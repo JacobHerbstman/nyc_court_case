@@ -1,0 +1,70 @@
+# #################################################
+# ## Generic gitignore for a task-based workflow
+# #################################################
+
+# --- System & Editor Files ---
+.DS_Store
+.Rhistory
+__pycache__/
+node_modules/
+.claude/
+
+# --- Log files ---
+*.log
+slurmlogs/
+tasks/*/slurmlogs/
+
+# --- Raw & Intermediate Data ---
+data_raw/
+tasks/*/input/
+tasks/*/output/
+tasks/*/temp/
+
+# --- Secrets ---
+.Renviron
+
+# --- Archive / deprecated task areas ---
+tasks/_deprecated/
+tasks/archive/
+tasks/archive/*/input/
+tasks/archive/*/output/
+tasks/archive/*/temp/
+
+# Exception: track the task flow graph for README if present
+!tasks/symlink_graph/output/
+tasks/symlink_graph/output/graph.txt
+!tasks/symlink_graph/output/task_flow.png
+
+# --- Paper build artifacts ---
+paper/*.aux
+paper/*.bbl
+paper/*.blg
+paper/*.fdb_latexmk
+paper/*.fff
+paper/*.fls
+paper/*.log
+paper/*.out
+paper/*.pdf
+paper/*.synctex.gz
+paper/*.ttt
+
+# --- Slides build artifacts ---
+slides/*.aux
+slides/*.bbl
+slides/*.blg
+slides/*.fdb_latexmk
+slides/*.fls
+slides/*.log
+slides/*.nav
+slides/*.out
+slides/*.pdf
+slides/*.synctex.gz
+slides/*.snm
+slides/*.toc
+
+# --- Scratch / local working area ---
+tmp/
+
+# --- Auto-generated graphics ---
+Rplots.pdf
+**/code/Rplots.pdf
