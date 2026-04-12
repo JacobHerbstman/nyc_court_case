@@ -58,6 +58,11 @@ extract_tables_from_json <- function(path) {
 
 identify_zip_role <- function(zip_path) {
   listing <- tryCatch(unzip(zip_path, list = TRUE), error = function(e) NULL)
+  zip_name <- tolower(basename(zip_path))
+
+  if (str_detect(zip_name, "_shape\\.zip$")) {
+    return("gis_data")
+  }
 
   if (is.null(listing)) {
     return("unknown")
@@ -66,6 +71,10 @@ identify_zip_role <- function(zip_path) {
   listing_names <- tolower(listing$Name)
 
   if (any(str_detect(listing_names, "\\.(shp|dbf|shx|prj)$"))) {
+    return("gis_data")
+  }
+
+  if (any(str_detect(listing_names, "shapefile.*\\.zip$"))) {
     return("gis_data")
   }
 

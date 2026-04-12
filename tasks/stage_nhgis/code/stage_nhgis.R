@@ -44,6 +44,8 @@ nhgis_extract_downloads <- if (file.exists(nhgis_extract_downloads_csv)) {
   )
 }
 
+nyc_counties <- c("005", "047", "061", "081", "085")
+
 sum_codes <- function(df, codes) {
   hits <- normalize_names(codes)
   hits <- hits[hits %in% names(df)]
@@ -147,10 +149,17 @@ for (i in seq_len(nrow(nhgis_rows))) {
     str_detect(tolower(table_listing$Name), "\\.(csv|dat)$") &
       !str_detect(tolower(table_listing$Name), "(_datadict|_geog|_tables)\\.csv$")
   ]
-  shapefile_candidates <- gis_listing$Name[str_detect(tolower(gis_listing$Name), "\\.shp$")]
+  shapefile_candidates <- gis_listing$Name[
+    str_detect(tolower(gis_listing$Name), "\\.shp$|shapefile.*\\.zip$")
+  ]
   has_expected_shape <- any(str_detect(
     tolower(c(basename(gis_zip), shapefile_candidates)),
-    paste0("tract.*", row$year, ".*tl2000|", row$year, ".*tract.*tl2000|us_tract_", row$year, "_tl2000")
+    paste0(
+      "tract.*", row$year, ".*tl2000|",
+      row$year, ".*tract.*tl2000|",
+      "us_tract_", row$year, "_tl2000|",
+      "shapefile.*tl2000.*tract.*", row$year
+    )
   ))
 
   if (length(table_candidates) == 0 || length(shapefile_candidates) == 0 || !has_expected_shape) {
@@ -190,8 +199,41 @@ for (i in seq_len(nrow(nhgis_rows))) {
     next
   }
 
-  nhgis_df <- suppressWarnings(read_nhgis(table_zip, verbose = FALSE))
-  names(nhgis_df) <- normalize_names(names(nhgis_df))
+  table_dfs <- lapply(table_candidates, function(table_file) {
+    out <- read_csv(unz(table_zip, table_file), show_col_types = FALSE, guess_max = 50000)
+    names(out) <- normalize_names(names(out))
+    out
+  })
+
+  nhgis_df <- table_dfs[[1]]
+
+  if (length(table_dfs) > 1) {
+    for (j in 2:length(table_dfs)) {
+      join_keys <- intersect(
+        c("gisjoin", "year", "state", "statea", "county", "countya", "tract", "tracta"),
+        intersect(names(nhgis_df), names(table_dfs[[j]]))
+      )
+
+      if (length(join_keys) == 0) {
+        stop("Could not identify NHGIS join keys across multiple dataset CSV files.")
+      }
+
+      nhgis_df <- nhgis_df |>
+        left_join(
+          table_dfs[[j]] |>
+            select(any_of(join_keys), any_of(setdiff(names(table_dfs[[j]]), names(nhgis_df)))),
+          by = join_keys
+        )
+    }
+  }
+
+  nhgis_df$statea <- pick_first_existing(nhgis_df, c("statea"))
+  nhgis_df$countya <- pick_first_existing(nhgis_df, c("countya"))
+  nhgis_df$statea_std <- str_pad(str_extract(as.character(nhgis_df$statea), "[0-9]+"), width = 2, side = "left", pad = "0")
+  nhgis_df$countya_std <- str_pad(str_extract(as.character(nhgis_df$countya), "[0-9]+"), width = 3, side = "left", pad = "0")
+  nhgis_df <- nhgis_df |>
+    filter(statea_std == "36", countya_std %in% nyc_counties) |>
+    select(-statea_std, -countya_std)
   year_map <- nhgis_table_map |> filter(year == row$year)
   missing_codes <- year_map$nhgis_code[!normalize_names(year_map$nhgis_code) %in% names(nhgis_df)]
 

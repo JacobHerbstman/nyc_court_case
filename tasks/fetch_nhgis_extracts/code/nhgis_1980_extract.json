@@ -29,6 +29,9 @@
     "dataFormat": "csv_no_header",
     "description": "1980 NYC tract extract",
     "breakdownAndDataTypeLayout": "single_file",
+    "geographicExtents": [
+        "360"
+    ],
     "collection": "nhgis",
     "version": 2
 }
