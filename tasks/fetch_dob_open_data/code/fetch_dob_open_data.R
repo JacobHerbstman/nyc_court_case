@@ -120,8 +120,9 @@ for (i in seq_len(nrow(dob_rows))) {
   staged_df$bbl[is.na(staged_df$bbl)] <- build_bbl(staged_df$borough, staged_df$block, staged_df$lot)[is.na(staged_df$bbl)]
   staged_df$address <- combine_address(staged_df$house_number, staged_df$street_name)
 
-  out_parquet <- file.path("..", "output", paste0(row$source_id, ".parquet"))
-  write_parquet_if_changed(staged_df, out_parquet)
+  out_parquet_local <- file.path("..", "output", paste0(row$source_id, ".parquet"))
+  out_parquet <- file.path("..", "..", "fetch_dob_open_data", "output", paste0(row$source_id, ".parquet"))
+  write_parquet_if_changed(staged_df, out_parquet_local)
 
   parsed_dates <- parse_mixed_date(staged_df$record_date)
 

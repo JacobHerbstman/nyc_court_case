@@ -32,8 +32,8 @@ build_bbl <- function(borough, block, lot) {
 }
 
 combine_address <- function(house_number, street_name) {
-  house_number <- str_squish(replace_na(as.character(house_number), ""))
-  street_name <- str_squish(replace_na(as.character(street_name), ""))
+  house_number <- str_squish(ifelse(is.na(house_number), "", as.character(house_number)))
+  street_name <- str_squish(ifelse(is.na(street_name), "", as.character(street_name)))
   address <- str_squish(str_trim(paste(house_number, street_name)))
   address[address == ""] <- NA_character_
   address
@@ -121,4 +121,17 @@ sanitize_file_stub <- function(x) {
     tolower() |>
     str_replace_all("[^a-z0-9]+", "_") |>
     str_replace_all("^_|_$", "")
+}
+
+release_order_key <- function(x) {
+  x <- as.character(x)
+  base_year <- suppressWarnings(as.integer(str_extract(x, "^[0-9]{2}")))
+  version <- suppressWarnings(as.numeric(str_replace(str_extract(x, "(?<=v)[0-9]+(\\.[0-9]+)?"), "_", ".")))
+  beta_flag <- str_detect(tolower(x), "beta")
+
+  out <- rep(NA_real_, length(x))
+  valid <- !is.na(base_year)
+  out[valid] <- (2000 + base_year[valid]) * 100 + ifelse(is.na(version[valid]), 0, version[valid] * 10)
+  out[valid & beta_flag] <- out[valid & beta_flag] - 0.5
+  out
 }

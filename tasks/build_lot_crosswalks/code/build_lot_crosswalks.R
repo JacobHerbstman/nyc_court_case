@@ -12,6 +12,8 @@ suppressPackageStartupMessages({
   library(tibble)
 })
 
+source("../../_lib/source_pipeline_utils.R")
+
 args <- commandArgs(trailingOnly = TRUE)
 
 if (length(args) != 4) {
@@ -26,6 +28,12 @@ out_qc_csv <- args[4]
 mappluto_index <- read_csv(mappluto_index_csv, show_col_types = FALSE, na = c("", "NA"))
 dob_index <- read_csv(dob_index_csv, show_col_types = FALSE, na = c("", "NA"))
 
+if (!"parquet_path" %in% names(mappluto_index)) {
+  write_csv(tibble(), out_crosswalk_csv, na = "")
+  write_csv(tibble(status = "no_mappluto_parquet_available"), out_qc_csv, na = "")
+  quit(save = "no")
+}
+
 parquet_rows <- mappluto_index |> filter(!is.na(parquet_path), file.exists(parquet_path))
 
 if (nrow(parquet_rows) == 0) {
@@ -35,8 +43,20 @@ if (nrow(parquet_rows) == 0) {
 }
 
 parquet_rows <- parquet_rows |>
-  mutate(vintage_rank = if_else(vintage == "current", 999999L, suppressWarnings(as.integer(str_extract(vintage, "[0-9]{4}"))))) |>
-  arrange(desc(vintage_rank))
+  mutate(
+    is_current_release = source_id == "dcp_mappluto_current",
+    vintage_rank = release_order_key(vintage)
+  ) |>
+  arrange(desc(is_current_release), desc(vintage_rank), desc(vintage))
+
+first_nonmissing <- function(x) {
+  x <- as.character(x)
+  x <- x[!is.na(x) & x != ""]
+  if (length(x) == 0) {
+    return(NA_character_)
+  }
+  x[1]
+}
 
 mappluto_latest <- read_parquet(parquet_rows$parquet_path[1]) |>
   as_tibble() |>
@@ -47,6 +67,25 @@ mappluto_latest <- read_parquet(parquet_rows$parquet_path[1]) |>
     current_council = as.character(council)
   ) |>
   distinct()
+
+mappluto_by_bbl <- mappluto_latest |>
+  filter(!is.na(bbl), bbl != "") |>
+  group_by(bbl) |>
+  summarise(
+    mappluto_address = first_nonmissing(address),
+    bbl_cd = first_nonmissing(current_cd),
+    bbl_council = first_nonmissing(current_council),
+    .groups = "drop"
+  )
+
+mappluto_by_address <- mappluto_latest |>
+  filter(!is.na(address), address != "") |>
+  group_by(address) |>
+  summarise(
+    address_cd = first_nonmissing(current_cd),
+    address_council = first_nonmissing(current_council),
+    .groups = "drop"
+  )
 
 dob_parquets <- dob_index |> filter(!is.na(parquet_path), file.exists(parquet_path))
 dob_ids <- if (nrow(dob_parquets) == 0) {
@@ -66,14 +105,12 @@ dob_ids <- if (nrow(dob_parquets) == 0) {
 }
 
 crosswalk <- dob_ids |>
-  left_join(mappluto_latest, by = "bbl") |>
-  left_join(
-    mappluto_latest |> select(address, address_cd = current_cd, address_council = current_council),
-    by = "address"
-  ) |>
+  left_join(mappluto_by_bbl, by = "bbl") |>
+  left_join(mappluto_by_address, by = "address") |>
   mutate(
-    current_cd = coalesce(current_cd, address_cd),
-    current_council = coalesce(current_council, address_council)
+    current_cd = coalesce(bbl_cd, address_cd),
+    current_council = coalesce(bbl_council, address_council),
+    address = coalesce(address, mappluto_address)
   ) |>
   select(bbl, bin, address, current_cd, current_council, source_id) |>
   distinct()
