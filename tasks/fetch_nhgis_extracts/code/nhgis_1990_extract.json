@@ -1,0 +1,33 @@
+{
+    "datasets": {
+        "1990_STF1": {
+            "dataTables": [
+                "NP6",
+                "NP9",
+                "NH1",
+                "NH3",
+                "NH5"
+            ],
+            "geogLevels": [
+                "tract"
+            ]
+        },
+        "1990_STF3": {
+            "dataTables": [
+                "NP80A",
+                "NH20"
+            ],
+            "geogLevels": [
+                "tract"
+            ]
+        }
+    },
+    "shapefiles": [
+        "us_tract_1990_tl2000"
+    ],
+    "dataFormat": "csv_no_header",
+    "description": "1990 NYC tract extract",
+    "breakdownAndDataTypeLayout": "single_file",
+    "collection": "nhgis",
+    "version": 2
+}

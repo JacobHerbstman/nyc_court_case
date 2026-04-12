@@ -8,14 +8,16 @@ This repository is the reproducible data-collection scaffold for the NYC member 
 - Archival ready: the workflow includes FOIL, Municipal Archives, and Municipal Library lanes from day one.
 - Reproducible by task: each source family has its own task with a minimal `Makefile`, explicit inputs, and linear scripts.
 - Manual drops are allowed when necessary, but every such file must be documented in tracked manifests under `tasks/source_registry/code/`.
+- NHGIS is scripted through `ipumsr` and reads `IPUMS_API_KEY` from `~/.Renviron`; do not create a repo-local secret file.
 
 ## Start Here
 
 1. Run `make` in `tasks/setup_environment/code/`.
 2. Run `make` in `tasks/source_registry/code/`.
 3. Review `tasks/source_registry/code/source_catalog.csv`, `manual_manifest.csv`, and `archive_requests.csv`.
-4. Place any required manual files into `data_raw/<source_id>/<vintage_or_pull_date>/`.
-5. Run source-family tasks from their `code/` folders.
+4. Make sure `IPUMS_API_KEY` is available in `~/.Renviron` for the NHGIS task.
+5. Place any required manual files into `data_raw/<source_id>/<vintage_or_pull_date>/`.
+6. Run source-family tasks from their `code/` folders.
 
 ## Task Order
 
@@ -25,6 +27,7 @@ This repository is the reproducible data-collection scaffold for the NYC member 
 - `tasks/fetch_dob_open_data`
 - `tasks/fetch_dcp_boundaries`
 - `tasks/fetch_census_bps`
+- `tasks/fetch_nhgis_extracts`
 - `tasks/stage_nhgis`
 - `tasks/stage_furman_coredata`
 - `tasks/archive_locator`

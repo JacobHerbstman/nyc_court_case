@@ -1,4 +1,4 @@
-# setwd("tasks/setup_environment/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/setup_environment/code")
 
 out_txt <- "../output/R_packages.txt"
 
@@ -6,7 +6,7 @@ options(repos = c(CRAN = "https://cloud.r-project.org"))
 
 cran_pkgs <- c(
   "arrow", "data.table", "DBI", "duckdb", "dplyr", "fixest",
-  "ggplot2", "jsonlite", "lubridate", "optparse", "readr", "sf", "stringr",
+  "ggplot2", "ipumsr", "jsonlite", "lubridate", "optparse", "readr", "sf", "stringr",
   "tibble", "tidyr"
 )
 

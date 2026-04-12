@@ -1,0 +1,34 @@
+{
+    "datasets": {
+        "1980_STF1": {
+            "dataTables": [
+                "NT4A",
+                "NT7",
+                "NT8",
+                "NT25",
+                "NT26A",
+                "NT26B"
+            ],
+            "geogLevels": [
+                "tract"
+            ]
+        },
+        "1980_STF3": {
+            "dataTables": [
+                "NT69",
+                "NT102A"
+            ],
+            "geogLevels": [
+                "tract"
+            ]
+        }
+    },
+    "shapefiles": [
+        "us_tract_1980_tl2000"
+    ],
+    "dataFormat": "csv_no_header",
+    "description": "1980 NYC tract extract",
+    "breakdownAndDataTypeLayout": "single_file",
+    "collection": "nhgis",
+    "version": 2
+}

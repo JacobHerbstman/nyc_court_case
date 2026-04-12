@@ -1,0 +1,66 @@
+year,dataset_name,data_table,data_table_description,nhgis_code,cell_description,staged_field
+1980,1980_STF1,NT4A,Housing Units,C8Y001,Total,total_housing_units
+1980,1980_STF1,NT7,Race,C9D001,White,white_population
+1980,1980_STF1,NT7,Race,C9D002,Black,black_population
+1980,1980_STF1,NT7,Race,C9D003,"American Indian, Eskimo, and Aleut: American Indian",native_population
+1980,1980_STF1,NT7,Race,C9D004,"American Indian, Eskimo, and Aleut: Eskimo",native_population
+1980,1980_STF1,NT7,Race,C9D005,"American Indian, Eskimo, and Aleut: Aleut",native_population
+1980,1980_STF1,NT7,Race,C9D006,"Asian and Pacific Islander: Japanese",asian_pacific_islander_population
+1980,1980_STF1,NT7,Race,C9D007,"Asian and Pacific Islander: Chinese",asian_pacific_islander_population
+1980,1980_STF1,NT7,Race,C9D008,"Asian and Pacific Islander: Filipino",asian_pacific_islander_population
+1980,1980_STF1,NT7,Race,C9D009,"Asian and Pacific Islander: Korean",asian_pacific_islander_population
+1980,1980_STF1,NT7,Race,C9D010,"Asian and Pacific Islander: Asian Indian",asian_pacific_islander_population
+1980,1980_STF1,NT7,Race,C9D011,"Asian and Pacific Islander: Vietnamese",asian_pacific_islander_population
+1980,1980_STF1,NT7,Race,C9D012,"Asian and Pacific Islander: Hawaiian",asian_pacific_islander_population
+1980,1980_STF1,NT7,Race,C9D013,"Asian and Pacific Islander: Guamanian",asian_pacific_islander_population
+1980,1980_STF1,NT7,Race,C9D014,"Asian and Pacific Islander: Samoan",asian_pacific_islander_population
+1980,1980_STF1,NT7,Race,C9D015,Other,other_race_population
+1980,1980_STF1,NT8,Spanish Origin,C9E001,Not of Spanish origin,non_hispanic_population
+1980,1980_STF1,NT8,Spanish Origin,C9E002,Mexican,hispanic_any_race
+1980,1980_STF1,NT8,Spanish Origin,C9E003,Puerto Rican,hispanic_any_race
+1980,1980_STF1,NT8,Spanish Origin,C9E004,Cuban,hispanic_any_race
+1980,1980_STF1,NT8,Spanish Origin,C9E005,Other Spanish,hispanic_any_race
+1980,1980_STF1,NT25,Vacancy Status,C7U001,For sale only,vacant_units
+1980,1980_STF1,NT25,Vacancy Status,C7U002,For rent,vacant_units
+1980,1980_STF1,NT25,Vacancy Status,C7U003,Held for occasional use,vacant_units
+1980,1980_STF1,NT25,Vacancy Status,C7U004,Other vacants,vacant_units
+1980,1980_STF1,NT26A,Occupied Housing Units,C7V001,Total,occupied_units
+1980,1980_STF1,NT26B,Tenure,C7W001,Owner occupied,owner_occupied_units
+1980,1980_STF1,NT26B,Tenure,C7W002,Renter occupied,renter_occupied_units
+1980,1980_STF3,NT69,Median Household Income in 1979,DIE001,Median household income in 1979,median_household_income
+1980,1980_STF3,NT102A,Units in Structure,DEG001,"1, detached",structure_1unit_detached
+1980,1980_STF3,NT102A,Units in Structure,DEG002,"1, attached",structure_1unit_attached
+1980,1980_STF3,NT102A,Units in Structure,DEG003,2,structure_2_unit
+1980,1980_STF3,NT102A,Units in Structure,DEG004,"3 and 4",structure_3_4_unit
+1980,1980_STF3,NT102A,Units in Structure,DEG005,5 or more,structure_5plus_unit
+1980,1980_STF3,NT102A,Units in Structure,DEG006,"Mobile home or trailer, etc.",structure_mobile_home_other
+1990,1990_STF1,NP6,Race,EUY001,White,white_population
+1990,1990_STF1,NP6,Race,EUY002,Black,black_population
+1990,1990_STF1,NP6,Race,EUY003,"American Indian, Eskimo, or Aleut",native_population
+1990,1990_STF1,NP6,Race,EUY004,Asian or Pacific Islander,asian_pacific_islander_population
+1990,1990_STF1,NP6,Race,EUY005,Other race,other_race_population
+1990,1990_STF1,NP9,Hispanic Origin,EU1001,Not of Hispanic origin,non_hispanic_population
+1990,1990_STF1,NP9,Hispanic Origin,EU1002,"Hispanic origin: Mexican",hispanic_any_race
+1990,1990_STF1,NP9,Hispanic Origin,EU1003,"Hispanic origin: Puerto Rican",hispanic_any_race
+1990,1990_STF1,NP9,Hispanic Origin,EU1004,"Hispanic origin: Cuban",hispanic_any_race
+1990,1990_STF1,NP9,Hispanic Origin,EU1005,"Hispanic origin: Other Hispanic",hispanic_any_race
+1990,1990_STF1,NH1,Housing Units,ESA001,Total,total_housing_units
+1990,1990_STF1,NH3,Tenure,ES1001,Owner occupied,owner_occupied_units
+1990,1990_STF1,NH3,Tenure,ES1002,Renter occupied,renter_occupied_units
+1990,1990_STF1,NH5,Vacancy Status,ETQ001,For rent,vacant_units
+1990,1990_STF1,NH5,Vacancy Status,ETQ002,For sale only,vacant_units
+1990,1990_STF1,NH5,Vacancy Status,ETQ003,"Rented or sold, not occupied",vacant_units
+1990,1990_STF1,NH5,Vacancy Status,ETQ004,"For seasonal, recreational, or occasional use",vacant_units
+1990,1990_STF1,NH5,Vacancy Status,ETQ005,For migrant workers,vacant_units
+1990,1990_STF1,NH5,Vacancy Status,ETQ006,Other vacant,vacant_units
+1990,1990_STF3,NP80A,Median Household Income in 1989,E4U001,Median household income in 1989,median_household_income
+1990,1990_STF3,NH20,Units in Structure,EX2001,"1, detached",structure_1unit_detached
+1990,1990_STF3,NH20,Units in Structure,EX2002,"1, attached",structure_1unit_attached
+1990,1990_STF3,NH20,Units in Structure,EX2003,2,structure_2_unit
+1990,1990_STF3,NH20,Units in Structure,EX2004,"3 or 4",structure_3_4_unit
+1990,1990_STF3,NH20,Units in Structure,EX2005,"5 to 9",structure_5plus_unit
+1990,1990_STF3,NH20,Units in Structure,EX2006,"10 to 19",structure_5plus_unit
+1990,1990_STF3,NH20,Units in Structure,EX2007,"20 to 49",structure_5plus_unit
+1990,1990_STF3,NH20,Units in Structure,EX2008,"50 or more",structure_5plus_unit
+1990,1990_STF3,NH20,Units in Structure,EX2009,"Mobile home or trailer",structure_mobile_home_other
+1990,1990_STF3,NH20,Units in Structure,EX2010,Other,structure_other
