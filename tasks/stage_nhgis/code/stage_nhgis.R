@@ -1,15 +1,13 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/stage_nhgis/code")
-# source_catalog_csv <- "../input/source_catalog.csv"
-# nhgis_extract_downloads_csv <- "../input/nhgis_extract_downloads.csv"
+# nhgis_raw_files_csv <- "../input/nhgis_raw_files.csv"
 # nhgis_table_map_csv <- "../input/nhgis_table_map.csv"
 # out_index_csv <- "../output/nhgis_files.csv"
 # out_qc_csv <- "../output/nhgis_qc.csv"
 
 suppressPackageStartupMessages({
+  library(arrow)
   library(dplyr)
-  library(ipumsr)
   library(readr)
-  library(stringr)
   library(tibble)
 })
 
@@ -17,34 +15,17 @@ source("../../_lib/source_pipeline_utils.R")
 
 args <- commandArgs(trailingOnly = TRUE)
 
-if (length(args) != 5) {
-  stop("Expected 5 arguments: source_catalog_csv nhgis_extract_downloads_csv nhgis_table_map_csv out_index_csv out_qc_csv")
+if (length(args) != 4) {
+  stop("Expected 4 arguments: nhgis_raw_files_csv nhgis_table_map_csv out_index_csv out_qc_csv")
 }
 
-source_catalog_csv <- args[1]
-nhgis_extract_downloads_csv <- args[2]
-nhgis_table_map_csv <- args[3]
-out_index_csv <- args[4]
-out_qc_csv <- args[5]
+nhgis_raw_files_csv <- args[1]
+nhgis_table_map_csv <- args[2]
+out_index_csv <- args[3]
+out_qc_csv <- args[4]
 
-source_catalog <- read_csv(source_catalog_csv, show_col_types = FALSE, na = c("", "NA"))
 nhgis_table_map <- read_csv(nhgis_table_map_csv, show_col_types = FALSE, na = c("", "NA"))
-nhgis_extract_downloads <- if (file.exists(nhgis_extract_downloads_csv)) {
-  read_csv(nhgis_extract_downloads_csv, show_col_types = FALSE, na = c("", "NA"))
-} else {
-  tibble(
-    source_id = character(),
-    year = integer(),
-    extract_number = integer(),
-    extract_status = character(),
-    file_role = character(),
-    raw_path = character(),
-    checksum_sha256 = character(),
-    status = character()
-  )
-}
-
-nyc_counties <- c("005", "047", "061", "081", "085")
+nhgis_raw_files <- read_csv(nhgis_raw_files_csv, show_col_types = FALSE, na = c("", "NA"))
 
 sum_codes <- function(df, codes) {
   hits <- normalize_names(codes)
@@ -87,153 +68,40 @@ sum_fields <- function(df, fields) {
   out
 }
 
-nhgis_rows <- source_catalog |>
-  filter(str_detect(source_id, "^nhgis_[0-9]{4}_tract_extract$")) |>
-  mutate(year = suppressWarnings(as.integer(str_extract(source_id, "[0-9]{4}"))))
+nhgis_rows <- nhgis_raw_files |>
+  mutate(year = as.integer(year))
 
 index_rows <- list()
 qc_rows <- list()
 
 for (i in seq_len(nrow(nhgis_rows))) {
   row <- nhgis_rows[i, ]
-  source_files <- nhgis_extract_downloads |>
-    filter(source_id == row$source_id, !is.na(raw_path), file.exists(raw_path))
-
-  table_zip <- source_files |>
-    filter(file_role == "table_data") |>
-    slice_head(n = 1) |>
-    pull(raw_path)
-
-  gis_zip <- source_files |>
-    filter(file_role == "gis_data") |>
-    slice_head(n = 1) |>
-    pull(raw_path)
-
-  missing_status <- if (nrow(source_files) == 0) {
-    "fetch_required"
-  } else if (any(str_detect(source_files$status, "failed"))) {
-    "fetch_failed"
-  } else {
-    "bundle_incomplete"
-  }
-
-  if (length(table_zip) == 0 || length(gis_zip) == 0) {
+  if (!file.exists(row$raw_parquet_path)) {
     index_rows[[i]] <- tibble(
       source_id = row$source_id,
       year = row$year,
-      table_zip_path = if (length(table_zip) == 0) NA_character_ else table_zip[[1]],
-      gis_zip_path = if (length(gis_zip) == 0) NA_character_ else gis_zip[[1]],
-      table_file_inside_zip = NA_character_,
-      shapefile_inside_zip = NA_character_,
+      table_zip_path = row$table_zip_path,
+      gis_zip_path = row$gis_zip_path,
+      table_file_inside_zip = row$table_file_inside_zip,
+      shapefile_inside_zip = row$shapefile_inside_zip,
+      raw_parquet_path = row$raw_parquet_path,
       parquet_path = NA_character_,
-      status = missing_status
+      status = row$status
     )
 
     qc_rows[[i]] <- tibble(
       source_id = row$source_id,
-      status = missing_status,
+      status = row$status,
       row_count = NA_real_,
       homeowner_share_mean = NA_real_,
       missing_nhgis_codes = NA_character_,
-      validation_notes = "Run tasks/fetch_nhgis_extracts before staging NHGIS outputs."
+      validation_notes = "Run tasks/load_nhgis_raw before staging NHGIS outputs."
     )
     next
   }
-
-  table_zip <- table_zip[[1]]
-  gis_zip <- gis_zip[[1]]
-  table_listing <- unzip(table_zip, list = TRUE)
-  gis_listing <- unzip(gis_zip, list = TRUE)
-
-  table_candidates <- table_listing$Name[
-    str_detect(tolower(table_listing$Name), "\\.(csv|dat)$") &
-      !str_detect(tolower(table_listing$Name), "(_datadict|_geog|_tables)\\.csv$")
-  ]
-  shapefile_candidates <- gis_listing$Name[
-    str_detect(tolower(gis_listing$Name), "\\.shp$|shapefile.*\\.zip$")
-  ]
-  has_expected_shape <- any(str_detect(
-    tolower(c(basename(gis_zip), shapefile_candidates)),
-    paste0(
-      "tract.*", row$year, ".*tl2000|",
-      row$year, ".*tract.*tl2000|",
-      "us_tract_", row$year, "_tl2000|",
-      "shapefile.*tl2000.*tract.*", row$year
-    )
-  ))
-
-  if (length(table_candidates) == 0 || length(shapefile_candidates) == 0 || !has_expected_shape) {
-    validation_notes <- c()
-
-    if (length(table_candidates) == 0) {
-      validation_notes <- c(validation_notes, "missing_tabular_payload")
-    }
-
-    if (length(shapefile_candidates) == 0) {
-      validation_notes <- c(validation_notes, "missing_shapefile_payload")
-    }
-
-    if (length(shapefile_candidates) > 0 && !has_expected_shape) {
-      validation_notes <- c(validation_notes, "unexpected_shapefile_asset")
-    }
-
-    index_rows[[i]] <- tibble(
-      source_id = row$source_id,
-      year = row$year,
-      table_zip_path = table_zip,
-      gis_zip_path = gis_zip,
-      table_file_inside_zip = if (length(table_candidates) == 0) NA_character_ else table_candidates[[1]],
-      shapefile_inside_zip = if (length(shapefile_candidates) == 0) NA_character_ else shapefile_candidates[[1]],
-      parquet_path = NA_character_,
-      status = "bundle_validation_failed"
-    )
-
-    qc_rows[[i]] <- tibble(
-      source_id = row$source_id,
-      status = "bundle_validation_failed",
-      row_count = NA_real_,
-      homeowner_share_mean = NA_real_,
-      missing_nhgis_codes = NA_character_,
-      validation_notes = paste(validation_notes, collapse = ";")
-    )
-    next
-  }
-
-  table_dfs <- lapply(table_candidates, function(table_file) {
-    out <- read_csv(unz(table_zip, table_file), show_col_types = FALSE, guess_max = 50000)
-    names(out) <- normalize_names(names(out))
-    out
-  })
-
-  nhgis_df <- table_dfs[[1]]
-
-  if (length(table_dfs) > 1) {
-    for (j in 2:length(table_dfs)) {
-      join_keys <- intersect(
-        c("gisjoin", "year", "state", "statea", "county", "countya", "tract", "tracta"),
-        intersect(names(nhgis_df), names(table_dfs[[j]]))
-      )
-
-      if (length(join_keys) == 0) {
-        stop("Could not identify NHGIS join keys across multiple dataset CSV files.")
-      }
-
-      nhgis_df <- nhgis_df |>
-        left_join(
-          table_dfs[[j]] |>
-            select(any_of(join_keys), any_of(setdiff(names(table_dfs[[j]]), names(nhgis_df)))),
-          by = join_keys
-        )
-    }
-  }
-
-  nhgis_df$statea <- pick_first_existing(nhgis_df, c("statea"))
-  nhgis_df$countya <- pick_first_existing(nhgis_df, c("countya"))
-  nhgis_df$statea_std <- str_pad(str_extract(as.character(nhgis_df$statea), "[0-9]+"), width = 2, side = "left", pad = "0")
-  nhgis_df$countya_std <- str_pad(str_extract(as.character(nhgis_df$countya), "[0-9]+"), width = 3, side = "left", pad = "0")
-  nhgis_df <- nhgis_df |>
-    filter(statea_std == "36", countya_std %in% nyc_counties) |>
-    select(-statea_std, -countya_std)
+  nhgis_df <- read_parquet(row$raw_parquet_path) |>
+    as.data.frame() |>
+    as_tibble()
   year_map <- nhgis_table_map |> filter(year == row$year)
   missing_codes <- year_map$nhgis_code[!normalize_names(year_map$nhgis_code) %in% names(nhgis_df)]
 
@@ -292,10 +160,11 @@ for (i in seq_len(nrow(nhgis_rows))) {
   index_rows[[i]] <- tibble(
     source_id = row$source_id,
     year = row$year,
-    table_zip_path = table_zip,
-    gis_zip_path = gis_zip,
-    table_file_inside_zip = table_candidates[[1]],
-    shapefile_inside_zip = shapefile_candidates[[1]],
+    table_zip_path = row$table_zip_path,
+    gis_zip_path = row$gis_zip_path,
+    table_file_inside_zip = row$table_file_inside_zip,
+    shapefile_inside_zip = row$shapefile_inside_zip,
+    raw_parquet_path = row$raw_parquet_path,
     parquet_path = out_parquet,
     status = "staged"
   )

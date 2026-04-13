@@ -1,9 +1,10 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/stage_dcp_boundaries/code")
-# dcp_boundary_files_csv <- "../input/dcp_boundary_files.csv"
+# dcp_boundary_raw_files_csv <- "../input/dcp_boundary_raw_files.csv"
 # out_index_csv <- "../output/dcp_boundary_index.csv"
 # out_qc_csv <- "../output/dcp_boundary_qc.csv"
 
 suppressPackageStartupMessages({
+  library(arrow)
   library(dplyr)
   library(readr)
   library(sf)
@@ -15,15 +16,23 @@ source("../../_lib/source_pipeline_utils.R")
 args <- commandArgs(trailingOnly = TRUE)
 
 if (length(args) != 3) {
-  stop("Expected 3 arguments: dcp_boundary_files_csv out_index_csv out_qc_csv")
+  stop("Expected 3 arguments: dcp_boundary_raw_files_csv out_index_csv out_qc_csv")
 }
 
-dcp_boundary_files_csv <- args[1]
+dcp_boundary_raw_files_csv <- args[1]
 out_index_csv <- args[2]
 out_qc_csv <- args[3]
 
-boundary_files <- read_csv(dcp_boundary_files_csv, show_col_types = FALSE, na = c("", "NA")) |>
-  filter(file_role == "boundary_shapefile_zip", file.exists(raw_path))
+hex_to_raw <- function(x) {
+  if (is.na(x) || x == "") {
+    return(as.raw())
+  }
+
+  as.raw(strtoi(substring(x, seq(1, nchar(x), by = 2), seq(2, nchar(x), by = 2)), 16L))
+}
+
+boundary_files <- read_csv(dcp_boundary_raw_files_csv, show_col_types = FALSE, na = c("", "NA"))
+boundary_files <- boundary_files[!is.na(boundary_files$raw_parquet_path) & file.exists(boundary_files$raw_parquet_path), ]
 
 if (nrow(boundary_files) == 0) {
   write_csv(tibble(), out_index_csv, na = "")
@@ -36,18 +45,14 @@ qc_rows <- list()
 
 for (i in seq_len(nrow(boundary_files))) {
   row <- boundary_files[i, ]
-  temp_dir <- tempfile(pattern = "boundary_")
-  dir.create(temp_dir, recursive = TRUE, showWarnings = FALSE)
-  unzip(row$raw_path, exdir = temp_dir)
+  boundary_df <- read_parquet(row$raw_parquet_path) |>
+    as.data.frame() |>
+    as_tibble()
 
-  shp_path <- list.files(temp_dir, pattern = "\\.shp$", recursive = TRUE, full.names = TRUE)[1]
-
-  if (is.na(shp_path)) {
-    stop("No shapefile found inside ", row$raw_path)
-  }
-
-  boundary_sf <- st_read(shp_path, quiet = TRUE, stringsAsFactors = FALSE)
-  names(boundary_sf) <- normalize_names(names(boundary_sf))
+  wkb_list <- lapply(boundary_df$raw_geometry_wkb_hex, hex_to_raw)
+  class(wkb_list) <- c("WKB", class(wkb_list))
+  boundary_geom <- st_as_sfc(wkb_list, EWKB = TRUE, crs = boundary_df$raw_crs_epsg[1])
+  boundary_sf <- st_sf(boundary_df, geometry = boundary_geom, crs = boundary_df$raw_crs_epsg[1])
 
   district_id <- if (row$source_id == "dcp_boundary_community_districts") {
     pick_first_existing(boundary_sf, c("borocd", "boro_cd", "cd"))
@@ -80,11 +85,12 @@ for (i in seq_len(nrow(boundary_files))) {
       geometry_wkt = as.character(st_as_text(st_geometry(boundary_repaired))),
       source_id = row$source_id,
       pull_date = row$pull_date,
-      source_raw_path = row$raw_path
+      source_raw_path = row$raw_path,
+      raw_parquet_path = row$raw_parquet_path
     ) |>
     st_drop_geometry() |>
     as_tibble() |>
-    select(source_id, pull_date, source_raw_path, district_id, district_name, shape_length, shape_area, crs_epsg, geometry_wkb_hex, geometry_wkt, everything())
+    select(source_id, pull_date, source_raw_path, raw_parquet_path, district_id, district_name, shape_length, shape_area, crs_epsg, geometry_wkb_hex, geometry_wkt, everything())
 
   out_parquet_local <- file.path("..", "output", paste0(sanitize_file_stub(paste(row$source_id, row$pull_date, sep = "_")), ".parquet"))
   out_parquet <- file.path("..", "..", "stage_dcp_boundaries", "output", basename(out_parquet_local))
@@ -96,6 +102,7 @@ for (i in seq_len(nrow(boundary_files))) {
     source_id = row$source_id,
     pull_date = row$pull_date,
     raw_path = row$raw_path,
+    raw_parquet_path = row$raw_parquet_path,
     parquet_path = out_parquet
   )
 

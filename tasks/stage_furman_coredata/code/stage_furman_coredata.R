@@ -1,53 +1,75 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/stage_furman_coredata/code")
-# source_catalog_csv <- "../input/source_catalog.csv"
-# manual_manifest_csv <- "../input/manual_manifest.csv"
-# out_csv <- "../output/furman_coredata_files.csv"
+# furman_coredata_raw_files_csv <- "../input/furman_coredata_raw_files.csv"
+# out_index_csv <- "../output/furman_coredata_files.csv"
+# out_qc_csv <- "../output/furman_coredata_qc.csv"
 
 suppressPackageStartupMessages({
+  library(arrow)
   library(readr)
   library(tibble)
 })
 
-source("../../_lib/source_pipeline_utils.R")
-
 args <- commandArgs(trailingOnly = TRUE)
 
 if (length(args) != 3) {
-  stop("Expected 3 arguments: source_catalog_csv manual_manifest_csv out_csv")
+  stop("Expected 3 arguments: furman_coredata_raw_files_csv out_index_csv out_qc_csv")
 }
 
-source_catalog_csv <- args[1]
-manual_manifest_csv <- args[2]
-out_csv <- args[3]
+furman_coredata_raw_files_csv <- args[1]
+out_index_csv <- args[2]
+out_qc_csv <- args[3]
 
-source_catalog <- read_csv(source_catalog_csv, show_col_types = FALSE, na = c("", "NA"))
-manual_manifest <- read_csv(manual_manifest_csv, show_col_types = FALSE, na = c("", "NA"))
+furman_raw_files <- read_csv(furman_coredata_raw_files_csv, show_col_types = FALSE, na = c("", "NA"))
 
-row <- source_catalog[source_catalog$source_id == "furman_coredata_neighborhood_indicators", ]
-raw_files <- collect_raw_files("furman_coredata_neighborhood_indicators")
-raw_path <- raw_files[1]
-parquet_path <- NA_character_
-status <- "manual_download_required"
-
-if (!is.na(raw_path) && grepl("\\.csv$", raw_path)) {
-  furman_df <- read_csv(raw_path, show_col_types = FALSE)
-  parquet_path <- file.path("..", "output", "furman_coredata_neighborhood_indicators.parquet")
-  write_parquet_if_changed(furman_df, parquet_path)
-  status <- "staged"
+if (nrow(furman_raw_files) == 0) {
+  write_csv(tibble(), out_index_csv, na = "")
+  write_csv(tibble(), out_qc_csv, na = "")
+  quit(save = "no")
 }
 
-write_csv(
-  tibble(
+index_rows <- list()
+qc_rows <- list()
+
+for (i in seq_len(nrow(furman_raw_files))) {
+  row <- furman_raw_files[i, ]
+  parquet_path <- NA_character_
+  status <- row$status
+  row_count <- NA_real_
+  column_count <- NA_real_
+
+  if (!is.na(row$raw_parquet_path) && file.exists(row$raw_parquet_path)) {
+    furman_df <- read_parquet(row$raw_parquet_path) |>
+      as.data.frame() |>
+      as_tibble()
+
+    out_parquet_local <- file.path("..", "output", paste0(row$source_id, ".parquet"))
+    parquet_path <- file.path("..", "..", "stage_furman_coredata", "output", basename(out_parquet_local))
+    write_parquet_if_changed(furman_df, out_parquet_local)
+
+    row_count <- nrow(furman_df)
+    column_count <- ncol(furman_df)
+    status <- "staged"
+  }
+
+  index_rows[[i]] <- tibble(
     source_id = row$source_id,
     status = status,
-    raw_path = raw_path,
+    raw_path = row$raw_path,
+    raw_parquet_path = row$raw_parquet_path,
     parquet_path = parquet_path,
-    checksum_sha256 = if (!is.na(raw_path)) compute_sha256(raw_path) else NA_character_,
+    checksum_sha256 = row$checksum_sha256,
     official_url = row$official_url,
-    download_instructions = manual_manifest$download_instructions[manual_manifest$source_id == row$source_id]
-  ),
-  out_csv,
-  na = ""
-)
+    download_instructions = row$download_instructions
+  )
 
-cat("Wrote Furman CoreData inventory to", out_csv, "\n")
+  qc_rows[[i]] <- tibble(
+    source_id = row$source_id,
+    status = status,
+    row_count = row_count,
+    column_count = column_count
+  )
+}
+
+write_csv(dplyr::bind_rows(index_rows), out_index_csv, na = "")
+write_csv(dplyr::bind_rows(qc_rows), out_qc_csv, na = "")
+cat("Wrote Furman CoreData staging outputs to", dirname(out_index_csv), "\n")

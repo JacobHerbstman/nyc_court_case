@@ -34,7 +34,7 @@ if (!"parquet_path" %in% names(mappluto_index)) {
   quit(save = "no")
 }
 
-parquet_rows <- mappluto_index |> filter(!is.na(parquet_path), file.exists(parquet_path))
+parquet_rows <- mappluto_index[!is.na(mappluto_index$parquet_path) & file.exists(mappluto_index$parquet_path), ]
 
 if (nrow(parquet_rows) == 0) {
   write_csv(tibble(), out_crosswalk_csv, na = "")
@@ -87,7 +87,7 @@ mappluto_by_address <- mappluto_latest |>
     .groups = "drop"
   )
 
-dob_parquets <- dob_index |> filter(!is.na(parquet_path), file.exists(parquet_path))
+dob_parquets <- dob_index[!is.na(dob_index$parquet_path) & file.exists(dob_index$parquet_path), ]
 dob_ids <- if (nrow(dob_parquets) == 0) {
   tibble(bbl = character(), bin = character(), address = character(), source_id = character())
 } else {

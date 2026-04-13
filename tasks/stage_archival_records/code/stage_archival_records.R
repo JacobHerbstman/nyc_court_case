@@ -1,64 +1,100 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/stage_archival_records/code")
 # source_catalog_csv <- "../input/source_catalog.csv"
 # archive_requests_csv <- "../input/archive_requests.csv"
-# out_csv <- "../output/archival_record_inventory.csv"
+# archival_record_raw_files_csv <- "../input/archival_record_raw_files.csv"
+# out_inventory_csv <- "../output/archival_record_inventory.csv"
+# out_qc_csv <- "../output/archival_record_inventory_qc.csv"
 
 suppressPackageStartupMessages({
   library(dplyr)
   library(readr)
-  library(stringr)
   library(tibble)
 })
 
-source("../../_lib/source_pipeline_utils.R")
-
 args <- commandArgs(trailingOnly = TRUE)
 
-if (length(args) != 3) {
-  stop("Expected 3 arguments: source_catalog_csv archive_requests_csv out_csv")
+if (length(args) != 5) {
+  stop("Expected 5 arguments: source_catalog_csv archive_requests_csv archival_record_raw_files_csv out_inventory_csv out_qc_csv")
 }
 
 source_catalog_csv <- args[1]
 archive_requests_csv <- args[2]
-out_csv <- args[3]
+archival_record_raw_files_csv <- args[3]
+out_inventory_csv <- args[4]
+out_qc_csv <- args[5]
 
 source_catalog <- read_csv(source_catalog_csv, show_col_types = FALSE, na = c("", "NA"))
 archive_requests <- read_csv(archive_requests_csv, show_col_types = FALSE, na = c("", "NA"))
+archival_raw_files <- read_csv(archival_record_raw_files_csv, show_col_types = FALSE, na = c("", "NA"))
 
-archive_sources <- source_catalog |> filter(str_detect(source_id, "^archives_"))
-inventory_rows <- list()
-row_id <- 1
+inventory_df <- source_catalog |>
+  filter(grepl("^archives_", source_id)) |>
+  select(source_id, official_url) |>
+  left_join(archival_raw_files, by = "source_id") |>
+  left_join(
+    archive_requests |>
+      select(request_id, custodian, portal_or_contact, records_requested, date_range, submitted_date, status, returned_filename),
+    by = "request_id",
+    suffix = c("_raw", "_request")
+  ) |>
+  mutate(
+    inventory_status = dplyr::coalesce(status_raw, "no_returned_files"),
+    request_status = status_request
+  ) |>
+  select(
+    source_id,
+    request_id,
+    raw_path,
+    checksum_sha256,
+    file_extension,
+    file_size_bytes,
+    inventory_status,
+    request_status,
+    custodian,
+    portal_or_contact,
+    records_requested,
+    date_range,
+    submitted_date,
+    returned_filename,
+    official_url
+  )
 
-for (i in seq_len(nrow(archive_sources))) {
-  source_row <- archive_sources[i, ]
-  raw_files <- collect_raw_files(source_row$source_id)
+qc_df <- inventory_df |>
+  group_by(source_id) |>
+  summarise(
+    inventory_rows = n(),
+    returned_file_rows = sum(inventory_status == "returned_file_present", na.rm = TRUE),
+    distinct_request_ids = n_distinct(request_id[!is.na(request_id)]),
+    .groups = "drop"
+  )
 
-  if (length(raw_files) == 0) {
-    inventory_rows[[row_id]] <- tibble(
-      source_id = source_row$source_id,
-      request_id = NA_character_,
-      raw_path = NA_character_,
-      checksum_sha256 = NA_character_,
-      status = "no_returned_files"
-    )
-    row_id <- row_id + 1
-    next
-  }
+if (nrow(inventory_df) == 0) {
+  inventory_df <- tibble(
+    source_id = character(),
+    request_id = character(),
+    raw_path = character(),
+    checksum_sha256 = character(),
+    file_extension = character(),
+    file_size_bytes = double(),
+    inventory_status = character(),
+    request_status = character(),
+    custodian = character(),
+    portal_or_contact = character(),
+    records_requested = character(),
+    date_range = character(),
+    submitted_date = character(),
+    returned_filename = character(),
+    official_url = character()
+  )
 
-  for (raw_path in raw_files) {
-    request_id <- str_split(raw_path, .Platform$file.sep)[[1]]
-    request_id <- request_id[length(request_id) - 1]
-
-    inventory_rows[[row_id]] <- tibble(
-      source_id = source_row$source_id,
-      request_id = request_id,
-      raw_path = raw_path,
-      checksum_sha256 = compute_sha256(raw_path),
-      status = "returned_file_present"
-    )
-    row_id <- row_id + 1
-  }
+  qc_df <- tibble(
+    source_id = character(),
+    inventory_rows = double(),
+    returned_file_rows = double(),
+    distinct_request_ids = double()
+  )
 }
 
-write_csv(bind_rows(inventory_rows), out_csv, na = "")
-cat("Wrote archival record inventory to", out_csv, "\n")
+write_csv(inventory_df, out_inventory_csv, na = "")
+write_csv(qc_df, out_qc_csv, na = "")
+cat("Wrote archival record inventory to", out_inventory_csv, "\n")
