@@ -223,13 +223,25 @@ looks_downloadable <- function(url) {
 
 download_with_status <- function(url, dest_path) {
   dir.create(dirname(dest_path), recursive = TRUE, showWarnings = FALSE)
+  temp_path <- tempfile(tmpdir = dirname(dest_path), fileext = paste0(".", tools::file_ext(dest_path)))
 
   tryCatch(
     {
-      download.file(url, destfile = dest_path, mode = "wb", quiet = TRUE)
+      options(timeout = max(3600, getOption("timeout")))
+      download.file(url, destfile = temp_path, mode = "wb", quiet = TRUE, method = "libcurl")
+      if (file.exists(dest_path)) {
+        unlink(dest_path)
+      }
+      file.rename(temp_path, dest_path)
       "downloaded"
     },
     error = function(e) {
+      if (file.exists(temp_path)) {
+        unlink(temp_path)
+      }
+      if (file.exists(dest_path)) {
+        unlink(dest_path)
+      }
       message(e$message)
       "download_failed"
     }
