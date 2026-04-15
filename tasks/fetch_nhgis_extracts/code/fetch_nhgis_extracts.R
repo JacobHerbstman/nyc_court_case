@@ -85,14 +85,40 @@ identify_zip_role <- function(zip_path) {
   "unknown"
 }
 
+extract_number_from_path <- function(path) {
+  suppressWarnings(as.integer(str_extract(basename(path), "(?<=nhgis)[0-9]{4}")))
+}
+
+read_zip_header_codes <- function(zip_path) {
+  listing <- tryCatch(unzip(zip_path, list = TRUE), error = function(e) NULL)
+
+  if (is.null(listing)) {
+    return(character())
+  }
+
+  table_files <- listing$Name[
+    str_detect(tolower(listing$Name), "\\.(csv|dat)$") &
+      !str_detect(tolower(listing$Name), "(_datadict|_geog|_tables)\\.csv$")
+  ]
+
+  if (length(table_files) == 0) {
+    return(character())
+  }
+
+  unique(unlist(lapply(table_files, function(table_file) {
+    header_line <- read_lines(unz(zip_path, table_file), n_max = 1)
+    normalize_names(str_split(header_line, ",", simplify = TRUE))
+  })))
+}
+
 nhgis_specs <- tibble(
   source_id = c("nhgis_1980_tract_extract", "nhgis_1990_tract_extract"),
   year = c(1980L, 1990L),
   spec_json = c(nhgis_1980_extract_json, nhgis_1990_extract_json)
 )
 
-nhgis_rows <- source_catalog |>
-  semi_join(nhgis_specs, by = "source_id") |>
+nhgis_rows <- source_catalog %>%
+  semi_join(nhgis_specs, by = "source_id") %>%
   left_join(nhgis_specs, by = "source_id")
 
 audit_rows <- list()
@@ -105,8 +131,8 @@ for (i in seq_len(nrow(nhgis_rows))) {
   save_extract_as_json(extract_spec, roundtrip_json, overwrite = TRUE)
 
   spec_pairs <- extract_tables_from_json(row$spec_json)
-  table_map_pairs <- nhgis_table_map |>
-    filter(year == row$year) |>
+  table_map_pairs <- nhgis_table_map %>%
+    filter(year == row$year) %>%
     distinct(dataset_name, data_table)
 
   roundtrip_rows[[i]] <- tibble(
@@ -132,19 +158,32 @@ for (i in seq_len(nrow(nhgis_rows))) {
 
   if (length(existing_zips) > 0) {
     existing_roles <- vapply(existing_zips, identify_zip_role, character(1))
-    existing_status <- if (all(c("table_data", "gis_data") %in% existing_roles)) "already_present" else "partial_bundle_present"
+    expected_codes <- nhgis_table_map %>%
+      filter(year == row$year) %>%
+      pull(nhgis_code) %>%
+      normalize_names() %>%
+      unique()
+    table_zips <- existing_zips[existing_roles == "table_data"]
+    gis_zips <- existing_zips[existing_roles == "gis_data"]
+    complete_table_bundle <- any(vapply(table_zips, function(path) {
+      header_codes <- read_zip_header_codes(path)
+      length(header_codes) > 0 && all(expected_codes %in% header_codes)
+    }, logical(1)))
+    complete_gis_bundle <- length(gis_zips) > 0
 
-    audit_rows[[i]] <- tibble(
-      source_id = row$source_id,
-      year = row$year,
-      extract_number = NA_integer_,
-      extract_status = "not_queried",
-      file_role = existing_roles,
-      raw_path = existing_zips,
-      checksum_sha256 = vapply(existing_zips, compute_sha256, character(1)),
-      status = existing_status
-    )
-    next
+    if (complete_table_bundle && complete_gis_bundle) {
+      audit_rows[[i]] <- tibble(
+        source_id = row$source_id,
+        year = row$year,
+        extract_number = vapply(existing_zips, extract_number_from_path, integer(1)),
+        extract_status = "not_queried",
+        file_role = existing_roles,
+        raw_path = existing_zips,
+        checksum_sha256 = vapply(existing_zips, compute_sha256, character(1)),
+        status = "already_present"
+      )
+      next
+    }
   }
 
   fetch_result <- tryCatch(

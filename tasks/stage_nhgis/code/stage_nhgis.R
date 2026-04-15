@@ -1,6 +1,7 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/stage_nhgis/code")
 # nhgis_raw_files_csv <- "../input/nhgis_raw_files.csv"
 # nhgis_table_map_csv <- "../input/nhgis_table_map.csv"
+# nhgis_income_overrides_csv <- "nhgis_income_overrides.csv"
 # out_index_csv <- "../output/nhgis_files.csv"
 # out_qc_csv <- "../output/nhgis_qc.csv"
 # out_reconciliation_csv <- "../output/nhgis_1980_reconciliation.csv"
@@ -16,15 +17,16 @@ source("../../_lib/source_pipeline_utils.R")
 
 args <- commandArgs(trailingOnly = TRUE)
 
-if (length(args) != 5) {
-  stop("Expected 5 arguments: nhgis_raw_files_csv nhgis_table_map_csv out_index_csv out_qc_csv out_reconciliation_csv")
+if (length(args) != 6) {
+  stop("Expected 6 arguments: nhgis_raw_files_csv nhgis_table_map_csv nhgis_income_overrides_csv out_index_csv out_qc_csv out_reconciliation_csv")
 }
 
 nhgis_raw_files_csv <- args[1]
 nhgis_table_map_csv <- args[2]
-out_index_csv <- args[3]
-out_qc_csv <- args[4]
-out_reconciliation_csv <- args[5]
+nhgis_income_overrides_csv <- args[3]
+out_index_csv <- args[4]
+out_qc_csv <- args[5]
+out_reconciliation_csv <- args[6]
 
 sum_codes <- function(df, codes) {
   hits <- normalize_names(codes)
@@ -65,6 +67,14 @@ sum_fields <- function(df, fields) {
 }
 
 nhgis_table_map <- read_csv(nhgis_table_map_csv, show_col_types = FALSE, na = c("", "NA"))
+nhgis_income_overrides <- read_csv(nhgis_income_overrides_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+  mutate(
+    year = as.integer(year),
+    gisjoin = as.character(gisjoin),
+    override_income_classification = as.character(override_income_classification),
+    override_reason = as.character(override_reason)
+  )
+
 nhgis_raw_files <- read_csv(nhgis_raw_files_csv, show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(year = as.integer(year))
 
@@ -115,6 +125,7 @@ for (i in seq_len(nrow(nhgis_raw_files))) {
     statea = pick_first_existing(nhgis_df, c("statea")),
     countya = pick_first_existing(nhgis_df, c("countya")),
     tracta = pick_first_existing(nhgis_df, c("tracta", "tract")),
+    households_total = sum_codes(nhgis_df, year_map$nhgis_code[year_map$staged_field == "households_total"]),
     total_housing_units = sum_codes(nhgis_df, year_map$nhgis_code[year_map$staged_field == "total_housing_units"]),
     owner_occupied_units = sum_codes(nhgis_df, year_map$nhgis_code[year_map$staged_field == "owner_occupied_units"]),
     renter_occupied_units = sum_codes(nhgis_df, year_map$nhgis_code[year_map$staged_field == "renter_occupied_units"]),
@@ -124,6 +135,7 @@ for (i in seq_len(nrow(nhgis_raw_files))) {
     native_population = sum_codes(nhgis_df, year_map$nhgis_code[year_map$staged_field == "native_population"]),
     asian_pacific_islander_population = sum_codes(nhgis_df, year_map$nhgis_code[year_map$staged_field == "asian_pacific_islander_population"]),
     other_race_population = sum_codes(nhgis_df, year_map$nhgis_code[year_map$staged_field == "other_race_population"]),
+    group_quarters_population = sum_codes(nhgis_df, year_map$nhgis_code[year_map$staged_field == "group_quarters_population"]),
     hispanic_any_race = sum_codes(nhgis_df, year_map$nhgis_code[year_map$staged_field == "hispanic_any_race"]),
     non_hispanic_population = sum_codes(nhgis_df, year_map$nhgis_code[year_map$staged_field == "non_hispanic_population"]),
     median_household_income = pull_code(nhgis_df, year_map$nhgis_code[year_map$staged_field == "median_household_income"][1]),
@@ -141,6 +153,9 @@ for (i in seq_len(nrow(nhgis_raw_files))) {
     staged_df,
     c("white_population", "black_population", "native_population", "asian_pacific_islander_population", "other_race_population")
   )
+  staged_df$non_group_quarters_population <- staged_df$total_population - staged_df$group_quarters_population
+  staged_df$group_quarters_population_share <- staged_df$group_quarters_population / staged_df$total_population
+  staged_df$household_count_gap <- staged_df$households_total - staged_df$occupied_units
   staged_df$structure_1unit <- sum_fields(staged_df, c("structure_1unit_detached", "structure_1unit_attached"))
   staged_df$structure_2_4_unit <- sum_fields(staged_df, c("structure_2_unit", "structure_3_4_unit"))
   staged_df$vacancy_status_gap <- staged_df$total_housing_units - staged_df$occupied_units - staged_df$vacant_units_status_sum
@@ -177,6 +192,20 @@ for (i in seq_len(nrow(nhgis_raw_files))) {
       ifelse(staged_df$occupied_units == 0, "valid_zero_universe", "unresolved")
     )
   )
+
+  staged_df <- staged_df %>%
+    left_join(
+      nhgis_income_overrides %>%
+        filter(year == row$year) %>%
+        select(year, gisjoin, override_income_classification, override_reason),
+      by = c("year", "gisjoin")
+    ) %>%
+    mutate(
+      income_classification = coalesce(override_income_classification, income_classification),
+      income_override_reason = override_reason
+    ) %>%
+    select(-override_income_classification, -override_reason)
+
   staged_df$unresolved_flag <- staged_df$housing_balance_classification == "concept_mismatch" | staged_df$income_classification == "unresolved"
 
   out_parquet_local <- file.path("..", "output", paste0(row$source_id, ".parquet"))
@@ -224,6 +253,7 @@ for (i in seq_len(nrow(nhgis_raw_files))) {
         zero_housing_flag,
         zero_income_flag,
         income_classification,
+        income_override_reason,
         unresolved_flag
       )
   }

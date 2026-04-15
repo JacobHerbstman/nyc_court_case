@@ -24,6 +24,10 @@ nhgis_table_map_csv <- args[2]
 out_index_csv <- args[3]
 out_qc_csv <- args[4]
 
+extract_number_from_path <- function(path) {
+  suppressWarnings(as.integer(str_extract(basename(path), "(?<=nhgis)[0-9]{4}")))
+}
+
 nhgis_table_map <- read_csv(nhgis_table_map_csv, show_col_types = FALSE, na = c("", "NA"))
 nhgis_extract_downloads <- if (file.exists(nhgis_extract_downloads_csv)) {
   read_csv(nhgis_extract_downloads_csv, show_col_types = FALSE, na = c("", "NA"))
@@ -38,9 +42,10 @@ nhgis_extract_downloads <- if (file.exists(nhgis_extract_downloads_csv)) {
     checksum_sha256 = character(),
     status = character()
   )
-}
+} %>%
+  mutate(extract_number = coalesce(extract_number, extract_number_from_path(raw_path)))
 
-expected_rows <- tibble(year = sort(unique(nhgis_table_map$year))) |>
+expected_rows <- tibble(year = sort(unique(nhgis_table_map$year))) %>%
   mutate(source_id = paste0("nhgis_", year, "_tract_extract"))
 
 nyc_counties <- c("005", "047", "061", "081", "085")
@@ -50,17 +55,19 @@ qc_rows <- list()
 
 for (i in seq_len(nrow(expected_rows))) {
   row <- expected_rows[i, ]
-  source_files <- nhgis_extract_downloads |>
-    filter(source_id == row$source_id, !is.na(raw_path), file.exists(raw_path))
+  source_files <- nhgis_extract_downloads %>%
+    filter(source_id == row$source_id, !is.na(raw_path), file.exists(raw_path)) %>%
+    mutate(extract_number = ifelse(is.na(extract_number), -1, extract_number)) %>%
+    arrange(desc(extract_number), desc(status == "downloaded"), raw_path)
 
-  table_zip <- source_files |>
-    filter(file_role == "table_data") |>
-    slice_head(n = 1) |>
+  table_zip <- source_files %>%
+    filter(file_role == "table_data") %>%
+    slice_head(n = 1) %>%
     pull(raw_path)
 
-  gis_zip <- source_files |>
-    filter(file_role == "gis_data") |>
-    slice_head(n = 1) |>
+  gis_zip <- source_files %>%
+    filter(file_role == "gis_data") %>%
+    slice_head(n = 1) %>%
     pull(raw_path)
 
   missing_status <- if (nrow(source_files) == 0) {
@@ -168,9 +175,9 @@ for (i in seq_len(nrow(expected_rows))) {
         stop("Could not identify NHGIS join keys across multiple dataset CSV files.")
       }
 
-      nhgis_df <- nhgis_df |>
+      nhgis_df <- nhgis_df %>%
         left_join(
-          table_dfs[[j]] |>
+          table_dfs[[j]] %>%
             select(any_of(join_keys), any_of(setdiff(names(table_dfs[[j]]), names(nhgis_df)))),
           by = join_keys
         )
@@ -181,9 +188,9 @@ for (i in seq_len(nrow(expected_rows))) {
   nhgis_df$countya <- pick_first_existing(nhgis_df, c("countya"))
   nhgis_df$statea_std <- str_pad(str_extract(as.character(nhgis_df$statea), "[0-9]+"), width = 2, side = "left", pad = "0")
   nhgis_df$countya_std <- str_pad(str_extract(as.character(nhgis_df$countya), "[0-9]+"), width = 3, side = "left", pad = "0")
-  nhgis_df <- nhgis_df |>
-    filter(statea_std == "36", countya_std %in% nyc_counties) |>
-    select(-statea_std, -countya_std) |>
+  nhgis_df <- nhgis_df %>%
+    filter(statea_std == "36", countya_std %in% nyc_counties) %>%
+    select(-statea_std, -countya_std) %>%
     mutate(source_id = row$source_id, source_year = row$year, table_zip_path = table_zip, gis_zip_path = gis_zip)
 
   out_parquet_local <- file.path("..", "output", paste0(row$source_id, "_raw.parquet"))

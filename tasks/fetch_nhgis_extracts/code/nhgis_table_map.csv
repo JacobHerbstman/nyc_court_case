@@ -1,4 +1,5 @@
 year,dataset_name,data_table,data_table_description,nhgis_code,cell_description,staged_field
+1980,1980_STF1,NT3,Households,C75001,Total,households_total
 1980,1980_STF1,NT4A,Housing Units,C8Y001,Total,total_housing_units
 1980,1980_STF1,NT7,Race,C9D001,White,white_population
 1980,1980_STF1,NT7,Race,C9D002,Black,black_population
@@ -20,6 +21,8 @@ year,dataset_name,data_table,data_table_description,nhgis_code,cell_description,
 1980,1980_STF1,NT8,Spanish Origin,C9E003,Puerto Rican,hispanic_any_race
 1980,1980_STF1,NT8,Spanish Origin,C9E004,Cuban,hispanic_any_race
 1980,1980_STF1,NT8,Spanish Origin,C9E005,Other Spanish,hispanic_any_race
+1980,1980_STF1,NT15,Household Type and Relationship,C7G008,In group quarters: Inmate of institution,group_quarters_population
+1980,1980_STF1,NT15,Household Type and Relationship,C7G009,In group quarters: Other,group_quarters_population
 1980,1980_STF1,NT25,Vacancy Status,C7U001,For sale only,vacant_units
 1980,1980_STF1,NT25,Vacancy Status,C7U002,For rent,vacant_units
 1980,1980_STF1,NT25,Vacancy Status,C7U003,Held for occasional use,vacant_units
@@ -34,6 +37,7 @@ year,dataset_name,data_table,data_table_description,nhgis_code,cell_description,
 1980,1980_STF3,NT102A,Units in Structure,DEG004,"3 and 4",structure_3_4_unit
 1980,1980_STF3,NT102A,Units in Structure,DEG005,5 or more,structure_5plus_unit
 1980,1980_STF3,NT102A,Units in Structure,DEG006,"Mobile home or trailer, etc.",structure_mobile_home_other
+1990,1990_STF1,NP3,Households,EUO001,Total,households_total
 1990,1990_STF1,NP6,Race,EUY001,White,white_population
 1990,1990_STF1,NP6,Race,EUY002,Black,black_population
 1990,1990_STF1,NP6,Race,EUY003,"American Indian, Eskimo, or Aleut",native_population
@@ -53,6 +57,16 @@ year,dataset_name,data_table,data_table_description,nhgis_code,cell_description,
 1990,1990_STF1,NH5,Vacancy Status,ETQ004,"For seasonal, recreational, or occasional use",vacant_units
 1990,1990_STF1,NH5,Vacancy Status,ETQ005,For migrant workers,vacant_units
 1990,1990_STF1,NH5,Vacancy Status,ETQ006,Other vacant,vacant_units
+1990,1990_STF1,NP28,Group Quarters,EUM001,Institutionalized persons: Correctional institutions,group_quarters_population
+1990,1990_STF1,NP28,Group Quarters,EUM002,Institutionalized persons: Nursing homes,group_quarters_population
+1990,1990_STF1,NP28,Group Quarters,EUM003,Institutionalized persons: Mental hospitals,group_quarters_population
+1990,1990_STF1,NP28,Group Quarters,EUM004,Institutionalized persons: Juvenile institutions,group_quarters_population
+1990,1990_STF1,NP28,Group Quarters,EUM005,Institutionalized persons: Other institutions,group_quarters_population
+1990,1990_STF1,NP28,Group Quarters,EUM006,Other persons in group quarters: College dormitories,group_quarters_population
+1990,1990_STF1,NP28,Group Quarters,EUM007,Other persons in group quarters: Military quarters,group_quarters_population
+1990,1990_STF1,NP28,Group Quarters,EUM008,Other persons in group quarters: Emergency shelters for homeless,group_quarters_population
+1990,1990_STF1,NP28,Group Quarters,EUM009,Other persons in group quarters: Visible in street locations,group_quarters_population
+1990,1990_STF1,NP28,Group Quarters,EUM010,Other persons in group quarters: Other noninstitutional group quarters,group_quarters_population
 1990,1990_STF3,NP80A,Median Household Income in 1989,E4U001,Median household income in 1989,median_household_income
 1990,1990_STF3,NH20,Units in Structure,EX2001,"1, detached",structure_1unit_detached
 1990,1990_STF3,NH20,Units in Structure,EX2002,"1, attached",structure_1unit_attached

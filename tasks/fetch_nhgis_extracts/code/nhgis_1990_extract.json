@@ -2,8 +2,10 @@
     "datasets": {
         "1990_STF1": {
             "dataTables": [
+                "NP3",
                 "NP6",
                 "NP9",
+                "NP28",
                 "NH1",
                 "NH3",
                 "NH5"
