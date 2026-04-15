@@ -21,7 +21,7 @@ out_csv <- args[3]
 
 archive_requests <- read_csv(archive_requests_csv, show_col_types = FALSE, na = c("", "NA"))
 
-queue <- archive_requests |>
+queue <- archive_requests %>%
   mutate(
     archive_lane = case_when(
       str_detect(request_id, "dob") ~ "dob_foil",
@@ -30,7 +30,7 @@ queue <- archive_requests |>
       str_detect(request_id, "acris") ~ "acris_followup",
       TRUE ~ "other"
     )
-  ) |>
+  ) %>%
   select(request_id, archive_lane, custodian, portal_or_contact, records_requested, date_range, submitted_date, status, returned_filename, notes)
 
 write_csv(queue, out_csv, na = "")

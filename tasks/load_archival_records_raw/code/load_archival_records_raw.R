@@ -27,7 +27,7 @@ out_qc_csv <- args[4]
 source_catalog <- read_csv(source_catalog_csv, show_col_types = FALSE, na = c("", "NA"))
 archive_requests <- read_csv(archive_requests_csv, show_col_types = FALSE, na = c("", "NA"))
 
-archive_sources <- source_catalog |> filter(str_detect(source_id, "^archives_"))
+archive_sources <- source_catalog %>% filter(str_detect(source_id, "^archives_"))
 index_rows <- list()
 qc_rows <- list()
 row_id <- 1

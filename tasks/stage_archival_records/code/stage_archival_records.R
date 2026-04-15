@@ -27,20 +27,20 @@ source_catalog <- read_csv(source_catalog_csv, show_col_types = FALSE, na = c(""
 archive_requests <- read_csv(archive_requests_csv, show_col_types = FALSE, na = c("", "NA"))
 archival_raw_files <- read_csv(archival_record_raw_files_csv, show_col_types = FALSE, na = c("", "NA"))
 
-inventory_df <- source_catalog |>
-  filter(grepl("^archives_", source_id)) |>
-  select(source_id, official_url) |>
-  left_join(archival_raw_files, by = "source_id") |>
+inventory_df <- source_catalog %>%
+  filter(grepl("^archives_", source_id)) %>%
+  select(source_id, official_url) %>%
+  left_join(archival_raw_files, by = "source_id") %>%
   left_join(
-    archive_requests |>
+    archive_requests %>%
       select(request_id, custodian, portal_or_contact, records_requested, date_range, submitted_date, status, returned_filename),
     by = "request_id",
     suffix = c("_raw", "_request")
-  ) |>
+  ) %>%
   mutate(
     inventory_status = dplyr::coalesce(status_raw, "no_returned_files"),
     request_status = status_request
-  ) |>
+  ) %>%
   select(
     source_id,
     request_id,
@@ -59,8 +59,8 @@ inventory_df <- source_catalog |>
     official_url
   )
 
-qc_df <- inventory_df |>
-  group_by(source_id) |>
+qc_df <- inventory_df %>%
+  group_by(source_id) %>%
   summarise(
     inventory_rows = n(),
     returned_file_rows = sum(inventory_status == "returned_file_present", na.rm = TRUE),

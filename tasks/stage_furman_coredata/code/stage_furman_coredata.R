@@ -5,9 +5,13 @@
 
 suppressPackageStartupMessages({
   library(arrow)
+  library(dplyr)
   library(readr)
+  library(stringr)
   library(tibble)
 })
+
+source("../../_lib/source_pipeline_utils.R")
 
 args <- commandArgs(trailingOnly = TRUE)
 
@@ -38,11 +42,17 @@ for (i in seq_len(nrow(furman_raw_files))) {
   column_count <- NA_real_
 
   if (!is.na(row$raw_parquet_path) && file.exists(row$raw_parquet_path)) {
-    furman_df <- read_parquet(row$raw_parquet_path) |>
-      as.data.frame() |>
+    furman_df <- read_parquet(row$raw_parquet_path) %>%
+      as.data.frame() %>%
       as_tibble()
 
-    out_parquet_local <- file.path("..", "output", paste0(row$source_id, ".parquet"))
+    out_stub <- if (!is.na(row$source_sheet) && str_squish(row$source_sheet) != "") {
+      paste(row$source_id, sanitize_file_stub(row$source_sheet), sep = "_")
+    } else {
+      row$source_id
+    }
+
+    out_parquet_local <- file.path("..", "output", paste0(out_stub, ".parquet"))
     parquet_path <- file.path("..", "..", "stage_furman_coredata", "output", basename(out_parquet_local))
     write_parquet_if_changed(furman_df, out_parquet_local)
 
@@ -53,6 +63,7 @@ for (i in seq_len(nrow(furman_raw_files))) {
 
   index_rows[[i]] <- tibble(
     source_id = row$source_id,
+    source_sheet = row$source_sheet,
     status = status,
     raw_path = row$raw_path,
     raw_parquet_path = row$raw_parquet_path,
@@ -64,6 +75,7 @@ for (i in seq_len(nrow(furman_raw_files))) {
 
   qc_rows[[i]] <- tibble(
     source_id = row$source_id,
+    source_sheet = row$source_sheet,
     status = status,
     row_count = row_count,
     column_count = column_count
