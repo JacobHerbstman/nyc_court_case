@@ -1,6 +1,7 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/estimate_zap_housing_cohorts/code")
 # zap_housing_initial_panel_csv <- "../input/zap_housing_initial_panel.csv"
 # zap_housing_mature_cohort_panel_csv <- "../input/zap_housing_mature_cohort_panel.csv"
+# reference_era <- "1980-1984"
 # out_results_csv <- "../output/zap_housing_era_interactions.csv"
 # out_summary_csv <- "../output/zap_housing_model_summary.csv"
 
@@ -16,14 +17,15 @@ source("../../_lib/source_pipeline_utils.R")
 
 args <- commandArgs(trailingOnly = TRUE)
 
-if (length(args) != 4) {
-  stop("Expected 4 arguments: zap_housing_initial_panel_csv zap_housing_mature_cohort_panel_csv out_results_csv out_summary_csv")
+if (length(args) != 5) {
+  stop("Expected 5 arguments: zap_housing_initial_panel_csv zap_housing_mature_cohort_panel_csv reference_era out_results_csv out_summary_csv")
 }
 
 zap_housing_initial_panel_csv <- args[1]
 zap_housing_mature_cohort_panel_csv <- args[2]
-out_results_csv <- args[3]
-out_summary_csv <- args[4]
+reference_era <- args[3]
+out_results_csv <- args[4]
+out_summary_csv <- args[5]
 
 z_score <- function(x) {
   x <- suppressWarnings(as.numeric(x))
@@ -133,8 +135,15 @@ static_control_vars <- c(
   "unemployment_rate_1990_exact_z"
 )
 
-count_eras <- c("1976-1979", "1985-1989", "1990-1999", "2000-2009", "2010-2019", "2020-2025")
-share_eras <- c("1976-1979", "1985-1989", "1990-1999", "2000-2009", "2010-2015")
+count_eras_all <- c("1976-1979", "1980-1984", "1985-1989", "1990-1999", "2000-2009", "2010-2019", "2020-2025")
+share_eras_all <- c("1976-1979", "1980-1984", "1985-1989", "1990-1999", "2000-2009", "2010-2015")
+
+if (!reference_era %in% count_eras_all) {
+  stop("reference_era must be one of: ", paste(count_eras_all, collapse = ", "))
+}
+
+count_eras <- count_eras_all[count_eras_all != reference_era]
+share_eras <- share_eras_all[share_eras_all != reference_era]
 
 count_df <- initial_panel %>%
   left_join(control_lookup, by = "borocd") %>%
@@ -237,7 +246,7 @@ for (spec_idx in seq_len(nrow(specs))) {
     outcome_label = outcome_label,
     control_layer = "uncontrolled",
     sample_label = sample_label,
-    reference_era = "1980-1984",
+    reference_era = reference_era,
     sample_year_min = sample_year_min,
     sample_year_max = sample_year_max,
     term_names = treat_terms,
@@ -275,7 +284,7 @@ for (spec_idx in seq_len(nrow(specs))) {
     outcome_label = outcome_label,
     control_layer = "static_1990",
     sample_label = sample_label,
-    reference_era = "1980-1984",
+    reference_era = reference_era,
     sample_year_min = sample_year_min,
     sample_year_max = sample_year_max,
     term_names = treat_terms,
