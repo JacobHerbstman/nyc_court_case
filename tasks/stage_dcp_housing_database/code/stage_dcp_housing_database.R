@@ -93,6 +93,7 @@ for (i in seq_len(nrow(raw_index))) {
   out_parquet_local <- file.path("..", "output", paste0("dcp_housing_database_project_level_", sanitize_file_stub(row$vintage), ".parquet"))
   out_parquet <- file.path("..", "..", "stage_dcp_housing_database", "output", basename(out_parquet_local))
   write_parquet_if_changed(staged_df, out_parquet_local)
+  pre_2010_permit_year_flag <- !is.na(staged_df$permit_year) & staged_df$permit_year < 2010
 
   index_rows[[i]] <- tibble(
     source_id = row$source_id,
@@ -114,6 +115,9 @@ for (i in seq_len(nrow(raw_index))) {
     nonmissing_council_share = mean(!is.na(staged_df$council_district)),
     permit_year_start = min(staged_df$permit_year, na.rm = TRUE),
     permit_year_end = max(staged_df$permit_year, na.rm = TRUE),
+    permit_year_missing_count = sum(is.na(staged_df$permit_year)),
+    permit_year_before_2010_count = sum(pre_2010_permit_year_flag),
+    permit_year_before_2010_classa_net = sum(staged_df$classa_net[pre_2010_permit_year_flag], na.rm = TRUE),
     completion_year_start = min(staged_df$completion_year, na.rm = TRUE),
     completion_year_end = max(staged_df$completion_year, na.rm = TRUE),
     status = "staged"

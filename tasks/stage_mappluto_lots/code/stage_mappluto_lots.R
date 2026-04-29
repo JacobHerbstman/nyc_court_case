@@ -24,8 +24,16 @@ out_qc_csv <- args[3]
 
 mappluto_raw_files <- read_csv(mappluto_raw_files_csv, show_col_types = FALSE, na = c("", "NA"))
 
+required_index_columns <- c("status", "raw_parquet_path")
+missing_index_columns <- setdiff(required_index_columns, names(mappluto_raw_files))
+
+if (length(missing_index_columns) > 0) {
+  stop("MapPLUTO raw index is missing required columns: ", paste(missing_index_columns, collapse = ", "))
+}
+
 jia_codes <- c(164L, 226L, 227L, 228L, 355L, 356L, 480L, 481L, 482L, 483L, 484L, 595L)
 min_plausible_yearbuilt <- 1800L
+current_year <- as.integer(format(Sys.Date(), "%Y"))
 
 normalize_text_field <- function(x) {
   out <- trimws(as.character(x))
@@ -64,7 +72,19 @@ safe_max_int <- function(x) {
   max(x, na.rm = TRUE)
 }
 
-available_rows <- mappluto_raw_files[!is.na(mappluto_raw_files$raw_parquet_path) & file.exists(mappluto_raw_files$raw_parquet_path), ]
+excluded_rows <- mappluto_raw_files |>
+  mutate(
+    status = as.character(status),
+    raw_parquet_path = as.character(raw_parquet_path)
+  ) |>
+  filter(is.na(status) | status != "loaded" | is.na(raw_parquet_path) | !file.exists(raw_parquet_path))
+
+available_rows <- mappluto_raw_files |>
+  mutate(
+    status = as.character(status),
+    raw_parquet_path = as.character(raw_parquet_path)
+  ) |>
+  filter(status == "loaded", !is.na(raw_parquet_path), file.exists(raw_parquet_path))
 
 if (nrow(available_rows) == 0) {
   write_csv(tibble(), out_index_csv, na = "")
@@ -166,7 +186,11 @@ for (i in seq_len(nrow(available_rows))) {
     raw_path = row$raw_path,
     raw_parquet_path = row$raw_parquet_path,
     parquet_path = out_parquet,
-    file_role = row$file_role
+    file_role = row$file_role,
+    raw_file_release = if ("raw_file_release" %in% names(row)) row$raw_file_release else NA_character_,
+    fetch_status = if ("fetch_status" %in% names(row)) row$fetch_status else NA_character_,
+    raw_zip_valid = if ("raw_zip_valid" %in% names(row)) row$raw_zip_valid else NA,
+    raw_status = row$status
   )
 
   qc_rows[[i]] <- tibble(
@@ -185,7 +209,10 @@ for (i in seq_len(nrow(available_rows))) {
     ordinary_cd_rows = sum(!lot_table$is_joint_interest_area, na.rm = TRUE),
     joint_interest_area_rows = sum(lot_table$is_joint_interest_area, na.rm = TRUE),
     min_yearbuilt = safe_min_int(lot_table$yearbuilt),
-    max_yearbuilt = safe_max_int(lot_table$yearbuilt)
+    max_yearbuilt = safe_max_int(lot_table$yearbuilt),
+    future_yearbuilt_count = sum(suppressWarnings(as.integer(lot_table$yearbuilt)) > current_year, na.rm = TRUE),
+    excluded_input_rows = nrow(excluded_rows),
+    raw_status = row$status
   )
 }
 

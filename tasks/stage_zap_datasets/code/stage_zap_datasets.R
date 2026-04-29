@@ -20,6 +20,21 @@ normalize_text_field <- function(x) {
   out
 }
 
+valid_bbl_format <- function(x) {
+  raw_value <- as.character(x)
+  !is.na(raw_value) & str_detect(raw_value, "^[1-5][0-9]{9}$")
+}
+
+has_multi_geography <- function(x) {
+  raw_value <- str_squish(as.character(x))
+  !is.na(raw_value) & raw_value != "" & str_detect(raw_value, "[,;/&]|\\band\\b|\\s+-\\s+")
+}
+
+has_compact_multi_council <- function(x) {
+  raw_value <- str_squish(as.character(x))
+  !is.na(raw_value) & str_detect(raw_value, "^[0-9]{3,}$")
+}
+
 args <- commandArgs(trailingOnly = TRUE)
 
 if (length(args) != 4) {
@@ -77,6 +92,8 @@ project_df <- raw_project_df |>
     borough = normalize_text_field(borough),
     community_district = normalize_text_field(community_district),
     cc_district = normalize_text_field(cc_district),
+    community_district_multi_flag = has_multi_geography(community_district),
+    council_district_multi_flag = has_multi_geography(cc_district) | has_compact_multi_council(cc_district),
     borough_code = standardize_borough_code(borough),
     borough_name_standardized = standardize_borough_name(borough),
     community_district_standardized = standardize_community_district(borough, community_district),
@@ -110,7 +127,7 @@ raw_bbl_df <- read_parquet(bbl_row$raw_parquet_path[[1]]) |>
 
 bbl_input_row_count <- nrow(raw_bbl_df)
 
-bbl_df <- raw_bbl_df |>
+bbl_pre_dedup <- raw_bbl_df |>
   mutate(
     project_id = normalize_text_field(project_id),
     bbl = normalize_text_field(bbl),
@@ -124,22 +141,43 @@ bbl_df <- raw_bbl_df |>
     unverified_lot = suppressWarnings(as.integer(normalize_text_field(unverified_lot))),
     validated_borough_code = standardize_borough_code(validated_borough),
     validated_borough_name = standardize_borough_name(validated_borough),
-    bbl_standardized = coalesce_character(bbl, build_bbl(validated_borough, validated_block, validated_lot)),
+    bbl_valid_format = valid_bbl_format(bbl),
+    bbl_built_from_components = build_bbl(validated_borough, validated_block, validated_lot),
+    raw_bbl_conflicts_with_validated_components = !is.na(bbl) &
+      bbl_valid_format &
+      !is.na(bbl_built_from_components) &
+      bbl != bbl_built_from_components,
+    bbl_standardized = coalesce_character(if_else(bbl_valid_format, bbl, NA_character_), bbl_built_from_components),
     is_validated = case_when(
       str_to_upper(validated) == "TRUE" ~ TRUE,
       str_to_upper(validated) == "FALSE" ~ FALSE,
       TRUE ~ NA
     ),
     input_row_number = row_number()
-  ) |>
+  )
+
+bbl_old_selection <- bbl_pre_dedup |>
   arrange(project_id, bbl_standardized, desc(is_validated), desc(!is.na(validated_date_parsed)), input_row_number) |>
   distinct(project_id, bbl_standardized, .keep_all = TRUE) |>
+  select(project_id, bbl_standardized, old_input_row_number = input_row_number)
+
+bbl_latest_selection <- bbl_pre_dedup |>
+  arrange(project_id, bbl_standardized, desc(is_validated), desc(!is.na(validated_date_parsed)), desc(validated_date_parsed), input_row_number) |>
+  distinct(project_id, bbl_standardized, .keep_all = TRUE)
+
+bbl_df <- bbl_latest_selection |>
   select(-input_row_number)
+
+bbl_latest_selection_changes <- bbl_latest_selection |>
+  select(project_id, bbl_standardized, new_input_row_number = input_row_number) |>
+  inner_join(bbl_old_selection, by = c("project_id", "bbl_standardized")) |>
+  filter(new_input_row_number != old_input_row_number)
 
 write_parquet_if_changed(project_df, out_project_parquet)
 write_parquet_if_changed(bbl_df, out_bbl_parquet)
 
 projects_with_any_bbl <- n_distinct(bbl_df$project_id[!is.na(bbl_df$project_id) & !is.na(bbl_df$bbl_standardized)])
+bbl_raw_nonmissing_count <- sum(!is.na(bbl_pre_dedup$bbl))
 
 qc_df <- tibble(
   project_source_vintage = project_row$vintage[[1]],
@@ -150,14 +188,22 @@ qc_df <- tibble(
   project_unique_project_id_count = n_distinct(project_df$project_id),
   project_nonmissing_borough_share = mean(!is.na(project_df$borough_name_standardized)),
   project_nonmissing_cd_share = mean(!is.na(project_df$community_district_standardized)),
+  project_multi_cd_count = sum(project_df$community_district_multi_flag, na.rm = TRUE),
+  project_multi_council_count = sum(project_df$council_district_multi_flag, na.rm = TRUE),
   project_min_reference_date = safe_min_date(project_df$project_reference_date),
   project_max_reference_date = safe_max_date(project_df$project_reference_date),
+  project_reference_before_1976_07_19_count = sum(!is.na(project_df$project_reference_date) & project_df$project_reference_date < as.Date("1976-07-19")),
   bbl_input_row_count = bbl_input_row_count,
   bbl_row_count = nrow(bbl_df),
   bbl_duplicate_rows_dropped = bbl_input_row_count - nrow(bbl_df),
   bbl_unique_project_id_count = n_distinct(bbl_df$project_id),
   bbl_unique_project_bbl_count = n_distinct(paste(bbl_df$project_id, bbl_df$bbl_standardized, sep = "_")),
   bbl_nonmissing_bbl_share = mean(!is.na(bbl_df$bbl_standardized)),
+  bbl_raw_valid_format_share = if (bbl_raw_nonmissing_count == 0) NA_real_ else mean(bbl_pre_dedup$bbl_valid_format[!is.na(bbl_pre_dedup$bbl)]),
+  bbl_raw_invalid_format_count = sum(!is.na(bbl_pre_dedup$bbl) & !bbl_pre_dedup$bbl_valid_format),
+  bbl_standardized_valid_format_share = mean(valid_bbl_format(bbl_df$bbl_standardized)),
+  bbl_raw_conflicts_with_validated_components_count = sum(bbl_pre_dedup$raw_bbl_conflicts_with_validated_components, na.rm = TRUE),
+  bbl_latest_validation_date_reselection_count = nrow(bbl_latest_selection_changes),
   bbl_validated_true_share = mean(bbl_df$is_validated %in% TRUE, na.rm = TRUE),
   project_share_with_any_bbl = projects_with_any_bbl / n_distinct(project_df$project_id)
 )

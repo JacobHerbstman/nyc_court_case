@@ -378,6 +378,8 @@ for (i in seq_len(nrow(raw_index))) {
     parquet_path = parquet_repo,
     unresolved_csv_path = unresolved_repo,
     section_index_csv_path = section_index_repo,
+    raw_status = row$status,
+    raw_review_required = !is.na(row$status) & row$status != "loaded",
     status = "staged"
   )
 
@@ -387,6 +389,8 @@ for (i in seq_len(nrow(raw_index))) {
   qc_rows[[i]] <- tibble(
     source_id = row$source_id,
     pull_date = row$pull_date,
+    raw_status = row$status,
+    raw_review_required = !is.na(row$status) & row$status != "loaded",
     parsed_metric_count = nrow(parsed_df),
     unresolved_row_count = nrow(unresolved_df),
     district_count = n_distinct(parsed_df$district_id),

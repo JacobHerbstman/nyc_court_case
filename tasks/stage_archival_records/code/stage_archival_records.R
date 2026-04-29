@@ -38,8 +38,10 @@ inventory_df <- source_catalog %>%
     suffix = c("_raw", "_request")
   ) %>%
   mutate(
-    inventory_status = dplyr::coalesce(status_raw, "no_returned_files"),
-    request_status = status_request
+    inventory_status = dplyr::coalesce(as.character(status_raw), "no_returned_files"),
+    request_status = dplyr::coalesce(as.character(request_status), as.character(status_request)),
+    submitted_date = dplyr::coalesce(as.character(submitted_date_raw), as.character(submitted_date_request)),
+    returned_filename = dplyr::coalesce(as.character(returned_filename_raw), as.character(returned_filename_request))
   ) %>%
   select(
     source_id,
@@ -65,6 +67,9 @@ qc_df <- inventory_df %>%
     inventory_rows = n(),
     returned_file_rows = sum(inventory_status == "returned_file_present", na.rm = TRUE),
     distinct_request_ids = n_distinct(request_id[!is.na(request_id)]),
+    planned_request_rows = sum(request_status == "planned", na.rm = TRUE),
+    deferred_request_rows = sum(request_status == "defer_until_needed", na.rm = TRUE),
+    submitted_no_return_rows = sum(inventory_status == "request_submitted_no_returned_files", na.rm = TRUE),
     .groups = "drop"
   )
 
@@ -91,7 +96,10 @@ if (nrow(inventory_df) == 0) {
     source_id = character(),
     inventory_rows = double(),
     returned_file_rows = double(),
-    distinct_request_ids = double()
+    distinct_request_ids = double(),
+    planned_request_rows = double(),
+    deferred_request_rows = double(),
+    submitted_no_return_rows = double()
   )
 }
 

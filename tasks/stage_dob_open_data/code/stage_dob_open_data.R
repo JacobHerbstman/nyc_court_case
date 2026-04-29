@@ -100,14 +100,42 @@ derive_community_district_source <- function(raw_value, standardized_value, boro
   out
 }
 
-dob_raw_files <- read_csv(dob_open_data_raw_files_csv, show_col_types = FALSE, na = c("", "NA"))
-dob_raw_files <- dob_raw_files[!is.na(dob_raw_files$raw_parquet_path) & file.exists(dob_raw_files$raw_parquet_path), ]
+dob_raw_files <- read_csv(dob_open_data_raw_files_csv, show_col_types = FALSE, na = c("", "NA")) |>
+  filter(!is.na(raw_parquet_path), file.exists(raw_parquet_path)) |>
+  mutate(
+    source_id = as.character(source_id),
+    pull_date = as.character(pull_date),
+    raw_parquet_path = as.character(raw_parquet_path)
+  )
 
 if (nrow(dob_raw_files) == 0) {
   write_csv(tibble(), out_index_csv, na = "")
   write_csv(tibble(), out_qc_csv, na = "")
   write_csv(tibble(), out_field_dictionary_csv, na = "")
   quit(save = "no")
+}
+
+duplicate_source_pull_files <- dob_raw_files |>
+  count(source_id, pull_date, name = "file_count") |>
+  filter(file_count > 1)
+
+if (nrow(duplicate_source_pull_files) > 0) {
+  stop(
+    "DOB raw index has multiple raw parquet files for the same source_id and pull_date: ",
+    paste(paste(duplicate_source_pull_files$source_id, duplicate_source_pull_files$pull_date, sep = ":"), collapse = ", ")
+  )
+}
+
+multi_pull_sources <- dob_raw_files |>
+  distinct(source_id, pull_date) |>
+  count(source_id, name = "pull_date_count") |>
+  filter(pull_date_count > 1)
+
+if (nrow(multi_pull_sources) > 0) {
+  stop(
+    "DOB staging writes source-level parquet names, so each source_id must have one pull_date. Multiple pull dates found for: ",
+    paste(multi_pull_sources$source_id, collapse = ", ")
+  )
 }
 
 index_rows <- list()
