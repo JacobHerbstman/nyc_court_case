@@ -47,12 +47,42 @@ extract_first_match <- function(text_value, pattern) {
   hit[1]
 }
 
-release_tag <- extract_first_match(description_html, "Latest Version:\\s*([^<]+)<")
-csv_zip_url <- extract_first_match(description_html, "href=\\\"([^\\\"]+nychdb_[^\\\"]+_csv\\.zip)\\\"")
-dictionary_url <- extract_first_match(description_html, "href=\\\"([^\\\"]+Housing_Database_Data_Dictionary\\.xlsx)\\\"")
+normalize_nyc_url <- function(url) {
+  url <- str_squish(as.character(url))
+
+  if (is.na(url) || url == "") {
+    return(NA_character_)
+  }
+
+  if (str_detect(url, "^https?://")) {
+    return(url)
+  }
+
+  if (str_starts(url, "//")) {
+    return(paste0("https:", url))
+  }
+
+  if (str_starts(url, "/")) {
+    return(paste0("https://www.nyc.gov", url))
+  }
+
+  paste0("https://www.nyc.gov/", url)
+}
+
+release_tag <- str_squish(extract_first_match(description_html, "Latest Version:\\s*([^<]+)<"))
+csv_zip_url <- normalize_nyc_url(extract_first_match(description_html, "href=\\\"([^\\\"]+nychdb_[^\\\"]+_csv\\.zip)\\\""))
+dictionary_url <- normalize_nyc_url(extract_first_match(description_html, "href=\\\"([^\\\"]+Housing_Database_Data_Dictionary\\.xlsx)\\\""))
 
 if (is.na(release_tag) || is.na(csv_zip_url) || is.na(dictionary_url)) {
   stop("Could not parse the current DCP Housing Database release metadata from the content API page.")
+}
+
+if (basename(csv_zip_url) != paste0("nychdb_", str_to_lower(release_tag), "_csv.zip")) {
+  stop("Parsed Housing Database CSV URL does not match the current release tag.")
+}
+
+if (basename(dictionary_url) != "Housing_Database_Data_Dictionary.xlsx") {
+  stop("Parsed Housing Database data dictionary URL has an unexpected file name.")
 }
 
 metadata_dir <- file.path("..", "..", "..", "data_raw", "dcp_housing_database_project_level", pull_date)

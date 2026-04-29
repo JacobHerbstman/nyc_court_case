@@ -57,22 +57,43 @@ for (i in seq_len(nrow(expected_rows))) {
   row <- expected_rows[i, ]
   source_files <- nhgis_extract_downloads %>%
     filter(source_id == row$source_id, !is.na(raw_path), file.exists(raw_path)) %>%
-    mutate(extract_number = ifelse(is.na(extract_number), -1, extract_number)) %>%
+    mutate(
+      extract_number = ifelse(is.na(extract_number), -1, extract_number),
+      fetch_status = as.character(status),
+      fetch_status_ok = is.na(fetch_status) | !str_detect(fetch_status, "failed")
+    ) %>%
     arrange(desc(extract_number), desc(status == "downloaded"), raw_path)
 
+  paired_extracts <- source_files %>%
+    filter(fetch_status_ok, file_role %in% c("table_data", "gis_data")) %>%
+    group_by(extract_number) %>%
+    summarise(
+      table_file_count = sum(file_role == "table_data"),
+      gis_file_count = sum(file_role == "gis_data"),
+      .groups = "drop"
+    ) %>%
+    filter(extract_number > 0, table_file_count > 0, gis_file_count > 0) %>%
+    arrange(desc(extract_number))
+
+  selected_extract_number <- if (nrow(paired_extracts) == 0) {
+    NA_integer_
+  } else {
+    paired_extracts$extract_number[[1]]
+  }
+
   table_zip <- source_files %>%
-    filter(file_role == "table_data") %>%
+    filter(fetch_status_ok, file_role == "table_data", extract_number == selected_extract_number) %>%
     slice_head(n = 1) %>%
     pull(raw_path)
 
   gis_zip <- source_files %>%
-    filter(file_role == "gis_data") %>%
+    filter(fetch_status_ok, file_role == "gis_data", extract_number == selected_extract_number) %>%
     slice_head(n = 1) %>%
     pull(raw_path)
 
   missing_status <- if (nrow(source_files) == 0) {
     "fetch_required"
-  } else if (any(str_detect(source_files$status, "failed"))) {
+  } else if (any(str_detect(as.character(source_files$status), "failed"), na.rm = TRUE)) {
     "fetch_failed"
   } else {
     "bundle_incomplete"
@@ -82,6 +103,7 @@ for (i in seq_len(nrow(expected_rows))) {
     index_rows[[i]] <- tibble(
       source_id = row$source_id,
       year = row$year,
+      extract_number = selected_extract_number,
       table_zip_path = if (length(table_zip) == 0) NA_character_ else table_zip[[1]],
       gis_zip_path = if (length(gis_zip) == 0) NA_character_ else gis_zip[[1]],
       table_file_inside_zip = NA_character_,
@@ -94,7 +116,7 @@ for (i in seq_len(nrow(expected_rows))) {
       source_id = row$source_id,
       status = missing_status,
       row_count = NA_real_,
-      validation_notes = "Run tasks/fetch_nhgis_extracts before loading NHGIS outputs."
+      validation_notes = "Run tasks/fetch_nhgis_extracts before loading a complete table/GIS extract pair."
     )
     next
   }
@@ -139,6 +161,7 @@ for (i in seq_len(nrow(expected_rows))) {
     index_rows[[i]] <- tibble(
       source_id = row$source_id,
       year = row$year,
+      extract_number = selected_extract_number,
       table_zip_path = table_zip,
       gis_zip_path = gis_zip,
       table_file_inside_zip = if (length(table_candidates) == 0) NA_character_ else table_candidates[[1]],
@@ -184,6 +207,34 @@ for (i in seq_len(nrow(expected_rows))) {
     }
   }
 
+  expected_codes <- nhgis_table_map %>%
+    filter(year == row$year) %>%
+    pull(nhgis_code) %>%
+    normalize_names()
+  missing_codes <- expected_codes[!expected_codes %in% names(nhgis_df)]
+
+  if (length(missing_codes) > 0) {
+    index_rows[[i]] <- tibble(
+      source_id = row$source_id,
+      year = row$year,
+      extract_number = selected_extract_number,
+      table_zip_path = table_zip,
+      gis_zip_path = gis_zip,
+      table_file_inside_zip = table_candidates[[1]],
+      shapefile_inside_zip = shapefile_candidates[[1]],
+      raw_parquet_path = NA_character_,
+      status = "bundle_validation_failed"
+    )
+
+    qc_rows[[i]] <- tibble(
+      source_id = row$source_id,
+      status = "bundle_validation_failed",
+      row_count = NA_real_,
+      validation_notes = paste0("missing_nhgis_codes:", paste(missing_codes, collapse = ";"))
+    )
+    next
+  }
+
   nhgis_df$statea <- pick_first_existing(nhgis_df, c("statea"))
   nhgis_df$countya <- pick_first_existing(nhgis_df, c("countya"))
   nhgis_df$statea_std <- str_pad(str_extract(as.character(nhgis_df$statea), "[0-9]+"), width = 2, side = "left", pad = "0")
@@ -200,6 +251,7 @@ for (i in seq_len(nrow(expected_rows))) {
   index_rows[[i]] <- tibble(
     source_id = row$source_id,
     year = row$year,
+    extract_number = selected_extract_number,
     table_zip_path = table_zip,
     gis_zip_path = gis_zip,
     table_file_inside_zip = table_candidates[[1]],
@@ -212,7 +264,7 @@ for (i in seq_len(nrow(expected_rows))) {
     source_id = row$source_id,
     status = "loaded",
     row_count = nrow(nhgis_df),
-    validation_notes = "validated_table_payload_and_tl2000_shapefile"
+    validation_notes = "validated_table_payload_and_indexed_tl2000_shapefile"
   )
 }
 

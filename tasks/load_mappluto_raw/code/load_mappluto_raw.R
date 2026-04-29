@@ -26,6 +26,38 @@ out_qc_csv <- args[3]
 
 mappluto_files <- read_csv(mappluto_files_csv, show_col_types = FALSE, na = c("", "NA"))
 
+extract_mappluto_release_from_path <- function(path) {
+  release <- str_match(
+    tolower(basename(path)),
+    "nyc_mappluto_([0-9]{2}v[0-9]+(?:_[0-9]+)?)(?:_arc)?_shp[.]zip$"
+  )[, 2]
+
+  str_replace_all(release, "_", ".")
+}
+
+mappluto_vintage_matches_file <- function(vintage, file_release) {
+  vintage_clean <- str_replace_all(tolower(as.character(vintage)), "_", ".")
+  file_clean <- str_replace_all(tolower(as.character(file_release)), "_", ".")
+
+  !is.na(file_clean) & nzchar(file_clean) &
+    (vintage_clean == file_clean | startsWith(vintage_clean, file_clean))
+}
+
+zip_has_valid_listing <- function(path) {
+  if (!str_detect(tolower(path), "[.]zip$")) {
+    return(TRUE)
+  }
+
+  listing <- suppressWarnings(system2("unzip", c("-Z1", path), stdout = TRUE, stderr = FALSE))
+  status <- attr(listing, "status")
+
+  if (is.null(status)) {
+    status <- 0L
+  }
+
+  identical(status, 0L) && length(listing) > 0
+}
+
 extract_mappluto_table <- function(raw_path) {
   read_path <- raw_path
   read_mode <- if (str_detect(tolower(raw_path), "\\.gpkg$")) "gpkg" else "dbf"
@@ -164,7 +196,20 @@ safe_max_int <- function(x) {
 
 available_rows <- mappluto_files |>
   filter(file_role == "mappluto_shapefile_zip", file.exists(raw_path)) |>
-  mutate(raw_path = as.character(raw_path), vintage = as.character(vintage))
+  mutate(
+    raw_path = as.character(raw_path),
+    vintage = as.character(vintage),
+    fetch_status = as.character(status),
+    raw_file_release = extract_mappluto_release_from_path(raw_path),
+    raw_zip_valid = vapply(raw_path, zip_has_valid_listing, logical(1)),
+    status = case_when(
+      !fetch_status %in% c("downloaded", "already_present", "redownloaded_after_validation_failure") ~ "upstream_fetch_not_valid",
+      !raw_zip_valid ~ "raw_zip_validation_failed",
+      is.na(raw_file_release) ~ "release_not_detected_from_filename",
+      !mappluto_vintage_matches_file(vintage, raw_file_release) ~ "vintage_file_mismatch",
+      TRUE ~ "loadable"
+    )
+  )
 
 if (nrow(available_rows) == 0) {
   write_csv(tibble(), out_index_csv, na = "")
@@ -174,6 +219,54 @@ if (nrow(available_rows) == 0) {
 
 index_rows <- list()
 qc_rows <- list()
+row_id <- 1L
+
+invalid_rows <- available_rows |>
+  filter(status != "loadable")
+
+if (nrow(invalid_rows) > 0) {
+  for (i in seq_len(nrow(invalid_rows))) {
+    row <- invalid_rows[i, ]
+
+    index_rows[[row_id]] <- tibble(
+      source_id = row$source_id,
+      vintage = row$vintage,
+      raw_path = row$raw_path,
+      raw_parquet_path = NA_character_,
+      file_role = row$file_role,
+      raw_file_release = row$raw_file_release,
+      fetch_status = row$fetch_status,
+      raw_zip_valid = row$raw_zip_valid,
+      status = row$status
+    )
+
+    qc_rows[[row_id]] <- tibble(
+      source_id = row$source_id,
+      vintage = row$vintage,
+      row_count = NA_real_,
+      nonmissing_bbl_share = NA_real_,
+      nonmissing_cd_share = NA_real_,
+      nonmissing_council_share = NA_real_,
+      nonmissing_unitsres_share = NA_real_,
+      nonmissing_yearbuilt_share = NA_real_,
+      nonmissing_zonedist1_share = NA_real_,
+      nonmissing_lotarea_share = NA_real_,
+      nonmissing_builtfar_share = NA_real_,
+      nonmissing_assessland_share = NA_real_,
+      min_raw_yearbuilt = NA_integer_,
+      max_raw_yearbuilt = NA_integer_,
+      raw_file_release = row$raw_file_release,
+      fetch_status = row$fetch_status,
+      raw_zip_valid = row$raw_zip_valid,
+      status = row$status
+    )
+
+    row_id <- row_id + 1L
+  }
+}
+
+available_rows <- available_rows |>
+  filter(status == "loadable")
 
 for (i in seq_len(nrow(available_rows))) {
   row <- available_rows[i, ]
@@ -191,15 +284,19 @@ for (i in seq_len(nrow(available_rows))) {
 
   write_parquet_if_changed(lot_table, out_parquet_local)
 
-  index_rows[[i]] <- tibble(
+  index_rows[[row_id]] <- tibble(
     source_id = row$source_id,
     vintage = row$vintage,
     raw_path = row$raw_path,
     raw_parquet_path = out_parquet,
-    file_role = row$file_role
+    file_role = row$file_role,
+    raw_file_release = row$raw_file_release,
+    fetch_status = row$fetch_status,
+    raw_zip_valid = row$raw_zip_valid,
+    status = "loaded"
   )
 
-  qc_rows[[i]] <- tibble(
+  qc_rows[[row_id]] <- tibble(
     source_id = row$source_id,
     vintage = row$vintage,
     row_count = nrow(lot_table),
@@ -213,8 +310,14 @@ for (i in seq_len(nrow(available_rows))) {
     nonmissing_builtfar_share = mean(!is.na(lot_table$builtfar)),
     nonmissing_assessland_share = mean(!is.na(lot_table$assessland)),
     min_raw_yearbuilt = safe_min_int(lot_table$yearbuilt),
-    max_raw_yearbuilt = safe_max_int(lot_table$yearbuilt)
+    max_raw_yearbuilt = safe_max_int(lot_table$yearbuilt),
+    raw_file_release = row$raw_file_release,
+    fetch_status = row$fetch_status,
+    raw_zip_valid = row$raw_zip_valid,
+    status = "loaded"
   )
+
+  row_id <- row_id + 1L
 }
 
 write_csv(bind_rows(index_rows), out_index_csv, na = "")

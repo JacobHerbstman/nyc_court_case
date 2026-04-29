@@ -7,6 +7,7 @@ suppressPackageStartupMessages({
   library(data.table)
   library(dplyr)
   library(readr)
+  library(stringr)
   library(tibble)
 })
 
@@ -23,12 +24,26 @@ out_index_csv <- args[2]
 out_qc_csv <- args[3]
 
 fetch_df <- read_csv(dob_permit_issuance_current_files_csv, show_col_types = FALSE, na = c("", "NA")) %>%
-  filter(file.exists(raw_path))
+  filter(file.exists(raw_path), !str_detect(as.character(status), "failed")) %>%
+  mutate(pull_date_sort = suppressWarnings(as.integer(pull_date)))
 
 if (nrow(fetch_df) == 0) {
   write_csv(tibble(), out_index_csv, na = "")
   write_csv(tibble(), out_qc_csv, na = "")
   quit(save = "no")
+}
+
+if (all(is.na(fetch_df$pull_date_sort))) {
+  stop("DOB permit issuance fetch inventory has no parseable pull_date values.")
+}
+
+latest_pull_date <- max(fetch_df$pull_date_sort, na.rm = TRUE)
+fetch_df <- fetch_df %>%
+  filter(pull_date_sort == latest_pull_date) %>%
+  arrange(raw_path)
+
+if (nrow(fetch_df) != 1) {
+  stop("Expected exactly one latest valid DOB permit issuance pull; found ", nrow(fetch_df), " rows for pull_date ", latest_pull_date, ".")
 }
 
 row <- fetch_df[1, ]

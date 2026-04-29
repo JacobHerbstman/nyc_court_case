@@ -22,8 +22,19 @@ out_index_csv <- args[2]
 out_qc_csv <- args[3]
 
 source_catalog <- read_csv(source_catalog_csv, show_col_types = FALSE, na = c("", "NA"))
+dob_open_data_source_ids <- c(
+  "dob_bis_job_filings",
+  "dob_now_build_job_filings",
+  "dob_bis_certificate_of_occupancy",
+  "dob_now_certificate_of_occupancy"
+)
 dob_rows <- source_catalog |>
-  filter(substr(source_id, 1, 4) == "dob_")
+  filter(source_id %in% dob_open_data_source_ids) |>
+  arrange(match(source_id, dob_open_data_source_ids))
+
+if (nrow(dob_rows) != length(dob_open_data_source_ids) || !setequal(dob_rows$source_id, dob_open_data_source_ids)) {
+  stop("Source catalog must contain the scripted non-permit DOB Open Data rows.")
+}
 
 index_rows <- list()
 qc_rows <- list()

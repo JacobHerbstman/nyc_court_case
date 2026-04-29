@@ -18,6 +18,7 @@ PAGE_TYPE_MAP = {
     "Socioeconomic Profile Housing Characteristics": "housing",
     "Socioeconomic Profile Housing and Economic Characteristics": "housing_economic",
 }
+EXPECTED_PROFILE_PAGE_COUNT = len(PAGE_TYPE_MAP)
 
 BoroughCodeMap = {
     "mn": "1",
@@ -179,33 +180,43 @@ def main() -> None:
 
             parsed_pages.sort(key=lambda page_row: page_row["pdf_page_number"])
             district_ids: set[str] = set()
+            pdf_page_rows: list[dict[str, object]] = []
+            district_page_counts: Counter[str] = Counter()
+            district_page_types: dict[str, set[str]] = {}
 
-            for group_start in range(0, len(parsed_pages), 7):
-                page_group = parsed_pages[group_start : group_start + 7]
-                title_district_ids = [
-                    page_row["title_district_id"]
-                    for page_row in page_group
-                    if page_row["title_district_id"] is not None
-                ]
+            for page_row in parsed_pages:
+                assigned_district_id = page_row["title_district_id"]
 
-                group_district_id = None
+                if assigned_district_id is None:
+                    continue
 
-                if title_district_ids:
-                    group_district_id = Counter(title_district_ids).most_common(1)[0][0]
+                pdf_page_rows.append(
+                    {
+                        "source_id": page_row["source_id"],
+                        "pull_date": page_row["pull_date"],
+                        "borough_code": page_row["borough_code"],
+                        "borough_name": page_row["borough_name"],
+                        "pdf_path": page_row["pdf_path"],
+                        "pdf_page_number": page_row["pdf_page_number"],
+                        "district_id": assigned_district_id,
+                        "district_header": page_row["district_header"],
+                        "page_title": page_row["page_title"],
+                        "profile_page_type": page_row["profile_page_type"],
+                        "section_count": page_row["section_count"],
+                        "line_count": page_row["line_count"],
+                        "status": "parsed_page",
+                        "validation_notes": "",
+                    }
+                )
 
-                for page_row in page_group:
-                    assigned_district_id = group_district_id or page_row["title_district_id"]
+                parsed_page_count += 1
+                parsed_line_count += page_row["line_count"]
+                district_ids.add(assigned_district_id)
+                district_page_counts[assigned_district_id] += 1
+                district_page_types.setdefault(assigned_district_id, set()).add(page_row["profile_page_type"])
 
-                    if assigned_district_id is None:
-                        continue
-
-                    page_status = (
-                        "group_inferred_district"
-                        if page_row["title_district_id"] != assigned_district_id
-                        else "parsed_page"
-                    )
-
-                    page_rows.append(
+                for line_number, line in enumerate(page_row["lines"], start=1):
+                    line_rows.append(
                         {
                             "source_id": page_row["source_id"],
                             "pull_date": page_row["pull_date"],
@@ -217,33 +228,35 @@ def main() -> None:
                             "district_header": page_row["district_header"],
                             "page_title": page_row["page_title"],
                             "profile_page_type": page_row["profile_page_type"],
-                            "section_count": page_row["section_count"],
-                            "line_count": page_row["line_count"],
-                            "status": page_status,
+                            "line_number": line_number,
+                            "line_text": line,
                         }
                     )
 
-                    parsed_page_count += 1
-                    parsed_line_count += page_row["line_count"]
-                    district_ids.add(assigned_district_id)
+            for page_row in pdf_page_rows:
+                validation_notes: list[str] = []
+                district_id = str(page_row["district_id"])
 
-                    for line_number, line in enumerate(page_row["lines"], start=1):
-                        line_rows.append(
-                            {
-                                "source_id": page_row["source_id"],
-                                "pull_date": page_row["pull_date"],
-                                "borough_code": page_row["borough_code"],
-                                "borough_name": page_row["borough_name"],
-                                "pdf_path": page_row["pdf_path"],
-                                "pdf_page_number": page_row["pdf_page_number"],
-                                "district_id": assigned_district_id,
-                                "district_header": page_row["district_header"],
-                                "page_title": page_row["page_title"],
-                                "profile_page_type": page_row["profile_page_type"],
-                                "line_number": line_number,
-                                "line_text": line,
-                            }
-                        )
+                if district_page_counts[district_id] != EXPECTED_PROFILE_PAGE_COUNT:
+                    validation_notes.append("unexpected_district_page_count")
+
+                if len(district_page_types[district_id]) != district_page_counts[district_id]:
+                    validation_notes.append("duplicate_profile_page_type")
+
+                if validation_notes:
+                    page_row["status"] = "review_required"
+                    page_row["validation_notes"] = ";".join(validation_notes)
+
+            page_rows.extend(pdf_page_rows)
+
+            pdf_validation_notes = sorted(
+                {
+                    note
+                    for page_row in pdf_page_rows
+                    for note in str(page_row["validation_notes"]).split(";")
+                    if note
+                }
+            )
 
             qc_rows.append(
                 {
@@ -256,7 +269,8 @@ def main() -> None:
                     "parsed_page_count": parsed_page_count,
                     "parsed_line_count": parsed_line_count,
                     "district_count": len(district_ids),
-                    "status": "loaded" if parsed_page_count > 0 else "review_required",
+                    "validation_notes": ";".join(pdf_validation_notes),
+                    "status": "loaded" if parsed_page_count > 0 and not pdf_validation_notes else "review_required",
                 }
             )
 
@@ -282,7 +296,14 @@ def main() -> None:
                 "pull_date": pull_date,
                 "raw_parquet_path": str(raw_parquet_repo),
                 "page_index_csv_path": str(page_index_repo),
-                "status": "loaded",
+                "status": (
+                    "review_required"
+                    if any(
+                        qc_row["pull_date"] == pull_date and qc_row["status"] == "review_required"
+                        for qc_row in qc_rows
+                    )
+                    else "loaded"
+                ),
             }
         )
 

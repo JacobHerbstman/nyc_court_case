@@ -39,6 +39,20 @@ provenance_rows <- list()
 inventory_counter <- 0L
 provenance_counter <- 0L
 
+count_downloaded_csv_rows <- function(path) {
+  if (!file.exists(path)) {
+    return(NA_integer_)
+  }
+
+  tryCatch(
+    nrow(read_csv(path, show_col_types = FALSE, progress = FALSE)),
+    error = function(e) {
+      message(e$message)
+      NA_integer_
+    }
+  )
+}
+
 for (i in seq_len(nrow(source_rows))) {
   source_row <- source_rows[i, ]
   source_id <- source_row$source_id[[1]]
@@ -132,7 +146,8 @@ for (i in seq_len(nrow(source_rows))) {
     dataset_name = as.character(metadata_json$name),
     rows_updated_at_utc = rows_updated_at,
     view_last_modified_utc = view_last_modified,
-    row_count_reported = as.character(metadata_json$columns[[1]]$cachedContents$count),
+    row_count_downloaded = count_downloaded_csv_rows(rows_csv_path),
+    first_column_nonnull_count = as.character(metadata_json$columns[[1]]$cachedContents$count),
     column_count = length(metadata_json$columns),
     attachment_count = length(attachment_rows),
     rows_csv_url = rows_csv_url,

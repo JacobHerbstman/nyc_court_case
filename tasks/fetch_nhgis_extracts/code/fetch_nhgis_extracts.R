@@ -119,7 +119,12 @@ nhgis_specs <- tibble(
 
 nhgis_rows <- source_catalog %>%
   semi_join(nhgis_specs, by = "source_id") %>%
-  left_join(nhgis_specs, by = "source_id")
+  left_join(nhgis_specs, by = "source_id") %>%
+  arrange(year)
+
+if (nrow(nhgis_rows) != nrow(nhgis_specs) || !setequal(nhgis_rows$source_id, nhgis_specs$source_id)) {
+  stop("Source catalog must contain the scripted NHGIS 1980 and 1990 tract extract rows.")
+}
 
 audit_rows <- list()
 roundtrip_rows <- list()

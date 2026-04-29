@@ -40,10 +40,29 @@ for (i in seq_len(nrow(boundary_files))) {
   dir.create(temp_dir, recursive = TRUE, showWarnings = FALSE)
   unzip(row$raw_path, exdir = temp_dir)
 
-  shp_path <- list.files(temp_dir, pattern = "\\.shp$", recursive = TRUE, full.names = TRUE)[1]
+  shp_paths <- list.files(temp_dir, pattern = "\\.shp$", recursive = TRUE, full.names = TRUE)
+  shp_path <- shp_paths[1]
 
-  if (is.na(shp_path)) {
-    stop("No shapefile found inside ", row$raw_path)
+  if (length(shp_paths) != 1) {
+    index_rows[[i]] <- tibble(
+      source_id = row$source_id,
+      pull_date = row$pull_date,
+      raw_path = row$raw_path,
+      shapefile_inside_zip = if (length(shp_paths) == 0) NA_character_ else paste(basename(shp_paths), collapse = ";"),
+      raw_parquet_path = NA_character_,
+      status = if (length(shp_paths) == 0) "shapefile_not_found_in_zip" else "unexpected_shapefile_payload"
+    )
+
+    qc_rows[[i]] <- tibble(
+      source_id = row$source_id,
+      pull_date = row$pull_date,
+      row_count = NA_real_,
+      column_count = NA_real_,
+      raw_crs_epsg = NA_integer_,
+      shapefile_inside_zip = if (length(shp_paths) == 0) NA_character_ else paste(basename(shp_paths), collapse = ";"),
+      status = if (length(shp_paths) == 0) "shapefile_not_found_in_zip" else "unexpected_shapefile_payload"
+    )
+    next
   }
 
   boundary_sf <- st_read(shp_path, quiet = TRUE, stringsAsFactors = FALSE)
@@ -73,7 +92,9 @@ for (i in seq_len(nrow(boundary_files))) {
     source_id = row$source_id,
     pull_date = row$pull_date,
     raw_path = row$raw_path,
-    raw_parquet_path = out_parquet
+    shapefile_inside_zip = basename(shp_path),
+    raw_parquet_path = out_parquet,
+    status = "loaded"
   )
 
   qc_rows[[i]] <- tibble(
@@ -81,7 +102,9 @@ for (i in seq_len(nrow(boundary_files))) {
     pull_date = row$pull_date,
     row_count = nrow(raw_df),
     column_count = ncol(raw_df),
-    raw_crs_epsg = st_crs(boundary_sf)$epsg
+    raw_crs_epsg = st_crs(boundary_sf)$epsg,
+    shapefile_inside_zip = basename(shp_path),
+    status = "loaded"
   )
 }
 

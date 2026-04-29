@@ -34,16 +34,51 @@ metadata_rows <- zap_files |>
   filter(file_role == "metadata_json", file.exists(raw_path)) |>
   transmute(source_id, vintage, metadata_json_path = as.character(raw_path))
 
-if (nrow(csv_rows) == 0) {
-  write_csv(tibble(), out_index_csv, na = "")
-  write_csv(tibble(), out_qc_csv, na = "")
-  write_csv(tibble(), out_columns_csv, na = "")
-  quit(save = "no")
-}
+reference_rows <- zap_files |>
+  filter(file_role %in% c("attachment_file", "metadata_json"), file.exists(raw_path)) |>
+  mutate(raw_path = as.character(raw_path), vintage = as.character(vintage))
 
 index_rows <- list()
 qc_rows <- list()
 column_rows <- list()
+row_id <- 1L
+
+if (nrow(reference_rows) > 0) {
+  for (i in seq_len(nrow(reference_rows))) {
+    row <- reference_rows[i, ]
+
+    index_rows[[row_id]] <- tibble(
+      source_id = row$source_id,
+      vintage = row$vintage,
+      raw_path = row$raw_path,
+      raw_parquet_path = NA_character_,
+      file_role = row$file_role,
+      status = row$status
+    )
+
+    qc_rows[[row_id]] <- tibble(
+      source_id = row$source_id,
+      vintage = row$vintage,
+      file_role = row$file_role,
+      raw_path = row$raw_path,
+      row_count = NA_real_,
+      column_count = NA_real_,
+      unique_project_id_count = NA_integer_,
+      nonmissing_project_id_share = NA_real_,
+      nonmissing_bbl_share = NA_real_,
+      status = row$status
+    )
+
+    row_id <- row_id + 1L
+  }
+}
+
+if (nrow(csv_rows) == 0) {
+  write_csv(bind_rows(index_rows), out_index_csv, na = "")
+  write_csv(bind_rows(qc_rows), out_qc_csv, na = "")
+  write_csv(tibble(), out_columns_csv, na = "")
+  quit(save = "no")
+}
 
 for (i in seq_len(nrow(csv_rows))) {
   row <- csv_rows[i, ]
@@ -94,23 +129,29 @@ for (i in seq_len(nrow(csv_rows))) {
     }
   }
 
-  index_rows[[i]] <- tibble(
+  index_rows[[row_id]] <- tibble(
     source_id = row$source_id,
     vintage = row$vintage,
     raw_path = row$raw_path,
     raw_parquet_path = out_parquet,
-    file_role = row$file_role
+    file_role = row$file_role,
+    status = row$status
   )
 
-  qc_rows[[i]] <- tibble(
+  qc_rows[[row_id]] <- tibble(
     source_id = row$source_id,
     vintage = row$vintage,
+    file_role = row$file_role,
+    raw_path = row$raw_path,
     row_count = nrow(raw_df),
     column_count = ncol(raw_df),
     unique_project_id_count = if ("project_id" %in% names(raw_df)) n_distinct(raw_df$project_id) else NA_integer_,
     nonmissing_project_id_share = if ("project_id" %in% names(raw_df)) mean(!is.na(raw_df$project_id) & raw_df$project_id != "") else NA_real_,
-    nonmissing_bbl_share = if ("bbl" %in% names(raw_df)) mean(!is.na(raw_df$bbl) & raw_df$bbl != "") else NA_real_
+    nonmissing_bbl_share = if ("bbl" %in% names(raw_df)) mean(!is.na(raw_df$bbl) & raw_df$bbl != "") else NA_real_,
+    status = row$status
   )
+
+  row_id <- row_id + 1L
 }
 
 write_csv(bind_rows(index_rows), out_index_csv, na = "")

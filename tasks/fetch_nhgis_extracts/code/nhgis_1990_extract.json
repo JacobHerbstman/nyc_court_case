@@ -28,7 +28,7 @@
         "us_tract_1990_tl2000"
     ],
     "dataFormat": "csv_no_header",
-    "description": "1990 NYC tract extract",
+    "description": "1990 New York State tract extract; load_nhgis_raw filters the five NYC counties",
     "breakdownAndDataTypeLayout": "single_file",
     "geographicExtents": [
         "360"

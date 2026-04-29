@@ -84,6 +84,25 @@ download_mappluto_asset <- function(url, dest_path) {
   download_status
 }
 
+normalize_release_label <- function(x) {
+  str_to_lower(str_replace_all(as.character(x), "_", "."))
+}
+
+parse_mappluto_archive_release <- function(url) {
+  raw_release <- str_match(
+    basename(url),
+    "^nyc_mappluto_([0-9]{2}v[0-9]+(?:_[0-9]+)?)_arc_shp\\.zip$"
+  )[, 2]
+
+  ifelse(is.na(raw_release), NA_character_, str_replace_all(raw_release, "_", "."))
+}
+
+release_label_matches_file <- function(release_label, file_release) {
+  label_norm <- normalize_release_label(release_label)
+  file_norm <- normalize_release_label(file_release)
+  !is.na(label_norm) & !is.na(file_norm) & (label_norm == file_norm | str_starts(label_norm, file_norm))
+}
+
 discovery_current_path <- file.path("..", "..", "..", "data_raw", "dcp_mappluto_current", pull_date, "mappluto_planning_content.json")
 discovery_pluto_path <- file.path("..", "..", "..", "data_raw", "dcp_pluto_current", pull_date, "mappluto_planning_content.json")
 archive_json_path <- file.path("..", "..", "..", "data_raw", "dcp_mappluto_archive", pull_date, "mappluto_archive_index.json")
@@ -127,15 +146,22 @@ archive_release_rows <- bind_rows(lapply(archive_rows, function(row) {
   bind_rows(lapply(row$releases, function(release_row) {
     tibble(
       archive_year = as.character(row$year),
-      release = as.character(release_row$text),
+      release_label = as.character(release_row$text),
       official_url = as.character(release_row$link)
     )
   }))
-}))
+})) |>
+  mutate(
+    file_release = parse_mappluto_archive_release(official_url),
+    release_label_url_match = release_label_matches_file(release_label, file_release),
+    release = if_else(release_label_url_match, release_label, file_release)
+  )
 
 if (nrow(archive_release_rows) == 0) {
   stop("The DCP archive JSON returned zero archived MapPLUTO shapefile releases.")
 }
+
+archive_mismatch_count <- sum(!archive_release_rows$release_label_url_match, na.rm = TRUE)
 
 inventory_rows <- list()
 inventory_counter <- 0L
@@ -200,6 +226,23 @@ for (i in seq_len(nrow(current_asset_rows))) {
 
 for (i in seq_len(nrow(archive_release_rows))) {
   archive_release <- archive_release_rows[i, ]
+
+  if (!isTRUE(archive_release$release_label_url_match)) {
+    inventory_counter <- inventory_counter + 1L
+    inventory_rows[[inventory_counter]] <- tibble(
+      source_id = "dcp_mappluto_archive",
+      vintage = archive_release$release_label,
+      pull_date = pull_date,
+      file_role = "mappluto_archive_release_mismatch",
+      raw_path = NA_character_,
+      status = "release_label_url_mismatch",
+      official_url = archive_release$official_url,
+      archive_release_label = archive_release$release_label,
+      archive_file_release = archive_release$file_release
+    )
+    next
+  }
+
   archive_raw_path <- file.path(
     "..", "..", "..", "data_raw", "dcp_mappluto_archive", archive_release$release, basename(archive_release$official_url)
   )
@@ -213,7 +256,9 @@ for (i in seq_len(nrow(archive_release_rows))) {
     file_role = "mappluto_shapefile_zip",
     raw_path = archive_raw_path,
     status = archive_status,
-    official_url = archive_release$official_url
+    official_url = archive_release$official_url,
+    archive_release_label = archive_release$release_label,
+    archive_file_release = archive_release$file_release
   )
 }
 
@@ -250,7 +295,10 @@ provenance_table <- bind_rows(
     current_release = NA_character_,
     metadata_path = archive_json_path,
     metadata_kind = "dcp_archive_json",
-    note = paste("Archive JSON listed", nrow(archive_release_rows), "official archived MapPLUTO shapefile releases.")
+    note = paste(
+      "Archive JSON listed", nrow(archive_release_rows), "official archived MapPLUTO shapefile releases;",
+      archive_mismatch_count, "release-label/URL mismatches were flagged without downloading under the mismatched label."
+    )
   )
 )
 

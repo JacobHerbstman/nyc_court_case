@@ -51,16 +51,50 @@ qc_rows <- list()
 for (i in seq_len(nrow(bps_files))) {
   row <- bps_files[i, ]
   raw_lines <- readLines(row$raw_path, warn = FALSE, encoding = "UTF-8")
+  control_z_line_count <- sum(raw_lines == "\032")
+  raw_lines <- raw_lines[raw_lines != "\032"]
   raw_lines <- raw_lines[!str_detect(raw_lines, "^(Survey|Date|\\s*$)")]
-  split_rows <- strsplit(raw_lines, ",", fixed = TRUE)
-  split_rows <- split_rows[lengths(split_rows) %in% c(35L, 38L, 41L)]
+  split_rows_all <- strsplit(raw_lines, ",", fixed = TRUE)
+  parseable_line <- lengths(split_rows_all) %in% c(35L, 38L, 41L)
+  split_rows <- split_rows_all[parseable_line]
+  dropped_line_count <- sum(!parseable_line)
 
   if (length(split_rows) == 0) {
+    index_rows[[i]] <- tibble(
+      year = row$vintage,
+      raw_path = row$raw_path,
+      raw_parquet_path = NA_character_,
+      status = "no_parseable_rows"
+    )
+
     qc_rows[[i]] <- tibble(
       year = row$vintage,
       schema_fields = NA_integer_,
-      raw_row_count = 0L,
+      raw_line_count = length(raw_lines),
+      parsed_row_count = 0L,
+      dropped_line_count = dropped_line_count,
+      ignored_control_z_line_count = control_z_line_count,
       status = "no_parseable_rows"
+    )
+    next
+  }
+
+  if (dropped_line_count > 0) {
+    index_rows[[i]] <- tibble(
+      year = row$vintage,
+      raw_path = row$raw_path,
+      raw_parquet_path = NA_character_,
+      status = "unexpected_line_width"
+    )
+
+    qc_rows[[i]] <- tibble(
+      year = row$vintage,
+      schema_fields = NA_integer_,
+      raw_line_count = length(raw_lines),
+      parsed_row_count = length(split_rows),
+      dropped_line_count = dropped_line_count,
+      ignored_control_z_line_count = control_z_line_count,
+      status = "unexpected_line_width"
     )
     next
   }
@@ -102,13 +136,17 @@ for (i in seq_len(nrow(bps_files))) {
   index_rows[[i]] <- tibble(
     year = row$vintage,
     raw_path = row$raw_path,
-    raw_parquet_path = out_parquet
+    raw_parquet_path = out_parquet,
+    status = "parsed"
   )
 
   qc_rows[[i]] <- tibble(
     year = row$vintage,
     schema_fields = schema_fields,
-    raw_row_count = nrow(raw_bps_df),
+    raw_line_count = length(raw_lines),
+    parsed_row_count = nrow(raw_bps_df),
+    dropped_line_count = dropped_line_count,
+    ignored_control_z_line_count = control_z_line_count,
     status = "parsed"
   )
 }

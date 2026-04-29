@@ -6,6 +6,7 @@
 suppressPackageStartupMessages({
   library(dplyr)
   library(readr)
+  library(stringr)
   library(tibble)
 })
 
@@ -36,16 +37,19 @@ qc_rows <- list()
 for (i in seq_len(nrow(file_index))) {
   row <- file_index[i, ]
   zip_listing <- unzip(row$raw_path, list = TRUE)
-  csv_inside_zip <- zip_listing$Name[grepl("\\.csv$", zip_listing$Name, ignore.case = TRUE)][1]
+  csv_candidates <- zip_listing$Name[grepl("\\.csv$", zip_listing$Name, ignore.case = TRUE)]
+  project_csv_candidates <- csv_candidates[
+    str_detect(tolower(basename(csv_candidates)), "^(housingdb|nychdb).*[.]csv$")
+  ]
 
-  if (is.na(csv_inside_zip)) {
+  if (length(project_csv_candidates) != 1) {
     index_rows[[i]] <- tibble(
       source_id = row$source_id,
       vintage = row$vintage,
       raw_path = row$raw_path,
-      csv_inside_zip = NA_character_,
+      csv_inside_zip = if (length(csv_candidates) == 0) NA_character_ else paste(csv_candidates, collapse = ";"),
       raw_parquet_path = NA_character_,
-      status = "csv_not_found_in_zip"
+      status = if (length(csv_candidates) == 0) "csv_not_found_in_zip" else "unexpected_csv_payload"
     )
 
     qc_rows[[i]] <- tibble(
@@ -53,11 +57,13 @@ for (i in seq_len(nrow(file_index))) {
       vintage = row$vintage,
       row_count = NA_real_,
       column_count = NA_real_,
-      status = "csv_not_found_in_zip"
+      csv_inside_zip = if (length(csv_candidates) == 0) NA_character_ else paste(csv_candidates, collapse = ";"),
+      status = if (length(csv_candidates) == 0) "csv_not_found_in_zip" else "unexpected_csv_payload"
     )
     next
   }
 
+  csv_inside_zip <- project_csv_candidates[[1]]
   extracted_csv <- unzip(row$raw_path, files = csv_inside_zip, exdir = tempdir(), overwrite = TRUE)
   raw_df <- read_csv(extracted_csv, show_col_types = FALSE, guess_max = 50000)
   names(raw_df) <- normalize_names(names(raw_df))

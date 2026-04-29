@@ -25,9 +25,15 @@ out_checksums_csv <- args[3]
 out_provenance_csv <- args[4]
 
 source_catalog <- read_csv(source_catalog_csv, show_col_types = FALSE, na = c("", "NA"))
-boundary_rows <- source_catalog |> filter(str_detect(source_id, "^dcp_boundary_"))
+current_boundary_source_ids <- c(
+  "dcp_boundary_community_districts",
+  "dcp_boundary_city_council_districts"
+)
+boundary_rows <- source_catalog |>
+  filter(source_id %in% current_boundary_source_ids) |>
+  arrange(match(source_id, current_boundary_source_ids))
 
-if (nrow(boundary_rows) != 2) {
+if (nrow(boundary_rows) != length(current_boundary_source_ids) || !setequal(boundary_rows$source_id, current_boundary_source_ids)) {
   stop("Source catalog must contain the two scripted DCP boundary rows.")
 }
 
