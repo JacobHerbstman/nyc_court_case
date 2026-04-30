@@ -1,7 +1,7 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_cd_homeownership_long_units_borough_details/code")
 # cd_homeownership_long_units_series_csv <- "../input/cd_homeownership_long_units_series.csv"
 # mappluto_construction_proxy_cd_year_csv <- "../input/mappluto_construction_proxy_cd_year.csv"
-# dcp_housing_database_project_level_parquet <- "../input/dcp_housing_database_project_level_25q4.parquet"
+# dcp_housing_database_files_csv <- "../input/dcp_housing_database_files.csv"
 # cd_homeownership_exact_decadal_validation_tercile_csv <- "../input/cd_homeownership_exact_decadal_validation_tercile.csv"
 # cd_homeownership_proxy_overlap_borough_year_csv <- "../input/cd_homeownership_proxy_overlap_borough_year.csv"
 # out_borough_era_csv <- "../output/cd_homeownership_long_units_borough_era_shares.csv"
@@ -15,6 +15,7 @@ suppressPackageStartupMessages({
   library(dplyr)
   library(ggplot2)
   library(readr)
+  library(stringr)
   library(tidyr)
   library(tibble)
 })
@@ -22,12 +23,12 @@ suppressPackageStartupMessages({
 args <- commandArgs(trailingOnly = TRUE)
 
 if (length(args) != 10) {
-  stop("Expected 10 arguments: cd_homeownership_long_units_series_csv mappluto_construction_proxy_cd_year_csv dcp_housing_database_project_level_parquet cd_homeownership_exact_decadal_validation_tercile_csv cd_homeownership_proxy_overlap_borough_year_csv out_borough_era_csv out_overlap_error_csv out_exact_splice_csv out_plots_pdf out_qc_csv")
+  stop("Expected 10 arguments: cd_homeownership_long_units_series_csv mappluto_construction_proxy_cd_year_csv dcp_housing_database_files_csv cd_homeownership_exact_decadal_validation_tercile_csv cd_homeownership_proxy_overlap_borough_year_csv out_borough_era_csv out_overlap_error_csv out_exact_splice_csv out_plots_pdf out_qc_csv")
 }
 
 cd_homeownership_long_units_series_csv <- args[1]
 mappluto_construction_proxy_cd_year_csv <- args[2]
-dcp_housing_database_project_level_parquet <- args[3]
+dcp_housing_database_files_csv <- args[3]
 cd_homeownership_exact_decadal_validation_tercile_csv <- args[4]
 cd_homeownership_proxy_overlap_borough_year_csv <- args[5]
 out_borough_era_csv <- args[6]
@@ -70,6 +71,21 @@ if (n_distinct(district_lookup$borocd) != 59) {
   stop("Expected the borough-details district lookup to cover 59 community districts.")
 }
 
+hdb_file <- read_csv(dcp_housing_database_files_csv, show_col_types = FALSE, na = c("", "NA")) |>
+  filter(source_id == "dcp_housing_database_project_level", !is.na(parquet_path), file.exists(parquet_path)) |>
+  mutate(
+    vintage = as.character(vintage),
+    vintage_year = suppressWarnings(as.integer(str_extract(vintage, "^[0-9]{2}"))),
+    vintage_quarter = suppressWarnings(as.integer(str_extract(str_to_lower(vintage), "(?<=q)[1-4]$"))),
+    vintage_order = 4L * vintage_year + vintage_quarter
+  ) |>
+  arrange(desc(vintage_order), desc(vintage), parquet_path) |>
+  slice_head(n = 1)
+
+if (nrow(hdb_file) == 0) {
+  stop("Could not find a staged DCP Housing Database project-level parquet in ", dcp_housing_database_files_csv)
+}
+
 units_series_df <- read_csv(cd_homeownership_long_units_series_csv, show_col_types = FALSE, na = c("", "NA")) |>
   filter(
     series_kind == "preferred_long_series",
@@ -97,8 +113,8 @@ projects_proxy_df <- read_csv(mappluto_construction_proxy_cd_year_csv, show_col_
   ) |>
   filter(year >= 1980, year <= 2009)
 
-projects_observed_df <- read_parquet(
-  dcp_housing_database_project_level_parquet,
+projects_observed_counts_df <- read_parquet(
+  hdb_file$parquet_path[[1]],
   col_select = c("completion_year", "community_district", "borough_code", "borough_name", "job_type", "classa_prop")
 ) |>
   transmute(
@@ -115,19 +131,24 @@ projects_observed_df <- read_parquet(
     !is.na(classa_prop),
     classa_prop > 0
   ) |>
-  left_join(
-    district_lookup |>
-      distinct(borocd, borough_code, borough_name),
-    by = "borocd",
-    relationship = "many-to-one"
-  ) |>
-  group_by(borocd, borough_code, borough_name, year) |>
+  group_by(borocd, year) |>
   summarize(
-    series_family = "projects_built_50_plus",
-    series_label = "Projects built: 50+",
     outcome_value = sum(classa_prop >= 50, na.rm = TRUE),
     .groups = "drop"
   )
+
+projects_observed_df <- expand_grid(
+  district_lookup |>
+    distinct(borocd, borough_code, borough_name),
+  year = 2010:2025
+) |>
+  left_join(projects_observed_counts_df, by = c("borocd", "year"), relationship = "one-to-one") |>
+  mutate(
+    series_family = "projects_built_50_plus",
+    series_label = "Projects built: 50+",
+    outcome_value = coalesce(outcome_value, 0)
+  ) |>
+  select(borocd, borough_code, borough_name, year, series_family, series_label, outcome_value)
 
 all_series_df <- bind_rows(units_series_df, projects_proxy_df, projects_observed_df) |>
   left_join(
@@ -144,14 +165,15 @@ all_series_df <- bind_rows(units_series_df, projects_proxy_df, projects_observed
       year >= 2010 & year <= 2019 ~ "2010-2019",
       year >= 2020 & year <= 2025 ~ "2020-2025",
       TRUE ~ NA_character_
-    )
+    ),
+    source_period = if_else(year < 2010, "pre_2010_proxy", "post_2010_observed")
   ) |>
   filter(!is.na(era))
 
 borough_year_shares_df <- all_series_df |>
-  group_by(series_family, series_label, borough_code, borough_name, year, treat_tercile, treat_tercile_label) |>
+  group_by(series_family, series_label, borough_code, borough_name, year, source_period, treat_tercile, treat_tercile_label) |>
   summarize(outcome_value = sum(outcome_value, na.rm = TRUE), .groups = "drop") |>
-  group_by(series_family, series_label, borough_code, borough_name, year) |>
+  group_by(series_family, series_label, borough_code, borough_name, year, source_period) |>
   mutate(
     borough_total = sum(outcome_value, na.rm = TRUE),
     borough_share = if_else(borough_total > 0, outcome_value / borough_total, NA_real_)
@@ -287,8 +309,9 @@ for (family_value in c("units_built_total", "units_built_50_plus", "projects_bui
     filter(series_family == family_value)
 
   print(
-    ggplot(family_plot_df, aes(x = year, y = borough_share, color = treat_tercile_label)) +
+    ggplot(family_plot_df, aes(x = year, y = borough_share, color = treat_tercile_label, group = interaction(treat_tercile_label, source_period))) +
       geom_line(linewidth = 0.8) +
+      geom_vline(xintercept = 2010, linetype = "dashed", color = "#666666") +
       facet_wrap(~borough_name, ncol = 2, scales = "free_y") +
       scale_color_manual(values = c("Low" = "#3366CC", "Middle" = "#999999", "High" = "#CC3311")) +
       labs(
@@ -329,12 +352,18 @@ borough_era_share_sum_df <- borough_era_df |>
 positive_borough_era_share_sum_df <- borough_era_share_sum_df |>
   filter(borough_total > 0)
 
+missing_project_observed_cd_year_df <- projects_observed_df |>
+  count(year, name = "cd_count") |>
+  filter(cd_count != n_distinct(district_lookup$borocd))
+
 qc_df <- bind_rows(
   tibble(metric = "borough_count", value = n_distinct(borough_era_df$borough_name), note = "Boroughs represented in the borough-era share table."),
   tibble(metric = "district_count", value = n_distinct(district_lookup$borocd), note = "Community districts assigned to treatment terciles."),
+  tibble(metric = "hdb_vintage_order", value = hdb_file$vintage_order[[1]], note = paste("Staged DCP Housing Database vintage selected for post-2010 observed project counts:", hdb_file$vintage[[1]])),
   tibble(metric = "series_family_count", value = n_distinct(borough_era_df$series_family), note = "Series represented in the borough-era share table."),
   tibble(metric = "overlap_error_row_count", value = nrow(overlap_error_df), note = "Rows in the overlap error table by borough, era, and tercile."),
   tibble(metric = "exact_splice_row_count", value = nrow(exact_splice_df), note = "Rows in the exact-to-observed total-units era splice table."),
+  tibble(metric = "post_2010_project_count_year_gap_count", value = nrow(missing_project_observed_cd_year_df), note = "Post-2010 project-count years not covering all 59 CDs after zero-fill."),
   tibble(metric = "zero_borough_era_total_cell_count", value = sum(is.na(borough_era_share_sum_df$borough_total) | borough_era_share_sum_df$borough_total <= 0), note = "Borough-era cells excluded from share-sum QC because the denominator is zero."),
   tibble(metric = "max_positive_borough_era_share_sum_gap", value = max(abs(positive_borough_era_share_sum_df$total_share - 1), na.rm = TRUE), note = "Maximum absolute gap from 1 in positive-denominator borough-era tercile-share sums.")
 )

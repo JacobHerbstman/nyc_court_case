@@ -29,6 +29,16 @@ out_candidates_csv <- args[4]
 out_project_summary_csv <- args[5]
 out_qc_csv <- args[6]
 
+assert_unique_keys <- function(df, key_cols, df_name) {
+  duplicate_keys <- df %>%
+    count(across(all_of(key_cols)), name = "source_row_count") %>%
+    filter(source_row_count > 1)
+
+  if (nrow(duplicate_keys) > 0) {
+    stop(df_name, " is not unique by ", paste(key_cols, collapse = ", "), ".")
+  }
+}
+
 project_base <- read_csv(zap_housing_cohort_base_csv, show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(
     project_id = as.character(project_id),
@@ -83,7 +93,11 @@ hdb_jobs <- read_parquet(
   select(-borough_name, -community_district, -bbl) %>%
   filter(!is.na(job_number), !is.na(bbl_standardized))
 
-candidate_links <- project_base %>%
+assert_unique_keys(project_base, "project_id", "ZAP housing cohort base")
+assert_unique_keys(zap_bbl, c("project_id", "bbl_standardized"), "ZAP project BBL crosswalk")
+assert_unique_keys(hdb_jobs, c("job_number", "bbl_standardized"), "HDB job-BBL input")
+
+project_bbl <- project_base %>%
   select(
     project_id,
     project_name,
@@ -100,8 +114,54 @@ candidate_links <- project_base %>%
     has_bbl,
     bbl_count
   ) %>%
-  left_join(zap_bbl, by = "project_id") %>%
-  left_join(hdb_jobs, by = "bbl_standardized", relationship = "many-to-many") %>%
+  left_join(zap_bbl, by = "project_id", relationship = "one-to-many") %>%
+  arrange(project_id, bbl_standardized)
+
+hdb_bbl_summary <- hdb_jobs %>%
+  group_by(bbl_standardized) %>%
+  summarise(
+    hdb_job_count = n_distinct(job_number),
+    hdb_housing_job_count = n_distinct(job_number[is_housing_active_job %in% TRUE]),
+    .groups = "drop"
+  )
+
+project_bbl_status <- project_bbl %>%
+  left_join(hdb_bbl_summary, by = "bbl_standardized", relationship = "many-to-one") %>%
+  mutate(
+    hdb_job_count = coalesce(hdb_job_count, 0L),
+    hdb_housing_job_count = coalesce(hdb_housing_job_count, 0L)
+  )
+
+candidate_project_bbl <- project_bbl %>%
+  filter(!is.na(bbl_standardized))
+
+candidate_hdb_jobs <- hdb_jobs %>%
+  filter(!is.na(permit_year))
+
+candidate_bbls <- sort(intersect(
+  unique(candidate_project_bbl$bbl_standardized),
+  unique(candidate_hdb_jobs$bbl_standardized)
+))
+
+candidate_pair_list <- lapply(candidate_bbls, function(bbl_value) {
+  project_rows <- candidate_project_bbl[candidate_project_bbl$bbl_standardized == bbl_value, , drop = FALSE]
+  job_rows <- candidate_hdb_jobs[
+    candidate_hdb_jobs$bbl_standardized == bbl_value,
+    setdiff(names(candidate_hdb_jobs), "bbl_standardized"),
+    drop = FALSE
+  ]
+
+  if (nrow(project_rows) == 0 || nrow(job_rows) == 0) {
+    return(tibble())
+  }
+
+  bind_cols(
+    as_tibble(project_rows[rep(seq_len(nrow(project_rows)), each = nrow(job_rows)), , drop = FALSE]),
+    as_tibble(job_rows[rep(seq_len(nrow(job_rows)), times = nrow(project_rows)), , drop = FALSE])
+  )
+})
+
+candidate_pairs <- bind_rows(candidate_pair_list) %>%
   mutate(
     permit_lag = ifelse(!is.na(permit_year), permit_year - cert_year, NA_integer_),
     completion_lag = ifelse(!is.na(completion_year), completion_year - cert_year, NA_integer_),
@@ -109,28 +169,48 @@ candidate_links <- project_base %>%
     within_0_10 = !is.na(permit_lag) & permit_lag >= 0 & permit_lag <= 10,
     within_neg2_10 = !is.na(permit_lag) & permit_lag >= -2 & permit_lag <= 10,
     within_neg5_15 = !is.na(permit_lag) & permit_lag >= -5 & permit_lag <= 15
+  )
+
+candidate_pairs_timed <- candidate_pairs %>%
+  filter(within_neg5_15) %>%
+  arrange(project_id, job_number, bbl_standardized, permit_year) %>%
+  distinct(project_id, job_number, .keep_all = TRUE)
+
+candidate_job_counts <- candidate_pairs_timed %>%
+  count(job_number, name = "candidate_project_count")
+
+candidate_links <- candidate_pairs_timed %>%
+  left_join(candidate_job_counts, by = "job_number", relationship = "many-to-one") %>%
+  mutate(
+    assignment_window_rank = case_when(
+      within_0_10 ~ 1L,
+      within_neg2_10 ~ 2L,
+      TRUE ~ 3L
+    ),
+    assignment_abs_lag = abs(permit_lag)
   ) %>%
+  arrange(
+    job_number,
+    assignment_window_rank,
+    assignment_abs_lag,
+    desc(cert_year),
+    project_id,
+    bbl_standardized
+  ) %>%
+  group_by(job_number) %>%
+  mutate(assigned_candidate_rank = row_number()) %>%
+  ungroup() %>%
+  filter(assigned_candidate_rank == 1L) %>%
+  mutate(
+    shared_job_candidate_count = candidate_project_count,
+    assignment_rule = "Assign each HDB job to one ZAP project, preferring 0-10 links, closest permit lag, then latest certification year."
+  ) %>%
+  select(-candidate_project_count) %>%
   arrange(project_id, bbl_standardized, permit_year, job_number)
 
-project_summary <- candidate_links %>%
+timed_project_summary <- candidate_links %>%
   group_by(project_id) %>%
   summarise(
-    project_name = first(.data$project_name),
-    project_brief = first(.data$project_brief),
-    borocd = first(.data$borocd),
-    borough_name = first(.data$borough_name),
-    cert_year = first(.data$cert_year),
-    cert_era = first(.data$cert_era),
-    treat_pp = first(.data$treat_pp),
-    treat_z_boro = first(.data$treat_z_boro),
-    is_complete = first(.data$is_complete),
-    is_fail = first(.data$is_fail),
-    is_unresolved = first(.data$is_unresolved),
-    has_bbl = first(.data$has_bbl),
-    bbl_count = first(.data$bbl_count),
-    matched_bbl_count = n_distinct(bbl_standardized[!is.na(job_number)]),
-    has_any_hdb_match_exact_bbl = any(!is.na(job_number)),
-    has_any_housing_job_exact_bbl = any(is_housing_active_job %in% TRUE, na.rm = TRUE),
     has_any_housing_job_0_5 = any(is_housing_active_job %in% TRUE & within_0_5, na.rm = TRUE),
     has_any_housing_job_0_10 = any(is_housing_active_job %in% TRUE & within_0_10, na.rm = TRUE),
     has_any_housing_job_neg2_10 = any(is_housing_active_job %in% TRUE & within_neg2_10, na.rm = TRUE),
@@ -148,6 +228,47 @@ project_summary <- candidate_links %>%
     first_housing_permit_year_0_10 = suppressWarnings(min(permit_year[is_housing_active_job %in% TRUE & within_0_10], na.rm = TRUE)),
     first_housing_permit_lag_0_10 = suppressWarnings(min(permit_lag[is_housing_active_job %in% TRUE & within_0_10], na.rm = TRUE)),
     .groups = "drop"
+  )
+
+project_summary <- project_bbl_status %>%
+  group_by(project_id) %>%
+  summarise(
+    project_name = first(.data$project_name),
+    project_brief = first(.data$project_brief),
+    borocd = first(.data$borocd),
+    borough_name = first(.data$borough_name),
+    cert_year = first(.data$cert_year),
+    cert_era = first(.data$cert_era),
+    treat_pp = first(.data$treat_pp),
+    treat_z_boro = first(.data$treat_z_boro),
+    is_complete = first(.data$is_complete),
+    is_fail = first(.data$is_fail),
+    is_unresolved = first(.data$is_unresolved),
+    has_bbl = first(.data$has_bbl),
+    bbl_count = first(.data$bbl_count),
+    matched_bbl_count = n_distinct(bbl_standardized[hdb_job_count > 0]),
+    has_any_hdb_match_exact_bbl = any(hdb_job_count > 0, na.rm = TRUE),
+    has_any_housing_job_exact_bbl = any(hdb_housing_job_count > 0, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  left_join(timed_project_summary, by = "project_id", relationship = "one-to-one") %>%
+  mutate(
+    has_any_housing_job_0_5 = coalesce(has_any_housing_job_0_5, FALSE),
+    has_any_housing_job_0_10 = coalesce(has_any_housing_job_0_10, FALSE),
+    has_any_housing_job_neg2_10 = coalesce(has_any_housing_job_neg2_10, FALSE),
+    has_any_housing_job_neg5_15 = coalesce(has_any_housing_job_neg5_15, FALSE),
+    has_any_addition_job_0_10 = coalesce(has_any_addition_job_0_10, FALSE),
+    has_any_nb_job_0_10 = coalesce(has_any_nb_job_0_10, FALSE),
+    has_any_nb_50_plus_job_0_10 = coalesce(has_any_nb_50_plus_job_0_10, FALSE),
+    linked_housing_job_count_0_10 = coalesce(linked_housing_job_count_0_10, 0L),
+    linked_addition_job_count_0_10 = coalesce(linked_addition_job_count_0_10, 0L),
+    linked_nb_job_count_0_10 = coalesce(linked_nb_job_count_0_10, 0L),
+    linked_nb_gross_units_0_10 = coalesce(linked_nb_gross_units_0_10, 0),
+    linked_gross_add_units_0_10 = coalesce(linked_gross_add_units_0_10, 0),
+    linked_gross_loss_units_0_10 = coalesce(linked_gross_loss_units_0_10, 0),
+    linked_net_units_0_10 = coalesce(linked_net_units_0_10, 0),
+    first_housing_permit_year_0_10 = coalesce(first_housing_permit_year_0_10, NA_integer_),
+    first_housing_permit_lag_0_10 = coalesce(first_housing_permit_lag_0_10, NA_integer_)
   ) %>%
   mutate(
     matched_bbl_count = coalesce(matched_bbl_count, 0L),
@@ -162,6 +283,16 @@ project_summary <- candidate_links %>%
     first_housing_permit_lag_0_10 = ifelse(is.infinite(first_housing_permit_lag_0_10), NA_integer_, first_housing_permit_lag_0_10)
   ) %>%
   arrange(cert_year, borocd, project_id)
+
+assigned_duplicate_job_count <- candidate_links %>%
+  count(job_number, name = "assigned_row_count") %>%
+  filter(assigned_row_count > 1) %>%
+  nrow()
+
+assigned_duplicate_project_job_count <- candidate_links %>%
+  count(project_id, job_number, name = "assigned_project_job_row_count") %>%
+  filter(assigned_project_job_row_count > 1) %>%
+  nrow()
 
 qc_df <- bind_rows(
   tibble(
@@ -218,6 +349,36 @@ qc_df <- bind_rows(
     metric = "any_nb_50_plus_job_0_10_share",
     value = mean(project_summary$has_any_nb_50_plus_job_0_10, na.rm = TRUE),
     note = "Share with any 50+ unit new-building DCP housing job within 0-10 permit years after certification."
+  ),
+  tibble(
+    metric = "timed_candidate_project_job_count_before_assignment",
+    value = nrow(candidate_pairs_timed),
+    note = "Project-job candidates on exact BBLs within the broad -5 to +15 timing window before one-job assignment."
+  ),
+  tibble(
+    metric = "timed_candidate_shared_job_count",
+    value = sum(candidate_job_counts$candidate_project_count > 1, na.rm = TRUE),
+    note = "HDB jobs that had more than one eligible ZAP project candidate before assignment."
+  ),
+  tibble(
+    metric = "timed_candidate_extra_project_job_count",
+    value = sum(pmax(candidate_job_counts$candidate_project_count - 1, 0), na.rm = TRUE),
+    note = "Extra project-job candidate attributions removed by the one-job-to-one-project assignment rule."
+  ),
+  tibble(
+    metric = "assigned_candidate_row_count",
+    value = nrow(candidate_links),
+    note = "Assigned exact-BBL project-job links after resolving shared HDB jobs."
+  ),
+  tibble(
+    metric = "assigned_duplicate_job_count",
+    value = assigned_duplicate_job_count,
+    note = "Should be zero because each HDB job is assigned to at most one ZAP project."
+  ),
+  tibble(
+    metric = "assigned_duplicate_project_job_count",
+    value = assigned_duplicate_project_job_count,
+    note = "Should be zero because project-job candidate rows are deduplicated before assignment."
   ),
   tibble(
     metric = "median_first_housing_permit_lag_0_10",

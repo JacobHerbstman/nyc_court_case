@@ -1,7 +1,7 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_cd_homeownership_long_units_sensitivity/code")
 # cd_homeownership_long_units_series_csv <- "../input/cd_homeownership_long_units_series.csv"
 # mappluto_construction_proxy_cd_year_csv <- "../input/mappluto_construction_proxy_cd_year.csv"
-# dcp_housing_database_project_level_parquet <- "../input/dcp_housing_database_project_level_25q4.parquet"
+# dcp_housing_database_files_csv <- "../input/dcp_housing_database_files.csv"
 # out_pooled_csv <- "../output/cd_homeownership_long_units_sensitivity_pooled.csv"
 # out_borough_csv <- "../output/cd_homeownership_long_units_sensitivity_borough.csv"
 # out_leave_one_out_csv <- "../output/cd_homeownership_long_units_sensitivity_leave_one_out.csv"
@@ -18,18 +18,19 @@ suppressPackageStartupMessages({
   library(dplyr)
   library(ggplot2)
   library(readr)
+  library(stringr)
   library(tidyr)
 })
 
 args <- commandArgs(trailingOnly = TRUE)
 
 if (length(args) != 13) {
-  stop("Expected 13 arguments: cd_homeownership_long_units_series_csv mappluto_construction_proxy_cd_year_csv dcp_housing_database_project_level_parquet out_pooled_csv out_borough_csv out_leave_one_out_csv out_top5_out_csv out_levels_csv out_extensive_csv out_top5_csv out_summary_csv out_qc_csv out_plots_pdf")
+  stop("Expected 13 arguments: cd_homeownership_long_units_series_csv mappluto_construction_proxy_cd_year_csv dcp_housing_database_files_csv out_pooled_csv out_borough_csv out_leave_one_out_csv out_top5_out_csv out_levels_csv out_extensive_csv out_top5_csv out_summary_csv out_qc_csv out_plots_pdf")
 }
 
 cd_homeownership_long_units_series_csv <- args[1]
 mappluto_construction_proxy_cd_year_csv <- args[2]
-dcp_housing_database_project_level_parquet <- args[3]
+dcp_housing_database_files_csv <- args[3]
 out_pooled_csv <- args[4]
 out_borough_csv <- args[5]
 out_leave_one_out_csv <- args[6]
@@ -52,9 +53,28 @@ assert_unique_keys <- function(df, keys, label) {
 }
 
 compute_share_scenario <- function(df, scenario_type, scenario_name) {
-  borough_level <- df |>
+  aggregated_df <- df |>
     group_by(series_family, year, borough_code, borough_name, treat_tercile, treat_tercile_label) |>
-    summarize(outcome_value = sum(outcome_value, na.rm = TRUE), .groups = "drop") |>
+    summarize(outcome_value = sum(outcome_value, na.rm = TRUE), .groups = "drop")
+
+  assert_unique_keys(
+    aggregated_df,
+    c("series_family", "year", "borough_code", "borough_name", "treat_tercile", "treat_tercile_label"),
+    paste("share scenario", scenario_type, scenario_name)
+  )
+
+  borough_level <- expand_grid(
+    df |>
+      distinct(series_family, year),
+    df |>
+      distinct(borough_code, borough_name, treat_tercile, treat_tercile_label)
+  ) |>
+    left_join(
+      aggregated_df,
+      by = c("series_family", "year", "borough_code", "borough_name", "treat_tercile", "treat_tercile_label"),
+      relationship = "one-to-one"
+    ) |>
+    mutate(outcome_value = coalesce(outcome_value, 0)) |>
     group_by(series_family, year, borough_code, borough_name) |>
     mutate(
       borough_total = sum(outcome_value, na.rm = TRUE),
@@ -156,6 +176,21 @@ if (n_distinct(district_lookup$borocd) != 59) {
   stop("Expected the long-units sensitivity district lookup to cover 59 community districts.")
 }
 
+hdb_file <- read_csv(dcp_housing_database_files_csv, show_col_types = FALSE, na = c("", "NA")) |>
+  filter(source_id == "dcp_housing_database_project_level", !is.na(parquet_path), file.exists(parquet_path)) |>
+  mutate(
+    vintage = as.character(vintage),
+    vintage_year = suppressWarnings(as.integer(str_extract(vintage, "^[0-9]{2}"))),
+    vintage_quarter = suppressWarnings(as.integer(str_extract(str_to_lower(vintage), "(?<=q)[1-4]$"))),
+    vintage_order = 4L * vintage_year + vintage_quarter
+  ) |>
+  arrange(desc(vintage_order), desc(vintage), parquet_path) |>
+  slice_head(n = 1)
+
+if (nrow(hdb_file) == 0) {
+  stop("Could not find a staged DCP Housing Database project-level parquet in ", dcp_housing_database_files_csv)
+}
+
 series_df <- series_df |>
   select(-treat_tercile, -treat_tercile_label) |>
   left_join(
@@ -187,7 +222,7 @@ project_proxy <- read_csv(mappluto_construction_proxy_cd_year_csv, show_col_type
   filter(year >= 1980, year <= 2009)
 
 project_observed <- read_parquet(
-  dcp_housing_database_project_level_parquet,
+  hdb_file$parquet_path[[1]],
   col_select = c("completion_year", "community_district", "borough_code", "borough_name", "job_type", "classa_prop")
 ) |>
   transmute(
@@ -339,6 +374,7 @@ write_csv(summary_df, out_summary_csv, na = "")
 
 qc_df <- bind_rows(
   tibble(metric = "district_count", value = n_distinct(series_df$borocd), note = "Standard CDs in the preferred long sensitivity series."),
+  tibble(metric = "hdb_vintage_order", value = hdb_file$vintage_order[[1]], note = paste("Staged DCP Housing Database vintage selected for project-level sensitivity diagnostics:", hdb_file$vintage[[1]])),
   tibble(metric = "preferred_series_year_gap_count", value = nrow(series_df |>
     count(series_family, year, name = "cd_count") |>
     filter(cd_count != 59)), note = "Preferred series-family-year cells not covering all 59 CDs."),

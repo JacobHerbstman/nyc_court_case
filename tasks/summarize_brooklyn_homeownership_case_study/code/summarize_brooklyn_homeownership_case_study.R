@@ -5,7 +5,7 @@
 # long_units_path <- "../input/cd_homeownership_long_units_series.csv"
 # dcp_supply_path <- "../input/cd_homeownership_dcp_supply_panel.csv"
 # permit_panel_path <- "../input/cd_homeownership_permit_nb_panel.csv"
-# boundaries_path <- "../input/dcp_boundary_community_districts_20260412.parquet"
+# boundary_index_path <- "../input/dcp_boundary_index.csv"
 # zap_cd_year_path <- "../input/zap_ulurp_redev_cd_year_panel.csv"
 # zap_mature_path <- "../input/zap_ulurp_redev_mature_cohort_panel.csv"
 # zap_yield_path <- "../input/zap_ulurp_redev_yield_panel.csv"
@@ -41,7 +41,7 @@ args <- commandArgs(trailingOnly = TRUE)
 if (length(args) != 20) {
   stop(
     "Expected 20 arguments: controls_path long_units_path dcp_supply_path permit_panel_path ",
-    "boundaries_path zap_cd_year_path zap_mature_path zap_yield_path cd_summary_out ",
+    "boundary_index_path zap_cd_year_path zap_mature_path zap_yield_path cd_summary_out ",
     "era_outcomes_out regressions_out block_regressions_out block_diagnostics_out ",
     "leave_one_cd_out size_bin_summary_out zap_summary_out zap_block_regressions_out ",
     "qc_out plots_out control_flip_plots_out"
@@ -52,7 +52,7 @@ controls_path <- args[1]
 long_units_path <- args[2]
 dcp_supply_path <- args[3]
 permit_panel_path <- args[4]
-boundaries_path <- args[5]
+boundary_index_path <- args[5]
 zap_cd_year_path <- args[6]
 zap_mature_path <- args[7]
 zap_yield_path <- args[8]
@@ -78,6 +78,19 @@ theme_set(
       legend.position = "bottom"
     )
 )
+
+boundary_file <- read_csv(boundary_index_path, show_col_types = FALSE, na = c("", "NA")) %>%
+  filter(source_id == "dcp_boundary_community_districts", !is.na(parquet_path), file.exists(parquet_path)) %>%
+  mutate(
+    pull_date = as.character(pull_date),
+    pull_date_order = suppressWarnings(as.integer(pull_date))
+  ) %>%
+  arrange(desc(pull_date_order), desc(pull_date), parquet_path) %>%
+  slice_head(n = 1)
+
+if (nrow(boundary_file) == 0) {
+  stop("Could not find a staged community-district boundary parquet in ", boundary_index_path)
+}
 
 safe_standardize <- function(x) {
   x <- suppressWarnings(as.numeric(x))
@@ -847,6 +860,10 @@ qc <- bind_rows(
     check_value = as.character(nrow(zap_yield))
   ),
   tibble(
+    check_name = "boundary_pull_date",
+    check_value = as.character(boundary_file$pull_date[[1]])
+  ),
+  tibble(
     check_name = "notes",
     check_value = paste(
       "Block-decomposition regressions use within-Brooklyn standardized block scores",
@@ -866,10 +883,17 @@ write_csv_if_changed(zap_summary, zap_summary_out)
 write_csv_if_changed(zap_block_regressions, zap_block_regressions_out)
 write_csv_if_changed(qc, qc_out)
 
-boundaries_sf <- read_parquet(boundaries_path, col_select = c("district_id", "geometry_wkt")) %>%
+boundary_raw <- read_parquet(boundary_file$parquet_path[[1]], col_select = c("district_id", "geometry_wkt", "crs_epsg"))
+
+boundary_crs <- unique(boundary_raw$crs_epsg[!is.na(boundary_raw$crs_epsg)])
+if (length(boundary_crs) != 1) {
+  stop("Expected exactly one non-missing CRS in the staged community-district boundary file.")
+}
+
+boundaries_sf <- boundary_raw %>%
   transmute(
     borocd = suppressWarnings(as.integer(district_id)),
-    geometry = st_as_sfc(geometry_wkt, crs = 4326)
+    geometry = st_as_sfc(geometry_wkt, crs = boundary_crs[[1]])
   ) %>%
   st_as_sf() %>%
   st_transform(2263) %>%
@@ -1066,7 +1090,7 @@ print(
     facet_grid(era ~ outcome_label, scales = "free_y") +
     labs(
       title = "Within-Brooklyn scatterplots",
-      subtitle = "Large-unit and gross-addition margins decline more steeply with homeowner exposure than the smallest-building margin",
+      subtitle = "Era-average outcomes against 1990 homeowner exposure",
       x = "1990 homeowner exposure (z within borough)",
       y = "Era-average outcome"
     )
@@ -1100,8 +1124,8 @@ print(
     geom_errorbar(aes(ymin = raw_beta_treat_z - 1.96 * raw_beta_treat_z_se, ymax = raw_beta_treat_z + 1.96 * raw_beta_treat_z_se), width = 0.12, color = "#2a6f97") +
     facet_wrap(~era) +
     labs(
-      title = "Brooklyn size-bin monotonicity",
-      subtitle = "Raw homeowner slope by size bin. The negative pattern steepens as the unit margin gets larger.",
+      title = "Brooklyn size-bin slopes",
+      subtitle = "Raw homeowner slopes by size bin and era",
       x = "Size bin",
       y = "Raw coefficient on homeowner exposure"
     )

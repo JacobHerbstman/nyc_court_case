@@ -1,7 +1,7 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_cd_homeownership_proxy_overlap_validation/code")
 # cd_homeownership_1990_measure_csv <- "../input/cd_homeownership_1990_measure.csv"
 # mappluto_construction_proxy_cd_year_csv <- "../input/mappluto_construction_proxy_cd_year.csv"
-# dcp_housing_database_project_level_parquet <- "../input/dcp_housing_database_project_level_25q4.parquet"
+# dcp_housing_database_files_csv <- "../input/dcp_housing_database_files.csv"
 # out_tercile_year_csv <- "../output/cd_homeownership_proxy_overlap_tercile_year.csv"
 # out_borough_year_csv <- "../output/cd_homeownership_proxy_overlap_borough_year.csv"
 # out_residual_csv <- "../output/cd_homeownership_proxy_overlap_cd_year_residual.csv"
@@ -14,18 +14,19 @@ suppressPackageStartupMessages({
   library(dplyr)
   library(ggplot2)
   library(readr)
+  library(stringr)
   library(tidyr)
 })
 
 args <- commandArgs(trailingOnly = TRUE)
 
 if (length(args) != 9) {
-  stop("Expected 9 arguments: cd_homeownership_1990_measure_csv mappluto_construction_proxy_cd_year_csv dcp_housing_database_project_level_parquet out_tercile_year_csv out_borough_year_csv out_residual_csv out_metrics_csv out_qc_csv out_plots_pdf")
+  stop("Expected 9 arguments: cd_homeownership_1990_measure_csv mappluto_construction_proxy_cd_year_csv dcp_housing_database_files_csv out_tercile_year_csv out_borough_year_csv out_residual_csv out_metrics_csv out_qc_csv out_plots_pdf")
 }
 
 cd_homeownership_1990_measure_csv <- args[1]
 mappluto_construction_proxy_cd_year_csv <- args[2]
-dcp_housing_database_project_level_parquet <- args[3]
+dcp_housing_database_files_csv <- args[3]
 out_tercile_year_csv <- args[4]
 out_borough_year_csv <- args[5]
 out_residual_csv <- args[6]
@@ -79,6 +80,21 @@ if (n_distinct(treatment_df$borocd) != 59) {
   stop("Expected the homeownership treatment lookup to cover 59 community districts.")
 }
 
+hdb_file <- read_csv(dcp_housing_database_files_csv, show_col_types = FALSE, na = c("", "NA")) |>
+  filter(source_id == "dcp_housing_database_project_level", !is.na(parquet_path), file.exists(parquet_path)) |>
+  mutate(
+    vintage = as.character(vintage),
+    vintage_year = suppressWarnings(as.integer(str_extract(vintage, "^[0-9]{2}"))),
+    vintage_quarter = suppressWarnings(as.integer(str_extract(str_to_lower(vintage), "(?<=q)[1-4]$"))),
+    vintage_order = 4L * vintage_year + vintage_quarter
+  ) |>
+  arrange(desc(vintage_order), desc(vintage), parquet_path) |>
+  slice_head(n = 1)
+
+if (nrow(hdb_file) == 0) {
+  stop("Could not find a staged DCP Housing Database project-level parquet in ", dcp_housing_database_files_csv)
+}
+
 proxy_long <- read_csv(mappluto_construction_proxy_cd_year_csv, show_col_types = FALSE, na = c("", "NA")) |>
   transmute(
     borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
@@ -98,7 +114,7 @@ proxy_long <- read_csv(mappluto_construction_proxy_cd_year_csv, show_col_types =
   mutate(source = "proxy")
 
 observed_source <- read_parquet(
-  dcp_housing_database_project_level_parquet,
+  hdb_file$parquet_path[[1]],
   col_select = c("completion_year", "community_district", "borough_code", "borough_name", "job_type", "classa_prop")
 ) |>
   transmute(
@@ -151,7 +167,7 @@ balanced_df <- expand_grid(
   left_join(
     source_long,
     by = c("borocd", "borough_code", "borough_name", "year", "outcome_family", "source"),
-    relationship = "many-to-one"
+    relationship = "one-to-one"
   ) |>
   mutate(outcome_value = coalesce(outcome_value, 0))
 
@@ -295,6 +311,7 @@ positive_share_sum_df <- share_sum_df |>
 
 qc_df <- bind_rows(
   tibble(metric = "district_count", value = n_distinct(balanced_df$borocd), note = "Standard CDs in the overlap validation sample."),
+  tibble(metric = "hdb_vintage_order", value = as.numeric(hdb_file$vintage_order[[1]]), note = paste0("Selected DCP Housing Database vintage ", hdb_file$vintage[[1]], ".")),
   tibble(metric = "balanced_expected_row_count", value = 59L * length(2010:2025) * 3L * 2L, note = "Expected balanced CD-year-source-outcome rows."),
   tibble(metric = "balanced_actual_row_count", value = nrow(balanced_df), note = "Actual balanced CD-year-source-outcome rows."),
   tibble(metric = "year_min", value = min(balanced_df$year, na.rm = TRUE), note = "Minimum overlap year."),

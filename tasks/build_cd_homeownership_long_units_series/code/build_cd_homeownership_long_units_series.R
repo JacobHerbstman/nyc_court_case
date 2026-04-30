@@ -77,7 +77,8 @@ proxy_map <- tribble(
   "mappluto_proxy", "units_built_total", "Units built: total", "residential_units_proxy",
   "mappluto_proxy", "units_built_1_4", "Units built: 1-4", "units_1_4_proxy",
   "mappluto_proxy", "units_built_5_plus", "Units built: 5+", "units_5_plus_proxy",
-  "mappluto_proxy", "units_built_50_plus", "Units built: 50+", "units_50_plus_proxy"
+  "mappluto_proxy", "units_built_50_plus", "Units built: 50+", "units_50_plus_proxy",
+  "mappluto_proxy", "projects_built_50_plus", "Projects built: 50+", "lots_50_plus_proxy"
 )
 
 cd_skeleton <- measure_df |>
@@ -123,7 +124,7 @@ hdb_file <- read_csv(dcp_housing_database_files_csv, show_col_types = FALSE, na 
   mutate(
     vintage = as.character(vintage),
     vintage_year = suppressWarnings(as.integer(str_extract(vintage, "^[0-9]{2}"))),
-    vintage_quarter = suppressWarnings(as.integer(str_extract(vintage, "(?<=Q)[1-4]$"))),
+    vintage_quarter = suppressWarnings(as.integer(str_extract(str_to_lower(vintage), "(?<=q)[1-4]$"))),
     vintage_order = 4L * vintage_year + vintage_quarter
   ) |>
   arrange(desc(vintage_order), desc(vintage), parquet_path) |>
@@ -173,6 +174,7 @@ hdb_base <- hdb_source_df |>
   group_by(borocd, borough_code, borough_name, year) |>
   summarize(
     units_built_total = sum(nb_gross_units, na.rm = TRUE),
+    projects_built_50_plus = sum(job_type == "New Building" & classa_prop >= 50, na.rm = TRUE),
     gross_add_units_observed = sum(gross_add_units, na.rm = TRUE),
     .groups = "drop"
   )
@@ -214,6 +216,7 @@ hdb_panel_source <- expand_grid(cd_skeleton, year = 2010:2025) |>
   ) |>
   mutate(
     units_built_total = coalesce(units_built_total, 0),
+    projects_built_50_plus = coalesce(projects_built_50_plus, 0),
     gross_add_units_observed = coalesce(gross_add_units_observed, 0),
     units_built_1_4 = coalesce(units_built_1_4, 0),
     units_built_5_plus = coalesce(units_built_5_plus, 0),
@@ -226,6 +229,7 @@ hdb_map <- tribble(
   "dcp_hdb_completion", "preferred_long_series", "units_built_1_4", "Units built: 1-4", "units_built_1_4",
   "dcp_hdb_completion", "preferred_long_series", "units_built_5_plus", "Units built: 5+", "units_built_5_plus",
   "dcp_hdb_completion", "preferred_long_series", "units_built_50_plus", "Units built: 50+", "units_built_50_plus",
+  "dcp_hdb_completion", "preferred_long_series", "projects_built_50_plus", "Projects built: 50+", "projects_built_50_plus",
   "dcp_hdb_completion", "observed_only", "gross_add_units_observed", "Gross additions observed", "gross_add_units_observed"
 )
 
@@ -293,6 +297,7 @@ write_csv(
     tibble(metric = "source_count", value = as.character(n_distinct(series_df$source_family)), note = "Distinct source families in the long units series."),
     tibble(metric = "missing_treat_count", value = as.character(sum(is.na(series_df$treat_z_boro))), note = "Rows missing the exact homeownership treatment."),
     tibble(metric = "preferred_units_built_total_sum", value = as.character(sum(series_df$outcome_value[series_df$series_family == "units_built_total"], na.rm = TRUE)), note = "Total units in the preferred compatible long series."),
+    tibble(metric = "preferred_projects_built_50_plus_sum", value = as.character(sum(series_df$outcome_value[series_df$series_family == "projects_built_50_plus"], na.rm = TRUE)), note = "Total 50+ unit project/lot counts in the preferred compatible long series."),
     tibble(metric = "observed_gross_add_units_sum_2010_2025", value = as.character(sum(series_df$outcome_value[series_df$series_family == "gross_add_units_observed"], na.rm = TRUE)), note = "Observed gross additions over 2010-2025 from DCP Housing Database completion-year aggregation.")
   ),
   out_qc_csv,

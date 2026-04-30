@@ -1,8 +1,8 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_cd_homeownership_long_units_levels_developability/code")
 # cd_homeownership_long_units_series_csv <- "../input/cd_homeownership_long_units_series.csv"
-# dcp_housing_database_project_level_parquet <- "../input/dcp_housing_database_project_level_25q4.parquet"
+# dcp_housing_database_files_csv <- "../input/dcp_housing_database_files.csv"
 # mappluto_construction_proxy_cd_year_csv <- "../input/mappluto_construction_proxy_cd_year.csv"
-# dcp_mappluto_current_parquet <- "../input/dcp_mappluto_current_25v4.parquet"
+# mappluto_lot_files_csv <- "../input/mappluto_lot_files.csv"
 # cd_baseline_1990_controls_csv <- "../input/cd_baseline_1990_controls.csv"
 # out_level_year_csv <- "../output/cd_homeownership_long_units_level_year.csv"
 # out_level_era_csv <- "../output/cd_homeownership_long_units_level_era.csv"
@@ -16,20 +16,23 @@ suppressPackageStartupMessages({
   library(dplyr)
   library(ggplot2)
   library(readr)
+  library(stringr)
   library(tidyr)
   library(tibble)
 })
 
+source("../../_lib/source_pipeline_utils.R")
+
 args <- commandArgs(trailingOnly = TRUE)
 
 if (length(args) != 11) {
-  stop("Expected 11 arguments: cd_homeownership_long_units_series_csv dcp_housing_database_project_level_parquet mappluto_construction_proxy_cd_year_csv dcp_mappluto_current_parquet cd_baseline_1990_controls_csv out_level_year_csv out_level_era_csv out_built_form_csv out_residuals_csv out_plots_pdf out_qc_csv")
+  stop("Expected 11 arguments: cd_homeownership_long_units_series_csv dcp_housing_database_files_csv mappluto_construction_proxy_cd_year_csv mappluto_lot_files_csv cd_baseline_1990_controls_csv out_level_year_csv out_level_era_csv out_built_form_csv out_residuals_csv out_plots_pdf out_qc_csv")
 }
 
 cd_homeownership_long_units_series_csv <- args[1]
-dcp_housing_database_project_level_parquet <- args[2]
+dcp_housing_database_files_csv <- args[2]
 mappluto_construction_proxy_cd_year_csv <- args[3]
-dcp_mappluto_current_parquet <- args[4]
+mappluto_lot_files_csv <- args[4]
 cd_baseline_1990_controls_csv <- args[5]
 out_level_year_csv <- args[6]
 out_level_era_csv <- args[7]
@@ -71,6 +74,35 @@ assert_unique_keys(district_lookup, "borocd", "levels/developability district lo
 
 if (n_distinct(district_lookup$borocd) != 59) {
   stop("Expected the levels/developability district lookup to cover 59 community districts.")
+}
+
+hdb_file <- read_csv(dcp_housing_database_files_csv, show_col_types = FALSE, na = c("", "NA")) |>
+  filter(source_id == "dcp_housing_database_project_level", !is.na(parquet_path), file.exists(parquet_path)) |>
+  mutate(
+    vintage = as.character(vintage),
+    vintage_year = suppressWarnings(as.integer(str_extract(vintage, "^[0-9]{2}"))),
+    vintage_quarter = suppressWarnings(as.integer(str_extract(str_to_lower(vintage), "(?<=q)[1-4]$"))),
+    vintage_order = 4L * vintage_year + vintage_quarter
+  ) |>
+  arrange(desc(vintage_order), desc(vintage), parquet_path) |>
+  slice_head(n = 1)
+
+if (nrow(hdb_file) == 0) {
+  stop("Could not find a staged DCP Housing Database project-level parquet in ", dcp_housing_database_files_csv)
+}
+
+mappluto_file <- read_csv(mappluto_lot_files_csv, show_col_types = FALSE, na = c("", "NA")) |>
+  filter(!is.na(parquet_path), file.exists(parquet_path)) |>
+  mutate(
+    source_priority = if_else(source_id == "dcp_mappluto_current", 1L, 0L),
+    vintage = as.character(vintage),
+    vintage_order = release_order_key(vintage)
+  ) |>
+  arrange(desc(source_priority), desc(vintage_order), desc(vintage), parquet_path) |>
+  slice_head(n = 1)
+
+if (nrow(mappluto_file) == 0) {
+  stop("Could not find a staged MapPLUTO lot parquet in ", mappluto_lot_files_csv)
 }
 
 units_year_df <- read_csv(cd_homeownership_long_units_series_csv, show_col_types = FALSE, na = c("", "NA")) |>
@@ -118,7 +150,7 @@ projects_proxy_df <- read_csv(mappluto_construction_proxy_cd_year_csv, show_col_
   filter(year >= 1980, year <= 2009)
 
 projects_observed_df <- read_parquet(
-  dcp_housing_database_project_level_parquet,
+  hdb_file$parquet_path[[1]],
   col_select = c("completion_year", "community_district", "borough_code", "borough_name", "job_type", "classa_prop", "classa_net")
 ) |>
   transmute(
@@ -167,8 +199,8 @@ project_panel_df <- bind_rows(
   ) |>
   mutate(
     project_count_50_plus = coalesce(project_count_50_plus, 0),
-    gross_add_units = gross_add_units,
-    units_50_plus_observed = units_50_plus_observed
+    gross_add_units = coalesce(gross_add_units, 0),
+    units_50_plus_observed = coalesce(units_50_plus_observed, 0)
   )
 
 project_year_df <- project_panel_df |>
@@ -185,7 +217,7 @@ project_year_df <- project_panel_df |>
   select(year, treat_tercile, treat_tercile_label, metric, metric_value)
 
 built_form_df <- read_parquet(
-  dcp_mappluto_current_parquet,
+  mappluto_file$parquet_path[[1]],
   col_select = c("cd", "unitsres", "lotarea", "builtfar", "residfar", "landuse")
 ) |>
   transmute(
@@ -228,17 +260,12 @@ built_form_df <- read_parquet(
 
 write_csv(built_form_df, out_built_form_csv, na = "")
 
-gross_add_year_df <- projects_observed_df |>
+gross_add_year_df <- project_panel_df |>
+  filter(year >= 2010) |>
   left_join(
     built_form_df |>
       select(borocd, residential_acres_current),
     by = "borocd",
-    relationship = "many-to-one"
-  ) |>
-  left_join(
-    district_lookup |>
-      select(borocd, borough_code, borough_name, treat_tercile, treat_tercile_label),
-    by = c("borocd", "borough_code", "borough_name"),
     relationship = "many-to-one"
   ) |>
   group_by(year, treat_tercile, treat_tercile_label) |>
@@ -254,6 +281,7 @@ gross_add_year_df <- projects_observed_df |>
   select(year, treat_tercile, treat_tercile_label, metric, metric_value)
 
 level_year_df <- bind_rows(units_year_df, project_year_df, gross_add_year_df) |>
+  mutate(source_period = if_else(year < 2010, "pre_2010_proxy", "post_2010_observed")) |>
   arrange(metric, year, treat_tercile)
 
 write_csv(level_year_df, out_level_year_csv, na = "")
@@ -411,12 +439,17 @@ plot_year_df <- level_year_df |>
       metric == "units_built_50_plus_per_10000_occupied_1990" ~ "50+ units per 10,000 occupied units (1990)",
       TRUE ~ "50+ projects per CD-year"
     ),
+    source_period = factor(source_period, levels = c("pre_2010_proxy", "post_2010_observed")),
     treat_tercile_label = factor(treat_tercile_label, levels = c("Low", "Middle", "High"))
   )
 
 print(
-  ggplot(plot_year_df, aes(x = year, y = metric_value, color = treat_tercile_label)) +
+  ggplot(
+    plot_year_df,
+    aes(x = year, y = metric_value, color = treat_tercile_label, group = interaction(treat_tercile_label, source_period))
+  ) +
     geom_line(linewidth = 0.8) +
+    geom_vline(xintercept = 2010, linetype = "dashed", color = "#666666", linewidth = 0.4) +
     facet_wrap(~metric_label, ncol = 1, scales = "free_y") +
     scale_color_manual(values = c("Low" = "#3366CC", "Middle" = "#999999", "High" = "#CC3311")) +
     labs(x = NULL, y = NULL, color = "Treat tercile") +
@@ -459,7 +492,10 @@ dev.off()
 
 qc_df <- bind_rows(
   tibble(metric = "district_count", value = n_distinct(district_lookup$borocd), note = "Districts in the levels and developability diagnostics."),
+  tibble(metric = "hdb_vintage_order", value = as.numeric(hdb_file$vintage_order[[1]]), note = paste0("Selected DCP Housing Database vintage ", hdb_file$vintage[[1]], ".")),
+  tibble(metric = "mappluto_vintage_order", value = as.numeric(mappluto_file$vintage_order[[1]]), note = paste0("Selected MapPLUTO source ", mappluto_file$source_id[[1]], " vintage ", mappluto_file$vintage[[1]], ".")),
   tibble(metric = "built_form_row_count", value = nrow(built_form_df), note = "Rows in the current MapPLUTO built-form control table."),
+  tibble(metric = "post_2010_project_panel_gap_count", value = 59L * length(2010:2025) - nrow(filter(project_panel_df, year >= 2010)), note = "Missing standard CD-years after balancing observed HDB project counts to zero."),
   tibble(metric = "residual_row_count", value = nrow(residuals_df), note = "Rows in the residualized cross-section output."),
   tibble(metric = "avg_annual_50_plus_units_residual_corr", value = cor(
     residuals_df$treat_residual[residuals_df$outcome_name == "avg_annual_50_plus_units_2010_2025"],

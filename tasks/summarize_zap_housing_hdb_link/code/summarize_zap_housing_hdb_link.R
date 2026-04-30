@@ -52,6 +52,17 @@ assert_unique_keys <- function(df, keys, label) {
 
 project_df <- read_csv(zap_housing_hdb_project_summary_csv, show_col_types = FALSE, na = c("", "NA"))
 
+linked_0_10_cols <- c(
+  "linked_housing_projects_0_10",
+  "linked_addition_projects_0_10",
+  "linked_nb_projects_0_10",
+  "linked_nb_50_plus_projects_0_10",
+  "linked_nb_gross_units_0_10",
+  "linked_gross_add_units_0_10",
+  "linked_gross_loss_units_0_10",
+  "linked_net_units_0_10"
+)
+
 district_lookup <- project_df %>%
   distinct(borocd, borough_name, treat_pp) %>%
   group_by(borough_name) %>%
@@ -105,9 +116,11 @@ cohort_panel <- crossing(
     linked_gross_add_units_0_10 = coalesce(linked_gross_add_units_0_10, 0),
     linked_gross_loss_units_0_10 = coalesce(linked_gross_loss_units_0_10, 0),
     linked_net_units_0_10 = coalesce(linked_net_units_0_10, 0),
-    linked_addition_rate_0_10 = ifelse(cert_year <= 2015 & initial_apps > 0, linked_addition_projects_0_10 / initial_apps, NA_real_),
-    linked_nb_50_plus_rate_0_10 = ifelse(cert_year <= 2015 & initial_apps > 0, linked_nb_50_plus_projects_0_10 / initial_apps, NA_real_),
-    linked_gross_add_units_per_app_0_10 = ifelse(cert_year <= 2015 & initial_apps > 0, linked_gross_add_units_0_10 / initial_apps, NA_real_),
+    mature_0_10_window = cert_year <= 2015,
+    across(all_of(linked_0_10_cols), ~ ifelse(mature_0_10_window, .x, NA_real_)),
+    linked_addition_rate_0_10 = ifelse(mature_0_10_window & initial_apps > 0, linked_addition_projects_0_10 / initial_apps, NA_real_),
+    linked_nb_50_plus_rate_0_10 = ifelse(mature_0_10_window & initial_apps > 0, linked_nb_50_plus_projects_0_10 / initial_apps, NA_real_),
+    linked_gross_add_units_per_app_0_10 = ifelse(mature_0_10_window & initial_apps > 0, linked_gross_add_units_0_10 / initial_apps, NA_real_),
     cert_era_summary = summary_era_from_year(cert_year)
   ) %>%
   arrange(cert_year, borocd)
@@ -169,6 +182,11 @@ qc_df <- bind_rows(
     metric = "immature_2016_2025_application_count",
     value = sum(cohort_panel$initial_apps[cohort_panel$cert_year >= 2016], na.rm = TRUE),
     note = "Applications excluded from comparable 0-10 era summaries because the buildout window is immature."
+  ),
+  tibble(
+    metric = "immature_0_10_nonmissing_cell_count",
+    value = sum(!is.na(unlist(cohort_panel[cohort_panel$cert_year > 2015, linked_0_10_cols])), na.rm = TRUE),
+    note = "Should be zero because raw 0-10 linked outcomes are masked for immature 2016-2025 cohorts."
   ),
   tibble(
     metric = "linked_addition_projects_share_0_10",

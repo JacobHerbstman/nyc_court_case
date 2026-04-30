@@ -49,7 +49,20 @@ static_control_cols <- c(
   "unemployment_rate_1990_exact"
 )
 
-summary_era_from_year <- function(x) {
+application_era_from_year <- function(x) {
+  case_when(
+    x >= 1976 & x <= 1979 ~ "1976-1979",
+    x >= 1980 & x <= 1984 ~ "1980-1984",
+    x >= 1985 & x <= 1989 ~ "1985-1989",
+    x >= 1990 & x <= 1999 ~ "1990-1999",
+    x >= 2000 & x <= 2009 ~ "2000-2009",
+    x >= 2010 & x <= 2019 ~ "2010-2019",
+    x >= 2020 & x <= 2025 ~ "2020-2025",
+    TRUE ~ NA_character_
+  )
+}
+
+mature_era_from_year <- function(x) {
   case_when(
     x >= 1976 & x <= 1979 ~ "1976-1979",
     x >= 1980 & x <= 1984 ~ "1980-1984",
@@ -57,7 +70,6 @@ summary_era_from_year <- function(x) {
     x >= 1990 & x <= 1999 ~ "1990-1999",
     x >= 2000 & x <= 2009 ~ "2000-2009",
     x >= 2010 & x <= 2015 ~ "2010-2015",
-    x >= 2016 & x <= 2025 ~ "2016-2025",
     TRUE ~ NA_character_
   )
 }
@@ -114,7 +126,7 @@ initial_panel <- crossing(
   left_join(initial_counts, by = c("borocd", "cert_year"), relationship = "many-to-one") %>%
   mutate(
     initial_apps = coalesce(initial_apps, 0L),
-    cert_era_summary = summary_era_from_year(cert_year)
+    cert_era_summary = application_era_from_year(cert_year)
   ) %>%
   group_by(borough_name, cert_year) %>%
   mutate(
@@ -151,7 +163,7 @@ mature_panel <- crossing(
     completion_share = ifelse(initial_apps > 0, complete_apps / initial_apps, NA_real_),
     failure_share = ifelse(initial_apps > 0, failed_apps / initial_apps, NA_real_),
     unresolved_share = ifelse(initial_apps > 0, unresolved_apps / initial_apps, NA_real_),
-    cert_era_summary = summary_era_from_year(cert_year)
+    cert_era_summary = mature_era_from_year(cert_year)
   ) %>%
   arrange(cert_year, borocd)
 
@@ -159,8 +171,8 @@ if (any(mature_panel$cert_year > 2015, na.rm = TRUE)) {
   stop("Mature ZAP housing cohort panel includes certification years after 2015.")
 }
 
-if (any(mature_panel$cert_era_summary == "2016-2025", na.rm = TRUE)) {
-  stop("Mature ZAP housing cohort panel includes immature 2016-2025 era labels.")
+if (any(mature_panel$cert_era_summary %in% c("2010-2019", "2020-2025", "2016-2025"), na.rm = TRUE)) {
+  stop("Mature ZAP housing cohort panel includes immature post-2015 era labels.")
 }
 
 initial_year_mean_df <- initial_panel %>%
@@ -302,10 +314,11 @@ bbl_link_df <- bind_rows(
     ),
   base_df %>%
     filter(cert_year <= 2025) %>%
-    group_by(cert_era) %>%
+    mutate(cert_era_summary = application_era_from_year(cert_year)) %>%
+    group_by(cert_era_summary) %>%
     summarise(
       dimension = "cert_era",
-      group_value = first(cert_era),
+      group_value = first(cert_era_summary),
       project_count = n(),
       has_bbl_share = mean(has_bbl, na.rm = TRUE),
       mean_bbl_count = mean(bbl_count, na.rm = TRUE),
@@ -348,8 +361,8 @@ qc_df <- bind_rows(
   ),
   tibble(
     metric = "mature_panel_immature_era_row_count",
-    value = sum(mature_panel$cert_era_summary == "2016-2025", na.rm = TRUE),
-    note = "Should be zero because mature status summaries exclude immature 2016-2025 cohorts."
+    value = sum(mature_panel$cert_era_summary %in% c("2010-2019", "2020-2025", "2016-2025"), na.rm = TRUE),
+    note = "Should be zero because mature status summaries exclude immature post-2015 cohorts."
   ),
   tibble(
     metric = "mature_identity_max_gap",
@@ -384,7 +397,7 @@ plot_era_df <- era_summary %>%
   mutate(
     cert_era_summary = factor(
       cert_era_summary,
-      levels = c("1976-1979", "1980-1984", "1985-1989", "1990-1999", "2000-2009", "2010-2015", "2016-2025")
+      levels = c("1976-1979", "1980-1984", "1985-1989", "1990-1999", "2000-2009", "2010-2015", "2010-2019", "2020-2025")
     ),
     treat_tercile_label = factor(treat_tercile_label, levels = c("Low", "Middle", "High"))
   )
