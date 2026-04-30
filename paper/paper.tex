@@ -1,0 +1,67 @@
+\documentclass[12pt]{article}
+
+% PACKAGES
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{natbib}
+\usepackage[hyperfootnotes=false]{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{setspace}
+\usepackage{verbatim}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{threeparttable}
+\usepackage{enumitem}
+\usepackage[nomarkers, nolists, tablesfirst]{endfloat}
+\renewcommand{\efloatseparator}{\bigskip}
+
+% SETTINGS
+\doublespacing
+
+% Custom command for figure notes
+\newcommand{\figurenotes}[1]{\par\vspace{0.5em}\footnotesize\textit{Notes:} #1}
+
+\begin{document}
+
+\begingroup
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\begin{center}
+{\Large Local Control and Discretionary Housing Supply: Evidence from \textit{Board of Estimate v. Morris}}
+
+\vspace{1.5em}
+Jacob Herbstman\footnotemark[2]
+
+\vspace{0.5em}
+\today
+\end{center}
+
+\footnotetext[2]{University of Chicago, Harris School of Public Policy. Email: \url{jherbstman@uchicago.edu}.}
+\endgroup
+\setcounter{footnote}{0}
+
+\vspace{1em}
+
+\begin{abstract}
+\end{abstract}
+
+\clearpage
+
+\input{sections/intro.tex}
+\input{sections/literature.tex}
+\input{sections/empirical_strategy.tex}
+\input{sections/exploratory_results.tex}
+
+\newpage
+
+\bibliographystyle{aea}
+\bibliography{sections/nyc_court_case.bib}
+
+\newpage
+
+% Process main text floats after references.
+\processdelayedfloats
+\clearpage
+
+\end{document}
