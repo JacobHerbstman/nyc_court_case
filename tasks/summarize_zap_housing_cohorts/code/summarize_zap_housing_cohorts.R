@@ -62,6 +62,16 @@ summary_era_from_year <- function(x) {
   )
 }
 
+assert_unique_keys <- function(df, keys, label) {
+  duplicate_keys <- df %>%
+    count(across(all_of(keys)), name = "n") %>%
+    filter(n > 1)
+
+  if (nrow(duplicate_keys) > 0) {
+    stop(label, " is not unique by ", paste(keys, collapse = ", "), ".")
+  }
+}
+
 base_df <- read_csv(zap_housing_cohort_base_csv, show_col_types = FALSE, na = c("", "NA"))
 
 district_lookup <- base_df %>%
@@ -84,16 +94,24 @@ district_lookup <- base_df %>%
   ungroup() %>%
   arrange(borocd)
 
+assert_unique_keys(district_lookup, "borocd", "ZAP housing district lookup")
+
+if (n_distinct(district_lookup$borocd) != 59) {
+  stop("Expected the ZAP housing district lookup to cover 59 community districts.")
+}
+
 initial_counts <- base_df %>%
   filter(cert_year >= 1976, cert_year <= 2025) %>%
   count(borocd, cert_year, name = "initial_apps")
+
+assert_unique_keys(initial_counts, c("borocd", "cert_year"), "ZAP housing initial counts")
 
 initial_panel <- crossing(
   borocd = district_lookup$borocd,
   cert_year = 1976:2025
 ) %>%
-  left_join(district_lookup, by = "borocd") %>%
-  left_join(initial_counts, by = c("borocd", "cert_year")) %>%
+  left_join(district_lookup, by = "borocd", relationship = "many-to-one") %>%
+  left_join(initial_counts, by = c("borocd", "cert_year"), relationship = "many-to-one") %>%
   mutate(
     initial_apps = coalesce(initial_apps, 0L),
     cert_era_summary = summary_era_from_year(cert_year)
@@ -117,12 +135,14 @@ mature_counts <- base_df %>%
     .groups = "drop"
   )
 
+assert_unique_keys(mature_counts, c("borocd", "cert_year"), "ZAP housing mature counts")
+
 mature_panel <- crossing(
   borocd = district_lookup$borocd,
   cert_year = 1976:2015
 ) %>%
-  left_join(district_lookup, by = "borocd") %>%
-  left_join(mature_counts, by = c("borocd", "cert_year")) %>%
+  left_join(district_lookup, by = "borocd", relationship = "many-to-one") %>%
+  left_join(mature_counts, by = c("borocd", "cert_year"), relationship = "many-to-one") %>%
   mutate(
     initial_apps = coalesce(initial_apps, 0L),
     complete_apps = coalesce(complete_apps, 0L),
@@ -134,6 +154,14 @@ mature_panel <- crossing(
     cert_era_summary = summary_era_from_year(cert_year)
   ) %>%
   arrange(cert_year, borocd)
+
+if (any(mature_panel$cert_year > 2015, na.rm = TRUE)) {
+  stop("Mature ZAP housing cohort panel includes certification years after 2015.")
+}
+
+if (any(mature_panel$cert_era_summary == "2016-2025", na.rm = TRUE)) {
+  stop("Mature ZAP housing cohort panel includes immature 2016-2025 era labels.")
+}
 
 initial_year_mean_df <- initial_panel %>%
   group_by(cert_year, treat_tercile, treat_tercile_label) %>%
@@ -300,7 +328,7 @@ qc_df <- bind_rows(
   ),
   tibble(
     metric = "initial_panel_expected_row_count",
-    value = nrow(district_lookup) * length(1976:2025),
+    value = 59L * length(1976:2025),
     note = "Expected balanced row count for the initial application panel."
   ),
   tibble(
@@ -310,8 +338,18 @@ qc_df <- bind_rows(
   ),
   tibble(
     metric = "mature_panel_expected_row_count",
-    value = nrow(district_lookup) * length(1976:2015),
+    value = 59L * length(1976:2015),
     note = "Expected balanced row count for the mature cohort panel."
+  ),
+  tibble(
+    metric = "mature_panel_max_cert_year",
+    value = max(mature_panel$cert_year, na.rm = TRUE),
+    note = "Should be 2015 for fully mature 0-10-year style cohort summaries."
+  ),
+  tibble(
+    metric = "mature_panel_immature_era_row_count",
+    value = sum(mature_panel$cert_era_summary == "2016-2025", na.rm = TRUE),
+    note = "Should be zero because mature status summaries exclude immature 2016-2025 cohorts."
   ),
   tibble(
     metric = "mature_identity_max_gap",

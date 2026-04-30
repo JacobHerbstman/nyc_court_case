@@ -1,6 +1,6 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_cd_homeownership_exact_decadal_validation/code")
 # cd_homeownership_1990_measure_csv <- "../input/cd_homeownership_1990_measure.csv"
-# dcp_cd_profiles_parquet <- "../input/dcp_cd_profiles_1990_2000_20260415.parquet"
+# dcp_cd_profiles_1990_2000_files_csv <- "../input/dcp_cd_profiles_1990_2000_files.csv"
 # mappluto_construction_proxy_cd_year_csv <- "../input/mappluto_construction_proxy_cd_year.csv"
 # out_cd_csv <- "../output/cd_homeownership_exact_decadal_validation_cd.csv"
 # out_tercile_csv <- "../output/cd_homeownership_exact_decadal_validation_tercile.csv"
@@ -20,11 +20,11 @@ suppressPackageStartupMessages({
 args <- commandArgs(trailingOnly = TRUE)
 
 if (length(args) != 9) {
-  stop("Expected 9 arguments: cd_homeownership_1990_measure_csv dcp_cd_profiles_parquet mappluto_construction_proxy_cd_year_csv out_cd_csv out_tercile_csv out_comparison_csv out_borough_csv out_qc_csv out_plot_pdf")
+  stop("Expected 9 arguments: cd_homeownership_1990_measure_csv dcp_cd_profiles_1990_2000_files_csv mappluto_construction_proxy_cd_year_csv out_cd_csv out_tercile_csv out_comparison_csv out_borough_csv out_qc_csv out_plot_pdf")
 }
 
 cd_homeownership_1990_measure_csv <- args[1]
-dcp_cd_profiles_parquet <- args[2]
+dcp_cd_profiles_1990_2000_files_csv <- args[2]
 mappluto_construction_proxy_cd_year_csv <- args[3]
 out_cd_csv <- args[4]
 out_tercile_csv <- args[5]
@@ -51,7 +51,21 @@ treatment_df <- read_csv(cd_homeownership_1990_measure_csv, show_col_types = FAL
   ) |>
   ungroup()
 
-exact_cd <- read_parquet(dcp_cd_profiles_parquet) |>
+if (anyDuplicated(treatment_df$borocd)) {
+  stop("Homeownership treatment file is not unique by borocd.")
+}
+
+dcp_profile_file <- read_csv(dcp_cd_profiles_1990_2000_files_csv, show_col_types = FALSE, na = c("", "NA")) |>
+  mutate(pull_date = as.character(pull_date)) |>
+  filter(!is.na(parquet_path), file.exists(parquet_path)) |>
+  arrange(desc(pull_date), parquet_path) |>
+  slice_head(n = 1)
+
+if (nrow(dcp_profile_file) == 0) {
+  stop("Could not find a staged DCP CD profiles parquet in ", dcp_cd_profiles_1990_2000_files_csv)
+}
+
+exact_raw <- read_parquet(dcp_profile_file$parquet_path[[1]]) |>
   filter(
     profile_page_type == "housing",
     section_name == "year_structure_built",
@@ -66,8 +80,19 @@ exact_cd <- read_parquet(dcp_cd_profiles_parquet) |>
   left_join(
     treatment_df |>
       select(borocd, borough_code),
-    by = "borocd"
-  ) |>
+    by = "borocd",
+    relationship = "many-to-one"
+  )
+
+duplicate_exact_cells <- exact_raw |>
+  count(borocd, metric_label, name = "source_row_count") |>
+  filter(source_row_count > 1)
+
+if (nrow(duplicate_exact_cells) > 0) {
+  stop("Exact DCP year-structure-built cells are not unique by borocd and metric_label.")
+}
+
+exact_cd <- exact_raw |>
   group_by(borocd, borough_code, borough_name) |>
   summarize(
     units_built_1980s_exact = sum(value_2000_number[metric_label == "1980 to 1989"], na.rm = TRUE),
@@ -84,14 +109,21 @@ exact_cd <- read_parquet(dcp_cd_profiles_parquet) |>
   ) |>
   select(-decade_source)
 
-proxy_cd <- read_csv(mappluto_construction_proxy_cd_year_csv, show_col_types = FALSE, na = c("", "NA")) |>
+mappluto_cd_year <- read_csv(mappluto_construction_proxy_cd_year_csv, show_col_types = FALSE, na = c("", "NA")) |>
   transmute(
     borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
     borough_code = suppressWarnings(as.integer(borough_code)),
     borough_name = borough_name,
     yearbuilt = suppressWarnings(as.integer(yearbuilt)),
     residential_units_proxy = suppressWarnings(as.numeric(residential_units_proxy))
-  ) |>
+  )
+
+mappluto_2000_excluded_units <- mappluto_cd_year |>
+  filter(yearbuilt == 2000) |>
+  summarize(value = sum(residential_units_proxy, na.rm = TRUE)) |>
+  pull(value)
+
+proxy_cd <- mappluto_cd_year |>
   filter(yearbuilt >= 1980, yearbuilt <= 1999) |>
   mutate(
     decade = if_else(yearbuilt <= 1989, "1980s", "1990s")
@@ -99,12 +131,18 @@ proxy_cd <- read_csv(mappluto_construction_proxy_cd_year_csv, show_col_types = F
   group_by(borocd, borough_code, borough_name, decade) |>
   summarize(proxy_units = sum(residential_units_proxy, na.rm = TRUE), .groups = "drop")
 
-cd_validation_df <- exact_cd |>
-  full_join(proxy_cd, by = c("borocd", "borough_code", "borough_name", "decade")) |>
+cd_validation_joined <- exact_cd |>
+  full_join(proxy_cd, by = c("borocd", "borough_code", "borough_name", "decade"))
+
+missing_exact_before_fill_count <- sum(is.na(cd_validation_joined$exact_units))
+missing_proxy_before_fill_count <- sum(is.na(cd_validation_joined$proxy_units))
+
+cd_validation_df <- cd_validation_joined |>
   left_join(
     treatment_df |>
       select(borocd, borough_code, borough_name, treat_pp, treat_tercile, treat_tercile_label),
-    by = c("borocd", "borough_code", "borough_name")
+    by = c("borocd", "borough_code", "borough_name"),
+    relationship = "many-to-one"
   ) |>
   mutate(
     exact_units = coalesce(exact_units, 0),
@@ -233,6 +271,9 @@ qc_df <- bind_rows(
     group_by(source, decade) |>
     summarize(total_share = sum(borough_share, na.rm = TRUE), .groups = "drop") |>
     pull(total_share), na.rm = TRUE), note = "Maximum sum of tercile shares across source-decade cells; should equal 1."),
+  tibble(metric = "missing_exact_before_fill_count", value = missing_exact_before_fill_count, note = "Rows missing exact DCP units before zero-fill after the exact/proxy join."),
+  tibble(metric = "missing_proxy_before_fill_count", value = missing_proxy_before_fill_count, note = "Rows missing MapPLUTO proxy units before zero-fill after the exact/proxy join."),
+  tibble(metric = "mappluto_year_2000_units_excluded", value = mappluto_2000_excluded_units, note = "MapPLUTO units with yearbuilt 2000 excluded because the exact 1990s DCP bucket ends at March 2000."),
   tibble(metric = "exact_high_share_change_1990s_minus_1980s", value = comparison_df$value[comparison_df$metric == "exact_high_share_change_1990s_minus_1980s"], note = "Negative values mean the high-homeownership tercile loses exact share from the 1980s to the 1990s.")
 )
 
@@ -250,7 +291,7 @@ print(
     geom_col(position = "dodge", width = 0.72) +
     facet_wrap(~decade, nrow = 1) +
     scale_fill_manual(values = c("Exact DCP 2000 structure-built counts" = "#1b6ca8", "MapPLUTO proxy" = "#d65f0e")) +
-    labs(x = NULL, y = "Within-borough share", fill = NULL) +
+    labs(x = NULL, y = "Citywide share", fill = NULL) +
     theme_minimal(base_size = 11) +
     theme(legend.position = "bottom")
 )

@@ -36,10 +36,48 @@ if (!file.exists(current_raw_parquet)) {
 current_index <- read_csv(current_raw_files_csv, show_col_types = FALSE, na = c("", "NA"))
 comparison_audit <- read_csv(current_source_decision_csv, show_col_types = FALSE, na = c("", "NA"))
 
+if (
+  nrow(current_index) != 1 ||
+    n_distinct(current_index$dataset_id) != 1 ||
+    n_distinct(current_index$pull_date) != 1 ||
+    n_distinct(current_index$raw_path) != 1 ||
+    n_distinct(current_index$raw_parquet_path) != 1
+) {
+  stop("Current permit issuance raw index must describe exactly one source snapshot.")
+}
+
+required_comparison_columns <- c(
+  "record_year",
+  "current_row_count",
+  "current_nb_row_count",
+  "current_residential_row_count",
+  "historical_row_count",
+  "historical_nb_row_count",
+  "historical_residential_row_count",
+  "current_ge_historical_row_count_flag",
+  "current_ge_historical_nb_row_count_flag"
+)
+missing_comparison_columns <- setdiff(required_comparison_columns, names(comparison_audit))
+
+if (length(missing_comparison_columns) > 0) {
+  stop("Current-source comparison audit is missing required columns: ", paste(missing_comparison_columns, collapse = ", "))
+}
+
+comparison_duplicate_years <- comparison_audit %>%
+  count(record_year, name = "source_row_count") %>%
+  filter(source_row_count != 1)
+
+if (nrow(comparison_duplicate_years) > 0) {
+  stop("Current-source comparison audit must have exactly one row per record_year.")
+}
+
 required_years <- tibble(record_year = 1989:2013)
 
 comparison_check_df <- required_years %>%
-  left_join(comparison_audit, by = "record_year")
+  left_join(comparison_audit, by = "record_year", relationship = "one-to-one") %>%
+  mutate(
+    current_ge_historical_residential_row_count_flag = current_residential_row_count >= historical_residential_row_count
+  )
 
 if (any(is.na(comparison_check_df$current_row_count)) || any(is.na(comparison_check_df$historical_row_count))) {
   stop("Comparison audit must include current and historical row counts for every year from 1989 through 2013.")
@@ -47,6 +85,14 @@ if (any(is.na(comparison_check_df$current_row_count)) || any(is.na(comparison_ch
 
 if (any(!comparison_check_df$current_ge_historical_row_count_flag, na.rm = TRUE)) {
   stop("Current permit issuance source does not dominate historical row coverage in every year from 1989 through 2013.")
+}
+
+if (any(!comparison_check_df$current_ge_historical_nb_row_count_flag, na.rm = TRUE)) {
+  stop("Current permit issuance source does not dominate historical new-building row coverage in every year from 1989 through 2013.")
+}
+
+if (any(!comparison_check_df$current_ge_historical_residential_row_count_flag, na.rm = TRUE)) {
+  stop("Current permit issuance source does not dominate historical residential row coverage in every year from 1989 through 2013.")
 }
 
 current_raw_df <- read_parquet(current_raw_parquet) %>%
@@ -104,11 +150,18 @@ harmonized_nb_city_year <- harmonized_df %>%
 bps_compare_df <- if (nrow(bps_city_year) == 0) {
   tibble(record_year = integer(), harmonized_nb_permit_rows = double(), city_total_units = double())
 } else {
+  bps_city_year_df <- bps_city_year %>%
+    transmute(record_year = as.integer(year), city_total_units = as.numeric(city_total_units))
+
+  if (anyDuplicated(bps_city_year_df$record_year)) {
+    stop("Census BPS city-year validation input is not unique by record_year.")
+  }
+
   harmonized_nb_city_year %>%
     inner_join(
-      bps_city_year %>%
-        transmute(record_year = as.integer(year), city_total_units = as.numeric(city_total_units)),
-      by = "record_year"
+      bps_city_year_df,
+      by = "record_year",
+      relationship = "many-to-one"
     )
 }
 
@@ -123,6 +176,8 @@ qc_df <- bind_rows(
   tibble(metric = "missing_issuance_date_share", value = as.character(mean(harmonized_df$issuance_date_missing_flag, na.rm = TRUE)), note = "Share of unified rows retained without issuance dates."),
   tibble(metric = "record_year_missing_when_issuance_missing", value = as.character(all(is.na(harmonized_df$record_year[harmonized_df$issuance_date_missing_flag]))), note = "Rows missing issuance date should also have missing record year."),
   tibble(metric = "current_ge_historical_all_years_1989_2013", value = as.character(all(comparison_check_df$current_ge_historical_row_count_flag, na.rm = TRUE)), note = "Current source row counts are at least as large as historical in every year from 1989 through 2013."),
+  tibble(metric = "current_ge_historical_nb_all_years_1989_2013", value = as.character(all(comparison_check_df$current_ge_historical_nb_row_count_flag, na.rm = TRUE)), note = "Current source new-building row counts are at least as large as historical in every year from 1989 through 2013."),
+  tibble(metric = "current_ge_historical_residential_all_years_1989_2013", value = as.character(all(comparison_check_df$current_ge_historical_residential_row_count_flag, na.rm = TRUE)), note = "Current source residential row counts are at least as large as historical in every year from 1989 through 2013."),
   tibble(metric = "comparison_years_checked", value = as.character(nrow(comparison_check_df)), note = "Number of audit years checked before writing the unified dataset."),
   tibble(metric = "bps_descriptive_overlap_years", value = as.character(nrow(bps_compare_df)), note = "Descriptive only: permit-row counts are not unit counts and should not be interpreted as a BPS replacement.")
 )

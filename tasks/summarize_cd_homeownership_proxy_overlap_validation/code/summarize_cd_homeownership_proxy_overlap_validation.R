@@ -45,6 +45,16 @@ metric_value <- function(df, family, metric_name) {
   value[[1]]
 }
 
+assert_unique_keys <- function(df, keys, label) {
+  duplicate_keys <- df |>
+    count(across(all_of(keys)), name = "n") |>
+    filter(n > 1)
+
+  if (nrow(duplicate_keys) > 0) {
+    stop(label, " is not unique by ", paste(keys, collapse = ", "), ".")
+  }
+}
+
 treatment_df <- read_csv(cd_homeownership_1990_measure_csv, show_col_types = FALSE, na = c("", "NA")) |>
   transmute(
     borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
@@ -62,6 +72,12 @@ treatment_df <- read_csv(cd_homeownership_1990_measure_csv, show_col_types = FAL
     )
   ) |>
   ungroup()
+
+assert_unique_keys(treatment_df, "borocd", "homeownership treatment lookup")
+
+if (n_distinct(treatment_df$borocd) != 59) {
+  stop("Expected the homeownership treatment lookup to cover 59 community districts.")
+}
 
 proxy_long <- read_csv(mappluto_construction_proxy_cd_year_csv, show_col_types = FALSE, na = c("", "NA")) |>
   transmute(
@@ -115,6 +131,16 @@ observed_source <- read_parquet(
   ) |>
   mutate(source = "observed")
 
+source_long <- bind_rows(proxy_long, observed_source) |>
+  group_by(borocd, borough_code, borough_name, year, outcome_family, source) |>
+  summarise(outcome_value = sum(outcome_value, na.rm = TRUE), .groups = "drop")
+
+assert_unique_keys(
+  source_long,
+  c("borocd", "borough_code", "borough_name", "year", "outcome_family", "source"),
+  "proxy/observed overlap source panel"
+)
+
 balanced_df <- expand_grid(
   treatment_df |>
     select(borocd, borough_code, borough_name, treat_tercile, treat_tercile_label),
@@ -122,7 +148,11 @@ balanced_df <- expand_grid(
   outcome_family = c("total_nb_units", "units_50_plus", "projects_50_plus"),
   source = c("proxy", "observed")
 ) |>
-  left_join(bind_rows(proxy_long, observed_source), by = c("borocd", "borough_code", "borough_name", "year", "outcome_family", "source")) |>
+  left_join(
+    source_long,
+    by = c("borocd", "borough_code", "borough_name", "year", "outcome_family", "source"),
+    relationship = "many-to-one"
+  ) |>
   mutate(outcome_value = coalesce(outcome_value, 0))
 
 tercile_borough_source <- balanced_df |>
@@ -252,18 +282,26 @@ metrics_df <- bind_rows(
 
 write_csv(metrics_df, out_metrics_csv, na = "")
 
+share_sum_df <- tercile_borough_source |>
+  group_by(source, outcome_family, borough_code, borough_name, year) |>
+  summarize(
+    borough_total = first(borough_total),
+    total_share = sum(borough_share, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+positive_share_sum_df <- share_sum_df |>
+  filter(borough_total > 0)
+
 qc_df <- bind_rows(
   tibble(metric = "district_count", value = n_distinct(balanced_df$borocd), note = "Standard CDs in the overlap validation sample."),
+  tibble(metric = "balanced_expected_row_count", value = 59L * length(2010:2025) * 3L * 2L, note = "Expected balanced CD-year-source-outcome rows."),
+  tibble(metric = "balanced_actual_row_count", value = nrow(balanced_df), note = "Actual balanced CD-year-source-outcome rows."),
   tibble(metric = "year_min", value = min(balanced_df$year, na.rm = TRUE), note = "Minimum overlap year."),
   tibble(metric = "year_max", value = max(balanced_df$year, na.rm = TRUE), note = "Maximum overlap year."),
-  tibble(metric = "tercile_share_sum_min", value = min(tercile_borough_source |>
-    group_by(source, outcome_family, borough_code, borough_name, year) |>
-    summarize(total_share = sum(borough_share, na.rm = TRUE), .groups = "drop") |>
-    pull(total_share), na.rm = TRUE), note = "Minimum borough-year tercile-share sum; should equal 1 when totals are positive."),
-  tibble(metric = "tercile_share_sum_max", value = max(tercile_borough_source |>
-    group_by(source, outcome_family, borough_code, borough_name, year) |>
-    summarize(total_share = sum(borough_share, na.rm = TRUE), .groups = "drop") |>
-    pull(total_share), na.rm = TRUE), note = "Maximum borough-year tercile-share sum; should equal 1 when totals are positive.")
+  tibble(metric = "zero_borough_total_cell_count", value = sum(is.na(share_sum_df$borough_total) | share_sum_df$borough_total <= 0), note = "Borough-year-source-outcome cells excluded from share-sum QC because the denominator is zero."),
+  tibble(metric = "positive_tercile_share_sum_min", value = min(positive_share_sum_df$total_share, na.rm = TRUE), note = "Minimum borough-year tercile-share sum among positive-total cells; should equal 1."),
+  tibble(metric = "positive_tercile_share_sum_max", value = max(positive_share_sum_df$total_share, na.rm = TRUE), note = "Maximum borough-year tercile-share sum among positive-total cells; should equal 1.")
 )
 
 write_csv(qc_df, out_qc_csv, na = "")

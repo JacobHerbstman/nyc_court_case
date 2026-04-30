@@ -179,6 +179,7 @@ for (i in seq_len(nrow(available_rows))) {
     )
 
   write_parquet_if_changed(lot_table, out_parquet_local)
+  out_parquet_info <- file.info(out_parquet_local)
 
   index_rows[[i]] <- tibble(
     source_id = row$source_id,
@@ -186,6 +187,8 @@ for (i in seq_len(nrow(available_rows))) {
     raw_path = row$raw_path,
     raw_parquet_path = row$raw_parquet_path,
     parquet_path = out_parquet,
+    parquet_size_bytes = as.numeric(out_parquet_info$size),
+    parquet_mtime = format(out_parquet_info$mtime, "%Y-%m-%d %H:%M:%OS6 %z"),
     file_role = row$file_role,
     raw_file_release = if ("raw_file_release" %in% names(row)) row$raw_file_release else NA_character_,
     fetch_status = if ("fetch_status" %in% names(row)) row$fetch_status else NA_character_,

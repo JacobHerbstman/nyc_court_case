@@ -242,10 +242,35 @@ boundary_sf <- read_parquet(cd_boundary_parquet) |>
 pdf(out_maps_pdf, width = 10, height = 7.5)
 print(
   ggplot(boundary_sf) +
-    geom_sf(aes(fill = treat_z_boro), color = "white", linewidth = 0.1) +
-    scale_fill_viridis_c(option = "C") +
-    labs(title = "1990 homeownership exposure", subtitle = "Canonical within-borough z-score treatment.", fill = "Treat z") +
-    theme_void(base_size = 11)
+    geom_sf(aes(fill = treat_z_boro), color = "grey88", linewidth = 0.12) +
+    scale_fill_gradient2(
+      low = "#4C78A8",
+      mid = "#F7F7F7",
+      high = "#B64B4B",
+      midpoint = 0,
+      breaks = c(-1, 0, 1, 2),
+      name = "1990 Homeownership\nExposure (z-score)",
+      guide = guide_colorbar(
+        title.position = "top",
+        title.hjust = 0,
+        barheight = unit(45, "pt"),
+        barwidth = unit(9, "pt")
+      )
+    ) +
+    coord_sf(datum = NA, expand = FALSE) +
+    labs(
+      title = "1990 homeownership exposure",
+      subtitle = "Within-borough standardized community-district homeownership, 1990."
+    ) +
+    theme_void(base_size = 11) +
+    theme(
+      plot.title = element_text(face = "bold", size = 14, margin = margin(b = 4)),
+      plot.subtitle = element_text(size = 10.5, color = "grey30", margin = margin(b = 8)),
+      plot.margin = margin(12, 16, 12, 16),
+      legend.title = element_text(size = 9.5, lineheight = 0.95),
+      legend.text = element_text(size = 8.5),
+      legend.margin = margin(l = 8)
+    )
 )
 print(
   ggplot(boundary_sf) +

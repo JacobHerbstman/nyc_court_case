@@ -21,6 +21,16 @@ out_top_cd_csv <- args[2]
 out_top_cd_year_csv <- args[3]
 out_qc_csv <- args[4]
 
+assert_unique_keys <- function(df, keys, label) {
+  duplicate_keys <- df |>
+    count(across(all_of(keys)), name = "n") |>
+    filter(n > 1)
+
+  if (nrow(duplicate_keys) > 0) {
+    stop(label, " is not unique by ", paste(keys, collapse = ", "), ".")
+  }
+}
+
 district_lookup <- read_csv(cd_homeownership_long_units_series_csv, show_col_types = FALSE, na = c("", "NA")) |>
   distinct(borocd, borough_code, borough_name, treat_pp) |>
   mutate(
@@ -38,6 +48,12 @@ district_lookup <- read_csv(cd_homeownership_long_units_series_csv, show_col_typ
     )
   ) |>
   ungroup()
+
+assert_unique_keys(district_lookup, "borocd", "long-units anatomy district lookup")
+
+if (n_distinct(district_lookup$borocd) != 59) {
+  stop("Expected the long-units anatomy district lookup to cover 59 community districts.")
+}
 
 series_df <- read_csv(cd_homeownership_long_units_series_csv, show_col_types = FALSE, na = c("", "NA")) |>
   filter(
@@ -67,7 +83,8 @@ series_df <- read_csv(cd_homeownership_long_units_series_csv, show_col_types = F
   left_join(
     district_lookup |>
       select(borocd, borough_code, borough_name, treat_tercile, treat_tercile_label),
-    by = c("borocd", "borough_code", "borough_name")
+    by = c("borocd", "borough_code", "borough_name"),
+    relationship = "many-to-one"
   ) |>
   filter(treat_tercile_label == "High")
 
@@ -113,6 +130,7 @@ write_csv(top_cd_df, out_top_cd_csv, na = "")
 write_csv(top_cd_year_df, out_top_cd_year_csv, na = "")
 
 qc_df <- bind_rows(
+  tibble(metric = "district_count", value = n_distinct(district_lookup$borocd), note = "Community districts assigned to treatment terciles."),
   tibble(metric = "series_family_count", value = n_distinct(top_cd_df$series_family), note = "Series covered in the anatomy tables."),
   tibble(metric = "era_count", value = n_distinct(top_cd_df$era), note = "Eras covered in the anatomy tables."),
   tibble(metric = "top_cd_row_count", value = nrow(top_cd_df), note = "Top-CD rows written; should equal series by era by 10."),

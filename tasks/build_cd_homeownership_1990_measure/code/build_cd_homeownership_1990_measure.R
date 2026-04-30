@@ -1,13 +1,15 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_cd_homeownership_1990_measure/code")
-# dcp_cd_homeownership_1990_csv <- "../input/dcp_cd_homeownership_1990.csv"
+# dcp_cd_profiles_1990_2000_files_csv <- "../input/dcp_cd_profiles_1990_2000_files.csv"
 # out_measure_csv <- "../output/cd_homeownership_1990_measure.csv"
 # out_qc_csv <- "../output/cd_homeownership_1990_measure_qc.csv"
 
 suppressPackageStartupMessages({
+  library(arrow)
   library(dplyr)
   library(readr)
   library(stringr)
   library(tibble)
+  library(tidyr)
 })
 
 source("../../_lib/source_pipeline_utils.R")
@@ -15,22 +17,110 @@ source("../../_lib/source_pipeline_utils.R")
 args <- commandArgs(trailingOnly = TRUE)
 
 if (length(args) != 3) {
-  stop("Expected 3 arguments: dcp_cd_homeownership_1990_csv out_measure_csv out_qc_csv")
+  stop("Expected 3 arguments: dcp_cd_profiles_1990_2000_files_csv out_measure_csv out_qc_csv")
 }
 
-dcp_cd_homeownership_1990_csv <- args[1]
+dcp_cd_profiles_1990_2000_files_csv <- args[1]
 out_measure_csv <- args[2]
 out_qc_csv <- args[3]
 
-exact_df <- read_csv(dcp_cd_homeownership_1990_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+stage_files <- read_csv(dcp_cd_profiles_1990_2000_files_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+  mutate(pull_date = as.character(pull_date)) %>%
+  filter(!is.na(parquet_path), file.exists(parquet_path))
+
+if (nrow(stage_files) == 0) {
+  write_csv(tibble(), out_measure_csv, na = "")
+  write_csv(tibble(), out_qc_csv, na = "")
+  quit(save = "no")
+}
+
+stage_file <- stage_files %>%
+  arrange(desc(pull_date), parquet_path) %>%
+  slice_head(n = 1)
+
+homeownership_cells <- read_parquet(stage_file$parquet_path[[1]]) %>%
+  as.data.frame() %>%
+  as_tibble() %>%
   mutate(
     district_id = str_pad(as.character(district_id), width = 3, side = "left", pad = "0"),
-    borough_code = as.character(borough_code),
-    borough_name = standardize_borough_name(borough_code),
-    pull_date = as.character(pull_date)
+    borough_code = substr(district_id, 1, 1),
+    borough_name = standardize_borough_name(borough_code)
+  ) %>%
+  filter(
+    section_name == "housing_tenure",
+    metric_label %in% c("Occupied housing units", "Owner-occupied housing units")
+  ) %>%
+  mutate(metric_key = case_when(
+    metric_label == "Occupied housing units" ~ "occupied",
+    metric_label == "Owner-occupied housing units" ~ "owner",
+    TRUE ~ NA_character_
+  )) %>%
+  select(district_id, borough_code, borough_name, metric_key, value_1990_number, value_1990_percent, footnote_markers) %>%
+  distinct()
+
+duplicate_homeownership_cells <- homeownership_cells %>%
+  count(district_id, metric_key, name = "source_row_count") %>%
+  filter(source_row_count > 1)
+
+if (nrow(duplicate_homeownership_cells) > 0) {
+  stop("DCP homeownership cells are not unique by district_id and metric_key; fix staged profiles before building the canonical measure.")
+}
+
+exact_df <- homeownership_cells %>%
+  pivot_wider(
+    names_from = metric_key,
+    values_from = c(value_1990_number, value_1990_percent, footnote_markers),
+    names_glue = "{metric_key}_{.value}"
+  ) %>%
+  transmute(
+    source_id = stage_file$source_id[[1]],
+    pull_date = stage_file$pull_date[[1]],
+    district_id,
+    borough_code,
+    borough_name,
+    owner_occupied_units_1990 = owner_value_1990_number,
+    occupied_units_1990 = occupied_value_1990_number,
+    owner_occupied_share_reported_1990_pct = owner_value_1990_percent,
+    occupied_share_reported_1990_pct = occupied_value_1990_percent,
+    occupied_footnote_markers = occupied_footnote_markers,
+    owner_footnote_markers = owner_footnote_markers
+  ) %>%
+  arrange(district_id) %>%
+  mutate(
+    homeowner_share_1990 = owner_occupied_units_1990 / occupied_units_1990,
+    homeowner_share_1990_pct = 100 * homeowner_share_1990
+  )
+
+borough_df <- exact_df %>%
+  group_by(borough_code, borough_name) %>%
+  summarise(
+    borough_owner_occupied_units_1990 = sum(owner_occupied_units_1990, na.rm = TRUE),
+    borough_occupied_units_1990 = sum(occupied_units_1990, na.rm = TRUE),
+    borough_homeowner_share_1990 = borough_owner_occupied_units_1990 / borough_occupied_units_1990,
+    borough_homeowner_share_1990_pct = 100 * borough_homeowner_share_1990,
+    district_count = n(),
+    .groups = "drop"
   )
 
 measure_df <- exact_df %>%
+  left_join(
+    borough_df,
+    by = c("borough_code", "borough_name"),
+    relationship = "many-to-one"
+  ) %>%
+  mutate(
+    homeowner_share_minus_borough = homeowner_share_1990 - borough_homeowner_share_1990,
+    treat_pp = 100 * homeowner_share_minus_borough,
+    owner_share_reported_gap_pp = homeowner_share_1990_pct - owner_occupied_share_reported_1990_pct
+  ) %>%
+  group_by(borough_code, borough_name) %>%
+  mutate(
+    treat_pp_boro_mean = mean(treat_pp, na.rm = TRUE),
+    treat_pp_boro_sd = sd(treat_pp, na.rm = TRUE),
+    treat_z_boro = (treat_pp - treat_pp_boro_mean) / treat_pp_boro_sd,
+    treat_z_boro = ifelse(is.finite(treat_z_boro), treat_z_boro, NA_real_)
+  ) %>%
+  ungroup() %>%
   transmute(
     source_id,
     pull_date,
@@ -48,18 +138,10 @@ measure_df <- exact_df %>%
     h_b_1990_pct = borough_homeowner_share_1990_pct,
     cd_minus_borough_1990 = homeowner_share_minus_borough,
     treat_pp,
+    treat_z_boro,
     owner_occupied_share_reported_1990_pct,
     owner_share_reported_gap_pp
   ) %>%
-  group_by(borough_code, borough_name) %>%
-  mutate(
-    treat_pp_boro_mean = mean(treat_pp, na.rm = TRUE),
-    treat_pp_boro_sd = sd(treat_pp, na.rm = TRUE),
-    treat_z_boro = (treat_pp - treat_pp_boro_mean) / treat_pp_boro_sd,
-    treat_z_boro = ifelse(is.finite(treat_z_boro), treat_z_boro, NA_real_)
-  ) %>%
-  ungroup() %>%
-  select(-treat_pp_boro_mean, -treat_pp_boro_sd) %>%
   arrange(district_id)
 
 qc_df <- bind_rows(

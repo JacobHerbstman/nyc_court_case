@@ -16,3 +16,5 @@ all: ../output/mappluto_construction_proxy_lot_level.parquet ../output/mappluto_
 ../output/mappluto_construction_proxy_qc.csv: ../output/mappluto_construction_proxy_lot_level.parquet
 
 link-inputs: ../input/mappluto_lot_files.csv ../input/cd_homeownership_1990_measure.csv
+
+include ../../generic.make

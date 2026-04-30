@@ -2,7 +2,7 @@
 # cd_homeownership_1990_measure_csv <- "../input/cd_homeownership_1990_measure.csv"
 # cd_baseline_1990_controls_csv <- "../input/cd_baseline_1990_controls.csv"
 # mappluto_construction_proxy_cd_year_csv <- "../input/mappluto_construction_proxy_cd_year.csv"
-# dcp_housing_database_project_level_parquet <- "../input/dcp_housing_database_project_level_25q4.parquet"
+# dcp_housing_database_files_csv <- "../input/dcp_housing_database_files.csv"
 # out_series_csv <- "../output/cd_homeownership_long_units_series.csv"
 # out_qc_csv <- "../output/cd_homeownership_long_units_series_qc.csv"
 
@@ -18,13 +18,13 @@ suppressPackageStartupMessages({
 args <- commandArgs(trailingOnly = TRUE)
 
 if (length(args) != 6) {
-  stop("Expected 6 arguments: cd_homeownership_1990_measure_csv cd_baseline_1990_controls_csv mappluto_construction_proxy_cd_year_csv dcp_housing_database_project_level_parquet out_series_csv out_qc_csv")
+  stop("Expected 6 arguments: cd_homeownership_1990_measure_csv cd_baseline_1990_controls_csv mappluto_construction_proxy_cd_year_csv dcp_housing_database_files_csv out_series_csv out_qc_csv")
 }
 
 cd_homeownership_1990_measure_csv <- args[1]
 cd_baseline_1990_controls_csv <- args[2]
 mappluto_construction_proxy_cd_year_csv <- args[3]
-dcp_housing_database_project_level_parquet <- args[4]
+dcp_housing_database_files_csv <- args[4]
 out_series_csv <- args[5]
 out_qc_csv <- args[6]
 
@@ -36,6 +36,10 @@ measure_df <- read_csv(cd_homeownership_1990_measure_csv, show_col_types = FALSE
   ) |>
   arrange(borocd)
 
+if (anyDuplicated(measure_df$borocd)) {
+  stop("Homeownership measure is not unique by borocd.")
+}
+
 controls_df <- read_csv(cd_baseline_1990_controls_csv, show_col_types = FALSE, na = c("", "NA")) |>
   mutate(
     district_id = str_pad(as.character(district_id), width = 3, side = "left", pad = "0"),
@@ -43,6 +47,10 @@ controls_df <- read_csv(cd_baseline_1990_controls_csv, show_col_types = FALSE, n
     borough_code = suppressWarnings(as.integer(borough_code))
   ) |>
   arrange(borocd)
+
+if (anyDuplicated(controls_df$borocd)) {
+  stop("Baseline controls file is not unique by borocd.")
+}
 
 static_controls <- controls_df |>
   select(
@@ -72,7 +80,10 @@ proxy_map <- tribble(
   "mappluto_proxy", "units_built_50_plus", "Units built: 50+", "units_50_plus_proxy"
 )
 
-proxy_long <- read_csv(mappluto_construction_proxy_cd_year_csv, show_col_types = FALSE, na = c("", "NA")) |>
+cd_skeleton <- measure_df |>
+  distinct(borocd, borough_code, borough_name)
+
+proxy_values <- read_csv(mappluto_construction_proxy_cd_year_csv, show_col_types = FALSE, na = c("", "NA")) |>
   mutate(
     borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
     borough_code = suppressWarnings(as.integer(borough_code)),
@@ -84,8 +95,22 @@ proxy_long <- read_csv(mappluto_construction_proxy_cd_year_csv, show_col_types =
     cols = all_of(proxy_map$value_column),
     names_to = "value_column",
     values_to = "outcome_value"
+  )
+
+duplicate_proxy_values <- proxy_values |>
+  count(borocd, borough_code, borough_name, year, value_column, name = "source_row_count") |>
+  filter(source_row_count > 1)
+
+if (nrow(duplicate_proxy_values) > 0) {
+  stop("MapPLUTO proxy series is not unique by CD, year, and value column.")
+}
+
+proxy_long <- expand_grid(cd_skeleton, year = 1980:2009, proxy_map) |>
+  left_join(
+    proxy_values,
+    by = c("borocd", "borough_code", "borough_name", "year", "value_column"),
+    relationship = "many-to-one"
   ) |>
-  left_join(proxy_map, by = "value_column") |>
   mutate(
     source_label = "MapPLUTO yearbuilt proxy",
     series_kind = "preferred_long_series",
@@ -93,8 +118,23 @@ proxy_long <- read_csv(mappluto_construction_proxy_cd_year_csv, show_col_types =
   ) |>
   select(source_family, source_label, series_kind, series_family, series_label, borocd, borough_code, borough_name, year, outcome_value)
 
+hdb_file <- read_csv(dcp_housing_database_files_csv, show_col_types = FALSE, na = c("", "NA")) |>
+  filter(source_id == "dcp_housing_database_project_level", !is.na(parquet_path), file.exists(parquet_path)) |>
+  mutate(
+    vintage = as.character(vintage),
+    vintage_year = suppressWarnings(as.integer(str_extract(vintage, "^[0-9]{2}"))),
+    vintage_quarter = suppressWarnings(as.integer(str_extract(vintage, "(?<=Q)[1-4]$"))),
+    vintage_order = 4L * vintage_year + vintage_quarter
+  ) |>
+  arrange(desc(vintage_order), desc(vintage), parquet_path) |>
+  slice_head(n = 1)
+
+if (nrow(hdb_file) == 0) {
+  stop("Could not find a staged DCP Housing Database project-level parquet in ", dcp_housing_database_files_csv)
+}
+
 hdb_source_df <- read_parquet(
-  dcp_housing_database_project_level_parquet,
+  hdb_file$parquet_path[[1]],
   col_select = c("completion_year", "community_district", "borough_code", "borough_name", "job_type", "classa_prop", "classa_net")
 ) |>
   transmute(
@@ -146,15 +186,35 @@ hdb_size <- hdb_source_df |>
     values_from = units_built,
     values_fill = 0,
     names_glue = "units_built_{nb_size_bin}"
-  ) |>
+  )
+
+for (missing_size_column in setdiff(
+  c("units_built_1_2", "units_built_3_4", "units_built_5_9", "units_built_10_49", "units_built_50_plus"),
+  names(hdb_size)
+)) {
+  hdb_size[[missing_size_column]] <- 0
+}
+
+hdb_size <- hdb_size |>
   mutate(
     units_built_1_4 = coalesce(units_built_1_2, 0) + coalesce(units_built_3_4, 0),
     units_built_5_plus = coalesce(units_built_5_9, 0) + coalesce(units_built_10_49, 0) + coalesce(units_built_50_plus, 0)
   )
 
-hdb_panel_source <- hdb_base |>
-  left_join(hdb_size, by = c("borocd", "borough_code", "borough_name", "year")) |>
+hdb_panel_source <- expand_grid(cd_skeleton, year = 2010:2025) |>
+  left_join(
+    hdb_base,
+    by = c("borocd", "borough_code", "borough_name", "year"),
+    relationship = "one-to-one"
+  ) |>
+  left_join(
+    hdb_size,
+    by = c("borocd", "borough_code", "borough_name", "year"),
+    relationship = "one-to-one"
+  ) |>
   mutate(
+    units_built_total = coalesce(units_built_total, 0),
+    gross_add_units_observed = coalesce(gross_add_units_observed, 0),
     units_built_1_4 = coalesce(units_built_1_4, 0),
     units_built_5_plus = coalesce(units_built_5_plus, 0),
     units_built_50_plus = coalesce(units_built_50_plus, 0)
@@ -176,39 +236,42 @@ hdb_long <- hdb_panel_source |>
     names_to = "value_column",
     values_to = "outcome_value"
   ) |>
-  left_join(hdb_map, by = "value_column") |>
+  left_join(hdb_map, by = "value_column", relationship = "many-to-one") |>
   mutate(
     source_label = "DCP Housing Database completion-year observed",
     outcome_value = coalesce(outcome_value, 0)
   ) |>
   select(source_family, source_label, series_kind, series_family, series_label, borocd, borough_code, borough_name, year, outcome_value)
 
+measure_with_controls <- measure_df |>
+  select(
+    source_id,
+    pull_date,
+    district_id,
+    borocd,
+    borough_code,
+    borough_name,
+    owner_occupied_units_1990,
+    occupied_units_1990,
+    borough_owner_occupied_units_1990,
+    borough_occupied_units_1990,
+    h_cd_1990,
+    h_cd_1990_pct,
+    h_b_1990,
+    h_b_1990_pct,
+    cd_minus_borough_1990,
+    treat_pp,
+    treat_z_boro,
+    owner_occupied_share_reported_1990_pct,
+    owner_share_reported_gap_pp
+  ) |>
+  left_join(static_controls, by = c("district_id", "borocd"), relationship = "one-to-one")
+
 series_df <- bind_rows(proxy_long, hdb_long) |>
-  right_join(
-    measure_df |>
-      select(
-        source_id,
-        pull_date,
-        district_id,
-        borocd,
-        borough_code,
-        borough_name,
-        owner_occupied_units_1990,
-        occupied_units_1990,
-        borough_owner_occupied_units_1990,
-        borough_occupied_units_1990,
-        h_cd_1990,
-        h_cd_1990_pct,
-        h_b_1990,
-        h_b_1990_pct,
-        cd_minus_borough_1990,
-        treat_pp,
-        treat_z_boro,
-        owner_occupied_share_reported_1990_pct,
-        owner_share_reported_gap_pp
-      ) |>
-      left_join(static_controls, by = c("district_id", "borocd")),
-    by = c("borocd", "borough_code", "borough_name")
+  left_join(
+    measure_with_controls,
+    by = c("borocd", "borough_code", "borough_name"),
+    relationship = "many-to-one"
   ) |>
   group_by(series_family, year, borough_code, borough_name) |>
   mutate(

@@ -9,15 +9,11 @@ all: ../output/zap_housing_era_interactions.csv ../output/zap_housing_model_summ
 ../input/zap_housing_mature_cohort_panel.csv: ../../summarize_zap_housing_cohorts/output/zap_housing_mature_cohort_panel.csv | ../input
 	ln -sf "$<" "$@"
 
-../output/zap_housing_era_interactions.csv: estimate_zap_housing_cohorts.R ../input/zap_housing_initial_panel.csv ../input/zap_housing_mature_cohort_panel.csv | ../output
+../output/zap_housing_era_interactions.csv ../output/zap_housing_model_summary.csv: estimate_zap_housing_cohorts.R ../../_lib/source_pipeline_utils.R ../input/zap_housing_initial_panel.csv ../input/zap_housing_mature_cohort_panel.csv | ../output
 	$(R) $< ../input/zap_housing_initial_panel.csv ../input/zap_housing_mature_cohort_panel.csv 1980-1984 ../output/zap_housing_era_interactions.csv ../output/zap_housing_model_summary.csv
 
-../output/zap_housing_model_summary.csv: ../output/zap_housing_era_interactions.csv
-
-../output/zap_housing_era_interactions_ref_1985_1989.csv: estimate_zap_housing_cohorts.R ../input/zap_housing_initial_panel.csv ../input/zap_housing_mature_cohort_panel.csv | ../output
+../output/zap_housing_era_interactions_ref_1985_1989.csv ../output/zap_housing_model_summary_ref_1985_1989.csv: estimate_zap_housing_cohorts.R ../../_lib/source_pipeline_utils.R ../input/zap_housing_initial_panel.csv ../input/zap_housing_mature_cohort_panel.csv | ../output
 	$(R) $< ../input/zap_housing_initial_panel.csv ../input/zap_housing_mature_cohort_panel.csv 1985-1989 ../output/zap_housing_era_interactions_ref_1985_1989.csv ../output/zap_housing_model_summary_ref_1985_1989.csv
-
-../output/zap_housing_model_summary_ref_1985_1989.csv: ../output/zap_housing_era_interactions_ref_1985_1989.csv
 
 link-inputs: ../input/zap_housing_initial_panel.csv ../input/zap_housing_mature_cohort_panel.csv
 

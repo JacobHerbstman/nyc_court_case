@@ -35,9 +35,28 @@ sanitize_era <- function(x) {
   str_replace_all(x, "-", "_")
 }
 
+era_from_term <- function(term) {
+  case_when(
+    str_detect(term, "1976_1979") ~ "1976-1979",
+    str_detect(term, "1980_1984") ~ "1980-1984",
+    str_detect(term, "1985_1989") ~ "1985-1989",
+    str_detect(term, "1990_1999") ~ "1990-1999",
+    str_detect(term, "2000_2009") ~ "2000-2009",
+    str_detect(term, "2010_2015") ~ "2010-2015",
+    str_detect(term, "2010_2019") ~ "2010-2019",
+    str_detect(term, "2016_2020") ~ "2016-2020",
+    str_detect(term, "2020_2025") ~ "2020-2025",
+    TRUE ~ NA_character_
+  )
+}
+
 add_terms <- function(df, variable_names, eras) {
   out_df <- df
-  variable_names <- variable_names[variable_names %in% names(df)]
+  missing_variables <- setdiff(variable_names, names(df))
+
+  if (length(missing_variables) > 0) {
+    stop("Missing variables needed for era interactions: ", paste(missing_variables, collapse = ", "))
+  }
 
   for (variable_name in variable_names) {
     for (era_value in eras) {
@@ -54,10 +73,15 @@ extract_term_rows <- function(model, requested_terms, analysis_family, sample_la
   rownames(coef_df) <- NULL
   p_value_col <- names(coef_df)[str_detect(names(coef_df), "^Pr\\(")][1]
 
+  if (is.na(p_value_col)) {
+    stop("Could not identify p-value column for ", analysis_family, " / ", sample_label, " / ", outcome_family, " / ", functional_form, " / ", control_layer)
+  }
+
   conf_df <- as.data.frame(confint(model))
   conf_df$term <- rownames(conf_df)
   rownames(conf_df) <- NULL
   names(conf_df)[1:2] <- c("conf_low", "conf_high")
+  missing_terms <- setdiff(requested_terms, coef_df$term)
 
   tibble(term = requested_terms) %>%
     left_join(coef_df, by = "term") %>%
@@ -76,13 +100,44 @@ extract_term_rows <- function(model, requested_terms, analysis_family, sample_la
       estimate = Estimate,
       std_error = `Std. Error`,
       p_value = .data[[p_value_col]],
-      n_obs = nobs(model)
+      n_obs = nobs(model),
+      model_status = if_else(term %in% missing_terms, "requested_term_dropped", "estimated"),
+      model_message = if_else(
+        term %in% missing_terms,
+        paste0("Requested term was dropped by fixest: ", term),
+        NA_character_
+      )
     ) %>%
     select(
       analysis_family, sample_label, outcome_family, functional_form, control_layer,
       index_name, reference_era, year_min, year_max, weighted_model,
-      term, estimate, std_error, p_value, conf_low, conf_high, n_obs
+      term, estimate, std_error, p_value, conf_low, conf_high, n_obs,
+      model_status, model_message
     )
+}
+
+failed_term_rows <- function(requested_terms, analysis_family, sample_label, outcome_family, functional_form, control_layer, index_name, reference_era, year_min, year_max, weighted_model, model_status, model_message) {
+  tibble(
+    analysis_family = analysis_family,
+    sample_label = sample_label,
+    outcome_family = outcome_family,
+    functional_form = functional_form,
+    control_layer = control_layer,
+    index_name = index_name,
+    reference_era = reference_era,
+    year_min = year_min,
+    year_max = year_max,
+    weighted_model = weighted_model,
+    term = requested_terms,
+    estimate = NA_real_,
+    std_error = NA_real_,
+    p_value = NA_real_,
+    conf_low = NA_real_,
+    conf_high = NA_real_,
+    n_obs = NA_integer_,
+    model_status = model_status,
+    model_message = model_message
+  )
 }
 
 classify_attenuation <- function(base_estimate, full_estimate, base_se, full_se) {
@@ -99,6 +154,24 @@ classify_attenuation <- function(base_estimate, full_estimate, base_se, full_se)
   }
 
   "mixed_or_stable"
+}
+
+assert_required_columns <- function(df, required_cols, df_name) {
+  missing_cols <- setdiff(required_cols, names(df))
+
+  if (length(missing_cols) > 0) {
+    stop(df_name, " is missing required columns: ", paste(missing_cols, collapse = ", "))
+  }
+}
+
+assert_unique_keys <- function(df, key_cols, df_name) {
+  duplicate_keys <- df %>%
+    count(across(all_of(key_cols)), name = "source_row_count") %>%
+    filter(source_row_count > 1)
+
+  if (nrow(duplicate_keys) > 0) {
+    stop(df_name, " is not unique by ", paste(key_cols, collapse = ", "), ".")
+  }
 }
 
 sample_filters <- list(
@@ -153,6 +226,8 @@ control_blocks <- list(
   `4_all_blocks` = c(pretrend_controls, exact_controls, built_form_controls)
 )
 
+all_control_cols <- unique(c(pretrend_controls, exact_controls, built_form_controls))
+
 cd_year_panel <- read_csv(zap_ulurp_redev_cd_year_panel_csv, show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(
     borocd = suppressWarnings(as.integer(borocd)),
@@ -169,7 +244,10 @@ mature_panel <- read_csv(zap_ulurp_redev_mature_cohort_panel_csv, show_col_types
     borocd = suppressWarnings(as.integer(borocd)),
     cert_year = suppressWarnings(as.integer(cert_year)),
     borough_name = as.character(borough_name),
-    era = as.character(era),
+    era = case_when(
+      cert_year >= 2010 & cert_year <= 2015 ~ "2010-2015",
+      TRUE ~ as.character(era)
+    ),
     borough_year = interaction(borough_name, cert_year, drop = TRUE),
     triple_A = treat_z_boro * redev_potential_A_z_boro,
     triple_C = treat_z_boro * redev_potential_C_z_boro
@@ -186,13 +264,62 @@ yield_panel <- read_csv(zap_ulurp_redev_yield_panel_csv, show_col_types = FALSE,
     triple_C = treat_z_boro * redev_potential_C_z_boro
   )
 
+assert_required_columns(
+  cd_year_panel,
+  c(
+    "borocd", "cert_year", "borough_name", "era", "treat_z_boro",
+    "redev_potential_A_z_boro", "redev_potential_C_z_boro", "occupied_units_1990",
+    "initial_apps", "private_initial_apps", "public_hpd_apps",
+    "initial_apps_per_10k", "private_initial_apps_per_10k", "public_hpd_apps_per_10k",
+    "initial_apps_per_res_acre", "private_initial_apps_per_res_acre", "public_hpd_apps_per_res_acre",
+    all_control_cols
+  ),
+  "ZAP ULURP CD-year panel"
+)
+assert_required_columns(
+  mature_panel,
+  c(
+    "borocd", "cert_year", "borough_name", "era", "treat_z_boro",
+    "redev_potential_A_z_boro", "redev_potential_C_z_boro", "initial_apps",
+    "completion_share", "failure_share", all_control_cols
+  ),
+  "ZAP ULURP mature cohort panel"
+)
+assert_required_columns(
+  yield_panel,
+  c(
+    "borocd", "cert_year", "borough_name", "yield_era", "era", "treat_z_boro",
+    "redev_potential_A_z_boro", "redev_potential_C_z_boro", "initial_apps",
+    "linked_nb_50_plus_rate_0_5", "linked_gross_add_units_per_app_0_5",
+    all_control_cols
+  ),
+  "ZAP ULURP yield panel"
+)
+assert_unique_keys(cd_year_panel, c("borocd", "cert_year"), "ZAP ULURP CD-year panel")
+assert_unique_keys(mature_panel, c("borocd", "cert_year"), "ZAP ULURP mature cohort panel")
+assert_unique_keys(yield_panel, c("borocd", "cert_year", "yield_era"), "ZAP ULURP yield panel")
+
+if (any(mature_panel$cert_year > 2015, na.rm = TRUE)) {
+  stop("Mature-status estimation currently expects certification years through 2015 only; update mature status eras before including later cohorts.")
+}
+
 run_model_block <- function(df, analysis_family, sample_label, outcome_family, outcome_var, raw_outcome_var, eras, reference_era, control_layer, functional_form, weighted_model = FALSE, allow_ppml = FALSE) {
+  spec_label <- paste(analysis_family, sample_label, outcome_family, functional_form, control_layer, sep = " / ")
+
   if (nrow(df) == 0) {
-    return(NULL)
+    stop("No input rows for model spec: ", spec_label)
   }
 
+  allowed_eras <- unique(c(reference_era, eras))
+
   work_df <- df %>%
-    filter(!is.na(.data[[outcome_var]]), !is.na(treat_z_boro), !is.na(redev_potential_A_z_boro), !is.na(era))
+    filter(
+      !is.na(.data[[outcome_var]]),
+      !is.na(treat_z_boro),
+      !is.na(redev_potential_A_z_boro),
+      !is.na(era),
+      era %in% allowed_eras
+    )
 
   if (weighted_model) {
     work_df <- work_df %>% filter(initial_apps > 0)
@@ -203,11 +330,25 @@ run_model_block <- function(df, analysis_family, sample_label, outcome_family, o
   }
 
   if (nrow(work_df) == 0) {
-    return(NULL)
+    stop("No estimation rows after restrictions for model spec: ", spec_label)
+  }
+
+  observed_eras <- unique(work_df$era[!is.na(work_df$era)])
+  if (!reference_era %in% observed_eras) {
+    stop("Reference era ", reference_era, " is absent after restrictions for model spec: ", spec_label)
+  }
+
+  missing_requested_eras <- setdiff(eras, observed_eras)
+  if (length(missing_requested_eras) > 0) {
+    stop("Requested eras absent after restrictions for model spec ", spec_label, ": ", paste(missing_requested_eras, collapse = ", "))
   }
 
   control_vars <- control_blocks[[control_layer]]
-  control_vars <- control_vars[control_vars %in% names(work_df)]
+  missing_control_vars <- setdiff(control_vars, names(work_df))
+
+  if (length(missing_control_vars) > 0) {
+    stop("Missing controls for ", spec_label, ": ", paste(missing_control_vars, collapse = ", "))
+  }
 
   work_df <- add_terms(work_df, c("treat_z_boro", "redev_potential_A_z_boro", "triple_A", "redev_potential_C_z_boro", control_vars), eras)
 
@@ -221,20 +362,26 @@ run_model_block <- function(df, analysis_family, sample_label, outcome_family, o
 
   formula_terms <- c(treat_terms, redev_terms, triple_terms, control_terms)
   if (length(formula_terms) == 0) {
-    return(NULL)
+    stop("No formula terms for model spec: ", spec_label)
   }
 
   if (allow_ppml) {
+    model_error_message <- NA_character_
     model <- tryCatch(
       fepois(
         as.formula(paste0(raw_outcome_var, " ~ ", paste(formula_terms, collapse = " + "), " | borocd + borough_year")),
         data = work_df,
         cluster = ~borocd,
-        offset = log(work_df$occupied_units_1990)
+        offset = log(work_df$occupied_units_1990),
+        glm.iter = 1000
       ),
-      error = function(e) NULL
+      error = function(e) {
+        model_error_message <<- conditionMessage(e)
+        NULL
+      }
     )
   } else if (weighted_model) {
+    model_error_message <- NA_character_
     model <- tryCatch(
       feols(
         as.formula(paste0(outcome_var, " ~ ", paste(formula_terms, collapse = " + "), " | borocd + borough_year")),
@@ -242,25 +389,54 @@ run_model_block <- function(df, analysis_family, sample_label, outcome_family, o
         weights = ~initial_apps,
         cluster = ~borocd
       ),
-      error = function(e) NULL
+      error = function(e) {
+        model_error_message <<- conditionMessage(e)
+        NULL
+      }
     )
   } else {
+    model_error_message <- NA_character_
     model <- tryCatch(
       feols(
         as.formula(paste0(outcome_var, " ~ ", paste(formula_terms, collapse = " + "), " | borocd + borough_year")),
         data = work_df,
         cluster = ~borocd
       ),
-      error = function(e) NULL
+      error = function(e) {
+        model_error_message <<- conditionMessage(e)
+        NULL
+      }
     )
   }
 
   if (is.null(model)) {
-    return(NULL)
+    return(
+      bind_rows(
+        failed_term_rows(treat_terms, analysis_family, sample_label, outcome_family, functional_form, control_layer, "A", reference_era, min(work_df$cert_year), max(work_df$cert_year), weighted_model, "model_failed", model_error_message) %>%
+          mutate(term_group = "homeowner"),
+        failed_term_rows(triple_terms, analysis_family, sample_label, outcome_family, functional_form, control_layer, "A", reference_era, min(work_df$cert_year), max(work_df$cert_year), weighted_model, "model_failed", model_error_message) %>%
+          mutate(term_group = "homeowner_x_redev")
+      ) %>%
+        mutate(
+          era = era_from_term(term),
+          converged = FALSE
+        )
+    )
   }
 
   if (allow_ppml && isFALSE(model$convStatus)) {
-    return(NULL)
+    return(
+      bind_rows(
+        failed_term_rows(treat_terms, analysis_family, sample_label, outcome_family, functional_form, control_layer, "A", reference_era, min(work_df$cert_year), max(work_df$cert_year), weighted_model, "ppml_not_converged", paste0("PPML did not converge for ", spec_label, ".")) %>%
+          mutate(term_group = "homeowner"),
+        failed_term_rows(triple_terms, analysis_family, sample_label, outcome_family, functional_form, control_layer, "A", reference_era, min(work_df$cert_year), max(work_df$cert_year), weighted_model, "ppml_not_converged", paste0("PPML did not converge for ", spec_label, ".")) %>%
+          mutate(term_group = "homeowner_x_redev")
+      ) %>%
+        mutate(
+          era = era_from_term(term),
+          converged = FALSE
+        )
+    )
   }
 
   bind_rows(
@@ -270,18 +446,7 @@ run_model_block <- function(df, analysis_family, sample_label, outcome_family, o
       mutate(term_group = "homeowner_x_redev")
   ) %>%
     mutate(
-      era = case_when(
-        str_detect(term, "1976_1979") ~ "1976-1979",
-        str_detect(term, "1980_1984") ~ "1980-1984",
-        str_detect(term, "1985_1989") ~ "1985-1989",
-        str_detect(term, "1990_1999") ~ "1990-1999",
-        str_detect(term, "2000_2009") ~ "2000-2009",
-        str_detect(term, "2010_2019") ~ "2010-2019",
-        str_detect(term, "2020_2025") ~ "2020-2025",
-        str_detect(term, "2010_2015") ~ "2010-2015",
-        str_detect(term, "2016_2020") ~ "2016-2020",
-        TRUE ~ NA_character_
-      ),
+      era = era_from_term(term),
       converged = TRUE
     )
 }
@@ -336,7 +501,7 @@ for (outcome_family in c("initial_apps", "private_initial_apps", "public_hpd_app
   }
 }
 
-status_eras <- c("1985-1989", "1990-1999", "2000-2009", "2010-2019")
+status_eras <- c("1985-1989", "1990-1999", "2000-2009", "2010-2015")
 for (outcome_family in c("completion_share", "failure_share")) {
   for (control_layer in names(control_blocks)) {
     model_rows <- run_model_block(
@@ -457,6 +622,10 @@ model_summary_df <- bind_rows(results_rows) %>%
   ) %>%
   arrange(analysis_family, sample_label, outcome_family, functional_form, control_layer, term_group, era)
 
+if (any(model_summary_df$model_status == "estimated" & (is.na(model_summary_df$estimate) | is.na(model_summary_df$std_error)))) {
+  stop("Model summary contains estimated rows with missing estimates or standard errors.")
+}
+
 nested_diag_df <- model_summary_df %>%
   filter(
     sample_label == "all_nyc",
@@ -485,6 +654,7 @@ write_csv_if_changed(nested_diag_df, out_nested_diag_csv)
 headline_plot_df <- model_summary_df %>%
   filter(
     sample_label == "all_nyc",
+    model_status == "estimated",
     control_layer %in% c("0_fe_only", "4_all_blocks"),
     term_group == "homeowner_x_redev",
     functional_form %in% c("linear_occ", "linear_share", "linear_yield"),
@@ -494,6 +664,7 @@ headline_plot_df <- model_summary_df %>%
 sensitivity_plot_df <- model_summary_df %>%
   filter(
     sample_label != "all_nyc",
+    model_status == "estimated",
     control_layer == "4_all_blocks",
     term_group == "homeowner_x_redev",
     functional_form %in% c("linear_occ", "linear_share", "linear_yield"),

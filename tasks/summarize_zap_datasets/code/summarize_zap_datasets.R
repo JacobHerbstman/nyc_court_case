@@ -32,17 +32,30 @@ out_qc_csv <- args[7]
 stage_qc <- read_csv(zap_stage_qc_csv, show_col_types = FALSE, na = c("", "NA"))
 project_df <- read_parquet(zap_project_parquet) |>
   as.data.frame() |>
-  as_tibble()
+  as_tibble() |>
+  mutate(project_id = as.character(project_id))
 bbl_df <- read_parquet(zap_bbl_parquet) |>
   as.data.frame() |>
-  as_tibble()
+  as_tibble() |>
+  mutate(
+    project_id = as.character(project_id),
+    bbl_standardized = as.character(bbl_standardized)
+  )
 
-if (nrow(project_df) == 0 || nrow(bbl_df) == 0) {
+if (nrow(project_df) == 0) {
   write_csv(tibble(), out_counts_csv, na = "")
   write_csv(tibble(), out_link_csv, na = "")
   write_csv(tibble(), out_geo_csv, na = "")
-  write_csv(bind_rows(stage_qc, tibble(metric = "status", value = "missing_staged_zap_data")), out_qc_csv, na = "")
+  write_csv(bind_rows(stage_qc, tibble(metric = "status", value = "missing_staged_zap_project_data")), out_qc_csv, na = "")
   quit(save = "no")
+}
+
+if (any(is.na(project_df$project_id))) {
+  stop("ZAP project data contains missing project_id values.")
+}
+
+if (n_distinct(project_df$project_id) != nrow(project_df)) {
+  stop("ZAP project data must be unique by project_id before summarizing.")
 }
 
 counts_df <- project_df |>
@@ -56,10 +69,10 @@ counts_df <- project_df |>
   arrange(project_reference_decade, project_status, ulurp_group)
 
 project_bbl_flags <- project_df |>
-  transmute(project_id = as.character(project_id)) |>
+  transmute(project_id) |>
   left_join(
     bbl_df |>
-      filter(!is.na(project_id)) |>
+      filter(!is.na(project_id), !is.na(bbl_standardized)) |>
       group_by(project_id) |>
       summarise(
         bbl_count = n(),
@@ -67,7 +80,8 @@ project_bbl_flags <- project_df |>
         any_validated_bbl = any(is_validated %in% TRUE),
         .groups = "drop"
       ),
-    by = "project_id"
+    by = "project_id",
+    relationship = "one-to-one"
   ) |>
   mutate(
     has_any_bbl = !is.na(bbl_count) & bbl_count > 0,
@@ -81,7 +95,11 @@ link_df <- tibble(
   project_count_with_validated_bbl = sum(project_bbl_flags$any_validated_bbl, na.rm = TRUE),
   project_share_with_validated_bbl = mean(project_bbl_flags$any_validated_bbl, na.rm = TRUE),
   bbl_row_count = nrow(bbl_df),
-  distinct_project_bbl_count = n_distinct(paste(bbl_df$project_id, bbl_df$bbl_standardized, sep = "_")),
+  distinct_project_bbl_count = n_distinct(paste(
+    bbl_df$project_id[!is.na(bbl_df$project_id) & !is.na(bbl_df$bbl_standardized)],
+    bbl_df$bbl_standardized[!is.na(bbl_df$project_id) & !is.na(bbl_df$bbl_standardized)],
+    sep = "_"
+  )),
   distinct_bbl_count = n_distinct(bbl_df$bbl_standardized[!is.na(bbl_df$bbl_standardized)])
 )
 
@@ -93,7 +111,8 @@ geo_df <- project_df |>
   left_join(
     project_bbl_flags |>
       select(project_id, has_any_bbl, any_validated_bbl),
-    by = "project_id"
+    by = "project_id",
+    relationship = "many-to-one"
   ) |>
   group_by(borough_name_standardized, community_district_standardized) |>
   summarise(

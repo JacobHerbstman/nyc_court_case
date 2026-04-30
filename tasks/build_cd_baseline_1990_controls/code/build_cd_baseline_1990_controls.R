@@ -1,6 +1,6 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_cd_baseline_1990_controls/code")
 # cd_homeownership_1990_measure_csv <- "../input/cd_homeownership_1990_measure.csv"
-# dcp_cd_profiles_parquet <- "../input/dcp_cd_profiles_1990_2000_20260415.parquet"
+# dcp_cd_profiles_1990_2000_files_csv <- "../input/dcp_cd_profiles_1990_2000_files.csv"
 # nhgis_files_csv <- "../input/nhgis_files.csv"
 # nhgis_1980_parquet <- "../input/nhgis_1980_tract_extract.parquet"
 # nhgis_1990_parquet <- "../input/nhgis_1990_tract_extract.parquet"
@@ -23,11 +23,11 @@ source("../../_lib/source_pipeline_utils.R")
 args <- commandArgs(trailingOnly = TRUE)
 
 if (length(args) != 9) {
-  stop("Expected 9 arguments: cd_homeownership_1990_measure_csv dcp_cd_profiles_parquet nhgis_files_csv nhgis_1980_parquet nhgis_1990_parquet dcp_boundary_index_csv out_controls_csv out_qc_csv out_overlay_qc_csv")
+  stop("Expected 9 arguments: cd_homeownership_1990_measure_csv dcp_cd_profiles_1990_2000_files_csv nhgis_files_csv nhgis_1980_parquet nhgis_1990_parquet dcp_boundary_index_csv out_controls_csv out_qc_csv out_overlay_qc_csv")
 }
 
 cd_homeownership_1990_measure_csv <- args[1]
-dcp_cd_profiles_parquet <- args[2]
+dcp_cd_profiles_1990_2000_files_csv <- args[2]
 nhgis_files_csv <- args[3]
 nhgis_1980_parquet <- args[4]
 nhgis_1990_parquet <- args[5]
@@ -76,12 +76,28 @@ read_nested_shape <- function(outer_zip_path) {
 }
 
 pull_dcp_metric <- function(df, section_key, metric_key, value_col, out_name) {
-  df %>%
+  metric_df <- df %>%
     filter(section_name == section_key, metric_label == metric_key) %>%
     transmute(
       district_id,
       !!out_name := suppressWarnings(as.numeric(.data[[value_col]]))
     )
+
+  duplicate_keys <- metric_df %>%
+    count(district_id, name = "source_row_count") %>%
+    filter(source_row_count > 1)
+
+  if (nrow(duplicate_keys) > 0) {
+    stop(
+      "DCP metric is not unique by district_id: ",
+      section_key,
+      " / ",
+      metric_key,
+      ". Fix staged profiles before joining."
+    )
+  }
+
+  metric_df
 }
 
 pull_dcp_metric_max <- function(df, section_key, metric_key, value_col, out_name) {
@@ -144,7 +160,8 @@ build_cd_overlay <- function(nhgis_df, gis_zip_path, cd_sf, year_value) {
           vacant_units_alloc_sum = sum(vacant_units_alloc, na.rm = TRUE),
           .groups = "drop"
         ),
-      by = "gisjoin"
+      by = "gisjoin",
+      relationship = "one-to-one"
     ) %>%
     mutate(
       area_share_sum = coalesce(area_share_sum, 0),
@@ -235,14 +252,28 @@ measure_df <- read_csv(cd_homeownership_1990_measure_csv, show_col_types = FALSE
   ) %>%
   arrange(district_id)
 
-profiles_df <- read_parquet(dcp_cd_profiles_parquet) %>%
+if (anyDuplicated(measure_df$district_id)) {
+  stop("Homeownership measure is not unique by district_id.")
+}
+
+dcp_profile_file <- read_csv(dcp_cd_profiles_1990_2000_files_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+  mutate(pull_date = as.character(pull_date)) %>%
+  filter(!is.na(parquet_path), file.exists(parquet_path)) %>%
+  arrange(desc(pull_date), parquet_path) %>%
+  slice_head(n = 1)
+
+if (nrow(dcp_profile_file) == 0) {
+  stop("Could not find a staged DCP CD profiles parquet in ", dcp_cd_profiles_1990_2000_files_csv)
+}
+
+profiles_df <- read_parquet(dcp_profile_file$parquet_path[[1]]) %>%
   as.data.frame() %>%
   as_tibble() %>%
   mutate(district_id = str_pad(as.character(district_id), width = 3, side = "left", pad = "0")) %>%
   filter(district_id %in% standard_cd_ids)
 
 exact_df <- measure_df %>%
-  select(source_id, pull_date, district_id, borocd, borough_code, borough_name, treat_pp, treat_z_boro) %>%
+  select(source_id, pull_date, district_id, borocd, borough_code, borough_name, h_cd_1990, treat_pp, treat_z_boro) %>%
   left_join(pull_dcp_metric(profiles_df, "housing_occupancy", "Total housing units", "value_1990_number", "total_housing_units_1990_exact"), by = "district_id") %>%
   left_join(pull_dcp_metric(profiles_df, "housing_occupancy", "Occupied housing units", "value_1990_number", "occupied_units_1990_exact"), by = "district_id") %>%
   left_join(pull_dcp_metric(profiles_df, "housing_occupancy", "Vacant housing units", "value_1990_number", "vacant_housing_units_1990_exact"), by = "district_id") %>%
@@ -344,7 +375,7 @@ if (length(nhgis_1980_gis_zip) == 0 || length(nhgis_1990_gis_zip) == 0) {
 }
 
 dcp_boundary_index <- read_csv(dcp_boundary_index_csv, show_col_types = FALSE, na = c("", "NA")) %>%
-  mutate(pull_date = as.Date(pull_date))
+  mutate(pull_date = as.Date(as.character(pull_date), format = "%Y%m%d"))
 
 community_district_parquet <- dcp_boundary_index %>%
   filter(source_id == "dcp_boundary_community_districts", !is.na(parquet_path), file.exists(parquet_path)) %>%
@@ -392,7 +423,8 @@ controls_df <- exact_df %>%
         homeowner_share_1980_approx = homeowner_share,
         vacancy_rate_1980_approx = vacancy_rate
       ),
-    by = "district_id"
+    by = "district_id",
+    relationship = "many-to-one"
   ) %>%
   left_join(
     overlay_1990$cd_df %>%
@@ -405,7 +437,8 @@ controls_df <- exact_df %>%
         homeowner_share_1990_approx = homeowner_share,
         vacancy_rate_1990_approx = vacancy_rate
       ),
-    by = "district_id"
+    by = "district_id",
+    relationship = "many-to-one"
   ) %>%
   mutate(
     total_housing_units_growth_1980_1990_approx = ifelse(
@@ -431,7 +464,6 @@ overlay_qc_df <- bind_rows(
 
 primary_exact_control_vars <- c(
   "vacancy_rate_1990_exact",
-  "renter_share_1990_exact",
   "structure_share_1_detached_1990_exact",
   "structure_share_1_attached_1990_exact",
   "structure_share_2_units_1990_exact",
@@ -459,6 +491,16 @@ qc_df <- bind_rows(
     metric = "district_count",
     value = nrow(controls_df),
     note = "Standard community districts in the baseline controls file."
+  ),
+  tibble(
+    metric = "distinct_district_count",
+    value = n_distinct(controls_df$district_id),
+    note = "Distinct standard community district identifiers in the baseline controls file."
+  ),
+  tibble(
+    metric = "duplicated_district_row_count",
+    value = nrow(controls_df) - n_distinct(controls_df$district_id),
+    note = "Extra rows created by duplicate district identifiers; should be zero."
   ),
   tibble(
     metric = "missing_primary_exact_control_cd_count_excluding_housing_value",
@@ -506,6 +548,11 @@ qc_df <- bind_rows(
     note = "Maximum absolute gap between the exact 1990 units-in-structure shares and one."
   ),
   tibble(
+    metric = "renter_share_treatment_complement_max_abs_gap",
+    value = max(abs(controls_df$renter_share_1990_exact - (1 - controls_df$h_cd_1990)), na.rm = TRUE),
+    note = "Renter share is the complement of the homeownership treatment and is not included in the primary exact controls."
+  ),
+  tibble(
     metric = "year_structure_built_1980_1989_1990_available_count",
     value = profiles_df %>%
       filter(section_name == "year_structure_built", metric_label == "1980 to 1989") %>%
@@ -517,7 +564,16 @@ qc_df <- bind_rows(
     metric = "status",
     value = ifelse(
       nrow(controls_df) == 59 &&
+        n_distinct(controls_df$district_id) == 59 &&
+        nrow(controls_df) - n_distinct(controls_df$district_id) == 0 &&
         sum(!stats::complete.cases(controls_df[, primary_exact_control_vars])) == 0 &&
+        sum(!stats::complete.cases(controls_df[, static_1990_demo_control_vars])) == 0 &&
+        sum(!stats::complete.cases(controls_df[, c(
+          "total_housing_units_growth_1980_1990_approx",
+          "occupied_units_growth_1980_1990_approx",
+          "vacancy_rate_change_1980_1990_pp_approx",
+          "homeowner_share_change_1980_1990_pp_approx"
+        )])) == 0 &&
         all(overlay_qc_df %>% filter(metric == "district_count") %>% pull(value) == 59),
       1,
       0

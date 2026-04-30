@@ -38,6 +38,16 @@ out_residuals_csv <- args[9]
 out_plots_pdf <- args[10]
 out_qc_csv <- args[11]
 
+assert_unique_keys <- function(df, keys, label) {
+  duplicate_keys <- df |>
+    count(across(all_of(keys)), name = "n") |>
+    filter(n > 1)
+
+  if (nrow(duplicate_keys) > 0) {
+    stop(label, " is not unique by ", paste(keys, collapse = ", "), ".")
+  }
+}
+
 district_lookup <- read_csv(cd_homeownership_long_units_series_csv, show_col_types = FALSE, na = c("", "NA")) |>
   distinct(borocd, borough_code, borough_name, treat_pp, occupied_units_1990) |>
   mutate(
@@ -57,6 +67,12 @@ district_lookup <- read_csv(cd_homeownership_long_units_series_csv, show_col_typ
   ) |>
   ungroup()
 
+assert_unique_keys(district_lookup, "borocd", "levels/developability district lookup")
+
+if (n_distinct(district_lookup$borocd) != 59) {
+  stop("Expected the levels/developability district lookup to cover 59 community districts.")
+}
+
 units_year_df <- read_csv(cd_homeownership_long_units_series_csv, show_col_types = FALSE, na = c("", "NA")) |>
   filter(
     series_kind == "preferred_long_series",
@@ -73,7 +89,8 @@ units_year_df <- read_csv(cd_homeownership_long_units_series_csv, show_col_types
   left_join(
     district_lookup |>
       select(borocd, borough_code, borough_name, treat_tercile, treat_tercile_label, occupied_units_1990),
-    by = c("borocd", "borough_code", "borough_name")
+    by = c("borocd", "borough_code", "borough_name"),
+    relationship = "many-to-one"
   ) |>
   group_by(series_family, year, treat_tercile, treat_tercile_label) |>
   summarize(
@@ -119,7 +136,8 @@ projects_observed_df <- read_parquet(
   left_join(
     district_lookup |>
       distinct(borocd, borough_code, borough_name),
-    by = "borocd"
+    by = "borocd",
+    relationship = "many-to-one"
   ) |>
   group_by(borocd, borough_code, borough_name, year) |>
   summarize(
@@ -144,7 +162,8 @@ project_panel_df <- bind_rows(
         select(borocd, borough_code, borough_name, treat_tercile, treat_tercile_label),
       year = 1980:2025
     ),
-    by = c("borocd", "borough_code", "borough_name", "year")
+    by = c("borocd", "borough_code", "borough_name", "year"),
+    relationship = "one-to-one"
   ) |>
   mutate(
     project_count_50_plus = coalesce(project_count_50_plus, 0),
@@ -203,7 +222,8 @@ built_form_df <- read_parquet(
   left_join(
     district_lookup |>
       select(borocd, borough_code, borough_name, treat_pp, treat_tercile, treat_tercile_label),
-    by = "borocd"
+    by = "borocd",
+    relationship = "many-to-one"
   )
 
 write_csv(built_form_df, out_built_form_csv, na = "")
@@ -212,12 +232,14 @@ gross_add_year_df <- projects_observed_df |>
   left_join(
     built_form_df |>
       select(borocd, residential_acres_current),
-    by = "borocd"
+    by = "borocd",
+    relationship = "many-to-one"
   ) |>
   left_join(
     district_lookup |>
       select(borocd, borough_code, borough_name, treat_tercile, treat_tercile_label),
-    by = c("borocd", "borough_code", "borough_name")
+    by = c("borocd", "borough_code", "borough_name"),
+    relationship = "many-to-one"
   ) |>
   group_by(year, treat_tercile, treat_tercile_label) |>
   summarize(
@@ -285,7 +307,7 @@ residual_base_df <- expand_grid(
     avg_annual_gross_add_units_2010_2025 = mean(gross_add_units, na.rm = TRUE),
     .groups = "drop"
   ) |>
-  left_join(baseline_controls_df, by = c("borocd", "borough_code", "borough_name")) |>
+  left_join(baseline_controls_df, by = c("borocd", "borough_code", "borough_name"), relationship = "many-to-one") |>
   left_join(
     built_form_df |>
       select(
@@ -296,10 +318,38 @@ residual_base_df <- expand_grid(
         underbuilt_res_lot_share_current,
         mean_residfar_res_current
       ),
-    by = "borocd"
+    by = "borocd",
+    relationship = "many-to-one"
   )
 
+residual_control_cols <- c(
+  "vacancy_rate_1990_exact",
+  "structure_share_1_2_units_1990_exact",
+  "structure_share_5_plus_units_1990_exact",
+  "subway_commute_share_1990_exact",
+  "residential_acres_current",
+  "one_two_family_lot_share_current",
+  "vacant_land_share_current",
+  "underbuilt_res_lot_share_current",
+  "mean_residfar_res_current"
+)
+
 fit_residual_table <- function(df, outcome_name) {
+  model_df <- df |>
+    select(
+      borocd,
+      borough_code,
+      borough_name,
+      treat_pp,
+      all_of(outcome_name),
+      all_of(residual_control_cols)
+    ) |>
+    filter(if_all(all_of(c("treat_pp", outcome_name, residual_control_cols)), ~ !is.na(.x)))
+
+  if (nrow(model_df) < 10) {
+    stop("Too few complete cases to residualize ", outcome_name, ".")
+  }
+
   outcome_formula <- as.formula(paste0(
     outcome_name,
     " ~ factor(borough_name) + vacancy_rate_1990_exact + structure_share_1_2_units_1990_exact + ",
@@ -312,16 +362,16 @@ fit_residual_table <- function(df, outcome_name) {
     "one_two_family_lot_share_current + vacant_land_share_current + underbuilt_res_lot_share_current + mean_residfar_res_current"
   ))
 
-  outcome_fit <- lm(outcome_formula, data = df)
-  treat_fit <- lm(treat_formula, data = df)
-  outcome_values <- df[[outcome_name]]
+  outcome_fit <- lm(outcome_formula, data = model_df)
+  treat_fit <- lm(treat_formula, data = model_df)
+  outcome_values <- model_df[[outcome_name]]
 
   tibble(
     outcome_name = as.character(outcome_name),
-    borocd = df$borocd,
-    borough_code = df$borough_code,
-    borough_name = df$borough_name,
-    treat_pp = df$treat_pp,
+    borocd = model_df$borocd,
+    borough_code = model_df$borough_code,
+    borough_name = model_df$borough_name,
+    treat_pp = model_df$treat_pp,
     outcome_value = outcome_values,
     treat_residual = resid(treat_fit),
     outcome_residual = resid(outcome_fit)
@@ -341,7 +391,8 @@ residuals_df <- bind_rows(
   left_join(
     district_lookup |>
       select(borocd, treat_tercile, treat_tercile_label),
-    by = "borocd"
+    by = "borocd",
+    relationship = "many-to-one"
   )
 
 write_csv(residuals_df, out_residuals_csv, na = "")

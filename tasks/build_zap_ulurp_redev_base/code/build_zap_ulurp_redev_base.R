@@ -30,9 +30,17 @@ out_base_csv <- args[5]
 out_qc_csv <- args[6]
 
 has_action_code <- function(actions_string, action_code) {
-  actions_standardized <- str_replace_all(str_to_upper(coalesce(actions_string, "")), ",", ";")
-  actions_standardized <- str_replace_all(actions_standardized, "\\s+", "")
-  str_detect(actions_standardized, paste0("(^|;)", action_code, "($|;)"))
+  str_detect(str_to_upper(coalesce(actions_string, "")), paste0("\\b", action_code, "\\b"))
+}
+
+assert_unique_keys <- function(df, key_cols, df_name) {
+  duplicate_keys <- df %>%
+    count(across(all_of(key_cols)), name = "source_row_count") %>%
+    filter(source_row_count > 1)
+
+  if (nrow(duplicate_keys) > 0) {
+    stop(df_name, " is not unique by ", paste(key_cols, collapse = ", "), ".")
+  }
 }
 
 pretrend_control_cols <- c(
@@ -96,19 +104,23 @@ redev_df <- read_csv(cd_redevelopment_potential_baseline_csv, show_col_types = F
     high_homeowner = treat_z_boro >= median(treat_z_boro, na.rm = TRUE),
     high_redev_A = redev_potential_A_z_boro >= median(redev_potential_A_z_boro, na.rm = TRUE),
     two_by_two_cell_A = case_when(
+      is.na(high_homeowner) | is.na(high_redev_A) ~ NA_character_,
       !high_homeowner & !high_redev_A ~ "LL",
       !high_homeowner & high_redev_A ~ "LH",
       high_homeowner & !high_redev_A ~ "HL",
-      TRUE ~ "HH"
+      high_homeowner & high_redev_A ~ "HH"
     ),
     two_by_two_label_A = case_when(
+      is.na(two_by_two_cell_A) ~ NA_character_,
       two_by_two_cell_A == "LL" ~ "Low homeowner / Low redev",
       two_by_two_cell_A == "LH" ~ "Low homeowner / High redev",
       two_by_two_cell_A == "HL" ~ "High homeowner / Low redev",
-      TRUE ~ "High homeowner / High redev"
+      two_by_two_cell_A == "HH" ~ "High homeowner / High redev"
     )
   ) %>%
   ungroup()
+
+assert_unique_keys(redev_df, c("borocd", "borough_name"), "Redevelopment baseline input")
 
 cohort_base_df <- read_csv(zap_housing_cohort_base_csv, show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(
@@ -121,6 +133,16 @@ cohort_base_df <- read_csv(zap_housing_cohort_base_csv, show_col_types = FALSE, 
     is_fail = as.logical(is_fail),
     is_unresolved = as.logical(is_unresolved)
   )
+
+if ("actions" %in% names(cohort_base_df)) {
+  cohort_base_df <- cohort_base_df %>%
+    rename(cohort_actions = actions)
+} else {
+  cohort_base_df <- cohort_base_df %>%
+    mutate(cohort_actions = NA_character_)
+}
+
+assert_unique_keys(cohort_base_df, "project_id", "ZAP housing cohort base input")
 
 zap_raw_df <- read_parquet(
   zap_project_parquet,
@@ -143,8 +165,10 @@ zap_raw_df <- read_parquet(
     approval_date = as.Date(approval_date_parsed),
     completed_date = as.Date(completed_date_parsed),
     ulurp_numbers = as.character(ulurp_numbers),
-    actions = as.character(actions)
+    zap_actions = as.character(actions)
   )
+
+assert_unique_keys(zap_raw_df, "project_id", "Staged ZAP project input")
 
 hdb_link_df <- read_csv(zap_housing_hdb_project_summary_csv, show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(
@@ -175,16 +199,18 @@ hdb_link_df <- read_csv(zap_housing_hdb_project_summary_csv, show_col_types = FA
     first_housing_permit_lag_0_10
   )
 
+assert_unique_keys(hdb_link_df, "project_id", "ZAP-HDB project summary input")
+
 base_df <- cohort_base_df %>%
   select(-any_of(c("treat_pp", "treat_z_boro", exact_control_cols, pretrend_control_cols, built_form_control_cols))) %>%
-  left_join(zap_raw_df, by = "project_id") %>%
-  left_join(hdb_link_df, by = "project_id") %>%
-  left_join(redev_df, by = c("borocd", "borough_name")) %>%
+  left_join(zap_raw_df, by = "project_id", relationship = "one-to-one") %>%
+  left_join(hdb_link_df, by = "project_id", relationship = "one-to-one") %>%
+  left_join(redev_df, by = c("borocd", "borough_name"), relationship = "many-to-one") %>%
   mutate(
     applicant_type = str_squish(applicant_type),
     primary_applicant = str_squish(primary_applicant),
     ceqr_leadagency = str_squish(ceqr_leadagency),
-    actions = coalesce(actions.x, actions.y),
+    actions = coalesce(cohort_actions, zap_actions),
     actions = str_squish(actions),
     private_applicant = applicant_type == "Private",
     public_applicant = applicant_type %in% c("Other Public Agency", "DCP"),
@@ -285,6 +311,7 @@ qc_df <- bind_rows(
   tibble(metric = "distinct_borocd_count", value = n_distinct(base_df$borocd), note = "Should equal the 59 standard community districts."),
   tibble(metric = "missing_treat_z_boro_row_count", value = sum(is.na(base_df$treat_z_boro)), note = "Should be zero after redevelopment merge."),
   tibble(metric = "missing_redev_A_row_count", value = sum(is.na(base_df$redev_potential_A_z_boro)), note = "Should be zero after redevelopment merge."),
+  tibble(metric = "missing_two_by_two_cell_A_row_count", value = sum(is.na(base_df$two_by_two_cell_A)), note = "Rows missing the homeowner/redevelopment two-by-two classification."),
   tibble(metric = "missing_applicant_type_row_count", value = sum(is.na(base_df$applicant_type) | base_df$applicant_type == ""), note = "Rows missing applicant type in staged ZAP."),
   tibble(metric = "private_applicant_project_count", value = sum(base_df$private_applicant, na.rm = TRUE), note = "Projects classified as private applicants."),
   tibble(metric = "public_applicant_project_count", value = sum(base_df$public_applicant, na.rm = TRUE), note = "Projects classified as public applicants."),

@@ -12,6 +12,8 @@ suppressPackageStartupMessages({
   library(tidyr)
 })
 
+source("../../_lib/source_pipeline_utils.R")
+
 args <- commandArgs(trailingOnly = TRUE)
 
 if (length(args) != 5) {
@@ -32,13 +34,18 @@ standard_cd <- read_csv(treatment_csv, show_col_types = FALSE, na = c("", "NA"))
   ) |>
   distinct()
 
+if (anyDuplicated(standard_cd$borocd)) {
+  stop("Treatment input is not unique by borocd.")
+}
+
 mappluto_index <- read_csv(mappluto_lot_files_csv, show_col_types = FALSE, na = c("", "NA")) |>
   mutate(
     source_priority = if_else(source_id == "dcp_mappluto_current", 1L, 0L),
-    vintage = as.character(vintage)
+    vintage = as.character(vintage),
+    vintage_order = release_order_key(vintage)
   ) |>
   filter(!is.na(parquet_path), file.exists(parquet_path)) |>
-  arrange(desc(source_priority), desc(vintage))
+  arrange(desc(source_priority), desc(vintage_order), desc(vintage))
 
 if (nrow(mappluto_index) == 0) {
   write_parquet(tibble(), out_lot_parquet)
@@ -90,7 +97,7 @@ lot_level <- current_df |>
     yearbuilt <= 2025,
     unitsres > 0
   ) |>
-  inner_join(standard_cd, by = "borocd") |>
+  inner_join(standard_cd, by = "borocd", relationship = "many-to-one") |>
   mutate(
     residential_only_flag = unitstotal == unitsres,
     mixed_use_flag = unitstotal > unitsres,
@@ -144,7 +151,7 @@ panel <- expand_grid(
   standard_cd |> select(borocd, borough_code, borough_name),
   yearbuilt = 1980:2025
 ) |>
-  left_join(panel_base, by = c("borocd", "borough_code", "borough_name", "yearbuilt")) |>
+  left_join(panel_base, by = c("borocd", "borough_code", "borough_name", "yearbuilt"), relationship = "one-to-one") |>
   mutate(
     residential_lot_count_proxy = coalesce(residential_lot_count_proxy, 0),
     residential_only_lot_count_proxy = coalesce(residential_only_lot_count_proxy, 0),

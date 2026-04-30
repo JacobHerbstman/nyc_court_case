@@ -40,6 +40,11 @@ z_score <- function(x) {
 
 add_era_interactions <- function(df, variable_names, era_values) {
   out_df <- df
+  missing_variables <- setdiff(variable_names, names(df))
+
+  if (length(missing_variables) > 0) {
+    stop("Missing variables needed for era interactions: ", paste(missing_variables, collapse = ", "))
+  }
 
   for (variable_name in variable_names) {
     for (era_value in era_values) {
@@ -54,6 +59,14 @@ extract_model_rows <- function(model, outcome_family, outcome_label, control_lay
   coef_table <- as.data.frame(coeftable(model))
   coef_table$term <- rownames(coef_table)
   rownames(coef_table) <- NULL
+  missing_terms <- setdiff(term_names, coef_table$term)
+
+  if (length(missing_terms) > 0) {
+    stop(
+      "Model dropped requested terms for ", outcome_family, " / ", control_layer,
+      " / reference ", reference_era, ": ", paste(missing_terms, collapse = ", ")
+    )
+  }
 
   confint_df <- as.data.frame(confint(model))
   confint_df$term <- rownames(confint_df)
@@ -81,6 +94,38 @@ extract_model_rows <- function(model, outcome_family, outcome_label, control_lay
     )
 }
 
+assert_required_columns <- function(df, required_cols, df_name) {
+  missing_cols <- setdiff(required_cols, names(df))
+
+  if (length(missing_cols) > 0) {
+    stop(df_name, " is missing required columns: ", paste(missing_cols, collapse = ", "))
+  }
+}
+
+assert_unique_keys <- function(df, key_cols, df_name) {
+  duplicate_keys <- df %>%
+    count(across(all_of(key_cols)), name = "source_row_count") %>%
+    filter(source_row_count > 1)
+
+  if (nrow(duplicate_keys) > 0) {
+    stop(df_name, " is not unique by ", paste(key_cols, collapse = ", "), ".")
+  }
+}
+
+summarize_model_sample <- function(model, model_df, weight_var) {
+  model_rows <- obs(model)
+  sample_df <- model_df[model_rows, , drop = FALSE]
+
+  tibble(
+    input_rows = nrow(model_df),
+    nobs = nobs(model),
+    dropped_input_rows = nrow(model_df) - nobs(model),
+    positive_outcome_share = mean(sample_df$outcome_value > 0, na.rm = TRUE),
+    outcome_mean = mean(sample_df$outcome_value, na.rm = TRUE),
+    weight_sum = if (is.na(weight_var)) NA_real_ else sum(sample_df[[weight_var]], na.rm = TRUE)
+  )
+}
+
 static_control_cols <- c(
   "vacancy_rate_1990_exact",
   "structure_share_1_2_units_1990_exact",
@@ -100,6 +145,19 @@ static_control_cols <- c(
 initial_panel <- read_csv(zap_housing_initial_panel_csv, show_col_types = FALSE, na = c("", "NA"))
 mature_panel <- read_csv(zap_housing_mature_cohort_panel_csv, show_col_types = FALSE, na = c("", "NA"))
 
+assert_required_columns(
+  initial_panel,
+  c("borocd", "cert_year", "borough_name", "initial_apps", "treat_z_boro", static_control_cols),
+  "Initial ZAP housing panel"
+)
+assert_required_columns(
+  mature_panel,
+  c("borocd", "cert_year", "borough_name", "initial_apps", "completion_share", "failure_share", "treat_z_boro"),
+  "Mature ZAP housing panel"
+)
+assert_unique_keys(initial_panel, c("borocd", "cert_year"), "Initial ZAP housing panel")
+assert_unique_keys(mature_panel, c("borocd", "cert_year"), "Mature ZAP housing panel")
+
 control_lookup <- initial_panel %>%
   distinct(borocd, across(all_of(static_control_cols))) %>%
   transmute(
@@ -118,6 +176,8 @@ control_lookup <- initial_panel %>%
     college_graduate_share_1990_exact_z = z_score(college_graduate_share_1990_exact),
     unemployment_rate_1990_exact_z = z_score(unemployment_rate_1990_exact)
   )
+
+assert_unique_keys(control_lookup, "borocd", "Static control lookup")
 
 static_control_vars <- c(
   "vacancy_rate_1990_exact_z",
@@ -142,11 +202,15 @@ if (!reference_era %in% count_eras_all) {
   stop("reference_era must be one of: ", paste(count_eras_all, collapse = ", "))
 }
 
+if (!reference_era %in% share_eras_all) {
+  stop("reference_era must also be available in mature-cohort share eras: ", paste(share_eras_all, collapse = ", "))
+}
+
 count_eras <- count_eras_all[count_eras_all != reference_era]
 share_eras <- share_eras_all[share_eras_all != reference_era]
 
 count_df <- initial_panel %>%
-  left_join(control_lookup, by = "borocd") %>%
+  left_join(control_lookup, by = "borocd", relationship = "many-to-one") %>%
   mutate(
     outcome_value = initial_apps,
     era = case_when(
@@ -165,7 +229,7 @@ count_df <- initial_panel %>%
 
 completion_df <- mature_panel %>%
   filter(initial_apps > 0) %>%
-  left_join(control_lookup, by = "borocd") %>%
+  left_join(control_lookup, by = "borocd", relationship = "many-to-one") %>%
   mutate(
     outcome_value = completion_share,
     era = case_when(
@@ -183,7 +247,7 @@ completion_df <- mature_panel %>%
 
 failure_df <- mature_panel %>%
   filter(initial_apps > 0) %>%
-  left_join(control_lookup, by = "borocd") %>%
+  left_join(control_lookup, by = "borocd", relationship = "many-to-one") %>%
   mutate(
     outcome_value = failure_share,
     era = case_when(
@@ -259,11 +323,9 @@ for (spec_idx in seq_len(nrow(specs))) {
     outcome_label = outcome_label,
     control_layer = "uncontrolled",
     sample_label = sample_label,
-    nobs = nobs(model_uncontrolled),
-    positive_outcome_share = mean(work_df$outcome_value > 0, na.rm = TRUE),
-    outcome_mean = mean(work_df$outcome_value, na.rm = TRUE),
-    weight_sum = if (is.na(weight_var)) NA_real_ else sum(work_df[[weight_var]], na.rm = TRUE)
-  )
+    missing_requested_term_count = length(setdiff(treat_terms, rownames(coeftable(model_uncontrolled))))
+  ) %>%
+    bind_cols(summarize_model_sample(model_uncontrolled, uncontrolled_df, weight_var))
   summary_idx <- summary_idx + 1L
 
   controlled_df <- add_era_interactions(uncontrolled_df, static_control_vars, era_values)
@@ -297,11 +359,9 @@ for (spec_idx in seq_len(nrow(specs))) {
     outcome_label = outcome_label,
     control_layer = "static_1990",
     sample_label = sample_label,
-    nobs = nobs(model_controlled),
-    positive_outcome_share = mean(work_df$outcome_value > 0, na.rm = TRUE),
-    outcome_mean = mean(work_df$outcome_value, na.rm = TRUE),
-    weight_sum = if (is.na(weight_var)) NA_real_ else sum(work_df[[weight_var]], na.rm = TRUE)
-  )
+    missing_requested_term_count = length(setdiff(treat_terms, rownames(coeftable(model_controlled))))
+  ) %>%
+    bind_cols(summarize_model_sample(model_controlled, controlled_df, weight_var))
   summary_idx <- summary_idx + 1L
 }
 

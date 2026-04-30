@@ -31,6 +31,12 @@
 - If a logged outcome has zeros, handle them by dropping zero observations for the logged specification unless explicitly instructed otherwise.
 - For the alderman uncertainty index, keep the current control set unless explicitly asked to change it.
 
+## Join Safety Standard
+- Never use many-to-many joins in active task code.
+- Before joining, validate that the join keys are unique on the side that should be unique, or collapse duplicate keys upstream with explicit source-priority or aggregation logic and QC output.
+- Do not silence dplyr many-to-many warnings with `relationship = "many-to-many"`. If `relationship` is used, use it to assert the expected one-to-one, many-to-one, or one-to-many contract.
+- If a join would be many-to-many, fix the producer/root data issue first instead of expanding rows downstream.
+
 ## Make Incrementality Rules
 - Do not call recursive upstream builds inside active task Makefiles (for example, no `$(MAKE) -C ../../...` inside symlink/input rules).
 - `link-inputs` should only create symlinks and should not orchestrate upstream task execution.

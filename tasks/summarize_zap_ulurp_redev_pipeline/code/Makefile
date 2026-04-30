@@ -9,16 +9,8 @@ all: ../output/zap_ulurp_redev_cd_year_panel.csv ../output/zap_ulurp_redev_matur
 ../input/zap_housing_hdb_link_candidates.csv: ../../build_zap_housing_hdb_link/output/zap_housing_hdb_link_candidates.csv | ../input
 	ln -sf "$<" "$@"
 
-../output/zap_ulurp_redev_cd_year_panel.csv: summarize_zap_ulurp_redev_pipeline.R ../input/zap_ulurp_redev_project_base.csv ../input/zap_housing_hdb_link_candidates.csv | ../output
+../output/zap_ulurp_redev_cd_year_panel.csv ../output/zap_ulurp_redev_mature_cohort_panel.csv ../output/zap_ulurp_redev_yield_panel.csv ../output/zap_ulurp_redev_2x2_era_summary.csv ../output/zap_ulurp_redev_plots.pdf: summarize_zap_ulurp_redev_pipeline.R ../../_lib/source_pipeline_utils.R ../input/zap_ulurp_redev_project_base.csv ../input/zap_housing_hdb_link_candidates.csv | ../output
 	$(R) $< ../input/zap_ulurp_redev_project_base.csv ../input/zap_housing_hdb_link_candidates.csv ../output/zap_ulurp_redev_cd_year_panel.csv ../output/zap_ulurp_redev_mature_cohort_panel.csv ../output/zap_ulurp_redev_yield_panel.csv ../output/zap_ulurp_redev_2x2_era_summary.csv ../output/zap_ulurp_redev_plots.pdf
-
-../output/zap_ulurp_redev_mature_cohort_panel.csv: ../output/zap_ulurp_redev_cd_year_panel.csv
-
-../output/zap_ulurp_redev_yield_panel.csv: ../output/zap_ulurp_redev_cd_year_panel.csv
-
-../output/zap_ulurp_redev_2x2_era_summary.csv: ../output/zap_ulurp_redev_cd_year_panel.csv
-
-../output/zap_ulurp_redev_plots.pdf: ../output/zap_ulurp_redev_cd_year_panel.csv
 
 link-inputs: ../input/zap_ulurp_redev_project_base.csv ../input/zap_housing_hdb_link_candidates.csv
 

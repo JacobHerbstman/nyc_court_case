@@ -53,13 +53,38 @@ yield_era_from_year <- function(x) {
   )
 }
 
-project_base_df <- read_csv(zap_ulurp_redev_project_base_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+mature_era_from_year <- function(x) {
+  case_when(
+    x >= 1976 & x <= 1979 ~ "1976-1979",
+    x >= 1980 & x <= 1984 ~ "1980-1984",
+    x >= 1985 & x <= 1989 ~ "1985-1989",
+    x >= 1990 & x <= 1999 ~ "1990-1999",
+    x >= 2000 & x <= 2009 ~ "2000-2009",
+    x >= 2010 & x <= 2015 ~ "2010-2015",
+    TRUE ~ NA_character_
+  )
+}
+
+assert_unique_keys <- function(df, keys, label) {
+  duplicate_keys <- df %>%
+    count(across(all_of(keys)), name = "n") %>%
+    filter(n > 1)
+
+  if (nrow(duplicate_keys) > 0) {
+    stop(label, " is not unique by ", paste(keys, collapse = ", "), ".")
+  }
+}
+
+project_base_df <- read_csv(zap_ulurp_redev_project_base_csv, show_col_types = FALSE, na = c("", "NA"), guess_max = Inf) %>%
   mutate(
+    project_id = as.character(project_id),
     borocd = suppressWarnings(as.integer(borocd)),
     cert_year = suppressWarnings(as.integer(cert_year)),
     occupied_units_1990 = suppressWarnings(as.numeric(occupied_units_1990)),
     residential_acres = suppressWarnings(as.numeric(residential_acres))
   )
+
+assert_unique_keys(project_base_df, "project_id", "ZAP ULURP redevelopment project base")
 
 district_lookup <- project_base_df %>%
   distinct(
@@ -101,6 +126,12 @@ district_lookup <- project_base_df %>%
   ) %>%
   arrange(borocd)
 
+assert_unique_keys(district_lookup, "borocd", "ZAP ULURP redevelopment district lookup")
+
+if (n_distinct(district_lookup$borocd) != 59) {
+  stop("Expected the ZAP ULURP redevelopment district lookup to cover 59 community districts.")
+}
+
 apps_counts <- project_base_df %>%
   filter(cert_year >= 1976, cert_year <= 2025) %>%
   group_by(borocd, cert_year) %>%
@@ -115,12 +146,14 @@ apps_counts <- project_base_df %>%
     .groups = "drop"
   )
 
+assert_unique_keys(apps_counts, c("borocd", "cert_year"), "ZAP ULURP redevelopment application counts")
+
 cd_year_panel <- crossing(
   borocd = district_lookup$borocd,
   cert_year = 1976:2025
 ) %>%
-  left_join(district_lookup, by = "borocd") %>%
-  left_join(apps_counts, by = c("borocd", "cert_year")) %>%
+  left_join(district_lookup, by = "borocd", relationship = "many-to-one") %>%
+  left_join(apps_counts, by = c("borocd", "cert_year"), relationship = "many-to-one") %>%
   mutate(
     across(c(initial_apps, private_initial_apps, public_initial_apps, mixed_private_rezoning_apps, public_hpd_apps, rezoning_or_special_apps, public_land_or_disposition_apps), ~ coalesce(.x, 0L)),
     era = summary_era_from_year(cert_year),
@@ -160,15 +193,17 @@ mature_counts <- project_base_df %>%
     .groups = "drop"
   )
 
+assert_unique_keys(mature_counts, c("borocd", "cert_year"), "ZAP ULURP redevelopment mature counts")
+
 mature_panel <- crossing(
   borocd = district_lookup$borocd,
   cert_year = 1976:2015
 ) %>%
-  left_join(district_lookup, by = "borocd") %>%
-  left_join(mature_counts, by = c("borocd", "cert_year")) %>%
+  left_join(district_lookup, by = "borocd", relationship = "many-to-one") %>%
+  left_join(mature_counts, by = c("borocd", "cert_year"), relationship = "many-to-one") %>%
   mutate(
     across(c(initial_apps, complete_apps, failed_apps, unresolved_apps, private_initial_apps, private_complete_apps, private_failed_apps, private_unresolved_apps, public_initial_apps, public_complete_apps, public_failed_apps, public_unresolved_apps), ~ coalesce(.x, 0L)),
-    era = summary_era_from_year(cert_year),
+    era = mature_era_from_year(cert_year),
     completion_share = ifelse(initial_apps > 0, complete_apps / initial_apps, NA_real_),
     failure_share = ifelse(initial_apps > 0, failed_apps / initial_apps, NA_real_),
     unresolved_share = ifelse(initial_apps > 0, unresolved_apps / initial_apps, NA_real_),
@@ -178,6 +213,14 @@ mature_panel <- crossing(
     public_failure_share = ifelse(public_initial_apps > 0, public_failed_apps / public_initial_apps, NA_real_)
   ) %>%
   arrange(cert_year, borocd)
+
+if (any(mature_panel$cert_year > 2015, na.rm = TRUE)) {
+  stop("Mature ZAP ULURP redevelopment cohort panel includes certification years after 2015.")
+}
+
+if (any(mature_panel$era %in% c("2010-2019", "2016-2020", "2020-2025"), na.rm = TRUE)) {
+  stop("Mature ZAP ULURP redevelopment cohort panel includes an immature era label.")
+}
 
 candidate_05_df <- read_csv(zap_housing_hdb_link_candidates_csv, show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(
@@ -199,8 +242,10 @@ candidate_05_df <- read_csv(zap_housing_hdb_link_candidates_csv, show_col_types 
     .groups = "drop"
   )
 
+assert_unique_keys(candidate_05_df, "project_id", "0-5-year HDB candidate summary")
+
 yield_project_df <- project_base_df %>%
-  left_join(candidate_05_df, by = "project_id") %>%
+  left_join(candidate_05_df, by = "project_id", relationship = "many-to-one") %>%
   mutate(
     has_any_addition_job_0_5 = coalesce(has_any_addition_job_0_5, FALSE),
     has_any_nb_job_0_5 = coalesce(has_any_nb_job_0_5, FALSE),
@@ -243,12 +288,14 @@ yield_counts <- yield_project_df %>%
     .groups = "drop"
   )
 
+assert_unique_keys(yield_counts, c("borocd", "cert_year"), "ZAP ULURP redevelopment yield counts")
+
 yield_panel <- crossing(
   borocd = district_lookup$borocd,
   cert_year = 2010:2020
 ) %>%
-  left_join(district_lookup, by = "borocd") %>%
-  left_join(yield_counts, by = c("borocd", "cert_year")) %>%
+  left_join(district_lookup, by = "borocd", relationship = "many-to-one") %>%
+  left_join(yield_counts, by = c("borocd", "cert_year"), relationship = "many-to-one") %>%
   mutate(
     across(c(initial_apps, linked_addition_projects_0_10, linked_nb_projects_0_10, linked_nb_50_plus_projects_0_10, linked_gross_add_units_0_10, private_initial_apps, private_linked_addition_projects_0_10, private_linked_nb_projects_0_10, private_linked_nb_50_plus_projects_0_10, private_linked_gross_add_units_0_10, public_initial_apps, public_linked_addition_projects_0_10, public_linked_nb_projects_0_10, public_linked_nb_50_plus_projects_0_10, public_linked_gross_add_units_0_10, linked_addition_projects_0_5, linked_nb_projects_0_5, linked_nb_50_plus_projects_0_5, linked_gross_add_units_0_5, private_linked_addition_projects_0_5, private_linked_nb_projects_0_5, private_linked_nb_50_plus_projects_0_5, private_linked_gross_add_units_0_5, public_linked_addition_projects_0_5, public_linked_nb_projects_0_5, public_linked_nb_50_plus_projects_0_5, public_linked_gross_add_units_0_5), ~ coalesce(.x, 0)),
     yield_era = yield_era_from_year(cert_year),

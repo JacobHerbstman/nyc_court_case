@@ -189,6 +189,7 @@ copy_if_changed <- function(temp_path, out_path) {
     new_hash <- unname(tools::md5sum(temp_path))
     if (!is.na(old_hash) && !is.na(new_hash) && identical(old_hash, new_hash)) {
       unlink(temp_path)
+      Sys.setFileTime(out_path, Sys.time())
       return(invisible(FALSE))
     }
     unlink(out_path)

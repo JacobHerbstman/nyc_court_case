@@ -18,6 +18,7 @@ PAGE_TYPE_MAP = {
     "Socioeconomic Profile Housing Characteristics": "housing",
     "Socioeconomic Profile Housing and Economic Characteristics": "housing_economic",
 }
+PAGE_TYPE_SEQUENCE = list(PAGE_TYPE_MAP.values())
 EXPECTED_PROFILE_PAGE_COUNT = len(PAGE_TYPE_MAP)
 
 BoroughCodeMap = {
@@ -26,6 +27,13 @@ BoroughCodeMap = {
     "bk": "3",
     "qn": "4",
     "si": "5",
+}
+EXPECTED_BOROUGH_DISTRICT_COUNT = {
+    "mn": 12,
+    "bx": 12,
+    "bk": 18,
+    "qn": 14,
+    "si": 3,
 }
 
 DISTRICT_RE = re.compile(r"Community District\s+(\d{1,2})\b")
@@ -179,13 +187,28 @@ def main() -> None:
                 )
 
             parsed_pages.sort(key=lambda page_row: page_row["pdf_page_number"])
+            sequence_can_assign = (
+                len(parsed_pages)
+                == EXPECTED_BOROUGH_DISTRICT_COUNT[row["borough_code"]] * EXPECTED_PROFILE_PAGE_COUNT
+                and all(
+                    page_row["profile_page_type"]
+                    == PAGE_TYPE_SEQUENCE[(page_idx - 1) % EXPECTED_PROFILE_PAGE_COUNT]
+                    for page_idx, page_row in enumerate(parsed_pages, start=1)
+                )
+            )
             district_ids: set[str] = set()
             pdf_page_rows: list[dict[str, object]] = []
             district_page_counts: Counter[str] = Counter()
             district_page_types: dict[str, set[str]] = {}
 
-            for page_row in parsed_pages:
-                assigned_district_id = page_row["title_district_id"]
+            for page_idx, page_row in enumerate(parsed_pages, start=1):
+                sequence_district_id = None
+
+                if sequence_can_assign:
+                    sequence_district_num = (page_idx - 1) // EXPECTED_PROFILE_PAGE_COUNT + 1
+                    sequence_district_id = f"{BoroughCodeMap[row['borough_code']]}{sequence_district_num:02d}"
+
+                assigned_district_id = sequence_district_id or page_row["title_district_id"]
 
                 if assigned_district_id is None:
                     continue
@@ -199,6 +222,8 @@ def main() -> None:
                         "pdf_path": page_row["pdf_path"],
                         "pdf_page_number": page_row["pdf_page_number"],
                         "district_id": assigned_district_id,
+                        "title_district_id": page_row["title_district_id"],
+                        "sequence_district_id": sequence_district_id,
                         "district_header": page_row["district_header"],
                         "page_title": page_row["page_title"],
                         "profile_page_type": page_row["profile_page_type"],
@@ -225,6 +250,8 @@ def main() -> None:
                             "pdf_path": page_row["pdf_path"],
                             "pdf_page_number": page_row["pdf_page_number"],
                             "district_id": assigned_district_id,
+                            "title_district_id": page_row["title_district_id"],
+                            "sequence_district_id": sequence_district_id,
                             "district_header": page_row["district_header"],
                             "page_title": page_row["page_title"],
                             "profile_page_type": page_row["profile_page_type"],
@@ -242,6 +269,9 @@ def main() -> None:
 
                 if len(district_page_types[district_id]) != district_page_counts[district_id]:
                     validation_notes.append("duplicate_profile_page_type")
+
+                if page_row["sequence_district_id"] and page_row["sequence_district_id"] != page_row["title_district_id"]:
+                    validation_notes.append("sequence_district_id_corrected")
 
                 if validation_notes:
                     page_row["status"] = "review_required"

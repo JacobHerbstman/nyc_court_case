@@ -147,6 +147,12 @@ safe_lm_fit <- function(df, predictors, spec_name, spec_family, spec_order) {
     tidy_df <- tibble(beta_treat_z = NA_real_, beta_treat_z_se = NA_real_, beta_treat_z_p = NA_real_)
   }
 
+  fit_status <- ifelse(
+    is.na(tidy_df$beta_treat_z[[1]]) || is.na(tidy_df$beta_treat_z_se[[1]]),
+    "treat_term_dropped",
+    "ok"
+  )
+
   bind_cols(
     tibble(
       spec = spec_name,
@@ -155,7 +161,7 @@ safe_lm_fit <- function(df, predictors, spec_name, spec_family, spec_order) {
       control_count = length(predictors),
       r_squared = summary(fit)$r.squared,
       n = nobs(fit),
-      fit_status = "ok"
+      fit_status = fit_status
     ),
     tidy_df
   )
@@ -234,6 +240,16 @@ make_zap_mature_era <- function(year) {
     year >= 2010 & year <= 2015 ~ "2010-2015",
     TRUE ~ NA_character_
   )
+}
+
+assert_unique_keys <- function(df, keys, label) {
+  duplicate_keys <- df %>%
+    count(across(all_of(keys)), name = "n") %>%
+    filter(n > 1)
+
+  if (nrow(duplicate_keys) > 0) {
+    stop(label, " is not unique by ", paste(keys, collapse = ", "), ".")
+  }
 }
 
 controls_raw <- read_csv(controls_path, show_col_types = FALSE) %>%
@@ -322,9 +338,12 @@ lookup_cols <- c(
 
 lookup_df <- brooklyn_base %>% select(all_of(lookup_cols))
 
+assert_unique_keys(lookup_df, "borocd", "Brooklyn helper lookup")
+
 long_outcomes <- read_csv(long_units_path, show_col_types = FALSE) %>%
   filter(
     borough_name == "Brooklyn",
+    series_kind == "preferred_long_series",
     series_family %in% c("units_built_total", "units_built_50_plus")
   ) %>%
   mutate(era = make_long_era(year)) %>%
@@ -335,7 +354,7 @@ long_outcomes <- read_csv(long_units_path, show_col_types = FALSE) %>%
     years_n = n_distinct(year),
     .groups = "drop"
   ) %>%
-  inner_join(lookup_df, by = "borocd") %>%
+  inner_join(lookup_df, by = "borocd", relationship = "many-to-one") %>%
   mutate(
     outcome_id = series_family,
     outcome_label = case_when(
@@ -368,7 +387,7 @@ dcp_outcomes <- read_csv(dcp_supply_path, show_col_types = FALSE) %>%
     years_n = n_distinct(year),
     .groups = "drop"
   ) %>%
-  inner_join(lookup_df, by = "borocd") %>%
+  inner_join(lookup_df, by = "borocd", relationship = "many-to-one") %>%
   mutate(
     outcome_id = outcome_family,
     outcome_label = case_when(
@@ -393,7 +412,18 @@ dcp_outcomes <- read_csv(dcp_supply_path, show_col_types = FALSE) %>%
     )
   )
 
-permit_outcomes <- read_csv(permit_panel_path, show_col_types = FALSE) %>%
+permit_panel_raw <- read_csv(permit_panel_path, show_col_types = FALSE)
+
+permit_outcome_families <- permit_panel_raw %>%
+  filter(!is.na(outcome_family)) %>%
+  distinct(outcome_family) %>%
+  pull(outcome_family)
+
+if (!identical(sort(permit_outcome_families), "permit_nb_jobs")) {
+  stop("Expected permit panel to contain exactly one outcome_family: permit_nb_jobs.")
+}
+
+permit_outcomes <- permit_panel_raw %>%
   filter(borough_name == "Brooklyn") %>%
   mutate(era = make_post2010_era(year)) %>%
   filter(!is.na(era)) %>%
@@ -403,7 +433,7 @@ permit_outcomes <- read_csv(permit_panel_path, show_col_types = FALSE) %>%
     years_n = n_distinct(year),
     .groups = "drop"
   ) %>%
-  inner_join(lookup_df, by = "borocd") %>%
+  inner_join(lookup_df, by = "borocd", relationship = "many-to-one") %>%
   mutate(
     outcome_id = "permit_nb_jobs",
     outcome_label = "DOB new-building jobs",
@@ -434,7 +464,7 @@ wide_value_names <- era_outcomes %>%
   pivot_wider(names_from = value_name, values_from = outcome_rate)
 
 cd_summary <- brooklyn_base %>%
-  left_join(wide_value_names, by = "borocd") %>%
+  left_join(wide_value_names, by = "borocd", relationship = "one-to-one") %>%
   mutate(
     treat_rank_brooklyn = min_rank(desc(treat_z_boro))
   ) %>%
@@ -528,7 +558,8 @@ size_bin_summary <- era_outcomes %>%
       filter(spec == "raw", outcome_id %in% size_bin_outcomes, era %in% c("2010-2019", "2020-2025")) %>%
       mutate(size_bin = recode(outcome_id, !!!size_bin_labels)) %>%
       select(era, size_bin, raw_beta_treat_z = beta_treat_z, raw_beta_treat_z_se = beta_treat_z_se),
-    by = c("era", "size_bin")
+    by = c("era", "size_bin"),
+    relationship = "many-to-one"
   ) %>%
   arrange(era, factor(size_bin, levels = c("1-2", "3-4", "5-9", "10-49", "50+")), homeowner_half)
 
@@ -625,7 +656,7 @@ zap_applications_era <- zap_cd_year %>%
     public_hpd_apps = sum(public_hpd_apps, na.rm = TRUE),
     .groups = "drop"
   ) %>%
-  inner_join(lookup_df, by = "borocd") %>%
+  inner_join(lookup_df, by = "borocd", relationship = "many-to-one") %>%
   mutate(
     initial_apps_per_10k = initial_apps / years_n * 10000 / occupied_units_1990_exact,
     private_initial_apps_per_10k = private_initial_apps / years_n * 10000 / occupied_units_1990_exact,
@@ -644,7 +675,7 @@ zap_mature_era <- zap_mature %>%
     unresolved_apps = sum(unresolved_apps, na.rm = TRUE),
     .groups = "drop"
   ) %>%
-  inner_join(lookup_df, by = "borocd") %>%
+  inner_join(lookup_df, by = "borocd", relationship = "many-to-one") %>%
   mutate(
     completion_share = ifelse(initial_apps > 0, complete_apps / initial_apps, NA_real_),
     failure_share = ifelse(initial_apps > 0, failed_apps / initial_apps, NA_real_)
@@ -659,7 +690,7 @@ zap_yield_descriptive <- zap_yield %>%
     linked_gross_add_units_0_10 = sum(linked_gross_add_units_0_10, na.rm = TRUE),
     .groups = "drop"
   ) %>%
-  inner_join(lookup_df, by = "borocd") %>%
+  inner_join(lookup_df, by = "borocd", relationship = "many-to-one") %>%
   mutate(
     linked_nb_50_plus_rate_0_10 = ifelse(initial_apps > 0, linked_nb_50_plus_projects_0_10 / initial_apps, NA_real_),
     linked_gross_add_units_per_app_0_10 = ifelse(initial_apps > 0, linked_gross_add_units_0_10 / initial_apps, NA_real_)
@@ -674,7 +705,7 @@ zap_yield_regression <- zap_yield %>%
     linked_gross_add_units_0_5 = sum(linked_gross_add_units_0_5, na.rm = TRUE),
     .groups = "drop"
   ) %>%
-  inner_join(lookup_df, by = "borocd") %>%
+  inner_join(lookup_df, by = "borocd", relationship = "many-to-one") %>%
   mutate(
     linked_nb_50_plus_rate_0_5 = ifelse(initial_apps > 0, linked_nb_50_plus_projects_0_5 / initial_apps, NA_real_),
     linked_gross_add_units_per_app_0_5 = ifelse(initial_apps > 0, linked_gross_add_units_0_5 / initial_apps, NA_real_)
@@ -844,7 +875,8 @@ boundaries_sf <- read_parquet(boundaries_path, col_select = c("district_id", "ge
   st_transform(2263) %>%
   inner_join(
     brooklyn_base %>% select(borocd, brooklyn_short_label, cd_label, treat_z_boro),
-    by = "borocd"
+    by = "borocd",
+    relationship = "many-to-one"
   )
 
 map_data <- boundaries_sf %>%
@@ -855,7 +887,8 @@ map_data <- boundaries_sf %>%
         units_built_total_2020_2025_per_10k_occupied,
         units_built_50_plus_2020_2025_per_10k_occupied
       ),
-    by = "borocd"
+    by = "borocd",
+    relationship = "many-to-one"
   )
 
 rank_plot_data <- cd_summary %>%

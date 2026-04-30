@@ -36,6 +36,16 @@ out_exact_splice_csv <- args[8]
 out_plots_pdf <- args[9]
 out_qc_csv <- args[10]
 
+assert_unique_keys <- function(df, keys, label) {
+  duplicate_keys <- df |>
+    count(across(all_of(keys)), name = "n") |>
+    filter(n > 1)
+
+  if (nrow(duplicate_keys) > 0) {
+    stop(label, " is not unique by ", paste(keys, collapse = ", "), ".")
+  }
+}
+
 district_lookup <- read_csv(cd_homeownership_long_units_series_csv, show_col_types = FALSE, na = c("", "NA")) |>
   distinct(borocd, borough_code, borough_name, treat_pp) |>
   mutate(
@@ -53,6 +63,12 @@ district_lookup <- read_csv(cd_homeownership_long_units_series_csv, show_col_typ
     )
   ) |>
   ungroup()
+
+assert_unique_keys(district_lookup, "borocd", "borough-details district lookup")
+
+if (n_distinct(district_lookup$borocd) != 59) {
+  stop("Expected the borough-details district lookup to cover 59 community districts.")
+}
 
 units_series_df <- read_csv(cd_homeownership_long_units_series_csv, show_col_types = FALSE, na = c("", "NA")) |>
   filter(
@@ -102,7 +118,8 @@ projects_observed_df <- read_parquet(
   left_join(
     district_lookup |>
       distinct(borocd, borough_code, borough_name),
-    by = "borocd"
+    by = "borocd",
+    relationship = "many-to-one"
   ) |>
   group_by(borocd, borough_code, borough_name, year) |>
   summarize(
@@ -116,7 +133,8 @@ all_series_df <- bind_rows(units_series_df, projects_proxy_df, projects_observed
   left_join(
     district_lookup |>
       select(borocd, borough_code, borough_name, treat_tercile, treat_tercile_label),
-    by = c("borocd", "borough_code", "borough_name")
+    by = c("borocd", "borough_code", "borough_name"),
+    relationship = "many-to-one"
   ) |>
   mutate(
     era = case_when(
@@ -221,7 +239,8 @@ observed_era_df <- read_csv(cd_homeownership_long_units_series_csv, show_col_typ
   left_join(
     district_lookup |>
       select(borocd, borough_code, borough_name, treat_tercile, treat_tercile_label),
-    by = c("borocd", "borough_code", "borough_name")
+    by = c("borocd", "borough_code", "borough_name"),
+    relationship = "many-to-one"
   ) |>
   mutate(
     era = case_when(
@@ -299,15 +318,25 @@ print(
 
 dev.off()
 
+borough_era_share_sum_df <- borough_era_df |>
+  group_by(series_family, borough_code, borough_name, era) |>
+  summarize(
+    borough_total = first(borough_total),
+    total_share = sum(borough_share, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+positive_borough_era_share_sum_df <- borough_era_share_sum_df |>
+  filter(borough_total > 0)
+
 qc_df <- bind_rows(
   tibble(metric = "borough_count", value = n_distinct(borough_era_df$borough_name), note = "Boroughs represented in the borough-era share table."),
+  tibble(metric = "district_count", value = n_distinct(district_lookup$borocd), note = "Community districts assigned to treatment terciles."),
   tibble(metric = "series_family_count", value = n_distinct(borough_era_df$series_family), note = "Series represented in the borough-era share table."),
   tibble(metric = "overlap_error_row_count", value = nrow(overlap_error_df), note = "Rows in the overlap error table by borough, era, and tercile."),
   tibble(metric = "exact_splice_row_count", value = nrow(exact_splice_df), note = "Rows in the exact-to-observed total-units era splice table."),
-  tibble(metric = "max_borough_era_share_sum_gap", value = max(abs(borough_era_df |>
-    group_by(series_family, borough_code, borough_name, era) |>
-    summarize(total_share = sum(borough_share, na.rm = TRUE), .groups = "drop") |>
-    pull(total_share) - 1), na.rm = TRUE), note = "Maximum absolute gap from 1 in borough-era tercile-share sums.")
+  tibble(metric = "zero_borough_era_total_cell_count", value = sum(is.na(borough_era_share_sum_df$borough_total) | borough_era_share_sum_df$borough_total <= 0), note = "Borough-era cells excluded from share-sum QC because the denominator is zero."),
+  tibble(metric = "max_positive_borough_era_share_sum_gap", value = max(abs(positive_borough_era_share_sum_df$total_share - 1), na.rm = TRUE), note = "Maximum absolute gap from 1 in positive-denominator borough-era tercile-share sums.")
 )
 
 write_csv(qc_df, out_qc_csv, na = "")

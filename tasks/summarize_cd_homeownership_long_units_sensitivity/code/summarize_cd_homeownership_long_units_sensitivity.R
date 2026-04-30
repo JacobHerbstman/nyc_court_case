@@ -41,6 +41,16 @@ out_summary_csv <- args[11]
 out_qc_csv <- args[12]
 out_plots_pdf <- args[13]
 
+assert_unique_keys <- function(df, keys, label) {
+  duplicate_keys <- df |>
+    count(across(all_of(keys)), name = "n") |>
+    filter(n > 1)
+
+  if (nrow(duplicate_keys) > 0) {
+    stop(label, " is not unique by ", paste(keys, collapse = ", "), ".")
+  }
+}
+
 compute_share_scenario <- function(df, scenario_type, scenario_name) {
   borough_level <- df |>
     group_by(series_family, year, borough_code, borough_name, treat_tercile, treat_tercile_label) |>
@@ -140,12 +150,19 @@ district_lookup <- read_csv(cd_homeownership_long_units_series_csv, show_col_typ
   ) |>
   ungroup()
 
+assert_unique_keys(district_lookup, "borocd", "long-units sensitivity district lookup")
+
+if (n_distinct(district_lookup$borocd) != 59) {
+  stop("Expected the long-units sensitivity district lookup to cover 59 community districts.")
+}
+
 series_df <- series_df |>
   select(-treat_tercile, -treat_tercile_label) |>
   left_join(
     district_lookup |>
       select(borocd, borough_code, borough_name, treat_tercile, treat_tercile_label, occupied_units_1990),
-    by = c("borocd", "borough_code", "borough_name", "occupied_units_1990")
+    by = c("borocd", "borough_code", "borough_name", "occupied_units_1990"),
+    relationship = "many-to-one"
   )
 
 top5_cd_year <- series_df |>
@@ -205,7 +222,8 @@ project_panel <- bind_rows(project_proxy, project_observed) |>
         select(borocd, borough_code, borough_name, treat_tercile, treat_tercile_label),
       year = 1980:2025
     ),
-    by = c("borocd", "borough_code", "borough_name", "year")
+    by = c("borocd", "borough_code", "borough_name", "year"),
+    relationship = "one-to-one"
   ) |>
   mutate(
     project_count_50_plus = coalesce(project_count_50_plus, 0),
@@ -321,6 +339,9 @@ write_csv(summary_df, out_summary_csv, na = "")
 
 qc_df <- bind_rows(
   tibble(metric = "district_count", value = n_distinct(series_df$borocd), note = "Standard CDs in the preferred long sensitivity series."),
+  tibble(metric = "preferred_series_year_gap_count", value = nrow(series_df |>
+    count(series_family, year, name = "cd_count") |>
+    filter(cd_count != 59)), note = "Preferred series-family-year cells not covering all 59 CDs."),
   tibble(metric = "top5_cd_year_count", value = nrow(top5_cd_year), note = "CD-year observations removed in the top-5-out sensitivity."),
   tibble(metric = "pooled_total_high_2020s_decline", value = summary_df$decline_survives_2020s[summary_df$scenario_type == "pooled" & summary_df$scenario_name == "all_boroughs" & summary_df$series_family == "units_built_total"], note = "One means the high-homeownership tercile still has a lower 2020-2025 share than in 1985-1989 for total units."),
   tibble(metric = "pooled_50_plus_high_2020s_decline", value = summary_df$decline_survives_2020s[summary_df$scenario_type == "pooled" & summary_df$scenario_name == "all_boroughs" & summary_df$series_family == "units_built_50_plus"], note = "One means the high-homeownership tercile still has a lower 2020-2025 share than in 1985-1989 for 50+ units.")

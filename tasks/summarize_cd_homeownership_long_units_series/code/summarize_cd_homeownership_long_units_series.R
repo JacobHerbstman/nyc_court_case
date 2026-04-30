@@ -27,6 +27,16 @@ out_tercile_era_csv <- args[4]
 out_qc_csv <- args[5]
 out_plots_pdf <- args[6]
 
+assert_unique_keys <- function(df, keys, label) {
+  duplicate_keys <- df |>
+    count(across(all_of(keys)), name = "n") |>
+    filter(n > 1)
+
+  if (nrow(duplicate_keys) > 0) {
+    stop(label, " is not unique by ", paste(keys, collapse = ", "), ".")
+  }
+}
+
 series_df <- read_csv(cd_homeownership_long_units_series_csv, show_col_types = FALSE, na = c("", "NA"))
 
 district_lookup <- series_df |>
@@ -42,6 +52,12 @@ district_lookup <- series_df |>
   ) |>
   ungroup()
 
+assert_unique_keys(district_lookup, "borocd", "long-units district lookup")
+
+if (n_distinct(district_lookup$borocd) != 59) {
+  stop("Expected the long-units district lookup to cover 59 community districts.")
+}
+
 city_year_df <- series_df |>
   group_by(series_kind, source_family, source_label, series_family, series_label, year) |>
   summarize(
@@ -55,7 +71,8 @@ preferred_df <- series_df |>
   left_join(
     district_lookup |>
       select(borocd, treat_tercile, treat_tercile_label),
-    by = "borocd"
+    by = "borocd",
+    relationship = "many-to-one"
   ) |>
   mutate(
     era = case_when(
@@ -109,6 +126,9 @@ write_csv(tercile_era_df, out_tercile_era_csv, na = "")
 write_csv(
   bind_rows(
     tibble(metric = "district_count", value = n_distinct(district_lookup$borocd), note = "Community districts assigned to treatment terciles."),
+    tibble(metric = "preferred_series_year_gap_count", value = nrow(preferred_df |>
+      count(series_family, year, name = "cd_count") |>
+      filter(cd_count != 59)), note = "Preferred series-family-year cells not covering all 59 CDs."),
     tibble(metric = "city_year_row_count", value = nrow(city_year_df), note = "Rows in the city-year long units summary."),
     tibble(metric = "tercile_year_row_count", value = nrow(tercile_year_df), note = "Rows in the annual tercile summary for the preferred series."),
     tibble(metric = "tercile_era_row_count", value = nrow(tercile_era_df), note = "Rows in the era tercile summary for the preferred series.")

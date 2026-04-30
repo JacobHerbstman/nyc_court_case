@@ -42,7 +42,7 @@ escape_tex <- function(x) {
   x
 }
 
-base_df <- read_csv(zap_ulurp_redev_project_base_csv, show_col_types = FALSE, na = c("", "NA"))
+base_df <- read_csv(zap_ulurp_redev_project_base_csv, show_col_types = FALSE, na = c("", "NA"), guess_max = Inf)
 qc_df <- read_csv(zap_ulurp_redev_project_base_qc_csv, show_col_types = FALSE, na = c("", "NA"))
 era_summary_df <- read_csv(zap_ulurp_redev_era_summary_csv, show_col_types = FALSE, na = c("", "NA"))
 model_summary_df <- read_csv(zap_ulurp_redev_model_summary_csv, show_col_types = FALSE, na = c("", "NA"))
@@ -98,10 +98,10 @@ hh_apps_2010s <- get_era_value("initial_apps_per_10k", "2010-2019", "HH")
 lh_apps_2010s <- get_era_value("initial_apps_per_10k", "2010-2019", "LH")
 hh_private_apps_2010s <- get_era_value("private_initial_apps_per_10k", "2010-2019", "HH")
 lh_private_apps_2010s <- get_era_value("private_initial_apps_per_10k", "2010-2019", "LH")
-hh_completion_2010s <- get_era_value("completion_share", "2010-2019", "HH")
-lh_completion_2010s <- get_era_value("completion_share", "2010-2019", "LH")
-hh_failure_2010s <- get_era_value("failure_share", "2010-2019", "HH")
-lh_failure_2010s <- get_era_value("failure_share", "2010-2019", "LH")
+hh_completion_2010_2015 <- get_era_value("completion_share", "2010-2015", "HH")
+lh_completion_2010_2015 <- get_era_value("completion_share", "2010-2015", "LH")
+hh_failure_2010_2015 <- get_era_value("failure_share", "2010-2015", "HH")
+lh_failure_2010_2015 <- get_era_value("failure_share", "2010-2015", "LH")
 hh_yield_2010_2015 <- get_era_value("linked_nb_50_plus_rate_0_10", "2010-2015", "HH")
 lh_yield_2010_2015 <- get_era_value("linked_nb_50_plus_rate_0_10", "2010-2015", "LH")
 hh_add_units_2010_2015 <- get_era_value("linked_gross_add_units_per_app_0_10", "2010-2015", "HH")
@@ -109,8 +109,8 @@ lh_add_units_2010_2015 <- get_era_value("linked_gross_add_units_per_app_0_10", "
 
 private_apps_model <- get_model_estimate("private_initial_apps", "all_nyc", "4_all_blocks", "2020-2025", "linear_occ")
 public_hpd_model <- get_model_estimate("public_hpd_apps", "all_nyc", "4_all_blocks", "2020-2025", "linear_occ")
-completion_model <- get_model_estimate("completion_share", "all_nyc", "4_all_blocks", "2010-2019", "linear_share")
-failure_model <- get_model_estimate("failure_share", "all_nyc", "4_all_blocks", "2010-2019", "linear_share")
+completion_model <- get_model_estimate("completion_share", "all_nyc", "4_all_blocks", "2010-2015", "linear_share")
+failure_model <- get_model_estimate("failure_share", "all_nyc", "4_all_blocks", "2010-2015", "linear_share")
 yield_model <- get_model_estimate("linked_nb_50_plus_rate", "all_nyc", "4_all_blocks", "2016-2020", "linear_yield")
 gross_add_model <- get_model_estimate("linked_gross_add_units_per_app", "all_nyc", "4_all_blocks", "2016-2020", "linear_yield")
 
@@ -161,8 +161,8 @@ md_lines <- c(
   "## Descriptive 2x2 Patterns",
   paste0("- Applications per 10,000 occupied units, `2010-2019`: `LH = ", fmt_num(lh_apps_2010s), "`, `HH = ", fmt_num(hh_apps_2010s), "`."),
   paste0("- Private applications per 10,000, `2010-2019`: `LH = ", fmt_num(lh_private_apps_2010s), "`, `HH = ", fmt_num(hh_private_apps_2010s), "`."),
-  paste0("- Completion share, `2010-2019` mature cohorts: `LH = ", fmt_num(lh_completion_2010s), "`, `HH = ", fmt_num(hh_completion_2010s), "`."),
-  paste0("- Failure share, `2010-2019` mature cohorts: `LH = ", fmt_num(lh_failure_2010s), "`, `HH = ", fmt_num(hh_failure_2010s), "`."),
+  paste0("- Completion share, `2010-2015` mature cohorts: `LH = ", fmt_num(lh_completion_2010_2015), "`, `HH = ", fmt_num(hh_completion_2010_2015), "`."),
+  paste0("- Failure share, `2010-2015` mature cohorts: `LH = ", fmt_num(lh_failure_2010_2015), "`, `HH = ", fmt_num(hh_failure_2010_2015), "`."),
   paste0("- Linked `50+` build-out rate, `2010-2015`: `LH = ", fmt_num(lh_yield_2010_2015), "`, `HH = ", fmt_num(hh_yield_2010_2015), "`."),
   paste0("- Linked gross-add units per app, `2010-2015`: `LH = ", fmt_num(lh_add_units_2010_2015), "`, `HH = ", fmt_num(hh_add_units_2010_2015), "`."),
   "",
@@ -175,8 +175,8 @@ md_lines <- c(
   "## Interaction Diagnostics",
   paste0("- All-controls homeowner × redevelopment estimate for private applications, `2020-2025`: `", fmt_num(private_apps_model$estimate), "` (SE `", fmt_num(private_apps_model$std_error), "`)."),
   paste0("- All-controls homeowner × redevelopment estimate for public-HPD applications, `2020-2025`: `", fmt_num(public_hpd_model$estimate), "` (SE `", fmt_num(public_hpd_model$std_error), "`)."),
-  paste0("- All-controls homeowner × redevelopment estimate for completion share, `2010-2019`: `", fmt_num(completion_model$estimate), "` (SE `", fmt_num(completion_model$std_error), "`)."),
-  paste0("- All-controls homeowner × redevelopment estimate for failure share, `2010-2019`: `", fmt_num(failure_model$estimate), "` (SE `", fmt_num(failure_model$std_error), "`)."),
+  paste0("- All-controls homeowner × redevelopment estimate for completion share, `2010-2015`: `", fmt_num(completion_model$estimate), "` (SE `", fmt_num(completion_model$std_error), "`)."),
+  paste0("- All-controls homeowner × redevelopment estimate for failure share, `2010-2015`: `", fmt_num(failure_model$estimate), "` (SE `", fmt_num(failure_model$std_error), "`)."),
   paste0("- All-controls homeowner × redevelopment estimate for linked `50+` build-out yield, `2016-2020` relative to `2010-2015` using the identified `0-5` window: `", fmt_num(yield_model$estimate), "` (SE `", fmt_num(yield_model$std_error), "`)."),
   paste0("- All-controls homeowner × redevelopment estimate for linked gross-add units per app, `2016-2020` relative to `2010-2015` using the identified `0-5` window: `", fmt_num(gross_add_model$estimate), "` (SE `", fmt_num(gross_add_model$std_error), "`)."),
   "",
@@ -234,8 +234,8 @@ tex_lines <- c(
   "\\midrule",
   paste0("Applications per 10,000, 2010--2019 & ", escape_tex(fmt_num(lh_apps_2010s)), " & ", escape_tex(fmt_num(hh_apps_2010s)), " \\\\"),
   paste0("Private applications per 10,000, 2010--2019 & ", escape_tex(fmt_num(lh_private_apps_2010s)), " & ", escape_tex(fmt_num(hh_private_apps_2010s)), " \\\\"),
-  paste0("Completion share, 2010--2019 & ", escape_tex(fmt_num(lh_completion_2010s)), " & ", escape_tex(fmt_num(hh_completion_2010s)), " \\\\"),
-  paste0("Failure share, 2010--2019 & ", escape_tex(fmt_num(lh_failure_2010s)), " & ", escape_tex(fmt_num(hh_failure_2010s)), " \\\\"),
+  paste0("Completion share, 2010--2015 & ", escape_tex(fmt_num(lh_completion_2010_2015)), " & ", escape_tex(fmt_num(hh_completion_2010_2015)), " \\\\"),
+  paste0("Failure share, 2010--2015 & ", escape_tex(fmt_num(lh_failure_2010_2015)), " & ", escape_tex(fmt_num(hh_failure_2010_2015)), " \\\\"),
   paste0("Linked 50+ build-out rate, 2010--2015 & ", escape_tex(fmt_num(lh_yield_2010_2015)), " & ", escape_tex(fmt_num(hh_yield_2010_2015)), " \\\\"),
   paste0("Linked gross-add units per app, 2010--2015 & ", escape_tex(fmt_num(lh_add_units_2010_2015)), " & ", escape_tex(fmt_num(hh_add_units_2010_2015)), " \\\\"),
   "\\bottomrule",
@@ -256,8 +256,8 @@ tex_lines <- c(
   "\\midrule",
   paste0("Private applications, 2020--2025 & ", escape_tex(fmt_num(private_apps_model$estimate)), " & ", escape_tex(fmt_num(private_apps_model$std_error)), " \\\\"),
   paste0("Public HPD applications, 2020--2025 & ", escape_tex(fmt_num(public_hpd_model$estimate)), " & ", escape_tex(fmt_num(public_hpd_model$std_error)), " \\\\"),
-  paste0("Completion share, 2010--2019 & ", escape_tex(fmt_num(completion_model$estimate)), " & ", escape_tex(fmt_num(completion_model$std_error)), " \\\\"),
-  paste0("Failure share, 2010--2019 & ", escape_tex(fmt_num(failure_model$estimate)), " & ", escape_tex(fmt_num(failure_model$std_error)), " \\\\"),
+  paste0("Completion share, 2010--2015 & ", escape_tex(fmt_num(completion_model$estimate)), " & ", escape_tex(fmt_num(completion_model$std_error)), " \\\\"),
+  paste0("Failure share, 2010--2015 & ", escape_tex(fmt_num(failure_model$estimate)), " & ", escape_tex(fmt_num(failure_model$std_error)), " \\\\"),
   paste0("Linked 50+ yield, 2016--2020 vs 2010--2015 & ", escape_tex(fmt_num(yield_model$estimate)), " & ", escape_tex(fmt_num(yield_model$std_error)), " \\\\"),
   paste0("Linked gross-add units per app, 2016--2020 vs 2010--2015 & ", escape_tex(fmt_num(gross_add_model$estimate)), " & ", escape_tex(fmt_num(gross_add_model$std_error)), " \\\\"),
   "\\bottomrule",
