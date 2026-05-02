@@ -31,7 +31,7 @@ if (nrow(source_row) != 1) {
 }
 
 dataset_id <- str_match(source_row$official_url[1], "views/([a-z0-9-]+)/")[, 2]
-pull_date <- format(Sys.Date(), "%Y%m%d")
+pull_date <- resolve_raw_pull_date(setNames(list(source_row$expected_filename[1]), source_id))
 raw_dir <- file.path("..", "..", "..", "data_raw", source_id, pull_date)
 raw_path <- file.path(raw_dir, source_row$expected_filename[1])
 existing_index <- if (file.exists(out_index_csv)) {

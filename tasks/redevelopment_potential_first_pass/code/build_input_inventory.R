@@ -8,7 +8,7 @@
 # mappluto_lot_qc_csv <- "../input/mappluto_lot_qc.csv"
 # hdb_project_parquet <- "../input/dcp_housing_database_project_level_25q4.parquet"
 # dob_nb_panel_csv <- "../input/cd_homeownership_permit_nb_panel.csv"
-# cd_boundary_parquet <- "../input/dcp_boundary_community_districts_20260412.parquet"
+# cd_boundary_parquet <- "../input/dcp_boundary_community_districts_20260501.parquet"
 # out_csv <- "../output/input_inventory.csv"
 
 suppressPackageStartupMessages({

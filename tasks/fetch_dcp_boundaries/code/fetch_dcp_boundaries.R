@@ -47,7 +47,12 @@ download_names <- c(
   dcp_boundary_city_council_districts = "city_council_districts.zip"
 )
 
-pull_date <- format(Sys.Date(), "%Y%m%d")
+pull_date <- resolve_raw_pull_date(setNames(
+  lapply(names(download_names), function(source_id) {
+    c(download_names[[source_id]], paste0(dataset_ids[[source_id]], "_metadata.json"))
+  }),
+  names(download_names)
+))
 inventory_rows <- list()
 provenance_rows <- list()
 

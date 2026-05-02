@@ -33,7 +33,13 @@ if (nrow(source_rows) != 2) {
   stop("Source catalog must contain exactly dcp_zap_project_data and dcp_zap_bbl.")
 }
 
-pull_date <- format(Sys.Date(), "%Y%m%d")
+pull_date <- resolve_raw_pull_date(setNames(
+  lapply(seq_len(nrow(source_rows)), function(i) {
+    dataset_id <- str_match(source_rows$official_url[[i]], "([a-z0-9]{4}-[a-z0-9]{4})")[, 2]
+    c(source_rows$expected_filename[[i]], paste0(dataset_id, "_metadata.json"))
+  }),
+  source_rows$source_id
+))
 inventory_rows <- list()
 provenance_rows <- list()
 inventory_counter <- 0L

@@ -31,7 +31,7 @@ if (nrow(bps_row) != 1) {
 }
 
 years <- 1980:2024
-pull_date <- format(Sys.Date(), "%Y%m%d")
+pull_date <- resolve_raw_pull_date(list(census_bps_place_ascii = "placeasc.pdf"))
 inventory_rows <- list()
 
 for (year_value in years) {

@@ -42,7 +42,9 @@ profile_urls <- tibble(
   )
 )
 
-pull_date <- format(Sys.Date(), "%Y%m%d")
+pull_date <- resolve_raw_pull_date(list(
+  dcp_cd_profiles_1990_2000 = paste0("1990-2000_", profile_urls$borough_code, "_cd_profile.pdf")
+))
 inventory_rows <- vector("list", nrow(profile_urls))
 
 for (i in seq_len(nrow(profile_urls))) {

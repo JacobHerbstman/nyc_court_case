@@ -3,6 +3,7 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 SHELL := bash
+.DELETE_ON_ERROR:
 
 # ----------------------------------------------------------------------------
 # Create the standard folders if they don't exist
@@ -14,7 +15,7 @@ SHELL := bash
 # SLURM wrapper (path is still relative to each task's code/ folder)
 # ----------------------------------------------------------------------------
 run.sbatch: ../../setup_environment/code/run.sbatch | slurmlogs
-	ln -sf $< $@
+	@test "$$(readlink "$@")" = "$<" || ln -sf $< $@
 
 # ----------------------------------------------------------------------------
 # Remove accidental Finder-style duplicates like "file 2.csv" when canonical
@@ -34,11 +35,16 @@ sanitize-numbered-duplicates: ../input
 
 link-inputs: sanitize-numbered-duplicates
 
-# ----------------------------------------------------------------------------
-# Generic upstream rule — This is a powerful but advanced feature.
-# For now, we will rely on explicit symbolic linking rules in each Makefile
-# to make the workflow as clear as possible.
-# ----------------------------------------------------------------------------
- ../../output/%:
-	$(MAKE) -C $(subst output/,code/,$(dir $@)) \
-	        ../output/$(notdir $@)
+UPSTREAM_TASKS := $(notdir $(patsubst %/code,%,$(wildcard ../../*/code)))
+
+.PHONY: FORCE
+.PRECIOUS: ../../%
+
+define UPSTREAM_OUTPUT_RULE
+../../$(1)/output/%: FORCE
+	$$(MAKE) -C ../../$(1)/code ../output/$$*
+endef
+
+$(foreach task,$(UPSTREAM_TASKS),$(eval $(call UPSTREAM_OUTPUT_RULE,$(task))))
+
+FORCE:

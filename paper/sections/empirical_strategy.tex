@@ -31,21 +31,42 @@ The outcomes then track housing production in the same community districts over 
 
 \subsection{Treatment Definition}
 
-The treatment is baseline homeowner concentration relative to the borough. Let $H_{cb,1990}$ be the 1990 owner-occupied share of occupied housing units in community district $c$ in borough $b$, and let $H_{b,1990}$ be the corresponding borough-wide owner-occupied share. The raw treatment is:
+The treatment is baseline homeowner concentration relative to the borough.
+Let $H_{cb,1990}$ be the 1990 owner-occupied share of occupied housing units in community district $c$ in borough $b$, and let $H_{b,1990}$ be the corresponding borough-wide owner-occupied share.
+The treatment is baseline homeowner concentration within borough. Let
+$H_{cb,1990}$ be the 1990 owner-occupied share of occupied housing units
+in community district $c$ in borough $b$. I define the treatment as a
+within-borough standardized homeownership score:
 
 \begin{equation}
-    \Delta H_{cb,1990} = H_{cb,1990} - H_{b,1990}.
+    T_{cb}
+    =
+    \frac{
+        H_{cb,1990} - \overline{H}_{b,1990}^{CD}
+    }{
+        s_b(H_{cb,1990})
+    },
 \end{equation}
 
-The main measure standardizes this difference within borough:
+where $\overline{H}_{b,1990}^{CD}$ and $s_b(H_{cb,1990})$ are the mean and
+standard deviation of 1990 homeownership across community districts in
+borough $b$.
 
-\begin{equation}
-    T_{cb} = \frac{\Delta H_{cb,1990} - \overline{\Delta H}_{b,1990}}{s_b(\Delta H_{cb,1990})}.
-\end{equation}
+This score compares each community district to other community districts
+in the same borough. A value of zero means that the district has average
+homeownership for its borough, measured across community districts. A
+positive value means that the district was more homeowner-heavy than other
+districts in the same borough, and a negative value means that it was more
+renter-heavy.
 
-Boroughs are inherently heterogeneous and differ sharply in housing stock, density, transit access, homeownership vs. rental rates, and long-run development pressure. 
-A citywide treatment would partly compare Staten Island to Manhattan or outer Queens to the Bronx. 
-The within-borough measure instead asks whether homeowner-heavy districts within the same borough, where land-use decisions were previously made, experienced different construction trajectories after land-use authority became more district based (and potentially subject to more local homeowner opposition).
+This within-borough standardization is important because boroughs differ
+sharply in housing stock, density, transit access, baseline ownership
+rates, and long-run development pressure.
+A citywide measure would partly
+compare Staten Island to Manhattan or outer Queens to the Bronx.
+The within-borough score instead asks whether homeowner-heavy districts within
+the same borough experienced different post-reform construction trajectories
+than lower-homeownership districts in that same borough.
 
 The identifying logic is simple. If member deference gives local councilmembers more effective control over discretionary land use, then places with stronger homeowner constituencies should have more political capacity to resist large buildings. 
 That prediction should be strongest for multi-unit and large-building construction, where local opposition and discretionary review are most relevant. 
@@ -58,5 +79,8 @@ The treatment measure has substantial variation within each borough, which allow
     \includegraphics[page=1,width=0.82\textwidth]{../tasks/redevelopment_potential_first_pass/output/figures/redev_potential_maps.pdf}
     \caption{Community-District Homeownership Exposure}
     \label{fig:treatment_map}
-    \figurenotes{Figure maps the canonical treatment measure by community district. The measure is the 1990 community-district homeownership share minus the borough homeownership share, standardized within borough. Redder districts have higher homeowner concentration than other community districts in the same borough; bluer districts have lower concentration.}
+    \figurenotes{Figure maps the canonical treatment measure by community district. The measure is the 1990 community-district homeownership share, standardized
+within borough across community districts. Redder districts had higher
+homeownership than other community districts in the same borough; bluer
+districts had lower homeownership. Light-gray polygons are DCP joint interest areas, shown for geographic context but excluded from the 59-CD treatment measure.}
 \end{figure}

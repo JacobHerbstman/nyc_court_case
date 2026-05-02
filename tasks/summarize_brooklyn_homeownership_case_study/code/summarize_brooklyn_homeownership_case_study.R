@@ -920,10 +920,8 @@ rank_plot_data <- cd_summary %>%
     cd_label,
     treat_z_boro,
     units_built_total_2020_2025_per_10k_occupied,
-    units_built_50_plus_2020_2025_per_10k_occupied,
     nb_gross_units_1_2_2020_2025_per_10k_occupied,
-    nb_gross_units_10_49_2020_2025_per_10k_occupied,
-    nb_project_count_50_plus_2020_2025_per_cd_year
+    units_built_50_plus_2020_2025_per_10k_occupied
   ) %>%
   pivot_longer(
     cols = -cd_label,
@@ -936,18 +934,14 @@ rank_plot_data <- cd_summary %>%
       levels = c(
         "treat_z_boro",
         "units_built_total_2020_2025_per_10k_occupied",
-        "units_built_50_plus_2020_2025_per_10k_occupied",
         "nb_gross_units_1_2_2020_2025_per_10k_occupied",
-        "nb_gross_units_10_49_2020_2025_per_10k_occupied",
-        "nb_project_count_50_plus_2020_2025_per_cd_year"
+        "units_built_50_plus_2020_2025_per_10k_occupied"
       ),
       labels = c(
         "1990 homeowner exposure",
         "Total units, 2020-2025",
-        "50+ units, 2020-2025",
-        "1-2 unit units, 2020-2025",
-        "10-49 unit units, 2020-2025",
-        "50+ projects, 2020-2025"
+        "1-2 unit building units, 2020-2025",
+        "50+ units, 2020-2025"
       )
     ),
     cd_label = factor(cd_label, levels = rev(cd_summary$cd_label))

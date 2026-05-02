@@ -34,9 +34,21 @@ if (nrow(source_row) != 1) {
 
 content_api_url <- source_row$official_url[1]
 archive_json_url <- "https://www.nyc.gov/assets/planning/json/content/resources/dataset-archives/housing-project-level.json"
-pull_date <- format(Sys.Date(), "%Y%m%d")
+pull_date <- resolve_raw_pull_date(list(
+  dcp_housing_database_project_level = c(
+    "housing_project_level_content_api.json",
+    "housing_project_level_archive.json"
+  )
+))
+metadata_dir <- file.path("..", "..", "..", "data_raw", "dcp_housing_database_project_level", pull_date)
+content_json_path <- file.path(metadata_dir, "housing_project_level_content_api.json")
+archive_json_path <- file.path(metadata_dir, "housing_project_level_archive.json")
 
-content_json <- fromJSON(content_api_url, simplifyVector = FALSE)
+content_json <- if (file.exists(content_json_path)) {
+  fromJSON(content_json_path, simplifyVector = FALSE)
+} else {
+  fromJSON(content_api_url, simplifyVector = FALSE)
+}
 description_html <- content_json$description
 
 extract_first_match <- function(text_value, pattern) {
@@ -85,14 +97,11 @@ if (basename(dictionary_url) != "Housing_Database_Data_Dictionary.xlsx") {
   stop("Parsed Housing Database data dictionary URL has an unexpected file name.")
 }
 
-metadata_dir <- file.path("..", "..", "..", "data_raw", "dcp_housing_database_project_level", pull_date)
 release_dir <- file.path("..", "..", "..", "data_raw", "dcp_housing_database_project_level", release_tag)
 
 dir.create(metadata_dir, recursive = TRUE, showWarnings = FALSE)
 dir.create(release_dir, recursive = TRUE, showWarnings = FALSE)
 
-content_json_path <- file.path(metadata_dir, "housing_project_level_content_api.json")
-archive_json_path <- file.path(metadata_dir, "housing_project_level_archive.json")
 csv_zip_path <- file.path(release_dir, paste0("nychdb_", str_to_lower(release_tag), "_csv.zip"))
 dictionary_path <- file.path(release_dir, "Housing_Database_Data_Dictionary.xlsx")
 

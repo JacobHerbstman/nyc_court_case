@@ -38,7 +38,10 @@ if (nrow(dob_rows) != length(dob_open_data_source_ids) || !setequal(dob_rows$sou
 
 index_rows <- list()
 qc_rows <- list()
-pull_date <- format(Sys.Date(), "%Y%m%d")
+pull_date <- resolve_raw_pull_date(setNames(
+  lapply(dob_rows$expected_filename, c),
+  dob_rows$source_id
+))
 
 for (i in seq_len(nrow(dob_rows))) {
   row <- dob_rows[i, ]

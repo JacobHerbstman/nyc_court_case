@@ -5,7 +5,7 @@
 # long_units_series_csv <- "../input/cd_homeownership_long_units_series.csv"
 # dcp_supply_panel_csv <- "../input/cd_homeownership_dcp_supply_panel.csv"
 # dob_nb_panel_csv <- "../input/cd_homeownership_permit_nb_panel.csv"
-# cd_boundary_parquet <- "../input/dcp_boundary_community_districts_20260412.parquet"
+# cd_boundary_parquet <- "../input/dcp_boundary_community_districts_20260501.parquet"
 # out_redev_by_treat_csv <- "../output/tables/redev_potential_by_treatment_tercile.csv"
 # out_treat_by_redev_csv <- "../output/tables/treatment_by_redev_tercile.csv"
 # out_cell_summary_csv <- "../output/tables/two_by_two_cell_summary.csv"
@@ -220,7 +220,7 @@ for (x_name in c("treat_z_boro", "treat_pp")) {
 }
 dev.off()
 
-boundary_sf <- read_parquet(cd_boundary_parquet) |>
+boundary_all_sf <- read_parquet(cd_boundary_parquet) |>
   transmute(
     borocd = sprintf(
       "%03d",
@@ -231,7 +231,9 @@ boundary_sf <- read_parquet(cd_boundary_parquet) |>
     ),
     geometry = st_as_sfc(geometry_wkt, crs = suppressWarnings(as.integer(crs_epsg[1])))
   ) |>
-  st_as_sf() |>
+  st_as_sf()
+
+boundary_sf <- boundary_all_sf |>
   filter(borocd %in% base_df$borocd) |>
   left_join(
     base_df |>
@@ -241,8 +243,9 @@ boundary_sf <- read_parquet(cd_boundary_parquet) |>
 
 pdf(out_maps_pdf, width = 10, height = 7.5)
 print(
-  ggplot(boundary_sf) +
-    geom_sf(aes(fill = treat_z_boro), color = "grey88", linewidth = 0.12) +
+  ggplot() +
+    geom_sf(data = boundary_all_sf, fill = "grey94", color = "white", linewidth = 0.08) +
+    geom_sf(data = boundary_sf, aes(fill = treat_z_boro), color = "grey88", linewidth = 0.12) +
     scale_fill_gradient2(
       low = "#4C78A8",
       mid = "#F7F7F7",
@@ -273,8 +276,9 @@ print(
     )
 )
 print(
-  ggplot(boundary_sf) +
-    geom_sf(aes(fill = redev_potential_A_z_boro), color = "white", linewidth = 0.1) +
+  ggplot() +
+    geom_sf(data = boundary_all_sf, fill = "grey94", color = "white", linewidth = 0.08) +
+    geom_sf(data = boundary_sf, aes(fill = redev_potential_A_z_boro), color = "white", linewidth = 0.1) +
     scale_fill_viridis_c(option = "C") +
     labs(title = "Redevelopment potential A", subtitle = "Within-borough z-score of log unused residential floor area.", fill = "A z") +
     theme_void(base_size = 11)

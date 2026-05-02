@@ -34,7 +34,11 @@ if (nrow(pluto_row) != 1 || nrow(mappluto_current_row) != 1 || nrow(mappluto_arc
   stop("Source catalog must contain dcp_pluto_current, dcp_mappluto_current, and dcp_mappluto_archive.")
 }
 
-pull_date <- format(Sys.Date(), "%Y%m%d")
+pull_date <- resolve_raw_pull_date(list(
+  dcp_mappluto_current = "mappluto_planning_content.json",
+  dcp_pluto_current = "mappluto_planning_content.json",
+  dcp_mappluto_archive = "mappluto_archive_index.json"
+))
 
 zip_is_valid <- function(path) {
   if (!file.exists(path)) {

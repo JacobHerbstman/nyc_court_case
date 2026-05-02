@@ -4,7 +4,7 @@ include ../../shell_functions.make
 all: ../output/census_bps_index.csv ../output/census_bps_qc.csv ../output/census_bps_borough_year.parquet ../output/census_bps_city_year.parquet
 
 ../input/census_bps_raw_files.csv: ../../load_census_bps_raw/output/census_bps_raw_files.csv | ../input
-	ln -sf "../../load_census_bps_raw/output/census_bps_raw_files.csv" "$@"
+	@test "$$(readlink "$@")" = "../../load_census_bps_raw/output/census_bps_raw_files.csv" || ln -sf "../../load_census_bps_raw/output/census_bps_raw_files.csv" "$@"
 
 ../output/census_bps_index.csv: stage_census_bps.R ../input/census_bps_raw_files.csv | ../output
 	$(R) $< ../input/census_bps_raw_files.csv ../output/census_bps_index.csv ../output/census_bps_qc.csv

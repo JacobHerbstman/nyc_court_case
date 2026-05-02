@@ -8,6 +8,8 @@
   Then the R script should read in those arguments from the command line and produce the corresponding output file, named according to the arguments in the makefile.
 - Tasks that use output from ``upstream`` tasks should use symlinking and makefiles to connect them together.
   It should be easy to trace the path out via makefiles from the `data_raw/` folder to final outputs.
+- This project follows the logbook/Dingel task workflow: task-local Makefiles declare concrete file targets and prerequisites, and shared `tasks/generic.make` handles recursive upstream checks.
+- `make` in `paper/` is the end-to-end paper entry point. It should compile the paper and chase task-generated figures/tables upstream through Make only when those prerequisites are missing or stale.
 
   ## Project Structure
 - `paper/` - LaTeX paper and sections
@@ -38,9 +40,13 @@
 - If a join would be many-to-many, fix the producer/root data issue first instead of expanding rows downstream.
 
 ## Make Incrementality Rules
-- Do not call recursive upstream builds inside active task Makefiles (for example, no `$(MAKE) -C ../../...` inside symlink/input rules).
+- Do not maintain a broad manual phase runner as the canonical dependency graph. File-level prerequisites in task Makefiles and `paper/Makefile` are the source of truth.
+- Active task Makefiles should include `../../generic.make`, which provides the shared recursive upstream rule for `../../<task>/output/...` prerequisites.
+- Do not call recursive upstream builds ad hoc inside active task symlink/input recipes. Recursive upstream checks belong in `tasks/generic.make` or explicit paper-side task-output rules.
+- Recursive upstream checks should preserve Make incrementality: they may invoke the upstream task Makefile, but upstream outputs should only rebuild when missing or stale relative to their own prerequisites.
 - `link-inputs` should only create symlinks and should not orchestrate upstream task execution.
 - Each symlink input should depend on the specific upstream output file path, not on broad/coarse gate files when avoidable.
+- Symlink recipes should be idempotent: check the existing `readlink "$@"` target before running `ln -sf`, so recursive upstream checks do not refresh input mtimes when the link is already correct.
 - Prefer narrow dependency edges over single-report anchors that can trigger unnecessary relinking and downstream invalidation.
 - Stamp-file workflows can obscure real dependency edges; use them sparingly and only when there is no clearer file-target alternative.
 - Before expensive runs, prefer `make -n` to inspect what will rebuild.

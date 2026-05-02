@@ -258,6 +258,56 @@ collect_raw_files <- function(source_id) {
   list.files(raw_dir, recursive = TRUE, full.names = TRUE, all.files = FALSE)
 }
 
+raw_source_dir <- function(source_id) {
+  file.path("..", "..", "..", "data_raw", source_id)
+}
+
+existing_raw_pull_dates <- function(source_id, required_files = character()) {
+  raw_dir <- raw_source_dir(source_id)
+  if (!dir.exists(raw_dir)) {
+    return(character())
+  }
+
+  date_dirs <- basename(list.dirs(raw_dir, recursive = FALSE, full.names = TRUE))
+  date_dirs <- date_dirs[str_detect(date_dirs, "^[0-9]{8}$")]
+
+  if (length(required_files) == 0) {
+    return(sort(date_dirs))
+  }
+
+  date_dirs[vapply(
+    date_dirs,
+    function(date_value) all(file.exists(file.path(raw_dir, date_value, required_files))),
+    logical(1)
+  )] |>
+    sort()
+}
+
+resolve_raw_pull_date <- function(required_files_by_source) {
+  today <- format(Sys.Date(), "%Y%m%d")
+  source_ids <- names(required_files_by_source)
+
+  if (is.null(source_ids) || any(source_ids == "")) {
+    stop("required_files_by_source must be a named list.")
+  }
+
+  valid_dates <- lapply(source_ids, function(source_id) {
+    existing_raw_pull_dates(source_id, required_files_by_source[[source_id]])
+  })
+
+  common_dates <- Reduce(intersect, valid_dates)
+
+  if (length(common_dates) == 0) {
+    return(today)
+  }
+
+  if (today %in% common_dates) {
+    return(today)
+  }
+
+  max(common_dates)
+}
+
 sanitize_file_stub <- function(x) {
   x <- tolower(x)
   x <- str_replace_all(x, "[^a-z0-9]+", "_")
