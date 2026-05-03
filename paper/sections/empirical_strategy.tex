@@ -3,40 +3,37 @@
 
 \subsection{Institutional Setting}
 
-Before \textit{Morris}, final land-use review in New York City ran through the Board of Estimate. 
-The Board combined three citywide officials, who together held six votes, with the five borough presidents, who held one vote each. 
-The Supreme Court's opinion describes the Board as holding broad fiscal and legislative powers, including control over land use, franchises, contracts, and parts of the budget process \citep{board_of_estimate_of_city_of_new_york_v_morris_notitle_1989}.
-The key is that key land-use decisions were previously made by a body whose smallest geographic representative was the borough, a large swath of the city, rather than a district-based councilmember who represents a much smaller and potentially less representative constituency.
+Before \textit{Morris}, final land-use review in New York City ran through the Board of Estimate.
+The Board combined three citywide officials, who together held six votes, with the five borough presidents, each holding one vote.
+As the Supreme Court's opinion describes, the Board exercised broad fiscal and legislative powers, including authority over land use, franchises, contracts, and parts of the budget process \citep{board_of_estimate_of_city_of_new_york_v_morris_notitle_1989}.
+The key implication is that land-use decisions were made by a body whose smallest geographic representative was the borough, a large swath of the city, rather than a district-based councilmember accountable to a much narrower constituency.
 
-The 1989 Charter revision, induced by the \textit{Morris} decision, drastically changed that allocation of authority. After the Board was abolished, final review of many land-use actions shifted to the City Council \citep{lane_policy_1998}. 
-The Council is a 51-member districted legislature. 
-A land-use application is still reviewed by the community board, borough president, and City Planning Commission, but the Council now sits at the final legislative stage for many discretionary approvals. 
-The mayor can veto some Council actions, but the practical politics of district-specific land use are dominated by the Council.
+The 1989 Charter revision induced by the \textit{Morris} decision substantially reorganized that authority. After the Board was abolished, final review of many land-use actions shifted to the City Council \citep{lane_policy_1998}.
+The Council is a 51-member districted legislature.
+Applications still pass through the community board, borough president, and City Planning Commission, but the Council now holds the final legislative stage for many discretionary approvals.
+While the mayor can veto some Council actions, the practical politics of district-specific land use are dominated by the Council.
 
-The key informal institution in this setting is member deference, which is the practice of the Council generally following the local councilmember on land-use applications in that member's district.
-The 2025 Charter Revision Commission describes this practice as outside the Charter but central to how land use works in practice \citep{new_york_city_charter_revision_commission_charter_2025}. 
+The key informal institution in this setting is member deference: the practice by which the Council generally follows the local councilmember on land-use applications within that member's district.
+The 2025 Charter Revision Commission describes this practice as operating outside the formal Charter but central to how land use actually works \citep{new_york_city_charter_revision_commission_charter_2025}.
 
 
 
 \subsection{Unit of Analysis}
 
-I use CDs as the unit of analysis in this paper due to their geographic stability and their similar size to Council districts.
-Community districts are not the same as Council districts, and that distinction is useful. Council districts are the political units through which member deference operates, but they are redrawn over time and coverage of exact boundaries is spotty going back to the 1980's.
-Community districts are stable neighborhood units that can be followed across the pre- and post-\textit{Morris} periods. 
-Many other datasets also aggregate to the community-district level which makes it a convenient and consistent level in which to analyze housing flows and demographic trends.
+I use community districts as the unit of analysis because of their geographic stability and their rough comparability in scale to Council districts.
+Community districts are not the same as Council districts, and that distinction matters here. Council districts are the political units through which member deference operates, but they are redrawn over time and have inconsistent boundary data going back to the 1980s.
+Community districts are stable neighborhood units that can be tracked across the pre- and post-\textit{Morris} periods.
+Many datasets also aggregate to the community-district level, making it a convenient and consistent unit for analyzing housing flows and demographic trends.
 
-This unit choice also keeps the treatment from being mechanically defined by post-reform political boundaries. 
-The treatment is measured using 1990 community-district homeownership, just as the institutional change was taking effect. 
-The outcomes then track housing production in the same community districts over time.
+This unit choice also prevents the treatment from being mechanically defined by post-reform political boundaries.
+The treatment is measured using 1990 community-district homeownership, precisely as the institutional change was taking effect.
+Outcomes are then tracked in the same community districts over time.
 
 \subsection{Treatment Definition}
 
-The treatment is baseline homeowner concentration relative to the borough.
+The treatment captures baseline homeowner concentration relative to the borough.
 Let $H_{cb,1990}$ be the 1990 owner-occupied share of occupied housing units in community district $c$ in borough $b$, and let $H_{b,1990}$ be the corresponding borough-wide owner-occupied share.
-The treatment is baseline homeowner concentration within borough. Let
-$H_{cb,1990}$ be the 1990 owner-occupied share of occupied housing units
-in community district $c$ in borough $b$. I define the treatment as a
-within-borough standardized homeownership score:
+I define the treatment as a within-borough standardized homeownership score:
 
 \begin{equation}
     T_{cb}
@@ -52,27 +49,15 @@ where $\overline{H}_{b,1990}^{CD}$ and $s_b(H_{cb,1990})$ are the mean and
 standard deviation of 1990 homeownership across community districts in
 borough $b$.
 
-This score compares each community district to other community districts
-in the same borough. A value of zero means that the district has average
-homeownership for its borough, measured across community districts. A
-positive value means that the district was more homeowner-heavy than other
-districts in the same borough, and a negative value means that it was more
-renter-heavy.
+This score compares each community district to others in the same borough. A value of zero indicates average homeownership for the borough; positive values indicate a more homeowner-heavy district; negative values indicate a more renter-heavy one.
 
-This within-borough standardization is important because boroughs differ
-sharply in housing stock, density, transit access, baseline ownership
-rates, and long-run development pressure.
-A citywide measure would partly
-compare Staten Island to Manhattan or outer Queens to the Bronx.
-The within-borough score instead asks whether homeowner-heavy districts within
-the same borough experienced different post-reform construction trajectories
-than lower-homeownership districts in that same borough.
+This within-borough standardization matters because boroughs differ substantially in housing stock, density, transit access, baseline ownership rates, and long-run development pressure.
+A citywide measure would partly conflate Staten Island with Manhattan or outer Queens with the Bronx.
+The within-borough score instead asks whether homeowner-heavy districts within the same borough experienced different post-reform construction trajectories than their lower-homeownership neighbors.
 
-The identifying logic is simple. If member deference gives local councilmembers more effective control over discretionary land use, then places with stronger homeowner constituencies should have more political capacity to resist large buildings. 
-That prediction should be strongest for multi-unit and large-building construction, where local opposition and discretionary review are most relevant. 
-It should be weaker for small buildings, which are less likely to require the same political process.
-Figure~\ref{fig:treatment_map} displays the variation in the treatment measure across the city. 
-The treatment measure has substantial variation within each borough, which allows me to not just make between-borough comparisons that may be driven by other confounding trends.
+The identifying logic is straightforward. If member deference gives local councilmembers effective control over discretionary land use, then places with stronger homeowner constituencies should have greater political capacity to resist large buildings.
+That prediction should be sharpest for multi-unit and large-building construction, where local opposition and discretionary review are most consequential, and weaker for small buildings, which are less likely to require the same political process.
+Figure~\ref{fig:treatment_map} illustrates the variation in the treatment measure across the city, with substantial within-borough dispersion that permits comparisons free of borough-level confounds.
 
 \begin{figure}[htbp]
     \centering
