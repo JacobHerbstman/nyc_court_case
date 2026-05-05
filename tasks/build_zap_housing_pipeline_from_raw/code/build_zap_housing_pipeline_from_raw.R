@@ -1,19 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_zap_housing_pipeline_from_raw/code")
-# zap_project_parquet <- "../input/zap_project_data.parquet"
-# zap_bbl_parquet <- "../input/zap_project_bbl.parquet"
-# mappluto_current_parquet <- "../input/dcp_mappluto_current_25v4.parquet"
-# cd_homeownership_1990_measure_csv <- "../input/cd_homeownership_1990_measure.csv"
-# cd_redevelopment_potential_baseline_csv <- "../input/cd_redevelopment_potential_baseline.csv"
-# zap_outcome_usability_csv <- "../input/zap_outcome_usability_by_period.csv"
-# zap_source_integrity_qc_csv <- "../input/zap_source_integrity_qc.csv"
-# out_project_base_csv <- "../output/zap_housing_project_base_audited.csv"
-# out_project_cd_primary_csv <- "../output/zap_housing_project_cd_primary.csv"
-# out_project_cd_bbl_fractional_csv <- "../output/zap_housing_project_cd_bbl_fractional.csv"
-# out_cd_year_primary_csv <- "../output/zap_housing_cd_year_panel_primary.csv"
-# out_cd_year_bbl_fractional_csv <- "../output/zap_housing_cd_year_panel_bbl_fractional.csv"
-# out_mature_status_primary_csv <- "../output/zap_housing_mature_status_panel_primary.csv"
-# out_mature_status_bbl_fractional_csv <- "../output/zap_housing_mature_status_panel_bbl_fractional.csv"
-# out_qc_csv <- "../output/zap_housing_pipeline_construction_qc.csv"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -26,47 +11,6 @@ suppressPackageStartupMessages({
 })
 
 source("../../_lib/source_pipeline_utils.R")
-
-args <- commandArgs(trailingOnly = TRUE)
-if (length(args) == 0) {
-  args <- c(
-    zap_project_parquet,
-    zap_bbl_parquet,
-    mappluto_current_parquet,
-    cd_homeownership_1990_measure_csv,
-    cd_redevelopment_potential_baseline_csv,
-    zap_outcome_usability_csv,
-    zap_source_integrity_qc_csv,
-    out_project_base_csv,
-    out_project_cd_primary_csv,
-    out_project_cd_bbl_fractional_csv,
-    out_cd_year_primary_csv,
-    out_cd_year_bbl_fractional_csv,
-    out_mature_status_primary_csv,
-    out_mature_status_bbl_fractional_csv,
-    out_qc_csv
-  )
-}
-
-if (length(args) != 15) {
-  stop("Expected 15 arguments: zap_project_parquet zap_bbl_parquet mappluto_current_parquet cd_homeownership_1990_measure_csv cd_redevelopment_potential_baseline_csv zap_outcome_usability_csv zap_source_integrity_qc_csv out_project_base_csv out_project_cd_primary_csv out_project_cd_bbl_fractional_csv out_cd_year_primary_csv out_cd_year_bbl_fractional_csv out_mature_status_primary_csv out_mature_status_bbl_fractional_csv out_qc_csv")
-}
-
-zap_project_parquet <- args[1]
-zap_bbl_parquet <- args[2]
-mappluto_current_parquet <- args[3]
-cd_homeownership_1990_measure_csv <- args[4]
-cd_redevelopment_potential_baseline_csv <- args[5]
-zap_outcome_usability_csv <- args[6]
-zap_source_integrity_qc_csv <- args[7]
-out_project_base_csv <- args[8]
-out_project_cd_primary_csv <- args[9]
-out_project_cd_bbl_fractional_csv <- args[10]
-out_cd_year_primary_csv <- args[11]
-out_cd_year_bbl_fractional_csv <- args[12]
-out_mature_status_primary_csv <- args[13]
-out_mature_status_bbl_fractional_csv <- args[14]
-out_qc_csv <- args[15]
 
 assign_period <- function(year_value) {
   case_when(
@@ -116,7 +60,7 @@ simple_status <- function(project_status) {
   )
 }
 
-zap_audit_qc <- read_csv(zap_source_integrity_qc_csv, show_col_types = FALSE, na = c("", "NA"))
+zap_audit_qc <- read_csv("../input/zap_source_integrity_qc.csv", show_col_types = FALSE, na = c("", "NA"))
 
 audit_fail_count <- sum(zap_audit_qc$status == "fail", na.rm = TRUE)
 if (audit_fail_count > 0) {
@@ -127,13 +71,13 @@ if (audit_fail_count > 0) {
       status = "fail",
       note = "Source integrity audit has failing hard checks; rebuild is blocked."
     ),
-    out_qc_csv,
+    "../output/zap_housing_pipeline_construction_qc.csv",
     na = ""
   )
-  stop("Source integrity audit has failing hard checks; inspect ", zap_source_integrity_qc_csv)
+  stop("Source integrity audit has failing hard checks; inspect ../input/zap_source_integrity_qc.csv")
 }
 
-standard_cd <- read_csv(cd_homeownership_1990_measure_csv, show_col_types = FALSE, na = c("", "NA")) |>
+standard_cd <- read_csv("../input/cd_homeownership_1990_measure.csv", show_col_types = FALSE, na = c("", "NA")) |>
   transmute(
     borocd = suppressWarnings(as.integer(borocd)),
     borough_code = suppressWarnings(as.integer(borough_code)),
@@ -147,7 +91,7 @@ if (nrow(standard_cd) != n_distinct(standard_cd$borocd)) {
   stop("Homeownership measure is not unique by borocd.")
 }
 
-redevelopment_denoms <- read_csv(cd_redevelopment_potential_baseline_csv, show_col_types = FALSE, na = c("", "NA")) |>
+redevelopment_denoms <- read_csv("../input/cd_redevelopment_potential_baseline.csv", show_col_types = FALSE, na = c("", "NA")) |>
   transmute(
     borocd = suppressWarnings(as.integer(borocd)),
     residential_acres = suppressWarnings(as.numeric(residential_acres))
@@ -165,7 +109,7 @@ if (any(is.na(cd_denoms$occupied_units_1990)) || any(is.na(cd_denoms$residential
   stop("Missing occupied-unit or residential-acre denominators.")
 }
 
-outcome_usability <- read_csv(zap_outcome_usability_csv, show_col_types = FALSE, na = c("", "NA")) |>
+outcome_usability <- read_csv("../input/zap_outcome_usability_by_period.csv", show_col_types = FALSE, na = c("", "NA")) |>
   select(period, outcome_type, usability) |>
   pivot_wider(names_from = outcome_type, values_from = usability, names_prefix = "usability_")
 
@@ -181,7 +125,7 @@ if (!all(required_usability_cols %in% names(outcome_usability))) {
   stop("Outcome usability file is missing required support columns.")
 }
 
-mappluto_cd <- read_parquet(mappluto_current_parquet, col_select = c("bbl", "cd")) |>
+mappluto_cd <- read_parquet("../input/dcp_mappluto_current_25v4.parquet", col_select = c("bbl", "cd")) |>
   transmute(
     bbl_standardized = as.character(bbl),
     borocd = suppressWarnings(as.integer(cd))
@@ -193,7 +137,7 @@ if (nrow(mappluto_cd) != n_distinct(mappluto_cd$bbl_standardized)) {
   stop("Current MapPLUTO BBL-CD crosswalk is not unique by BBL.")
 }
 
-zap_bbl <- read_parquet(zap_bbl_parquet, col_select = c("project_id", "bbl_standardized")) |>
+zap_bbl <- read_parquet("../input/zap_project_bbl.parquet", col_select = c("project_id", "bbl_standardized")) |>
   transmute(
     project_id = as.character(project_id),
     bbl_standardized = as.character(bbl_standardized)
@@ -205,7 +149,7 @@ if (nrow(zap_bbl) != nrow(distinct(zap_bbl, project_id, bbl_standardized))) {
   stop("Staged ZAP BBL links are not unique by project_id and bbl_standardized.")
 }
 
-project_df <- read_parquet(zap_project_parquet) |>
+project_df <- read_parquet("../input/zap_project_data.parquet") |>
   mutate(
     project_id = as.character(project_id),
     cert_year = year(certified_referred_date_parsed),
@@ -653,15 +597,15 @@ qc_df <- bind_rows(
   )
 )
 
-write_csv(project_base, out_project_base_csv, na = "")
-write_csv(primary_project_cd, out_project_cd_primary_csv, na = "")
-write_csv(bbl_project_cd, out_project_cd_bbl_fractional_csv, na = "")
-write_csv(primary_cd_year_panel, out_cd_year_primary_csv, na = "")
-write_csv(bbl_cd_year_panel, out_cd_year_bbl_fractional_csv, na = "")
-write_csv(primary_mature_status_panel, out_mature_status_primary_csv, na = "")
-write_csv(bbl_mature_status_panel, out_mature_status_bbl_fractional_csv, na = "")
-write_csv(qc_df, out_qc_csv, na = "")
+write_csv(project_base, "../output/zap_housing_project_base_audited.csv", na = "")
+write_csv(primary_project_cd, "../output/zap_housing_project_cd_primary.csv", na = "")
+write_csv(bbl_project_cd, "../output/zap_housing_project_cd_bbl_fractional.csv", na = "")
+write_csv(primary_cd_year_panel, "../output/zap_housing_cd_year_panel_primary.csv", na = "")
+write_csv(bbl_cd_year_panel, "../output/zap_housing_cd_year_panel_bbl_fractional.csv", na = "")
+write_csv(primary_mature_status_panel, "../output/zap_housing_mature_status_panel_primary.csv", na = "")
+write_csv(bbl_mature_status_panel, "../output/zap_housing_mature_status_panel_bbl_fractional.csv", na = "")
+write_csv(qc_df, "../output/zap_housing_pipeline_construction_qc.csv", na = "")
 
 if (any(qc_df$status == "fail")) {
-  stop("ZAP housing pipeline construction failed; inspect ", out_qc_csv)
+  stop("ZAP housing pipeline construction failed; inspect ../output/zap_housing_pipeline_construction_qc.csv")
 }

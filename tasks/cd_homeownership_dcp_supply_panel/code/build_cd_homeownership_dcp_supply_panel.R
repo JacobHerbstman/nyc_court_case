@@ -1,9 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/cd_homeownership_dcp_supply_panel/code")
-# cd_homeownership_1990_measure_csv <- "../input/cd_homeownership_1990_measure.csv"
-# cd_baseline_1990_controls_csv <- "../input/cd_baseline_1990_controls.csv"
-# dcp_housing_database_project_level_parquet <- "../input/dcp_housing_database_project_level_25q4.parquet"
-# out_panel_csv <- "../output/cd_homeownership_dcp_supply_panel.csv"
-# out_qc_csv <- "../output/cd_homeownership_dcp_supply_panel_qc.csv"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -16,19 +11,7 @@ suppressPackageStartupMessages({
 
 source("../../_lib/source_pipeline_utils.R")
 
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 5) {
-  stop("Expected 5 arguments: cd_homeownership_1990_measure_csv cd_baseline_1990_controls_csv dcp_housing_database_project_level_parquet out_panel_csv out_qc_csv")
-}
-
-cd_homeownership_1990_measure_csv <- args[1]
-cd_baseline_1990_controls_csv <- args[2]
-dcp_housing_database_project_level_parquet <- args[3]
-out_panel_csv <- args[4]
-out_qc_csv <- args[5]
-
-measure_df <- read_csv(cd_homeownership_1990_measure_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+measure_df <- read_csv("../input/cd_homeownership_1990_measure.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(
     district_id = str_pad(as.character(district_id), width = 3, side = "left", pad = "0"),
     borocd = as.integer(borocd),
@@ -37,7 +20,7 @@ measure_df <- read_csv(cd_homeownership_1990_measure_csv, show_col_types = FALSE
   ) %>%
   arrange(borocd)
 
-controls_df <- read_csv(cd_baseline_1990_controls_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+controls_df <- read_csv("../input/cd_baseline_1990_controls.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(
     district_id = str_pad(as.character(district_id), width = 3, side = "left", pad = "0"),
     borocd = as.integer(borocd),
@@ -47,7 +30,7 @@ controls_df <- read_csv(cd_baseline_1990_controls_csv, show_col_types = FALSE, n
   arrange(borocd)
 
 housing_df <- read_parquet(
-  dcp_housing_database_project_level_parquet,
+  "../input/dcp_housing_database_project_level_25q4.parquet",
   col_select = c("permit_year", "community_district", "job_type", "classa_init", "classa_prop", "classa_net")
 ) %>%
   as.data.frame() %>%
@@ -332,7 +315,7 @@ qc_df <- bind_rows(
   )
 )
 
-write_csv_if_changed(panel_df, out_panel_csv)
-write_csv_if_changed(qc_df, out_qc_csv)
+write_csv_if_changed(panel_df, "../output/cd_homeownership_dcp_supply_panel.csv")
+write_csv_if_changed(qc_df, "../output/cd_homeownership_dcp_supply_panel_qc.csv")
 
-cat("Wrote CD-year DCP housing-supply decomposition outputs to", dirname(out_panel_csv), "\n")
+cat("Wrote CD-year DCP housing-supply decomposition outputs to ../output\n")

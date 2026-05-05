@@ -1,10 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_zap_housing_hdb_link/code")
-# zap_housing_cohort_base_csv <- "../input/zap_housing_cohort_base.csv"
-# zap_project_bbl_parquet <- "../input/zap_project_bbl.parquet"
-# dcp_housing_database_project_level_parquet <- "../input/dcp_housing_database_project_level_25q4.parquet"
-# out_candidates_csv <- "../output/zap_housing_hdb_link_candidates.csv"
-# out_project_summary_csv <- "../output/zap_housing_hdb_project_summary.csv"
-# out_qc_csv <- "../output/zap_housing_hdb_link_qc.csv"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -15,19 +9,6 @@ suppressPackageStartupMessages({
 })
 
 source("../../_lib/source_pipeline_utils.R")
-
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 6) {
-  stop("Expected 6 arguments: zap_housing_cohort_base_csv zap_project_bbl_parquet dcp_housing_database_project_level_parquet out_candidates_csv out_project_summary_csv out_qc_csv")
-}
-
-zap_housing_cohort_base_csv <- args[1]
-zap_project_bbl_parquet <- args[2]
-dcp_housing_database_project_level_parquet <- args[3]
-out_candidates_csv <- args[4]
-out_project_summary_csv <- args[5]
-out_qc_csv <- args[6]
 
 assert_unique_keys <- function(df, key_cols, df_name) {
   duplicate_keys <- df %>%
@@ -57,7 +38,7 @@ safe_min_int <- function(x) {
   as.integer(min(x))
 }
 
-project_base <- read_csv(zap_housing_cohort_base_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+project_base <- read_csv("../input/zap_housing_cohort_base.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(
     project_id = as.character(project_id),
     borocd = as.integer(borocd),
@@ -66,7 +47,7 @@ project_base <- read_csv(zap_housing_cohort_base_csv, show_col_types = FALSE, na
     source_bbl_count = as.integer(bbl_count)
   )
 
-zap_bbl_raw <- read_parquet(zap_project_bbl_parquet, col_select = c("project_id", "bbl_standardized")) %>%
+zap_bbl_raw <- read_parquet("../input/zap_project_bbl.parquet", col_select = c("project_id", "bbl_standardized")) %>%
   as.data.frame() %>%
   as_tibble() %>%
   transmute(
@@ -92,7 +73,7 @@ zap_bbl <- zap_bbl_raw %>%
   distinct(project_id, bbl_standardized)
 
 hdb_jobs_raw <- read_parquet(
-  dcp_housing_database_project_level_parquet,
+  "../input/dcp_housing_database_project_level_25q4.parquet",
   col_select = c("job_number", "job_type", "permit_year", "completion_year", "classa_prop", "classa_net", "borough_name", "community_district", "bbl")
 ) %>%
   as.data.frame() %>%
@@ -364,12 +345,12 @@ qc_df <- bind_rows(
 )
 
 if (any(qc_df$status == "fail")) {
-  write_csv_if_changed(qc_df, out_qc_csv)
+  write_csv_if_changed(qc_df, "../output/zap_housing_hdb_link_qc.csv")
   stop("ZAP-HDB linkage QC failed.")
 }
 
-write_csv_if_changed(candidate_links, out_candidates_csv)
-write_csv_if_changed(project_summary, out_project_summary_csv)
-write_csv_if_changed(qc_df, out_qc_csv)
+write_csv_if_changed(candidate_links, "../output/zap_housing_hdb_link_candidates.csv")
+write_csv_if_changed(project_summary, "../output/zap_housing_hdb_project_summary.csv")
+write_csv_if_changed(qc_df, "../output/zap_housing_hdb_link_qc.csv")
 
-cat("Wrote ZAP-HDB linkage outputs to", dirname(out_candidates_csv), "\n")
+cat("Wrote ZAP-HDB linkage outputs to ../output\n")

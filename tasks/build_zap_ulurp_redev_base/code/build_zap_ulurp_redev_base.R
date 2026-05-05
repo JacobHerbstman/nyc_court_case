@@ -1,10 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_zap_ulurp_redev_base/code")
-# zap_project_parquet <- "../input/zap_project_data.parquet"
-# zap_housing_cohort_base_csv <- "../input/zap_housing_cohort_base.csv"
-# zap_housing_hdb_project_summary_csv <- "../input/zap_housing_hdb_project_summary.csv"
-# cd_redevelopment_potential_baseline_csv <- "../input/cd_redevelopment_potential_baseline.csv"
-# out_base_csv <- "../output/zap_ulurp_redev_project_base.csv"
-# out_qc_csv <- "../output/zap_ulurp_redev_project_base_qc.csv"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -15,19 +9,6 @@ suppressPackageStartupMessages({
 })
 
 source("../../_lib/source_pipeline_utils.R")
-
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 6) {
-  stop("Expected 6 arguments: zap_project_parquet zap_housing_cohort_base_csv zap_housing_hdb_project_summary_csv cd_redevelopment_potential_baseline_csv out_base_csv out_qc_csv")
-}
-
-zap_project_parquet <- args[1]
-zap_housing_cohort_base_csv <- args[2]
-zap_housing_hdb_project_summary_csv <- args[3]
-cd_redevelopment_potential_baseline_csv <- args[4]
-out_base_csv <- args[5]
-out_qc_csv <- args[6]
 
 has_action_code <- function(actions_string, action_code) {
   str_detect(str_to_upper(coalesce(actions_string, "")), paste0("\\b", action_code, "\\b"))
@@ -75,7 +56,7 @@ built_form_control_cols <- c(
   "cd_share_lot_area_parking_or_low_intensity"
 )
 
-redev_df <- read_csv(cd_redevelopment_potential_baseline_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+redev_df <- read_csv("../input/cd_redevelopment_potential_baseline.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   select(
     borocd,
     borough_name,
@@ -122,7 +103,7 @@ redev_df <- read_csv(cd_redevelopment_potential_baseline_csv, show_col_types = F
 
 assert_unique_keys(redev_df, c("borocd", "borough_name"), "Redevelopment baseline input")
 
-cohort_base_df <- read_csv(zap_housing_cohort_base_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+cohort_base_df <- read_csv("../input/zap_housing_cohort_base.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(
     project_id = as.character(project_id),
     borocd = suppressWarnings(as.integer(borocd)),
@@ -145,7 +126,7 @@ if ("actions" %in% names(cohort_base_df)) {
 assert_unique_keys(cohort_base_df, "project_id", "ZAP housing cohort base input")
 
 zap_raw_df <- read_parquet(
-  zap_project_parquet,
+  "../input/zap_project_data.parquet",
   col_select = c(
     "project_id", "applicant_type", "primary_applicant", "ceqr_leadagency",
     "council_district_first", "current_milestone", "current_milestone_date_parsed",
@@ -170,7 +151,7 @@ zap_raw_df <- read_parquet(
 
 assert_unique_keys(zap_raw_df, "project_id", "Staged ZAP project input")
 
-hdb_link_df <- read_csv(zap_housing_hdb_project_summary_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+hdb_link_df <- read_csv("../input/zap_housing_hdb_project_summary.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(
     project_id = as.character(project_id),
     across(matches("(^has_|_rate_|_units_|_count_|permit_year|permit_lag)"), ~ suppressWarnings(as.numeric(.x))),
@@ -323,7 +304,7 @@ qc_df <- bind_rows(
   tibble(metric = "high_homeowner_high_redev_project_count", value = sum(base_df$two_by_two_cell_A == "HH", na.rm = TRUE), note = "Projects in the high-homeowner/high-redevelopment cell.")
 )
 
-write_csv_if_changed(base_df, out_base_csv)
-write_csv_if_changed(qc_df, out_qc_csv)
+write_csv_if_changed(base_df, "../output/zap_ulurp_redev_project_base.csv")
+write_csv_if_changed(qc_df, "../output/zap_ulurp_redev_project_base_qc.csv")
 
-cat("Wrote ZAP ULURP redevelopment base outputs to", dirname(out_base_csv), "\n")
+cat("Wrote ZAP ULURP redevelopment base outputs to ../output\n")
