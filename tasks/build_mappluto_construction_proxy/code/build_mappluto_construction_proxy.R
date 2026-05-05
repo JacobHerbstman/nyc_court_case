@@ -1,9 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_mappluto_construction_proxy/code")
-# mappluto_lot_files_csv <- "../input/mappluto_lot_files.csv"
-# treatment_csv <- "../input/cd_homeownership_1990_measure.csv"
-# out_lot_parquet <- "../output/mappluto_construction_proxy_lot_level.parquet"
-# out_panel_csv <- "../output/mappluto_construction_proxy_cd_year.csv"
-# out_qc_csv <- "../output/mappluto_construction_proxy_qc.csv"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -14,19 +9,7 @@ suppressPackageStartupMessages({
 
 source("../../_lib/source_pipeline_utils.R")
 
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 5) {
-  stop("Expected 5 arguments: mappluto_lot_files_csv treatment_csv out_lot_parquet out_panel_csv out_qc_csv")
-}
-
-mappluto_lot_files_csv <- args[1]
-treatment_csv <- args[2]
-out_lot_parquet <- args[3]
-out_panel_csv <- args[4]
-out_qc_csv <- args[5]
-
-standard_cd <- read_csv(treatment_csv, show_col_types = FALSE, na = c("", "NA")) |>
+standard_cd <- read_csv("../input/cd_homeownership_1990_measure.csv", show_col_types = FALSE, na = c("", "NA")) |>
   transmute(
     borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
     borough_code = suppressWarnings(as.integer(borough_code)),
@@ -38,7 +21,7 @@ if (anyDuplicated(standard_cd$borocd)) {
   stop("Treatment input is not unique by borocd.")
 }
 
-mappluto_index <- read_csv(mappluto_lot_files_csv, show_col_types = FALSE, na = c("", "NA")) |>
+mappluto_index <- read_csv("../input/mappluto_lot_files.csv", show_col_types = FALSE, na = c("", "NA")) |>
   mutate(
     source_priority = if_else(source_id == "dcp_mappluto_current", 1L, 0L),
     vintage = as.character(vintage),
@@ -48,9 +31,9 @@ mappluto_index <- read_csv(mappluto_lot_files_csv, show_col_types = FALSE, na = 
   arrange(desc(source_priority), desc(vintage_order), desc(vintage))
 
 if (nrow(mappluto_index) == 0) {
-  write_parquet(tibble(), out_lot_parquet)
-  write_csv(tibble(), out_panel_csv, na = "")
-  write_csv(tibble(metric = "status", value = "no_staged_mappluto_files", note = NA_character_), out_qc_csv, na = "")
+  write_parquet(tibble(), "../output/mappluto_construction_proxy_lot_level.parquet")
+  write_csv(tibble(), "../output/mappluto_construction_proxy_cd_year.csv", na = "")
+  write_csv(tibble(metric = "status", value = "no_staged_mappluto_files", note = NA_character_), "../output/mappluto_construction_proxy_qc.csv", na = "")
   quit(save = "no")
 }
 
@@ -116,7 +99,7 @@ lot_level <- current_df |>
     residential_only_flag, mixed_use_flag, size_bin
   )
 
-write_parquet(lot_level, out_lot_parquet)
+write_parquet(lot_level, "../output/mappluto_construction_proxy_lot_level.parquet")
 
 panel_base <- lot_level |>
   group_by(borocd, borough_code, borough_name, yearbuilt) |>
@@ -177,7 +160,7 @@ panel <- expand_grid(
   ) |>
   arrange(borocd, yearbuilt)
 
-write_csv(panel, out_panel_csv, na = "")
+write_csv(panel, "../output/mappluto_construction_proxy_cd_year.csv", na = "")
 
 write_csv(
   bind_rows(
@@ -193,8 +176,8 @@ write_csv(
     tibble(metric = "proxy_max_yearbuilt", value = as.character(max(lot_level$yearbuilt, na.rm = TRUE)), note = "Maximum proxy yearbuilt retained."),
     tibble(metric = "proxy_interpretation", value = "surviving_residential_stock_built_in_year_t", note = "This is a surviving-stock proxy, not a clean construction-flow series.")
   ),
-  out_qc_csv,
+  "../output/mappluto_construction_proxy_qc.csv",
   na = ""
 )
 
-cat("Wrote MapPLUTO construction proxy outputs to", dirname(out_panel_csv), "\n")
+cat("Wrote MapPLUTO construction proxy outputs to ../output\n")

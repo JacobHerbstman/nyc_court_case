@@ -1,10 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_dob_permit_issuance_harmonized/code")
-# current_raw_files_csv <- "../input/dob_permit_issuance_current_raw_files.csv"
-# current_raw_parquet <- "../input/dob_permit_issuance_current_raw.parquet"
-# current_source_decision_csv <- "current_source_decision_1989_2013.csv"
-# census_bps_city_year_parquet <- "../input/census_bps_city_year.parquet"
-# out_parquet <- "../output/dob_permit_issuance_harmonized.parquet"
-# out_qc_csv <- "../output/dob_permit_issuance_harmonized_qc.csv"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -16,25 +10,12 @@ suppressPackageStartupMessages({
 source("../../_lib/source_pipeline_utils.R")
 source("../../_lib/dob_permit_issuance_utils.R")
 
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 6) {
-  stop("Expected 6 arguments for build_dob_permit_issuance_harmonized.R")
-}
-
-current_raw_files_csv <- args[1]
-current_raw_parquet <- args[2]
-current_source_decision_csv <- args[3]
-census_bps_city_year_parquet <- args[4]
-out_parquet <- args[5]
-out_qc_csv <- args[6]
-
-if (!file.exists(current_raw_parquet)) {
+if (!file.exists("../input/dob_permit_issuance_current_raw.parquet")) {
   stop("Current permit issuance raw parquet is required.")
 }
 
-current_index <- read_csv(current_raw_files_csv, show_col_types = FALSE, na = c("", "NA"))
-comparison_audit <- read_csv(current_source_decision_csv, show_col_types = FALSE, na = c("", "NA"))
+current_index <- read_csv("../input/dob_permit_issuance_current_raw_files.csv", show_col_types = FALSE, na = c("", "NA"))
+comparison_audit <- read_csv("current_source_decision_1989_2013.csv", show_col_types = FALSE, na = c("", "NA"))
 
 if (
   nrow(current_index) != 1 ||
@@ -95,7 +76,7 @@ if (any(!comparison_check_df$current_ge_historical_residential_row_count_flag, n
   stop("Current permit issuance source does not dominate historical residential row coverage in every year from 1989 through 2013.")
 }
 
-current_raw_df <- read_parquet(current_raw_parquet) %>%
+current_raw_df <- read_parquet("../input/dob_permit_issuance_current_raw.parquet") %>%
   as.data.frame() %>%
   as_tibble()
 
@@ -132,10 +113,10 @@ if (duplicate_permit_identifier_rows > 0) {
   stop("Current-source canonical permit identifiers are not unique; inspect the current permit raw source before writing the unified dataset.")
 }
 
-write_parquet_if_changed(harmonized_df, out_parquet)
+write_parquet_if_changed(harmonized_df, "../output/dob_permit_issuance_harmonized.parquet")
 
-bps_city_year <- if (file.exists(census_bps_city_year_parquet)) {
-  read_parquet(census_bps_city_year_parquet) %>%
+bps_city_year <- if (file.exists("../input/census_bps_city_year.parquet")) {
+  read_parquet("../input/census_bps_city_year.parquet") %>%
     as.data.frame() %>%
     as_tibble()
 } else {
@@ -182,5 +163,5 @@ qc_df <- bind_rows(
   tibble(metric = "bps_descriptive_overlap_years", value = as.character(nrow(bps_compare_df)), note = "Descriptive only: permit-row counts are not unit counts and should not be interpreted as a BPS replacement.")
 )
 
-write_csv(qc_df, out_qc_csv, na = "")
-cat("Wrote current-primary DOB permit issuance outputs to", dirname(out_qc_csv), "\n")
+write_csv(qc_df, "../output/dob_permit_issuance_harmonized_qc.csv", na = "")
+cat("Wrote current-primary DOB permit issuance outputs to ../output\n")

@@ -1,10 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_cd_homeownership_long_units_series/code")
-# cd_homeownership_1990_measure_csv <- "../input/cd_homeownership_1990_measure.csv"
-# cd_baseline_1990_controls_csv <- "../input/cd_baseline_1990_controls.csv"
-# mappluto_construction_proxy_cd_year_csv <- "../input/mappluto_construction_proxy_cd_year.csv"
-# dcp_housing_database_files_csv <- "../input/dcp_housing_database_files.csv"
-# out_series_csv <- "../output/cd_homeownership_long_units_series.csv"
-# out_qc_csv <- "../output/cd_homeownership_long_units_series_qc.csv"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -15,20 +9,7 @@ suppressPackageStartupMessages({
   library(tibble)
 })
 
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 6) {
-  stop("Expected 6 arguments: cd_homeownership_1990_measure_csv cd_baseline_1990_controls_csv mappluto_construction_proxy_cd_year_csv dcp_housing_database_files_csv out_series_csv out_qc_csv")
-}
-
-cd_homeownership_1990_measure_csv <- args[1]
-cd_baseline_1990_controls_csv <- args[2]
-mappluto_construction_proxy_cd_year_csv <- args[3]
-dcp_housing_database_files_csv <- args[4]
-out_series_csv <- args[5]
-out_qc_csv <- args[6]
-
-measure_df <- read_csv(cd_homeownership_1990_measure_csv, show_col_types = FALSE, na = c("", "NA")) |>
+measure_df <- read_csv("../input/cd_homeownership_1990_measure.csv", show_col_types = FALSE, na = c("", "NA")) |>
   mutate(
     district_id = str_pad(as.character(district_id), width = 3, side = "left", pad = "0"),
     borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
@@ -40,7 +21,7 @@ if (anyDuplicated(measure_df$borocd)) {
   stop("Homeownership measure is not unique by borocd.")
 }
 
-controls_df <- read_csv(cd_baseline_1990_controls_csv, show_col_types = FALSE, na = c("", "NA")) |>
+controls_df <- read_csv("../input/cd_baseline_1990_controls.csv", show_col_types = FALSE, na = c("", "NA")) |>
   mutate(
     district_id = str_pad(as.character(district_id), width = 3, side = "left", pad = "0"),
     borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
@@ -84,7 +65,7 @@ proxy_map <- tribble(
 cd_skeleton <- measure_df |>
   distinct(borocd, borough_code, borough_name)
 
-proxy_values <- read_csv(mappluto_construction_proxy_cd_year_csv, show_col_types = FALSE, na = c("", "NA")) |>
+proxy_values <- read_csv("../input/mappluto_construction_proxy_cd_year.csv", show_col_types = FALSE, na = c("", "NA")) |>
   mutate(
     borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
     borough_code = suppressWarnings(as.integer(borough_code)),
@@ -119,7 +100,7 @@ proxy_long <- expand_grid(cd_skeleton, year = 1980:2009, proxy_map) |>
   ) |>
   select(source_family, source_label, series_kind, series_family, series_label, borocd, borough_code, borough_name, year, outcome_value)
 
-hdb_file <- read_csv(dcp_housing_database_files_csv, show_col_types = FALSE, na = c("", "NA")) |>
+hdb_file <- read_csv("../input/dcp_housing_database_files.csv", show_col_types = FALSE, na = c("", "NA")) |>
   filter(source_id == "dcp_housing_database_project_level", !is.na(parquet_path), file.exists(parquet_path)) |>
   mutate(
     vintage = as.character(vintage),
@@ -131,7 +112,7 @@ hdb_file <- read_csv(dcp_housing_database_files_csv, show_col_types = FALSE, na 
   slice_head(n = 1)
 
 if (nrow(hdb_file) == 0) {
-  stop("Could not find a staged DCP Housing Database project-level parquet in ", dcp_housing_database_files_csv)
+  stop("Could not find a staged DCP Housing Database project-level parquet in ../input/dcp_housing_database_files.csv")
 }
 
 hdb_source_df <- read_parquet(
@@ -285,7 +266,7 @@ series_df <- bind_rows(proxy_long, hdb_long) |>
   ungroup() |>
   arrange(series_kind, series_family, borocd, year)
 
-write_csv(series_df, out_series_csv, na = "")
+write_csv(series_df, "../output/cd_homeownership_long_units_series.csv", na = "")
 
 write_csv(
   bind_rows(
@@ -300,8 +281,8 @@ write_csv(
     tibble(metric = "preferred_projects_built_50_plus_sum", value = as.character(sum(series_df$outcome_value[series_df$series_family == "projects_built_50_plus"], na.rm = TRUE)), note = "Total 50+ unit project/lot counts in the preferred compatible long series."),
     tibble(metric = "observed_gross_add_units_sum_2010_2025", value = as.character(sum(series_df$outcome_value[series_df$series_family == "gross_add_units_observed"], na.rm = TRUE)), note = "Observed gross additions over 2010-2025 from DCP Housing Database completion-year aggregation.")
   ),
-  out_qc_csv,
+  "../output/cd_homeownership_long_units_series_qc.csv",
   na = ""
 )
 
-cat("Wrote long units series outputs to", dirname(out_series_csv), "\n")
+cat("Wrote long units series outputs to ../output\n")

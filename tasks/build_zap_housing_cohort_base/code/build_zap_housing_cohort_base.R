@@ -1,10 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_zap_housing_cohort_base/code")
-# zap_project_parquet <- "../input/zap_project_data.parquet"
-# zap_project_bbl_parquet <- "../input/zap_project_bbl.parquet"
-# cd_homeownership_1990_measure_csv <- "../input/cd_homeownership_1990_measure.csv"
-# cd_baseline_1990_controls_csv <- "../input/cd_baseline_1990_controls.csv"
-# out_base_csv <- "../output/zap_housing_cohort_base.csv"
-# out_qc_csv <- "../output/zap_housing_cohort_base_qc.csv"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -15,19 +9,6 @@ suppressPackageStartupMessages({
 })
 
 source("../../_lib/source_pipeline_utils.R")
-
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 6) {
-  stop("Expected 6 arguments: zap_project_parquet zap_project_bbl_parquet cd_homeownership_1990_measure_csv cd_baseline_1990_controls_csv out_base_csv out_qc_csv")
-}
-
-zap_project_parquet <- args[1]
-zap_project_bbl_parquet <- args[2]
-cd_homeownership_1990_measure_csv <- args[3]
-cd_baseline_1990_controls_csv <- args[4]
-out_base_csv <- args[5]
-out_qc_csv <- args[6]
 
 static_control_cols <- c(
   "vacancy_rate_1990_exact",
@@ -45,7 +26,7 @@ static_control_cols <- c(
   "unemployment_rate_1990_exact"
 )
 
-measure_df <- read_csv(cd_homeownership_1990_measure_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+measure_df <- read_csv("../input/cd_homeownership_1990_measure.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   transmute(
     borocd = as.integer(borocd),
     borough_name = as.character(borough_name),
@@ -53,13 +34,13 @@ measure_df <- read_csv(cd_homeownership_1990_measure_csv, show_col_types = FALSE
     treat_z_boro = suppressWarnings(as.numeric(treat_z_boro))
   )
 
-controls_df <- read_csv(cd_baseline_1990_controls_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+controls_df <- read_csv("../input/cd_baseline_1990_controls.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   transmute(
     borocd = as.integer(borocd),
     across(all_of(static_control_cols), ~ suppressWarnings(as.numeric(.x)))
   )
 
-bbl_df <- read_parquet(zap_project_bbl_parquet) %>%
+bbl_df <- read_parquet("../input/zap_project_bbl.parquet") %>%
   as.data.frame() %>%
   as_tibble() %>%
   mutate(
@@ -76,7 +57,7 @@ bbl_summary <- bbl_df %>%
     .groups = "drop"
   )
 
-base_df <- read_parquet(zap_project_parquet) %>%
+base_df <- read_parquet("../input/zap_project_data.parquet") %>%
   as.data.frame() %>%
   as_tibble() %>%
   mutate(
@@ -213,7 +194,7 @@ qc_df <- bind_rows(
   )
 )
 
-write_csv_if_changed(base_df, out_base_csv)
-write_csv_if_changed(qc_df, out_qc_csv)
+write_csv_if_changed(base_df, "../output/zap_housing_cohort_base.csv")
+write_csv_if_changed(qc_df, "../output/zap_housing_cohort_base_qc.csv")
 
-cat("Wrote ZAP housing cohort base outputs to", dirname(out_base_csv), "\n")
+cat("Wrote ZAP housing cohort base outputs to ../output\n")
