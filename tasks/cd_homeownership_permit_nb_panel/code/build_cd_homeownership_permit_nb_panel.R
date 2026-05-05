@@ -1,9 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/cd_homeownership_permit_nb_panel/code")
-# cd_homeownership_1990_measure_csv <- "../input/cd_homeownership_1990_measure.csv"
-# dob_permit_issuance_harmonized_parquet <- "../input/dob_permit_issuance_harmonized.parquet"
-# out_panel_csv <- "../output/cd_homeownership_permit_nb_panel.csv"
-# out_qc_csv <- "../output/cd_homeownership_permit_nb_panel_qc.csv"
-# out_conflict_csv <- "../output/cd_homeownership_permit_nb_job_conflicts.csv"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -16,19 +11,7 @@ suppressPackageStartupMessages({
 
 source("../../_lib/source_pipeline_utils.R")
 
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 5) {
-  stop("Expected 5 arguments: cd_homeownership_1990_measure_csv dob_permit_issuance_harmonized_parquet out_panel_csv out_qc_csv out_conflict_csv")
-}
-
-cd_homeownership_1990_measure_csv <- args[1]
-dob_permit_issuance_harmonized_parquet <- args[2]
-out_panel_csv <- args[3]
-out_qc_csv <- args[4]
-out_conflict_csv <- args[5]
-
-measure_df <- read_csv(cd_homeownership_1990_measure_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+measure_df <- read_csv("../input/cd_homeownership_1990_measure.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(
     district_id = str_pad(as.character(district_id), width = 3, side = "left", pad = "0"),
     borocd = as.integer(borocd),
@@ -38,7 +21,7 @@ measure_df <- read_csv(cd_homeownership_1990_measure_csv, show_col_types = FALSE
   arrange(borocd)
 
 permit_df <- read_parquet(
-  dob_permit_issuance_harmonized_parquet,
+  "../input/dob_permit_issuance_harmonized.parquet",
   col_select = c("permit_identifier", "job_number", "job_type", "issuance_date", "community_district")
 ) %>%
   as.data.frame() %>%
@@ -215,8 +198,8 @@ qc_df <- bind_rows(
   )
 )
 
-write_csv_if_changed(panel_df, out_panel_csv)
-write_csv_if_changed(qc_df, out_qc_csv)
-write_csv_if_changed(conflict_df, out_conflict_csv)
+write_csv_if_changed(panel_df, "../output/cd_homeownership_permit_nb_panel.csv")
+write_csv_if_changed(qc_df, "../output/cd_homeownership_permit_nb_panel_qc.csv")
+write_csv_if_changed(conflict_df, "../output/cd_homeownership_permit_nb_job_conflicts.csv")
 
-cat("Wrote CD-year DOB new-building panel outputs to", dirname(out_panel_csv), "\n")
+cat("Wrote CD-year DOB new-building panel outputs to ../output\n")

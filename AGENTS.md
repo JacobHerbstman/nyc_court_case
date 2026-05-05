@@ -4,8 +4,9 @@
 - This project uses a task-based workflow. Every task in the paper has a dedicated folder in `tasks/` with its own `code/`, `input/`, and `output/` subfolders.
 - Each task should have its own makefile. Each makefile should be as clean and simple as possible to make them readable.
 - In makefiles, limit comments and additional targets such as ``clean''. Typical makefiles should only have a default ``all'' target and a ``link-inputs'' target.
-- Tasks that run many regression specifications, for example, should always call arguments from the makefile and use loops in the makefile to create target filenames for each specification.
-  Then the R script should read in those arguments from the command line and produce the corresponding output file, named according to the arguments in the makefile.
+- Tasks that run many regression specifications, for example, should call only true specification arguments from the Makefile and use loops in the Makefile to create target filenames for each specification.
+  Then the R script should read in those specification arguments from the command line and produce the corresponding output file, named according to the arguments in the Makefile.
+  Do not pass fixed task-local input/output file paths as command-line arguments.
 - Tasks that use output from ``upstream`` tasks should use symlinking and makefiles to connect them together.
   It should be easy to trace the path out via makefiles from the `data_raw/` folder to final outputs.
 - This project follows the logbook/Dingel task workflow: task-local Makefiles declare concrete file targets and prerequisites, and shared `tasks/generic.make` handles recursive upstream checks.
@@ -58,18 +59,25 @@
 - Keep default workflow targets limited to essentials (`all`, `link-inputs`, and task-specific essential file targets).
 - Keep one concise recipe per logical output producer.
 - Keep output and input names explicit and traceable.
+- Order active task Makefiles in a standard top-down cascade: `all`, output-producing target rules, input symlink target rules, `link-inputs`, then shared includes.
+- Output files should appear as Make targets before the input symlink targets they depend on, so the reader starts from what the task produces and then traces prerequisites downward.
+- When one script writes multiple outputs, put all of those outputs on the same producer target rule unless there is a concrete reason not to.
 - Favor readability over clever Make metaprogramming unless scale requires it.
 
 ## Makefile Path Style
 - Write file paths directly in targets and recipes.
 - Do not use path indirection blocks like `*_IN`, `*_UP`, `*_OUT`, `INPUT`, `OUTPUTS`, or similar path alias variables.
 - Keep only scalar/config variables in Makefiles (dates, thresholds, flags, spec lists, tool executables).
+- Do not pass fixed task-local file paths from Make to R/Python scripts. A fixed input such as `../input/foo.csv` or fixed output such as `../output/bar.csv` should be written directly in the script.
+- Makefile command-line arguments are reserved for real analytical variation: specifications, outcomes, fixed-effect choices, clustering choices, samples, periods, control sets, thresholds, or other scalar/config values.
+- If a task has no real analytical variation, its Make recipe should usually call the script with no arguments, for example `$(R) $<`.
 
 ## RStudio Interactive Block Standard
 - For every active R script that accepts CLI arguments, include a top-of-file commented interactive block.
 - That block must include:
   - a commented `setwd(...)` line to the task `code/` folder
   - one commented named assignment line per example CLI argument, in CLI order, using the exact variable names used by the script's interactive fallback or CLI unpacking
+- Scripts with no CLI arguments should usually include only the commented `setwd(...)` line.
 - Do not include a commented `Rscript ...` line in the interactive block.
 - Do not include bundled commented argument vectors/lists (for example, no `args <- c(...)` block).
 - Do not include placeholder paths such as `tasks/"task"/code`.
@@ -79,10 +87,13 @@
 - Do not use executable `!exists(...)` checks as the bridge between interactive runs and CLI runs; use direct positional-arg validation plus one named unpacking block instead.
 
 ## Script Path Style (R + Python)
+- Fixed task-local file paths belong directly in active scripts, not in Makefile arguments.
 - Avoid path alias variables for simple I/O handoff when direct use is clear.
-- Prefer direct call-site reads/writes (`read_csv(args[1])`, `write_csv(df, args[2])`, and R equivalents).
+- Prefer direct call-site reads/writes (`read_csv("../input/foo.csv")`, `write_csv_if_changed(df, "../output/bar.csv")`, and R equivalents).
 - Keep path handling explicit and local to each read/write call unless reuse materially improves clarity.
-- For CLI scripts, keep positional `args[i]` or `cli_args[i]` as the canonical Make interface, then introduce one short top-of-script unpacking block to named variables when that makes interactive execution clearer.
+- For CLI scripts, use arguments only for real specification/configuration values, not fixed file paths.
+- For CLI scripts, keep positional `args[i]` or `cli_args[i]` as the canonical Make interface for those specification/configuration values, then introduce one short top-of-script unpacking block to named variables when that makes interactive execution clearer.
+- Do not create `in_*`, `out_*`, or similar path variables solely to shuttle fixed task-local paths from the top of the script to the read/write call. Use direct paths at the call site unless the same path is reused enough that a local variable materially improves readability.
 - Do not use `normalizePath()` in active task scripts for standard Make-managed inputs/outputs; keep task paths relative and direct.
 - Do not use `dir.create()` in active task scripts for standard task `input/`, `output/`, or `temp/` directories; Make should own directory creation.
 

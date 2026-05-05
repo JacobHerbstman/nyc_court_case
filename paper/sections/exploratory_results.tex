@@ -66,23 +66,24 @@ Y_{cbt}
 \end{equation}
 where \(c\) indexes community districts, \(b\) boroughs, and \(p(t)\) period bins.
 The omitted period \(p_0\) is 1985--1989.
+The event-study figure uses five-year bins, with 2020--2025 as the final partial bin.
 The treatment \(T_c\) is the 1990 homeownership share, standardized within borough.
 The controls \(X_c\) are 1990 median household income, the 1990 poverty share, log 1990 occupied units, and pre-period production on the same outcome scale, each interacted with the period bins.
 Fixed effects absorb permanent CD differences and borough-period housing cycles; standard errors are clustered by CD.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[page=1,width=0.86\textwidth]{../tasks/estimate_cd_homeownership_long_units_event_study/output/cd_homeownership_long_units_event_coefficients_5_plus_four_controls.pdf}
+    \includegraphics[page=1,width=0.86\textwidth]{../tasks/estimate_cd_homeownership_long_units_event_study/output/cd_homeownership_long_units_event_coefficients_5_plus_four_controls_5yr_bins.pdf}
     \caption{Event-Study Gradients by Housing Margin}
     \label{fig:homeownership_event_study_5_plus}
-    \figurenotes{Figure plots coefficients on within-borough standardized 1990 homeownership from Equation~\ref{eq:homeownership_event_study}. Outcomes are units in 1--4 unit and 5+ unit new buildings per 10,000 occupied housing units in 1990. The omitted period is 1985--1989. Controls are 1990 median household income, the 1990 poverty share, log 1990 occupied units, and pre-period production, each interacted with period bins. Standard errors are clustered by CD.}
+    \figurenotes{Figure plots coefficients on within-borough standardized 1990 homeownership from Equation~\ref{eq:homeownership_event_study}. Outcomes are units in 1--4 unit and 5+ unit new buildings per 10,000 occupied housing units in 1990. The omitted period is 1985--1989. The event-study bins are five-year periods, except for the final 2020--2025 bin. Controls are 1990 median household income, the 1990 poverty share, log 1990 occupied units, and pre-period production, each interacted with period bins. Standard errors are clustered by CD.}
 \end{figure}
 
 Figure~\ref{fig:homeownership_event_study_5_plus} shows a delayed homeowner gradient rather than an immediate post-1990 break.
-The 1980--1984 placebo coefficient is positive, \HomeownFivePlusEventEarlyEightiesCoef, relative to 1985--1989.
-The 1990s and 2000s coefficients are also small, \HomeownFivePlusEventNinetiesCoef\ and \HomeownFivePlusEventTwoThousandsCoef.
-The gradient turns sharply negative in the later periods: a one-standard-deviation increase in 1990 homeownership exposure is associated with \HomeownFivePlusEventTwentyTensCoef\ fewer 5+ unit new-building units per 10,000 baseline occupied units in 2010--2019 \((p=\HomeownFivePlusEventTwentyTensP)\), and \HomeownFivePlusEventTwentyTwentiesCoef\ fewer in 2020--2025 \((p=\HomeownFivePlusEventTwentyTwentiesP)\).
-The 1--4 unit placebo shows no comparable pattern, with coefficients of \HomeownOneFourEventTwentyTensCoef\ in 2010--2019 and \HomeownOneFourEventTwentyTwentiesCoef\ in 2020--2025.
+The 1980--1984 placebo coefficient is \HomeownFivePlusEventFiveyrEarlyEightiesCoef, relative to 1985--1989.
+The 1990--1994, 1995--1999, 2000--2004, and 2005--2009 coefficients are \HomeownFivePlusEventFiveyrNinetiesEarlyCoef, \HomeownFivePlusEventFiveyrNinetiesLateCoef, \HomeownFivePlusEventFiveyrTwoThousandsEarlyCoef, and \HomeownFivePlusEventFiveyrTwoThousandsLateCoef.
+The gradient turns negative in 2010--2014, \HomeownFivePlusEventFiveyrTwentyTensEarlyCoef\ \((p=\HomeownFivePlusEventFiveyrTwentyTensEarlyP)\), and becomes much larger in 2015--2019, \HomeownFivePlusEventFiveyrTwentyTensLateCoef\ \((p=\HomeownFivePlusEventFiveyrTwentyTensLateP)\), and 2020--2025, \HomeownFivePlusEventFiveyrTwentyTwentiesCoef\ \((p=\HomeownFivePlusEventFiveyrTwentyTwentiesP)\).
+The 1--4 unit placebo shows no comparable late decline, with coefficients of \HomeownOneFourEventFiveyrTwentyTensEarlyCoef, \HomeownOneFourEventFiveyrTwentyTensLateCoef, and \HomeownOneFourEventFiveyrTwentyTwentiesCoef\ over the same three post-2010 bins.
 
 \input{../tasks/estimate_cd_homeownership_long_units_event_study/output/cd_homeownership_long_units_long_difference_5_plus_four_controls.tex}
 

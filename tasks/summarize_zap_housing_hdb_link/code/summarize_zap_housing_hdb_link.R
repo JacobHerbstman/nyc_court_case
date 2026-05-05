@@ -52,6 +52,11 @@ assert_unique_keys <- function(df, keys, label) {
 
 project_df <- read_csv(zap_housing_hdb_project_summary_csv, show_col_types = FALSE, na = c("", "NA"))
 
+if (!"bbl_linkable" %in% names(project_df)) {
+  project_df <- project_df %>%
+    mutate(bbl_linkable = has_bbl %in% TRUE)
+}
+
 linked_0_10_cols <- c(
   "linked_housing_projects_0_10",
   "linked_addition_projects_0_10",
@@ -87,14 +92,16 @@ cohort_counts <- project_df %>%
   group_by(borocd, cert_year) %>%
   summarise(
     initial_apps = n(),
-    linked_housing_projects_0_10 = sum(has_any_housing_job_0_10, na.rm = TRUE),
-    linked_addition_projects_0_10 = sum(has_any_addition_job_0_10, na.rm = TRUE),
-    linked_nb_projects_0_10 = sum(has_any_nb_job_0_10, na.rm = TRUE),
-    linked_nb_50_plus_projects_0_10 = sum(has_any_nb_50_plus_job_0_10, na.rm = TRUE),
-    linked_nb_gross_units_0_10 = sum(linked_nb_gross_units_0_10, na.rm = TRUE),
-    linked_gross_add_units_0_10 = sum(linked_gross_add_units_0_10, na.rm = TRUE),
-    linked_gross_loss_units_0_10 = sum(linked_gross_loss_units_0_10, na.rm = TRUE),
-    linked_net_units_0_10 = sum(linked_net_units_0_10, na.rm = TRUE),
+    linkable_apps = sum(bbl_linkable %in% TRUE),
+    no_valid_bbl_apps = sum(!(bbl_linkable %in% TRUE)),
+    linked_housing_projects_0_10 = sum(has_any_housing_job_0_10[bbl_linkable %in% TRUE], na.rm = TRUE),
+    linked_addition_projects_0_10 = sum(has_any_addition_job_0_10[bbl_linkable %in% TRUE], na.rm = TRUE),
+    linked_nb_projects_0_10 = sum(has_any_nb_job_0_10[bbl_linkable %in% TRUE], na.rm = TRUE),
+    linked_nb_50_plus_projects_0_10 = sum(has_any_nb_50_plus_job_0_10[bbl_linkable %in% TRUE], na.rm = TRUE),
+    linked_nb_gross_units_0_10 = sum(linked_nb_gross_units_0_10[bbl_linkable %in% TRUE], na.rm = TRUE),
+    linked_gross_add_units_0_10 = sum(linked_gross_add_units_0_10[bbl_linkable %in% TRUE], na.rm = TRUE),
+    linked_gross_loss_units_0_10 = sum(linked_gross_loss_units_0_10[bbl_linkable %in% TRUE], na.rm = TRUE),
+    linked_net_units_0_10 = sum(linked_net_units_0_10[bbl_linkable %in% TRUE], na.rm = TRUE),
     .groups = "drop"
   )
 
@@ -108,6 +115,8 @@ cohort_panel <- crossing(
   left_join(cohort_counts, by = c("borocd", "cert_year"), relationship = "many-to-one") %>%
   mutate(
     initial_apps = coalesce(initial_apps, 0L),
+    linkable_apps = coalesce(linkable_apps, 0L),
+    no_valid_bbl_apps = coalesce(no_valid_bbl_apps, 0L),
     linked_housing_projects_0_10 = coalesce(linked_housing_projects_0_10, 0L),
     linked_addition_projects_0_10 = coalesce(linked_addition_projects_0_10, 0L),
     linked_nb_projects_0_10 = coalesce(linked_nb_projects_0_10, 0L),
@@ -116,26 +125,26 @@ cohort_panel <- crossing(
     linked_gross_add_units_0_10 = coalesce(linked_gross_add_units_0_10, 0),
     linked_gross_loss_units_0_10 = coalesce(linked_gross_loss_units_0_10, 0),
     linked_net_units_0_10 = coalesce(linked_net_units_0_10, 0),
-    mature_0_10_window = cert_year <= 2015,
-    across(all_of(linked_0_10_cols), ~ ifelse(mature_0_10_window, .x, NA_real_)),
-    linked_addition_rate_0_10 = ifelse(mature_0_10_window & initial_apps > 0, linked_addition_projects_0_10 / initial_apps, NA_real_),
-    linked_nb_50_plus_rate_0_10 = ifelse(mature_0_10_window & initial_apps > 0, linked_nb_50_plus_projects_0_10 / initial_apps, NA_real_),
-    linked_gross_add_units_per_app_0_10 = ifelse(mature_0_10_window & initial_apps > 0, linked_gross_add_units_0_10 / initial_apps, NA_real_),
+    observable_0_10_window = cert_year >= 2010 & cert_year <= 2015,
+    across(all_of(linked_0_10_cols), ~ ifelse(observable_0_10_window, .x, NA_real_)),
+    linked_addition_rate_0_10 = ifelse(observable_0_10_window & linkable_apps > 0, linked_addition_projects_0_10 / linkable_apps, NA_real_),
+    linked_nb_50_plus_rate_0_10 = ifelse(observable_0_10_window & linkable_apps > 0, linked_nb_50_plus_projects_0_10 / linkable_apps, NA_real_),
+    linked_gross_add_units_per_app_0_10 = ifelse(observable_0_10_window & linkable_apps > 0, linked_gross_add_units_0_10 / linkable_apps, NA_real_),
     cert_era_summary = summary_era_from_year(cert_year)
   ) %>%
   arrange(cert_year, borocd)
 
 cohort_panel_mature_0_10 <- cohort_panel %>%
-  filter(cert_year <= 2015)
+  filter(observable_0_10_window)
 
 era_summary <- bind_rows(
   cohort_panel_mature_0_10 %>%
     group_by(cert_era_summary, treat_tercile, treat_tercile_label) %>%
     summarise(
       outcome_family = "linked_addition_rate_0_10",
-      outcome_label = "Share of ZAP housing projects linking to an addition job within 0-10 years",
+      outcome_label = "Share of linkable ZAP housing projects linking to an addition job within 0-10 years",
       numerator = sum(linked_addition_projects_0_10, na.rm = TRUE),
-      denominator = sum(initial_apps, na.rm = TRUE),
+      denominator = sum(linkable_apps, na.rm = TRUE),
       value = ifelse(denominator > 0, numerator / denominator, NA_real_),
       .groups = "drop"
     ),
@@ -143,9 +152,9 @@ era_summary <- bind_rows(
     group_by(cert_era_summary, treat_tercile, treat_tercile_label) %>%
     summarise(
       outcome_family = "linked_nb_50_plus_rate_0_10",
-      outcome_label = "Share of ZAP housing projects linking to a 50+ unit NB job within 0-10 years",
+      outcome_label = "Share of linkable ZAP housing projects linking to a 50+ unit NB job within 0-10 years",
       numerator = sum(linked_nb_50_plus_projects_0_10, na.rm = TRUE),
-      denominator = sum(initial_apps, na.rm = TRUE),
+      denominator = sum(linkable_apps, na.rm = TRUE),
       value = ifelse(denominator > 0, numerator / denominator, NA_real_),
       .groups = "drop"
     ),
@@ -153,9 +162,9 @@ era_summary <- bind_rows(
     group_by(cert_era_summary, treat_tercile, treat_tercile_label) %>%
     summarise(
       outcome_family = "linked_gross_add_units_per_app_0_10",
-      outcome_label = "Linked gross addition units per ZAP housing project within 0-10 years",
+      outcome_label = "Linked gross addition units per linkable ZAP housing project within 0-10 years",
       numerator = sum(linked_gross_add_units_0_10, na.rm = TRUE),
-      denominator = sum(initial_apps, na.rm = TRUE),
+      denominator = sum(linkable_apps, na.rm = TRUE),
       value = ifelse(denominator > 0, numerator / denominator, NA_real_),
       .groups = "drop"
     )
@@ -176,7 +185,12 @@ qc_df <- bind_rows(
   tibble(
     metric = "era_summary_0_10_max_cert_year",
     value = max(cohort_panel_mature_0_10$cert_year, na.rm = TRUE),
-    note = "Maximum certification year used in comparable 0-10 buildout summaries."
+    note = "Maximum certification year used in comparable observed 0-10 buildout summaries."
+  ),
+  tibble(
+    metric = "era_summary_0_10_min_cert_year",
+    value = min(cohort_panel_mature_0_10$cert_year, na.rm = TRUE),
+    note = "Minimum certification year used; earlier cohorts are not treated as observed zero because HDB support is post-2010."
   ),
   tibble(
     metric = "immature_2016_2025_application_count",
@@ -184,24 +198,39 @@ qc_df <- bind_rows(
     note = "Applications excluded from comparable 0-10 era summaries because the buildout window is immature."
   ),
   tibble(
+    metric = "historical_1976_2009_application_count",
+    value = sum(cohort_panel$initial_apps[cohort_panel$cert_year < 2010], na.rm = TRUE),
+    note = "Applications excluded because HDB does not provide complete 0-10 post-certification outcome support before 2010."
+  ),
+  tibble(
+    metric = "observable_0_10_no_valid_bbl_application_count",
+    value = sum(cohort_panel_mature_0_10$no_valid_bbl_apps, na.rm = TRUE),
+    note = "Observed-window applications excluded from rate denominators because exact-BBL linkage is impossible."
+  ),
+  tibble(
     metric = "immature_0_10_nonmissing_cell_count",
     value = sum(!is.na(unlist(cohort_panel[cohort_panel$cert_year > 2015, linked_0_10_cols])), na.rm = TRUE),
     note = "Should be zero because raw 0-10 linked outcomes are masked for immature 2016-2025 cohorts."
   ),
   tibble(
+    metric = "historical_0_10_nonmissing_cell_count",
+    value = sum(!is.na(unlist(cohort_panel[cohort_panel$cert_year < 2010, linked_0_10_cols])), na.rm = TRUE),
+    note = "Should be zero because pre-2010 cohorts are unsupported rather than observed zeros."
+  ),
+  tibble(
     metric = "linked_addition_projects_share_0_10",
-    value = sum(cohort_panel_mature_0_10$linked_addition_projects_0_10, na.rm = TRUE) / sum(cohort_panel_mature_0_10$initial_apps, na.rm = TRUE),
-    note = "Share of ZAP housing projects that link to any addition-producing housing job within 0-10 years."
+    value = sum(cohort_panel_mature_0_10$linked_addition_projects_0_10, na.rm = TRUE) / sum(cohort_panel_mature_0_10$linkable_apps, na.rm = TRUE),
+    note = "Share of linkable ZAP housing projects that link to any addition-producing housing job within 0-10 years."
   ),
   tibble(
     metric = "linked_nb_50_plus_projects_share_0_10",
-    value = sum(cohort_panel_mature_0_10$linked_nb_50_plus_projects_0_10, na.rm = TRUE) / sum(cohort_panel_mature_0_10$initial_apps, na.rm = TRUE),
-    note = "Share of ZAP housing projects that link to any 50+ unit new-building housing job within 0-10 years."
+    value = sum(cohort_panel_mature_0_10$linked_nb_50_plus_projects_0_10, na.rm = TRUE) / sum(cohort_panel_mature_0_10$linkable_apps, na.rm = TRUE),
+    note = "Share of linkable ZAP housing projects that link to any 50+ unit new-building housing job within 0-10 years."
   ),
   tibble(
     metric = "mean_linked_gross_add_units_per_app_0_10",
-    value = sum(cohort_panel_mature_0_10$linked_gross_add_units_0_10, na.rm = TRUE) / sum(cohort_panel_mature_0_10$initial_apps, na.rm = TRUE),
-    note = "Average linked gross addition units per ZAP housing project within the 0-10 year window."
+    value = sum(cohort_panel_mature_0_10$linked_gross_add_units_0_10, na.rm = TRUE) / sum(cohort_panel_mature_0_10$linkable_apps, na.rm = TRUE),
+    note = "Average linked gross addition units per linkable ZAP housing project within the 0-10 year window."
   )
 )
 
@@ -209,7 +238,7 @@ plot_df <- era_summary %>%
   mutate(
     cert_era_summary = factor(
       cert_era_summary,
-      levels = c("1976-1979", "1980-1984", "1985-1989", "1990-1999", "2000-2009", "2010-2015", "2016-2025")
+      levels = c("2010-2015")
     ),
     treat_tercile_label = factor(treat_tercile_label, levels = c("Low", "Middle", "High"))
   )
@@ -225,7 +254,8 @@ plot_obj <- ggplot(
     x = "Certification era",
     y = NULL,
     fill = "Treatment tercile",
-    title = "Linked housing outcomes for ZAP housing projects"
+    title = "Linked housing outcomes for ZAP housing projects",
+    subtitle = "0-10 year outcomes are shown only for 2010-2015 certification cohorts with valid BBL support"
   ) +
   theme_minimal(base_size = 11) +
   theme(legend.position = "bottom")

@@ -8,11 +8,15 @@
 # out_event_coefficients_light_mix_pdf <- "../output/cd_homeownership_long_units_event_coefficients_light_mix.pdf"
 # out_event_coefficients_5_plus_light_mix_pdf <- "../output/cd_homeownership_long_units_event_coefficients_5_plus_light_mix.pdf"
 # out_event_coefficients_5_plus_four_controls_pdf <- "../output/cd_homeownership_long_units_event_coefficients_5_plus_four_controls.pdf"
+# out_event_coefficients_5yr_csv <- "../output/cd_homeownership_long_units_event_coefficients_5yr_bins.csv"
+# out_event_coefficients_5_plus_four_controls_5yr_pdf <- "../output/cd_homeownership_long_units_event_coefficients_5_plus_four_controls_5yr_bins.pdf"
 # out_event_coefficients_light_no_preprod_pdf <- "../output/cd_homeownership_long_units_event_coefficients_light_no_preprod.pdf"
 # out_event_coefficients_light_controls_pdf <- "../output/cd_homeownership_long_units_event_coefficients_light_controls.pdf"
 # out_event_poisson_coefficients_csv <- "../output/cd_homeownership_long_units_event_poisson_coefficients.csv"
 # out_event_poisson_coefficients_fe_only_pdf <- "../output/cd_homeownership_long_units_event_poisson_coefficients_fe_only.pdf"
 # out_event_poisson_coefficients_5_plus_four_controls_pdf <- "../output/cd_homeownership_long_units_event_poisson_coefficients_5_plus_four_controls.pdf"
+# out_event_poisson_coefficients_5yr_csv <- "../output/cd_homeownership_long_units_event_poisson_coefficients_5yr_bins.csv"
+# out_event_poisson_coefficients_5_plus_four_controls_5yr_pdf <- "../output/cd_homeownership_long_units_event_poisson_coefficients_5_plus_four_controls_5yr_bins.pdf"
 # out_long_difference_csv <- "../output/cd_homeownership_long_units_long_difference_estimates.csv"
 # out_long_difference_5_plus_four_controls_tex <- "../output/cd_homeownership_long_units_long_difference_5_plus_four_controls.tex"
 # out_event_5_plus_four_controls_macros_tex <- "../output/cd_homeownership_long_units_event_5_plus_four_controls_macros.tex"
@@ -36,8 +40,8 @@ source("../../_lib/source_pipeline_utils.R")
 
 args <- commandArgs(trailingOnly = TRUE)
 
-if (length(args) != 22) {
-  stop("Expected 22 arguments: cd_homeownership_long_units_series_csv cd_baseline_1990_controls_csv cd_redevelopment_potential_baseline_csv out_event_coefficients_csv out_event_coefficients_pdf out_event_coefficients_fe_only_pdf out_event_coefficients_light_mix_pdf out_event_coefficients_5_plus_light_mix_pdf out_event_coefficients_5_plus_four_controls_pdf out_event_coefficients_light_no_preprod_pdf out_event_coefficients_light_controls_pdf out_event_poisson_coefficients_csv out_event_poisson_coefficients_fe_only_pdf out_event_poisson_coefficients_5_plus_four_controls_pdf out_long_difference_csv out_long_difference_5_plus_four_controls_tex out_event_5_plus_four_controls_macros_tex out_triple_diff_csv out_triple_diff_pdf out_randomization_csv out_model_summary_csv out_qc_csv")
+if (length(args) != 26) {
+  stop("Expected 26 arguments: cd_homeownership_long_units_series_csv cd_baseline_1990_controls_csv cd_redevelopment_potential_baseline_csv out_event_coefficients_csv out_event_coefficients_pdf out_event_coefficients_fe_only_pdf out_event_coefficients_light_mix_pdf out_event_coefficients_5_plus_light_mix_pdf out_event_coefficients_5_plus_four_controls_pdf out_event_coefficients_5yr_csv out_event_coefficients_5_plus_four_controls_5yr_pdf out_event_coefficients_light_no_preprod_pdf out_event_coefficients_light_controls_pdf out_event_poisson_coefficients_csv out_event_poisson_coefficients_fe_only_pdf out_event_poisson_coefficients_5_plus_four_controls_pdf out_event_poisson_coefficients_5yr_csv out_event_poisson_coefficients_5_plus_four_controls_5yr_pdf out_long_difference_csv out_long_difference_5_plus_four_controls_tex out_event_5_plus_four_controls_macros_tex out_triple_diff_csv out_triple_diff_pdf out_randomization_csv out_model_summary_csv out_qc_csv")
 }
 
 cd_homeownership_long_units_series_csv <- args[1]
@@ -49,19 +53,23 @@ out_event_coefficients_fe_only_pdf <- args[6]
 out_event_coefficients_light_mix_pdf <- args[7]
 out_event_coefficients_5_plus_light_mix_pdf <- args[8]
 out_event_coefficients_5_plus_four_controls_pdf <- args[9]
-out_event_coefficients_light_no_preprod_pdf <- args[10]
-out_event_coefficients_light_controls_pdf <- args[11]
-out_event_poisson_coefficients_csv <- args[12]
-out_event_poisson_coefficients_fe_only_pdf <- args[13]
-out_event_poisson_coefficients_5_plus_four_controls_pdf <- args[14]
-out_long_difference_csv <- args[15]
-out_long_difference_5_plus_four_controls_tex <- args[16]
-out_event_5_plus_four_controls_macros_tex <- args[17]
-out_triple_diff_csv <- args[18]
-out_triple_diff_pdf <- args[19]
-out_randomization_csv <- args[20]
-out_model_summary_csv <- args[21]
-out_qc_csv <- args[22]
+out_event_coefficients_5yr_csv <- args[10]
+out_event_coefficients_5_plus_four_controls_5yr_pdf <- args[11]
+out_event_coefficients_light_no_preprod_pdf <- args[12]
+out_event_coefficients_light_controls_pdf <- args[13]
+out_event_poisson_coefficients_csv <- args[14]
+out_event_poisson_coefficients_fe_only_pdf <- args[15]
+out_event_poisson_coefficients_5_plus_four_controls_pdf <- args[16]
+out_event_poisson_coefficients_5yr_csv <- args[17]
+out_event_poisson_coefficients_5_plus_four_controls_5yr_pdf <- args[18]
+out_long_difference_csv <- args[19]
+out_long_difference_5_plus_four_controls_tex <- args[20]
+out_event_5_plus_four_controls_macros_tex <- args[21]
+out_triple_diff_csv <- args[22]
+out_triple_diff_pdf <- args[23]
+out_randomization_csv <- args[24]
+out_model_summary_csv <- args[25]
+out_qc_csv <- args[26]
 
 write_lines_if_changed <- function(lines, out_path) {
   temp_path <- tempfile(fileext = ".tex")
@@ -208,6 +216,20 @@ event_periods <- c(
 )
 reference_event_period <- "1985-1989"
 estimated_event_periods <- event_periods[event_periods != reference_event_period]
+
+event_periods_5yr <- c(
+  "1980-1984",
+  "1985-1989",
+  "1990-1994",
+  "1995-1999",
+  "2000-2004",
+  "2005-2009",
+  "2010-2014",
+  "2015-2019",
+  "2020-2025"
+)
+reference_event_period_5yr <- "1985-1989"
+estimated_event_periods_5yr <- event_periods_5yr[event_periods_5yr != reference_event_period_5yr]
 
 outcome_defs <- tribble(
   ~outcome_id, ~outcome_label, ~margin_role,
@@ -584,6 +606,120 @@ event_coefficients_df <- bind_rows(event_rows) |>
   ) |>
   arrange(outcome_id, outcome_scale, control_layer, event_period)
 
+analysis_panel_5yr <- analysis_panel |>
+  mutate(
+    event_period = case_when(
+      year >= 1980 & year <= 1984 ~ "1980-1984",
+      year >= 1985 & year <= 1989 ~ "1985-1989",
+      year >= 1990 & year <= 1994 ~ "1990-1994",
+      year >= 1995 & year <= 1999 ~ "1995-1999",
+      year >= 2000 & year <= 2004 ~ "2000-2004",
+      year >= 2005 & year <= 2009 ~ "2005-2009",
+      year >= 2010 & year <= 2014 ~ "2010-2014",
+      year >= 2015 & year <= 2019 ~ "2015-2019",
+      year >= 2020 & year <= 2025 ~ "2020-2025",
+      TRUE ~ NA_character_
+    ),
+    event_period = factor(event_period, levels = event_periods_5yr),
+    borough_period = interaction(borough_name, event_period, drop = TRUE)
+  ) |>
+  filter(!is.na(event_period))
+
+event_5yr_rows <- list()
+event_5yr_index <- 1L
+event_5yr_control_layer <- "1_light_controls"
+event_5yr_control_vars <- control_blocks[[event_5yr_control_layer]]
+
+for (outcome_value in c("units_built_1_4", "units_built_5_plus")) {
+  for (scale_value in scale_defs$outcome_scale) {
+    outcome_df <- analysis_panel_5yr |>
+      filter(outcome_id == outcome_value, outcome_scale == scale_value, !is.na(outcome_rate))
+
+    work_df <- add_period_terms(outcome_df, c("treat_z_boro", event_5yr_control_vars), estimated_event_periods_5yr)
+    treatment_terms <- paste0("treat_z_boro_x_", sanitize_period(estimated_event_periods_5yr))
+    control_terms <- unlist(lapply(event_5yr_control_vars, function(control_var) paste0(control_var, "_x_", sanitize_period(estimated_event_periods_5yr))))
+    model_formula <- as.formula(paste0("outcome_rate ~ ", paste(c(treatment_terms, control_terms), collapse = " + "), " | borocd + borough_period"))
+
+    model <- feols(model_formula, data = work_df, cluster = ~borocd)
+
+    requested_terms_df <- tibble(term = treatment_terms, event_period = estimated_event_periods_5yr, is_reference = FALSE)
+    event_5yr_rows[[event_5yr_index]] <- bind_rows(
+      tibble(
+        term = NA_character_,
+        event_period = reference_event_period_5yr,
+        is_reference = TRUE,
+        estimate = 0,
+        std_error = NA_real_,
+        statistic = NA_real_,
+        p_value = NA_real_,
+        conf_low = NA_real_,
+        conf_high = NA_real_
+      ),
+      extract_model_terms(model, requested_terms_df)
+    ) |>
+      mutate(
+        period_scheme = "five_year_bins",
+        outcome_id = first(work_df$outcome_id),
+        outcome_label = first(work_df$outcome_label),
+        margin_role = first(work_df$margin_role),
+        outcome_scale = first(work_df$outcome_scale),
+        outcome_scale_label = first(work_df$outcome_scale_label),
+        control_layer = event_5yr_control_layer,
+        control_layer_label = control_layer_label(event_5yr_control_layer),
+        reference_event_period = reference_event_period_5yr,
+        sample_year_min = min(work_df$year, na.rm = TRUE),
+        sample_year_max = max(work_df$year, na.rm = TRUE)
+      ) |>
+      select(
+        period_scheme,
+        outcome_id,
+        outcome_label,
+        margin_role,
+        outcome_scale,
+        outcome_scale_label,
+        control_layer,
+        control_layer_label,
+        reference_event_period,
+        event_period,
+        is_reference,
+        term,
+        estimate,
+        std_error,
+        statistic,
+        p_value,
+        conf_low,
+        conf_high,
+        sample_year_min,
+        sample_year_max
+      )
+    event_5yr_index <- event_5yr_index + 1L
+
+    summary_rows[[summary_index]] <- tibble(
+      model_family = "event_study_5yr",
+      outcome_id = first(work_df$outcome_id),
+      outcome_scale = first(work_df$outcome_scale),
+      treatment = "treat_z_boro",
+      control_layer = event_5yr_control_layer,
+      observation_count = nobs(model),
+      district_count = n_distinct(work_df$borocd),
+      year_count = n_distinct(work_df$year),
+      period_count = n_distinct(work_df$event_period),
+      control_count = length(event_5yr_control_vars),
+      requested_treat_term_count = length(treatment_terms),
+      present_treat_term_count = sum(treatment_terms %in% names(coef(model))),
+      within_r2 = within_r2(model)
+    )
+    summary_index <- summary_index + 1L
+  }
+}
+
+event_coefficients_5yr_df <- bind_rows(event_5yr_rows) |>
+  mutate(
+    event_period = factor(event_period, levels = event_periods_5yr),
+    control_layer = factor(control_layer, levels = names(control_blocks))
+  ) |>
+  arrange(outcome_id, outcome_scale, control_layer, event_period)
+
 poisson_rows <- list()
 poisson_index <- 1L
 poisson_specs <- bind_rows(
@@ -684,6 +820,122 @@ for (poisson_spec_index in seq_len(nrow(poisson_specs))) {
 
 event_poisson_coefficients_df <- bind_rows(poisson_rows) |>
   mutate(event_period = factor(event_period, levels = event_periods)) |>
+  arrange(outcome_id, control_layer, event_period)
+
+panel_df_5yr <- panel_df |>
+  mutate(
+    event_period = case_when(
+      year >= 1980 & year <= 1984 ~ "1980-1984",
+      year >= 1985 & year <= 1989 ~ "1985-1989",
+      year >= 1990 & year <= 1994 ~ "1990-1994",
+      year >= 1995 & year <= 1999 ~ "1995-1999",
+      year >= 2000 & year <= 2004 ~ "2000-2004",
+      year >= 2005 & year <= 2009 ~ "2005-2009",
+      year >= 2010 & year <= 2014 ~ "2010-2014",
+      year >= 2015 & year <= 2019 ~ "2015-2019",
+      year >= 2020 & year <= 2025 ~ "2020-2025",
+      TRUE ~ NA_character_
+    ),
+    event_period = factor(event_period, levels = event_periods_5yr),
+    borough_period = interaction(borough_name, event_period, drop = TRUE)
+  ) |>
+  filter(!is.na(event_period))
+
+poisson_5yr_rows <- list()
+poisson_5yr_index <- 1L
+poisson_5yr_control_layer <- "1_light_controls"
+poisson_5yr_control_vars <- control_blocks[[poisson_5yr_control_layer]]
+
+for (poisson_5yr_outcome_id in c("units_built_1_4", "units_built_5_plus")) {
+  outcome_df <- panel_df_5yr |>
+    filter(
+      outcome_id == poisson_5yr_outcome_id,
+      !is.na(outcome_value),
+      outcome_value >= 0,
+      occupied_units_1990_exact > 0
+    ) |>
+    left_join(
+      pre_rate_lookup |>
+        filter(outcome_scale == "per_10000_occupied_1990") |>
+        select(outcome_id, borocd, pre_1980_1988_rate_z),
+      by = c("outcome_id", "borocd"),
+      relationship = "many-to-one"
+    )
+
+  work_df <- add_period_terms(outcome_df, c("treat_z_boro", poisson_5yr_control_vars), estimated_event_periods_5yr)
+  treatment_terms <- paste0("treat_z_boro_x_", sanitize_period(estimated_event_periods_5yr))
+  control_terms <- unlist(lapply(poisson_5yr_control_vars, function(control_var) paste0(control_var, "_x_", sanitize_period(estimated_event_periods_5yr))))
+  model_formula <- as.formula(paste0("outcome_value ~ ", paste(c(treatment_terms, control_terms), collapse = " + "), " | borocd + borough_period"))
+
+  model <- fepois(
+    model_formula,
+    data = work_df,
+    cluster = ~borocd,
+    offset = log(work_df$occupied_units_1990_exact)
+  )
+
+  requested_terms_df <- tibble(term = treatment_terms, event_period = estimated_event_periods_5yr, is_reference = FALSE)
+  poisson_5yr_rows[[poisson_5yr_index]] <- bind_rows(
+    tibble(
+      term = NA_character_,
+      event_period = reference_event_period_5yr,
+      is_reference = TRUE,
+      estimate = 0,
+      std_error = NA_real_,
+      statistic = NA_real_,
+      p_value = NA_real_,
+      conf_low = NA_real_,
+      conf_high = NA_real_
+    ),
+    extract_model_terms(model, requested_terms_df)
+  ) |>
+    transmute(
+      period_scheme = "five_year_bins",
+      outcome_id = first(work_df$outcome_id),
+      outcome_label = first(work_df$outcome_label),
+      margin_role = first(work_df$margin_role),
+      poisson_scale = "count_offset_occupied_1990",
+      poisson_scale_label = "Count with 1990 occupied-units exposure",
+      control_layer = poisson_5yr_control_layer,
+      control_layer_label = control_layer_label(poisson_5yr_control_layer),
+      reference_event_period = reference_event_period_5yr,
+      event_period,
+      is_reference,
+      term,
+      log_estimate = estimate,
+      log_std_error = std_error,
+      log_statistic = statistic,
+      p_value,
+      log_conf_low = conf_low,
+      log_conf_high = conf_high,
+      percent_estimate = log_point_to_percent(estimate),
+      percent_conf_low = log_point_to_percent(conf_low),
+      percent_conf_high = log_point_to_percent(conf_high),
+      sample_year_min = min(work_df$year, na.rm = TRUE),
+      sample_year_max = max(work_df$year, na.rm = TRUE)
+    )
+  poisson_5yr_index <- poisson_5yr_index + 1L
+
+  summary_rows[[summary_index]] <- tibble(
+    model_family = "event_study_poisson_5yr",
+    outcome_id = first(work_df$outcome_id),
+    outcome_scale = "count_offset_occupied_1990",
+    treatment = "treat_z_boro",
+    control_layer = poisson_5yr_control_layer,
+    observation_count = nobs(model),
+    district_count = n_distinct(work_df$borocd),
+    year_count = n_distinct(work_df$year),
+    period_count = n_distinct(work_df$event_period),
+    control_count = length(poisson_5yr_control_vars),
+    requested_treat_term_count = length(treatment_terms),
+    present_treat_term_count = sum(treatment_terms %in% names(coef(model))),
+    within_r2 = within_r2(model)
+  )
+  summary_index <- summary_index + 1L
+}
+
+event_poisson_coefficients_5yr_df <- bind_rows(poisson_5yr_rows) |>
+  mutate(event_period = factor(event_period, levels = event_periods_5yr)) |>
   arrange(outcome_id, control_layer, event_period)
 
 window_defs <- tribble(
@@ -1004,7 +1256,9 @@ model_summary_df <- bind_rows(summary_rows) |>
   arrange(model_family, outcome_id, outcome_scale, treatment, control_layer)
 
 write_csv_if_changed(event_coefficients_df, out_event_coefficients_csv)
+write_csv_if_changed(event_coefficients_5yr_df, out_event_coefficients_5yr_csv)
 write_csv_if_changed(event_poisson_coefficients_df, out_event_poisson_coefficients_csv)
+write_csv_if_changed(event_poisson_coefficients_5yr_df, out_event_poisson_coefficients_5yr_csv)
 write_csv_if_changed(long_difference_df, out_long_difference_csv)
 write_csv_if_changed(triple_diff_df, out_triple_diff_csv)
 write_csv_if_changed(randomization_df, out_randomization_csv)
@@ -1113,6 +1367,29 @@ lookup_event_value <- function(outcome_value, period_value, value_col, digits) {
   format_decimal(value, digits)
 }
 
+four_controls_event_5yr_df <- event_coefficients_5yr_df |>
+  filter(
+    outcome_scale == "per_10000_occupied_1990",
+    control_layer == "1_light_controls"
+  ) |>
+  mutate(event_period = as.character(event_period))
+
+lookup_event_5yr_value <- function(outcome_value, period_value, value_col, digits) {
+  value <- four_controls_event_5yr_df |>
+    filter(outcome_id == outcome_value, event_period == period_value) |>
+    pull(all_of(value_col))
+
+  if (length(value) != 1) {
+    stop("Expected one five-year event-study value for outcome ", outcome_value, ", period ", period_value, " and column ", value_col, ".")
+  }
+
+  if (value_col == "p_value") {
+    return(format_p_value_plain(value))
+  }
+
+  format_decimal(value, digits)
+}
+
 lookup_long_difference_value <- function(comparison_value, value_col, digits) {
   value <- long_difference_table_df |>
     filter(comparison_id == comparison_value) |>
@@ -1144,6 +1421,20 @@ write_lines_if_changed(
     latex_macro_line("HomeownFivePlusEventTwentyTwentiesP", lookup_event_value("units_built_5_plus", "2020-2025", "p_value", 3)),
     latex_macro_line("HomeownOneFourEventTwentyTensCoef", lookup_event_value("units_built_1_4", "2010-2019", "estimate", 1)),
     latex_macro_line("HomeownOneFourEventTwentyTwentiesCoef", lookup_event_value("units_built_1_4", "2020-2025", "estimate", 1)),
+    latex_macro_line("HomeownFivePlusEventFiveyrEarlyEightiesCoef", lookup_event_5yr_value("units_built_5_plus", "1980-1984", "estimate", 1)),
+    latex_macro_line("HomeownFivePlusEventFiveyrNinetiesEarlyCoef", lookup_event_5yr_value("units_built_5_plus", "1990-1994", "estimate", 1)),
+    latex_macro_line("HomeownFivePlusEventFiveyrNinetiesLateCoef", lookup_event_5yr_value("units_built_5_plus", "1995-1999", "estimate", 1)),
+    latex_macro_line("HomeownFivePlusEventFiveyrTwoThousandsEarlyCoef", lookup_event_5yr_value("units_built_5_plus", "2000-2004", "estimate", 1)),
+    latex_macro_line("HomeownFivePlusEventFiveyrTwoThousandsLateCoef", lookup_event_5yr_value("units_built_5_plus", "2005-2009", "estimate", 1)),
+    latex_macro_line("HomeownFivePlusEventFiveyrTwentyTensEarlyCoef", lookup_event_5yr_value("units_built_5_plus", "2010-2014", "estimate", 1)),
+    latex_macro_line("HomeownFivePlusEventFiveyrTwentyTensEarlyP", lookup_event_5yr_value("units_built_5_plus", "2010-2014", "p_value", 3)),
+    latex_macro_line("HomeownFivePlusEventFiveyrTwentyTensLateCoef", lookup_event_5yr_value("units_built_5_plus", "2015-2019", "estimate", 1)),
+    latex_macro_line("HomeownFivePlusEventFiveyrTwentyTensLateP", lookup_event_5yr_value("units_built_5_plus", "2015-2019", "p_value", 3)),
+    latex_macro_line("HomeownFivePlusEventFiveyrTwentyTwentiesCoef", lookup_event_5yr_value("units_built_5_plus", "2020-2025", "estimate", 1)),
+    latex_macro_line("HomeownFivePlusEventFiveyrTwentyTwentiesP", lookup_event_5yr_value("units_built_5_plus", "2020-2025", "p_value", 3)),
+    latex_macro_line("HomeownOneFourEventFiveyrTwentyTensEarlyCoef", lookup_event_5yr_value("units_built_1_4", "2010-2014", "estimate", 1)),
+    latex_macro_line("HomeownOneFourEventFiveyrTwentyTensLateCoef", lookup_event_5yr_value("units_built_1_4", "2015-2019", "estimate", 1)),
+    latex_macro_line("HomeownOneFourEventFiveyrTwentyTwentiesCoef", lookup_event_5yr_value("units_built_1_4", "2020-2025", "estimate", 1)),
     latex_macro_line("HomeownFivePlusLongDiffPlaceboCoef", lookup_long_difference_value("placebo_1985_1989_minus_1980_1984", "estimate", 1)),
     latex_macro_line("HomeownFivePlusLongDiffPlaceboP", lookup_long_difference_value("placebo_1985_1989_minus_1980_1984", "p_value", 3)),
     latex_macro_line("HomeownFivePlusLongDiffTwentyTensCoef", lookup_long_difference_value("post_2010_2019_minus_1980_1988", "estimate", 1)),
@@ -1432,6 +1723,58 @@ print(
 )
 dev.off()
 
+event_5yr_plot_df <- event_coefficients_5yr_df |>
+  mutate(
+    event_period = as.character(event_period),
+    event_period_index = match(event_period, event_periods_5yr)
+  )
+
+one_four_five_plus_four_controls_event_5yr_plot_df <- event_5yr_plot_df |>
+  filter(
+    outcome_id %in% c("units_built_1_4", "units_built_5_plus"),
+    outcome_scale == "per_10000_occupied_1990",
+    control_layer == "1_light_controls"
+  ) |>
+  mutate(outcome_label = factor(outcome_label, levels = c("1-4 unit buildings", "5+ unit buildings")))
+
+five_plus_four_controls_event_5yr_plot_df <- event_5yr_plot_df |>
+  filter(
+    outcome_id == "units_built_5_plus",
+    control_layer == "1_light_controls"
+  )
+
+pdf(out_event_coefficients_5_plus_four_controls_5yr_pdf, width = 11, height = 8.5)
+print(
+  ggplot(
+    one_four_five_plus_four_controls_event_5yr_plot_df,
+    aes(x = event_period_index, y = estimate, color = outcome_label, group = outcome_label)
+  ) +
+    geom_hline(yintercept = 0, linetype = "dashed", color = "#666666", linewidth = 0.35) +
+    geom_errorbar(data = filter(one_four_five_plus_four_controls_event_5yr_plot_df, !is_reference), aes(ymin = conf_low, ymax = conf_high), width = 0.12, linewidth = 0.45, position = margin_dodge) +
+    geom_line(linewidth = 0.75, position = margin_dodge) +
+    geom_point(size = 2.1, position = margin_dodge) +
+    scale_color_manual(values = margin_colors) +
+    scale_x_continuous(breaks = seq_along(event_periods_5yr), labels = event_periods_5yr) +
+    labs(title = "Four-control event study, five-year bins: 1-4 vs 5+ unit buildings", x = NULL, y = "Coefficient on homeowner exposure", color = NULL) +
+    theme_minimal(base_size = 11) +
+    theme(legend.position = "bottom", axis.text.x = element_text(angle = 45, hjust = 1))
+)
+print(
+  ggplot(
+    filter(five_plus_four_controls_event_5yr_plot_df, outcome_scale == "per_residential_acre"),
+    aes(x = event_period_index, y = estimate, group = 1)
+  ) +
+    geom_hline(yintercept = 0, linetype = "dashed", color = "#666666", linewidth = 0.35) +
+    geom_errorbar(data = filter(five_plus_four_controls_event_5yr_plot_df, outcome_scale == "per_residential_acre", !is_reference), aes(ymin = conf_low, ymax = conf_high), width = 0.12, linewidth = 0.45, color = "#2f7d32") +
+    geom_line(linewidth = 0.75, color = "#2f7d32") +
+    geom_point(size = 2.1, color = "#2f7d32") +
+    scale_x_continuous(breaks = seq_along(event_periods_5yr), labels = event_periods_5yr) +
+    labs(title = "Four-control event study, five-year bins: 5+ unit buildings per residential acre", x = NULL, y = "Coefficient on homeowner exposure") +
+    theme_minimal(base_size = 11) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+)
+dev.off()
+
 light_no_preprod_event_plot_df <- event_plot_df |>
   filter(control_layer == "1_light_no_preprod")
 
@@ -1605,6 +1948,34 @@ print(
 )
 dev.off()
 
+event_poisson_5yr_plot_df <- event_poisson_coefficients_5yr_df |>
+  mutate(
+    event_period = as.character(event_period),
+    event_period_index = match(event_period, event_periods_5yr)
+  )
+
+one_four_five_plus_four_controls_poisson_5yr_plot_df <- event_poisson_5yr_plot_df |>
+  filter(outcome_id %in% c("units_built_1_4", "units_built_5_plus")) |>
+  mutate(outcome_label = factor(outcome_label, levels = c("1-4 unit buildings", "5+ unit buildings")))
+
+pdf(out_event_poisson_coefficients_5_plus_four_controls_5yr_pdf, width = 11, height = 8.5)
+print(
+  ggplot(
+    one_four_five_plus_four_controls_poisson_5yr_plot_df,
+    aes(x = event_period_index, y = percent_estimate, color = outcome_label, group = outcome_label)
+  ) +
+    geom_hline(yintercept = 0, linetype = "dashed", color = "#666666", linewidth = 0.35) +
+    geom_errorbar(data = filter(one_four_five_plus_four_controls_poisson_5yr_plot_df, !is_reference), aes(ymin = percent_conf_low, ymax = percent_conf_high), width = 0.12, linewidth = 0.45, position = margin_dodge) +
+    geom_line(linewidth = 0.75, position = margin_dodge) +
+    geom_point(size = 2.1, position = margin_dodge) +
+    scale_color_manual(values = margin_colors) +
+    scale_x_continuous(breaks = seq_along(event_periods_5yr), labels = event_periods_5yr) +
+    labs(title = "Four-control PPML event study, five-year bins: 1-4 vs 5+ unit buildings", x = NULL, y = "Percent change in expected count", color = NULL) +
+    theme_minimal(base_size = 11) +
+    theme(legend.position = "bottom", axis.text.x = element_text(angle = 45, hjust = 1))
+)
+dev.off()
+
 triple_plot_df <- triple_diff_df |>
   mutate(
     event_period = as.character(event_period),
@@ -1632,11 +2003,15 @@ expected_output_paths <- c(
   out_event_coefficients_light_mix_pdf,
   out_event_coefficients_5_plus_light_mix_pdf,
   out_event_coefficients_5_plus_four_controls_pdf,
+  out_event_coefficients_5yr_csv,
+  out_event_coefficients_5_plus_four_controls_5yr_pdf,
   out_event_coefficients_light_no_preprod_pdf,
   out_event_coefficients_light_controls_pdf,
   out_event_poisson_coefficients_csv,
   out_event_poisson_coefficients_fe_only_pdf,
   out_event_poisson_coefficients_5_plus_four_controls_pdf,
+  out_event_poisson_coefficients_5yr_csv,
+  out_event_poisson_coefficients_5_plus_four_controls_5yr_pdf,
   out_long_difference_csv,
   out_long_difference_5_plus_four_controls_tex,
   out_event_5_plus_four_controls_macros_tex,
@@ -1648,10 +2023,13 @@ expected_output_paths <- c(
 
 output_nonempty_count <- sum(file.exists(expected_output_paths) & file.info(expected_output_paths)$size > 0)
 missing_event_terms <- event_coefficients_df |> filter(!is_reference, is.na(estimate)) |> nrow()
+missing_event_5yr_terms <- event_coefficients_5yr_df |> filter(!is_reference, is.na(estimate)) |> nrow()
 missing_poisson_event_terms <- event_poisson_coefficients_df |> filter(!is_reference, is.na(percent_estimate)) |> nrow()
+missing_poisson_event_5yr_terms <- event_poisson_coefficients_5yr_df |> filter(!is_reference, is.na(percent_estimate)) |> nrow()
 missing_triple_terms <- triple_diff_df |> filter(!is_reference, is.na(estimate)) |> nrow()
 missing_long_diff_terms <- long_difference_df |> filter(is.na(estimate)) |> nrow()
 missing_expected_event_periods <- setdiff(event_periods, as.character(unique(analysis_panel$event_period)))
+missing_expected_event_periods_5yr <- setdiff(event_periods_5yr, as.character(unique(analysis_panel_5yr$event_period)))
 
 qc_df <- bind_rows(
   tibble(metric = "district_count", value = as.character(n_distinct(panel_df$borocd)), note = "Standard community districts in the design panel."),
@@ -1659,12 +2037,16 @@ qc_df <- bind_rows(
   tibble(metric = "year_max", value = as.character(max(panel_df$year, na.rm = TRUE)), note = "Maximum year in the design panel."),
   tibble(metric = "event_period_count", value = as.character(n_distinct(panel_df$event_period)), note = "Distinct event-study bins represented."),
   tibble(metric = "missing_expected_event_period_count", value = as.character(length(missing_expected_event_periods)), note = "Expected event-study bins absent from the panel."),
+  tibble(metric = "event_period_5yr_count", value = as.character(n_distinct(analysis_panel_5yr$event_period)), note = "Distinct five-year event-study bins represented."),
+  tibble(metric = "missing_expected_event_period_5yr_count", value = as.character(length(missing_expected_event_periods_5yr)), note = "Expected five-year event-study bins absent from the panel."),
   tibble(metric = "missing_treatment_1990_count", value = as.character(sum(is.na(panel_df$treat_z_boro))), note = "Rows missing 1990 within-borough homeownership exposure."),
   tibble(metric = "missing_treatment_1980_count", value = as.character(sum(is.na(panel_df$homeowner_share_1980_z_boro))), note = "Rows missing 1980 within-borough homeownership exposure."),
   tibble(metric = "missing_control_cell_count", value = as.character(missing_control_cell_count), note = "Raw control cells missing before standardization."),
   tibble(metric = "negative_5_49_count", value = as.character(negative_5_49_count), note = "CD-years where 5+ units minus 50+ units was negative before truncation."),
   tibble(metric = "event_missing_treat_term_count", value = as.character(missing_event_terms), note = "Requested event-study treatment terms missing from output."),
+  tibble(metric = "event_5yr_missing_treat_term_count", value = as.character(missing_event_5yr_terms), note = "Requested five-year event-study treatment terms missing from output."),
   tibble(metric = "poisson_event_missing_treat_term_count", value = as.character(missing_poisson_event_terms), note = "Requested PPML event-study treatment terms missing from output."),
+  tibble(metric = "poisson_event_5yr_missing_treat_term_count", value = as.character(missing_poisson_event_5yr_terms), note = "Requested five-year PPML event-study treatment terms missing from output."),
   tibble(metric = "triple_diff_missing_treat_term_count", value = as.character(missing_triple_terms), note = "Requested triple-difference treatment terms missing from output."),
   tibble(metric = "long_difference_missing_treat_term_count", value = as.character(missing_long_diff_terms), note = "Long-difference treatment rows missing estimates."),
   tibble(metric = "randomization_row_count", value = as.character(nrow(randomization_df)), note = "Randomization-inference rows for main 50+ long differences."),
@@ -1676,12 +2058,15 @@ status_flag <- n_distinct(panel_df$borocd) == 59 &&
   min(panel_df$year, na.rm = TRUE) == 1980 &&
   max(panel_df$year, na.rm = TRUE) == 2025 &&
   length(missing_expected_event_periods) == 0 &&
+  length(missing_expected_event_periods_5yr) == 0 &&
   sum(is.na(panel_df$treat_z_boro)) == 0 &&
   sum(is.na(panel_df$homeowner_share_1980_z_boro)) == 0 &&
   missing_control_cell_count == 0 &&
   negative_5_49_count == 0 &&
   missing_event_terms == 0 &&
+  missing_event_5yr_terms == 0 &&
   missing_poisson_event_terms == 0 &&
+  missing_poisson_event_5yr_terms == 0 &&
   missing_triple_terms == 0 &&
   missing_long_diff_terms == 0 &&
   nrow(randomization_df) == 4 &&
