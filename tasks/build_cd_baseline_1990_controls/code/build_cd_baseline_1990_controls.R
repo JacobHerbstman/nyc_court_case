@@ -1,13 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_cd_baseline_1990_controls/code")
-# cd_homeownership_1990_measure_csv <- "../input/cd_homeownership_1990_measure.csv"
-# dcp_cd_profiles_1990_2000_files_csv <- "../input/dcp_cd_profiles_1990_2000_files.csv"
-# nhgis_files_csv <- "../input/nhgis_files.csv"
-# nhgis_1980_parquet <- "../input/nhgis_1980_tract_extract.parquet"
-# nhgis_1990_parquet <- "../input/nhgis_1990_tract_extract.parquet"
-# dcp_boundary_index_csv <- "../input/dcp_boundary_index.csv"
-# out_controls_csv <- "../output/cd_baseline_1990_controls.csv"
-# out_qc_csv <- "../output/cd_baseline_1990_controls_qc.csv"
-# out_overlay_qc_csv <- "../output/cd_baseline_1990_controls_overlay_qc.csv"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -19,22 +10,6 @@ suppressPackageStartupMessages({
 })
 
 source("../../_lib/source_pipeline_utils.R")
-
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 9) {
-  stop("Expected 9 arguments: cd_homeownership_1990_measure_csv dcp_cd_profiles_1990_2000_files_csv nhgis_files_csv nhgis_1980_parquet nhgis_1990_parquet dcp_boundary_index_csv out_controls_csv out_qc_csv out_overlay_qc_csv")
-}
-
-cd_homeownership_1990_measure_csv <- args[1]
-dcp_cd_profiles_1990_2000_files_csv <- args[2]
-nhgis_files_csv <- args[3]
-nhgis_1980_parquet <- args[4]
-nhgis_1990_parquet <- args[5]
-dcp_boundary_index_csv <- args[6]
-out_controls_csv <- args[7]
-out_qc_csv <- args[8]
-out_overlay_qc_csv <- args[9]
 
 sf_use_s2(FALSE)
 
@@ -243,7 +218,7 @@ standard_cd_ids <- c(
   sprintf("5%02d", 1:3)
 )
 
-measure_df <- read_csv(cd_homeownership_1990_measure_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+measure_df <- read_csv("../input/cd_homeownership_1990_measure.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(
     district_id = str_pad(as.character(district_id), width = 3, side = "left", pad = "0"),
     borocd = as.integer(borocd),
@@ -256,14 +231,14 @@ if (anyDuplicated(measure_df$district_id)) {
   stop("Homeownership measure is not unique by district_id.")
 }
 
-dcp_profile_file <- read_csv(dcp_cd_profiles_1990_2000_files_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+dcp_profile_file <- read_csv("../input/dcp_cd_profiles_1990_2000_files.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(pull_date = as.character(pull_date)) %>%
   filter(!is.na(parquet_path), file.exists(parquet_path)) %>%
   arrange(desc(pull_date), parquet_path) %>%
   slice_head(n = 1)
 
 if (nrow(dcp_profile_file) == 0) {
-  stop("Could not find a staged DCP CD profiles parquet in ", dcp_cd_profiles_1990_2000_files_csv)
+  stop("Could not find a staged DCP CD profiles parquet in ../input/dcp_cd_profiles_1990_2000_files.csv")
 }
 
 profiles_df <- read_parquet(dcp_profile_file$parquet_path[[1]]) %>%
@@ -344,15 +319,15 @@ exact_df <- measure_df %>%
   ) %>%
   ungroup()
 
-nhgis_files <- read_csv(nhgis_files_csv, show_col_types = FALSE, na = c("", "NA"))
+nhgis_files <- read_csv("../input/nhgis_files.csv", show_col_types = FALSE, na = c("", "NA"))
 
-nhgis_1980 <- read_parquet(nhgis_1980_parquet) %>%
+nhgis_1980 <- read_parquet("../input/nhgis_1980_tract_extract.parquet") %>%
   as.data.frame() %>%
   as_tibble() %>%
   mutate(gisjoin = as.character(gisjoin)) %>%
   select(gisjoin, total_housing_units, occupied_units, owner_occupied_units, vacant_units)
 
-nhgis_1990 <- read_parquet(nhgis_1990_parquet) %>%
+nhgis_1990 <- read_parquet("../input/nhgis_1990_tract_extract.parquet") %>%
   as.data.frame() %>%
   as_tibble() %>%
   mutate(gisjoin = as.character(gisjoin)) %>%
@@ -371,10 +346,10 @@ nhgis_1990_gis_zip <- nhgis_files %>%
   pull(gis_zip_path)
 
 if (length(nhgis_1980_gis_zip) == 0 || length(nhgis_1990_gis_zip) == 0) {
-  stop("Could not find both 1980 and 1990 NHGIS GIS zip paths in ", nhgis_files_csv)
+  stop("Could not find both 1980 and 1990 NHGIS GIS zip paths in ../input/nhgis_files.csv")
 }
 
-dcp_boundary_index <- read_csv(dcp_boundary_index_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+dcp_boundary_index <- read_csv("../input/dcp_boundary_index.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(pull_date = as.Date(as.character(pull_date), format = "%Y%m%d"))
 
 community_district_parquet <- dcp_boundary_index %>%
@@ -384,7 +359,7 @@ community_district_parquet <- dcp_boundary_index %>%
   pull(parquet_path)
 
 if (length(community_district_parquet) == 0) {
-  stop("Could not find a staged community district parquet path in ", dcp_boundary_index_csv)
+  stop("Could not find a staged community district parquet path in ../input/dcp_boundary_index.csv")
 }
 
 boundary_df <- read_parquet(community_district_parquet[[1]]) %>%
@@ -582,8 +557,8 @@ qc_df <- bind_rows(
   )
 )
 
-write_csv_if_changed(controls_df, out_controls_csv)
-write_csv_if_changed(qc_df, out_qc_csv)
-write_csv_if_changed(overlay_qc_df, out_overlay_qc_csv)
+write_csv_if_changed(controls_df, "../output/cd_baseline_1990_controls.csv")
+write_csv_if_changed(qc_df, "../output/cd_baseline_1990_controls_qc.csv")
+write_csv_if_changed(overlay_qc_df, "../output/cd_baseline_1990_controls_overlay_qc.csv")
 
-cat("Wrote CD baseline control outputs to", dirname(out_controls_csv), "\n")
+cat("Wrote CD baseline control outputs to ../output\n")

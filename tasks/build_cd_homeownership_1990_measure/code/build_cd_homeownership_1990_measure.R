@@ -1,7 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_cd_homeownership_1990_measure/code")
-# dcp_cd_profiles_1990_2000_files_csv <- "../input/dcp_cd_profiles_1990_2000_files.csv"
-# out_measure_csv <- "../output/cd_homeownership_1990_measure.csv"
-# out_qc_csv <- "../output/cd_homeownership_1990_measure_qc.csv"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -14,23 +11,13 @@ suppressPackageStartupMessages({
 
 source("../../_lib/source_pipeline_utils.R")
 
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 3) {
-  stop("Expected 3 arguments: dcp_cd_profiles_1990_2000_files_csv out_measure_csv out_qc_csv")
-}
-
-dcp_cd_profiles_1990_2000_files_csv <- args[1]
-out_measure_csv <- args[2]
-out_qc_csv <- args[3]
-
-stage_files <- read_csv(dcp_cd_profiles_1990_2000_files_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+stage_files <- read_csv("../input/dcp_cd_profiles_1990_2000_files.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(pull_date = as.character(pull_date)) %>%
   filter(!is.na(parquet_path), file.exists(parquet_path))
 
 if (nrow(stage_files) == 0) {
-  write_csv(tibble(), out_measure_csv, na = "")
-  write_csv(tibble(), out_qc_csv, na = "")
+  write_csv(tibble(), "../output/cd_homeownership_1990_measure.csv", na = "")
+  write_csv(tibble(), "../output/cd_homeownership_1990_measure_qc.csv", na = "")
   quit(save = "no")
 }
 
@@ -193,7 +180,7 @@ qc_df <- bind_rows(
   )
 )
 
-write_csv_if_changed(measure_df, out_measure_csv)
-write_csv_if_changed(qc_df, out_qc_csv)
+write_csv_if_changed(measure_df, "../output/cd_homeownership_1990_measure.csv")
+write_csv_if_changed(qc_df, "../output/cd_homeownership_1990_measure_qc.csv")
 
-cat("Wrote canonical CD homeownership measure outputs to", dirname(out_measure_csv), "\n")
+cat("Wrote canonical CD homeownership measure outputs to ../output\n")

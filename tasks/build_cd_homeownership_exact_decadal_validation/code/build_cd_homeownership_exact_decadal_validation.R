@@ -1,13 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_cd_homeownership_exact_decadal_validation/code")
-# cd_homeownership_1990_measure_csv <- "../input/cd_homeownership_1990_measure.csv"
-# dcp_cd_profiles_1990_2000_files_csv <- "../input/dcp_cd_profiles_1990_2000_files.csv"
-# mappluto_construction_proxy_cd_year_csv <- "../input/mappluto_construction_proxy_cd_year.csv"
-# out_cd_csv <- "../output/cd_homeownership_exact_decadal_validation_cd.csv"
-# out_tercile_csv <- "../output/cd_homeownership_exact_decadal_validation_tercile.csv"
-# out_comparison_csv <- "../output/cd_homeownership_exact_decadal_validation_comparison.csv"
-# out_borough_csv <- "../output/cd_homeownership_exact_decadal_validation_borough.csv"
-# out_qc_csv <- "../output/cd_homeownership_exact_decadal_validation_qc.csv"
-# out_plot_pdf <- "../output/cd_homeownership_exact_decadal_validation_plot.pdf"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -17,23 +8,7 @@ suppressPackageStartupMessages({
   library(tidyr)
 })
 
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 9) {
-  stop("Expected 9 arguments: cd_homeownership_1990_measure_csv dcp_cd_profiles_1990_2000_files_csv mappluto_construction_proxy_cd_year_csv out_cd_csv out_tercile_csv out_comparison_csv out_borough_csv out_qc_csv out_plot_pdf")
-}
-
-cd_homeownership_1990_measure_csv <- args[1]
-dcp_cd_profiles_1990_2000_files_csv <- args[2]
-mappluto_construction_proxy_cd_year_csv <- args[3]
-out_cd_csv <- args[4]
-out_tercile_csv <- args[5]
-out_comparison_csv <- args[6]
-out_borough_csv <- args[7]
-out_qc_csv <- args[8]
-out_plot_pdf <- args[9]
-
-treatment_df <- read_csv(cd_homeownership_1990_measure_csv, show_col_types = FALSE, na = c("", "NA")) |>
+treatment_df <- read_csv("../input/cd_homeownership_1990_measure.csv", show_col_types = FALSE, na = c("", "NA")) |>
   transmute(
     borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
     borough_code = suppressWarnings(as.integer(borough_code)),
@@ -55,14 +30,14 @@ if (anyDuplicated(treatment_df$borocd)) {
   stop("Homeownership treatment file is not unique by borocd.")
 }
 
-dcp_profile_file <- read_csv(dcp_cd_profiles_1990_2000_files_csv, show_col_types = FALSE, na = c("", "NA")) |>
+dcp_profile_file <- read_csv("../input/dcp_cd_profiles_1990_2000_files.csv", show_col_types = FALSE, na = c("", "NA")) |>
   mutate(pull_date = as.character(pull_date)) |>
   filter(!is.na(parquet_path), file.exists(parquet_path)) |>
   arrange(desc(pull_date), parquet_path) |>
   slice_head(n = 1)
 
 if (nrow(dcp_profile_file) == 0) {
-  stop("Could not find a staged DCP CD profiles parquet in ", dcp_cd_profiles_1990_2000_files_csv)
+  stop("Could not find a staged DCP CD profiles parquet in ../input/dcp_cd_profiles_1990_2000_files.csv")
 }
 
 exact_raw <- read_parquet(dcp_profile_file$parquet_path[[1]]) |>
@@ -109,7 +84,7 @@ exact_cd <- exact_raw |>
   ) |>
   select(-decade_source)
 
-mappluto_cd_year <- read_csv(mappluto_construction_proxy_cd_year_csv, show_col_types = FALSE, na = c("", "NA")) |>
+mappluto_cd_year <- read_csv("../input/mappluto_construction_proxy_cd_year.csv", show_col_types = FALSE, na = c("", "NA")) |>
   transmute(
     borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
     borough_code = suppressWarnings(as.integer(borough_code)),
@@ -194,13 +169,13 @@ overall_tercile_df <- tercile_source_df |>
   ) |>
   select(geography_scope, everything())
 
-write_csv(cd_validation_df, out_cd_csv, na = "")
-write_csv(overall_tercile_df, out_tercile_csv, na = "")
+write_csv(cd_validation_df, "../output/cd_homeownership_exact_decadal_validation_cd.csv", na = "")
+write_csv(overall_tercile_df, "../output/cd_homeownership_exact_decadal_validation_tercile.csv", na = "")
 write_csv(
   tercile_source_df |>
     filter(source == "Exact DCP 2000 structure-built counts") |>
     select(borough_code, borough_name, decade, treat_tercile, treat_tercile_label, outcome_value, borough_total, borough_share),
-  out_borough_csv,
+  "../output/cd_homeownership_exact_decadal_validation_borough.csv",
   na = ""
 )
 
@@ -256,7 +231,7 @@ comparison_df <- bind_rows(
 ) |>
   arrange(decade, metric)
 
-write_csv(comparison_df, out_comparison_csv, na = "")
+write_csv(comparison_df, "../output/cd_homeownership_exact_decadal_validation_comparison.csv", na = "")
 
 qc_df <- bind_rows(
   tibble(metric = "district_count_exact_1980s", value = n_distinct(cd_validation_df$borocd[cd_validation_df$decade == "1980s" & !is.na(cd_validation_df$exact_units)]), note = "CDs in the exact 1980s decade table."),
@@ -277,7 +252,7 @@ qc_df <- bind_rows(
   tibble(metric = "exact_high_share_change_1990s_minus_1980s", value = comparison_df$value[comparison_df$metric == "exact_high_share_change_1990s_minus_1980s"], note = "Negative values mean the high-homeownership tercile loses exact share from the 1980s to the 1990s.")
 )
 
-write_csv(qc_df, out_qc_csv, na = "")
+write_csv(qc_df, "../output/cd_homeownership_exact_decadal_validation_qc.csv", na = "")
 
 plot_df <- overall_tercile_df |>
   mutate(
@@ -285,7 +260,7 @@ plot_df <- overall_tercile_df |>
     source = factor(source, levels = c("Exact DCP 2000 structure-built counts", "MapPLUTO proxy"))
   )
 
-pdf(out_plot_pdf, width = 10, height = 6.5)
+pdf("../output/cd_homeownership_exact_decadal_validation_plot.pdf", width = 10, height = 6.5)
 print(
   ggplot(plot_df, aes(x = treat_tercile_label, y = borough_share, fill = source)) +
     geom_col(position = "dodge", width = 0.72) +
@@ -297,4 +272,4 @@ print(
 )
 dev.off()
 
-cat("Wrote exact decadal validation outputs to", dirname(out_cd_csv), "\n")
+cat("Wrote exact decadal validation outputs to ../output\n")

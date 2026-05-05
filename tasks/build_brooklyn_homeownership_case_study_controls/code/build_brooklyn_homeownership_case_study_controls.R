@@ -1,14 +1,6 @@
 #!/usr/bin/env Rscript
 
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_brooklyn_homeownership_case_study_controls/code")
-# baseline_controls_path <- "../input/cd_baseline_1990_controls.csv"
-# nhgis_files_path <- "../input/nhgis_files.csv"
-# nhgis_1990_path <- "../input/nhgis_1990_tract_extract.parquet"
-# boundary_index_path <- "../input/dcp_boundary_index.csv"
-# boundary_parquet_path <- "../input/dcp_boundary_community_districts_20260501.parquet"
-# redevelopment_path <- "../input/cd_redevelopment_potential_baseline.csv"
-# controls_out <- "../output/brooklyn_homeownership_case_study_controls.csv"
-# qc_out <- "../output/brooklyn_homeownership_case_study_controls_qc.csv"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -20,24 +12,6 @@ suppressPackageStartupMessages({
 })
 
 source("../../_lib/source_pipeline_utils.R")
-
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 8) {
-  stop(
-    "Expected 8 arguments: baseline_controls_path nhgis_files_path nhgis_1990_path ",
-    "boundary_index_path boundary_parquet_path redevelopment_path controls_out qc_out"
-  )
-}
-
-baseline_controls_path <- args[1]
-nhgis_files_path <- args[2]
-nhgis_1990_path <- args[3]
-boundary_index_path <- args[4]
-boundary_parquet_path <- args[5]
-redevelopment_path <- args[6]
-controls_out <- args[7]
-qc_out <- args[8]
 
 sf_use_s2(FALSE)
 
@@ -207,7 +181,7 @@ brooklyn_label_map <- tribble(
     cd_label = paste(brooklyn_short_label, brooklyn_neighborhood_label)
   )
 
-baseline_controls <- read_csv(baseline_controls_path, show_col_types = FALSE) %>%
+baseline_controls <- read_csv("../input/cd_baseline_1990_controls.csv", show_col_types = FALSE) %>%
   mutate(
     borocd = suppressWarnings(as.integer(borocd)),
     district_id = str_pad(as.character(borocd), width = 3, side = "left", pad = "0"),
@@ -235,7 +209,7 @@ baseline_controls <- read_csv(baseline_controls_path, show_col_types = FALSE) %>
     homeowner_share_change_1980_1990_pp_approx
   )
 
-redevelopment <- read_csv(redevelopment_path, show_col_types = FALSE) %>%
+redevelopment <- read_csv("../input/cd_redevelopment_potential_baseline.csv", show_col_types = FALSE) %>%
   mutate(
     borocd = suppressWarnings(as.integer(borocd)),
     borough_name = as.character(borough_name)
@@ -257,10 +231,10 @@ redevelopment <- read_csv(redevelopment_path, show_col_types = FALSE) %>%
     cd_share_lot_area_parking_or_low_intensity
   )
 
-nhgis_files <- read_csv(nhgis_files_path, show_col_types = FALSE) %>%
+nhgis_files <- read_csv("../input/nhgis_files.csv", show_col_types = FALSE) %>%
   mutate(year = suppressWarnings(as.integer(year)))
 
-nhgis_1990 <- read_parquet(nhgis_1990_path) %>%
+nhgis_1990 <- read_parquet("../input/nhgis_1990_tract_extract.parquet") %>%
   as.data.frame() %>%
   as_tibble() %>%
   mutate(gisjoin = as.character(gisjoin)) %>%
@@ -273,10 +247,10 @@ nhgis_1990_gis_zip <- nhgis_files %>%
   pull(gis_zip_path)
 
 if (length(nhgis_1990_gis_zip) == 0) {
-  stop("Could not find the 1990 NHGIS GIS zip path in ", nhgis_files_path)
+  stop("Could not find the 1990 NHGIS GIS zip path in ../input/nhgis_files.csv")
 }
 
-boundary_index <- read_csv(boundary_index_path, show_col_types = FALSE) %>%
+boundary_index <- read_csv("../input/dcp_boundary_index.csv", show_col_types = FALSE) %>%
   mutate(
     pull_date = as.Date(as.character(suppressWarnings(as.integer(pull_date))), format = "%Y%m%d")
   )
@@ -288,7 +262,7 @@ boundary_source_note <- boundary_index %>%
   transmute(note = paste0("Boundary source pull date: ", pull_date, ".")) %>%
   pull(note)
 
-boundary_df <- read_parquet(boundary_parquet_path) %>%
+boundary_df <- read_parquet("../input/dcp_boundary_community_districts_20260501.parquet") %>%
   as.data.frame() %>%
   as_tibble() %>%
   mutate(
@@ -386,5 +360,5 @@ qc_df <- bind_rows(
 ) %>%
   mutate(value = as.character(value))
 
-write_csv_if_changed(controls_df, controls_out)
-write_csv_if_changed(qc_df, qc_out)
+write_csv_if_changed(controls_df, "../output/brooklyn_homeownership_case_study_controls.csv")
+write_csv_if_changed(qc_df, "../output/brooklyn_homeownership_case_study_controls_qc.csv")

@@ -61,7 +61,7 @@
 - Keep output and input names explicit and traceable.
 - Order active task Makefiles in a standard top-down cascade: `all`, output-producing target rules, input symlink target rules, `link-inputs`, then shared includes.
 - Output files should appear as Make targets before the input symlink targets they depend on, so the reader starts from what the task produces and then traces prerequisites downward.
-- When one script writes multiple outputs, put all of those outputs on the same producer target rule unless there is a concrete reason not to.
+- This repo uses GNU Make 3.81, so do not use ordinary multiple-target producer rules for scripts that write several outputs; they can rerun the same script once per target. Instead, use one canonical output as the producer target and make the other outputs depend on that canonical output.
 - Favor readability over clever Make metaprogramming unless scale requires it.
 
 ## Makefile Path Style
