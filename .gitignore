@@ -64,6 +64,8 @@ slides/*.toc
 
 # --- Scratch / local working area ---
 tmp/
+LOCAL_PROJECT_MEMO.md
+paper/aea.bst
 
 # --- Auto-generated graphics ---
 Rplots.pdf
