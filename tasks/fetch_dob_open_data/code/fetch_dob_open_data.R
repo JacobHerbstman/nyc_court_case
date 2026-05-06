@@ -1,7 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/fetch_dob_open_data/code")
-# source_catalog_csv <- "../input/source_catalog.csv"
-# out_index_csv <- "../output/dob_open_data_files.csv"
-# out_qc_csv <- "../output/dob_open_data_qc.csv"
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -11,17 +8,7 @@ suppressPackageStartupMessages({
 
 source("../../_lib/source_pipeline_utils.R")
 
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 3) {
-  stop("Expected 3 arguments: source_catalog_csv out_index_csv out_qc_csv")
-}
-
-source_catalog_csv <- args[1]
-out_index_csv <- args[2]
-out_qc_csv <- args[3]
-
-source_catalog <- read_csv(source_catalog_csv, show_col_types = FALSE, na = c("", "NA"))
+source_catalog <- read_csv("../input/source_catalog.csv", show_col_types = FALSE, na = c("", "NA"))
 dob_open_data_source_ids <- c(
   "dob_bis_job_filings",
   "dob_now_build_job_filings",
@@ -88,6 +75,6 @@ for (i in seq_len(nrow(dob_rows))) {
   )
 }
 
-write_csv(bind_rows(index_rows), out_index_csv, na = "")
-write_csv(bind_rows(qc_rows), out_qc_csv, na = "")
-cat("Wrote DOB Open Data fetch outputs to", dirname(out_index_csv), "\n")
+write_csv_if_changed(bind_rows(index_rows), "../output/dob_open_data_files.csv")
+write_csv_if_changed(bind_rows(qc_rows), "../output/dob_open_data_qc.csv")
+cat("Wrote DOB Open Data fetch outputs to ../output\n")

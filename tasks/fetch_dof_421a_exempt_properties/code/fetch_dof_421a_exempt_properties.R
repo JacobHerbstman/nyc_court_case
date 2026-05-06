@@ -1,7 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/fetch_dof_421a_exempt_properties/code")
-# raw_dir <- "../output/raw"
-# out_files_csv <- "../output/dof_421a_raw_files.csv"
-# out_qc_csv <- "../output/dof_421a_fetch_qc.csv"
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -12,16 +9,7 @@ suppressPackageStartupMessages({
 
 source("../../_lib/source_pipeline_utils.R")
 
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 3) {
-  stop("Expected 3 arguments: raw_dir out_files_csv out_qc_csv")
-}
-
-raw_dir <- args[1]
-out_files_csv <- args[2]
-out_qc_csv <- args[3]
-
+raw_dir <- "../output/raw"
 source_page <- "https://www.nyc.gov/site/finance/property/benefits-421a.page"
 html_lines <- readLines(source_page, warn = FALSE)
 html <- paste(html_lines, collapse = "\n")
@@ -90,8 +78,8 @@ qc_df <- bind_rows(
   tibble(metric = "missing_borough_count", value = as.character(sum(is.na(inventory$borough_file))), status = if_else(sum(is.na(inventory$borough_file)) == 0, "pass", "fail"), note = "Each Excel file should map to a borough.")
 )
 
-write_csv_if_changed(inventory, out_files_csv)
-write_csv_if_changed(qc_df, out_qc_csv)
+write_csv_if_changed(inventory, "../output/dof_421a_raw_files.csv")
+write_csv_if_changed(qc_df, "../output/dof_421a_fetch_qc.csv")
 
 if (any(qc_df$status == "fail")) {
   stop("DOF 421-a fetch QC failed.")
