@@ -1,30 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/estimate_cd_homeownership_long_units_event_study/code")
-# cd_homeownership_long_units_series_csv <- "../input/cd_homeownership_long_units_series.csv"
-# cd_baseline_1990_controls_csv <- "../input/cd_baseline_1990_controls.csv"
-# cd_redevelopment_potential_baseline_csv <- "../input/cd_redevelopment_potential_baseline.csv"
-# out_event_coefficients_csv <- "../output/cd_homeownership_long_units_event_coefficients.csv"
-# out_event_coefficients_pdf <- "../output/cd_homeownership_long_units_event_coefficients.pdf"
-# out_event_coefficients_fe_only_pdf <- "../output/cd_homeownership_long_units_event_coefficients_fe_only.pdf"
-# out_event_coefficients_light_mix_pdf <- "../output/cd_homeownership_long_units_event_coefficients_light_mix.pdf"
-# out_event_coefficients_5_plus_light_mix_pdf <- "../output/cd_homeownership_long_units_event_coefficients_5_plus_light_mix.pdf"
-# out_event_coefficients_5_plus_four_controls_pdf <- "../output/cd_homeownership_long_units_event_coefficients_5_plus_four_controls.pdf"
-# out_event_coefficients_5yr_csv <- "../output/cd_homeownership_long_units_event_coefficients_5yr_bins.csv"
-# out_event_coefficients_5_plus_four_controls_5yr_pdf <- "../output/cd_homeownership_long_units_event_coefficients_5_plus_four_controls_5yr_bins.pdf"
-# out_event_coefficients_light_no_preprod_pdf <- "../output/cd_homeownership_long_units_event_coefficients_light_no_preprod.pdf"
-# out_event_coefficients_light_controls_pdf <- "../output/cd_homeownership_long_units_event_coefficients_light_controls.pdf"
-# out_event_poisson_coefficients_csv <- "../output/cd_homeownership_long_units_event_poisson_coefficients.csv"
-# out_event_poisson_coefficients_fe_only_pdf <- "../output/cd_homeownership_long_units_event_poisson_coefficients_fe_only.pdf"
-# out_event_poisson_coefficients_5_plus_four_controls_pdf <- "../output/cd_homeownership_long_units_event_poisson_coefficients_5_plus_four_controls.pdf"
-# out_event_poisson_coefficients_5yr_csv <- "../output/cd_homeownership_long_units_event_poisson_coefficients_5yr_bins.csv"
-# out_event_poisson_coefficients_5_plus_four_controls_5yr_pdf <- "../output/cd_homeownership_long_units_event_poisson_coefficients_5_plus_four_controls_5yr_bins.pdf"
-# out_long_difference_csv <- "../output/cd_homeownership_long_units_long_difference_estimates.csv"
-# out_long_difference_5_plus_four_controls_tex <- "../output/cd_homeownership_long_units_long_difference_5_plus_four_controls.tex"
-# out_event_5_plus_four_controls_macros_tex <- "../output/cd_homeownership_long_units_event_5_plus_four_controls_macros.tex"
-# out_triple_diff_csv <- "../output/cd_homeownership_long_units_triple_diff_coefficients.csv"
-# out_triple_diff_pdf <- "../output/cd_homeownership_long_units_triple_diff_coefficients.pdf"
-# out_randomization_csv <- "../output/cd_homeownership_long_units_randomization_inference.csv"
-# out_model_summary_csv <- "../output/cd_homeownership_long_units_model_summary.csv"
-# out_qc_csv <- "../output/cd_homeownership_long_units_design_qc.csv"
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -37,39 +11,6 @@ suppressPackageStartupMessages({
 })
 
 source("../../_lib/source_pipeline_utils.R")
-
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 26) {
-  stop("Expected 26 arguments: cd_homeownership_long_units_series_csv cd_baseline_1990_controls_csv cd_redevelopment_potential_baseline_csv out_event_coefficients_csv out_event_coefficients_pdf out_event_coefficients_fe_only_pdf out_event_coefficients_light_mix_pdf out_event_coefficients_5_plus_light_mix_pdf out_event_coefficients_5_plus_four_controls_pdf out_event_coefficients_5yr_csv out_event_coefficients_5_plus_four_controls_5yr_pdf out_event_coefficients_light_no_preprod_pdf out_event_coefficients_light_controls_pdf out_event_poisson_coefficients_csv out_event_poisson_coefficients_fe_only_pdf out_event_poisson_coefficients_5_plus_four_controls_pdf out_event_poisson_coefficients_5yr_csv out_event_poisson_coefficients_5_plus_four_controls_5yr_pdf out_long_difference_csv out_long_difference_5_plus_four_controls_tex out_event_5_plus_four_controls_macros_tex out_triple_diff_csv out_triple_diff_pdf out_randomization_csv out_model_summary_csv out_qc_csv")
-}
-
-cd_homeownership_long_units_series_csv <- args[1]
-cd_baseline_1990_controls_csv <- args[2]
-cd_redevelopment_potential_baseline_csv <- args[3]
-out_event_coefficients_csv <- args[4]
-out_event_coefficients_pdf <- args[5]
-out_event_coefficients_fe_only_pdf <- args[6]
-out_event_coefficients_light_mix_pdf <- args[7]
-out_event_coefficients_5_plus_light_mix_pdf <- args[8]
-out_event_coefficients_5_plus_four_controls_pdf <- args[9]
-out_event_coefficients_5yr_csv <- args[10]
-out_event_coefficients_5_plus_four_controls_5yr_pdf <- args[11]
-out_event_coefficients_light_no_preprod_pdf <- args[12]
-out_event_coefficients_light_controls_pdf <- args[13]
-out_event_poisson_coefficients_csv <- args[14]
-out_event_poisson_coefficients_fe_only_pdf <- args[15]
-out_event_poisson_coefficients_5_plus_four_controls_pdf <- args[16]
-out_event_poisson_coefficients_5yr_csv <- args[17]
-out_event_poisson_coefficients_5_plus_four_controls_5yr_pdf <- args[18]
-out_long_difference_csv <- args[19]
-out_long_difference_5_plus_four_controls_tex <- args[20]
-out_event_5_plus_four_controls_macros_tex <- args[21]
-out_triple_diff_csv <- args[22]
-out_triple_diff_pdf <- args[23]
-out_randomization_csv <- args[24]
-out_model_summary_csv <- args[25]
-out_qc_csv <- args[26]
 
 write_lines_if_changed <- function(lines, out_path) {
   temp_path <- tempfile(fileext = ".tex")
@@ -307,9 +248,9 @@ control_blocks <- list(
   `3_land_opportunity_robustness` = c(baseline_control_cols, pretrend_control_cols, "pre_1980_1988_rate_z", land_control_cols)
 )
 
-series_df <- read_csv(cd_homeownership_long_units_series_csv, show_col_types = FALSE, na = c("", "NA"))
-controls_df <- read_csv(cd_baseline_1990_controls_csv, show_col_types = FALSE, na = c("", "NA"))
-redev_df <- read_csv(cd_redevelopment_potential_baseline_csv, show_col_types = FALSE, na = c("", "NA"))
+series_df <- read_csv("../input/cd_homeownership_long_units_series.csv", show_col_types = FALSE, na = c("", "NA"))
+controls_df <- read_csv("../input/cd_baseline_1990_controls.csv", show_col_types = FALSE, na = c("", "NA"))
+redev_df <- read_csv("../input/cd_redevelopment_potential_baseline.csv", show_col_types = FALSE, na = c("", "NA"))
 
 assert_required_columns(
   series_df,
@@ -1255,14 +1196,14 @@ randomization_df <- bind_rows(randomization_rows)
 model_summary_df <- bind_rows(summary_rows) |>
   arrange(model_family, outcome_id, outcome_scale, treatment, control_layer)
 
-write_csv_if_changed(event_coefficients_df, out_event_coefficients_csv)
-write_csv_if_changed(event_coefficients_5yr_df, out_event_coefficients_5yr_csv)
-write_csv_if_changed(event_poisson_coefficients_df, out_event_poisson_coefficients_csv)
-write_csv_if_changed(event_poisson_coefficients_5yr_df, out_event_poisson_coefficients_5yr_csv)
-write_csv_if_changed(long_difference_df, out_long_difference_csv)
-write_csv_if_changed(triple_diff_df, out_triple_diff_csv)
-write_csv_if_changed(randomization_df, out_randomization_csv)
-write_csv_if_changed(model_summary_df, out_model_summary_csv)
+write_csv_if_changed(event_coefficients_df, "../output/cd_homeownership_long_units_event_coefficients.csv")
+write_csv_if_changed(event_coefficients_5yr_df, "../output/cd_homeownership_long_units_event_coefficients_5yr_bins.csv")
+write_csv_if_changed(event_poisson_coefficients_df, "../output/cd_homeownership_long_units_event_poisson_coefficients.csv")
+write_csv_if_changed(event_poisson_coefficients_5yr_df, "../output/cd_homeownership_long_units_event_poisson_coefficients_5yr_bins.csv")
+write_csv_if_changed(long_difference_df, "../output/cd_homeownership_long_units_long_difference_estimates.csv")
+write_csv_if_changed(triple_diff_df, "../output/cd_homeownership_long_units_triple_diff_coefficients.csv")
+write_csv_if_changed(randomization_df, "../output/cd_homeownership_long_units_randomization_inference.csv")
+write_csv_if_changed(model_summary_df, "../output/cd_homeownership_long_units_model_summary.csv")
 
 long_difference_table_df <- long_difference_df |>
   filter(
@@ -1342,7 +1283,7 @@ long_difference_table_lines <- c(
   "\\end{table}"
 )
 
-write_lines_if_changed(long_difference_table_lines, out_long_difference_5_plus_four_controls_tex)
+write_lines_if_changed(long_difference_table_lines, "../output/cd_homeownership_long_units_long_difference_5_plus_four_controls.tex")
 
 four_controls_event_df <- event_coefficients_df |>
   filter(
@@ -1442,7 +1383,7 @@ write_lines_if_changed(
     latex_macro_line("HomeownFivePlusLongDiffTwentyTwentiesCoef", lookup_long_difference_value("post_2020_2025_minus_1980_1988", "estimate", 1)),
     latex_macro_line("HomeownFivePlusLongDiffTwentyTwentiesP", lookup_long_difference_value("post_2020_2025_minus_1980_1988", "p_value", 3))
   ),
-  out_event_5_plus_four_controls_macros_tex
+  "../output/cd_homeownership_long_units_event_5_plus_four_controls_macros.tex"
 )
 
 event_plot_df <- event_coefficients_df |>
@@ -1451,7 +1392,7 @@ event_plot_df <- event_coefficients_df |>
     event_period_index = match(event_period, event_periods)
   )
 
-pdf(out_event_coefficients_pdf, width = 11, height = 8.5)
+pdf("../output/cd_homeownership_long_units_event_coefficients.pdf", width = 11, height = 8.5)
 print(
   ggplot(
     filter(event_plot_df, outcome_id == "units_built_50_plus", outcome_scale == "per_10000_occupied_1990"),
@@ -1500,7 +1441,7 @@ dev.off()
 fe_only_event_plot_df <- event_plot_df |>
   filter(control_layer == "0_fe_only")
 
-pdf(out_event_coefficients_fe_only_pdf, width = 11, height = 8.5)
+pdf("../output/cd_homeownership_long_units_event_coefficients_fe_only.pdf", width = 11, height = 8.5)
 print(
   ggplot(
     filter(fe_only_event_plot_df, outcome_id == "units_built_50_plus", outcome_scale == "per_10000_occupied_1990"),
@@ -1565,7 +1506,7 @@ light_mix_event_plot_df <- event_plot_df |>
   filter(control_layer %in% light_mix_control_layers) |>
   mutate(control_layer_label = factor(control_layer_label, levels = light_mix_control_labels))
 
-pdf(out_event_coefficients_light_mix_pdf, width = 11, height = 8.5)
+pdf("../output/cd_homeownership_long_units_event_coefficients_light_mix.pdf", width = 11, height = 8.5)
 print(
   ggplot(
     filter(light_mix_event_plot_df, outcome_id == "units_built_50_plus", outcome_scale == "per_10000_occupied_1990"),
@@ -1624,7 +1565,7 @@ five_plus_light_mix_event_plot_df <- event_plot_df |>
   ) |>
   mutate(control_layer_label = factor(control_layer_label, levels = light_mix_control_labels))
 
-pdf(out_event_coefficients_5_plus_light_mix_pdf, width = 11, height = 8.5)
+pdf("../output/cd_homeownership_long_units_event_coefficients_5_plus_light_mix.pdf", width = 11, height = 8.5)
 print(
   ggplot(
     filter(five_plus_light_mix_event_plot_df, outcome_scale == "per_10000_occupied_1990"),
@@ -1691,7 +1632,7 @@ one_four_five_plus_four_controls_event_plot_df <- event_plot_df |>
 margin_dodge <- position_dodge(width = 0.28)
 margin_colors <- c("1-4 unit buildings" = "#666666", "5+ unit buildings" = "#2f7d32")
 
-pdf(out_event_coefficients_5_plus_four_controls_pdf, width = 11, height = 8.5)
+pdf("../output/cd_homeownership_long_units_event_coefficients_5_plus_four_controls.pdf", width = 11, height = 8.5)
 print(
   ggplot(
     one_four_five_plus_four_controls_event_plot_df,
@@ -1743,7 +1684,7 @@ five_plus_four_controls_event_5yr_plot_df <- event_5yr_plot_df |>
     control_layer == "1_light_controls"
   )
 
-pdf(out_event_coefficients_5_plus_four_controls_5yr_pdf, width = 11, height = 8.5)
+pdf("../output/cd_homeownership_long_units_event_coefficients_5_plus_four_controls_5yr_bins.pdf", width = 11, height = 8.5)
 print(
   ggplot(
     one_four_five_plus_four_controls_event_5yr_plot_df,
@@ -1778,7 +1719,7 @@ dev.off()
 light_no_preprod_event_plot_df <- event_plot_df |>
   filter(control_layer == "1_light_no_preprod")
 
-pdf(out_event_coefficients_light_no_preprod_pdf, width = 11, height = 8.5)
+pdf("../output/cd_homeownership_long_units_event_coefficients_light_no_preprod.pdf", width = 11, height = 8.5)
 print(
   ggplot(
     filter(light_no_preprod_event_plot_df, outcome_id == "units_built_50_plus", outcome_scale == "per_10000_occupied_1990"),
@@ -1827,7 +1768,7 @@ dev.off()
 light_event_plot_df <- event_plot_df |>
   filter(control_layer == "1_light_controls")
 
-pdf(out_event_coefficients_light_controls_pdf, width = 11, height = 8.5)
+pdf("../output/cd_homeownership_long_units_event_coefficients_light_controls.pdf", width = 11, height = 8.5)
 print(
   ggplot(
     filter(light_event_plot_df, outcome_id == "units_built_50_plus", outcome_scale == "per_10000_occupied_1990"),
@@ -1882,7 +1823,7 @@ event_poisson_plot_df <- event_poisson_coefficients_df |>
 event_poisson_fe_only_plot_df <- event_poisson_plot_df |>
   filter(control_layer == "0_fe_only")
 
-pdf(out_event_poisson_coefficients_fe_only_pdf, width = 11, height = 8.5)
+pdf("../output/cd_homeownership_long_units_event_poisson_coefficients_fe_only.pdf", width = 11, height = 8.5)
 print(
   ggplot(
     filter(event_poisson_fe_only_plot_df, outcome_id == "units_built_50_plus"),
@@ -1934,7 +1875,7 @@ event_poisson_5_plus_four_controls_plot_df <- event_poisson_plot_df |>
     control_layer == "1_light_controls"
   )
 
-pdf(out_event_poisson_coefficients_5_plus_four_controls_pdf, width = 11, height = 8.5)
+pdf("../output/cd_homeownership_long_units_event_poisson_coefficients_5_plus_four_controls.pdf", width = 11, height = 8.5)
 print(
   ggplot(event_poisson_5_plus_four_controls_plot_df, aes(x = event_period_index, y = percent_estimate, group = 1)) +
     geom_hline(yintercept = 0, linetype = "dashed", color = "#666666", linewidth = 0.35) +
@@ -1958,7 +1899,7 @@ one_four_five_plus_four_controls_poisson_5yr_plot_df <- event_poisson_5yr_plot_d
   filter(outcome_id %in% c("units_built_1_4", "units_built_5_plus")) |>
   mutate(outcome_label = factor(outcome_label, levels = c("1-4 unit buildings", "5+ unit buildings")))
 
-pdf(out_event_poisson_coefficients_5_plus_four_controls_5yr_pdf, width = 11, height = 8.5)
+pdf("../output/cd_homeownership_long_units_event_poisson_coefficients_5_plus_four_controls_5yr_bins.pdf", width = 11, height = 8.5)
 print(
   ggplot(
     one_four_five_plus_four_controls_poisson_5yr_plot_df,
@@ -1982,7 +1923,7 @@ triple_plot_df <- triple_diff_df |>
     event_period_index = match(event_period, event_periods)
   )
 
-pdf(out_triple_diff_pdf, width = 10, height = 7)
+pdf("../output/cd_homeownership_long_units_triple_diff_coefficients.pdf", width = 10, height = 7)
 print(
   ggplot(triple_plot_df, aes(x = event_period_index, y = estimate, color = outcome_label, group = outcome_label)) +
     geom_hline(yintercept = 0, linetype = "dashed", color = "#666666", linewidth = 0.35) +
@@ -1997,28 +1938,28 @@ print(
 dev.off()
 
 expected_output_paths <- c(
-  out_event_coefficients_csv,
-  out_event_coefficients_pdf,
-  out_event_coefficients_fe_only_pdf,
-  out_event_coefficients_light_mix_pdf,
-  out_event_coefficients_5_plus_light_mix_pdf,
-  out_event_coefficients_5_plus_four_controls_pdf,
-  out_event_coefficients_5yr_csv,
-  out_event_coefficients_5_plus_four_controls_5yr_pdf,
-  out_event_coefficients_light_no_preprod_pdf,
-  out_event_coefficients_light_controls_pdf,
-  out_event_poisson_coefficients_csv,
-  out_event_poisson_coefficients_fe_only_pdf,
-  out_event_poisson_coefficients_5_plus_four_controls_pdf,
-  out_event_poisson_coefficients_5yr_csv,
-  out_event_poisson_coefficients_5_plus_four_controls_5yr_pdf,
-  out_long_difference_csv,
-  out_long_difference_5_plus_four_controls_tex,
-  out_event_5_plus_four_controls_macros_tex,
-  out_triple_diff_csv,
-  out_triple_diff_pdf,
-  out_randomization_csv,
-  out_model_summary_csv
+  "../output/cd_homeownership_long_units_event_coefficients.csv",
+  "../output/cd_homeownership_long_units_event_coefficients.pdf",
+  "../output/cd_homeownership_long_units_event_coefficients_fe_only.pdf",
+  "../output/cd_homeownership_long_units_event_coefficients_light_mix.pdf",
+  "../output/cd_homeownership_long_units_event_coefficients_5_plus_light_mix.pdf",
+  "../output/cd_homeownership_long_units_event_coefficients_5_plus_four_controls.pdf",
+  "../output/cd_homeownership_long_units_event_coefficients_5yr_bins.csv",
+  "../output/cd_homeownership_long_units_event_coefficients_5_plus_four_controls_5yr_bins.pdf",
+  "../output/cd_homeownership_long_units_event_coefficients_light_no_preprod.pdf",
+  "../output/cd_homeownership_long_units_event_coefficients_light_controls.pdf",
+  "../output/cd_homeownership_long_units_event_poisson_coefficients.csv",
+  "../output/cd_homeownership_long_units_event_poisson_coefficients_fe_only.pdf",
+  "../output/cd_homeownership_long_units_event_poisson_coefficients_5_plus_four_controls.pdf",
+  "../output/cd_homeownership_long_units_event_poisson_coefficients_5yr_bins.csv",
+  "../output/cd_homeownership_long_units_event_poisson_coefficients_5_plus_four_controls_5yr_bins.pdf",
+  "../output/cd_homeownership_long_units_long_difference_estimates.csv",
+  "../output/cd_homeownership_long_units_long_difference_5_plus_four_controls.tex",
+  "../output/cd_homeownership_long_units_event_5_plus_four_controls_macros.tex",
+  "../output/cd_homeownership_long_units_triple_diff_coefficients.csv",
+  "../output/cd_homeownership_long_units_triple_diff_coefficients.pdf",
+  "../output/cd_homeownership_long_units_randomization_inference.csv",
+  "../output/cd_homeownership_long_units_model_summary.csv"
 )
 
 output_nonempty_count <- sum(file.exists(expected_output_paths) & file.info(expected_output_paths)$size > 0)
@@ -2077,10 +2018,10 @@ qc_df <- bind_rows(
   tibble(metric = "status", value = as.character(as.integer(status_flag)), note = "One means the revised long-units design task passed all QC checks.")
 )
 
-write_csv_if_changed(qc_df, out_qc_csv)
+write_csv_if_changed(qc_df, "../output/cd_homeownership_long_units_design_qc.csv")
 
 if (!status_flag) {
-  stop("Revised long-units design QC failed; see ", out_qc_csv)
+  stop("Revised long-units design QC failed; see ", "../output/cd_homeownership_long_units_design_qc.csv")
 }
 
-cat("Wrote revised homeownership long-units design outputs to", dirname(out_event_coefficients_csv), "\n")
+cat("Wrote revised homeownership long-units design outputs to", dirname("../output/cd_homeownership_long_units_event_coefficients.csv"), "\n")

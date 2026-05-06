@@ -1,9 +1,5 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/estimate_zap_housing_cohorts/code")
-# zap_housing_initial_panel_csv <- "../input/zap_housing_initial_panel.csv"
-# zap_housing_mature_cohort_panel_csv <- "../input/zap_housing_mature_cohort_panel.csv"
 # reference_era <- "1980-1984"
-# out_results_csv <- "../output/zap_housing_era_interactions.csv"
-# out_summary_csv <- "../output/zap_housing_model_summary.csv"
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -17,15 +13,15 @@ source("../../_lib/source_pipeline_utils.R")
 
 args <- commandArgs(trailingOnly = TRUE)
 
-if (length(args) != 5) {
-  stop("Expected 5 arguments: zap_housing_initial_panel_csv zap_housing_mature_cohort_panel_csv reference_era out_results_csv out_summary_csv")
+if (length(args) == 0) {
+  args <- c(reference_era)
 }
 
-zap_housing_initial_panel_csv <- args[1]
-zap_housing_mature_cohort_panel_csv <- args[2]
-reference_era <- args[3]
-out_results_csv <- args[4]
-out_summary_csv <- args[5]
+if (length(args) != 1) {
+  stop("Expected 1 argument: reference_era")
+}
+
+reference_era <- args[1]
 
 z_score <- function(x) {
   x <- suppressWarnings(as.numeric(x))
@@ -142,8 +138,8 @@ static_control_cols <- c(
   "unemployment_rate_1990_exact"
 )
 
-initial_panel <- read_csv(zap_housing_initial_panel_csv, show_col_types = FALSE, na = c("", "NA"))
-mature_panel <- read_csv(zap_housing_mature_cohort_panel_csv, show_col_types = FALSE, na = c("", "NA"))
+initial_panel <- read_csv("../input/zap_housing_initial_panel.csv", show_col_types = FALSE, na = c("", "NA"))
+mature_panel <- read_csv("../input/zap_housing_mature_cohort_panel.csv", show_col_types = FALSE, na = c("", "NA"))
 
 assert_required_columns(
   initial_panel,
@@ -371,7 +367,14 @@ results_df <- bind_rows(results_rows) %>%
 summary_df <- bind_rows(summary_rows) %>%
   arrange(outcome_family, control_layer)
 
-write_csv_if_changed(results_df, out_results_csv)
-write_csv_if_changed(summary_df, out_summary_csv)
+if (reference_era == "1980-1984") {
+  write_csv_if_changed(results_df, "../output/zap_housing_era_interactions.csv")
+  write_csv_if_changed(summary_df, "../output/zap_housing_model_summary.csv")
+} else if (reference_era == "1985-1989") {
+  write_csv_if_changed(results_df, "../output/zap_housing_era_interactions_ref_1985_1989.csv")
+  write_csv_if_changed(summary_df, "../output/zap_housing_model_summary_ref_1985_1989.csv")
+} else {
+  stop("No output path is defined for reference_era: ", reference_era)
+}
 
-cat("Wrote ZAP housing cohort regression outputs to", dirname(out_results_csv), "\n")
+cat("Wrote ZAP housing cohort regression outputs to ../output\n")

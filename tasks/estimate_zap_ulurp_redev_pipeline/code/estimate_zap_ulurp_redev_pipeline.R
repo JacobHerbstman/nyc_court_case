@@ -1,10 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/estimate_zap_ulurp_redev_pipeline/code")
-# zap_ulurp_redev_cd_year_panel_csv <- "../input/zap_ulurp_redev_cd_year_panel.csv"
-# zap_ulurp_redev_mature_cohort_panel_csv <- "../input/zap_ulurp_redev_mature_cohort_panel.csv"
-# zap_ulurp_redev_yield_panel_csv <- "../input/zap_ulurp_redev_yield_panel.csv"
-# out_model_summary_csv <- "../output/zap_ulurp_redev_model_summary.csv"
-# out_nested_diag_csv <- "../output/zap_ulurp_redev_nested_diagnostics.csv"
-# out_coefficients_pdf <- "../output/zap_ulurp_redev_coefficients.pdf"
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -17,19 +11,6 @@ suppressPackageStartupMessages({
 })
 
 source("../../_lib/source_pipeline_utils.R")
-
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 6) {
-  stop("Expected 6 arguments: zap_ulurp_redev_cd_year_panel_csv zap_ulurp_redev_mature_cohort_panel_csv zap_ulurp_redev_yield_panel_csv out_model_summary_csv out_nested_diag_csv out_coefficients_pdf")
-}
-
-zap_ulurp_redev_cd_year_panel_csv <- args[1]
-zap_ulurp_redev_mature_cohort_panel_csv <- args[2]
-zap_ulurp_redev_yield_panel_csv <- args[3]
-out_model_summary_csv <- args[4]
-out_nested_diag_csv <- args[5]
-out_coefficients_pdf <- args[6]
 
 sanitize_era <- function(x) {
   str_replace_all(x, "-", "_")
@@ -228,7 +209,7 @@ control_blocks <- list(
 
 all_control_cols <- unique(c(pretrend_controls, exact_controls, built_form_controls))
 
-cd_year_panel <- read_csv(zap_ulurp_redev_cd_year_panel_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+cd_year_panel <- read_csv("../input/zap_ulurp_redev_cd_year_panel.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(
     borocd = suppressWarnings(as.integer(borocd)),
     cert_year = suppressWarnings(as.integer(cert_year)),
@@ -239,7 +220,7 @@ cd_year_panel <- read_csv(zap_ulurp_redev_cd_year_panel_csv, show_col_types = FA
     triple_C = treat_z_boro * redev_potential_C_z_boro
   )
 
-mature_panel <- read_csv(zap_ulurp_redev_mature_cohort_panel_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+mature_panel <- read_csv("../input/zap_ulurp_redev_mature_cohort_panel.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(
     borocd = suppressWarnings(as.integer(borocd)),
     cert_year = suppressWarnings(as.integer(cert_year)),
@@ -253,7 +234,7 @@ mature_panel <- read_csv(zap_ulurp_redev_mature_cohort_panel_csv, show_col_types
     triple_C = treat_z_boro * redev_potential_C_z_boro
   )
 
-yield_panel <- read_csv(zap_ulurp_redev_yield_panel_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+yield_panel <- read_csv("../input/zap_ulurp_redev_yield_panel.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(
     borocd = suppressWarnings(as.integer(borocd)),
     cert_year = suppressWarnings(as.integer(cert_year)),
@@ -648,8 +629,8 @@ nested_diag_df <- model_summary_df %>%
   ) %>%
   arrange(analysis_family, outcome_family, term_group, era)
 
-write_csv_if_changed(model_summary_df, out_model_summary_csv)
-write_csv_if_changed(nested_diag_df, out_nested_diag_csv)
+write_csv_if_changed(model_summary_df, "../output/zap_ulurp_redev_model_summary.csv")
+write_csv_if_changed(nested_diag_df, "../output/zap_ulurp_redev_nested_diagnostics.csv")
 
 headline_plot_df <- model_summary_df %>%
   filter(
@@ -709,6 +690,6 @@ print(
 
 dev.off()
 
-copy_if_changed(temp_pdf, out_coefficients_pdf)
+copy_if_changed(temp_pdf, "../output/zap_ulurp_redev_coefficients.pdf")
 
-cat("Wrote ZAP ULURP redevelopment regression outputs to", dirname(out_model_summary_csv), "\n")
+cat("Wrote ZAP ULURP redevelopment regression outputs to ../output\n")
