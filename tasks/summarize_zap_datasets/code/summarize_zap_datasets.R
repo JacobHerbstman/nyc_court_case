@@ -1,11 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_zap_datasets/code")
-# zap_stage_qc_csv <- "../input/zap_stage_qc.csv"
-# zap_project_parquet <- "../input/zap_project_data.parquet"
-# zap_bbl_parquet <- "../input/zap_project_bbl.parquet"
-# out_counts_csv <- "../output/zap_project_counts_by_decade_status.csv"
-# out_link_csv <- "../output/zap_bbl_link_completeness.csv"
-# out_geo_csv <- "../output/zap_geography_coverage.csv"
-# out_qc_csv <- "../output/zap_summary_qc.csv"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -15,26 +8,12 @@ suppressPackageStartupMessages({
   library(tibble)
 })
 
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 7) {
-  stop("Expected 7 arguments: zap_stage_qc_csv zap_project_parquet zap_bbl_parquet out_counts_csv out_link_csv out_geo_csv out_qc_csv")
-}
-
-zap_stage_qc_csv <- args[1]
-zap_project_parquet <- args[2]
-zap_bbl_parquet <- args[3]
-out_counts_csv <- args[4]
-out_link_csv <- args[5]
-out_geo_csv <- args[6]
-out_qc_csv <- args[7]
-
-stage_qc <- read_csv(zap_stage_qc_csv, show_col_types = FALSE, na = c("", "NA"))
-project_df <- read_parquet(zap_project_parquet) |>
+stage_qc <- read_csv("../input/zap_stage_qc.csv", show_col_types = FALSE, na = c("", "NA"))
+project_df <- read_parquet("../input/zap_project_data.parquet") |>
   as.data.frame() |>
   as_tibble() |>
   mutate(project_id = as.character(project_id))
-bbl_df <- read_parquet(zap_bbl_parquet) |>
+bbl_df <- read_parquet("../input/zap_project_bbl.parquet") |>
   as.data.frame() |>
   as_tibble() |>
   mutate(
@@ -43,10 +22,10 @@ bbl_df <- read_parquet(zap_bbl_parquet) |>
   )
 
 if (nrow(project_df) == 0) {
-  write_csv(tibble(), out_counts_csv, na = "")
-  write_csv(tibble(), out_link_csv, na = "")
-  write_csv(tibble(), out_geo_csv, na = "")
-  write_csv(bind_rows(stage_qc, tibble(metric = "status", value = "missing_staged_zap_project_data")), out_qc_csv, na = "")
+  write_csv(tibble(), "../output/zap_project_counts_by_decade_status.csv", na = "")
+  write_csv(tibble(), "../output/zap_bbl_link_completeness.csv", na = "")
+  write_csv(tibble(), "../output/zap_geography_coverage.csv", na = "")
+  write_csv(bind_rows(stage_qc, tibble(metric = "status", value = "missing_staged_zap_project_data")), "../output/zap_summary_qc.csv", na = "")
   quit(save = "no")
 }
 
@@ -144,9 +123,9 @@ summary_qc <- bind_rows(
   )
 )
 
-write_csv(counts_df, out_counts_csv, na = "")
-write_csv(link_df, out_link_csv, na = "")
-write_csv(geo_df, out_geo_csv, na = "")
-write_csv(summary_qc, out_qc_csv, na = "")
+write_csv(counts_df, "../output/zap_project_counts_by_decade_status.csv", na = "")
+write_csv(link_df, "../output/zap_bbl_link_completeness.csv", na = "")
+write_csv(geo_df, "../output/zap_geography_coverage.csv", na = "")
+write_csv(summary_qc, "../output/zap_summary_qc.csv", na = "")
 
-cat("Wrote ZAP summary outputs to", dirname(out_counts_csv), "\n")
+cat("Wrote ZAP summary outputs to ../output\n")

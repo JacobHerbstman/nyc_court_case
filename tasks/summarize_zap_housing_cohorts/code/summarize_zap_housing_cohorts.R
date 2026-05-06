@@ -1,12 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_zap_housing_cohorts/code")
-# zap_housing_cohort_base_csv <- "../input/zap_housing_cohort_base.csv"
-# out_initial_panel_csv <- "../output/zap_housing_initial_panel.csv"
-# out_mature_panel_csv <- "../output/zap_housing_mature_cohort_panel.csv"
-# out_year_summary_csv <- "../output/zap_housing_tercile_year_summary.csv"
-# out_era_summary_csv <- "../output/zap_housing_tercile_era_summary.csv"
-# out_bbl_link_csv <- "../output/zap_housing_bbl_link_completeness.csv"
-# out_qc_csv <- "../output/zap_housing_summary_qc.csv"
-# out_plots_pdf <- "../output/zap_housing_plots.pdf"
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -17,21 +9,6 @@ suppressPackageStartupMessages({
 })
 
 source("../../_lib/source_pipeline_utils.R")
-
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 8) {
-  stop("Expected 8 arguments: zap_housing_cohort_base_csv out_initial_panel_csv out_mature_panel_csv out_year_summary_csv out_era_summary_csv out_bbl_link_csv out_qc_csv out_plots_pdf")
-}
-
-zap_housing_cohort_base_csv <- args[1]
-out_initial_panel_csv <- args[2]
-out_mature_panel_csv <- args[3]
-out_year_summary_csv <- args[4]
-out_era_summary_csv <- args[5]
-out_bbl_link_csv <- args[6]
-out_qc_csv <- args[7]
-out_plots_pdf <- args[8]
 
 static_control_cols <- c(
   "vacancy_rate_1990_exact",
@@ -84,7 +61,7 @@ assert_unique_keys <- function(df, keys, label) {
   }
 }
 
-base_df <- read_csv(zap_housing_cohort_base_csv, show_col_types = FALSE, na = c("", "NA"))
+base_df <- read_csv("../input/zap_housing_cohort_base.csv", show_col_types = FALSE, na = c("", "NA"))
 
 district_lookup <- base_df %>%
   distinct(
@@ -439,13 +416,13 @@ pdf(temp_pdf, width = 11, height = 8.5)
 print(year_plot)
 print(era_plot)
 dev.off()
-copy_if_changed(temp_pdf, out_plots_pdf)
+copy_if_changed(temp_pdf, "../output/zap_housing_plots.pdf")
 
-write_csv_if_changed(initial_panel, out_initial_panel_csv)
-write_csv_if_changed(mature_panel, out_mature_panel_csv)
-write_csv_if_changed(year_summary, out_year_summary_csv)
-write_csv_if_changed(era_summary, out_era_summary_csv)
-write_csv_if_changed(bbl_link_df, out_bbl_link_csv)
-write_csv_if_changed(qc_df, out_qc_csv)
+write_csv_if_changed(initial_panel, "../output/zap_housing_initial_panel.csv")
+write_csv_if_changed(mature_panel, "../output/zap_housing_mature_cohort_panel.csv")
+write_csv_if_changed(year_summary, "../output/zap_housing_tercile_year_summary.csv")
+write_csv_if_changed(era_summary, "../output/zap_housing_tercile_era_summary.csv")
+write_csv_if_changed(bbl_link_df, "../output/zap_housing_bbl_link_completeness.csv")
+write_csv_if_changed(qc_df, "../output/zap_housing_summary_qc.csv")
 
-cat("Wrote ZAP housing cohort summary outputs to", dirname(out_initial_panel_csv), "\n")
+cat("Wrote ZAP housing cohort summary outputs to ../output\n")

@@ -1,16 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_zap_capacity_weighted_tercile_trends/code")
-# zap_housing_project_base_audited_csv <- "../input/zap_housing_project_base_audited.csv"
-# zap_project_bbl_parquet <- "../input/zap_project_bbl.parquet"
-# mappluto_current_parquet <- "../input/dcp_mappluto_current_25v4.parquet"
-# cd_homeownership_1990_measure_csv <- "../input/cd_homeownership_1990_measure.csv"
-# cd_redevelopment_potential_baseline_csv <- "../input/cd_redevelopment_potential_baseline.csv"
-# zap_outcome_usability_csv <- "../input/zap_outcome_usability_by_period.csv"
-# out_project_bbl_csv <- "../output/zap_capacity_weighted_project_bbl.csv"
-# out_cd_year_csv <- "../output/zap_capacity_weighted_cd_year.csv"
-# out_tercile_year_csv <- "../output/zap_capacity_weighted_tercile_year.csv"
-# out_per_10000_pdf <- "../output/zap_capacity_weighted_tercile_trends_per_10000.pdf"
-# out_per_residential_acre_pdf <- "../output/zap_capacity_weighted_tercile_trends_per_residential_acre.pdf"
-# out_qc_csv <- "../output/zap_capacity_weighted_tercile_trends_qc.csv"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -21,38 +9,6 @@ suppressPackageStartupMessages({
   library(tibble)
   library(tidyr)
 })
-
-cli_args <- commandArgs(trailingOnly = TRUE)
-if (length(cli_args) == 0) {
-  cli_args <- c(
-    zap_housing_project_base_audited_csv,
-    zap_project_bbl_parquet,
-    mappluto_current_parquet,
-    cd_homeownership_1990_measure_csv,
-    cd_redevelopment_potential_baseline_csv,
-    zap_outcome_usability_csv,
-    out_project_bbl_csv,
-    out_cd_year_csv,
-    out_tercile_year_csv,
-    out_per_10000_pdf,
-    out_per_residential_acre_pdf,
-    out_qc_csv
-  )
-}
-stopifnot(length(cli_args) == 12)
-
-zap_housing_project_base_audited_csv <- cli_args[1]
-zap_project_bbl_parquet <- cli_args[2]
-mappluto_current_parquet <- cli_args[3]
-cd_homeownership_1990_measure_csv <- cli_args[4]
-cd_redevelopment_potential_baseline_csv <- cli_args[5]
-zap_outcome_usability_csv <- cli_args[6]
-out_project_bbl_csv <- cli_args[7]
-out_cd_year_csv <- cli_args[8]
-out_tercile_year_csv <- cli_args[9]
-out_per_10000_pdf <- cli_args[10]
-out_per_residential_acre_pdf <- cli_args[11]
-out_qc_csv <- cli_args[12]
 
 qc_rows <- tibble(
   check_name = character(),
@@ -143,7 +99,7 @@ capacity_metrics <- tribble(
   "affected_current_residential_lot_acres", "Affected current residential lot acres", 3L
 )
 
-standard_cd <- read_csv(cd_homeownership_1990_measure_csv, show_col_types = FALSE) |>
+standard_cd <- read_csv("../input/cd_homeownership_1990_measure.csv", show_col_types = FALSE) |>
   transmute(
     borocd = as.integer(borocd),
     borough_code = as.integer(borough_code),
@@ -165,7 +121,7 @@ add_qc(
   "Homeownership denominator rows must be unique by borocd."
 )
 
-redevelopment_denoms <- read_csv(cd_redevelopment_potential_baseline_csv, show_col_types = FALSE) |>
+redevelopment_denoms <- read_csv("../input/cd_redevelopment_potential_baseline.csv", show_col_types = FALSE) |>
   transmute(
     borocd = as.integer(borocd),
     residential_acres = as.numeric(residential_acres)
@@ -200,12 +156,12 @@ add_qc(
   "Treatment, 1990 occupied-unit denominators, and residential-acre denominators must be nonmissing."
 )
 
-source_usability <- read_csv(zap_outcome_usability_csv, show_col_types = FALSE) |>
+source_usability <- read_csv("../input/zap_outcome_usability_by_period.csv", show_col_types = FALSE) |>
   filter(period %in% c("1985-1989", "1990-1999", "2000-2009", "2010-2019", "2020-2025")) |>
   select(period, outcome_type, usability) |>
   pivot_wider(names_from = outcome_type, values_from = usability, names_prefix = "source_")
 
-project_base <- read_csv(zap_housing_project_base_audited_csv, show_col_types = FALSE) |>
+project_base <- read_csv("../input/zap_housing_project_base_audited.csv", show_col_types = FALSE) |>
   mutate(
     cert_year = as.integer(cert_year),
     period = period_from_year(cert_year),
@@ -228,7 +184,7 @@ add_qc(
   "Capacity plots are restricted to certification years 1985-2025."
 )
 
-zap_project_bbl <- read_parquet(zap_project_bbl_parquet) |>
+zap_project_bbl <- read_parquet("../input/zap_project_bbl.parquet") |>
   transmute(
     project_id = as.character(project_id),
     bbl_standardized = as.character(bbl_standardized)
@@ -242,7 +198,7 @@ add_qc(
   "Project-BBL links must be unique after distincting exact duplicates."
 )
 
-mappluto_lot <- read_parquet(mappluto_current_parquet) |>
+mappluto_lot <- read_parquet("../input/dcp_mappluto_current_25v4.parquet") |>
   transmute(
     bbl_standardized = as.character(bbl),
     mappluto_borocd = as.integer(cd),
@@ -279,7 +235,7 @@ project_bbl <- project_base |>
     affected_current_residential_lot_acres = if_else(bbl_standard_cd_flag, current_residential_lot_acres, 0)
   )
 
-write_csv(project_bbl, out_project_bbl_csv, na = "")
+write_csv(project_bbl, "../output/zap_capacity_weighted_project_bbl.csv", na = "")
 
 project_capacity <- project_bbl |>
   group_by(project_id) |>
@@ -457,7 +413,7 @@ cd_year <- cd_year_grid |>
     )
   )
 
-write_csv(cd_year, out_cd_year_csv, na = "")
+write_csv(cd_year, "../output/zap_capacity_weighted_cd_year.csv", na = "")
 
 tercile_year <- cd_year |>
   select(
@@ -518,7 +474,7 @@ tercile_year <- cd_year |>
   ) |>
   arrange(assignment_type, capacity_order, outcome_order, year, homeownership_tercile)
 
-write_csv(tercile_year, out_tercile_year_csv, na = "")
+write_csv(tercile_year, "../output/zap_capacity_weighted_tercile_year.csv", na = "")
 
 make_capacity_plot <- function(data, capacity_metric_name, y_var, y_label) {
   data |>
@@ -553,7 +509,7 @@ make_capacity_plot <- function(data, capacity_metric_name, y_var, y_label) {
     )
 }
 
-pdf(out_per_10000_pdf, width = 11, height = 8.5)
+pdf("../output/zap_capacity_weighted_tercile_trends_per_10000.pdf", width = 11, height = 8.5)
 for (metric_name in capacity_metrics$capacity_metric) {
   print(make_capacity_plot(
     tercile_year,
@@ -564,7 +520,7 @@ for (metric_name in capacity_metrics$capacity_metric) {
 }
 dev.off()
 
-pdf(out_per_residential_acre_pdf, width = 11, height = 8.5)
+pdf("../output/zap_capacity_weighted_tercile_trends_per_residential_acre.pdf", width = 11, height = 8.5)
 for (metric_name in capacity_metrics$capacity_metric) {
   print(make_capacity_plot(
     tercile_year,
@@ -641,36 +597,36 @@ add_qc(
 )
 add_qc(
   "project_bbl_output_nonempty",
-  file.exists(out_project_bbl_csv) && file.info(out_project_bbl_csv)$size > 0,
-  file.info(out_project_bbl_csv)$size,
+  file.exists("../output/zap_capacity_weighted_project_bbl.csv") && file.info("../output/zap_capacity_weighted_project_bbl.csv")$size > 0,
+  file.info("../output/zap_capacity_weighted_project_bbl.csv")$size,
   "Project-BBL capacity output must be nonempty."
 )
 add_qc(
   "cd_year_output_nonempty",
-  file.exists(out_cd_year_csv) && file.info(out_cd_year_csv)$size > 0,
-  file.info(out_cd_year_csv)$size,
+  file.exists("../output/zap_capacity_weighted_cd_year.csv") && file.info("../output/zap_capacity_weighted_cd_year.csv")$size > 0,
+  file.info("../output/zap_capacity_weighted_cd_year.csv")$size,
   "CD-year capacity output must be nonempty."
 )
 add_qc(
   "tercile_year_output_nonempty",
-  file.exists(out_tercile_year_csv) && file.info(out_tercile_year_csv)$size > 0,
-  file.info(out_tercile_year_csv)$size,
+  file.exists("../output/zap_capacity_weighted_tercile_year.csv") && file.info("../output/zap_capacity_weighted_tercile_year.csv")$size > 0,
+  file.info("../output/zap_capacity_weighted_tercile_year.csv")$size,
   "Tercile-year capacity output must be nonempty."
 )
 add_qc(
   "per_10000_pdf_nonempty",
-  file.exists(out_per_10000_pdf) && file.info(out_per_10000_pdf)$size > 0,
-  file.info(out_per_10000_pdf)$size,
+  file.exists("../output/zap_capacity_weighted_tercile_trends_per_10000.pdf") && file.info("../output/zap_capacity_weighted_tercile_trends_per_10000.pdf")$size > 0,
+  file.info("../output/zap_capacity_weighted_tercile_trends_per_10000.pdf")$size,
   "Per-10,000 occupied-unit PDF must be nonempty."
 )
 add_qc(
   "per_residential_acre_pdf_nonempty",
-  file.exists(out_per_residential_acre_pdf) && file.info(out_per_residential_acre_pdf)$size > 0,
-  file.info(out_per_residential_acre_pdf)$size,
+  file.exists("../output/zap_capacity_weighted_tercile_trends_per_residential_acre.pdf") && file.info("../output/zap_capacity_weighted_tercile_trends_per_residential_acre.pdf")$size > 0,
+  file.info("../output/zap_capacity_weighted_tercile_trends_per_residential_acre.pdf")$size,
   "Per-residential-acre PDF must be nonempty."
 )
 
-write_csv(qc_rows, out_qc_csv, na = "")
+write_csv(qc_rows, "../output/zap_capacity_weighted_tercile_trends_qc.csv", na = "")
 
 if (any(qc_rows$status == "fail")) {
   failed_checks <- paste(qc_rows$check_name[qc_rows$status == "fail"], collapse = ", ")

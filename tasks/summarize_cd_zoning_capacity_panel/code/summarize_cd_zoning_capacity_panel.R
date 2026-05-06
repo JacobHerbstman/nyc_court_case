@@ -1,11 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_cd_zoning_capacity_panel/code")
-# mappluto_lot_files_csv <- "../input/mappluto_lot_files.csv"
-# cd_redevelopment_baseline_csv <- "../input/cd_redevelopment_potential_baseline.csv"
-# out_lot_release_parquet <- "../output/cd_zoning_capacity_lot_release.parquet"
-# out_cd_year_csv <- "../output/cd_zoning_capacity_cd_year.csv"
-# out_plot_pdf <- "../output/cd_zoning_capacity_tercile_trends.pdf"
-# out_coefficients_csv <- "../output/cd_zoning_capacity_coefficients.csv"
-# out_qc_csv <- "../output/cd_zoning_capacity_qc.csv"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -19,20 +12,6 @@ suppressPackageStartupMessages({
 })
 
 source("../../_lib/source_pipeline_utils.R")
-
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 7) {
-  stop("Expected 7 arguments: mappluto_lot_files_csv cd_redevelopment_baseline_csv out_lot_release_parquet out_cd_year_csv out_plot_pdf out_coefficients_csv out_qc_csv")
-}
-
-mappluto_lot_files_csv <- args[1]
-cd_redevelopment_baseline_csv <- args[2]
-out_lot_release_parquet <- args[3]
-out_cd_year_csv <- args[4]
-out_plot_pdf <- args[5]
-out_coefficients_csv <- args[6]
-out_qc_csv <- args[7]
 
 version_rank <- function(vintage) {
   year_part <- suppressWarnings(as.integer(str_extract(vintage, "^[0-9]{2}")))
@@ -60,7 +39,7 @@ coef_row <- function(df, outcome_name, year_value) {
   )
 }
 
-cd_base <- read_csv(cd_redevelopment_baseline_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+cd_base <- read_csv("../input/cd_redevelopment_potential_baseline.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   transmute(
     borocd = as.integer(borocd),
     borough_name = as.character(borough_name),
@@ -83,7 +62,7 @@ district_lookup <- cd_base %>%
   ) %>%
   ungroup()
 
-mappluto_files <- read_csv(mappluto_lot_files_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+mappluto_files <- read_csv("../input/mappluto_lot_files.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   filter(raw_status == "loaded", str_detect(vintage, "^[0-9]{2}v")) %>%
   mutate(
     year = 2000L + suppressWarnings(as.integer(str_extract(vintage, "^[0-9]{2}"))),
@@ -220,7 +199,7 @@ temp_pdf <- tempfile(fileext = ".pdf")
 pdf(temp_pdf, width = 10.5, height = 8)
 print(plot_obj)
 dev.off()
-copy_if_changed(temp_pdf, out_plot_pdf)
+copy_if_changed(temp_pdf, "../output/cd_zoning_capacity_tercile_trends.pdf")
 
 qc_df <- bind_rows(
   tibble(metric = "selected_release_count", value = nrow(mappluto_files), status = if_else(nrow(mappluto_files) == 8, "pass", "fail"), note = "One MapPLUTO release per year, 2018-2025."),
@@ -233,13 +212,13 @@ qc_df <- bind_rows(
 )
 
 if (any(qc_df$status == "fail")) {
-  write_csv_if_changed(qc_df, out_qc_csv)
+  write_csv_if_changed(qc_df, "../output/cd_zoning_capacity_qc.csv")
   stop("Zoning capacity QC failed.")
 }
 
-write_parquet_if_changed(lot_release, out_lot_release_parquet)
-write_csv_if_changed(cd_year, out_cd_year_csv)
-write_csv_if_changed(coefficients, out_coefficients_csv)
-write_csv_if_changed(qc_df, out_qc_csv)
+write_parquet_if_changed(lot_release, "../output/cd_zoning_capacity_lot_release.parquet")
+write_csv_if_changed(cd_year, "../output/cd_zoning_capacity_cd_year.csv")
+write_csv_if_changed(coefficients, "../output/cd_zoning_capacity_coefficients.csv")
+write_csv_if_changed(qc_df, "../output/cd_zoning_capacity_qc.csv")
 
-cat("Wrote CD zoning-capacity panel outputs to", dirname(out_cd_year_csv), "\n")
+cat("Wrote CD zoning-capacity panel outputs to ../output\n")

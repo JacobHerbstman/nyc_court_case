@@ -1,11 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_zap_housing_buildout_after_certification/code")
-# zap_housing_hdb_project_summary_csv <- "../input/zap_housing_hdb_project_summary.csv"
-# zap_housing_hdb_link_candidates_csv <- "../input/zap_housing_hdb_link_candidates.csv"
-# out_project_csv <- "../output/zap_housing_buildout_project_audited.csv"
-# out_summary_csv <- "../output/zap_housing_buildout_cohort_summary.csv"
-# out_coefficients_csv <- "../output/zap_housing_buildout_delay_coefficients.csv"
-# out_plots_pdf <- "../output/zap_housing_buildout_plots.pdf"
-# out_qc_csv <- "../output/zap_housing_buildout_qc.csv"
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -17,20 +10,6 @@ suppressPackageStartupMessages({
 })
 
 source("../../_lib/source_pipeline_utils.R")
-
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 7) {
-  stop("Expected 7 arguments: zap_housing_hdb_project_summary_csv zap_housing_hdb_link_candidates_csv out_project_csv out_summary_csv out_coefficients_csv out_plots_pdf out_qc_csv")
-}
-
-zap_housing_hdb_project_summary_csv <- args[1]
-zap_housing_hdb_link_candidates_csv <- args[2]
-out_project_csv <- args[3]
-out_summary_csv <- args[4]
-out_coefficients_csv <- args[5]
-out_plots_pdf <- args[6]
-out_qc_csv <- args[7]
 
 assert_unique_keys <- function(df, key_cols, df_name) {
   duplicate_keys <- df %>%
@@ -94,7 +73,7 @@ coef_row <- function(df, outcome_name, window_name) {
   )
 }
 
-project_summary <- read_csv(zap_housing_hdb_project_summary_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+project_summary <- read_csv("../input/zap_housing_hdb_project_summary.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(
     project_id = as.character(project_id),
     cert_year = as.integer(cert_year),
@@ -161,7 +140,7 @@ district_lookup <- project_summary %>%
   ungroup() %>%
   select(borocd, treat_tercile, treat_tercile_label)
 
-candidates <- read_csv(zap_housing_hdb_link_candidates_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+candidates <- read_csv("../input/zap_housing_hdb_link_candidates.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(
     project_id = as.character(project_id),
     job_number = as.character(job_number),
@@ -362,7 +341,7 @@ temp_pdf <- tempfile(fileext = ".pdf")
 pdf(temp_pdf, width = 12, height = 10.5)
 print(plot_obj)
 dev.off()
-copy_if_changed(temp_pdf, out_plots_pdf)
+copy_if_changed(temp_pdf, "../output/zap_housing_buildout_plots.pdf")
 
 nonlinkable_nonmissing_count <- project_out %>%
   filter(!bbl_linkable) %>%
@@ -408,17 +387,17 @@ qc_df <- bind_rows(
   tibble(metric = "nonlinkable_project_nonmissing_outcome_count", value = nonlinkable_nonmissing_count, status = if_else(nonlinkable_nonmissing_count == 0, "pass", "fail"), note = "Projects without valid ZAP BBLs must be masked, not counted as zero build-out."),
   tibble(metric = "summary_plot_outcome_missing_cell_count", value = summary_cell_count, status = if_else(summary_cell_count == 0, "pass", "fail"), note = "Each plotted outcome/window/cohort should have Low, Middle, and High tercile cells."),
   tibble(metric = "negative_unit_outcome_count", value = sum(project_long$value < 0 & project_long$outcome %in% c("linked_gross_add_units_permitted_per_project", "linked_gross_add_units_completed_per_project", "linked_nb_50plus_units_permitted_per_project", "linked_nb_50plus_units_completed_per_project"), na.rm = TRUE), status = if_else(sum(project_long$value < 0 & project_long$outcome %in% c("linked_gross_add_units_permitted_per_project", "linked_gross_add_units_completed_per_project", "linked_nb_50plus_units_permitted_per_project", "linked_nb_50plus_units_completed_per_project"), na.rm = TRUE) == 0, "pass", "fail"), note = "Linked unit outcomes must be nonnegative."),
-  tibble(metric = "plot_file_bytes", value = file.info(out_plots_pdf)$size, status = if_else(file.exists(out_plots_pdf) && file.info(out_plots_pdf)$size > 0, "pass", "fail"), note = "Generated PDF should be nonempty.")
+  tibble(metric = "plot_file_bytes", value = file.info("../output/zap_housing_buildout_plots.pdf")$size, status = if_else(file.exists("../output/zap_housing_buildout_plots.pdf") && file.info("../output/zap_housing_buildout_plots.pdf")$size > 0, "pass", "fail"), note = "Generated PDF should be nonempty.")
 )
 
 if (any(qc_df$status == "fail")) {
-  write_csv_if_changed(qc_df, out_qc_csv)
+  write_csv_if_changed(qc_df, "../output/zap_housing_buildout_qc.csv")
   stop("ZAP build-out QC failed.")
 }
 
-write_csv_if_changed(project_out, out_project_csv)
-write_csv_if_changed(summary_df, out_summary_csv)
-write_csv_if_changed(coefficients, out_coefficients_csv)
-write_csv_if_changed(qc_df, out_qc_csv)
+write_csv_if_changed(project_out, "../output/zap_housing_buildout_project_audited.csv")
+write_csv_if_changed(summary_df, "../output/zap_housing_buildout_cohort_summary.csv")
+write_csv_if_changed(coefficients, "../output/zap_housing_buildout_delay_coefficients.csv")
+write_csv_if_changed(qc_df, "../output/zap_housing_buildout_qc.csv")
 
-cat("Wrote ZAP build-out diagnostics to", dirname(out_project_csv), "\n")
+cat("Wrote ZAP build-out diagnostics to ../output\n")
