@@ -1,25 +1,10 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_cd_homeownership_long_units_anatomy/code")
-# cd_homeownership_long_units_series_csv <- "../input/cd_homeownership_long_units_series.csv"
-# out_top_cd_csv <- "../output/cd_homeownership_long_units_anatomy_top_cd.csv"
-# out_top_cd_year_csv <- "../output/cd_homeownership_long_units_anatomy_top_cd_year.csv"
-# out_qc_csv <- "../output/cd_homeownership_long_units_anatomy_qc.csv"
 
 suppressPackageStartupMessages({
   library(dplyr)
   library(readr)
   library(tibble)
 })
-
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 4) {
-  stop("Expected 4 arguments: cd_homeownership_long_units_series_csv out_top_cd_csv out_top_cd_year_csv out_qc_csv")
-}
-
-cd_homeownership_long_units_series_csv <- args[1]
-out_top_cd_csv <- args[2]
-out_top_cd_year_csv <- args[3]
-out_qc_csv <- args[4]
 
 assert_unique_keys <- function(df, keys, label) {
   duplicate_keys <- df |>
@@ -31,7 +16,7 @@ assert_unique_keys <- function(df, keys, label) {
   }
 }
 
-district_lookup <- read_csv(cd_homeownership_long_units_series_csv, show_col_types = FALSE, na = c("", "NA")) |>
+district_lookup <- read_csv("../input/cd_homeownership_long_units_series.csv", show_col_types = FALSE, na = c("", "NA")) |>
   distinct(borocd, borough_code, borough_name, treat_pp) |>
   mutate(
     borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
@@ -55,7 +40,7 @@ if (n_distinct(district_lookup$borocd) != 59) {
   stop("Expected the long-units anatomy district lookup to cover 59 community districts.")
 }
 
-series_df <- read_csv(cd_homeownership_long_units_series_csv, show_col_types = FALSE, na = c("", "NA")) |>
+series_df <- read_csv("../input/cd_homeownership_long_units_series.csv", show_col_types = FALSE, na = c("", "NA")) |>
   filter(
     series_kind == "preferred_long_series",
     series_family %in% c("units_built_total", "units_built_50_plus")
@@ -126,8 +111,8 @@ top_cd_year_df <- series_df |>
   slice_head(n = 10) |>
   ungroup()
 
-write_csv(top_cd_df, out_top_cd_csv, na = "")
-write_csv(top_cd_year_df, out_top_cd_year_csv, na = "")
+write_csv(top_cd_df, "../output/cd_homeownership_long_units_anatomy_top_cd.csv", na = "")
+write_csv(top_cd_year_df, "../output/cd_homeownership_long_units_anatomy_top_cd_year.csv", na = "")
 
 qc_df <- bind_rows(
   tibble(metric = "district_count", value = n_distinct(district_lookup$borocd), note = "Community districts assigned to treatment terciles."),
@@ -145,6 +130,6 @@ qc_df <- bind_rows(
     pull(top10_share), na.rm = TRUE), note = "Minimum share captured by the top 10 CD-years within a series-era high-tercile total.")
 )
 
-write_csv(qc_df, out_qc_csv, na = "")
+write_csv(qc_df, "../output/cd_homeownership_long_units_anatomy_qc.csv", na = "")
 
-cat("Wrote long-units anatomy outputs to", dirname(out_top_cd_csv), "\n")
+cat("Wrote long-units anatomy outputs to ../output\n")

@@ -1,26 +1,6 @@
 #!/usr/bin/env Rscript
 
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_brooklyn_homeownership_case_study/code")
-# controls_path <- "../input/brooklyn_homeownership_case_study_controls.csv"
-# long_units_path <- "../input/cd_homeownership_long_units_series.csv"
-# dcp_supply_path <- "../input/cd_homeownership_dcp_supply_panel.csv"
-# permit_panel_path <- "../input/cd_homeownership_permit_nb_panel.csv"
-# boundary_index_path <- "../input/dcp_boundary_index.csv"
-# zap_cd_year_path <- "../input/zap_ulurp_redev_cd_year_panel.csv"
-# zap_mature_path <- "../input/zap_ulurp_redev_mature_cohort_panel.csv"
-# zap_yield_path <- "../input/zap_ulurp_redev_yield_panel.csv"
-# cd_summary_out <- "../output/brooklyn_homeownership_case_study_cd_summary.csv"
-# era_outcomes_out <- "../output/brooklyn_homeownership_case_study_era_outcomes.csv"
-# regressions_out <- "../output/brooklyn_homeownership_case_study_regressions.csv"
-# block_regressions_out <- "../output/brooklyn_homeownership_case_study_block_regressions.csv"
-# block_diagnostics_out <- "../output/brooklyn_homeownership_case_study_block_diagnostics.csv"
-# leave_one_cd_out <- "../output/brooklyn_homeownership_case_study_leave_one_cd_out.csv"
-# size_bin_summary_out <- "../output/brooklyn_homeownership_case_study_size_bin_summary.csv"
-# zap_summary_out <- "../output/brooklyn_homeownership_case_study_zap_summary.csv"
-# zap_block_regressions_out <- "../output/brooklyn_homeownership_case_study_zap_block_regressions.csv"
-# qc_out <- "../output/brooklyn_homeownership_case_study_qc.csv"
-# plots_out <- "../output/brooklyn_homeownership_case_study_plots.pdf"
-# control_flip_plots_out <- "../output/brooklyn_homeownership_case_study_control_flip_plots.pdf"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -36,39 +16,6 @@ suppressPackageStartupMessages({
 
 source("../../_lib/source_pipeline_utils.R")
 
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 20) {
-  stop(
-    "Expected 20 arguments: controls_path long_units_path dcp_supply_path permit_panel_path ",
-    "boundary_index_path zap_cd_year_path zap_mature_path zap_yield_path cd_summary_out ",
-    "era_outcomes_out regressions_out block_regressions_out block_diagnostics_out ",
-    "leave_one_cd_out size_bin_summary_out zap_summary_out zap_block_regressions_out ",
-    "qc_out plots_out control_flip_plots_out"
-  )
-}
-
-controls_path <- args[1]
-long_units_path <- args[2]
-dcp_supply_path <- args[3]
-permit_panel_path <- args[4]
-boundary_index_path <- args[5]
-zap_cd_year_path <- args[6]
-zap_mature_path <- args[7]
-zap_yield_path <- args[8]
-cd_summary_out <- args[9]
-era_outcomes_out <- args[10]
-regressions_out <- args[11]
-block_regressions_out <- args[12]
-block_diagnostics_out <- args[13]
-leave_one_cd_out <- args[14]
-size_bin_summary_out <- args[15]
-zap_summary_out <- args[16]
-zap_block_regressions_out <- args[17]
-qc_out <- args[18]
-plots_out <- args[19]
-control_flip_plots_out <- args[20]
-
 theme_set(
   theme_minimal(base_size = 11) +
     theme(
@@ -79,7 +26,7 @@ theme_set(
     )
 )
 
-boundary_file <- read_csv(boundary_index_path, show_col_types = FALSE, na = c("", "NA")) %>%
+boundary_file <- read_csv("../input/dcp_boundary_index.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   filter(source_id == "dcp_boundary_community_districts", !is.na(parquet_path), file.exists(parquet_path)) %>%
   mutate(
     pull_date = as.character(pull_date),
@@ -89,7 +36,7 @@ boundary_file <- read_csv(boundary_index_path, show_col_types = FALSE, na = c(""
   slice_head(n = 1)
 
 if (nrow(boundary_file) == 0) {
-  stop("Could not find a staged community-district boundary parquet in ", boundary_index_path)
+  stop("Could not find a staged community-district boundary parquet in ../input/dcp_boundary_index.csv")
 }
 
 safe_standardize <- function(x) {
@@ -265,7 +212,7 @@ assert_unique_keys <- function(df, keys, label) {
   }
 }
 
-controls_raw <- read_csv(controls_path, show_col_types = FALSE) %>%
+controls_raw <- read_csv("../input/brooklyn_homeownership_case_study_controls.csv", show_col_types = FALSE) %>%
   mutate(
     borocd = suppressWarnings(as.integer(borocd)),
     brooklyn_short_label = as.character(brooklyn_short_label),
@@ -353,7 +300,7 @@ lookup_df <- brooklyn_base %>% select(all_of(lookup_cols))
 
 assert_unique_keys(lookup_df, "borocd", "Brooklyn helper lookup")
 
-long_outcomes <- read_csv(long_units_path, show_col_types = FALSE) %>%
+long_outcomes <- read_csv("../input/cd_homeownership_long_units_series.csv", show_col_types = FALSE) %>%
   filter(
     borough_name == "Brooklyn",
     series_kind == "preferred_long_series",
@@ -379,7 +326,7 @@ long_outcomes <- read_csv(long_units_path, show_col_types = FALSE) %>%
     outcome_rate = total_outcome / years_n * 10000 / occupied_units_1990_exact
   )
 
-dcp_outcomes <- read_csv(dcp_supply_path, show_col_types = FALSE) %>%
+dcp_outcomes <- read_csv("../input/cd_homeownership_dcp_supply_panel.csv", show_col_types = FALSE) %>%
   filter(
     borough_name == "Brooklyn",
     outcome_family %in% c(
@@ -425,7 +372,7 @@ dcp_outcomes <- read_csv(dcp_supply_path, show_col_types = FALSE) %>%
     )
   )
 
-permit_panel_raw <- read_csv(permit_panel_path, show_col_types = FALSE)
+permit_panel_raw <- read_csv("../input/cd_homeownership_permit_nb_panel.csv", show_col_types = FALSE)
 
 permit_outcome_families <- permit_panel_raw %>%
   filter(!is.na(outcome_family)) %>%
@@ -636,21 +583,21 @@ leave_one_out_results <- leave_targets %>%
   ungroup() %>%
   arrange(outcome_id, spec, influence_rank_abs_change)
 
-zap_cd_year <- read_csv(zap_cd_year_path, show_col_types = FALSE) %>%
+zap_cd_year <- read_csv("../input/zap_ulurp_redev_cd_year_panel.csv", show_col_types = FALSE) %>%
   mutate(
     borocd = suppressWarnings(as.integer(borocd)),
     cert_year = suppressWarnings(as.integer(cert_year))
   ) %>%
   filter(borough_name == "Brooklyn")
 
-zap_mature <- read_csv(zap_mature_path, show_col_types = FALSE) %>%
+zap_mature <- read_csv("../input/zap_ulurp_redev_mature_cohort_panel.csv", show_col_types = FALSE) %>%
   mutate(
     borocd = suppressWarnings(as.integer(borocd)),
     cert_year = suppressWarnings(as.integer(cert_year))
   ) %>%
   filter(borough_name == "Brooklyn")
 
-zap_yield <- read_csv(zap_yield_path, show_col_types = FALSE) %>%
+zap_yield <- read_csv("../input/zap_ulurp_redev_yield_panel.csv", show_col_types = FALSE) %>%
   mutate(
     borocd = suppressWarnings(as.integer(borocd)),
     cert_year = suppressWarnings(as.integer(cert_year))
@@ -872,16 +819,16 @@ qc <- bind_rows(
   )
 )
 
-write_csv_if_changed(cd_summary, cd_summary_out)
-write_csv_if_changed(era_outcomes, era_outcomes_out)
-write_csv_if_changed(headline_regressions, regressions_out)
-write_csv_if_changed(block_regressions, block_regressions_out)
-write_csv_if_changed(block_diagnostics, block_diagnostics_out)
-write_csv_if_changed(leave_one_out_results, leave_one_cd_out)
-write_csv_if_changed(size_bin_summary, size_bin_summary_out)
-write_csv_if_changed(zap_summary, zap_summary_out)
-write_csv_if_changed(zap_block_regressions, zap_block_regressions_out)
-write_csv_if_changed(qc, qc_out)
+write_csv_if_changed(cd_summary, "../output/brooklyn_homeownership_case_study_cd_summary.csv")
+write_csv_if_changed(era_outcomes, "../output/brooklyn_homeownership_case_study_era_outcomes.csv")
+write_csv_if_changed(headline_regressions, "../output/brooklyn_homeownership_case_study_regressions.csv")
+write_csv_if_changed(block_regressions, "../output/brooklyn_homeownership_case_study_block_regressions.csv")
+write_csv_if_changed(block_diagnostics, "../output/brooklyn_homeownership_case_study_block_diagnostics.csv")
+write_csv_if_changed(leave_one_out_results, "../output/brooklyn_homeownership_case_study_leave_one_cd_out.csv")
+write_csv_if_changed(size_bin_summary, "../output/brooklyn_homeownership_case_study_size_bin_summary.csv")
+write_csv_if_changed(zap_summary, "../output/brooklyn_homeownership_case_study_zap_summary.csv")
+write_csv_if_changed(zap_block_regressions, "../output/brooklyn_homeownership_case_study_zap_block_regressions.csv")
+write_csv_if_changed(qc, "../output/brooklyn_homeownership_case_study_qc.csv")
 
 boundary_raw <- read_parquet(boundary_file$parquet_path[[1]], col_select = c("district_id", "geometry_wkt", "crs_epsg"))
 
@@ -1035,7 +982,7 @@ zap_plot_data <- zap_block_regressions %>%
     era = factor(era, levels = c("1990-1999", "2000-2009", "2010-2019", "2020-2025", "2010-2015", "2016-2020"))
   )
 
-pdf(plots_out, width = 14, height = 10)
+pdf("../output/brooklyn_homeownership_case_study_plots.pdf", width = 14, height = 10)
 
 for (metric_name in c(
   "treat_z_boro",
@@ -1108,7 +1055,7 @@ print(
 
 dev.off()
 
-pdf(control_flip_plots_out, width = 13, height = 9)
+pdf("../output/brooklyn_homeownership_case_study_control_flip_plots.pdf", width = 13, height = 9)
 
 print(
   ggplot(size_bin_plot_data, aes(x = size_bin, y = raw_beta_treat_z, group = 1)) +

@@ -1,10 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/stage_nhgis/code")
-# nhgis_raw_files_csv <- "../input/nhgis_raw_files.csv"
-# nhgis_table_map_csv <- "../input/nhgis_table_map.csv"
-# nhgis_income_overrides_csv <- "nhgis_income_overrides.csv"
-# out_index_csv <- "../output/nhgis_files.csv"
-# out_qc_csv <- "../output/nhgis_qc.csv"
-# out_reconciliation_csv <- "../output/nhgis_1980_reconciliation.csv"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -14,19 +8,6 @@ suppressPackageStartupMessages({
 })
 
 source("../../_lib/source_pipeline_utils.R")
-
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 6) {
-  stop("Expected 6 arguments: nhgis_raw_files_csv nhgis_table_map_csv nhgis_income_overrides_csv out_index_csv out_qc_csv out_reconciliation_csv")
-}
-
-nhgis_raw_files_csv <- args[1]
-nhgis_table_map_csv <- args[2]
-nhgis_income_overrides_csv <- args[3]
-out_index_csv <- args[4]
-out_qc_csv <- args[5]
-out_reconciliation_csv <- args[6]
 
 sum_codes <- function(df, codes) {
   hits <- normalize_names(codes)
@@ -66,8 +47,8 @@ sum_fields <- function(df, fields) {
   out
 }
 
-nhgis_table_map <- read_csv(nhgis_table_map_csv, show_col_types = FALSE, na = c("", "NA"))
-nhgis_income_overrides <- read_csv(nhgis_income_overrides_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+nhgis_table_map <- read_csv("../input/nhgis_table_map.csv", show_col_types = FALSE, na = c("", "NA"))
+nhgis_income_overrides <- read_csv("nhgis_income_overrides.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(
     year = as.integer(year),
     gisjoin = as.character(gisjoin),
@@ -75,7 +56,7 @@ nhgis_income_overrides <- read_csv(nhgis_income_overrides_csv, show_col_types = 
     override_reason = as.character(override_reason)
   )
 
-nhgis_raw_files <- read_csv(nhgis_raw_files_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+nhgis_raw_files <- read_csv("../input/nhgis_raw_files.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(year = as.integer(year))
 
 index_rows <- list()
@@ -259,7 +240,7 @@ for (i in seq_len(nrow(nhgis_raw_files))) {
   }
 }
 
-write_csv(bind_rows(index_rows), out_index_csv, na = "")
-write_csv(bind_rows(qc_rows), out_qc_csv, na = "")
-write_csv(bind_rows(reconciliation_rows), out_reconciliation_csv, na = "")
-cat("Wrote NHGIS staging outputs to", dirname(out_index_csv), "\n")
+write_csv(bind_rows(index_rows), "../output/nhgis_files.csv", na = "")
+write_csv(bind_rows(qc_rows), "../output/nhgis_qc.csv", na = "")
+write_csv(bind_rows(reconciliation_rows), "../output/nhgis_1980_reconciliation.csv", na = "")
+cat("Wrote NHGIS staging outputs to ../output\n")

@@ -1,8 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/stage_zap_datasets/code")
-# zap_raw_files_csv <- "../input/zap_raw_files.csv"
-# out_qc_csv <- "../output/zap_stage_qc.csv"
-# out_project_parquet <- "../output/zap_project_data.parquet"
-# out_bbl_parquet <- "../output/zap_project_bbl.parquet"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -35,18 +31,7 @@ has_compact_multi_council <- function(x) {
   !is.na(raw_value) & str_detect(raw_value, "^[0-9]{3,}$")
 }
 
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 4) {
-  stop("Expected 4 arguments: zap_raw_files_csv out_qc_csv out_project_parquet out_bbl_parquet")
-}
-
-zap_raw_files_csv <- args[1]
-out_qc_csv <- args[2]
-out_project_parquet <- args[3]
-out_bbl_parquet <- args[4]
-
-raw_index <- read_csv(zap_raw_files_csv, show_col_types = FALSE, na = c("", "NA")) |>
+raw_index <- read_csv("../input/zap_raw_files.csv", show_col_types = FALSE, na = c("", "NA")) |>
   filter(!is.na(raw_parquet_path), file.exists(raw_parquet_path)) |>
   mutate(vintage = as.character(vintage), raw_parquet_path = as.character(raw_parquet_path))
 
@@ -61,9 +46,9 @@ bbl_row <- raw_index |>
   slice_head(n = 1)
 
 if (nrow(project_row) == 0 || nrow(bbl_row) == 0) {
-  write_csv(tibble(status = "missing_zap_source"), out_qc_csv, na = "")
-  write_parquet_if_changed(tibble(), out_project_parquet)
-  write_parquet_if_changed(tibble(), out_bbl_parquet)
+  write_csv(tibble(status = "missing_zap_source"), "../output/zap_stage_qc.csv", na = "")
+  write_parquet_if_changed(tibble(), "../output/zap_project_data.parquet")
+  write_parquet_if_changed(tibble(), "../output/zap_project_bbl.parquet")
   quit(save = "no")
 }
 
@@ -173,8 +158,8 @@ bbl_latest_selection_changes <- bbl_latest_selection |>
   inner_join(bbl_old_selection, by = c("project_id", "bbl_standardized")) |>
   filter(new_input_row_number != old_input_row_number)
 
-write_parquet_if_changed(project_df, out_project_parquet)
-write_parquet_if_changed(bbl_df, out_bbl_parquet)
+write_parquet_if_changed(project_df, "../output/zap_project_data.parquet")
+write_parquet_if_changed(bbl_df, "../output/zap_project_bbl.parquet")
 
 projects_with_any_bbl <- n_distinct(bbl_df$project_id[!is.na(bbl_df$project_id) & !is.na(bbl_df$bbl_standardized)])
 bbl_raw_nonmissing_count <- sum(!is.na(bbl_pre_dedup$bbl))
@@ -208,6 +193,6 @@ qc_df <- tibble(
   project_share_with_any_bbl = projects_with_any_bbl / n_distinct(project_df$project_id)
 )
 
-write_csv(qc_df, out_qc_csv, na = "")
+write_csv(qc_df, "../output/zap_stage_qc.csv", na = "")
 
-cat("Wrote ZAP staging outputs to", dirname(out_qc_csv), "\n")
+cat("Wrote ZAP staging outputs to ../output\n")

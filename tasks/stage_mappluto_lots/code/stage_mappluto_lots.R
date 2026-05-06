@@ -1,7 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/stage_mappluto_lots/code")
-# mappluto_raw_files_csv <- "../input/mappluto_raw_files.csv"
-# out_index_csv <- "../output/mappluto_lot_files.csv"
-# out_qc_csv <- "../output/mappluto_lot_qc.csv"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -12,17 +9,7 @@ suppressPackageStartupMessages({
 
 source("../../_lib/source_pipeline_utils.R")
 
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 3) {
-  stop("Expected 3 arguments: mappluto_raw_files_csv out_index_csv out_qc_csv")
-}
-
-mappluto_raw_files_csv <- args[1]
-out_index_csv <- args[2]
-out_qc_csv <- args[3]
-
-mappluto_raw_files <- read_csv(mappluto_raw_files_csv, show_col_types = FALSE, na = c("", "NA"))
+mappluto_raw_files <- read_csv("../input/mappluto_raw_files.csv", show_col_types = FALSE, na = c("", "NA"))
 
 required_index_columns <- c("status", "raw_parquet_path")
 missing_index_columns <- setdiff(required_index_columns, names(mappluto_raw_files))
@@ -87,8 +74,8 @@ available_rows <- mappluto_raw_files |>
   filter(status == "loaded", !is.na(raw_parquet_path), file.exists(raw_parquet_path))
 
 if (nrow(available_rows) == 0) {
-  write_csv(tibble(), out_index_csv, na = "")
-  write_csv(tibble(), out_qc_csv, na = "")
+  write_csv(tibble(), "../output/mappluto_lot_files.csv", na = "")
+  write_csv(tibble(), "../output/mappluto_lot_qc.csv", na = "")
   quit(save = "no")
 }
 
@@ -219,6 +206,6 @@ for (i in seq_len(nrow(available_rows))) {
   )
 }
 
-write_csv(bind_rows(index_rows), out_index_csv, na = "")
-write_csv(bind_rows(qc_rows), out_qc_csv, na = "")
-cat("Wrote MapPLUTO staging outputs to", dirname(out_index_csv), "\n")
+write_csv(bind_rows(index_rows), "../output/mappluto_lot_files.csv", na = "")
+write_csv(bind_rows(qc_rows), "../output/mappluto_lot_qc.csv", na = "")
+cat("Wrote MapPLUTO staging outputs to ../output\n")
