@@ -1,13 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/redevelopment_potential_first_pass/code")
-# treatment_csv <- "../input/cd_homeownership_1990_measure.csv"
-# baseline_controls_csv <- "../input/cd_baseline_1990_controls.csv"
-# mappluto_main_parquet <- "../input/dcp_mappluto_archive_18v1_1.parquet"
-# mappluto_current_parquet <- "../input/dcp_mappluto_current_25v4.parquet"
-# mappluto_lot_qc_csv <- "../input/mappluto_lot_qc.csv"
-# out_baseline_csv <- "../output/cd_redevelopment_potential_baseline.csv"
-# out_qc_csv <- "../output/cd_redevelopment_potential_qc.csv"
-# out_index_corr_csv <- "../output/cd_redevelopment_potential_index_correlations.csv"
-# out_sensitivity_csv <- "../output/cd_redevelopment_potential_sensitivity.csv"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -18,23 +9,7 @@ suppressPackageStartupMessages({
   library(tidyr)
 })
 
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 9) {
-  stop("Expected 9 arguments: treatment_csv baseline_controls_csv mappluto_main_parquet mappluto_current_parquet mappluto_lot_qc_csv out_baseline_csv out_qc_csv out_index_corr_csv out_sensitivity_csv")
-}
-
-treatment_csv <- args[1]
-baseline_controls_csv <- args[2]
-mappluto_main_parquet <- args[3]
-mappluto_current_parquet <- args[4]
-mappluto_lot_qc_csv <- args[5]
-out_baseline_csv <- args[6]
-out_qc_csv <- args[7]
-out_index_corr_csv <- args[8]
-out_sensitivity_csv <- args[9]
-
-treatment_df <- read_csv(treatment_csv, show_col_types = FALSE, na = c("", "NA")) |>
+treatment_df <- read_csv("../input/cd_homeownership_1990_measure.csv", show_col_types = FALSE, na = c("", "NA")) |>
   transmute(
     borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
     borough_code = suppressWarnings(as.integer(borough_code)),
@@ -48,7 +23,7 @@ treatment_df <- read_csv(treatment_csv, show_col_types = FALSE, na = c("", "NA")
     occupied_units_1990 = suppressWarnings(as.numeric(occupied_units_1990))
   )
 
-controls_df <- read_csv(baseline_controls_csv, show_col_types = FALSE, na = c("", "NA")) |>
+controls_df <- read_csv("../input/cd_baseline_1990_controls.csv", show_col_types = FALSE, na = c("", "NA")) |>
   transmute(
     borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
     borough_code = suppressWarnings(as.integer(borough_code)),
@@ -71,7 +46,7 @@ controls_df <- read_csv(baseline_controls_csv, show_col_types = FALSE, na = c(""
     homeowner_share_change_1980_1990_pp_approx = suppressWarnings(as.numeric(homeowner_share_change_1980_1990_pp_approx))
   )
 
-mappluto_qc_df <- read_csv(mappluto_lot_qc_csv, show_col_types = FALSE, na = c("", "NA"))
+mappluto_qc_df <- read_csv("../input/mappluto_lot_qc.csv", show_col_types = FALSE, na = c("", "NA"))
 
 truthy_value <- function(x) {
   x_chr <- str_to_upper(str_trim(coalesce(as.character(x), "")))
@@ -336,10 +311,10 @@ build_cd_dataset <- function(pluto_path, release_label, weighted_means = TRUE, v
   )
 }
 
-main_build <- build_cd_dataset(mappluto_main_parquet, release_label = "18v1.1", weighted_means = TRUE, valid_far_only = FALSE)
-current_build <- build_cd_dataset(mappluto_current_parquet, release_label = "25v4", weighted_means = TRUE, valid_far_only = FALSE)
-main_unweighted_build <- build_cd_dataset(mappluto_main_parquet, release_label = "18v1.1", weighted_means = FALSE, valid_far_only = FALSE)
-main_valid_far_build <- build_cd_dataset(mappluto_main_parquet, release_label = "18v1.1", weighted_means = TRUE, valid_far_only = TRUE)
+main_build <- build_cd_dataset("../input/dcp_mappluto_archive_18v1_1.parquet", release_label = "18v1.1", weighted_means = TRUE, valid_far_only = FALSE)
+current_build <- build_cd_dataset("../input/dcp_mappluto_current_25v4.parquet", release_label = "25v4", weighted_means = TRUE, valid_far_only = FALSE)
+main_unweighted_build <- build_cd_dataset("../input/dcp_mappluto_archive_18v1_1.parquet", release_label = "18v1.1", weighted_means = FALSE, valid_far_only = FALSE)
+main_valid_far_build <- build_cd_dataset("../input/dcp_mappluto_archive_18v1_1.parquet", release_label = "18v1.1", weighted_means = TRUE, valid_far_only = TRUE)
 
 baseline_df <- main_build$cd_df |>
   arrange(borocd)
@@ -455,10 +430,10 @@ qc_df <- bind_rows(
     borocd = NA_character_,
     borough_name = NA_character_,
     value = as.character(c(
-      nrow(read_parquet(mappluto_main_parquet, col_select = "bbl")),
-      sum(read_parquet(mappluto_main_parquet, col_select = c("cd")) |> transmute(borocd = sprintf("%03d", suppressWarnings(as.integer(cd)))) |> pull(borocd) %in% treatment_df$borocd),
-      sum(coalesce(read_parquet(mappluto_main_parquet, col_select = "is_joint_interest_area") |> pull(is_joint_interest_area), FALSE), na.rm = TRUE),
-      nrow(read_parquet(mappluto_main_parquet, col_select = c("cd", "lotarea")) |> transmute(borocd = sprintf("%03d", suppressWarnings(as.integer(cd))), lotarea = suppressWarnings(as.numeric(lotarea))) |> filter(borocd %in% treatment_df$borocd) |> filter(!(is.finite(lotarea) & lotarea > 0))),
+      nrow(read_parquet("../input/dcp_mappluto_archive_18v1_1.parquet", col_select = "bbl")),
+      sum(read_parquet("../input/dcp_mappluto_archive_18v1_1.parquet", col_select = c("cd")) |> transmute(borocd = sprintf("%03d", suppressWarnings(as.integer(cd)))) |> pull(borocd) %in% treatment_df$borocd),
+      sum(coalesce(read_parquet("../input/dcp_mappluto_archive_18v1_1.parquet", col_select = "is_joint_interest_area") |> pull(is_joint_interest_area), FALSE), na.rm = TRUE),
+      nrow(read_parquet("../input/dcp_mappluto_archive_18v1_1.parquet", col_select = c("cd", "lotarea")) |> transmute(borocd = sprintf("%03d", suppressWarnings(as.integer(cd))), lotarea = suppressWarnings(as.numeric(lotarea))) |> filter(borocd %in% treatment_df$borocd) |> filter(!(is.finite(lotarea) & lotarea > 0))),
       nrow(main_valid_far_build$lot_df)
     )),
     note = c(
@@ -493,9 +468,9 @@ qc_df <- bind_rows(
   )
 )
 
-write_csv(baseline_df, out_baseline_csv, na = "")
-write_csv(qc_df, out_qc_csv, na = "")
-write_csv(index_corr_df, out_index_corr_csv, na = "")
-write_csv(sensitivity_df, out_sensitivity_csv, na = "")
+write_csv(baseline_df, "../output/cd_redevelopment_potential_baseline.csv", na = "")
+write_csv(qc_df, "../output/cd_redevelopment_potential_qc.csv", na = "")
+write_csv(index_corr_df, "../output/cd_redevelopment_potential_index_correlations.csv", na = "")
+write_csv(sensitivity_df, "../output/cd_redevelopment_potential_sensitivity.csv", na = "")
 
-cat("Wrote redevelopment potential baseline outputs to", dirname(out_baseline_csv), "\n")
+cat("Wrote redevelopment potential baseline outputs to ../output\n")

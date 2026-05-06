@@ -1,8 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/load_zap_raw/code")
-# zap_files_csv <- "../input/zap_files.csv"
-# out_index_csv <- "../output/zap_raw_files.csv"
-# out_qc_csv <- "../output/zap_raw_qc.csv"
-# out_columns_csv <- "../output/zap_columns_metadata.csv"
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -13,18 +9,7 @@ suppressPackageStartupMessages({
 
 source("../../_lib/source_pipeline_utils.R")
 
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 4) {
-  stop("Expected 4 arguments: zap_files_csv out_index_csv out_qc_csv out_columns_csv")
-}
-
-zap_files_csv <- args[1]
-out_index_csv <- args[2]
-out_qc_csv <- args[3]
-out_columns_csv <- args[4]
-
-zap_files <- read_csv(zap_files_csv, show_col_types = FALSE, na = c("", "NA"))
+zap_files <- read_csv("../input/zap_files.csv", show_col_types = FALSE, na = c("", "NA"))
 csv_rows <- zap_files |>
   filter(file_role == "rows_csv", file.exists(raw_path)) |>
   mutate(raw_path = as.character(raw_path), vintage = as.character(vintage)) |>
@@ -74,9 +59,9 @@ if (nrow(reference_rows) > 0) {
 }
 
 if (nrow(csv_rows) == 0) {
-  write_csv(bind_rows(index_rows), out_index_csv, na = "")
-  write_csv(bind_rows(qc_rows), out_qc_csv, na = "")
-  write_csv(tibble(), out_columns_csv, na = "")
+  write_csv(bind_rows(index_rows), "../output/zap_raw_files.csv", na = "")
+  write_csv(bind_rows(qc_rows), "../output/zap_raw_qc.csv", na = "")
+  write_csv(tibble(), "../output/zap_columns_metadata.csv", na = "")
   quit(save = "no")
 }
 
@@ -154,8 +139,8 @@ for (i in seq_len(nrow(csv_rows))) {
   row_id <- row_id + 1L
 }
 
-write_csv(bind_rows(index_rows), out_index_csv, na = "")
-write_csv(bind_rows(qc_rows), out_qc_csv, na = "")
-write_csv(bind_rows(column_rows), out_columns_csv, na = "")
+write_csv(bind_rows(index_rows), "../output/zap_raw_files.csv", na = "")
+write_csv(bind_rows(qc_rows), "../output/zap_raw_qc.csv", na = "")
+write_csv(bind_rows(column_rows), "../output/zap_columns_metadata.csv", na = "")
 
-cat("Wrote ZAP raw load outputs to", dirname(out_index_csv), "\n")
+cat("Wrote ZAP raw load outputs to ../output\n")

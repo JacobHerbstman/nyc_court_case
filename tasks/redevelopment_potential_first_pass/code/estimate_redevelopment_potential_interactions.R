@@ -1,17 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/redevelopment_potential_first_pass/code")
-# redev_baseline_csv <- "../output/cd_redevelopment_potential_baseline.csv"
-# long_units_series_csv <- "../input/cd_homeownership_long_units_series.csv"
-# dcp_supply_panel_csv <- "../input/cd_homeownership_dcp_supply_panel.csv"
-# dob_nb_panel_csv <- "../input/cd_homeownership_permit_nb_panel.csv"
-# proxy_lot_level_parquet <- "../input/mappluto_construction_proxy_lot_level.parquet"
-# out_model_summary_csv <- "../output/tables/redev_interaction_model_summary.csv"
-# out_nested_diag_csv <- "../output/tables/nested_controls_coefficient_diagnostics.csv"
-# out_borough_sensitivity_csv <- "../output/tables/borough_sensitivity_redev.csv"
-# out_manhattan_anatomy_csv <- "../output/tables/manhattan_baseline_anatomy.csv"
-# out_nested_pdf <- "../output/figures/nested_controls_coefficients.pdf"
-# out_event_pdf <- "../output/figures/redev_interaction_event_coefficients.pdf"
-# out_borough_paths_pdf <- "../output/figures/borough_specific_two_by_two_paths.pdf"
-# out_non_manhattan_pdf <- "../output/figures/non_manhattan_redev_paths.pdf"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -23,26 +10,6 @@ suppressPackageStartupMessages({
   library(tidyr)
   library(tibble)
 })
-
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 13) {
-  stop("Expected 13 arguments: redev_baseline_csv long_units_series_csv dcp_supply_panel_csv dob_nb_panel_csv proxy_lot_level_parquet out_model_summary_csv out_nested_diag_csv out_borough_sensitivity_csv out_manhattan_anatomy_csv out_nested_pdf out_event_pdf out_borough_paths_pdf out_non_manhattan_pdf")
-}
-
-redev_baseline_csv <- args[1]
-long_units_series_csv <- args[2]
-dcp_supply_panel_csv <- args[3]
-dob_nb_panel_csv <- args[4]
-proxy_lot_level_parquet <- args[5]
-out_model_summary_csv <- args[6]
-out_nested_diag_csv <- args[7]
-out_borough_sensitivity_csv <- args[8]
-out_manhattan_anatomy_csv <- args[9]
-out_nested_pdf <- args[10]
-out_event_pdf <- args[11]
-out_borough_paths_pdf <- args[12]
-out_non_manhattan_pdf <- args[13]
 
 sanitize_era <- function(x) {
   str_replace_all(x, "-", "_")
@@ -102,7 +69,7 @@ classify_attenuation <- function(base_estimate, full_estimate, base_se, full_se)
   "mixed_or_stable"
 }
 
-base_df <- read_csv(redev_baseline_csv, show_col_types = FALSE, na = c("", "NA")) |>
+base_df <- read_csv("../output/cd_redevelopment_potential_baseline.csv", show_col_types = FALSE, na = c("", "NA")) |>
   mutate(
     borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
     borough_code = suppressWarnings(as.integer(borough_code)),
@@ -127,7 +94,7 @@ base_df <- read_csv(redev_baseline_csv, show_col_types = FALSE, na = c("", "NA")
   ) |>
   ungroup()
 
-long_df <- read_csv(long_units_series_csv, show_col_types = FALSE, na = c("", "NA")) |>
+long_df <- read_csv("../input/cd_homeownership_long_units_series.csv", show_col_types = FALSE, na = c("", "NA")) |>
   filter(series_kind == "preferred_long_series", series_family %in% c("units_built_total", "units_built_50_plus")) |>
   transmute(
     borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
@@ -174,7 +141,7 @@ long_df <- read_csv(long_units_series_csv, show_col_types = FALSE, na = c("", "N
   ) |>
   filter(!is.na(era))
 
-dcp_df <- read_csv(dcp_supply_panel_csv, show_col_types = FALSE, na = c("", "NA")) |>
+dcp_df <- read_csv("../input/cd_homeownership_dcp_supply_panel.csv", show_col_types = FALSE, na = c("", "NA")) |>
   filter(year >= 2010, outcome_family %in% c("gross_add_units", "nb_gross_units", "nb_gross_units_50_plus", "nb_project_count", "nb_project_count_50_plus")) |>
   transmute(
     borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
@@ -533,7 +500,7 @@ for (sample_label in names(sample_filters)) {
   }
 }
 
-dob_df <- read_csv(dob_nb_panel_csv, show_col_types = FALSE, na = c("", "NA")) |>
+dob_df <- read_csv("../input/cd_homeownership_permit_nb_panel.csv", show_col_types = FALSE, na = c("", "NA")) |>
   transmute(
     borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
     borough_code = suppressWarnings(as.integer(borough_code)),
@@ -584,7 +551,7 @@ model_summary_df <- bind_rows(results_rows) |>
   ) |>
   arrange(analysis_family, sample_label, outcome_family, functional_form, control_layer, index_name, term_group, era)
 
-write_csv(model_summary_df, out_model_summary_csv, na = "")
+write_csv(model_summary_df, "../output/tables/redev_interaction_model_summary.csv", na = "")
 
 nested_diag_df <- model_summary_df |>
   filter(
@@ -609,7 +576,7 @@ nested_diag_df <- model_summary_df |>
     attenuation_class = mapply(classify_attenuation, estimate_0_fe_only, estimate_4_all_blocks, std_error_0_fe_only, std_error_4_all_blocks)
   )
 
-write_csv(nested_diag_df, out_nested_diag_csv, na = "")
+write_csv(nested_diag_df, "../output/tables/nested_controls_coefficient_diagnostics.csv", na = "")
 
 borough_share_df <- bind_rows(
   long_df |>
@@ -673,7 +640,7 @@ sensitivity_rows_df <- model_summary_df |>
   )
 
 borough_sensitivity_df <- bind_rows(borough_share_df, sensitivity_rows_df)
-write_csv(borough_sensitivity_df, out_borough_sensitivity_csv, na = "")
+write_csv(borough_sensitivity_df, "../output/tables/borough_sensitivity_redev.csv", na = "")
 
 manhattan_cd_df <- base_df |>
   filter(borocd %in% c("101", "105", "106", "108")) |>
@@ -691,7 +658,7 @@ manhattan_units_df <- long_df |>
 manhattan_units_df <- manhattan_units_df |>
   rename_with(~str_replace_all(., "-", "_"))
 
-manhattan_top_lots_df <- read_parquet(proxy_lot_level_parquet) |>
+manhattan_top_lots_df <- read_parquet("../input/mappluto_construction_proxy_lot_level.parquet") |>
   transmute(
     bbl = as.character(bbl),
     address = address,
@@ -729,9 +696,9 @@ manhattan_anatomy_df <- bind_rows(
     )
 )
 
-write_csv(manhattan_anatomy_df, out_manhattan_anatomy_csv, na = "")
+write_csv(manhattan_anatomy_df, "../output/tables/manhattan_baseline_anatomy.csv", na = "")
 
-pdf(out_nested_pdf, width = 9, height = 7)
+pdf("../output/figures/nested_controls_coefficients.pdf", width = 9, height = 7)
 print(
   ggplot(
     filter(model_summary_df, sample_label == "all_nyc", index_name == "A", functional_form == "linear_occ", term_group == "homeowner_x_redev", outcome_family %in% c("units_built_total", "gross_add_units", "nb_gross_units_50_plus")),
@@ -746,7 +713,7 @@ print(
 )
 dev.off()
 
-pdf(out_event_pdf, width = 9, height = 7)
+pdf("../output/figures/redev_interaction_event_coefficients.pdf", width = 9, height = 7)
 print(
   ggplot(
     filter(model_summary_df, sample_label == "all_nyc", index_name == "A", functional_form == "linear_occ", control_layer %in% c("0_fe_only", "4_all_blocks"), term_group == "homeowner_x_redev", outcome_family %in% c("units_built_total", "gross_add_units", "nb_gross_units_50_plus")),
@@ -777,7 +744,7 @@ borough_path_df <- bind_rows(
     summarize(value = mean(outcome_value, na.rm = TRUE), .groups = "drop")
 )
 
-pdf(out_borough_paths_pdf, width = 10, height = 8)
+pdf("../output/figures/borough_specific_two_by_two_paths.pdf", width = 10, height = 8)
 print(
   ggplot(filter(borough_path_df, outcome_family == "units_built_total"), aes(x = era, y = value, color = two_by_two_label, group = two_by_two_label)) +
     geom_line() +
@@ -817,7 +784,7 @@ non_manhattan_path_df <- bind_rows(
     summarize(value = 10000 * sum(outcome_value, na.rm = TRUE) / sum(occupied_units_1990, na.rm = TRUE), .groups = "drop")
 )
 
-pdf(out_non_manhattan_pdf, width = 9, height = 7)
+pdf("../output/figures/non_manhattan_redev_paths.pdf", width = 9, height = 7)
 print(
   ggplot(filter(non_manhattan_path_df, outcome_family == "units_built_total"), aes(x = era, y = value, color = two_by_two_label, group = two_by_two_label)) +
     geom_line() +
@@ -836,4 +803,4 @@ print(
 )
 dev.off()
 
-cat("Wrote redevelopment interaction and Manhattan sensitivity outputs to", dirname(out_model_summary_csv), "\n")
+cat("Wrote redevelopment interaction and Manhattan sensitivity outputs to ../output\n")

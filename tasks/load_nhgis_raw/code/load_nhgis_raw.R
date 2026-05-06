@@ -1,8 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/load_nhgis_raw/code")
-# nhgis_extract_downloads_csv <- "../input/nhgis_extract_downloads.csv"
-# nhgis_table_map_csv <- "../input/nhgis_table_map.csv"
-# out_index_csv <- "../output/nhgis_raw_files.csv"
-# out_qc_csv <- "../output/nhgis_raw_qc.csv"
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -13,24 +9,13 @@ suppressPackageStartupMessages({
 
 source("../../_lib/source_pipeline_utils.R")
 
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 4) {
-  stop("Expected 4 arguments: nhgis_extract_downloads_csv nhgis_table_map_csv out_index_csv out_qc_csv")
-}
-
-nhgis_extract_downloads_csv <- args[1]
-nhgis_table_map_csv <- args[2]
-out_index_csv <- args[3]
-out_qc_csv <- args[4]
-
 extract_number_from_path <- function(path) {
   suppressWarnings(as.integer(str_extract(basename(path), "(?<=nhgis)[0-9]{4}")))
 }
 
-nhgis_table_map <- read_csv(nhgis_table_map_csv, show_col_types = FALSE, na = c("", "NA"))
-nhgis_extract_downloads <- if (file.exists(nhgis_extract_downloads_csv)) {
-  read_csv(nhgis_extract_downloads_csv, show_col_types = FALSE, na = c("", "NA"))
+nhgis_table_map <- read_csv("../input/nhgis_table_map.csv", show_col_types = FALSE, na = c("", "NA"))
+nhgis_extract_downloads <- if (file.exists("../input/nhgis_extract_downloads.csv")) {
+  read_csv("../input/nhgis_extract_downloads.csv", show_col_types = FALSE, na = c("", "NA"))
 } else {
   tibble(
     source_id = character(),
@@ -268,6 +253,6 @@ for (i in seq_len(nrow(expected_rows))) {
   )
 }
 
-write_csv(bind_rows(index_rows), out_index_csv, na = "")
-write_csv(bind_rows(qc_rows), out_qc_csv, na = "")
-cat("Wrote NHGIS raw outputs to", dirname(out_index_csv), "\n")
+write_csv(bind_rows(index_rows), "../output/nhgis_raw_files.csv", na = "")
+write_csv(bind_rows(qc_rows), "../output/nhgis_raw_qc.csv", na = "")
+cat("Wrote NHGIS raw outputs to ../output\n")

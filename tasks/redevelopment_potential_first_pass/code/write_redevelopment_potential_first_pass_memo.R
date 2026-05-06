@@ -1,16 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/redevelopment_potential_first_pass/code")
-# input_inventory_csv <- "../output/input_inventory.csv"
-# redev_baseline_csv <- "../output/cd_redevelopment_potential_baseline.csv"
-# redev_qc_csv <- "../output/cd_redevelopment_potential_qc.csv"
-# redev_corr_csv <- "../output/cd_redevelopment_potential_index_correlations.csv"
-# redev_sensitivity_csv <- "../output/cd_redevelopment_potential_sensitivity.csv"
-# cell_summary_csv <- "../output/tables/two_by_two_cell_summary.csv"
-# era_outcomes_csv <- "../output/tables/two_by_two_era_outcomes.csv"
-# model_summary_csv <- "../output/tables/redev_interaction_model_summary.csv"
-# borough_sensitivity_csv <- "../output/tables/borough_sensitivity_redev.csv"
-# manhattan_anatomy_csv <- "../output/tables/manhattan_baseline_anatomy.csv"
-# out_md <- "../output/redevelopment_potential_first_pass_memo.md"
-# out_tex <- "../output/redevelopment_potential_first_pass_memo.tex"
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -20,25 +8,6 @@ suppressPackageStartupMessages({
   library(tibble)
   library(tidyr)
 })
-
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 12) {
-  stop("Expected 12 arguments: input_inventory_csv redev_baseline_csv redev_qc_csv redev_corr_csv redev_sensitivity_csv cell_summary_csv era_outcomes_csv model_summary_csv borough_sensitivity_csv manhattan_anatomy_csv out_md out_tex")
-}
-
-input_inventory_csv <- args[1]
-redev_baseline_csv <- args[2]
-redev_qc_csv <- args[3]
-redev_corr_csv <- args[4]
-redev_sensitivity_csv <- args[5]
-cell_summary_csv <- args[6]
-era_outcomes_csv <- args[7]
-model_summary_csv <- args[8]
-borough_sensitivity_csv <- args[9]
-manhattan_anatomy_csv <- args[10]
-out_md <- args[11]
-out_tex <- args[12]
 
 fmt_num <- function(x, digits = 3) {
   ifelse(is.na(x), NA_character_, formatC(x, format = "f", digits = digits, big.mark = ","))
@@ -57,16 +26,16 @@ make_latex_table <- function(df) {
   )
 }
 
-input_inventory_df <- read_csv(input_inventory_csv, show_col_types = FALSE, na = c("", "NA"))
-redev_baseline_df <- read_csv(redev_baseline_csv, show_col_types = FALSE, na = c("", "NA"))
-redev_qc_df <- read_csv(redev_qc_csv, show_col_types = FALSE, na = c("", "NA"))
-redev_corr_df <- read_csv(redev_corr_csv, show_col_types = FALSE, na = c("", "NA"))
-redev_sensitivity_df <- read_csv(redev_sensitivity_csv, show_col_types = FALSE, na = c("", "NA"))
-cell_summary_df <- read_csv(cell_summary_csv, show_col_types = FALSE, na = c("", "NA"))
-era_outcomes_df <- read_csv(era_outcomes_csv, show_col_types = FALSE, na = c("", "NA"))
-model_summary_df <- read_csv(model_summary_csv, show_col_types = FALSE, na = c("", "NA"))
-borough_sensitivity_df <- read_csv(borough_sensitivity_csv, show_col_types = FALSE, na = c("", "NA"))
-manhattan_anatomy_df <- read_csv(manhattan_anatomy_csv, show_col_types = FALSE, na = c("", "NA"))
+input_inventory_df <- read_csv("../output/input_inventory.csv", show_col_types = FALSE, na = c("", "NA"))
+redev_baseline_df <- read_csv("../output/cd_redevelopment_potential_baseline.csv", show_col_types = FALSE, na = c("", "NA"))
+redev_qc_df <- read_csv("../output/cd_redevelopment_potential_qc.csv", show_col_types = FALSE, na = c("", "NA"))
+redev_corr_df <- read_csv("../output/cd_redevelopment_potential_index_correlations.csv", show_col_types = FALSE, na = c("", "NA"))
+redev_sensitivity_df <- read_csv("../output/cd_redevelopment_potential_sensitivity.csv", show_col_types = FALSE, na = c("", "NA"))
+cell_summary_df <- read_csv("../output/tables/two_by_two_cell_summary.csv", show_col_types = FALSE, na = c("", "NA"))
+era_outcomes_df <- read_csv("../output/tables/two_by_two_era_outcomes.csv", show_col_types = FALSE, na = c("", "NA"))
+model_summary_df <- read_csv("../output/tables/redev_interaction_model_summary.csv", show_col_types = FALSE, na = c("", "NA"))
+borough_sensitivity_df <- read_csv("../output/tables/borough_sensitivity_redev.csv", show_col_types = FALSE, na = c("", "NA"))
+manhattan_anatomy_df <- read_csv("../output/tables/manhattan_baseline_anatomy.csv", show_col_types = FALSE, na = c("", "NA"))
 
 headline_interactions <- model_summary_df |>
   filter(
@@ -217,7 +186,7 @@ md_lines <- c(
   "- Historical zoning maps or stronger allowed-density baselines if this first pass remains promising."
 )
 
-writeLines(md_lines, out_md)
+writeLines(md_lines, "../output/redevelopment_potential_first_pass_memo.md")
 
 tex_lines <- c(
   "\\documentclass[11pt]{article}",
@@ -328,6 +297,6 @@ tex_lines <- c(
   "\\end{document}"
 )
 
-writeLines(tex_lines, out_tex)
+writeLines(tex_lines, "../output/redevelopment_potential_first_pass_memo.tex")
 
-cat("Wrote redevelopment memo markdown and TeX to", dirname(out_md), "\n")
+cat("Wrote redevelopment memo markdown and TeX to ../output\n")

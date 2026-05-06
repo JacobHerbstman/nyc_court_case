@@ -1,21 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/redevelopment_potential_first_pass/code")
-# treatment_csv <- "../input/cd_homeownership_1990_measure.csv"
-# baseline_controls_csv <- "../input/cd_baseline_1990_controls.csv"
-# redev_baseline_csv <- "../output/cd_redevelopment_potential_baseline.csv"
-# long_units_series_csv <- "../input/cd_homeownership_long_units_series.csv"
-# dcp_supply_panel_csv <- "../input/cd_homeownership_dcp_supply_panel.csv"
-# dob_nb_panel_csv <- "../input/cd_homeownership_permit_nb_panel.csv"
-# cd_boundary_parquet <- "../input/dcp_boundary_community_districts_20260501.parquet"
-# out_redev_by_treat_csv <- "../output/tables/redev_potential_by_treatment_tercile.csv"
-# out_treat_by_redev_csv <- "../output/tables/treatment_by_redev_tercile.csv"
-# out_cell_summary_csv <- "../output/tables/two_by_two_cell_summary.csv"
-# out_era_outcomes_csv <- "../output/tables/two_by_two_era_outcomes.csv"
-# out_scatter_pdf <- "../output/figures/homeownership_vs_redev_potential_scatter.pdf"
-# out_maps_pdf <- "../output/figures/redev_potential_maps.pdf"
-# out_total_units_pdf <- "../output/figures/two_by_two_total_units_paths.pdf"
-# out_50plus_units_pdf <- "../output/figures/two_by_two_50plus_units_paths.pdf"
-# out_gross_add_pdf <- "../output/figures/two_by_two_gross_additions_paths.pdf"
-# out_project_count_pdf <- "../output/figures/two_by_two_50plus_project_count_paths.pdf"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -28,34 +11,10 @@ suppressPackageStartupMessages({
   library(tibble)
 })
 
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 17) {
-  stop("Expected 17 arguments: treatment_csv baseline_controls_csv redev_baseline_csv long_units_series_csv dcp_supply_panel_csv dob_nb_panel_csv cd_boundary_parquet out_redev_by_treat_csv out_treat_by_redev_csv out_cell_summary_csv out_era_outcomes_csv out_scatter_pdf out_maps_pdf out_total_units_pdf out_50plus_units_pdf out_gross_add_pdf out_project_count_pdf")
-}
-
-treatment_csv <- args[1]
-baseline_controls_csv <- args[2]
-redev_baseline_csv <- args[3]
-long_units_series_csv <- args[4]
-dcp_supply_panel_csv <- args[5]
-dob_nb_panel_csv <- args[6]
-cd_boundary_parquet <- args[7]
-out_redev_by_treat_csv <- args[8]
-out_treat_by_redev_csv <- args[9]
-out_cell_summary_csv <- args[10]
-out_era_outcomes_csv <- args[11]
-out_scatter_pdf <- args[12]
-out_maps_pdf <- args[13]
-out_total_units_pdf <- args[14]
-out_50plus_units_pdf <- args[15]
-out_gross_add_pdf <- args[16]
-out_project_count_pdf <- args[17]
-
 era_levels <- c("1980-1984", "1985-1989", "1990-1999", "2000-2009", "2010-2019", "2020-2025")
 era_observed_levels <- c("2010-2014", "2015-2019", "2020-2025")
 
-base_df <- read_csv(redev_baseline_csv, show_col_types = FALSE, na = c("", "NA")) |>
+base_df <- read_csv("../output/cd_redevelopment_potential_baseline.csv", show_col_types = FALSE, na = c("", "NA")) |>
   mutate(
     borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
     borough_code = suppressWarnings(as.integer(borough_code)),
@@ -171,9 +130,9 @@ cell_summary_df <- base_df |>
   ) |>
   arrange(two_by_two_cell)
 
-write_csv(redev_by_treat_df, out_redev_by_treat_csv, na = "")
-write_csv(treat_by_redev_df, out_treat_by_redev_csv, na = "")
-write_csv(cell_summary_df, out_cell_summary_csv, na = "")
+write_csv(redev_by_treat_df, "../output/tables/redev_potential_by_treatment_tercile.csv", na = "")
+write_csv(treat_by_redev_df, "../output/tables/treatment_by_redev_tercile.csv", na = "")
+write_csv(cell_summary_df, "../output/tables/two_by_two_cell_summary.csv", na = "")
 
 scatter_label_df <- bind_rows(
   base_df |>
@@ -193,7 +152,7 @@ scatter_label_df <- bind_rows(
 ) |>
   distinct(borocd, .keep_all = TRUE)
 
-pdf(out_scatter_pdf, width = 8.5, height = 7)
+pdf("../output/figures/homeownership_vs_redev_potential_scatter.pdf", width = 8.5, height = 7)
 for (x_name in c("treat_z_boro", "treat_pp")) {
   for (y_name in c("redev_potential_A_z_boro", "redev_potential_B_z_boro", "redev_potential_C_z_boro")) {
     print(
@@ -220,7 +179,7 @@ for (x_name in c("treat_z_boro", "treat_pp")) {
 }
 dev.off()
 
-boundary_all_sf <- read_parquet(cd_boundary_parquet) |>
+boundary_all_sf <- read_parquet("../input/dcp_boundary_community_districts_20260501.parquet") |>
   transmute(
     borocd = sprintf(
       "%03d",
@@ -241,7 +200,7 @@ boundary_sf <- boundary_all_sf |>
     by = "borocd"
   )
 
-pdf(out_maps_pdf, width = 10, height = 7.5)
+pdf("../output/figures/redev_potential_maps.pdf", width = 10, height = 7.5)
 print(
   ggplot() +
     geom_sf(data = boundary_all_sf, fill = "grey94", color = "white", linewidth = 0.08) +
@@ -285,7 +244,7 @@ print(
 )
 dev.off()
 
-long_df <- read_csv(long_units_series_csv, show_col_types = FALSE, na = c("", "NA")) |>
+long_df <- read_csv("../input/cd_homeownership_long_units_series.csv", show_col_types = FALSE, na = c("", "NA")) |>
   filter(series_kind == "preferred_long_series", series_family %in% c("units_built_total", "units_built_50_plus")) |>
   transmute(
     borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
@@ -344,7 +303,7 @@ long_era_df <- bind_rows(
     )
 )
 
-dcp_df <- read_csv(dcp_supply_panel_csv, show_col_types = FALSE, na = c("", "NA")) |>
+dcp_df <- read_csv("../input/cd_homeownership_dcp_supply_panel.csv", show_col_types = FALSE, na = c("", "NA")) |>
   filter(
     year >= 2010,
     outcome_family %in% c("gross_add_units", "nb_gross_units", "nb_gross_units_50_plus", "nb_project_count", "nb_project_count_50_plus")
@@ -451,7 +410,7 @@ observed_era_df <- bind_rows(
     )
 )
 
-dob_df <- read_csv(dob_nb_panel_csv, show_col_types = FALSE, na = c("", "NA")) |>
+dob_df <- read_csv("../input/cd_homeownership_permit_nb_panel.csv", show_col_types = FALSE, na = c("", "NA")) |>
   transmute(
     borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
     borough_code = suppressWarnings(as.integer(borough_code)),
@@ -491,7 +450,7 @@ dob_df <- read_csv(dob_nb_panel_csv, show_col_types = FALSE, na = c("", "NA")) |
 era_outcomes_df <- bind_rows(long_era_df, observed_era_df, dob_df) |>
   arrange(outcome_family, era, two_by_two_cell, metric)
 
-write_csv(era_outcomes_df, out_era_outcomes_csv, na = "")
+write_csv(era_outcomes_df, "../output/tables/two_by_two_era_outcomes.csv", na = "")
 
 plot_era_path <- function(df, family_name, x_levels, title_text, subtitle_text, y_labels, out_pdf_path) {
   pdf(out_pdf_path, width = 8.5, height = 7)
@@ -528,7 +487,7 @@ plot_era_path(
   title_text = "2x2 paths: total new-building units",
   subtitle_text = "Preferred long series. Source switches from PLUTO proxy to observed DCP HDB in 2010.",
   y_labels = list(per_10000_occupied_1990 = "Units per 10,000 occupied units", per_residential_acre = "Units per residential acre", within_borough_share = "Within-borough share"),
-  out_pdf_path = out_total_units_pdf
+  out_pdf_path = "../output/figures/two_by_two_total_units_paths.pdf"
 )
 
 plot_era_path(
@@ -538,7 +497,7 @@ plot_era_path(
   title_text = "2x2 paths: 50+ new-building units",
   subtitle_text = "Preferred long series. Source switches from PLUTO proxy to observed DCP HDB in 2010.",
   y_labels = list(per_10000_occupied_1990 = "50+ units per 10,000 occupied units", per_residential_acre = "50+ units per residential acre", within_borough_share = "Within-borough share"),
-  out_pdf_path = out_50plus_units_pdf
+  out_pdf_path = "../output/figures/two_by_two_50plus_units_paths.pdf"
 )
 
 plot_era_path(
@@ -548,7 +507,7 @@ plot_era_path(
   title_text = "2x2 paths: gross additions",
   subtitle_text = "Observed DCP permit-year outcomes only.",
   y_labels = list(per_10000_occupied_1990 = "Gross additions per 10,000 occupied units", per_residential_acre = "Gross additions per residential acre", within_borough_share = "Within-borough share"),
-  out_pdf_path = out_gross_add_pdf
+  out_pdf_path = "../output/figures/two_by_two_gross_additions_paths.pdf"
 )
 
 plot_era_path(
@@ -558,7 +517,7 @@ plot_era_path(
   title_text = "2x2 paths: 50+ projects and project scale",
   subtitle_text = "Observed DCP permit-year outcomes only.",
   y_labels = list(projects_per_cd_year = "50+ projects per CD-year", probability = "Probability of any 50+ project", mean_units = "Mean units per NB project"),
-  out_pdf_path = out_project_count_pdf
+  out_pdf_path = "../output/figures/two_by_two_50plus_project_count_paths.pdf"
 )
 
-cat("Wrote redevelopment descriptive outputs to", dirname(out_redev_by_treat_csv), "\n")
+cat("Wrote redevelopment descriptive outputs to ../output\n")

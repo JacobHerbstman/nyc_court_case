@@ -1,7 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/load_mappluto_raw/code")
-# mappluto_files_csv <- "../input/mappluto_files.csv"
-# out_index_csv <- "../output/mappluto_raw_files.csv"
-# out_qc_csv <- "../output/mappluto_raw_qc.csv"
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -14,17 +11,7 @@ suppressPackageStartupMessages({
 
 source("../../_lib/source_pipeline_utils.R")
 
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 3) {
-  stop("Expected 3 arguments: mappluto_files_csv out_index_csv out_qc_csv")
-}
-
-mappluto_files_csv <- args[1]
-out_index_csv <- args[2]
-out_qc_csv <- args[3]
-
-mappluto_files <- read_csv(mappluto_files_csv, show_col_types = FALSE, na = c("", "NA"))
+mappluto_files <- read_csv("../input/mappluto_files.csv", show_col_types = FALSE, na = c("", "NA"))
 
 extract_mappluto_release_from_path <- function(path) {
   release <- str_match(
@@ -212,8 +199,8 @@ available_rows <- mappluto_files |>
   )
 
 if (nrow(available_rows) == 0) {
-  write_csv(tibble(), out_index_csv, na = "")
-  write_csv(tibble(), out_qc_csv, na = "")
+  write_csv(tibble(), "../output/mappluto_raw_files.csv", na = "")
+  write_csv(tibble(), "../output/mappluto_raw_qc.csv", na = "")
   quit(save = "no")
 }
 
@@ -320,6 +307,6 @@ for (i in seq_len(nrow(available_rows))) {
   row_id <- row_id + 1L
 }
 
-write_csv(bind_rows(index_rows), out_index_csv, na = "")
-write_csv(bind_rows(qc_rows), out_qc_csv, na = "")
-cat("Wrote raw MapPLUTO load outputs to", dirname(out_index_csv), "\n")
+write_csv(bind_rows(index_rows), "../output/mappluto_raw_files.csv", na = "")
+write_csv(bind_rows(qc_rows), "../output/mappluto_raw_qc.csv", na = "")
+cat("Wrote raw MapPLUTO load outputs to ../output\n")
