@@ -1,15 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/write_brooklyn_homeownership_case_study_memo/code")
-# brooklyn_cd_summary_csv <- "../input/brooklyn_homeownership_case_study_cd_summary.csv"
-# brooklyn_era_outcomes_csv <- "../input/brooklyn_homeownership_case_study_era_outcomes.csv"
-# brooklyn_block_regressions_csv <- "../input/brooklyn_homeownership_case_study_block_regressions.csv"
-# brooklyn_block_diagnostics_csv <- "../input/brooklyn_homeownership_case_study_block_diagnostics.csv"
-# brooklyn_leave_one_cd_out_csv <- "../input/brooklyn_homeownership_case_study_leave_one_cd_out.csv"
-# brooklyn_size_bin_summary_csv <- "../input/brooklyn_homeownership_case_study_size_bin_summary.csv"
-# brooklyn_zap_summary_csv <- "../input/brooklyn_homeownership_case_study_zap_summary.csv"
-# brooklyn_zap_block_regressions_csv <- "../input/brooklyn_homeownership_case_study_zap_block_regressions.csv"
-# brooklyn_qc_csv <- "../input/brooklyn_homeownership_case_study_qc.csv"
-# out_memo_md <- "../output/brooklyn_homeownership_case_study_memo.md"
-# out_memo_tex <- "../output/brooklyn_homeownership_case_study_memo.tex"
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -19,30 +8,6 @@ suppressPackageStartupMessages({
 })
 
 source("../../_lib/source_pipeline_utils.R")
-
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 11) {
-  stop(
-    "Expected 11 arguments: brooklyn_cd_summary_csv brooklyn_era_outcomes_csv ",
-    "brooklyn_block_regressions_csv brooklyn_block_diagnostics_csv ",
-    "brooklyn_leave_one_cd_out_csv brooklyn_size_bin_summary_csv ",
-    "brooklyn_zap_summary_csv brooklyn_zap_block_regressions_csv ",
-    "brooklyn_qc_csv out_memo_md out_memo_tex"
-  )
-}
-
-brooklyn_cd_summary_csv <- args[1]
-brooklyn_era_outcomes_csv <- args[2]
-brooklyn_block_regressions_csv <- args[3]
-brooklyn_block_diagnostics_csv <- args[4]
-brooklyn_leave_one_cd_out_csv <- args[5]
-brooklyn_size_bin_summary_csv <- args[6]
-brooklyn_zap_summary_csv <- args[7]
-brooklyn_zap_block_regressions_csv <- args[8]
-brooklyn_qc_csv <- args[9]
-out_memo_md <- args[10]
-out_memo_tex <- args[11]
 
 fmt_num <- function(x, digits = 3) {
   ifelse(is.na(x), "NA", formatC(x, digits = digits, format = "f", big.mark = ","))
@@ -64,15 +29,15 @@ clean_spec_label <- function(x) {
     str_to_sentence()
 }
 
-cd_summary <- read_csv(brooklyn_cd_summary_csv, show_col_types = FALSE)
-era_outcomes <- read_csv(brooklyn_era_outcomes_csv, show_col_types = FALSE)
-block_regressions <- read_csv(brooklyn_block_regressions_csv, show_col_types = FALSE)
-block_diagnostics <- read_csv(brooklyn_block_diagnostics_csv, show_col_types = FALSE)
-leave_one_out <- read_csv(brooklyn_leave_one_cd_out_csv, show_col_types = FALSE)
-size_bin_summary <- read_csv(brooklyn_size_bin_summary_csv, show_col_types = FALSE)
-zap_summary <- read_csv(brooklyn_zap_summary_csv, show_col_types = FALSE)
-zap_block_regressions <- read_csv(brooklyn_zap_block_regressions_csv, show_col_types = FALSE)
-qc <- read_csv(brooklyn_qc_csv, show_col_types = FALSE)
+cd_summary <- read_csv("../input/brooklyn_homeownership_case_study_cd_summary.csv", show_col_types = FALSE)
+era_outcomes <- read_csv("../input/brooklyn_homeownership_case_study_era_outcomes.csv", show_col_types = FALSE)
+block_regressions <- read_csv("../input/brooklyn_homeownership_case_study_block_regressions.csv", show_col_types = FALSE)
+block_diagnostics <- read_csv("../input/brooklyn_homeownership_case_study_block_diagnostics.csv", show_col_types = FALSE)
+leave_one_out <- read_csv("../input/brooklyn_homeownership_case_study_leave_one_cd_out.csv", show_col_types = FALSE)
+size_bin_summary <- read_csv("../input/brooklyn_homeownership_case_study_size_bin_summary.csv", show_col_types = FALSE)
+zap_summary <- read_csv("../input/brooklyn_homeownership_case_study_zap_summary.csv", show_col_types = FALSE)
+zap_block_regressions <- read_csv("../input/brooklyn_homeownership_case_study_zap_block_regressions.csv", show_col_types = FALSE)
+qc <- read_csv("../input/brooklyn_homeownership_case_study_qc.csv", show_col_types = FALSE)
 
 brooklyn_count <- qc %>%
   filter(check_name == "brooklyn_cd_count") %>%
@@ -228,7 +193,7 @@ md_lines <- c(
 
 temp_md <- tempfile(fileext = ".md")
 writeLines(md_lines, temp_md)
-copy_if_changed(temp_md, out_memo_md)
+copy_if_changed(temp_md, "../output/brooklyn_homeownership_case_study_memo.md")
 
 top_high_rows <- apply(top_high, 1, function(row) {
   paste0(
@@ -431,4 +396,4 @@ tex_lines <- c(
 
 temp_tex <- tempfile(fileext = ".tex")
 writeLines(tex_lines, temp_tex)
-copy_if_changed(temp_tex, out_memo_tex)
+copy_if_changed(temp_tex, "../output/brooklyn_homeownership_case_study_memo.tex")

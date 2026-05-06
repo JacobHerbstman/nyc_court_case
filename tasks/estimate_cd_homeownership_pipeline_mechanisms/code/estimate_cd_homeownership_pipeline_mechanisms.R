@@ -1,18 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/estimate_cd_homeownership_pipeline_mechanisms/code")
-# zap_ulurp_redev_project_base_csv <- "../input/zap_ulurp_redev_project_base.csv"
-# zap_ulurp_redev_cd_year_panel_csv <- "../input/zap_ulurp_redev_cd_year_panel.csv"
-# zap_ulurp_redev_mature_cohort_panel_csv <- "../input/zap_ulurp_redev_mature_cohort_panel.csv"
-# zap_ulurp_redev_yield_panel_csv <- "../input/zap_ulurp_redev_yield_panel.csv"
-# cd_homeownership_permit_nb_panel_csv <- "../input/cd_homeownership_permit_nb_panel.csv"
-# cd_redevelopment_potential_baseline_csv <- "../input/cd_redevelopment_potential_baseline.csv"
-# out_event_coefficients_csv <- "../output/cd_homeownership_pipeline_event_coefficients.csv"
-# out_event_coefficients_pdf <- "../output/cd_homeownership_pipeline_event_coefficients.pdf"
-# out_timing_delay_csv <- "../output/cd_homeownership_pipeline_timing_delay_estimates.csv"
-# out_status_estimates_csv <- "../output/cd_homeownership_pipeline_status_estimates.csv"
-# out_permit_coefficients_csv <- "../output/cd_homeownership_pipeline_permit_coefficients.csv"
-# out_permit_coefficients_pdf <- "../output/cd_homeownership_pipeline_permit_coefficients.pdf"
-# out_model_summary_csv <- "../output/cd_homeownership_pipeline_model_summary.csv"
-# out_qc_csv <- "../output/cd_homeownership_pipeline_design_qc.csv"
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -25,27 +11,6 @@ suppressPackageStartupMessages({
 })
 
 source("../../_lib/source_pipeline_utils.R")
-
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 14) {
-  stop("Expected 14 arguments: zap_ulurp_redev_project_base_csv zap_ulurp_redev_cd_year_panel_csv zap_ulurp_redev_mature_cohort_panel_csv zap_ulurp_redev_yield_panel_csv cd_homeownership_permit_nb_panel_csv cd_redevelopment_potential_baseline_csv out_event_coefficients_csv out_event_coefficients_pdf out_timing_delay_csv out_status_estimates_csv out_permit_coefficients_csv out_permit_coefficients_pdf out_model_summary_csv out_qc_csv")
-}
-
-zap_ulurp_redev_project_base_csv <- args[1]
-zap_ulurp_redev_cd_year_panel_csv <- args[2]
-zap_ulurp_redev_mature_cohort_panel_csv <- args[3]
-zap_ulurp_redev_yield_panel_csv <- args[4]
-cd_homeownership_permit_nb_panel_csv <- args[5]
-cd_redevelopment_potential_baseline_csv <- args[6]
-out_event_coefficients_csv <- args[7]
-out_event_coefficients_pdf <- args[8]
-out_timing_delay_csv <- args[9]
-out_status_estimates_csv <- args[10]
-out_permit_coefficients_csv <- args[11]
-out_permit_coefficients_pdf <- args[12]
-out_model_summary_csv <- args[13]
-out_qc_csv <- args[14]
 
 assert_required_columns <- function(df, required_cols, df_name) {
   missing_cols <- setdiff(required_cols, names(df))
@@ -364,12 +329,12 @@ status_periods <- c("1976-1979", "1980-1984", "1985-1989", "1990-1999", "2000-20
 permit_periods <- c("1990-1999", "2000-2009", "2010-2019", "2020-2025")
 permit_reference_period <- "1990-1999"
 
-baseline_df <- read_csv(cd_redevelopment_potential_baseline_csv, show_col_types = FALSE, na = c("", "NA"))
-zap_project_df <- read_csv(zap_ulurp_redev_project_base_csv, col_types = cols(.default = col_character()), na = c("", "NA"))
-zap_cd_year_df <- read_csv(zap_ulurp_redev_cd_year_panel_csv, show_col_types = FALSE, na = c("", "NA"))
-zap_mature_df <- read_csv(zap_ulurp_redev_mature_cohort_panel_csv, show_col_types = FALSE, na = c("", "NA"))
-zap_yield_df <- read_csv(zap_ulurp_redev_yield_panel_csv, show_col_types = FALSE, na = c("", "NA"))
-permit_df <- read_csv(cd_homeownership_permit_nb_panel_csv, show_col_types = FALSE, na = c("", "NA"))
+baseline_df <- read_csv("../input/cd_redevelopment_potential_baseline.csv", show_col_types = FALSE, na = c("", "NA"))
+zap_project_df <- read_csv("../input/zap_ulurp_redev_project_base.csv", col_types = cols(.default = col_character()), na = c("", "NA"))
+zap_cd_year_df <- read_csv("../input/zap_ulurp_redev_cd_year_panel.csv", show_col_types = FALSE, na = c("", "NA"))
+zap_mature_df <- read_csv("../input/zap_ulurp_redev_mature_cohort_panel.csv", show_col_types = FALSE, na = c("", "NA"))
+zap_yield_df <- read_csv("../input/zap_ulurp_redev_yield_panel.csv", show_col_types = FALSE, na = c("", "NA"))
+permit_df <- read_csv("../input/cd_homeownership_permit_nb_panel.csv", show_col_types = FALSE, na = c("", "NA"))
 
 assert_required_columns(
   baseline_df,
@@ -819,33 +784,33 @@ qc_df <- bind_rows(
   tibble(metric = "pipeline_model_error_count", value = as.character(sum(c(event_coefficients$model_status, timing_estimates$model_status, status_estimates$model_status, permit_coefficients$model_status) == "model_error", na.rm = TRUE)), status = if_else(sum(c(event_coefficients$model_status, timing_estimates$model_status, status_estimates$model_status, permit_coefficients$model_status) == "model_error", na.rm = TRUE) == 0, "pass", "fail"), note = "Unexpected model errors across all exploratory mechanism estimates."),
   tibble(metric = "pipeline_constant_outcome_count", value = as.character(sum(c(event_coefficients$model_status, timing_estimates$model_status, status_estimates$model_status, permit_coefficients$model_status) == "constant_outcome", na.rm = TRUE)), status = if_else(sum(c(event_coefficients$model_status, timing_estimates$model_status, status_estimates$model_status, permit_coefficients$model_status) == "constant_outcome", na.rm = TRUE) == 0, "pass", "warning"), note = "Requested models not estimated because the dependent variable is constant; this currently flags unresolved ZAP outcomes."),
   tibble(metric = "pipeline_insufficient_sample_count", value = as.character(sum(c(event_coefficients$model_status, timing_estimates$model_status, status_estimates$model_status, permit_coefficients$model_status) == "insufficient_sample", na.rm = TRUE)), status = if_else(sum(c(event_coefficients$model_status, timing_estimates$model_status, status_estimates$model_status, permit_coefficients$model_status) == "insufficient_sample", na.rm = TRUE) == 0, "pass", "warning"), note = "Requested models not estimated because there is no usable reference-period sample; this currently flags approval-date timing."),
-  tibble(metric = "event_coefficients_nonempty", value = as.character(file.exists(out_event_coefficients_csv) && file.info(out_event_coefficients_csv)$size > 0), status = "pending_file_write", note = "Checked after file write by the script producer target."),
-  tibble(metric = "permit_coefficients_nonempty", value = as.character(file.exists(out_permit_coefficients_csv) && file.info(out_permit_coefficients_csv)$size > 0), status = "pending_file_write", note = "Checked after file write by the script producer target.")
+  tibble(metric = "event_coefficients_nonempty", value = as.character(file.exists("../output/cd_homeownership_pipeline_event_coefficients.csv") && file.info("../output/cd_homeownership_pipeline_event_coefficients.csv")$size > 0), status = "pending_file_write", note = "Checked after file write by the script producer target."),
+  tibble(metric = "permit_coefficients_nonempty", value = as.character(file.exists("../output/cd_homeownership_pipeline_permit_coefficients.csv") && file.info("../output/cd_homeownership_pipeline_permit_coefficients.csv")$size > 0), status = "pending_file_write", note = "Checked after file write by the script producer target.")
 )
 
 hard_fail_count <- sum(qc_df$status == "fail", na.rm = TRUE)
 
 if (hard_fail_count > 0) {
-  write_csv_if_changed(qc_df, out_qc_csv)
-  stop("Pipeline mechanism QC failed; inspect ", out_qc_csv)
+  write_csv_if_changed(qc_df, "../output/cd_homeownership_pipeline_design_qc.csv")
+  stop("Pipeline mechanism QC failed; inspect ../output/cd_homeownership_pipeline_design_qc.csv")
 }
 
-write_csv_if_changed(event_coefficients |> arrange(analysis_family, outcome_id, outcome_scale, control_layer, event_period), out_event_coefficients_csv)
-write_csv_if_changed(timing_estimates |> arrange(analysis_family, outcome_id, control_layer, event_period), out_timing_delay_csv)
-write_csv_if_changed(status_estimates |> arrange(analysis_family, outcome_id, outcome_scale, control_layer, event_period), out_status_estimates_csv)
-write_csv_if_changed(permit_coefficients |> arrange(analysis_family, outcome_id, outcome_scale, control_layer, event_period), out_permit_coefficients_csv)
-write_csv_if_changed(model_summary, out_model_summary_csv)
+write_csv_if_changed(event_coefficients |> arrange(analysis_family, outcome_id, outcome_scale, control_layer, event_period), "../output/cd_homeownership_pipeline_event_coefficients.csv")
+write_csv_if_changed(timing_estimates |> arrange(analysis_family, outcome_id, control_layer, event_period), "../output/cd_homeownership_pipeline_timing_delay_estimates.csv")
+write_csv_if_changed(status_estimates |> arrange(analysis_family, outcome_id, outcome_scale, control_layer, event_period), "../output/cd_homeownership_pipeline_status_estimates.csv")
+write_csv_if_changed(permit_coefficients |> arrange(analysis_family, outcome_id, outcome_scale, control_layer, event_period), "../output/cd_homeownership_pipeline_permit_coefficients.csv")
+write_csv_if_changed(model_summary, "../output/cd_homeownership_pipeline_model_summary.csv")
 
 build_plot(
   event_coefficients,
-  out_event_coefficients_pdf,
+  "../output/cd_homeownership_pipeline_event_coefficients.pdf",
   "ZAP/ULURP application gradients by homeownership exposure",
   "Coefficient on homeowner exposure"
 )
 
 build_plot(
   permit_coefficients,
-  out_permit_coefficients_pdf,
+  "../output/cd_homeownership_pipeline_permit_coefficients.pdf",
   "DOB new-building permit gradients by homeownership exposure",
   "Coefficient on homeowner exposure"
 )
@@ -853,22 +818,22 @@ build_plot(
 qc_df <- qc_df |>
   mutate(
     status = case_when(
-      metric == "event_coefficients_nonempty" ~ if_else(file.exists(out_event_coefficients_csv) && file.info(out_event_coefficients_csv)$size > 0, "pass", "fail"),
-      metric == "permit_coefficients_nonempty" ~ if_else(file.exists(out_permit_coefficients_csv) && file.info(out_permit_coefficients_csv)$size > 0, "pass", "fail"),
+      metric == "event_coefficients_nonempty" ~ if_else(file.exists("../output/cd_homeownership_pipeline_event_coefficients.csv") && file.info("../output/cd_homeownership_pipeline_event_coefficients.csv")$size > 0, "pass", "fail"),
+      metric == "permit_coefficients_nonempty" ~ if_else(file.exists("../output/cd_homeownership_pipeline_permit_coefficients.csv") && file.info("../output/cd_homeownership_pipeline_permit_coefficients.csv")$size > 0, "pass", "fail"),
       TRUE ~ status
     ),
     value = case_when(
-      metric == "event_coefficients_nonempty" ~ as.character(file.exists(out_event_coefficients_csv) && file.info(out_event_coefficients_csv)$size > 0),
-      metric == "permit_coefficients_nonempty" ~ as.character(file.exists(out_permit_coefficients_csv) && file.info(out_permit_coefficients_csv)$size > 0),
+      metric == "event_coefficients_nonempty" ~ as.character(file.exists("../output/cd_homeownership_pipeline_event_coefficients.csv") && file.info("../output/cd_homeownership_pipeline_event_coefficients.csv")$size > 0),
+      metric == "permit_coefficients_nonempty" ~ as.character(file.exists("../output/cd_homeownership_pipeline_permit_coefficients.csv") && file.info("../output/cd_homeownership_pipeline_permit_coefficients.csv")$size > 0),
       TRUE ~ value
     )
   )
 
 if (sum(qc_df$status == "fail", na.rm = TRUE) > 0) {
-  write_csv_if_changed(qc_df, out_qc_csv)
-  stop("Pipeline mechanism output QC failed; inspect ", out_qc_csv)
+  write_csv_if_changed(qc_df, "../output/cd_homeownership_pipeline_design_qc.csv")
+  stop("Pipeline mechanism output QC failed; inspect ../output/cd_homeownership_pipeline_design_qc.csv")
 }
 
-write_csv_if_changed(qc_df, out_qc_csv)
+write_csv_if_changed(qc_df, "../output/cd_homeownership_pipeline_design_qc.csv")
 
-cat("Wrote exploratory ZAP/ULURP and permit pipeline diagnostics to", dirname(out_qc_csv), "\n")
+cat("Wrote exploratory ZAP/ULURP and permit pipeline diagnostics to ../output\n")
