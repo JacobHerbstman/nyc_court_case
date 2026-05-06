@@ -1,12 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_zap_ulurp_redev_pipeline/code")
-# zap_ulurp_redev_project_base_csv <- "../input/zap_ulurp_redev_project_base.csv"
-# zap_housing_hdb_link_candidates_csv <- "../input/zap_housing_hdb_link_candidates.csv"
-# out_cd_year_panel_csv <- "../output/zap_ulurp_redev_cd_year_panel.csv"
-# out_mature_panel_csv <- "../output/zap_ulurp_redev_mature_cohort_panel.csv"
-# out_yield_panel_csv <- "../output/zap_ulurp_redev_yield_panel.csv"
-# out_era_summary_csv <- "../output/zap_ulurp_redev_2x2_era_summary.csv"
-# out_qc_csv <- "../output/zap_ulurp_redev_summary_qc.csv"
-# out_plots_pdf <- "../output/zap_ulurp_redev_plots.pdf"
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -18,21 +10,6 @@ suppressPackageStartupMessages({
 })
 
 source("../../_lib/source_pipeline_utils.R")
-
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 8) {
-  stop("Expected 8 arguments: zap_ulurp_redev_project_base_csv zap_housing_hdb_link_candidates_csv out_cd_year_panel_csv out_mature_panel_csv out_yield_panel_csv out_era_summary_csv out_qc_csv out_plots_pdf")
-}
-
-zap_ulurp_redev_project_base_csv <- args[1]
-zap_housing_hdb_link_candidates_csv <- args[2]
-out_cd_year_panel_csv <- args[3]
-out_mature_panel_csv <- args[4]
-out_yield_panel_csv <- args[5]
-out_era_summary_csv <- args[6]
-out_qc_csv <- args[7]
-out_plots_pdf <- args[8]
 
 summary_era_from_year <- function(x) {
   case_when(
@@ -77,7 +54,7 @@ assert_unique_keys <- function(df, keys, label) {
   }
 }
 
-project_base_df <- read_csv(zap_ulurp_redev_project_base_csv, show_col_types = FALSE, na = c("", "NA"), guess_max = Inf) %>%
+project_base_df <- read_csv("../input/zap_ulurp_redev_project_base.csv", show_col_types = FALSE, na = c("", "NA"), guess_max = Inf) %>%
   mutate(
     project_id = as.character(project_id),
     borocd = suppressWarnings(as.integer(borocd)),
@@ -224,7 +201,7 @@ if (any(mature_panel$era %in% c("2010-2019", "2016-2020", "2020-2025"), na.rm = 
   stop("Mature ZAP ULURP redevelopment cohort panel includes an immature era label.")
 }
 
-candidate_05_source_df <- read_csv(zap_housing_hdb_link_candidates_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+candidate_05_source_df <- read_csv("../input/zap_housing_hdb_link_candidates.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(
     project_id = as.character(project_id),
     job_number = as.character(job_number),
@@ -610,11 +587,11 @@ print(plot_one)
 print(plot_two)
 dev.off()
 
-copy_if_changed(temp_pdf, out_plots_pdf)
-write_csv_if_changed(cd_year_panel, out_cd_year_panel_csv)
-write_csv_if_changed(mature_panel, out_mature_panel_csv)
-write_csv_if_changed(yield_panel, out_yield_panel_csv)
-write_csv_if_changed(era_summary, out_era_summary_csv)
-write_csv_if_changed(qc_df, out_qc_csv)
+copy_if_changed(temp_pdf, "../output/zap_ulurp_redev_plots.pdf")
+write_csv_if_changed(cd_year_panel, "../output/zap_ulurp_redev_cd_year_panel.csv")
+write_csv_if_changed(mature_panel, "../output/zap_ulurp_redev_mature_cohort_panel.csv")
+write_csv_if_changed(yield_panel, "../output/zap_ulurp_redev_yield_panel.csv")
+write_csv_if_changed(era_summary, "../output/zap_ulurp_redev_2x2_era_summary.csv")
+write_csv_if_changed(qc_df, "../output/zap_ulurp_redev_summary_qc.csv")
 
-cat("Wrote ZAP ULURP redevelopment summary outputs to", dirname(out_cd_year_panel_csv), "\n")
+cat("Wrote ZAP ULURP redevelopment summary outputs to ../output\n")

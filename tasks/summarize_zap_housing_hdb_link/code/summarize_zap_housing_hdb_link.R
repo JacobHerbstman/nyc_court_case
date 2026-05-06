@@ -1,9 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_zap_housing_hdb_link/code")
-# zap_housing_hdb_project_summary_csv <- "../input/zap_housing_hdb_project_summary.csv"
-# out_panel_csv <- "../output/zap_housing_hdb_cohort_panel.csv"
-# out_era_summary_csv <- "../output/zap_housing_hdb_tercile_era_summary.csv"
-# out_qc_csv <- "../output/zap_housing_hdb_summary_qc.csv"
-# out_plots_pdf <- "../output/zap_housing_hdb_plots.pdf"
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -14,18 +9,6 @@ suppressPackageStartupMessages({
 })
 
 source("../../_lib/source_pipeline_utils.R")
-
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 5) {
-  stop("Expected 5 arguments: zap_housing_hdb_project_summary_csv out_panel_csv out_era_summary_csv out_qc_csv out_plots_pdf")
-}
-
-zap_housing_hdb_project_summary_csv <- args[1]
-out_panel_csv <- args[2]
-out_era_summary_csv <- args[3]
-out_qc_csv <- args[4]
-out_plots_pdf <- args[5]
 
 summary_era_from_year <- function(x) {
   case_when(
@@ -50,7 +33,7 @@ assert_unique_keys <- function(df, keys, label) {
   }
 }
 
-project_df <- read_csv(zap_housing_hdb_project_summary_csv, show_col_types = FALSE, na = c("", "NA"))
+project_df <- read_csv("../input/zap_housing_hdb_project_summary.csv", show_col_types = FALSE, na = c("", "NA"))
 
 if (!"bbl_linkable" %in% names(project_df)) {
   project_df <- project_df %>%
@@ -265,10 +248,10 @@ pdf(temp_pdf, width = 11, height = 8.5)
 print(plot_obj)
 dev.off()
 
-copy_if_changed(temp_pdf, out_plots_pdf)
+copy_if_changed(temp_pdf, "../output/zap_housing_hdb_plots.pdf")
 
-write_csv_if_changed(cohort_panel, out_panel_csv)
-write_csv_if_changed(era_summary, out_era_summary_csv)
-write_csv_if_changed(qc_df, out_qc_csv)
+write_csv_if_changed(cohort_panel, "../output/zap_housing_hdb_cohort_panel.csv")
+write_csv_if_changed(era_summary, "../output/zap_housing_hdb_tercile_era_summary.csv")
+write_csv_if_changed(qc_df, "../output/zap_housing_hdb_summary_qc.csv")
 
-cat("Wrote ZAP-HDB summary outputs to", dirname(out_panel_csv), "\n")
+cat("Wrote ZAP-HDB summary outputs to ../output\n")

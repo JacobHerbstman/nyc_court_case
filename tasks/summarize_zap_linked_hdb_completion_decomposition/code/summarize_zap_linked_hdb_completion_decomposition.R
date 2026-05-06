@@ -1,12 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_zap_linked_hdb_completion_decomposition/code")
-# hdb_project_parquet <- "../input/dcp_housing_database_project_level_25q4.parquet"
-# zap_hdb_candidates_csv <- "../input/zap_housing_hdb_link_candidates.csv"
-# cd_redevelopment_baseline_csv <- "../input/cd_redevelopment_potential_baseline.csv"
-# out_cd_year_csv <- "../output/zap_linked_hdb_50plus_cd_year.csv"
-# out_trends_pdf <- "../output/zap_linked_hdb_50plus_tercile_trends.pdf"
-# out_coefficients_csv <- "../output/zap_linked_hdb_50plus_coefficients.csv"
-# out_summary_csv <- "../output/zap_linked_hdb_50plus_summary.csv"
-# out_qc_csv <- "../output/zap_linked_hdb_50plus_qc.csv"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -20,21 +12,6 @@ suppressPackageStartupMessages({
 })
 
 source("../../_lib/source_pipeline_utils.R")
-
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 8) {
-  stop("Expected 8 arguments: hdb_project_parquet zap_hdb_candidates_csv cd_redevelopment_baseline_csv out_cd_year_csv out_trends_pdf out_coefficients_csv out_summary_csv out_qc_csv")
-}
-
-hdb_project_parquet <- args[1]
-zap_hdb_candidates_csv <- args[2]
-cd_redevelopment_baseline_csv <- args[3]
-out_cd_year_csv <- args[4]
-out_trends_pdf <- args[5]
-out_coefficients_csv <- args[6]
-out_summary_csv <- args[7]
-out_qc_csv <- args[8]
 
 assert_unique_keys <- function(df, key_cols, df_name) {
   duplicate_keys <- df %>%
@@ -89,7 +66,7 @@ coefficient_row <- function(df, outcome_name, link_status_name, period_name) {
   )
 }
 
-cd_base <- read_csv(cd_redevelopment_baseline_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+cd_base <- read_csv("../input/cd_redevelopment_potential_baseline.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   transmute(
     borocd = as.integer(borocd),
     borough_name = as.character(borough_name),
@@ -123,7 +100,7 @@ district_lookup <- cd_base %>%
   ungroup()
 
 hdb_jobs <- read_parquet(
-  hdb_project_parquet,
+  "../input/dcp_housing_database_project_level_25q4.parquet",
   col_select = c("job_number", "job_type", "completion_year", "permit_year", "classa_prop", "classa_net", "community_district", "bbl")
 ) %>%
   as.data.frame() %>%
@@ -144,7 +121,7 @@ hdb_jobs <- read_parquet(
 
 assert_unique_keys(hdb_jobs %>% filter(!is.na(job_number)), "job_number", "50+ unit HDB completion jobs")
 
-zap_links <- read_csv(zap_hdb_candidates_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+zap_links <- read_csv("../input/zap_housing_hdb_link_candidates.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   transmute(
     job_number = as.character(job_number),
     project_id = as.character(project_id),
@@ -315,7 +292,7 @@ temp_pdf <- tempfile(fileext = ".pdf")
 pdf(temp_pdf, width = 11, height = 10)
 print(plot_obj)
 dev.off()
-copy_if_changed(temp_pdf, out_trends_pdf)
+copy_if_changed(temp_pdf, "../output/zap_linked_hdb_50plus_tercile_trends.pdf")
 
 qc_df <- bind_rows(
   tibble(metric = "cd_count", value = n_distinct(cd_year$borocd), status = if_else(n_distinct(cd_year$borocd) == 59, "pass", "fail"), note = "Expected 59 CDs."),
@@ -330,17 +307,17 @@ qc_df <- bind_rows(
   tibble(metric = "zap_bbl_outside_timing_job_count", value = sum(hdb_classified$link_status == "ZAP BBL match, outside timing", na.rm = TRUE), status = "pass", note = "50+ NB completed jobs assigned to an exact-BBL ZAP project outside the broad timing window."),
   tibble(metric = "no_assigned_exact_zap_bbl_match_job_count", value = sum(hdb_classified$link_status == "No assigned exact ZAP BBL match", na.rm = TRUE), status = "pass", note = "50+ NB completed jobs with no assigned exact-BBL ZAP project."),
   tibble(metric = "expected_link_status_count", value = n_distinct(cd_year$link_status), status = if_else(n_distinct(cd_year$link_status) == length(link_status_levels), "pass", "fail"), note = "All requested link-status categories should be represented in the balanced CD-year panel."),
-  tibble(metric = "plot_file_bytes", value = file.info(out_trends_pdf)$size, status = if_else(file.exists(out_trends_pdf) && file.info(out_trends_pdf)$size > 0, "pass", "fail"), note = "Generated PDF should be nonempty.")
+  tibble(metric = "plot_file_bytes", value = file.info("../output/zap_linked_hdb_50plus_tercile_trends.pdf")$size, status = if_else(file.exists("../output/zap_linked_hdb_50plus_tercile_trends.pdf") && file.info("../output/zap_linked_hdb_50plus_tercile_trends.pdf")$size > 0, "pass", "fail"), note = "Generated PDF should be nonempty.")
 )
 
 if (any(qc_df$status == "fail")) {
-  write_csv_if_changed(qc_df, out_qc_csv)
+  write_csv_if_changed(qc_df, "../output/zap_linked_hdb_50plus_qc.csv")
   stop("ZAP-linked completion decomposition QC failed.")
 }
 
-write_csv_if_changed(cd_year, out_cd_year_csv)
-write_csv_if_changed(coefficients, out_coefficients_csv)
-write_csv_if_changed(summary_df, out_summary_csv)
-write_csv_if_changed(qc_df, out_qc_csv)
+write_csv_if_changed(cd_year, "../output/zap_linked_hdb_50plus_cd_year.csv")
+write_csv_if_changed(coefficients, "../output/zap_linked_hdb_50plus_coefficients.csv")
+write_csv_if_changed(summary_df, "../output/zap_linked_hdb_50plus_summary.csv")
+write_csv_if_changed(qc_df, "../output/zap_linked_hdb_50plus_qc.csv")
 
-cat("Wrote ZAP-linked HDB completion decomposition outputs to", dirname(out_cd_year_csv), "\n")
+cat("Wrote ZAP-linked HDB completion decomposition outputs to ../output\n")

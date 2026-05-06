@@ -1,11 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/write_zap_ulurp_redev_memo/code")
-# zap_ulurp_redev_project_base_csv <- "../input/zap_ulurp_redev_project_base.csv"
-# zap_ulurp_redev_project_base_qc_csv <- "../input/zap_ulurp_redev_project_base_qc.csv"
-# zap_ulurp_redev_era_summary_csv <- "../input/zap_ulurp_redev_2x2_era_summary.csv"
-# zap_ulurp_redev_model_summary_csv <- "../input/zap_ulurp_redev_model_summary.csv"
-# zap_ulurp_redev_nested_diagnostics_csv <- "../input/zap_ulurp_redev_nested_diagnostics.csv"
-# out_memo_md <- "../output/zap_ulurp_redev_memo.md"
-# out_memo_tex <- "../output/zap_ulurp_redev_memo.tex"
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -15,20 +8,6 @@ suppressPackageStartupMessages({
 })
 
 source("../../_lib/source_pipeline_utils.R")
-
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 7) {
-  stop("Expected 7 arguments: zap_ulurp_redev_project_base_csv zap_ulurp_redev_project_base_qc_csv zap_ulurp_redev_era_summary_csv zap_ulurp_redev_model_summary_csv zap_ulurp_redev_nested_diagnostics_csv out_memo_md out_memo_tex")
-}
-
-zap_ulurp_redev_project_base_csv <- args[1]
-zap_ulurp_redev_project_base_qc_csv <- args[2]
-zap_ulurp_redev_era_summary_csv <- args[3]
-zap_ulurp_redev_model_summary_csv <- args[4]
-zap_ulurp_redev_nested_diagnostics_csv <- args[5]
-out_memo_md <- args[6]
-out_memo_tex <- args[7]
 
 fmt_num <- function(x, digits = 3) {
   ifelse(is.na(x), "NA", formatC(x, digits = digits, format = "f", big.mark = ","))
@@ -42,11 +21,11 @@ escape_tex <- function(x) {
   x
 }
 
-base_df <- read_csv(zap_ulurp_redev_project_base_csv, show_col_types = FALSE, na = c("", "NA"), guess_max = Inf)
-qc_df <- read_csv(zap_ulurp_redev_project_base_qc_csv, show_col_types = FALSE, na = c("", "NA"))
-era_summary_df <- read_csv(zap_ulurp_redev_era_summary_csv, show_col_types = FALSE, na = c("", "NA"))
-model_summary_df <- read_csv(zap_ulurp_redev_model_summary_csv, show_col_types = FALSE, na = c("", "NA"))
-nested_diag_df <- read_csv(zap_ulurp_redev_nested_diagnostics_csv, show_col_types = FALSE, na = c("", "NA"))
+base_df <- read_csv("../input/zap_ulurp_redev_project_base.csv", show_col_types = FALSE, na = c("", "NA"), guess_max = Inf)
+qc_df <- read_csv("../input/zap_ulurp_redev_project_base_qc.csv", show_col_types = FALSE, na = c("", "NA"))
+era_summary_df <- read_csv("../input/zap_ulurp_redev_2x2_era_summary.csv", show_col_types = FALSE, na = c("", "NA"))
+model_summary_df <- read_csv("../input/zap_ulurp_redev_model_summary.csv", show_col_types = FALSE, na = c("", "NA"))
+nested_diag_df <- read_csv("../input/zap_ulurp_redev_nested_diagnostics.csv", show_col_types = FALSE, na = c("", "NA"))
 
 total_projects <- nrow(base_df)
 private_projects <- sum(base_df$private_applicant %in% TRUE, na.rm = TRUE)
@@ -202,7 +181,7 @@ md_lines <- c(
 
 temp_md <- tempfile(fileext = ".md")
 writeLines(md_lines, temp_md)
-copy_if_changed(temp_md, out_memo_md)
+copy_if_changed(temp_md, "../output/zap_ulurp_redev_memo.md")
 
 tex_lines <- c(
   "\\documentclass[11pt]{article}",
@@ -298,6 +277,6 @@ tex_lines <- c(
 
 temp_tex <- tempfile(fileext = ".tex")
 writeLines(tex_lines, temp_tex)
-copy_if_changed(temp_tex, out_memo_tex)
+copy_if_changed(temp_tex, "../output/zap_ulurp_redev_memo.tex")
 
-cat("Wrote ZAP ULURP redevelopment memo sources to", dirname(out_memo_md), "\n")
+cat("Wrote ZAP ULURP redevelopment memo sources to ../output\n")

@@ -3,11 +3,20 @@ include ../../shell_functions.make
 
 all: ../output/zap_housing_hdb_cohort_panel.csv ../output/zap_housing_hdb_tercile_era_summary.csv ../output/zap_housing_hdb_summary_qc.csv ../output/zap_housing_hdb_plots.pdf
 
+../output/zap_housing_hdb_summary_qc.csv: summarize_zap_housing_hdb_link.R ../../_lib/source_pipeline_utils.R ../input/zap_housing_hdb_project_summary.csv | ../output
+	$(R) $<
+
+../output/zap_housing_hdb_cohort_panel.csv: ../output/zap_housing_hdb_summary_qc.csv
+	@test -s "$@"
+
+../output/zap_housing_hdb_tercile_era_summary.csv: ../output/zap_housing_hdb_summary_qc.csv
+	@test -s "$@"
+
+../output/zap_housing_hdb_plots.pdf: ../output/zap_housing_hdb_summary_qc.csv
+	@test -s "$@"
+
 ../input/zap_housing_hdb_project_summary.csv: ../../build_zap_housing_hdb_link/output/zap_housing_hdb_project_summary.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
-
-../output/zap_housing_hdb_cohort_panel.csv ../output/zap_housing_hdb_tercile_era_summary.csv ../output/zap_housing_hdb_summary_qc.csv ../output/zap_housing_hdb_plots.pdf: summarize_zap_housing_hdb_link.R ../../_lib/source_pipeline_utils.R ../input/zap_housing_hdb_project_summary.csv | ../output
-	$(R) $< ../input/zap_housing_hdb_project_summary.csv ../output/zap_housing_hdb_cohort_panel.csv ../output/zap_housing_hdb_tercile_era_summary.csv ../output/zap_housing_hdb_summary_qc.csv ../output/zap_housing_hdb_plots.pdf
 
 link-inputs: ../input/zap_housing_hdb_project_summary.csv
 

@@ -1,10 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_zap_housing_pipeline_tercile_trends/code")
-# zap_housing_cd_year_panel_primary_csv <- "../input/zap_housing_cd_year_panel_primary.csv"
-# zap_housing_cd_year_panel_bbl_fractional_csv <- "../input/zap_housing_cd_year_panel_bbl_fractional.csv"
-# out_tercile_year_csv <- "../output/zap_housing_pipeline_tercile_year.csv"
-# out_per_10000_pdf <- "../output/zap_housing_pipeline_tercile_trends_per_10000.pdf"
-# out_per_residential_acre_pdf <- "../output/zap_housing_pipeline_tercile_trends_per_residential_acre.pdf"
-# out_qc_csv <- "../output/zap_housing_pipeline_tercile_trends_qc.csv"
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -14,29 +8,6 @@ suppressPackageStartupMessages({
   library(tibble)
   library(tidyr)
 })
-
-args <- commandArgs(trailingOnly = TRUE)
-if (length(args) == 0) {
-  args <- c(
-    zap_housing_cd_year_panel_primary_csv,
-    zap_housing_cd_year_panel_bbl_fractional_csv,
-    out_tercile_year_csv,
-    out_per_10000_pdf,
-    out_per_residential_acre_pdf,
-    out_qc_csv
-  )
-}
-
-if (length(args) != 6) {
-  stop("Expected 6 arguments: zap_housing_cd_year_panel_primary_csv zap_housing_cd_year_panel_bbl_fractional_csv out_tercile_year_csv out_per_10000_pdf out_per_residential_acre_pdf out_qc_csv")
-}
-
-zap_housing_cd_year_panel_primary_csv <- args[1]
-zap_housing_cd_year_panel_bbl_fractional_csv <- args[2]
-out_tercile_year_csv <- args[3]
-out_per_10000_pdf <- args[4]
-out_per_residential_acre_pdf <- args[5]
-out_qc_csv <- args[6]
 
 assert_unique_keys <- function(df, keys, label) {
   duplicate_keys <- df |>
@@ -56,10 +27,10 @@ plot_outcomes <- tribble(
   "housing_any_public_land_disposition_apps", "Housing public land/disposition", 4
 )
 
-primary_df <- read_csv(zap_housing_cd_year_panel_primary_csv, show_col_types = FALSE, na = c("", "NA")) |>
+primary_df <- read_csv("../input/zap_housing_cd_year_panel_primary.csv", show_col_types = FALSE, na = c("", "NA")) |>
   mutate(assignment_type = "primary_zap_cd")
 
-bbl_df <- read_csv(zap_housing_cd_year_panel_bbl_fractional_csv, show_col_types = FALSE, na = c("", "NA")) |>
+bbl_df <- read_csv("../input/zap_housing_cd_year_panel_bbl_fractional.csv", show_col_types = FALSE, na = c("", "NA")) |>
   mutate(assignment_type = "bbl_fractional_current_mappluto")
 
 panel_df <- bind_rows(primary_df, bbl_df) |>
@@ -216,14 +187,14 @@ make_plot(
   tercile_year_df,
   "rate_per_10000_occupied_units_1990",
   "Applications per 10,000 occupied 1990 units",
-  out_per_10000_pdf
+  "../output/zap_housing_pipeline_tercile_trends_per_10000.pdf"
 )
 
 make_plot(
   tercile_year_df,
   "rate_per_residential_acre",
   "Applications per residential acre",
-  out_per_residential_acre_pdf
+  "../output/zap_housing_pipeline_tercile_trends_per_residential_acre.pdf"
 )
 
 qc_df <- bind_rows(
@@ -259,21 +230,21 @@ qc_df <- bind_rows(
   ),
   tibble(
     metric = "per_10000_pdf_nonempty",
-    value = as.character(file.info(out_per_10000_pdf)$size),
-    status = if_else(file.info(out_per_10000_pdf)$size > 0, "pass", "fail"),
+    value = as.character(file.info("../output/zap_housing_pipeline_tercile_trends_per_10000.pdf")$size),
+    status = if_else(file.info("../output/zap_housing_pipeline_tercile_trends_per_10000.pdf")$size > 0, "pass", "fail"),
     note = "Raw trend plot scaled by 1990 occupied units."
   ),
   tibble(
     metric = "per_residential_acre_pdf_nonempty",
-    value = as.character(file.info(out_per_residential_acre_pdf)$size),
-    status = if_else(file.info(out_per_residential_acre_pdf)$size > 0, "pass", "fail"),
+    value = as.character(file.info("../output/zap_housing_pipeline_tercile_trends_per_residential_acre.pdf")$size),
+    status = if_else(file.info("../output/zap_housing_pipeline_tercile_trends_per_residential_acre.pdf")$size > 0, "pass", "fail"),
     note = "Raw trend plot scaled by residential acres."
   )
 )
 
-write_csv(tercile_year_df, out_tercile_year_csv, na = "")
-write_csv(qc_df, out_qc_csv, na = "")
+write_csv(tercile_year_df, "../output/zap_housing_pipeline_tercile_year.csv", na = "")
+write_csv(qc_df, "../output/zap_housing_pipeline_tercile_trends_qc.csv", na = "")
 
 if (any(qc_df$status == "fail")) {
-  stop("ZAP housing pipeline tercile trend QC failed; inspect ", out_qc_csv)
+  stop("ZAP housing pipeline tercile trend QC failed; inspect ../output/zap_housing_pipeline_tercile_trends_qc.csv")
 }
