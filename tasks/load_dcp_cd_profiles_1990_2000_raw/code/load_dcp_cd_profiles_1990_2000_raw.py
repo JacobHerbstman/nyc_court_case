@@ -112,20 +112,14 @@ def parse_title(title: str, borough_code: str) -> tuple[str | None, str | None, 
 
 
 def main() -> None:
-    if len(sys.argv) != 4:
-        raise SystemExit(
-            "Expected 3 arguments: dcp_cd_profiles_1990_2000_files_csv out_index_csv out_qc_csv"
-        )
+    if len(sys.argv) != 1:
+        raise SystemExit("Expected no arguments.")
 
-    dcp_cd_profiles_1990_2000_files_csv = Path(sys.argv[1])
-    out_index_csv = Path(sys.argv[2])
-    out_qc_csv = Path(sys.argv[3])
-
-    file_inventory = pd.read_csv(dcp_cd_profiles_1990_2000_files_csv)
+    file_inventory = pd.read_csv("../input/dcp_cd_profiles_1990_2000_files.csv")
 
     if file_inventory.empty:
-        pd.DataFrame().to_csv(out_index_csv, index=False)
-        pd.DataFrame().to_csv(out_qc_csv, index=False)
+        pd.DataFrame().to_csv("../output/dcp_cd_profiles_1990_2000_raw_files.csv", index=False)
+        pd.DataFrame().to_csv("../output/dcp_cd_profiles_1990_2000_raw_qc.csv", index=False)
         return
 
     file_inventory = file_inventory[
@@ -135,8 +129,8 @@ def main() -> None:
     ].copy()
 
     if file_inventory.empty:
-        pd.DataFrame().to_csv(out_index_csv, index=False)
-        pd.DataFrame().to_csv(out_qc_csv, index=False)
+        pd.DataFrame().to_csv("../output/dcp_cd_profiles_1990_2000_raw_files.csv", index=False)
+        pd.DataFrame().to_csv("../output/dcp_cd_profiles_1990_2000_raw_qc.csv", index=False)
         return
 
     index_rows: list[dict[str, object]] = []
@@ -313,7 +307,6 @@ def main() -> None:
         raw_parquet_local = Path("..") / "output" / f"dcp_cd_profiles_1990_2000_{pull_date}_raw.parquet"
         page_index_local = Path("..") / "output" / f"dcp_cd_profiles_1990_2000_{pull_date}_page_index.csv"
 
-        raw_parquet_local.parent.mkdir(parents=True, exist_ok=True)
         line_df.to_parquet(raw_parquet_local, index=False)
         page_df.to_csv(page_index_local, index=False)
 
@@ -337,9 +330,9 @@ def main() -> None:
             }
         )
 
-    pd.DataFrame(index_rows).to_csv(out_index_csv, index=False)
-    pd.DataFrame(qc_rows).to_csv(out_qc_csv, index=False)
-    print(f"Wrote raw DCP CD profile outputs to {out_index_csv.parent}")
+    pd.DataFrame(index_rows).to_csv("../output/dcp_cd_profiles_1990_2000_raw_files.csv", index=False)
+    pd.DataFrame(qc_rows).to_csv("../output/dcp_cd_profiles_1990_2000_raw_qc.csv", index=False)
+    print("Wrote raw DCP CD profile outputs to ../output")
 
 
 if __name__ == "__main__":

@@ -1,7 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/load_dob_open_data_raw/code")
-# dob_open_data_files_csv <- "../input/dob_open_data_files.csv"
-# out_index_csv <- "../output/dob_open_data_raw_files.csv"
-# out_qc_csv <- "../output/dob_open_data_raw_qc.csv"
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -11,17 +8,7 @@ suppressPackageStartupMessages({
 
 source("../../_lib/source_pipeline_utils.R")
 
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 3) {
-  stop("Expected 3 arguments: dob_open_data_files_csv out_index_csv out_qc_csv")
-}
-
-dob_open_data_files_csv <- args[1]
-out_index_csv <- args[2]
-out_qc_csv <- args[3]
-
-dob_files <- read_csv(dob_open_data_files_csv, show_col_types = FALSE, na = c("", "NA")) |>
+dob_files <- read_csv("../input/dob_open_data_files.csv", show_col_types = FALSE, na = c("", "NA")) |>
   filter(file.exists(raw_path)) |>
   mutate(
     source_id = as.character(source_id),
@@ -31,8 +18,8 @@ dob_files <- read_csv(dob_open_data_files_csv, show_col_types = FALSE, na = c(""
   )
 
 if (nrow(dob_files) == 0) {
-  write_csv(tibble(), out_index_csv, na = "")
-  write_csv(tibble(), out_qc_csv, na = "")
+  write_csv_if_changed(tibble(), "../output/dob_open_data_raw_files.csv")
+  write_csv_if_changed(tibble(), "../output/dob_open_data_raw_qc.csv")
   quit(save = "no")
 }
 
@@ -99,6 +86,6 @@ for (i in seq_len(nrow(dob_files))) {
   )
 }
 
-write_csv(bind_rows(index_rows), out_index_csv, na = "")
-write_csv(bind_rows(qc_rows), out_qc_csv, na = "")
-cat("Wrote DOB raw load outputs to", dirname(out_index_csv), "\n")
+write_csv_if_changed(bind_rows(index_rows), "../output/dob_open_data_raw_files.csv")
+write_csv_if_changed(bind_rows(qc_rows), "../output/dob_open_data_raw_qc.csv")
+cat("Wrote DOB raw load outputs to ../output\n")

@@ -1,7 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/load_census_bps_raw/code")
-# census_bps_files_csv <- "../input/census_bps_files.csv"
-# out_index_csv <- "../output/census_bps_raw_files.csv"
-# out_qc_csv <- "../output/census_bps_raw_qc.csv"
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -11,16 +8,6 @@ suppressPackageStartupMessages({
 })
 
 source("../../_lib/source_pipeline_utils.R")
-
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 3) {
-  stop("Expected 3 arguments: census_bps_files_csv out_index_csv out_qc_csv")
-}
-
-census_bps_files_csv <- args[1]
-out_index_csv <- args[2]
-out_qc_csv <- args[3]
 
 normalize_bps_place_name <- function(x) {
   x |>
@@ -34,14 +21,14 @@ safe_numeric_col <- function(x) {
   suppressWarnings(as.numeric(str_trim(as.character(x))))
 }
 
-bps_files <- read_csv(census_bps_files_csv, show_col_types = FALSE, na = c("", "NA")) |>
+bps_files <- read_csv("../input/census_bps_files.csv", show_col_types = FALSE, na = c("", "NA")) |>
   filter(file_role == "annual_place_ascii", file.exists(raw_path)) |>
   mutate(vintage = as.integer(vintage)) |>
   arrange(vintage)
 
 if (nrow(bps_files) == 0) {
-  write_csv(tibble(), out_index_csv, na = "")
-  write_csv(tibble(), out_qc_csv, na = "")
+  write_csv_if_changed(tibble(), "../output/census_bps_raw_files.csv")
+  write_csv_if_changed(tibble(), "../output/census_bps_raw_qc.csv")
   quit(save = "no")
 }
 
@@ -151,6 +138,6 @@ for (i in seq_len(nrow(bps_files))) {
   )
 }
 
-write_csv(bind_rows(index_rows), out_index_csv, na = "")
-write_csv(bind_rows(qc_rows), out_qc_csv, na = "")
-cat("Wrote raw Census BPS outputs to", dirname(out_index_csv), "\n")
+write_csv_if_changed(bind_rows(index_rows), "../output/census_bps_raw_files.csv")
+write_csv_if_changed(bind_rows(qc_rows), "../output/census_bps_raw_qc.csv")
+cat("Wrote raw Census BPS outputs to ../output\n")

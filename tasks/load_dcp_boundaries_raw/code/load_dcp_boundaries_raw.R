@@ -1,7 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/load_dcp_boundaries_raw/code")
-# dcp_boundary_files_csv <- "../input/dcp_boundary_files.csv"
-# out_index_csv <- "../output/dcp_boundary_raw_files.csv"
-# out_qc_csv <- "../output/dcp_boundary_raw_qc.csv"
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -12,22 +9,12 @@ suppressPackageStartupMessages({
 
 source("../../_lib/source_pipeline_utils.R")
 
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 3) {
-  stop("Expected 3 arguments: dcp_boundary_files_csv out_index_csv out_qc_csv")
-}
-
-dcp_boundary_files_csv <- args[1]
-out_index_csv <- args[2]
-out_qc_csv <- args[3]
-
-boundary_files <- read_csv(dcp_boundary_files_csv, show_col_types = FALSE, na = c("", "NA")) |>
+boundary_files <- read_csv("../input/dcp_boundary_files.csv", show_col_types = FALSE, na = c("", "NA")) |>
   filter(file_role == "boundary_shapefile_zip", file.exists(raw_path))
 
 if (nrow(boundary_files) == 0) {
-  write_csv(tibble(), out_index_csv, na = "")
-  write_csv(tibble(), out_qc_csv, na = "")
+  write_csv_if_changed(tibble(), "../output/dcp_boundary_raw_files.csv")
+  write_csv_if_changed(tibble(), "../output/dcp_boundary_raw_qc.csv")
   quit(save = "no")
 }
 
@@ -108,6 +95,6 @@ for (i in seq_len(nrow(boundary_files))) {
   )
 }
 
-write_csv(bind_rows(index_rows), out_index_csv, na = "")
-write_csv(bind_rows(qc_rows), out_qc_csv, na = "")
-cat("Wrote raw DCP boundary outputs to", dirname(out_index_csv), "\n")
+write_csv_if_changed(bind_rows(index_rows), "../output/dcp_boundary_raw_files.csv")
+write_csv_if_changed(bind_rows(qc_rows), "../output/dcp_boundary_raw_qc.csv")
+cat("Wrote raw DCP boundary outputs to ../output\n")
