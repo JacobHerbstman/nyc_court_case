@@ -1,14 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_cd_homeownership_long_units_borough_details/code")
-# cd_homeownership_long_units_series_csv <- "../input/cd_homeownership_long_units_series.csv"
-# mappluto_construction_proxy_cd_year_csv <- "../input/mappluto_construction_proxy_cd_year.csv"
-# dcp_housing_database_files_csv <- "../input/dcp_housing_database_files.csv"
-# cd_homeownership_exact_decadal_validation_tercile_csv <- "../input/cd_homeownership_exact_decadal_validation_tercile.csv"
-# cd_homeownership_proxy_overlap_borough_year_csv <- "../input/cd_homeownership_proxy_overlap_borough_year.csv"
-# out_borough_era_csv <- "../output/cd_homeownership_long_units_borough_era_shares.csv"
-# out_overlap_error_csv <- "../output/cd_homeownership_long_units_borough_overlap_error.csv"
-# out_exact_splice_csv <- "../output/cd_homeownership_long_units_exact_era_splice_total_units.csv"
-# out_plots_pdf <- "../output/cd_homeownership_long_units_borough_plots.pdf"
-# out_qc_csv <- "../output/cd_homeownership_long_units_borough_details_qc.csv"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -20,23 +10,6 @@ suppressPackageStartupMessages({
   library(tibble)
 })
 
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 10) {
-  stop("Expected 10 arguments: cd_homeownership_long_units_series_csv mappluto_construction_proxy_cd_year_csv dcp_housing_database_files_csv cd_homeownership_exact_decadal_validation_tercile_csv cd_homeownership_proxy_overlap_borough_year_csv out_borough_era_csv out_overlap_error_csv out_exact_splice_csv out_plots_pdf out_qc_csv")
-}
-
-cd_homeownership_long_units_series_csv <- args[1]
-mappluto_construction_proxy_cd_year_csv <- args[2]
-dcp_housing_database_files_csv <- args[3]
-cd_homeownership_exact_decadal_validation_tercile_csv <- args[4]
-cd_homeownership_proxy_overlap_borough_year_csv <- args[5]
-out_borough_era_csv <- args[6]
-out_overlap_error_csv <- args[7]
-out_exact_splice_csv <- args[8]
-out_plots_pdf <- args[9]
-out_qc_csv <- args[10]
-
 assert_unique_keys <- function(df, keys, label) {
   duplicate_keys <- df |>
     count(across(all_of(keys)), name = "n") |>
@@ -47,7 +20,7 @@ assert_unique_keys <- function(df, keys, label) {
   }
 }
 
-district_lookup <- read_csv(cd_homeownership_long_units_series_csv, show_col_types = FALSE, na = c("", "NA")) |>
+district_lookup <- read_csv("../input/cd_homeownership_long_units_series.csv", show_col_types = FALSE, na = c("", "NA")) |>
   distinct(borocd, borough_code, borough_name, treat_pp) |>
   mutate(
     borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
@@ -71,7 +44,7 @@ if (n_distinct(district_lookup$borocd) != 59) {
   stop("Expected the borough-details district lookup to cover 59 community districts.")
 }
 
-hdb_file <- read_csv(dcp_housing_database_files_csv, show_col_types = FALSE, na = c("", "NA")) |>
+hdb_file <- read_csv("../input/dcp_housing_database_files.csv", show_col_types = FALSE, na = c("", "NA")) |>
   filter(source_id == "dcp_housing_database_project_level", !is.na(parquet_path), file.exists(parquet_path)) |>
   mutate(
     vintage = as.character(vintage),
@@ -83,10 +56,10 @@ hdb_file <- read_csv(dcp_housing_database_files_csv, show_col_types = FALSE, na 
   slice_head(n = 1)
 
 if (nrow(hdb_file) == 0) {
-  stop("Could not find a staged DCP Housing Database project-level parquet in ", dcp_housing_database_files_csv)
+  stop("Could not find a staged DCP Housing Database project-level parquet in ../input/dcp_housing_database_files.csv")
 }
 
-units_series_df <- read_csv(cd_homeownership_long_units_series_csv, show_col_types = FALSE, na = c("", "NA")) |>
+units_series_df <- read_csv("../input/cd_homeownership_long_units_series.csv", show_col_types = FALSE, na = c("", "NA")) |>
   filter(
     series_kind == "preferred_long_series",
     series_family %in% c("units_built_total", "units_built_50_plus")
@@ -101,7 +74,7 @@ units_series_df <- read_csv(cd_homeownership_long_units_series_csv, show_col_typ
     outcome_value = suppressWarnings(as.numeric(outcome_value))
   )
 
-projects_proxy_df <- read_csv(mappluto_construction_proxy_cd_year_csv, show_col_types = FALSE, na = c("", "NA")) |>
+projects_proxy_df <- read_csv("../input/mappluto_construction_proxy_cd_year.csv", show_col_types = FALSE, na = c("", "NA")) |>
   transmute(
     borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
     borough_code = suppressWarnings(as.integer(borough_code)),
@@ -191,9 +164,9 @@ borough_era_df <- all_series_df |>
   ungroup() |>
   arrange(series_family, borough_code, era, treat_tercile)
 
-write_csv(borough_era_df, out_borough_era_csv, na = "")
+write_csv(borough_era_df, "../output/cd_homeownership_long_units_borough_era_shares.csv", na = "")
 
-overlap_error_df <- read_csv(cd_homeownership_proxy_overlap_borough_year_csv, show_col_types = FALSE, na = c("", "NA")) |>
+overlap_error_df <- read_csv("../input/cd_homeownership_proxy_overlap_borough_year.csv", show_col_types = FALSE, na = c("", "NA")) |>
   transmute(
     outcome_family = outcome_family,
     borough_code = suppressWarnings(as.integer(borough_code)),
@@ -229,9 +202,9 @@ overlap_error_df <- read_csv(cd_homeownership_proxy_overlap_borough_year_csv, sh
   ) |>
   arrange(series_family, borough_code, era, treat_tercile)
 
-write_csv(overlap_error_df, out_overlap_error_csv, na = "")
+write_csv(overlap_error_df, "../output/cd_homeownership_long_units_borough_overlap_error.csv", na = "")
 
-exact_tercile_df <- read_csv(cd_homeownership_exact_decadal_validation_tercile_csv, show_col_types = FALSE, na = c("", "NA")) |>
+exact_tercile_df <- read_csv("../input/cd_homeownership_exact_decadal_validation_tercile.csv", show_col_types = FALSE, na = c("", "NA")) |>
   filter(
     geography_scope == "all_boroughs",
     source == "Exact DCP 2000 structure-built counts"
@@ -243,7 +216,7 @@ exact_tercile_df <- read_csv(cd_homeownership_exact_decadal_validation_tercile_c
     borough_share = suppressWarnings(as.numeric(borough_share))
   )
 
-observed_era_df <- read_csv(cd_homeownership_long_units_series_csv, show_col_types = FALSE, na = c("", "NA")) |>
+observed_era_df <- read_csv("../input/cd_homeownership_long_units_series.csv", show_col_types = FALSE, na = c("", "NA")) |>
   filter(
     source_family == "dcp_hdb_completion",
     series_kind == "preferred_long_series",
@@ -293,7 +266,7 @@ exact_splice_df <- bind_rows(exact_tercile_df, observed_era_df) |>
   mutate(treat_tercile_label = factor(treat_tercile_label, levels = c("Low", "Middle", "High"))) |>
   arrange(era, treat_tercile)
 
-write_csv(exact_splice_df, out_exact_splice_csv, na = "")
+write_csv(exact_splice_df, "../output/cd_homeownership_long_units_exact_era_splice_total_units.csv", na = "")
 
 plot_df <- borough_year_shares_df |>
   filter(series_family %in% c("units_built_total", "units_built_50_plus", "projects_built_50_plus")) |>
@@ -302,7 +275,7 @@ plot_df <- borough_year_shares_df |>
     borough_name = factor(borough_name, levels = c("Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"))
   )
 
-pdf(out_plots_pdf, width = 11, height = 8.5)
+pdf("../output/cd_homeownership_long_units_borough_plots.pdf", width = 11, height = 8.5)
 
 for (family_value in c("units_built_total", "units_built_50_plus", "projects_built_50_plus")) {
   family_plot_df <- plot_df |>
@@ -368,6 +341,6 @@ qc_df <- bind_rows(
   tibble(metric = "max_positive_borough_era_share_sum_gap", value = max(abs(positive_borough_era_share_sum_df$total_share - 1), na.rm = TRUE), note = "Maximum absolute gap from 1 in positive-denominator borough-era tercile-share sums.")
 )
 
-write_csv(qc_df, out_qc_csv, na = "")
+write_csv(qc_df, "../output/cd_homeownership_long_units_borough_details_qc.csv", na = "")
 
-cat("Wrote borough detail outputs to", dirname(out_borough_era_csv), "\n")
+cat("Wrote borough detail outputs to ../output\n")

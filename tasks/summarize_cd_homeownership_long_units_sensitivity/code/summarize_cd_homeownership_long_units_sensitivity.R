@@ -1,17 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_cd_homeownership_long_units_sensitivity/code")
-# cd_homeownership_long_units_series_csv <- "../input/cd_homeownership_long_units_series.csv"
-# mappluto_construction_proxy_cd_year_csv <- "../input/mappluto_construction_proxy_cd_year.csv"
-# dcp_housing_database_files_csv <- "../input/dcp_housing_database_files.csv"
-# out_pooled_csv <- "../output/cd_homeownership_long_units_sensitivity_pooled.csv"
-# out_borough_csv <- "../output/cd_homeownership_long_units_sensitivity_borough.csv"
-# out_leave_one_out_csv <- "../output/cd_homeownership_long_units_sensitivity_leave_one_out.csv"
-# out_top5_out_csv <- "../output/cd_homeownership_long_units_sensitivity_top5_out.csv"
-# out_levels_csv <- "../output/cd_homeownership_long_units_sensitivity_levels.csv"
-# out_extensive_csv <- "../output/cd_homeownership_long_units_sensitivity_extensive.csv"
-# out_top5_csv <- "../output/cd_homeownership_long_units_sensitivity_top5_cd_year.csv"
-# out_summary_csv <- "../output/cd_homeownership_long_units_sensitivity_summary.csv"
-# out_qc_csv <- "../output/cd_homeownership_long_units_sensitivity_qc.csv"
-# out_plots_pdf <- "../output/cd_homeownership_long_units_sensitivity_plots.pdf"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -21,26 +8,6 @@ suppressPackageStartupMessages({
   library(stringr)
   library(tidyr)
 })
-
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 13) {
-  stop("Expected 13 arguments: cd_homeownership_long_units_series_csv mappluto_construction_proxy_cd_year_csv dcp_housing_database_files_csv out_pooled_csv out_borough_csv out_leave_one_out_csv out_top5_out_csv out_levels_csv out_extensive_csv out_top5_csv out_summary_csv out_qc_csv out_plots_pdf")
-}
-
-cd_homeownership_long_units_series_csv <- args[1]
-mappluto_construction_proxy_cd_year_csv <- args[2]
-dcp_housing_database_files_csv <- args[3]
-out_pooled_csv <- args[4]
-out_borough_csv <- args[5]
-out_leave_one_out_csv <- args[6]
-out_top5_out_csv <- args[7]
-out_levels_csv <- args[8]
-out_extensive_csv <- args[9]
-out_top5_csv <- args[10]
-out_summary_csv <- args[11]
-out_qc_csv <- args[12]
-out_plots_pdf <- args[13]
 
 assert_unique_keys <- function(df, keys, label) {
   duplicate_keys <- df |>
@@ -132,7 +99,7 @@ compute_level_scenario <- function(units_df, project_df, scenario_type, scenario
   bind_rows(units_rates, project_levels)
 }
 
-series_df <- read_csv(cd_homeownership_long_units_series_csv, show_col_types = FALSE, na = c("", "NA")) |>
+series_df <- read_csv("../input/cd_homeownership_long_units_series.csv", show_col_types = FALSE, na = c("", "NA")) |>
   filter(
     series_kind == "preferred_long_series",
     series_family %in% c("units_built_total", "units_built_50_plus")
@@ -153,7 +120,7 @@ series_df <- read_csv(cd_homeownership_long_units_series_csv, show_col_types = F
     occupied_units_1990 = suppressWarnings(as.numeric(occupied_units_1990))
   )
 
-district_lookup <- read_csv(cd_homeownership_long_units_series_csv, show_col_types = FALSE, na = c("", "NA")) |>
+district_lookup <- read_csv("../input/cd_homeownership_long_units_series.csv", show_col_types = FALSE, na = c("", "NA")) |>
   distinct(borocd, borough_code, borough_name, treat_pp, occupied_units_1990) |>
   mutate(
     borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
@@ -176,7 +143,7 @@ if (n_distinct(district_lookup$borocd) != 59) {
   stop("Expected the long-units sensitivity district lookup to cover 59 community districts.")
 }
 
-hdb_file <- read_csv(dcp_housing_database_files_csv, show_col_types = FALSE, na = c("", "NA")) |>
+hdb_file <- read_csv("../input/dcp_housing_database_files.csv", show_col_types = FALSE, na = c("", "NA")) |>
   filter(source_id == "dcp_housing_database_project_level", !is.na(parquet_path), file.exists(parquet_path)) |>
   mutate(
     vintage = as.character(vintage),
@@ -188,7 +155,7 @@ hdb_file <- read_csv(dcp_housing_database_files_csv, show_col_types = FALSE, na 
   slice_head(n = 1)
 
 if (nrow(hdb_file) == 0) {
-  stop("Could not find a staged DCP Housing Database project-level parquet in ", dcp_housing_database_files_csv)
+  stop("Could not find a staged DCP Housing Database project-level parquet in ../input/dcp_housing_database_files.csv")
 }
 
 series_df <- series_df |>
@@ -206,9 +173,9 @@ top5_cd_year <- series_df |>
   arrange(desc(outcome_value), borocd, year) |>
   slice_head(n = 5)
 
-write_csv(top5_cd_year, out_top5_csv, na = "")
+write_csv(top5_cd_year, "../output/cd_homeownership_long_units_sensitivity_top5_cd_year.csv", na = "")
 
-project_proxy <- read_csv(mappluto_construction_proxy_cd_year_csv, show_col_types = FALSE, na = c("", "NA")) |>
+project_proxy <- read_csv("../input/mappluto_construction_proxy_cd_year.csv", show_col_types = FALSE, na = c("", "NA")) |>
   transmute(
     borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
     borough_code = suppressWarnings(as.integer(borough_code)),
@@ -297,10 +264,10 @@ top5_out_share_df <- compute_share_scenario(
   "drop_top5_cd_year_50_plus"
 )
 
-write_csv(pooled_share_df, out_pooled_csv, na = "")
-write_csv(borough_share_df, out_borough_csv, na = "")
-write_csv(leave_one_out_share_df, out_leave_one_out_csv, na = "")
-write_csv(top5_out_share_df, out_top5_out_csv, na = "")
+write_csv(pooled_share_df, "../output/cd_homeownership_long_units_sensitivity_pooled.csv", na = "")
+write_csv(borough_share_df, "../output/cd_homeownership_long_units_sensitivity_borough.csv", na = "")
+write_csv(leave_one_out_share_df, "../output/cd_homeownership_long_units_sensitivity_leave_one_out.csv", na = "")
+write_csv(top5_out_share_df, "../output/cd_homeownership_long_units_sensitivity_top5_out.csv", na = "")
 
 levels_df <- bind_rows(
   compute_level_scenario(series_df, project_panel, "pooled", "all_boroughs"),
@@ -312,7 +279,7 @@ levels_df <- bind_rows(
   )
 )
 
-write_csv(levels_df, out_levels_csv, na = "")
+write_csv(levels_df, "../output/cd_homeownership_long_units_sensitivity_levels.csv", na = "")
 
 extensive_df <- project_panel |>
   group_by(year, treat_tercile, treat_tercile_label) |>
@@ -332,7 +299,7 @@ extensive_df <- project_panel |>
     metric_value = if_else(metric == "avg_units_per_nb_project" & year < 2010, NA_real_, metric_value)
   )
 
-write_csv(extensive_df, out_extensive_csv, na = "")
+write_csv(extensive_df, "../output/cd_homeownership_long_units_sensitivity_extensive.csv", na = "")
 
 all_share_df <- bind_rows(pooled_share_df, borough_share_df, leave_one_out_share_df, top5_out_share_df) |>
   mutate(
@@ -370,7 +337,7 @@ summary_df <- all_share_df |>
   ) |>
   arrange(series_family, scenario_type, scenario_name)
 
-write_csv(summary_df, out_summary_csv, na = "")
+write_csv(summary_df, "../output/cd_homeownership_long_units_sensitivity_summary.csv", na = "")
 
 qc_df <- bind_rows(
   tibble(metric = "district_count", value = n_distinct(series_df$borocd), note = "Standard CDs in the preferred long sensitivity series."),
@@ -383,7 +350,7 @@ qc_df <- bind_rows(
   tibble(metric = "pooled_50_plus_high_2020s_decline", value = summary_df$decline_survives_2020s[summary_df$scenario_type == "pooled" & summary_df$scenario_name == "all_boroughs" & summary_df$series_family == "units_built_50_plus"], note = "One means the high-homeownership tercile still has a lower 2020-2025 share than in 1985-1989 for 50+ units.")
 )
 
-write_csv(qc_df, out_qc_csv, na = "")
+write_csv(qc_df, "../output/cd_homeownership_long_units_sensitivity_qc.csv", na = "")
 
 pooled_plot_df <- pooled_share_df |>
   mutate(
@@ -436,7 +403,7 @@ extensive_plot_df <- extensive_df |>
     )
   )
 
-pdf(out_plots_pdf, width = 11, height = 8.5)
+pdf("../output/cd_homeownership_long_units_sensitivity_plots.pdf", width = 11, height = 8.5)
 print(
   ggplot(pooled_plot_df, aes(x = year, y = borough_share, color = treat_tercile_label)) +
     geom_line(linewidth = 0.8) +
@@ -492,4 +459,4 @@ print(
 )
 dev.off()
 
-cat("Wrote long-units sensitivity outputs to", dirname(out_pooled_csv), "\n")
+cat("Wrote long-units sensitivity outputs to ../output\n")

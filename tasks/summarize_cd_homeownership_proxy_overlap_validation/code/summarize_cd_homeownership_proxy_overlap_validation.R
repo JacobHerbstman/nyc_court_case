@@ -1,13 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_cd_homeownership_proxy_overlap_validation/code")
-# cd_homeownership_1990_measure_csv <- "../input/cd_homeownership_1990_measure.csv"
-# mappluto_construction_proxy_cd_year_csv <- "../input/mappluto_construction_proxy_cd_year.csv"
-# dcp_housing_database_files_csv <- "../input/dcp_housing_database_files.csv"
-# out_tercile_year_csv <- "../output/cd_homeownership_proxy_overlap_tercile_year.csv"
-# out_borough_year_csv <- "../output/cd_homeownership_proxy_overlap_borough_year.csv"
-# out_residual_csv <- "../output/cd_homeownership_proxy_overlap_cd_year_residual.csv"
-# out_metrics_csv <- "../output/cd_homeownership_proxy_overlap_metrics.csv"
-# out_qc_csv <- "../output/cd_homeownership_proxy_overlap_qc.csv"
-# out_plots_pdf <- "../output/cd_homeownership_proxy_overlap_plots.pdf"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -17,22 +8,6 @@ suppressPackageStartupMessages({
   library(stringr)
   library(tidyr)
 })
-
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 9) {
-  stop("Expected 9 arguments: cd_homeownership_1990_measure_csv mappluto_construction_proxy_cd_year_csv dcp_housing_database_files_csv out_tercile_year_csv out_borough_year_csv out_residual_csv out_metrics_csv out_qc_csv out_plots_pdf")
-}
-
-cd_homeownership_1990_measure_csv <- args[1]
-mappluto_construction_proxy_cd_year_csv <- args[2]
-dcp_housing_database_files_csv <- args[3]
-out_tercile_year_csv <- args[4]
-out_borough_year_csv <- args[5]
-out_residual_csv <- args[6]
-out_metrics_csv <- args[7]
-out_qc_csv <- args[8]
-out_plots_pdf <- args[9]
 
 metric_value <- function(df, family, metric_name) {
   value <- df |>
@@ -56,7 +31,7 @@ assert_unique_keys <- function(df, keys, label) {
   }
 }
 
-treatment_df <- read_csv(cd_homeownership_1990_measure_csv, show_col_types = FALSE, na = c("", "NA")) |>
+treatment_df <- read_csv("../input/cd_homeownership_1990_measure.csv", show_col_types = FALSE, na = c("", "NA")) |>
   transmute(
     borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
     borough_code = suppressWarnings(as.integer(borough_code)),
@@ -80,7 +55,7 @@ if (n_distinct(treatment_df$borocd) != 59) {
   stop("Expected the homeownership treatment lookup to cover 59 community districts.")
 }
 
-hdb_file <- read_csv(dcp_housing_database_files_csv, show_col_types = FALSE, na = c("", "NA")) |>
+hdb_file <- read_csv("../input/dcp_housing_database_files.csv", show_col_types = FALSE, na = c("", "NA")) |>
   filter(source_id == "dcp_housing_database_project_level", !is.na(parquet_path), file.exists(parquet_path)) |>
   mutate(
     vintage = as.character(vintage),
@@ -92,10 +67,10 @@ hdb_file <- read_csv(dcp_housing_database_files_csv, show_col_types = FALSE, na 
   slice_head(n = 1)
 
 if (nrow(hdb_file) == 0) {
-  stop("Could not find a staged DCP Housing Database project-level parquet in ", dcp_housing_database_files_csv)
+  stop("Could not find a staged DCP Housing Database project-level parquet in ../input/dcp_housing_database_files.csv")
 }
 
-proxy_long <- read_csv(mappluto_construction_proxy_cd_year_csv, show_col_types = FALSE, na = c("", "NA")) |>
+proxy_long <- read_csv("../input/mappluto_construction_proxy_cd_year.csv", show_col_types = FALSE, na = c("", "NA")) |>
   transmute(
     borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
     borough_code = suppressWarnings(as.integer(borough_code)),
@@ -229,9 +204,9 @@ cd_year_residual_df <- balanced_df |>
   ) |>
   arrange(outcome_family, borocd, year)
 
-write_csv(tercile_year_df, out_tercile_year_csv, na = "")
-write_csv(borough_year_compare_df, out_borough_year_csv, na = "")
-write_csv(cd_year_residual_df, out_residual_csv, na = "")
+write_csv(tercile_year_df, "../output/cd_homeownership_proxy_overlap_tercile_year.csv", na = "")
+write_csv(borough_year_compare_df, "../output/cd_homeownership_proxy_overlap_borough_year.csv", na = "")
+write_csv(cd_year_residual_df, "../output/cd_homeownership_proxy_overlap_cd_year_residual.csv", na = "")
 
 base_metrics_df <- bind_rows(
   tercile_year_df |>
@@ -296,7 +271,7 @@ metrics_df <- bind_rows(
 ) |>
   arrange(outcome_family, metric)
 
-write_csv(metrics_df, out_metrics_csv, na = "")
+write_csv(metrics_df, "../output/cd_homeownership_proxy_overlap_metrics.csv", na = "")
 
 share_sum_df <- tercile_borough_source |>
   group_by(source, outcome_family, borough_code, borough_name, year) |>
@@ -321,7 +296,7 @@ qc_df <- bind_rows(
   tibble(metric = "positive_tercile_share_sum_max", value = max(positive_share_sum_df$total_share, na.rm = TRUE), note = "Maximum borough-year tercile-share sum among positive-total cells; should equal 1.")
 )
 
-write_csv(qc_df, out_qc_csv, na = "")
+write_csv(qc_df, "../output/cd_homeownership_proxy_overlap_qc.csv", na = "")
 
 share_plot_df <- tercile_year_df |>
   mutate(
@@ -356,7 +331,7 @@ residual_plot_df <- cd_year_residual_df |>
     )
   )
 
-pdf(out_plots_pdf, width = 11, height = 8.5)
+pdf("../output/cd_homeownership_proxy_overlap_plots.pdf", width = 11, height = 8.5)
 print(
   ggplot(share_plot_df, aes(x = year, y = borough_share, color = treat_tercile_label, linetype = source_label)) +
     geom_line(linewidth = 0.75) +
@@ -386,4 +361,4 @@ print(
 )
 dev.off()
 
-cat("Wrote proxy overlap validation outputs to", dirname(out_tercile_year_csv), "\n")
+cat("Wrote proxy overlap validation outputs to ../output\n")

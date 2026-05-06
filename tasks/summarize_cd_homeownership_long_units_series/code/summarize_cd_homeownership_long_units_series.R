@@ -1,20 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_cd_homeownership_long_units_series/code")
-# cd_homeownership_long_units_series_csv <- "../input/cd_homeownership_long_units_series.csv"
-# out_city_year_csv <- "../output/cd_homeownership_long_units_city_year.csv"
-# out_tercile_year_csv <- "../output/cd_homeownership_long_units_tercile_year.csv"
-# out_tercile_era_csv <- "../output/cd_homeownership_long_units_tercile_era.csv"
-# out_qc_csv <- "../output/cd_homeownership_long_units_summary_qc.csv"
-# out_plots_pdf <- "../output/cd_homeownership_long_units_plots.pdf"
-# out_tercile_year_ma3_csv <- "../output/cd_homeownership_long_units_tercile_year_ma3.csv"
-# out_tercile_year_ma5_csv <- "../output/cd_homeownership_long_units_tercile_year_ma5.csv"
-# out_tercile_plot_ma3_pdf <- "../output/cd_homeownership_long_units_tercile_plot_ma3.pdf"
-# out_tercile_plot_ma5_pdf <- "../output/cd_homeownership_long_units_tercile_plot_ma5.pdf"
-# out_project_count_plot_pdf <- "../output/cd_homeownership_long_units_projects_50_plus_counts.pdf"
-# out_project_count_plot_ma3_pdf <- "../output/cd_homeownership_long_units_projects_50_plus_counts_ma3.pdf"
-# out_project_count_plot_ma5_pdf <- "../output/cd_homeownership_long_units_projects_50_plus_counts_ma5.pdf"
-# out_total_unit_count_plot_pdf <- "../output/cd_homeownership_long_units_total_unit_counts.pdf"
-# out_total_unit_count_plot_ma3_pdf <- "../output/cd_homeownership_long_units_total_unit_counts_ma3.pdf"
-# out_total_unit_count_plot_ma5_pdf <- "../output/cd_homeownership_long_units_total_unit_counts_ma5.pdf"
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -23,29 +7,6 @@ suppressPackageStartupMessages({
   library(tidyr)
   library(tibble)
 })
-
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 16) {
-  stop("Expected 16 arguments: cd_homeownership_long_units_series_csv out_city_year_csv out_tercile_year_csv out_tercile_era_csv out_qc_csv out_plots_pdf out_tercile_year_ma3_csv out_tercile_year_ma5_csv out_tercile_plot_ma3_pdf out_tercile_plot_ma5_pdf out_project_count_plot_pdf out_project_count_plot_ma3_pdf out_project_count_plot_ma5_pdf out_total_unit_count_plot_pdf out_total_unit_count_plot_ma3_pdf out_total_unit_count_plot_ma5_pdf")
-}
-
-cd_homeownership_long_units_series_csv <- args[1]
-out_city_year_csv <- args[2]
-out_tercile_year_csv <- args[3]
-out_tercile_era_csv <- args[4]
-out_qc_csv <- args[5]
-out_plots_pdf <- args[6]
-out_tercile_year_ma3_csv <- args[7]
-out_tercile_year_ma5_csv <- args[8]
-out_tercile_plot_ma3_pdf <- args[9]
-out_tercile_plot_ma5_pdf <- args[10]
-out_project_count_plot_pdf <- args[11]
-out_project_count_plot_ma3_pdf <- args[12]
-out_project_count_plot_ma5_pdf <- args[13]
-out_total_unit_count_plot_pdf <- args[14]
-out_total_unit_count_plot_ma3_pdf <- args[15]
-out_total_unit_count_plot_ma5_pdf <- args[16]
 
 assert_unique_keys <- function(df, keys, label) {
   duplicate_keys <- df |>
@@ -57,7 +18,7 @@ assert_unique_keys <- function(df, keys, label) {
   }
 }
 
-series_df <- read_csv(cd_homeownership_long_units_series_csv, show_col_types = FALSE, na = c("", "NA"))
+series_df <- read_csv("../input/cd_homeownership_long_units_series.csv", show_col_types = FALSE, na = c("", "NA"))
 
 district_lookup <- series_df |>
   distinct(borocd, borough_code, borough_name, treat_pp) |>
@@ -238,11 +199,11 @@ tercile_era_df <- preferred_df |>
   ) |>
   arrange(series_family, era, treat_tercile)
 
-write_csv(city_year_df, out_city_year_csv, na = "")
-write_csv(tercile_year_df, out_tercile_year_csv, na = "")
-write_csv(tercile_year_ma3_df, out_tercile_year_ma3_csv, na = "")
-write_csv(tercile_year_ma5_df, out_tercile_year_ma5_csv, na = "")
-write_csv(tercile_era_df, out_tercile_era_csv, na = "")
+write_csv(city_year_df, "../output/cd_homeownership_long_units_city_year.csv", na = "")
+write_csv(tercile_year_df, "../output/cd_homeownership_long_units_tercile_year.csv", na = "")
+write_csv(tercile_year_ma3_df, "../output/cd_homeownership_long_units_tercile_year_ma3.csv", na = "")
+write_csv(tercile_year_ma5_df, "../output/cd_homeownership_long_units_tercile_year_ma5.csv", na = "")
+write_csv(tercile_era_df, "../output/cd_homeownership_long_units_tercile_era.csv", na = "")
 
 write_csv(
   bind_rows(
@@ -259,7 +220,7 @@ write_csv(
     tibble(metric = "required_tercile_series_gap_count", value = nrow(required_tercile_series_gaps), note = "Required annual series-family-year cells with other than three treatment terciles."),
     tibble(metric = "tercile_era_row_count", value = nrow(tercile_era_df), note = "Rows in the era tercile summary for the preferred series.")
   ),
-  out_qc_csv,
+  "../output/cd_homeownership_long_units_summary_qc.csv",
   na = ""
 )
 
@@ -304,7 +265,7 @@ make_count_plot <- function(plot_df, y_column, y_label, split_source_period = FA
     theme(legend.position = "bottom")
 }
 
-pdf(out_plots_pdf, width = 11, height = 8.5)
+pdf("../output/cd_homeownership_long_units_plots.pdf", width = 11, height = 8.5)
 print(
   ggplot(city_plot_df, aes(x = year, y = city_outcome_total, color = series_label)) +
     geom_line(linewidth = 0.9) +
@@ -340,11 +301,11 @@ tercile_plot_ma5_df <- tercile_year_ma5_df |>
     series_label = factor(series_label, levels = c("Units built: total", "Units built: 50+"))
   )
 
-pdf(out_tercile_plot_ma3_pdf, width = 11, height = 8.5)
+pdf("../output/cd_homeownership_long_units_tercile_plot_ma3.pdf", width = 11, height = 8.5)
 print(make_smoothed_tercile_plot(tercile_plot_ma3_df, "Within-borough share (3-year centered MA)"))
 dev.off()
 
-pdf(out_tercile_plot_ma5_pdf, width = 11, height = 8.5)
+pdf("../output/cd_homeownership_long_units_tercile_plot_ma5.pdf", width = 11, height = 8.5)
 print(make_smoothed_tercile_plot(tercile_plot_ma5_df, "Within-borough share (5-year centered MA)"))
 dev.off()
 
@@ -369,15 +330,15 @@ total_unit_count_plot_ma5_df <- tercile_year_ma5_df |>
     series_label = factor(series_label, levels = "Units built: total")
   )
 
-pdf(out_total_unit_count_plot_pdf, width = 11, height = 8.5)
+pdf("../output/cd_homeownership_long_units_total_unit_counts.pdf", width = 11, height = 8.5)
 print(make_count_plot(total_unit_count_plot_df, "outcome_value", "Total units built"))
 dev.off()
 
-pdf(out_total_unit_count_plot_ma3_pdf, width = 11, height = 8.5)
+pdf("../output/cd_homeownership_long_units_total_unit_counts_ma3.pdf", width = 11, height = 8.5)
 print(make_count_plot(total_unit_count_plot_ma3_df, "outcome_value_ma", "Total units built (3-year centered MA)", TRUE))
 dev.off()
 
-pdf(out_total_unit_count_plot_ma5_pdf, width = 11, height = 8.5)
+pdf("../output/cd_homeownership_long_units_total_unit_counts_ma5.pdf", width = 11, height = 8.5)
 print(make_count_plot(total_unit_count_plot_ma5_df, "outcome_value_ma", "Total units built (5-year centered MA)", TRUE))
 dev.off()
 
@@ -402,16 +363,16 @@ project_count_plot_ma5_df <- tercile_year_ma5_df |>
     series_label = factor(series_label, levels = "Projects built: 50+")
   )
 
-pdf(out_project_count_plot_pdf, width = 11, height = 8.5)
+pdf("../output/cd_homeownership_long_units_projects_50_plus_counts.pdf", width = 11, height = 8.5)
 print(make_count_plot(project_count_plot_df, "outcome_value", "50+ unit project count"))
 dev.off()
 
-pdf(out_project_count_plot_ma3_pdf, width = 11, height = 8.5)
+pdf("../output/cd_homeownership_long_units_projects_50_plus_counts_ma3.pdf", width = 11, height = 8.5)
 print(make_count_plot(project_count_plot_ma3_df, "outcome_value_ma", "50+ unit project count (3-year centered MA)", TRUE))
 dev.off()
 
-pdf(out_project_count_plot_ma5_pdf, width = 11, height = 8.5)
+pdf("../output/cd_homeownership_long_units_projects_50_plus_counts_ma5.pdf", width = 11, height = 8.5)
 print(make_count_plot(project_count_plot_ma5_df, "outcome_value_ma", "50+ unit project count (5-year centered MA)", TRUE))
 dev.off()
 
-cat("Wrote long units summaries to", dirname(out_city_year_csv), "\n")
+cat("Wrote long units summaries to ../output\n")

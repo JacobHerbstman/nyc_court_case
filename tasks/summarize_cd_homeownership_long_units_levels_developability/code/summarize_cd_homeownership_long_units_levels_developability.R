@@ -1,15 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_cd_homeownership_long_units_levels_developability/code")
-# cd_homeownership_long_units_series_csv <- "../input/cd_homeownership_long_units_series.csv"
-# dcp_housing_database_files_csv <- "../input/dcp_housing_database_files.csv"
-# mappluto_construction_proxy_cd_year_csv <- "../input/mappluto_construction_proxy_cd_year.csv"
-# mappluto_lot_files_csv <- "../input/mappluto_lot_files.csv"
-# cd_baseline_1990_controls_csv <- "../input/cd_baseline_1990_controls.csv"
-# out_level_year_csv <- "../output/cd_homeownership_long_units_level_year.csv"
-# out_level_era_csv <- "../output/cd_homeownership_long_units_level_era.csv"
-# out_built_form_csv <- "../output/cd_homeownership_long_units_built_form_controls.csv"
-# out_residuals_csv <- "../output/cd_homeownership_long_units_developability_residuals.csv"
-# out_plots_pdf <- "../output/cd_homeownership_long_units_levels_developability_plots.pdf"
-# out_qc_csv <- "../output/cd_homeownership_long_units_levels_developability_qc.csv"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -23,24 +12,6 @@ suppressPackageStartupMessages({
 
 source("../../_lib/source_pipeline_utils.R")
 
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 11) {
-  stop("Expected 11 arguments: cd_homeownership_long_units_series_csv dcp_housing_database_files_csv mappluto_construction_proxy_cd_year_csv mappluto_lot_files_csv cd_baseline_1990_controls_csv out_level_year_csv out_level_era_csv out_built_form_csv out_residuals_csv out_plots_pdf out_qc_csv")
-}
-
-cd_homeownership_long_units_series_csv <- args[1]
-dcp_housing_database_files_csv <- args[2]
-mappluto_construction_proxy_cd_year_csv <- args[3]
-mappluto_lot_files_csv <- args[4]
-cd_baseline_1990_controls_csv <- args[5]
-out_level_year_csv <- args[6]
-out_level_era_csv <- args[7]
-out_built_form_csv <- args[8]
-out_residuals_csv <- args[9]
-out_plots_pdf <- args[10]
-out_qc_csv <- args[11]
-
 assert_unique_keys <- function(df, keys, label) {
   duplicate_keys <- df |>
     count(across(all_of(keys)), name = "n") |>
@@ -51,7 +22,7 @@ assert_unique_keys <- function(df, keys, label) {
   }
 }
 
-district_lookup <- read_csv(cd_homeownership_long_units_series_csv, show_col_types = FALSE, na = c("", "NA")) |>
+district_lookup <- read_csv("../input/cd_homeownership_long_units_series.csv", show_col_types = FALSE, na = c("", "NA")) |>
   distinct(borocd, borough_code, borough_name, treat_pp, occupied_units_1990) |>
   mutate(
     borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
@@ -76,7 +47,7 @@ if (n_distinct(district_lookup$borocd) != 59) {
   stop("Expected the levels/developability district lookup to cover 59 community districts.")
 }
 
-hdb_file <- read_csv(dcp_housing_database_files_csv, show_col_types = FALSE, na = c("", "NA")) |>
+hdb_file <- read_csv("../input/dcp_housing_database_files.csv", show_col_types = FALSE, na = c("", "NA")) |>
   filter(source_id == "dcp_housing_database_project_level", !is.na(parquet_path), file.exists(parquet_path)) |>
   mutate(
     vintage = as.character(vintage),
@@ -88,10 +59,10 @@ hdb_file <- read_csv(dcp_housing_database_files_csv, show_col_types = FALSE, na 
   slice_head(n = 1)
 
 if (nrow(hdb_file) == 0) {
-  stop("Could not find a staged DCP Housing Database project-level parquet in ", dcp_housing_database_files_csv)
+  stop("Could not find a staged DCP Housing Database project-level parquet in ../input/dcp_housing_database_files.csv")
 }
 
-mappluto_file <- read_csv(mappluto_lot_files_csv, show_col_types = FALSE, na = c("", "NA")) |>
+mappluto_file <- read_csv("../input/mappluto_lot_files.csv", show_col_types = FALSE, na = c("", "NA")) |>
   filter(!is.na(parquet_path), file.exists(parquet_path)) |>
   mutate(
     source_priority = if_else(source_id == "dcp_mappluto_current", 1L, 0L),
@@ -102,10 +73,10 @@ mappluto_file <- read_csv(mappluto_lot_files_csv, show_col_types = FALSE, na = c
   slice_head(n = 1)
 
 if (nrow(mappluto_file) == 0) {
-  stop("Could not find a staged MapPLUTO lot parquet in ", mappluto_lot_files_csv)
+  stop("Could not find a staged MapPLUTO lot parquet in ../input/mappluto_lot_files.csv")
 }
 
-units_year_df <- read_csv(cd_homeownership_long_units_series_csv, show_col_types = FALSE, na = c("", "NA")) |>
+units_year_df <- read_csv("../input/cd_homeownership_long_units_series.csv", show_col_types = FALSE, na = c("", "NA")) |>
   filter(
     series_kind == "preferred_long_series",
     series_family %in% c("units_built_total", "units_built_50_plus")
@@ -139,7 +110,7 @@ units_year_df <- read_csv(cd_homeownership_long_units_series_csv, show_col_types
   ) |>
   select(year, treat_tercile, treat_tercile_label, metric, metric_value)
 
-projects_proxy_df <- read_csv(mappluto_construction_proxy_cd_year_csv, show_col_types = FALSE, na = c("", "NA")) |>
+projects_proxy_df <- read_csv("../input/mappluto_construction_proxy_cd_year.csv", show_col_types = FALSE, na = c("", "NA")) |>
   transmute(
     borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
     borough_code = suppressWarnings(as.integer(borough_code)),
@@ -258,7 +229,7 @@ built_form_df <- read_parquet(
     relationship = "many-to-one"
   )
 
-write_csv(built_form_df, out_built_form_csv, na = "")
+write_csv(built_form_df, "../output/cd_homeownership_long_units_built_form_controls.csv", na = "")
 
 gross_add_year_df <- project_panel_df |>
   filter(year >= 2010) |>
@@ -284,7 +255,7 @@ level_year_df <- bind_rows(units_year_df, project_year_df, gross_add_year_df) |>
   mutate(source_period = if_else(year < 2010, "pre_2010_proxy", "post_2010_observed")) |>
   arrange(metric, year, treat_tercile)
 
-write_csv(level_year_df, out_level_year_csv, na = "")
+write_csv(level_year_df, "../output/cd_homeownership_long_units_level_year.csv", na = "")
 
 level_era_df <- level_year_df |>
   mutate(
@@ -302,9 +273,9 @@ level_era_df <- level_year_df |>
   summarize(metric_value = mean(metric_value, na.rm = TRUE), .groups = "drop") |>
   arrange(metric, era, treat_tercile)
 
-write_csv(level_era_df, out_level_era_csv, na = "")
+write_csv(level_era_df, "../output/cd_homeownership_long_units_level_era.csv", na = "")
 
-baseline_controls_df <- read_csv(cd_baseline_1990_controls_csv, show_col_types = FALSE, na = c("", "NA")) |>
+baseline_controls_df <- read_csv("../input/cd_baseline_1990_controls.csv", show_col_types = FALSE, na = c("", "NA")) |>
   transmute(
     borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
     borough_code = suppressWarnings(as.integer(borough_code)),
@@ -423,9 +394,9 @@ residuals_df <- bind_rows(
     relationship = "many-to-one"
   )
 
-write_csv(residuals_df, out_residuals_csv, na = "")
+write_csv(residuals_df, "../output/cd_homeownership_long_units_developability_residuals.csv", na = "")
 
-pdf(out_plots_pdf, width = 11, height = 8.5)
+pdf("../output/cd_homeownership_long_units_levels_developability_plots.pdf", width = 11, height = 8.5)
 
 plot_year_df <- level_year_df |>
   filter(metric %in% c(
@@ -509,6 +480,6 @@ qc_df <- bind_rows(
   ), note = "Residual correlation for avg annual gross additions, 2010-2025.")
 )
 
-write_csv(qc_df, out_qc_csv, na = "")
+write_csv(qc_df, "../output/cd_homeownership_long_units_levels_developability_qc.csv", na = "")
 
-cat("Wrote levels and developability outputs to", dirname(out_level_year_csv), "\n")
+cat("Wrote levels and developability outputs to ../output\n")
