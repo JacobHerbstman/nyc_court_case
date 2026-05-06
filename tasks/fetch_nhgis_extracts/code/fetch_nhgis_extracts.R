@@ -1,10 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/fetch_nhgis_extracts/code")
-# source_catalog_csv <- "../input/source_catalog.csv"
-# nhgis_1980_extract_json <- "nhgis_1980_extract.json"
-# nhgis_1990_extract_json <- "nhgis_1990_extract.json"
-# nhgis_table_map_csv <- "nhgis_table_map.csv"
-# out_audit_csv <- "../output/nhgis_extract_downloads.csv"
-# out_roundtrip_csv <- "../output/nhgis_extract_roundtrip_checks.csv"
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -17,19 +11,6 @@ suppressPackageStartupMessages({
 
 source("../../_lib/source_pipeline_utils.R")
 
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 6) {
-  stop("Expected 6 arguments: source_catalog_csv nhgis_1980_extract_json nhgis_1990_extract_json nhgis_table_map_csv out_audit_csv out_roundtrip_csv")
-}
-
-source_catalog_csv <- args[1]
-nhgis_1980_extract_json <- args[2]
-nhgis_1990_extract_json <- args[3]
-nhgis_table_map_csv <- args[4]
-out_audit_csv <- args[5]
-out_roundtrip_csv <- args[6]
-
 api_key <- Sys.getenv("IPUMS_API_KEY")
 
 if (str_trim(api_key) == "") {
@@ -41,8 +22,8 @@ if (str_trim(api_key) == "") {
   )
 }
 
-source_catalog <- read_csv(source_catalog_csv, show_col_types = FALSE, na = c("", "NA"))
-nhgis_table_map <- read_csv(nhgis_table_map_csv, show_col_types = FALSE, na = c("", "NA"))
+source_catalog <- read_csv("../input/source_catalog.csv", show_col_types = FALSE, na = c("", "NA"))
+nhgis_table_map <- read_csv("nhgis_table_map.csv", show_col_types = FALSE, na = c("", "NA"))
 
 extract_tables_from_json <- function(path) {
   spec <- fromJSON(path, simplifyVector = FALSE)
@@ -114,7 +95,7 @@ read_zip_header_codes <- function(zip_path) {
 nhgis_specs <- tibble(
   source_id = c("nhgis_1980_tract_extract", "nhgis_1990_tract_extract"),
   year = c(1980L, 1990L),
-  spec_json = c(nhgis_1980_extract_json, nhgis_1990_extract_json)
+  spec_json = c("nhgis_1980_extract.json", "nhgis_1990_extract.json")
 )
 
 nhgis_rows <- source_catalog %>%
@@ -238,6 +219,6 @@ for (i in seq_len(nrow(nhgis_rows))) {
   audit_rows[[i]] <- fetch_result
 }
 
-write_csv(bind_rows(audit_rows), out_audit_csv, na = "")
-write_csv(bind_rows(roundtrip_rows), out_roundtrip_csv, na = "")
-cat("Wrote NHGIS extract audit outputs to", dirname(out_audit_csv), "\n")
+write_csv_if_changed(bind_rows(audit_rows), "../output/nhgis_extract_downloads.csv")
+write_csv_if_changed(bind_rows(roundtrip_rows), "../output/nhgis_extract_roundtrip_checks.csv")
+cat("Wrote NHGIS extract audit outputs to ../output\n")

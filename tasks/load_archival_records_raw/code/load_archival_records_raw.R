@@ -1,8 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/load_archival_records_raw/code")
-# source_catalog_csv <- "../input/source_catalog.csv"
-# archive_requests_csv <- "../input/archive_requests.csv"
-# out_index_csv <- "../output/archival_record_raw_files.csv"
-# out_qc_csv <- "../output/archival_record_raw_qc.csv"
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -13,19 +9,8 @@ suppressPackageStartupMessages({
 
 source("../../_lib/source_pipeline_utils.R")
 
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 4) {
-  stop("Expected 4 arguments: source_catalog_csv archive_requests_csv out_index_csv out_qc_csv")
-}
-
-source_catalog_csv <- args[1]
-archive_requests_csv <- args[2]
-out_index_csv <- args[3]
-out_qc_csv <- args[4]
-
-source_catalog <- read_csv(source_catalog_csv, show_col_types = FALSE, na = c("", "NA"))
-archive_requests <- read_csv(archive_requests_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+source_catalog <- read_csv("../input/source_catalog.csv", show_col_types = FALSE, na = c("", "NA"))
+archive_requests <- read_csv("../input/archive_requests.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(
     submitted_date = as.character(submitted_date),
     returned_filename = as.character(returned_filename)
@@ -143,6 +128,6 @@ for (i in seq_len(nrow(archive_sources))) {
   }
 }
 
-write_csv(bind_rows(index_rows), out_index_csv, na = "")
-write_csv(bind_rows(qc_rows), out_qc_csv, na = "")
-cat("Wrote archival raw inventory to", out_index_csv, "\n")
+write_csv_if_changed(bind_rows(index_rows), "../output/archival_record_raw_files.csv")
+write_csv_if_changed(bind_rows(qc_rows), "../output/archival_record_raw_qc.csv")
+cat("Wrote archival raw inventory to ../output\n")

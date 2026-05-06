@@ -1,8 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/fetch_mappluto_archive/code")
-# source_catalog_csv <- "../input/source_catalog.csv"
-# out_files_csv <- "../output/mappluto_files.csv"
-# out_checksums_csv <- "../output/mappluto_checksums.csv"
-# out_provenance_csv <- "../output/mappluto_provenance.csv"
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -14,18 +10,7 @@ suppressPackageStartupMessages({
 
 source("../../_lib/source_pipeline_utils.R")
 
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 4) {
-  stop("Expected 4 arguments: source_catalog_csv out_files_csv out_checksums_csv out_provenance_csv")
-}
-
-source_catalog_csv <- args[1]
-out_files_csv <- args[2]
-out_checksums_csv <- args[3]
-out_provenance_csv <- args[4]
-
-source_catalog <- read_csv(source_catalog_csv, show_col_types = FALSE, na = c("", "NA"))
+source_catalog <- read_csv("../input/source_catalog.csv", show_col_types = FALSE, na = c("", "NA"))
 pluto_row <- source_catalog |> filter(source_id == "dcp_pluto_current")
 mappluto_current_row <- source_catalog |> filter(source_id == "dcp_mappluto_current")
 mappluto_archive_row <- source_catalog |> filter(source_id == "dcp_mappluto_archive")
@@ -306,8 +291,8 @@ provenance_table <- bind_rows(
   )
 )
 
-write_csv(file_inventory, out_files_csv, na = "")
-write_csv(checksum_table, out_checksums_csv, na = "")
-write_csv(provenance_table, out_provenance_csv, na = "")
+write_csv_if_changed(file_inventory, "../output/mappluto_files.csv")
+write_csv_if_changed(checksum_table, "../output/mappluto_checksums.csv")
+write_csv_if_changed(provenance_table, "../output/mappluto_provenance.csv")
 
-cat("Wrote DCP PLUTO and MapPLUTO fetch outputs to", dirname(out_files_csv), "\n")
+cat("Wrote DCP PLUTO and MapPLUTO fetch outputs to ../output\n")
