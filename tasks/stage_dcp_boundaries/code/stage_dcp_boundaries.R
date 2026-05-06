@@ -1,7 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/stage_dcp_boundaries/code")
-# dcp_boundary_raw_files_csv <- "../input/dcp_boundary_raw_files.csv"
-# out_index_csv <- "../output/dcp_boundary_index.csv"
-# out_qc_csv <- "../output/dcp_boundary_qc.csv"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -13,16 +10,6 @@ suppressPackageStartupMessages({
 
 source("../../_lib/source_pipeline_utils.R")
 
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 3) {
-  stop("Expected 3 arguments: dcp_boundary_raw_files_csv out_index_csv out_qc_csv")
-}
-
-dcp_boundary_raw_files_csv <- args[1]
-out_index_csv <- args[2]
-out_qc_csv <- args[3]
-
 hex_to_raw <- function(x) {
   if (is.na(x) || x == "") {
     return(as.raw())
@@ -31,12 +18,12 @@ hex_to_raw <- function(x) {
   as.raw(strtoi(substring(x, seq(1, nchar(x), by = 2), seq(2, nchar(x), by = 2)), 16L))
 }
 
-boundary_files <- read_csv(dcp_boundary_raw_files_csv, show_col_types = FALSE, na = c("", "NA"))
+boundary_files <- read_csv("../input/dcp_boundary_raw_files.csv", show_col_types = FALSE, na = c("", "NA"))
 boundary_files <- boundary_files[!is.na(boundary_files$raw_parquet_path) & file.exists(boundary_files$raw_parquet_path), ]
 
 if (nrow(boundary_files) == 0) {
-  write_csv(tibble(), out_index_csv, na = "")
-  write_csv(tibble(status = "no_boundary_raw_files"), out_qc_csv, na = "")
+  write_csv(tibble(), "../output/dcp_boundary_index.csv", na = "")
+  write_csv(tibble(status = "no_boundary_raw_files"), "../output/dcp_boundary_qc.csv", na = "")
   quit(save = "no")
 }
 
@@ -117,7 +104,7 @@ for (i in seq_len(nrow(boundary_files))) {
   )
 }
 
-write_csv(bind_rows(index_rows), out_index_csv, na = "")
-write_csv(bind_rows(qc_rows), out_qc_csv, na = "")
+write_csv(bind_rows(index_rows), "../output/dcp_boundary_index.csv", na = "")
+write_csv(bind_rows(qc_rows), "../output/dcp_boundary_qc.csv", na = "")
 
-cat("Wrote DCP boundary staging outputs to", dirname(out_index_csv), "\n")
+cat("Wrote DCP boundary staging outputs to ../output\n")

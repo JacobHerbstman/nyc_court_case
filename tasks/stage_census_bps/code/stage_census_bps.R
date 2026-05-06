@@ -1,7 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/stage_census_bps/code")
-# census_bps_raw_files_csv <- "../input/census_bps_raw_files.csv"
-# out_index_csv <- "../output/census_bps_index.csv"
-# out_qc_csv <- "../output/census_bps_qc.csv"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -12,25 +9,15 @@ suppressPackageStartupMessages({
 
 source("../../_lib/source_pipeline_utils.R")
 
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 3) {
-  stop("Expected 3 arguments: census_bps_raw_files_csv out_index_csv out_qc_csv")
-}
-
-census_bps_raw_files_csv <- args[1]
-out_index_csv <- args[2]
-out_qc_csv <- args[3]
-
-bps_files <- read_csv(census_bps_raw_files_csv, show_col_types = FALSE, na = c("", "NA"))
+bps_files <- read_csv("../input/census_bps_raw_files.csv", show_col_types = FALSE, na = c("", "NA"))
 bps_files <- bps_files[!is.na(bps_files$raw_parquet_path) & file.exists(bps_files$raw_parquet_path), ]
 bps_files <- bps_files |>
   mutate(year = as.integer(year)) |>
   arrange(year)
 
 if (nrow(bps_files) == 0) {
-  write_csv(tibble(), out_index_csv, na = "")
-  write_csv(tibble(status = "no_bps_raw_files"), out_qc_csv, na = "")
+  write_csv(tibble(), "../output/census_bps_index.csv", na = "")
+  write_csv(tibble(status = "no_bps_raw_files"), "../output/census_bps_qc.csv", na = "")
   quit(save = "no")
 }
 
@@ -70,7 +57,7 @@ for (i in seq_len(nrow(bps_files))) {
 
   borough_df <- parsed_df |>
     filter(state_code == "36") |>
-    left_join(borough_lookup |> rename(expected_county_code = county_code), by = "place_name_normalized") |>
+    left_join(borough_lookup |> rename(expected_county_code = county_code), by = "place_name_normalized", relationship = "many-to-one") |>
     filter(!is.na(borough_name))
 
   borough_df <- borough_df |>
@@ -133,9 +120,9 @@ borough_year_df <- bind_rows(borough_rows) |>
 
 city_year_df <- bind_rows(city_rows)
 
-write_parquet_if_changed(borough_year_df, file.path("..", "output", "census_bps_borough_year.parquet"))
-write_parquet_if_changed(city_year_df, file.path("..", "output", "census_bps_city_year.parquet"))
-write_csv(bind_rows(index_rows), out_index_csv, na = "")
-write_csv(bind_rows(qc_rows), out_qc_csv, na = "")
+write_parquet_if_changed(borough_year_df, "../output/census_bps_borough_year.parquet")
+write_parquet_if_changed(city_year_df, "../output/census_bps_city_year.parquet")
+write_csv(bind_rows(index_rows), "../output/census_bps_index.csv", na = "")
+write_csv(bind_rows(qc_rows), "../output/census_bps_qc.csv", na = "")
 
-cat("Wrote Census BPS staging outputs to", dirname(out_index_csv), "\n")
+cat("Wrote Census BPS staging outputs to ../output\n")

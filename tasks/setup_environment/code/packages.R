@@ -1,7 +1,5 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/setup_environment/code")
 
-out_txt <- "../output/R_packages.txt"
-
 options(repos = c(CRAN = "https://cloud.r-project.org"))
 
 cran_pkgs <- c(
@@ -15,5 +13,5 @@ for (pkg in cran_pkgs) {
 }
 
 pkgs <- as.data.frame(installed.packages()[, c("Package", "Version")])
-write.table(pkgs, out_txt, sep = "\t", row.names = FALSE, quote = FALSE)
-cat("Wrote", nrow(pkgs), "packages to", out_txt, "\n")
+write.table(pkgs, "../output/R_packages.txt", sep = "\t", row.names = FALSE, quote = FALSE)
+cat("Wrote", nrow(pkgs), "packages to ../output/R_packages.txt\n")

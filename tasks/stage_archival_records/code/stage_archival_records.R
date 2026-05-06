@@ -1,9 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/stage_archival_records/code")
-# source_catalog_csv <- "../input/source_catalog.csv"
-# archive_requests_csv <- "../input/archive_requests.csv"
-# archival_record_raw_files_csv <- "../input/archival_record_raw_files.csv"
-# out_inventory_csv <- "../output/archival_record_inventory.csv"
-# out_qc_csv <- "../output/archival_record_inventory_qc.csv"
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -11,31 +6,28 @@ suppressPackageStartupMessages({
   library(tibble)
 })
 
-args <- commandArgs(trailingOnly = TRUE)
+source_catalog <- read_csv("../input/source_catalog.csv", show_col_types = FALSE, na = c("", "NA"))
+archive_requests <- read_csv("../input/archive_requests.csv", show_col_types = FALSE, na = c("", "NA"))
+archival_raw_files <- read_csv("../input/archival_record_raw_files.csv", show_col_types = FALSE, na = c("", "NA"))
 
-if (length(args) != 5) {
-  stop("Expected 5 arguments: source_catalog_csv archive_requests_csv archival_record_raw_files_csv out_inventory_csv out_qc_csv")
+if (anyDuplicated(source_catalog$source_id)) {
+  stop("source_catalog has duplicate source_id values.")
 }
 
-source_catalog_csv <- args[1]
-archive_requests_csv <- args[2]
-archival_record_raw_files_csv <- args[3]
-out_inventory_csv <- args[4]
-out_qc_csv <- args[5]
-
-source_catalog <- read_csv(source_catalog_csv, show_col_types = FALSE, na = c("", "NA"))
-archive_requests <- read_csv(archive_requests_csv, show_col_types = FALSE, na = c("", "NA"))
-archival_raw_files <- read_csv(archival_record_raw_files_csv, show_col_types = FALSE, na = c("", "NA"))
+if (anyDuplicated(archive_requests$request_id)) {
+  stop("archive_requests has duplicate request_id values.")
+}
 
 inventory_df <- source_catalog %>%
   filter(grepl("^archives_", source_id)) %>%
   select(source_id, official_url) %>%
-  left_join(archival_raw_files, by = "source_id") %>%
+  left_join(archival_raw_files, by = "source_id", relationship = "one-to-many") %>%
   left_join(
     archive_requests %>%
       select(request_id, custodian, portal_or_contact, records_requested, date_range, submitted_date, status, returned_filename),
     by = "request_id",
-    suffix = c("_raw", "_request")
+    suffix = c("_raw", "_request"),
+    relationship = "many-to-one"
   ) %>%
   mutate(
     inventory_status = dplyr::coalesce(as.character(status_raw), "no_returned_files"),
@@ -103,6 +95,6 @@ if (nrow(inventory_df) == 0) {
   )
 }
 
-write_csv(inventory_df, out_inventory_csv, na = "")
-write_csv(qc_df, out_qc_csv, na = "")
-cat("Wrote archival record inventory to", out_inventory_csv, "\n")
+write_csv(inventory_df, "../output/archival_record_inventory.csv", na = "")
+write_csv(qc_df, "../output/archival_record_inventory_qc.csv", na = "")
+cat("Wrote archival record inventory to ../output/archival_record_inventory.csv\n")
