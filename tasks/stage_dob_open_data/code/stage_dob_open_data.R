@@ -1,8 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/stage_dob_open_data/code")
-# dob_open_data_raw_files_csv <- "../input/dob_open_data_raw_files.csv"
-# out_index_csv <- "../output/dob_open_data_files.csv"
-# out_qc_csv <- "../output/dob_open_data_qc.csv"
-# out_field_dictionary_csv <- "../output/dob_field_dictionary.csv"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -13,17 +9,6 @@ suppressPackageStartupMessages({
 })
 
 source("../../_lib/source_pipeline_utils.R")
-
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 4) {
-  stop("Expected 4 arguments: dob_open_data_raw_files_csv out_index_csv out_qc_csv out_field_dictionary_csv")
-}
-
-dob_open_data_raw_files_csv <- args[1]
-out_index_csv <- args[2]
-out_qc_csv <- args[3]
-out_field_dictionary_csv <- args[4]
 
 matched_column_name <- function(df, candidates) {
   hits <- candidates[candidates %in% names(df)]
@@ -100,7 +85,7 @@ derive_community_district_source <- function(raw_value, standardized_value, boro
   out
 }
 
-dob_raw_files <- read_csv(dob_open_data_raw_files_csv, show_col_types = FALSE, na = c("", "NA")) |>
+dob_raw_files <- read_csv("../input/dob_open_data_raw_files.csv", show_col_types = FALSE, na = c("", "NA")) |>
   filter(!is.na(raw_parquet_path), file.exists(raw_parquet_path)) |>
   mutate(
     source_id = as.character(source_id),
@@ -109,9 +94,9 @@ dob_raw_files <- read_csv(dob_open_data_raw_files_csv, show_col_types = FALSE, n
   )
 
 if (nrow(dob_raw_files) == 0) {
-  write_csv(tibble(), out_index_csv, na = "")
-  write_csv(tibble(), out_qc_csv, na = "")
-  write_csv(tibble(), out_field_dictionary_csv, na = "")
+  write_csv(tibble(), "../output/dob_open_data_files.csv", na = "")
+  write_csv(tibble(), "../output/dob_open_data_qc.csv", na = "")
+  write_csv(tibble(), "../output/dob_field_dictionary.csv", na = "")
   quit(save = "no")
 }
 
@@ -366,7 +351,7 @@ for (i in seq_len(nrow(dob_raw_files))) {
   )
 }
 
-write_csv(bind_rows(index_rows), out_index_csv, na = "")
-write_csv(bind_rows(qc_rows), out_qc_csv, na = "")
-write_csv(bind_rows(field_rows), out_field_dictionary_csv, na = "")
-cat("Wrote DOB staging outputs to", dirname(out_index_csv), "\n")
+write_csv(bind_rows(index_rows), "../output/dob_open_data_files.csv", na = "")
+write_csv(bind_rows(qc_rows), "../output/dob_open_data_qc.csv", na = "")
+write_csv(bind_rows(field_rows), "../output/dob_field_dictionary.csv", na = "")
+cat("Wrote DOB staging outputs to ../output\n")

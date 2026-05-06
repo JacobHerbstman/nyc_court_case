@@ -1,9 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/stage_dcp_housing_database/code")
-# dcp_housing_database_raw_files_csv <- "../input/dcp_housing_database_raw_files.csv"
-# out_index_csv <- "../output/dcp_housing_database_files.csv"
-# out_qc_csv <- "../output/dcp_housing_database_qc.csv"
-# out_city_year_parquet <- "../output/dcp_housing_database_city_year.parquet"
-# out_borough_year_parquet <- "../output/dcp_housing_database_borough_year.parquet"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -13,18 +8,6 @@ suppressPackageStartupMessages({
 })
 
 source("../../_lib/source_pipeline_utils.R")
-
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 5) {
-  stop("Expected 5 arguments: dcp_housing_database_raw_files_csv out_index_csv out_qc_csv out_city_year_parquet out_borough_year_parquet")
-}
-
-dcp_housing_database_raw_files_csv <- args[1]
-out_index_csv <- args[2]
-out_qc_csv <- args[3]
-out_city_year_parquet <- args[4]
-out_borough_year_parquet <- args[5]
 
 quarter_order_key <- function(x) {
   x <- toupper(as.character(x))
@@ -36,15 +19,15 @@ quarter_order_key <- function(x) {
   out
 }
 
-raw_index <- read_csv(dcp_housing_database_raw_files_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+raw_index <- read_csv("../input/dcp_housing_database_raw_files.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   filter(!is.na(raw_parquet_path), file.exists(raw_parquet_path)) %>%
   arrange(desc(quarter_order_key(vintage)), desc(vintage))
 
 if (nrow(raw_index) == 0) {
-  write_csv(tibble(), out_index_csv, na = "")
-  write_csv(tibble(), out_qc_csv, na = "")
-  write_parquet_if_changed(tibble(), out_city_year_parquet)
-  write_parquet_if_changed(tibble(), out_borough_year_parquet)
+  write_csv(tibble(), "../output/dcp_housing_database_files.csv", na = "")
+  write_csv(tibble(), "../output/dcp_housing_database_qc.csv", na = "")
+  write_parquet_if_changed(tibble(), "../output/dcp_housing_database_city_year.parquet")
+  write_parquet_if_changed(tibble(), "../output/dcp_housing_database_borough_year.parquet")
   quit(save = "no")
 }
 
@@ -153,8 +136,8 @@ for (i in seq_len(nrow(raw_index))) {
   }
 }
 
-write_parquet_if_changed(latest_city_year, out_city_year_parquet)
-write_parquet_if_changed(latest_borough_year, out_borough_year_parquet)
-write_csv(bind_rows(index_rows), out_index_csv, na = "")
-write_csv(bind_rows(qc_rows), out_qc_csv, na = "")
-cat("Wrote DCP Housing Database staging outputs to", dirname(out_index_csv), "\n")
+write_parquet_if_changed(latest_city_year, "../output/dcp_housing_database_city_year.parquet")
+write_parquet_if_changed(latest_borough_year, "../output/dcp_housing_database_borough_year.parquet")
+write_csv(bind_rows(index_rows), "../output/dcp_housing_database_files.csv", na = "")
+write_csv(bind_rows(qc_rows), "../output/dcp_housing_database_qc.csv", na = "")
+cat("Wrote DCP Housing Database staging outputs to ../output\n")

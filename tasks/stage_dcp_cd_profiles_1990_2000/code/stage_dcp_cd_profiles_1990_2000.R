@@ -1,7 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/stage_dcp_cd_profiles_1990_2000/code")
-# dcp_cd_profiles_raw_files_csv <- "../input/dcp_cd_profiles_1990_2000_raw_files.csv"
-# out_index_csv <- "../output/dcp_cd_profiles_1990_2000_files.csv"
-# out_qc_csv <- "../output/dcp_cd_profiles_1990_2000_qc.csv"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -12,16 +9,6 @@ suppressPackageStartupMessages({
 })
 
 source("../../_lib/source_pipeline_utils.R")
-
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 3) {
-  stop("Expected 3 arguments: dcp_cd_profiles_raw_files_csv out_index_csv out_qc_csv")
-}
-
-dcp_cd_profiles_raw_files_csv <- args[1]
-out_index_csv <- args[2]
-out_qc_csv <- args[3]
 
 expected_page_types <- c(
   "social",
@@ -191,12 +178,12 @@ parse_metric_line <- function(line) {
   tibble(parse_status = "unparsed")
 }
 
-raw_index <- read_csv(dcp_cd_profiles_raw_files_csv, show_col_types = FALSE, na = c("", "NA"))
+raw_index <- read_csv("../input/dcp_cd_profiles_1990_2000_raw_files.csv", show_col_types = FALSE, na = c("", "NA"))
 raw_index <- raw_index[!is.na(raw_index$raw_parquet_path) & file.exists(raw_index$raw_parquet_path), ]
 
 if (nrow(raw_index) == 0) {
-  write_csv(tibble(), out_index_csv, na = "")
-  write_csv(tibble(), out_qc_csv, na = "")
+  write_csv(tibble(), "../output/dcp_cd_profiles_1990_2000_files.csv", na = "")
+  write_csv(tibble(), "../output/dcp_cd_profiles_1990_2000_qc.csv", na = "")
   quit(save = "no")
 }
 
@@ -408,6 +395,6 @@ for (i in seq_len(nrow(raw_index))) {
   )
 }
 
-write_csv(bind_rows(index_rows), out_index_csv, na = "")
-write_csv(bind_rows(qc_rows), out_qc_csv, na = "")
-cat("Wrote DCP CD profile staging outputs to", dirname(out_index_csv), "\n")
+write_csv(bind_rows(index_rows), "../output/dcp_cd_profiles_1990_2000_files.csv", na = "")
+write_csv(bind_rows(qc_rows), "../output/dcp_cd_profiles_1990_2000_qc.csv", na = "")
+cat("Wrote DCP CD profile staging outputs to ../output\n")

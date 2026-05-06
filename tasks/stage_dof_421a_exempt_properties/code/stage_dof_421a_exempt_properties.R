@@ -1,8 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/stage_dof_421a_exempt_properties/code")
-# dof_421a_raw_files_csv <- "../input/dof_421a_raw_files.csv"
-# out_rows_csv <- "../output/dof_421a_exempt_property_rows.csv"
-# out_bbl_year_csv <- "../output/dof_421a_exempt_bbl_year.csv"
-# out_qc_csv <- "../output/dof_421a_stage_qc.csv"
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -13,17 +9,6 @@ suppressPackageStartupMessages({
 })
 
 source("../../_lib/source_pipeline_utils.R")
-
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 4) {
-  stop("Expected 4 arguments: dof_421a_raw_files_csv out_rows_csv out_bbl_year_csv out_qc_csv")
-}
-
-dof_421a_raw_files_csv <- args[1]
-out_rows_csv <- args[2]
-out_bbl_year_csv <- args[3]
-out_qc_csv <- args[4]
 
 parse_421a_file <- function(row) {
   raw <- read_excel(row$raw_path_resolved, col_names = FALSE, .name_repair = "unique")
@@ -76,12 +61,12 @@ parse_421a_file <- function(row) {
     filter(!is.na(bbl))
 }
 
-inventory_csv_target <- Sys.readlink(dof_421a_raw_files_csv)
+inventory_csv_target <- Sys.readlink("../input/dof_421a_raw_files.csv")
 if (is.na(inventory_csv_target) || inventory_csv_target == "") {
-  inventory_csv_target <- dof_421a_raw_files_csv
+  inventory_csv_target <- "../input/dof_421a_raw_files.csv"
 }
 
-inventory <- read_csv(dof_421a_raw_files_csv, show_col_types = FALSE, na = c("", "NA")) %>%
+inventory <- read_csv("../input/dof_421a_raw_files.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(
     raw_path_resolved = ifelse(
       file.exists(raw_path),
@@ -93,7 +78,7 @@ inventory <- read_csv(dof_421a_raw_files_csv, show_col_types = FALSE, na = c("",
 
 if (nrow(inventory) == 0) {
   qc_df <- tibble(metric = "input_file_count", value = 0, status = "fail", note = "No downloaded 421-a Excel files were found at resolved paths.")
-  write_csv_if_changed(qc_df, out_qc_csv)
+  write_csv_if_changed(qc_df, "../output/dof_421a_stage_qc.csv")
   stop("DOF 421-a staging QC failed.")
 }
 
@@ -131,12 +116,12 @@ qc_df <- bind_rows(
 )
 
 if (any(qc_df$status == "fail")) {
-  write_csv_if_changed(qc_df, out_qc_csv)
+  write_csv_if_changed(qc_df, "../output/dof_421a_stage_qc.csv")
   stop("DOF 421-a staging QC failed.")
 }
 
-write_csv_if_changed(rows, out_rows_csv)
-write_csv_if_changed(bbl_year, out_bbl_year_csv)
-write_csv_if_changed(qc_df, out_qc_csv)
+write_csv_if_changed(rows, "../output/dof_421a_exempt_property_rows.csv")
+write_csv_if_changed(bbl_year, "../output/dof_421a_exempt_bbl_year.csv")
+write_csv_if_changed(qc_df, "../output/dof_421a_stage_qc.csv")
 
-cat("Staged DOF 421-a exemption records to", out_rows_csv, "\n")
+cat("Staged DOF 421-a exemption records to ../output/dof_421a_exempt_property_rows.csv\n")

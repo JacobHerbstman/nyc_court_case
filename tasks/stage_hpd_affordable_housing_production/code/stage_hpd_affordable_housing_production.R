@@ -1,9 +1,4 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/stage_hpd_affordable_housing_production/code")
-# hpd_raw_csv <- "../input/hpd_affordable_housing_production_by_building.csv"
-# out_staged_csv <- "../output/hpd_affordable_housing_building_staged.csv"
-# out_staged_parquet <- "../output/hpd_affordable_housing_building_staged.parquet"
-# out_bbl_year_csv <- "../output/hpd_affordable_housing_bbl_year.csv"
-# out_qc_csv <- "../output/hpd_affordable_housing_stage_qc.csv"
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -13,18 +8,6 @@ suppressPackageStartupMessages({
 })
 
 source("../../_lib/source_pipeline_utils.R")
-
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 5) {
-  stop("Expected 5 arguments: hpd_raw_csv out_staged_csv out_staged_parquet out_bbl_year_csv out_qc_csv")
-}
-
-hpd_raw_csv <- args[1]
-out_staged_csv <- args[2]
-out_staged_parquet <- args[3]
-out_bbl_year_csv <- args[4]
-out_qc_csv <- args[5]
 
 safe_min_year <- function(x) {
   x <- x[!is.na(x)]
@@ -44,7 +27,7 @@ safe_max_year <- function(x) {
   as.integer(max(x))
 }
 
-raw_df <- read_csv(hpd_raw_csv, show_col_types = FALSE, na = c("", "NA"))
+raw_df <- read_csv("../input/hpd_affordable_housing_production_by_building.csv", show_col_types = FALSE, na = c("", "NA"))
 names(raw_df) <- normalize_names(names(raw_df))
 
 required_cols <- c("project_id", "building_id", "bbl", "bin", "borough", "community_board", "project_start_date", "building_completion_date", "all_counted_units", "total_units")
@@ -107,13 +90,13 @@ qc_df <- bind_rows(
 )
 
 if (any(qc_df$status == "fail")) {
-  write_csv_if_changed(qc_df, out_qc_csv)
+  write_csv_if_changed(qc_df, "../output/hpd_affordable_housing_stage_qc.csv")
   stop("HPD affordable housing staging QC failed.")
 }
 
-write_csv_if_changed(staged, out_staged_csv)
-write_parquet_if_changed(staged, out_staged_parquet)
-write_csv_if_changed(bbl_year, out_bbl_year_csv)
-write_csv_if_changed(qc_df, out_qc_csv)
+write_csv_if_changed(staged, "../output/hpd_affordable_housing_building_staged.csv")
+write_parquet_if_changed(staged, "../output/hpd_affordable_housing_building_staged.parquet")
+write_csv_if_changed(bbl_year, "../output/hpd_affordable_housing_bbl_year.csv")
+write_csv_if_changed(qc_df, "../output/hpd_affordable_housing_stage_qc.csv")
 
-cat("Staged HPD affordable housing production to", out_staged_csv, "\n")
+cat("Staged HPD affordable housing production to ../output/hpd_affordable_housing_building_staged.csv\n")
