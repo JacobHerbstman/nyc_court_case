@@ -22,40 +22,45 @@ During the 1990s, Speaker control could still override local members; by the 200
 
 \subsection{Unit of Analysis}
 
-I use community districts as the unit of analysis because of their geographic stability and their rough comparability in scale to Council districts.
-Community districts are not the same as Council districts, and that distinction matters here. Council districts are the political units through which member deference operates, but they are redrawn over time and have inconsistent boundary data going back to the 1980s.
-Community districts are stable neighborhood units that can be tracked across the pre- and post-Morris periods.
-Many datasets also aggregate to the community-district level, making it a convenient and consistent unit for analyzing housing flows and demographic trends.
+In this first Council-district version, I use the 51 City Council districts from the 2010 redistricting cycle as the unit of analysis.
+This is the political geography through which member deference operates, and it is the relevant geography for a post-2010 descriptive test.
+The cost is that the geography is not available consistently for the full pre-period, so I treat the 2010 districts as fixed and project historical exposure into those boundaries.
 
-This unit choice also prevents the treatment from being mechanically defined by post-reform political boundaries.
-The treatment is measured using 1990 community-district homeownership, precisely as the institutional change was taking effect.
-Outcomes are then tracked in the same community districts over time.
+This is deliberately a first pass.
+I do not claim that the 2010 districts were the operative political districts in the 1980s or 1990s.
+Instead, the exercise asks whether the places that became homeowner-heavy 2010 Council districts, measured using 1990 tenure, are the places that lost large-building production once member deference became more important.
+
+Housing production is measured from a single construction source: 25v4 MapPLUTO.
+I assign each MapPLUTO lot to the archived 2010 Council district containing the lot's representative point, then aggregate \texttt{yearbuilt} and residential units to Council-district-by-year cells.
+This keeps the construction outcome source fixed over 1980--2025.
+The tradeoff is that MapPLUTO provides a surviving-stock year-built proxy, not a clean annual completion-flow series.
 
 \subsection{Treatment Definition}
 
 The treatment captures baseline homeowner concentration relative to the borough.
-Let $H_{cb,1990}$ be the 1990 owner-occupied share of occupied housing units in community district $c$ in borough $b$, and let $H_{b,1990}$ be the corresponding borough-wide owner-occupied share.
+I start with 1990 NHGIS tract owner-occupied and occupied housing counts, intersect the 1990 tract polygons with the 2010 Council-district boundaries, and allocate tract counts to Council districts by area share.
+Let $H_{db,1990}$ be the resulting 1990 owner-occupied share of occupied housing units in Council district $d$, assigned to majority borough $b$, and let $H_{b,1990}$ be the corresponding borough-wide owner-occupied share.
 I define the treatment as a within-borough standardized homeownership score:
 
 \begin{equation}
-    T_{cb}
+    T_{db}
     =
     \frac{
-        H_{cb,1990} - \overline{H}_{b,1990}^{CD}
+        H_{db,1990} - \overline{H}_{b,1990}^{\mathrm{Council}}
     }{
-        s_b(H_{cb,1990})
+        s_b(H_{db,1990})
     },
 \end{equation}
 
-where $\overline{H}_{b,1990}^{CD}$ and $s_b(H_{cb,1990})$ are the mean and
-standard deviation of 1990 homeownership across community districts in
+where $\overline{H}_{b,1990}^{\mathrm{Council}}$ and $s_b(H_{db,1990})$ are the mean and
+standard deviation of 1990 homeownership across 2010 Council districts in
 borough $b$.
 
-This score compares each community district to others in the same borough. A value of zero indicates average homeownership for the borough; positive values indicate a more homeowner-heavy district; negative values indicate a more renter-heavy one.
+This score compares each Council district to others assigned to the same borough. A value of zero indicates average homeownership for the borough; positive values indicate a more homeowner-heavy district; negative values indicate a more renter-heavy one.
 
 This within-borough standardization matters because boroughs differ substantially in housing stock, density, transit access, baseline ownership rates, and long-run development pressure.
 A citywide measure would partly conflate Staten Island with Manhattan or outer Queens with the Bronx.
-The within-borough score instead asks whether homeowner-heavy districts within the same borough experienced different post-reform construction trajectories than their lower-homeownership neighbors.
+The within-borough score instead asks whether homeowner-heavy Council districts within the same borough experienced different post-reform construction trajectories than their lower-homeownership neighbors.
 
 The identifying logic is straightforward. If member deference gives local councilmembers effective control over discretionary land use, then places with stronger homeowner constituencies should have greater political capacity to resist large buildings.
 That prediction should be sharpest for multi-unit and large-building construction, where local opposition and discretionary review are most consequential, and weaker for small buildings, which are less likely to require the same political process.
@@ -63,11 +68,8 @@ Figure~\ref{fig:treatment_map} illustrates the variation in the treatment measur
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[page=1,width=0.82\textwidth]{../tasks/redevelopment_potential_first_pass/output/figures/redev_potential_maps.pdf}
-    \caption{Community-District Homeownership Exposure}
+    \includegraphics[page=1,width=0.82\textwidth]{../tasks/build_ccd2010_homeownership_1990_measure/output/ccdist2010_homeownership_1990_map.pdf}
+    \caption{2010 Council-District Homeownership Exposure}
     \label{fig:treatment_map}
-    \figurenotes{Figure maps the canonical treatment measure by community district. The measure is the 1990 community-district homeownership share, standardized
-within borough across community districts. Redder districts had higher
-homeownership than other community districts in the same borough; bluer
-districts had lower homeownership. Light-gray polygons are DCP joint interest areas, shown for geographic context but excluded from the 59-CD treatment measure.}
+\figurenotes{Figure maps the first-pass treatment measure by 2010 City Council district. The measure is the 1990 homeownership share, built by area-weighting 1990 NHGIS tract tenure counts into the 2010 Council boundaries and standardizing within assigned majority borough. Redder districts had higher homeownership than other Council districts in the same borough; bluer districts had lower homeownership.}
 \end{figure}
