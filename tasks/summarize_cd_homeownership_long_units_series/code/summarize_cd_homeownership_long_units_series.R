@@ -18,7 +18,11 @@ assert_unique_keys <- function(df, keys, label) {
   }
 }
 
-series_df <- read_csv("../input/cd_homeownership_long_units_series.csv", show_col_types = FALSE, na = c("", "NA"))
+series_df <- read_csv("../input/cd_homeownership_long_units_series.csv", show_col_types = FALSE, na = c("", "NA")) |>
+  mutate(
+    borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
+    borough_code = suppressWarnings(as.integer(borough_code))
+  )
 
 district_lookup <- series_df |>
   distinct(borocd, borough_code, borough_name, treat_pp) |>
@@ -38,6 +42,64 @@ assert_unique_keys(district_lookup, "borocd", "long-units district lookup")
 if (n_distinct(district_lookup$borocd) != 59) {
   stop("Expected the long-units district lookup to cover 59 community districts.")
 }
+
+pluto_full_map <- tribble(
+  ~series_family, ~series_label, ~value_column,
+  "units_built_total", "Units built: total", "residential_units_proxy",
+  "units_built_50_plus", "Units built: 50+", "units_50_plus_proxy"
+)
+
+pluto_full_values <- read_csv("../input/mappluto_construction_proxy_cd_year.csv", show_col_types = FALSE, na = c("", "NA")) |>
+  transmute(
+    borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
+    borough_code = suppressWarnings(as.integer(borough_code)),
+    borough_name = borough_name,
+    year = suppressWarnings(as.integer(yearbuilt)),
+    residential_units_proxy = suppressWarnings(as.numeric(residential_units_proxy)),
+    units_50_plus_proxy = suppressWarnings(as.numeric(units_50_plus_proxy))
+  ) |>
+  filter(year >= 1980, year <= 2025) |>
+  pivot_longer(
+    cols = all_of(pluto_full_map$value_column),
+    names_to = "value_column",
+    values_to = "outcome_value"
+  ) |>
+  left_join(pluto_full_map, by = "value_column", relationship = "many-to-one")
+
+assert_unique_keys(pluto_full_values, c("borocd", "year", "series_family"), "full-period MapPLUTO proxy values")
+
+pluto_full_df <- expand_grid(
+  district_lookup |>
+    select(borocd, borough_code, borough_name, treat_tercile, treat_tercile_label),
+  year = 1980:2025,
+  pluto_full_map |>
+    select(series_family, series_label)
+) |>
+  left_join(
+    pluto_full_values |>
+      select(borocd, borough_code, borough_name, year, series_family, outcome_value),
+    by = c("borocd", "borough_code", "borough_name", "year", "series_family"),
+    relationship = "one-to-one"
+  ) |>
+  mutate(outcome_value = coalesce(outcome_value, 0))
+
+pluto_full_tercile_year_df <- pluto_full_df |>
+  group_by(series_family, series_label, year, borough_code, borough_name, treat_tercile, treat_tercile_label) |>
+  summarize(outcome_value = sum(outcome_value, na.rm = TRUE), .groups = "drop") |>
+  group_by(series_family, series_label, year, borough_code, borough_name) |>
+  mutate(
+    borough_outcome_total = sum(outcome_value, na.rm = TRUE),
+    borough_outcome_share = if_else(borough_outcome_total > 0, outcome_value / borough_outcome_total, NA_real_)
+  ) |>
+  ungroup() |>
+  group_by(series_family, series_label, year, treat_tercile, treat_tercile_label) |>
+  summarize(
+    outcome_value = sum(outcome_value, na.rm = TRUE),
+    borough_outcome_total = sum(distinct(data.frame(borough_code, borough_name, borough_outcome_total))$borough_outcome_total, na.rm = TRUE),
+    borough_outcome_share = if_else(borough_outcome_total > 0, outcome_value / borough_outcome_total, NA_real_),
+    .groups = "drop"
+  ) |>
+  arrange(series_family, year, treat_tercile)
 
 city_year_df <- series_df |>
   group_by(series_kind, source_family, source_label, series_family, series_label, year) |>
@@ -203,6 +265,7 @@ write_csv(city_year_df, "../output/cd_homeownership_long_units_city_year.csv", n
 write_csv(tercile_year_df, "../output/cd_homeownership_long_units_tercile_year.csv", na = "")
 write_csv(tercile_year_ma3_df, "../output/cd_homeownership_long_units_tercile_year_ma3.csv", na = "")
 write_csv(tercile_year_ma5_df, "../output/cd_homeownership_long_units_tercile_year_ma5.csv", na = "")
+write_csv(pluto_full_tercile_year_df, "../output/cd_homeownership_long_units_pluto_full_tercile_year.csv", na = "")
 write_csv(tercile_era_df, "../output/cd_homeownership_long_units_tercile_era.csv", na = "")
 
 write_csv(
@@ -215,6 +278,7 @@ write_csv(
     tibble(metric = "tercile_year_row_count", value = nrow(tercile_year_df), note = "Rows in the annual tercile summary for the preferred series."),
     tibble(metric = "tercile_year_ma3_row_count", value = nrow(tercile_year_ma3_df), note = "Rows in the 3-year centered moving-average tercile summary."),
     tibble(metric = "tercile_year_ma5_row_count", value = nrow(tercile_year_ma5_df), note = "Rows in the 5-year centered moving-average tercile summary."),
+    tibble(metric = "pluto_full_tercile_year_row_count", value = nrow(pluto_full_tercile_year_df), note = "Rows in the full-period MapPLUTO-only annual tercile summary."),
     tibble(metric = "total_units_tercile_year_row_count", value = nrow(tercile_year_df |> filter(series_family == "units_built_total")), note = "Rows in the annual total-unit-count tercile summary."),
     tibble(metric = "project_50_plus_tercile_year_row_count", value = nrow(tercile_year_df |> filter(series_family == "projects_built_50_plus")), note = "Rows in the annual 50+ unit project-count tercile summary."),
     tibble(metric = "required_tercile_series_gap_count", value = nrow(required_tercile_series_gaps), note = "Required annual series-family-year cells with other than three treatment terciles."),
@@ -282,6 +346,30 @@ print(
     facet_wrap(~series_label, scales = "free_y", ncol = 1) +
     scale_color_manual(values = c("Low" = "#3366CC", "Middle" = "#999999", "High" = "#CC3311")) +
     labs(x = NULL, y = "Within-borough share", color = "Treat tercile") +
+    theme_minimal(base_size = 11) +
+    theme(legend.position = "bottom")
+)
+dev.off()
+
+pluto_full_plot_df <- pluto_full_tercile_year_df |>
+  mutate(
+    treat_tercile_label = factor(treat_tercile_label, levels = c("Low", "Middle", "High")),
+    series_label = factor(series_label, levels = c("Units built: total", "Units built: 50+"))
+  )
+
+pdf("../output/cd_homeownership_long_units_pluto_full_plots.pdf", width = 11, height = 8.5)
+print(
+  ggplot(pluto_full_plot_df, aes(x = year, y = borough_outcome_share, color = treat_tercile_label)) +
+    geom_line(linewidth = 0.8) +
+    geom_vline(xintercept = 2010, linetype = "dashed", color = "#666666") +
+    facet_wrap(~series_label, scales = "free_y", ncol = 1) +
+    scale_color_manual(values = c("Low" = "#3366CC", "Middle" = "#999999", "High" = "#CC3311")) +
+    labs(
+      title = "MapPLUTO-only yearbuilt proxy, 1980-2025",
+      x = NULL,
+      y = "Within-borough share",
+      color = "Treat tercile"
+    ) +
     theme_minimal(base_size = 11) +
     theme(legend.position = "bottom")
 )

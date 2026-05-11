@@ -57,6 +57,11 @@ raw_project_df <- read_parquet(project_row$raw_parquet_path[[1]]) |>
   as_tibble()
 
 project_input_row_count <- nrow(raw_project_df)
+missing_raw_project_id_count <- sum(is.na(normalize_text_field(raw_project_df$project_id)))
+
+if (missing_raw_project_id_count > 0) {
+  stop("Raw ZAP project data contain missing project_id values; inspect before deduping.")
+}
 
 project_df <- raw_project_df |>
   mutate(

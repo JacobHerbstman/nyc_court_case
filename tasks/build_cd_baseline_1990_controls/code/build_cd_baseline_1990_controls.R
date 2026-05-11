@@ -106,7 +106,20 @@ build_cd_overlay <- function(nhgis_df, gis_zip_path, cd_sf, year_value) {
   intersection_sf <- suppressWarnings(
     st_intersection(
       tract_sf %>%
-        select(gisjoin, total_housing_units, occupied_units, owner_occupied_units, vacant_units, tract_area),
+        select(
+          gisjoin,
+          total_housing_units,
+          occupied_units,
+          owner_occupied_units,
+          vacant_units,
+          total_population,
+          white_population,
+          black_population,
+          asian_pacific_islander_population,
+          other_race_population,
+          hispanic_any_race,
+          tract_area
+        ),
       cd_sf %>%
         select(district_id, borough_code, borough_name)
     )
@@ -117,12 +130,30 @@ build_cd_overlay <- function(nhgis_df, gis_zip_path, cd_sf, year_value) {
       total_housing_units_alloc = total_housing_units * area_share,
       occupied_units_alloc = occupied_units * area_share,
       owner_occupied_units_alloc = owner_occupied_units * area_share,
-      vacant_units_alloc = vacant_units * area_share
+      vacant_units_alloc = vacant_units * area_share,
+      total_population_alloc = total_population * area_share,
+      white_population_alloc = white_population * area_share,
+      black_population_alloc = black_population * area_share,
+      asian_pacific_islander_population_alloc = asian_pacific_islander_population * area_share,
+      other_race_population_alloc = other_race_population * area_share,
+      hispanic_any_race_alloc = hispanic_any_race * area_share
     )
 
   assignment_qc <- tract_sf %>%
     st_drop_geometry() %>%
-    select(gisjoin, total_housing_units, occupied_units, owner_occupied_units, vacant_units) %>%
+    select(
+      gisjoin,
+      total_housing_units,
+      occupied_units,
+      owner_occupied_units,
+      vacant_units,
+      total_population,
+      white_population,
+      black_population,
+      asian_pacific_islander_population,
+      other_race_population,
+      hispanic_any_race
+    ) %>%
     left_join(
       intersection_sf %>%
         st_drop_geometry() %>%
@@ -133,6 +164,12 @@ build_cd_overlay <- function(nhgis_df, gis_zip_path, cd_sf, year_value) {
           occupied_units_alloc_sum = sum(occupied_units_alloc, na.rm = TRUE),
           owner_occupied_units_alloc_sum = sum(owner_occupied_units_alloc, na.rm = TRUE),
           vacant_units_alloc_sum = sum(vacant_units_alloc, na.rm = TRUE),
+          total_population_alloc_sum = sum(total_population_alloc, na.rm = TRUE),
+          white_population_alloc_sum = sum(white_population_alloc, na.rm = TRUE),
+          black_population_alloc_sum = sum(black_population_alloc, na.rm = TRUE),
+          asian_pacific_islander_population_alloc_sum = sum(asian_pacific_islander_population_alloc, na.rm = TRUE),
+          other_race_population_alloc_sum = sum(other_race_population_alloc, na.rm = TRUE),
+          hispanic_any_race_alloc_sum = sum(hispanic_any_race_alloc, na.rm = TRUE),
           .groups = "drop"
         ),
       by = "gisjoin",
@@ -143,7 +180,13 @@ build_cd_overlay <- function(nhgis_df, gis_zip_path, cd_sf, year_value) {
       total_housing_units_assignment_share = ifelse(total_housing_units > 0, total_housing_units_alloc_sum / total_housing_units, NA_real_),
       occupied_units_assignment_share = ifelse(occupied_units > 0, occupied_units_alloc_sum / occupied_units, NA_real_),
       owner_occupied_units_assignment_share = ifelse(owner_occupied_units > 0, owner_occupied_units_alloc_sum / owner_occupied_units, NA_real_),
-      vacant_units_assignment_share = ifelse(vacant_units > 0, vacant_units_alloc_sum / vacant_units, NA_real_)
+      vacant_units_assignment_share = ifelse(vacant_units > 0, vacant_units_alloc_sum / vacant_units, NA_real_),
+      total_population_assignment_share = ifelse(total_population > 0, total_population_alloc_sum / total_population, NA_real_),
+      white_population_assignment_share = ifelse(white_population > 0, white_population_alloc_sum / white_population, NA_real_),
+      black_population_assignment_share = ifelse(black_population > 0, black_population_alloc_sum / black_population, NA_real_),
+      asian_pacific_islander_population_assignment_share = ifelse(asian_pacific_islander_population > 0, asian_pacific_islander_population_alloc_sum / asian_pacific_islander_population, NA_real_),
+      other_race_population_assignment_share = ifelse(other_race_population > 0, other_race_population_alloc_sum / other_race_population, NA_real_),
+      hispanic_any_race_assignment_share = ifelse(hispanic_any_race > 0, hispanic_any_race_alloc_sum / hispanic_any_race, NA_real_)
     )
 
   cd_df <- intersection_sf %>%
@@ -154,11 +197,22 @@ build_cd_overlay <- function(nhgis_df, gis_zip_path, cd_sf, year_value) {
       occupied_units = sum(occupied_units_alloc, na.rm = TRUE),
       owner_occupied_units = sum(owner_occupied_units_alloc, na.rm = TRUE),
       vacant_units = sum(vacant_units_alloc, na.rm = TRUE),
+      total_population = sum(total_population_alloc, na.rm = TRUE),
+      white_population = sum(white_population_alloc, na.rm = TRUE),
+      black_population = sum(black_population_alloc, na.rm = TRUE),
+      asian_pacific_islander_population = sum(asian_pacific_islander_population_alloc, na.rm = TRUE),
+      other_race_population = sum(other_race_population_alloc, na.rm = TRUE),
+      hispanic_any_race = sum(hispanic_any_race_alloc, na.rm = TRUE),
       .groups = "drop"
     ) %>%
     mutate(
       homeowner_share = ifelse(occupied_units > 0, owner_occupied_units / occupied_units, NA_real_),
-      vacancy_rate = ifelse(total_housing_units > 0, vacant_units / total_housing_units, NA_real_)
+      vacancy_rate = ifelse(total_housing_units > 0, vacant_units / total_housing_units, NA_real_),
+      white_share = ifelse(total_population > 0, white_population / total_population, NA_real_),
+      black_share = ifelse(total_population > 0, black_population / total_population, NA_real_),
+      asian_pacific_islander_share = ifelse(total_population > 0, asian_pacific_islander_population / total_population, NA_real_),
+      other_race_share = ifelse(total_population > 0, other_race_population / total_population, NA_real_),
+      hispanic_share = ifelse(total_population > 0, hispanic_any_race / total_population, NA_real_)
     ) %>%
     arrange(district_id)
 
@@ -192,6 +246,30 @@ build_cd_overlay <- function(nhgis_df, gis_zip_path, cd_sf, year_value) {
       metric = "vacant_units_assigned_share",
       value = sum(assignment_qc$vacant_units_alloc_sum, na.rm = TRUE) / sum(assignment_qc$vacant_units, na.rm = TRUE),
       note = "Share of NHGIS tract vacant units assigned to the standard current community districts."
+    ),
+    tibble(
+      year = year_value,
+      metric = "total_population_assigned_share",
+      value = sum(assignment_qc$total_population_alloc_sum, na.rm = TRUE) / sum(assignment_qc$total_population, na.rm = TRUE),
+      note = "Share of NHGIS tract total population assigned to the standard current community districts."
+    ),
+    tibble(
+      year = year_value,
+      metric = "white_population_assigned_share",
+      value = sum(assignment_qc$white_population_alloc_sum, na.rm = TRUE) / sum(assignment_qc$white_population, na.rm = TRUE),
+      note = "Share of NHGIS tract white population assigned to the standard current community districts."
+    ),
+    tibble(
+      year = year_value,
+      metric = "black_population_assigned_share",
+      value = sum(assignment_qc$black_population_alloc_sum, na.rm = TRUE) / sum(assignment_qc$black_population, na.rm = TRUE),
+      note = "Share of NHGIS tract Black population assigned to the standard current community districts."
+    ),
+    tibble(
+      year = year_value,
+      metric = "hispanic_population_assigned_share",
+      value = sum(assignment_qc$hispanic_any_race_alloc_sum, na.rm = TRUE) / sum(assignment_qc$hispanic_any_race, na.rm = TRUE),
+      note = "Share of NHGIS tract Hispanic population assigned to the standard current community districts."
     ),
     tibble(
       year = year_value,
@@ -325,13 +403,37 @@ nhgis_1980 <- read_parquet("../input/nhgis_1980_tract_extract.parquet") %>%
   as.data.frame() %>%
   as_tibble() %>%
   mutate(gisjoin = as.character(gisjoin)) %>%
-  select(gisjoin, total_housing_units, occupied_units, owner_occupied_units, vacant_units)
+  select(
+    gisjoin,
+    total_housing_units,
+    occupied_units,
+    owner_occupied_units,
+    vacant_units,
+    total_population,
+    white_population,
+    black_population,
+    asian_pacific_islander_population,
+    other_race_population,
+    hispanic_any_race
+  )
 
 nhgis_1990 <- read_parquet("../input/nhgis_1990_tract_extract.parquet") %>%
   as.data.frame() %>%
   as_tibble() %>%
   mutate(gisjoin = as.character(gisjoin)) %>%
-  select(gisjoin, total_housing_units, occupied_units, owner_occupied_units, vacant_units)
+  select(
+    gisjoin,
+    total_housing_units,
+    occupied_units,
+    owner_occupied_units,
+    vacant_units,
+    total_population,
+    white_population,
+    black_population,
+    asian_pacific_islander_population,
+    other_race_population,
+    hispanic_any_race
+  )
 
 nhgis_1980_gis_zip <- nhgis_files %>%
   filter(year == 1980, !is.na(gis_zip_path), file.exists(gis_zip_path)) %>%
@@ -396,7 +498,18 @@ controls_df <- exact_df %>%
         owner_occupied_units_1980_approx = owner_occupied_units,
         vacant_units_1980_approx = vacant_units,
         homeowner_share_1980_approx = homeowner_share,
-        vacancy_rate_1980_approx = vacancy_rate
+        vacancy_rate_1980_approx = vacancy_rate,
+        total_population_1980_nhgis = total_population,
+        white_population_1980_nhgis = white_population,
+        black_population_1980_nhgis = black_population,
+        asian_pacific_islander_population_1980_nhgis = asian_pacific_islander_population,
+        other_race_population_1980_nhgis = other_race_population,
+        hispanic_population_1980_nhgis = hispanic_any_race,
+        white_share_1980_nhgis = white_share,
+        black_share_1980_nhgis = black_share,
+        asian_pacific_islander_share_1980_nhgis = asian_pacific_islander_share,
+        other_race_share_1980_nhgis = other_race_share,
+        hispanic_share_1980_nhgis = hispanic_share
       ),
     by = "district_id",
     relationship = "many-to-one"
@@ -410,7 +523,18 @@ controls_df <- exact_df %>%
         owner_occupied_units_1990_approx = owner_occupied_units,
         vacant_units_1990_approx = vacant_units,
         homeowner_share_1990_approx = homeowner_share,
-        vacancy_rate_1990_approx = vacancy_rate
+        vacancy_rate_1990_approx = vacancy_rate,
+        total_population_1990_nhgis = total_population,
+        white_population_1990_nhgis = white_population,
+        black_population_1990_nhgis = black_population,
+        asian_pacific_islander_population_1990_nhgis = asian_pacific_islander_population,
+        other_race_population_1990_nhgis = other_race_population,
+        hispanic_population_1990_nhgis = hispanic_any_race,
+        white_share_1990_nhgis = white_share,
+        black_share_1990_nhgis = black_share,
+        asian_pacific_islander_share_1990_nhgis = asian_pacific_islander_share,
+        other_race_share_1990_nhgis = other_race_share,
+        hispanic_share_1990_nhgis = hispanic_share
       ),
     by = "district_id",
     relationship = "many-to-one"
@@ -428,6 +552,11 @@ controls_df <- exact_df %>%
     ),
     vacancy_rate_change_1980_1990_pp_approx = 100 * (vacancy_rate_1990_approx - vacancy_rate_1980_approx),
     homeowner_share_change_1980_1990_pp_approx = 100 * (homeowner_share_1990_approx - homeowner_share_1980_approx)
+  ) %>%
+  mutate(
+    white_share_change_1980_1990_pp_nhgis = 100 * (white_share_1990_nhgis - white_share_1980_nhgis),
+    black_share_change_1980_1990_pp_nhgis = 100 * (black_share_1990_nhgis - black_share_1980_nhgis),
+    hispanic_share_change_1980_1990_pp_nhgis = 100 * (hispanic_share_1990_nhgis - hispanic_share_1980_nhgis)
   ) %>%
   arrange(district_id)
 
@@ -461,6 +590,14 @@ static_1990_demo_control_vars <- c(
   "unemployment_rate_1990_exact"
 )
 
+nhgis_1990_race_vars <- c(
+  "white_share_1990_nhgis",
+  "black_share_1990_nhgis",
+  "asian_pacific_islander_share_1990_nhgis",
+  "other_race_share_1990_nhgis",
+  "hispanic_share_1990_nhgis"
+)
+
 qc_df <- bind_rows(
   tibble(
     metric = "district_count",
@@ -491,6 +628,11 @@ qc_df <- bind_rows(
     metric = "missing_static_1990_demo_control_cd_count",
     value = sum(!stats::complete.cases(controls_df[, static_1990_demo_control_vars])),
     note = "Community districts missing any chosen exact 1990 demographic baseline control from the DCP profiles."
+  ),
+  tibble(
+    metric = "missing_nhgis_1990_race_share_cd_count",
+    value = sum(!stats::complete.cases(controls_df[, nhgis_1990_race_vars])),
+    note = "Community districts missing any NHGIS 1990 race or Hispanic-origin share from tract-to-CD overlay."
   ),
   tibble(
     metric = "approx_pretrend_missing_cd_count",
@@ -543,6 +685,7 @@ qc_df <- bind_rows(
         nrow(controls_df) - n_distinct(controls_df$district_id) == 0 &&
         sum(!stats::complete.cases(controls_df[, primary_exact_control_vars])) == 0 &&
         sum(!stats::complete.cases(controls_df[, static_1990_demo_control_vars])) == 0 &&
+        sum(!stats::complete.cases(controls_df[, nhgis_1990_race_vars])) == 0 &&
         sum(!stats::complete.cases(controls_df[, c(
           "total_housing_units_growth_1980_1990_approx",
           "occupied_units_growth_1980_1990_approx",
