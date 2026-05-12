@@ -144,8 +144,8 @@ requested_term_df <- function(period_values) {
 
 extract_terms <- function(model, requested_terms) {
   requested_terms |>
-    left_join(coeftable_df(model), by = "term") |>
-    left_join(confint_df(model), by = "term") |>
+    left_join(coeftable_df(model), by = "term", relationship = "many-to-one") |>
+    left_join(confint_df(model), by = "term", relationship = "many-to-one") |>
     mutate(
       model_status = if_else(is.na(estimate), "requested_term_dropped", "estimated"),
       model_message = if_else(

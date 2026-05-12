@@ -294,7 +294,8 @@ residual_base_df <- expand_grid(
   left_join(
     projects_observed_df |>
       select(borocd, borough_code, borough_name, year, units_50_plus_observed, gross_add_units),
-    by = c("borocd", "borough_code", "borough_name", "year")
+    by = c("borocd", "borough_code", "borough_name", "year"),
+    relationship = "many-to-one"
   ) |>
   mutate(
     units_50_plus_observed = coalesce(units_50_plus_observed, 0),

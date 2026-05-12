@@ -2,7 +2,6 @@
 
 import csv
 import re
-import sys
 from collections import defaultdict
 from pathlib import Path
 
@@ -105,12 +104,9 @@ def find_cycle(tasks, edges):
 
 
 def main():
-    if len(sys.argv) != 4:
-        raise SystemExit("Expected arguments: edges_csv dot_file audit_csv")
-
-    edges_csv = Path(sys.argv[1])
-    dot_file = Path(sys.argv[2])
-    audit_csv = Path(sys.argv[3])
+    edges_csv = Path("../output/task_edges.csv")
+    dot_file = Path("../output/task_flow.dot")
+    audit_csv = Path("../output/task_graph_audit.csv")
     tasks_root = Path("..").resolve().parent
 
     task_makefiles = {

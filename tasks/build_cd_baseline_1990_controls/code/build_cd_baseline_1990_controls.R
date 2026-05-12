@@ -97,7 +97,7 @@ build_cd_overlay <- function(nhgis_df, gis_zip_path, cd_sf, year_value) {
     transmute(gisjoin = as.character(gisjoin), geometry)
 
   tract_sf <- tract_shape %>%
-    inner_join(nhgis_df, by = "gisjoin") %>%
+    inner_join(nhgis_df, by = "gisjoin", relationship = "many-to-one") %>%
     st_as_sf() %>%
     st_make_valid() %>%
     st_transform(2263) %>%
@@ -327,35 +327,35 @@ profiles_df <- read_parquet(dcp_profile_file$parquet_path[[1]]) %>%
 
 exact_df <- measure_df %>%
   select(source_id, pull_date, district_id, borocd, borough_code, borough_name, h_cd_1990, treat_pp, treat_z_boro) %>%
-  left_join(pull_dcp_metric(profiles_df, "housing_occupancy", "Total housing units", "value_1990_number", "total_housing_units_1990_exact"), by = "district_id") %>%
-  left_join(pull_dcp_metric(profiles_df, "housing_occupancy", "Occupied housing units", "value_1990_number", "occupied_units_1990_exact"), by = "district_id") %>%
-  left_join(pull_dcp_metric(profiles_df, "housing_occupancy", "Vacant housing units", "value_1990_number", "vacant_housing_units_1990_exact"), by = "district_id") %>%
-  left_join(pull_dcp_metric(profiles_df, "housing_tenure", "Owner-occupied housing units", "value_1990_number", "owner_occupied_units_1990_exact"), by = "district_id") %>%
-  left_join(pull_dcp_metric(profiles_df, "housing_tenure", "Renter-occupied housing units", "value_1990_number", "renter_occupied_units_1990_exact"), by = "district_id") %>%
-  left_join(pull_dcp_metric(profiles_df, "units_in_structure", "1 unit, detached", "value_1990_number", "structure_units_1_detached_1990_exact"), by = "district_id") %>%
-  left_join(pull_dcp_metric(profiles_df, "units_in_structure", "1 unit, attached", "value_1990_number", "structure_units_1_attached_1990_exact"), by = "district_id") %>%
-  left_join(pull_dcp_metric(profiles_df, "units_in_structure", "2 units", "value_1990_number", "structure_units_2_units_1990_exact"), by = "district_id") %>%
-  left_join(pull_dcp_metric(profiles_df, "units_in_structure", "3 or 4 units", "value_1990_number", "structure_units_3_4_units_1990_exact"), by = "district_id") %>%
-  left_join(pull_dcp_metric(profiles_df, "units_in_structure", "5 to 9 units", "value_1990_number", "structure_units_5_9_units_1990_exact"), by = "district_id") %>%
-  left_join(pull_dcp_metric(profiles_df, "units_in_structure", "10 to 19 units", "value_1990_number", "structure_units_10_19_units_1990_exact"), by = "district_id") %>%
-  left_join(pull_dcp_metric(profiles_df, "units_in_structure", "20 to 49 units", "value_1990_number", "structure_units_20_49_units_1990_exact"), by = "district_id") %>%
-  left_join(pull_dcp_metric(profiles_df, "units_in_structure", "50 or more units", "value_1990_number", "structure_units_50_plus_units_1990_exact"), by = "district_id") %>%
-  left_join(pull_dcp_metric(profiles_df, "units_in_structure", "Other", "value_1990_number", "structure_units_other_1990_exact"), by = "district_id") %>%
-  left_join(pull_dcp_metric(profiles_df, "income_in_1989_and_1999", "Median household income (1999 constant dollars)", "value_1990_number", "median_household_income_1990_1999_dollars_exact"), by = "district_id") %>%
-  left_join(pull_dcp_metric(profiles_df, "poverty_status_in_1989_and_1999", "Persons below the poverty level", "value_1990_number", "persons_below_poverty_1990_exact"), by = "district_id") %>%
-  left_join(pull_dcp_metric(profiles_df, "poverty_status_in_1989_and_1999", "Persons for whom poverty status was determined", "value_1990_number", "persons_poverty_universe_1990_exact"), by = "district_id") %>%
-  left_join(pull_dcp_metric(profiles_df, "value", "Median housing value (2000 constant dollars)", "value_1990_number", "median_housing_value_1990_2000_dollars_exact"), by = "district_id") %>%
-  left_join(pull_dcp_metric(profiles_df, "nativity_and_place_of_birth", "Total population", "value_1990_number", "total_population_1990_exact"), by = "district_id") %>%
-  left_join(pull_dcp_metric(profiles_df, "nativity_and_place_of_birth", "Foreign-born", "value_1990_number", "foreign_born_population_1990_exact"), by = "district_id") %>%
-  left_join(pull_dcp_metric(profiles_df, "educational_attainment", "Population 25 years and over", "value_1990_number", "population_25_and_over_1990_exact"), by = "district_id") %>%
-  left_join(pull_dcp_metric(profiles_df, "educational_attainment", "College graduate", "value_1990_number", "college_graduate_population_1990_exact"), by = "district_id") %>%
-  left_join(pull_dcp_metric(profiles_df, "educational_attainment", "High school graduate or higher", "value_1990_number", "high_school_or_higher_population_1990_exact"), by = "district_id") %>%
-  left_join(pull_dcp_metric_max(profiles_df, "employment_status", "In the labor force", "value_1990_number", "in_labor_force_1990_exact"), by = "district_id") %>%
-  left_join(pull_dcp_metric_max(profiles_df, "employment_status", "Unemployed", "value_1990_number", "unemployed_population_1990_exact"), by = "district_id") %>%
-  left_join(pull_dcp_metric(profiles_df, "commuting_to_work", "Workers 16 years and over", "value_1990_number", "workers_16_and_over_1990_exact"), by = "district_id") %>%
-  left_join(pull_dcp_metric(profiles_df, "commuting_to_work", "Subway", "value_1990_number", "subway_commuters_1990_exact"), by = "district_id") %>%
-  left_join(pull_dcp_metric(profiles_df, "commuting_to_work", "Public transportation", "value_1990_number", "public_transport_commuters_1990_exact"), by = "district_id") %>%
-  left_join(pull_dcp_metric(profiles_df, "commuting_to_work", "Mean travel time to work (minutes)", "value_1990_number", "mean_commute_time_1990_minutes_exact"), by = "district_id") %>%
+  left_join(pull_dcp_metric(profiles_df, "housing_occupancy", "Total housing units", "value_1990_number", "total_housing_units_1990_exact"), by = "district_id", relationship = "many-to-one") %>%
+  left_join(pull_dcp_metric(profiles_df, "housing_occupancy", "Occupied housing units", "value_1990_number", "occupied_units_1990_exact"), by = "district_id", relationship = "many-to-one") %>%
+  left_join(pull_dcp_metric(profiles_df, "housing_occupancy", "Vacant housing units", "value_1990_number", "vacant_housing_units_1990_exact"), by = "district_id", relationship = "many-to-one") %>%
+  left_join(pull_dcp_metric(profiles_df, "housing_tenure", "Owner-occupied housing units", "value_1990_number", "owner_occupied_units_1990_exact"), by = "district_id", relationship = "many-to-one") %>%
+  left_join(pull_dcp_metric(profiles_df, "housing_tenure", "Renter-occupied housing units", "value_1990_number", "renter_occupied_units_1990_exact"), by = "district_id", relationship = "many-to-one") %>%
+  left_join(pull_dcp_metric(profiles_df, "units_in_structure", "1 unit, detached", "value_1990_number", "structure_units_1_detached_1990_exact"), by = "district_id", relationship = "many-to-one") %>%
+  left_join(pull_dcp_metric(profiles_df, "units_in_structure", "1 unit, attached", "value_1990_number", "structure_units_1_attached_1990_exact"), by = "district_id", relationship = "many-to-one") %>%
+  left_join(pull_dcp_metric(profiles_df, "units_in_structure", "2 units", "value_1990_number", "structure_units_2_units_1990_exact"), by = "district_id", relationship = "many-to-one") %>%
+  left_join(pull_dcp_metric(profiles_df, "units_in_structure", "3 or 4 units", "value_1990_number", "structure_units_3_4_units_1990_exact"), by = "district_id", relationship = "many-to-one") %>%
+  left_join(pull_dcp_metric(profiles_df, "units_in_structure", "5 to 9 units", "value_1990_number", "structure_units_5_9_units_1990_exact"), by = "district_id", relationship = "many-to-one") %>%
+  left_join(pull_dcp_metric(profiles_df, "units_in_structure", "10 to 19 units", "value_1990_number", "structure_units_10_19_units_1990_exact"), by = "district_id", relationship = "many-to-one") %>%
+  left_join(pull_dcp_metric(profiles_df, "units_in_structure", "20 to 49 units", "value_1990_number", "structure_units_20_49_units_1990_exact"), by = "district_id", relationship = "many-to-one") %>%
+  left_join(pull_dcp_metric(profiles_df, "units_in_structure", "50 or more units", "value_1990_number", "structure_units_50_plus_units_1990_exact"), by = "district_id", relationship = "many-to-one") %>%
+  left_join(pull_dcp_metric(profiles_df, "units_in_structure", "Other", "value_1990_number", "structure_units_other_1990_exact"), by = "district_id", relationship = "many-to-one") %>%
+  left_join(pull_dcp_metric(profiles_df, "income_in_1989_and_1999", "Median household income (1999 constant dollars)", "value_1990_number", "median_household_income_1990_1999_dollars_exact"), by = "district_id", relationship = "many-to-one") %>%
+  left_join(pull_dcp_metric(profiles_df, "poverty_status_in_1989_and_1999", "Persons below the poverty level", "value_1990_number", "persons_below_poverty_1990_exact"), by = "district_id", relationship = "many-to-one") %>%
+  left_join(pull_dcp_metric(profiles_df, "poverty_status_in_1989_and_1999", "Persons for whom poverty status was determined", "value_1990_number", "persons_poverty_universe_1990_exact"), by = "district_id", relationship = "many-to-one") %>%
+  left_join(pull_dcp_metric(profiles_df, "value", "Median housing value (2000 constant dollars)", "value_1990_number", "median_housing_value_1990_2000_dollars_exact"), by = "district_id", relationship = "many-to-one") %>%
+  left_join(pull_dcp_metric(profiles_df, "nativity_and_place_of_birth", "Total population", "value_1990_number", "total_population_1990_exact"), by = "district_id", relationship = "many-to-one") %>%
+  left_join(pull_dcp_metric(profiles_df, "nativity_and_place_of_birth", "Foreign-born", "value_1990_number", "foreign_born_population_1990_exact"), by = "district_id", relationship = "many-to-one") %>%
+  left_join(pull_dcp_metric(profiles_df, "educational_attainment", "Population 25 years and over", "value_1990_number", "population_25_and_over_1990_exact"), by = "district_id", relationship = "many-to-one") %>%
+  left_join(pull_dcp_metric(profiles_df, "educational_attainment", "College graduate", "value_1990_number", "college_graduate_population_1990_exact"), by = "district_id", relationship = "many-to-one") %>%
+  left_join(pull_dcp_metric(profiles_df, "educational_attainment", "High school graduate or higher", "value_1990_number", "high_school_or_higher_population_1990_exact"), by = "district_id", relationship = "many-to-one") %>%
+  left_join(pull_dcp_metric_max(profiles_df, "employment_status", "In the labor force", "value_1990_number", "in_labor_force_1990_exact"), by = "district_id", relationship = "many-to-one") %>%
+  left_join(pull_dcp_metric_max(profiles_df, "employment_status", "Unemployed", "value_1990_number", "unemployed_population_1990_exact"), by = "district_id", relationship = "many-to-one") %>%
+  left_join(pull_dcp_metric(profiles_df, "commuting_to_work", "Workers 16 years and over", "value_1990_number", "workers_16_and_over_1990_exact"), by = "district_id", relationship = "many-to-one") %>%
+  left_join(pull_dcp_metric(profiles_df, "commuting_to_work", "Subway", "value_1990_number", "subway_commuters_1990_exact"), by = "district_id", relationship = "many-to-one") %>%
+  left_join(pull_dcp_metric(profiles_df, "commuting_to_work", "Public transportation", "value_1990_number", "public_transport_commuters_1990_exact"), by = "district_id", relationship = "many-to-one") %>%
+  left_join(pull_dcp_metric(profiles_df, "commuting_to_work", "Mean travel time to work (minutes)", "value_1990_number", "mean_commute_time_1990_minutes_exact"), by = "district_id", relationship = "many-to-one") %>%
   mutate(
     vacancy_rate_1990_exact = ifelse(total_housing_units_1990_exact > 0, vacant_housing_units_1990_exact / total_housing_units_1990_exact, NA_real_),
     renter_share_1990_exact = ifelse(occupied_units_1990_exact > 0, renter_occupied_units_1990_exact / occupied_units_1990_exact, NA_real_),

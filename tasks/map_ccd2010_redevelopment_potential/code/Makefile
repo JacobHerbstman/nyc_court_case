@@ -11,16 +11,16 @@ all: ../output/ccdist2010_redev_2002_map_qc.csv \
 	$(R) $<
 
 ../output/ccdist2010_redev_2002_hex_logsum_map.png: ../output/ccdist2010_redev_2002_map_qc.csv
-	@test -s "$@" || $(R) map_ccd2010_redevelopment_potential.R
+	@test -s "$@"
 
 ../output/ccdist2010_redev_2002_hex_density_map.png: ../output/ccdist2010_redev_2002_map_qc.csv
-	@test -s "$@" || $(R) map_ccd2010_redevelopment_potential.R
+	@test -s "$@"
 
 ../output/ccdist2010_redev_2002_council_map.png: ../output/ccdist2010_redev_2002_map_qc.csv
-	@test -s "$@" || $(R) map_ccd2010_redevelopment_potential.R
+	@test -s "$@"
 
 ../output/ccdist2010_redev_2002_hex_grid.gpkg: ../output/ccdist2010_redev_2002_map_qc.csv
-	@test -s "$@" || $(R) map_ccd2010_redevelopment_potential.R
+	@test -s "$@"
 
 ../input/ccdist2010_homeownership_1990_measure.csv: ../../build_ccd2010_homeownership_1990_measure/output/ccdist2010_homeownership_1990_measure.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"

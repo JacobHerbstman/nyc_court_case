@@ -57,7 +57,7 @@ build_brooklyn_overlay <- function(nhgis_df, gis_zip_path, cd_sf) {
     transmute(gisjoin = as.character(gisjoin), geometry)
 
   tract_sf <- tract_shape %>%
-    inner_join(nhgis_df, by = "gisjoin") %>%
+    inner_join(nhgis_df, by = "gisjoin", relationship = "many-to-one") %>%
     st_as_sf() %>%
     st_make_valid() %>%
     st_transform(2263) %>%
@@ -95,7 +95,8 @@ build_brooklyn_overlay <- function(nhgis_df, gis_zip_path, cd_sf) {
           hispanic_any_race_alloc_sum = sum(hispanic_any_race_alloc, na.rm = TRUE),
           .groups = "drop"
         ),
-      by = "gisjoin"
+      by = "gisjoin",
+      relationship = "many-to-one"
     )
 
   cd_df <- intersection_sf %>%
@@ -298,7 +299,7 @@ distance_df <- brooklyn_sf %>%
   select(borocd, distance_to_city_hall_miles)
 
 controls_df <- baseline_controls %>%
-  left_join(brooklyn_label_map, by = "borocd") %>%
+  left_join(brooklyn_label_map, by = "borocd", relationship = "many-to-one") %>%
   left_join(
     overlay_1990$cd_df %>%
       select(
@@ -311,10 +312,11 @@ controls_df <- baseline_controls %>%
         black_share_1990_nhgis,
         hispanic_share_1990_nhgis
       ),
-    by = "borocd"
+    by = "borocd",
+    relationship = "many-to-one"
   ) %>%
-  left_join(distance_df, by = "borocd") %>%
-  left_join(redevelopment, by = c("borocd", "borough_name")) %>%
+  left_join(distance_df, by = "borocd", relationship = "many-to-one") %>%
+  left_join(redevelopment, by = c("borocd", "borough_name"), relationship = "many-to-one") %>%
   mutate(
     density_1990_occ_per_res_acre = occupied_units_1990_exact / residential_acres
   ) %>%

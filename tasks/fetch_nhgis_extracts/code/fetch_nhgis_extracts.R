@@ -100,7 +100,7 @@ nhgis_specs <- tibble(
 
 nhgis_rows <- source_catalog %>%
   semi_join(nhgis_specs, by = "source_id") %>%
-  left_join(nhgis_specs, by = "source_id") %>%
+  left_join(nhgis_specs, by = "source_id", relationship = "many-to-one") %>%
   arrange(year)
 
 if (nrow(nhgis_rows) != nrow(nhgis_specs) || !setequal(nhgis_rows$source_id, nhgis_specs$source_id)) {

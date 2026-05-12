@@ -160,7 +160,7 @@ bbl_df <- bbl_latest_selection |>
 
 bbl_latest_selection_changes <- bbl_latest_selection |>
   select(project_id, bbl_standardized, new_input_row_number = input_row_number) |>
-  inner_join(bbl_old_selection, by = c("project_id", "bbl_standardized")) |>
+  inner_join(bbl_old_selection, by = c("project_id", "bbl_standardized"), relationship = "many-to-one") |>
   filter(new_input_row_number != old_input_row_number)
 
 write_parquet_if_changed(project_df, "../output/zap_project_data.parquet")

@@ -70,8 +70,8 @@ extract_model_rows <- function(model, outcome_family, outcome_label, control_lay
   names(confint_df)[1:2] <- c("conf_low", "conf_high")
 
   tibble(term = term_names, era = eras) %>%
-    left_join(coef_table, by = "term") %>%
-    left_join(confint_df, by = "term") %>%
+    left_join(coef_table, by = "term", relationship = "many-to-one") %>%
+    left_join(confint_df, by = "term", relationship = "many-to-one") %>%
     transmute(
       outcome_family,
       outcome_label,

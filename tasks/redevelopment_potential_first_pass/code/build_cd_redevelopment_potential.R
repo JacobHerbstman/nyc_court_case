@@ -103,7 +103,8 @@ build_cd_dataset <- function(pluto_path, release_label, weighted_means = TRUE, v
     left_join(
       treatment_df |>
         select(borocd, borough_code, borough_name),
-      by = "borocd"
+      by = "borocd",
+      relationship = "many-to-one"
     ) |>
     mutate(
       in_treatment_universe = !is.na(borough_code),
@@ -172,7 +173,7 @@ build_cd_dataset <- function(pluto_path, release_label, weighted_means = TRUE, v
     )
 
   lot_df <- lot_df |>
-    left_join(borough_medians_df, by = c("borough_code", "borough_name")) |>
+    left_join(borough_medians_df, by = c("borough_code", "borough_name"), relationship = "many-to-one") |>
     mutate(
       low_existing_far_boro = is_residential_lot & is.finite(built_far_use) & built_far_use < borough_built_far_median,
       low_existing_far_city = is_residential_lot & is.finite(built_far_use) & built_far_use < city_built_median,
@@ -221,8 +222,8 @@ build_cd_dataset <- function(pluto_path, release_label, weighted_means = TRUE, v
       cd_unused_res_floor_area_per_res_acre = if_else(cd_residential_lot_area > 0, cd_sum_unused_res_floor_area / (cd_residential_lot_area / 43560), NA_real_),
       residential_acres = cd_residential_lot_area / 43560
     ) |>
-    left_join(treatment_df, by = c("borocd", "borough_code", "borough_name")) |>
-    left_join(controls_df, by = c("borocd", "borough_code", "borough_name")) |>
+    left_join(treatment_df, by = c("borocd", "borough_code", "borough_name"), relationship = "many-to-one") |>
+    left_join(controls_df, by = c("borocd", "borough_code", "borough_name"), relationship = "many-to-one") |>
     group_by(borough_code, borough_name) |>
     mutate(
       demand_proxy_ratio_boro = median_housing_value_1990_2000_dollars_exact_filled / mean(median_housing_value_1990_2000_dollars_exact_filled, na.rm = TRUE)
@@ -295,7 +296,7 @@ build_cd_dataset <- function(pluto_path, release_label, weighted_means = TRUE, v
       summarize(median_value = stats::median(.data[[boro_name]], na.rm = TRUE), .groups = "drop")
 
     cd_df <- cd_df |>
-      left_join(borough_medians, by = c("borough_code", "borough_name")) |>
+      left_join(borough_medians, by = c("borough_code", "borough_name"), relationship = "many-to-one") |>
       mutate(
         !!high_name := .data[[boro_name]] >= median_value,
         !!low_name := .data[[boro_name]] < median_value
@@ -419,7 +420,7 @@ qc_df <- bind_rows(
     note = "Main release field nonmissing share from staged MapPLUTO QC."
   ),
   main_build$borough_pre_df |>
-    left_join(main_build$borough_post_df, by = c("borough_code", "borough_name")) |>
+    left_join(main_build$borough_post_df, by = c("borough_code", "borough_name"), relationship = "many-to-one") |>
     pivot_longer(cols = c(lot_count_before, lot_area_before, lot_count_after, lot_area_after), names_to = "item", values_to = "value") |>
     mutate(section = "borough_pre_post", subgroup = "18v1.1", borocd = NA_character_, value = as.character(value), note = "Borough totals before and after main redevelopment restrictions.") |>
     select(section, item, subgroup, borocd, borough_name, value, note),

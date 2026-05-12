@@ -97,7 +97,7 @@ size_outcomes_df <- panel_source_df %>%
   )
 
 year_outcomes_df <- base_outcomes_df %>%
-  left_join(size_outcomes_df, by = c("borocd", "year")) %>%
+  left_join(size_outcomes_df, by = c("borocd", "year"), relationship = "many-to-one") %>%
   mutate(
     nb_project_count_1_2 = coalesce(nb_project_count_1_2, 0),
     nb_project_count_3_4 = coalesce(nb_project_count_3_4, 0),
@@ -144,7 +144,7 @@ year_outcomes_long <- year_outcomes_df %>%
     names_to = "outcome_family",
     values_to = "outcome_value"
   ) %>%
-  left_join(outcome_map, by = "outcome_family")
+  left_join(outcome_map, by = "outcome_family", relationship = "many-to-one")
 
 panel_df <- crossing(
   measure_df %>%
@@ -199,12 +199,13 @@ panel_df <- crossing(
           vacancy_rate_change_1980_1990_pp_approx,
           homeowner_share_change_1980_1990_pp_approx
         ),
-      by = c("district_id", "borocd")
+      by = c("district_id", "borocd"),
+      relationship = "many-to-one"
     ),
   year = 2000:2025,
   outcome_map
 ) %>%
-  left_join(year_outcomes_long, by = c("borocd", "year", "outcome_family", "outcome_group", "outcome_label")) %>%
+  left_join(year_outcomes_long, by = c("borocd", "year", "outcome_family", "outcome_group", "outcome_label"), relationship = "many-to-one") %>%
   mutate(
     outcome_source_id = "dcp_housing_database_project_level",
     outcome_value = coalesce(outcome_value, 0)

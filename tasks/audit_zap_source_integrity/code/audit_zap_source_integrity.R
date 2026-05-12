@@ -37,14 +37,6 @@ nonmissing_value <- function(x) {
   !is.na(x) & str_squish(as.character(x)) != ""
 }
 
-share_value <- function(x) {
-  if (length(x) == 0) {
-    return(NA_real_)
-  }
-
-  mean(x, na.rm = TRUE)
-}
-
 has_action_code <- function(x, code) {
   raw_value <- str_to_upper(coalesce(as.character(x), ""))
   str_detect(raw_value, paste0("(^|[^A-Z0-9])", code, "([^A-Z0-9]|$)"))

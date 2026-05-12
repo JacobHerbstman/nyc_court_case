@@ -36,8 +36,8 @@ extract_term_rows <- function(model, requested_terms, analysis_family, sample_la
   names(conf_df)[1:2] <- c("conf_low", "conf_high")
 
   tibble(term = requested_terms) |>
-    left_join(coef_df, by = "term") |>
-    left_join(conf_df, by = "term") |>
+    left_join(coef_df, by = "term", relationship = "many-to-one") |>
+    left_join(conf_df, by = "term", relationship = "many-to-one") |>
     mutate(
       analysis_family = analysis_family,
       sample_label = sample_label,
@@ -121,7 +121,8 @@ long_df <- read_csv("../input/cd_homeownership_long_units_series.csv", show_col_
         cd_share_lot_area_old_building, cd_share_lot_area_protected,
         cd_share_lot_area_parking_or_low_intensity, two_by_two_cell, two_by_two_label
       ),
-    by = c("borocd", "borough_code", "borough_name")
+    by = c("borocd", "borough_code", "borough_name"),
+    relationship = "many-to-one"
   ) |>
   mutate(
     era = case_when(
@@ -168,7 +169,8 @@ dcp_df <- read_csv("../input/cd_homeownership_dcp_supply_panel.csv", show_col_ty
         cd_share_lot_area_old_building, cd_share_lot_area_protected,
         cd_share_lot_area_parking_or_low_intensity, two_by_two_cell, two_by_two_label
       ),
-    by = c("borocd", "borough_code", "borough_name")
+    by = c("borocd", "borough_code", "borough_name"),
+    relationship = "many-to-one"
   ) |>
   mutate(
     era = case_when(
@@ -209,7 +211,8 @@ observed_aux_df <- dcp_df |>
         cd_share_lot_area_old_building, cd_share_lot_area_protected,
         cd_share_lot_area_parking_or_low_intensity, two_by_two_cell, two_by_two_label
       ),
-    by = c("borocd", "borough_code", "borough_name")
+    by = c("borocd", "borough_code", "borough_name"),
+    relationship = "many-to-one"
   ) |>
   mutate(
     era = case_when(
@@ -524,7 +527,8 @@ dob_df <- read_csv("../input/cd_homeownership_permit_nb_panel.csv", show_col_typ
         cd_share_lot_area_old_building, cd_share_lot_area_protected,
         cd_share_lot_area_parking_or_low_intensity
       ),
-    by = c("borocd", "borough_code", "borough_name")
+    by = c("borocd", "borough_code", "borough_name"),
+    relationship = "many-to-one"
   ) |>
   mutate(
     era = case_when(
@@ -675,7 +679,7 @@ manhattan_top_lots_df <- read_parquet("../input/mappluto_construction_proxy_lot_
 
 manhattan_anatomy_df <- bind_rows(
   manhattan_cd_df |>
-    left_join(manhattan_units_df, by = "borocd") |>
+    left_join(manhattan_units_df, by = "borocd", relationship = "many-to-one") |>
     mutate(row_type = "cd_summary", rank = NA_integer_, bbl = NA_character_, address = NA_character_, yearbuilt = NA_integer_, unitsres = NA_real_),
   manhattan_top_lots_df |>
     mutate(

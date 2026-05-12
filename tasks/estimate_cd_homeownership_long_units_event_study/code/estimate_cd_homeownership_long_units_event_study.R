@@ -91,8 +91,8 @@ confint_df <- function(model) {
 
 extract_model_terms <- function(model, requested_terms_df) {
   requested_terms_df |>
-    left_join(coeftable_df(model), by = "term") |>
-    left_join(confint_df(model), by = "term")
+    left_join(coeftable_df(model), by = "term", relationship = "many-to-one") |>
+    left_join(confint_df(model), by = "term", relationship = "many-to-one")
 }
 
 log_point_to_percent <- function(x) {

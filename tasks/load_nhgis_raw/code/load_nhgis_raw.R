@@ -14,20 +14,7 @@ extract_number_from_path <- function(path) {
 }
 
 nhgis_table_map <- read_csv("../input/nhgis_table_map.csv", show_col_types = FALSE, na = c("", "NA"))
-nhgis_extract_downloads <- if (file.exists("../input/nhgis_extract_downloads.csv")) {
-  read_csv("../input/nhgis_extract_downloads.csv", show_col_types = FALSE, na = c("", "NA"))
-} else {
-  tibble(
-    source_id = character(),
-    year = integer(),
-    extract_number = integer(),
-    extract_status = character(),
-    file_role = character(),
-    raw_path = character(),
-    checksum_sha256 = character(),
-    status = character()
-  )
-} %>%
+nhgis_extract_downloads <- read_csv("../input/nhgis_extract_downloads.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(extract_number = coalesce(extract_number, extract_number_from_path(raw_path)))
 
 expected_rows <- tibble(year = sort(unique(nhgis_table_map$year))) %>%
@@ -187,7 +174,8 @@ for (i in seq_len(nrow(expected_rows))) {
         left_join(
           table_dfs[[j]] %>%
             select(any_of(join_keys), any_of(setdiff(names(table_dfs[[j]]), names(nhgis_df)))),
-          by = join_keys
+          by = join_keys,
+          relationship = "many-to-one"
         )
     }
   }

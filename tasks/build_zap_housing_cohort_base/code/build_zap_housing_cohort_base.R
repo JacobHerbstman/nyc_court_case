@@ -104,9 +104,9 @@ base_df <- read_parquet("../input/zap_project_data.parquet") %>%
     cert_year >= 1976,
     housing_flag
   ) %>%
-  left_join(bbl_summary, by = "project_id") %>%
-  left_join(measure_df, by = "borocd") %>%
-  left_join(controls_df, by = "borocd") %>%
+  left_join(bbl_summary, by = "project_id", relationship = "many-to-one") %>%
+  left_join(measure_df, by = "borocd", relationship = "many-to-one") %>%
+  left_join(controls_df, by = "borocd", relationship = "many-to-one") %>%
   mutate(
     bbl_count = coalesce(bbl_count, 0L),
     has_bbl = coalesce(has_bbl, FALSE),

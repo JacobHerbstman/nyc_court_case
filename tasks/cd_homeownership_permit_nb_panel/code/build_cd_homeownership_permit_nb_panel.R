@@ -48,7 +48,7 @@ conflict_jobs <- job_cd_df %>%
 
 conflict_df <- conflict_jobs %>%
   select(job_number, standard_cd_count, standard_cd_list) %>%
-  left_join(permit_df, by = "job_number") %>%
+  left_join(permit_df, by = "job_number", relationship = "many-to-one") %>%
   group_by(job_number) %>%
   summarise(
     standard_cd_count = first(standard_cd_count),
@@ -76,7 +76,7 @@ first_issuance_df <- permit_df %>%
 assigned_jobs_df <- job_cd_df %>%
   filter(standard_cd_count == 1) %>%
   select(job_number, assigned_borocd, standard_row_count) %>%
-  left_join(first_issuance_df, by = "job_number")
+  left_join(first_issuance_df, by = "job_number", relationship = "many-to-one")
 
 job_counts_df <- assigned_jobs_df %>%
   filter(!is.na(first_issuance_year), first_issuance_year >= 1989, first_issuance_year <= 2025) %>%
@@ -107,7 +107,7 @@ panel_df <- crossing(
     ),
   year = 1989:2025
 ) %>%
-  left_join(job_counts_df, by = c("borocd" = "assigned_borocd", "year")) %>%
+  left_join(job_counts_df, by = c("borocd" = "assigned_borocd", "year"), relationship = "many-to-one") %>%
   mutate(
     outcome_source_id = "dob_permit_issuance_harmonized",
     outcome_family = "permit_nb_jobs",

@@ -21,17 +21,6 @@ dataset_id <- str_match(source_row$official_url[1], "views/([a-z0-9-]+)/")[, 2]
 pull_date <- resolve_raw_pull_date(setNames(list(source_row$expected_filename[1]), source_id))
 raw_dir <- file.path("..", "..", "..", "data_raw", source_id, pull_date)
 raw_path <- file.path(raw_dir, source_row$expected_filename[1])
-existing_index <- if (file.exists("../output/dob_permit_issuance_current_files.csv")) {
-  read_csv("../output/dob_permit_issuance_current_files.csv", show_col_types = FALSE, na = c("", "NA"))
-} else {
-  tibble()
-}
-prior_failed <- nrow(existing_index) > 0 &&
-  any(existing_index$raw_path == raw_path & existing_index$status == "download_failed", na.rm = TRUE)
-
-if (prior_failed && file.exists(raw_path)) {
-  unlink(raw_path)
-}
 
 status <- if (file.exists(raw_path)) {
   "already_present"

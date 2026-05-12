@@ -179,7 +179,8 @@ for (i in seq_len(nrow(nhgis_raw_files))) {
       nhgis_income_overrides %>%
         filter(year == row$year) %>%
         select(year, gisjoin, override_income_classification, override_reason),
-      by = c("year", "gisjoin")
+      by = c("year", "gisjoin"),
+      relationship = "many-to-one"
     ) %>%
     mutate(
       income_classification = coalesce(override_income_classification, income_classification),

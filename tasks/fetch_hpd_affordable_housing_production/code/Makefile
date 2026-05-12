@@ -12,6 +12,4 @@ all: ../output/hpd_affordable_housing_production_by_building.csv ../output/hpd_a
 ../output/hpd_affordable_housing_production_fetch_qc.csv: ../output/hpd_affordable_housing_production_by_building.csv
 	@test -s "$@"
 
-link-inputs:
-
 include ../../generic.make

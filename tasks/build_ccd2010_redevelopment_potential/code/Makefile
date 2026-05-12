@@ -11,16 +11,16 @@ all: ../output/ccdist2010_redevelopment_potential.csv \
 	$(R) $<
 
 ../output/ccdist2010_redevelopment_potential_qc.csv: ../output/ccdist2010_redevelopment_potential.csv
-	@test -s "$@" || $(R) build_ccd2010_redevelopment_potential.R
+	@test -s "$@"
 
 ../output/ccdist2010_redevelopment_potential_index_correlations.csv: ../output/ccdist2010_redevelopment_potential.csv
-	@test -s "$@" || $(R) build_ccd2010_redevelopment_potential.R
+	@test -s "$@"
 
 ../output/ccdist2010_redevelopment_potential_sensitivity.csv: ../output/ccdist2010_redevelopment_potential.csv
-	@test -s "$@" || $(R) build_ccd2010_redevelopment_potential.R
+	@test -s "$@"
 
 ../output/ccdist2010_redevelopment_potential_2002_comparison.csv: ../output/ccdist2010_redevelopment_potential.csv
-	@test -s "$@" || $(R) build_ccd2010_redevelopment_potential.R
+	@test -s "$@"
 
 ../input/ccdist2010_homeownership_1990_measure.csv: ../../build_ccd2010_homeownership_1990_measure/output/ccdist2010_homeownership_1990_measure.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"

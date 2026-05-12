@@ -515,11 +515,10 @@ build_ccd_dataset <- function(raw_path, release_label, source_id_value, weighted
 
 main_raw_path <- get_mappluto_raw_path("dcp_mappluto_archive", "18v1.1")
 current_raw_path <- get_mappluto_raw_path("dcp_mappluto_current", "25v4")
-legacy_2002_raw_path <- "../input/mappluto_02b.zip"
 
 main_build <- build_ccd_dataset(main_raw_path, "18v1.1", "dcp_mappluto_archive", weighted_means = TRUE, valid_far_only = FALSE)
 current_build <- build_ccd_dataset(current_raw_path, "25v4", "dcp_mappluto_current", weighted_means = TRUE, valid_far_only = FALSE)
-legacy_2002_build <- build_ccd_dataset(legacy_2002_raw_path, "02b", "dcp_mappluto_archive_legacy", weighted_means = TRUE, valid_far_only = FALSE, legacy_02b = TRUE)
+legacy_2002_build <- build_ccd_dataset("../input/mappluto_02b.zip", "02b", "dcp_mappluto_archive_legacy", weighted_means = TRUE, valid_far_only = FALSE, legacy_02b = TRUE)
 main_unweighted_build <- build_ccd_dataset(main_raw_path, "18v1.1", "dcp_mappluto_archive", weighted_means = FALSE, valid_far_only = FALSE)
 main_valid_far_build <- build_ccd_dataset(main_raw_path, "18v1.1", "dcp_mappluto_archive", weighted_means = TRUE, valid_far_only = TRUE)
 

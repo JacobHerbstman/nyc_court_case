@@ -15,28 +15,28 @@ all: ../output/ccdist2010_opportunity_counterfactual_panel.csv \
 	$(R) $<
 
 ../output/ccdist2010_opportunity_counterfactual_summary.csv: ../output/ccdist2010_opportunity_counterfactual_panel.csv
-	@test -s "$@" || $(R) estimate_ccd2010_opportunity_counterfactual.R
+	@test -s "$@"
 
 ../output/ccdist2010_opportunity_counterfactual_qc.csv: ../output/ccdist2010_opportunity_counterfactual_panel.csv
-	@test -s "$@" || $(R) estimate_ccd2010_opportunity_counterfactual.R
+	@test -s "$@"
 
 ../output/ccdist2010_opportunity_counterfactual_model_summary.csv: ../output/ccdist2010_opportunity_counterfactual_panel.csv
-	@test -s "$@" || $(R) estimate_ccd2010_opportunity_counterfactual.R
+	@test -s "$@"
 
 ../output/ccdist2010_opportunity_counterfactual_main_treatment_coefficients.csv: ../output/ccdist2010_opportunity_counterfactual_panel.csv
-	@test -s "$@" || $(R) estimate_ccd2010_opportunity_counterfactual.R
+	@test -s "$@"
 
 ../output/ccdist2010_opportunity_counterfactual_two_by_two.csv: ../output/ccdist2010_opportunity_counterfactual_panel.csv
-	@test -s "$@" || $(R) estimate_ccd2010_opportunity_counterfactual.R
+	@test -s "$@"
 
 ../output/ccdist2010_opportunity_counterfactual_support_by_borough.csv: ../output/ccdist2010_opportunity_counterfactual_panel.csv
-	@test -s "$@" || $(R) estimate_ccd2010_opportunity_counterfactual.R
+	@test -s "$@"
 
 ../output/ccdist2010_opportunity_counterfactual_district_influence.csv: ../output/ccdist2010_opportunity_counterfactual_panel.csv
-	@test -s "$@" || $(R) estimate_ccd2010_opportunity_counterfactual.R
+	@test -s "$@"
 
 ../output/ccdist2010_opportunity_counterfactual_matched_diagnostic.csv: ../output/ccdist2010_opportunity_counterfactual_panel.csv
-	@test -s "$@" || $(R) estimate_ccd2010_opportunity_counterfactual.R
+	@test -s "$@"
 
 ../input/ccdist2010_redevelopment_potential.csv: ../../build_ccd2010_redevelopment_potential/output/ccdist2010_redevelopment_potential.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"

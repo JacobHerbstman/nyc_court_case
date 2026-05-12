@@ -133,7 +133,7 @@ cd_year <- lot_release %>%
     large_building_plausible_lot_area_share = sum(lotarea[large_building_plausible_flag], na.rm = TRUE) / sum(lotarea, na.rm = TRUE),
     .groups = "drop"
   ) %>%
-  right_join(crossing(year = 2018:2025, borocd = district_lookup$borocd), by = c("year", "borocd")) %>%
+  right_join(crossing(year = 2018:2025, borocd = district_lookup$borocd), by = c("year", "borocd"), relationship = "many-to-one") %>%
   left_join(district_lookup, by = "borocd", relationship = "many-to-one") %>%
   mutate(
     unused_res_floor_area_per_residential_acre = unused_res_floor_area / residential_acres,

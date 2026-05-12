@@ -197,7 +197,8 @@ boundary_sf <- boundary_all_sf |>
   left_join(
     base_df |>
       select(borocd, treat_z_boro, redev_potential_A_z_boro, borough_name),
-    by = "borocd"
+    by = "borocd",
+    relationship = "many-to-one"
   )
 
 pdf("../output/figures/redev_potential_maps.pdf", width = 10, height = 7.5)
@@ -258,7 +259,8 @@ long_df <- read_csv("../input/cd_homeownership_long_units_series.csv", show_col_
   left_join(
     base_df |>
       select(borocd, borough_code, borough_name, two_by_two_cell, two_by_two_label, occupied_units_1990, residential_acres),
-    by = c("borocd", "borough_code", "borough_name")
+    by = c("borocd", "borough_code", "borough_name"),
+    relationship = "many-to-one"
   ) |>
   mutate(
     era = case_when(
@@ -320,7 +322,8 @@ dcp_df <- read_csv("../input/cd_homeownership_dcp_supply_panel.csv", show_col_ty
   left_join(
     base_df |>
       select(borocd, borough_code, borough_name, two_by_two_cell, two_by_two_label, occupied_units_1990, residential_acres),
-    by = c("borocd", "borough_code", "borough_name")
+    by = c("borocd", "borough_code", "borough_name"),
+    relationship = "many-to-one"
   ) |>
   mutate(
     era = case_when(
@@ -341,7 +344,8 @@ nb_units_df <- dcp_df |>
   left_join(
     base_df |>
       select(borocd, borough_code, borough_name, two_by_two_cell, two_by_two_label, occupied_units_1990, residential_acres),
-    by = c("borocd", "borough_code", "borough_name")
+    by = c("borocd", "borough_code", "borough_name"),
+    relationship = "many-to-one"
   ) |>
   mutate(
     era = case_when(
@@ -424,7 +428,8 @@ dob_df <- read_csv("../input/cd_homeownership_permit_nb_panel.csv", show_col_typ
   left_join(
     base_df |>
       select(borocd, borough_code, borough_name, two_by_two_cell, two_by_two_label, occupied_units_1990),
-    by = c("borocd", "borough_code", "borough_name")
+    by = c("borocd", "borough_code", "borough_name"),
+    relationship = "many-to-one"
   ) |>
   mutate(
     era = case_when(

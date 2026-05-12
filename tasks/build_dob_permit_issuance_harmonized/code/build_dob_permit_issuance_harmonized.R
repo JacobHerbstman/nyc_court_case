@@ -10,10 +10,6 @@ suppressPackageStartupMessages({
 source("../../_lib/source_pipeline_utils.R")
 source("../../_lib/dob_permit_issuance_utils.R")
 
-if (!file.exists("../input/dob_permit_issuance_current_raw.parquet")) {
-  stop("Current permit issuance raw parquet is required.")
-}
-
 current_index <- read_csv("../input/dob_permit_issuance_current_raw_files.csv", show_col_types = FALSE, na = c("", "NA"))
 comparison_audit <- read_csv("current_source_decision_1989_2013.csv", show_col_types = FALSE, na = c("", "NA"))
 
@@ -115,36 +111,28 @@ if (duplicate_permit_identifier_rows > 0) {
 
 write_parquet_if_changed(harmonized_df, "../output/dob_permit_issuance_harmonized.parquet")
 
-bps_city_year <- if (file.exists("../input/census_bps_city_year.parquet")) {
-  read_parquet("../input/census_bps_city_year.parquet") %>%
-    as.data.frame() %>%
-    as_tibble()
-} else {
-  tibble()
-}
+bps_city_year <- read_parquet("../input/census_bps_city_year.parquet") %>%
+  as.data.frame() %>%
+  as_tibble()
 
 harmonized_nb_city_year <- harmonized_df %>%
   filter(job_type == "New Building", !is.na(record_year)) %>%
   group_by(record_year) %>%
   summarise(harmonized_nb_permit_rows = n(), .groups = "drop")
 
-bps_compare_df <- if (nrow(bps_city_year) == 0) {
-  tibble(record_year = integer(), harmonized_nb_permit_rows = double(), city_total_units = double())
-} else {
-  bps_city_year_df <- bps_city_year %>%
-    transmute(record_year = as.integer(year), city_total_units = as.numeric(city_total_units))
+bps_city_year_df <- bps_city_year %>%
+  transmute(record_year = as.integer(year), city_total_units = as.numeric(city_total_units))
 
-  if (anyDuplicated(bps_city_year_df$record_year)) {
-    stop("Census BPS city-year validation input is not unique by record_year.")
-  }
-
-  harmonized_nb_city_year %>%
-    inner_join(
-      bps_city_year_df,
-      by = "record_year",
-      relationship = "many-to-one"
-    )
+if (anyDuplicated(bps_city_year_df$record_year)) {
+  stop("Census BPS city-year validation input is not unique by record_year.")
 }
+
+bps_compare_df <- harmonized_nb_city_year %>%
+  inner_join(
+    bps_city_year_df,
+    by = "record_year",
+    relationship = "many-to-one"
+  )
 
 qc_df <- bind_rows(
   tibble(metric = "canonical_source_id", value = "dob_permit_issuance_current", note = "Canonical public permit issuance source used for the unified dataset."),

@@ -107,7 +107,7 @@ proxy_cd <- mappluto_cd_year |>
   summarize(proxy_units = sum(residential_units_proxy, na.rm = TRUE), .groups = "drop")
 
 cd_validation_joined <- exact_cd |>
-  full_join(proxy_cd, by = c("borocd", "borough_code", "borough_name", "decade"))
+  full_join(proxy_cd, by = c("borocd", "borough_code", "borough_name", "decade"), relationship = "many-to-one")
 
 missing_exact_before_fill_count <- sum(is.na(cd_validation_joined$exact_units))
 missing_proxy_before_fill_count <- sum(is.na(cd_validation_joined$proxy_units))

@@ -12,6 +12,4 @@ all: ../output/dof_421a_raw_files.csv ../output/dof_421a_fetch_qc.csv
 ../output/raw:
 	mkdir -p $@
 
-link-inputs:
-
 include ../../generic.make

@@ -40,7 +40,7 @@ if (nrow(missing_request_manifest_rows) > 0) {
 
 archive_sources <- source_catalog %>%
   filter(str_detect(source_id, "^archives_")) %>%
-  left_join(archive_source_requests, by = "source_id")
+  left_join(archive_source_requests, by = "source_id", relationship = "many-to-one")
 
 if (any(is.na(archive_sources$request_id))) {
   stop("Every archives_* source in source_catalog.csv needs an explicit request_id mapping.")

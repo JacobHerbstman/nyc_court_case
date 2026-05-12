@@ -65,8 +65,8 @@ extract_term_rows <- function(model, requested_terms, analysis_family, sample_la
   missing_terms <- setdiff(requested_terms, coef_df$term)
 
   tibble(term = requested_terms) %>%
-    left_join(coef_df, by = "term") %>%
-    left_join(conf_df, by = "term") %>%
+    left_join(coef_df, by = "term", relationship = "many-to-one") %>%
+    left_join(conf_df, by = "term", relationship = "many-to-one") %>%
     mutate(
       analysis_family = analysis_family,
       sample_label = sample_label,

@@ -1,15 +1,18 @@
 SHELL := bash
-PYTHON := python3
 .NOTPARALLEL:
 
-all: ../output/task_graph_audit.csv ../output/task_flow.png
+all: ../output/task_flow.dot ../output/task_edges.csv ../output/task_graph_audit.csv ../output/task_flow.png
 
-../output/task_graph_audit.csv ../output/task_edges.csv ../output/task_flow.dot: build_task_graph.py $(shell find ../../ -maxdepth 3 -path "*/code/Makefile") | ../output
-	$(PYTHON) $< ../output/task_edges.csv ../output/task_flow.dot ../output/task_graph_audit.csv
+../output/task_flow.dot: build_task_graph.py $(shell find ../../ -maxdepth 3 -path "*/code/Makefile") | ../output
+	python3 $<
+
+../output/task_edges.csv: ../output/task_flow.dot
+	@test -s "$@"
+
+../output/task_graph_audit.csv: ../output/task_flow.dot
+	@test -s "$@"
 
 ../output/task_flow.png: ../output/task_flow.dot | ../output
 	dot -Grankdir=LR -Tpng $< -o $@
-
-link-inputs:
 
 include ../../generic.make
