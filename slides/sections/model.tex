@@ -4,7 +4,7 @@
 
 
 \begin{frame}[t]
-    \frametitle{A minimal spatial model with politics}
+    \frametitle{A spatial model with agglomeration and local information}
 
     \small
     \begin{itemize}
@@ -25,11 +25,12 @@
         }
 
         \only<2->{
-        \item \alert<2>{\textbf{Households}} \(g \in \{O,R,F\}\)
+        \item \alert<2>{\textbf{Households}} \(g \in \{O,R,M\}\)
         \only<2>{
             \begin{itemize}
                 \footnotesize
-                \item Owners \(O\), incumbent renters \(R\), future residents \(F\).
+                \item Owners \(O\), incumbent renters \(R\), potential entrants \(M\).
+                \item Entrants are marginal migrants whose location choice is pinned down by an outside option.
                 \item Indirect utility:
                 \[
                     v_{gj}
@@ -42,11 +43,12 @@
                     -
                     \tau_j
                     -
-                    \chi_g C_j(q_j)
+                    C_j(q_j)
                     +
                     \varepsilon_{gj}
                 \]
-                \item \(C_j(q_j)\) lets local opposition reflect real neighborhood costs.
+                \item \(C_j(q_j)\) captures real local disamenities from development.
+                \item In the approval rules below, \(C_j(q_j)\) aggregates these disamenities across affected households.
             \end{itemize}
         }
         }
@@ -86,7 +88,7 @@
         \only<5>{
             \begin{itemize}
                 \footnotesize
-                \item Developers propose projects.
+                \item Developers propose privately feasible projects.
                 \item The political regime determines whether projects clear the approval stage.
                 \item Key welfare channels: rents, wages, amenities, local costs, and owner asset values.
             \end{itemize}
@@ -112,14 +114,15 @@
         \only<1>{
             \begin{itemize}
                 \footnotesize
-                \item A project is socially valuable if:
+                \item A proposed project is socially valuable if total surplus is:
                 \[
-                    B_j^L + B_j^E - C_j - K_j \geq 0
+                    B_j^L + B_j^E - C_j(q_j) - K_j(q_j) \geq 0
                 \]
                 \item \(B_j^L\): local benefits.
                 \item \(B_j^E\): external citywide benefits.
-                \item \(C_j\): true local cost.
-                \item \(K_j\): resource/construction cost.
+                \item \(C_j(q_j)\): true local cost.
+                \item \(K_j(q_j)\): resource/construction cost.
+                \item These rules summarize reduced-form project surplus; privately infeasible projects are not proposed.
             \end{itemize}
         }
         }
@@ -131,10 +134,10 @@
                 \footnotesize
                 \item Local politician observes local costs but weighs only local political benefits:
                 \[
-                    \widetilde{B}_j^L - C_j - K_j \geq 0
+                    \widetilde{B}_j^L - C_j(q_j) - K_j(q_j) \geq 0
                 \]
                 \item Strength: local information.
-                \item Weakness: ignores citywide and future-resident benefits.
+                \item Weakness: ignores citywide and potential-entrant benefits.
             \end{itemize}
         }
         }
@@ -146,7 +149,7 @@
                 \footnotesize
                 \item Central authority internalizes citywide benefits but may mismeasure local costs:
                 \[
-                    B_j^L + B_j^E - \widetilde{C}_j - K_j \geq 0
+                    B_j^L + B_j^E - \widetilde{C}_j(q_j) - K_j(q_j) \geq 0
                 \]
                 \item Strength: internalizes spillovers.
                 \item Weakness: imperfect local information.
@@ -160,7 +163,7 @@
             \begin{itemize}
                 \footnotesize
                 \item Rent reductions outside the district.
-                \item Benefits to future residents.
+                \item Benefits to potential entrants.
                 \item Agglomeration/productivity effects.
                 \item Fiscal or labor-market benefits outside the approving district.
             \end{itemize}
@@ -173,14 +176,14 @@
             \begin{itemize}
                 \footnotesize
                 \item Local politics may overweight incumbent homeowners.
-                \item Renters, future residents, and nonlocal beneficiaries may be underweighted.
+                \item Renters, potential entrants, and nonlocal beneficiaries may be underweighted.
                 \item This is the political-economy channel.
             \end{itemize}
         }
         }
 
         \only<6->{
-        \item \alert<6>{\textbf{Information wedge:} \(C_j - \widetilde{C}_j\)}
+        \item \alert<6>{\textbf{Information wedge:} \(C_j(q_j) - \widetilde{C}_j(q_j)\)}
         \only<6>{
             \begin{itemize}
                 \footnotesize
@@ -198,7 +201,7 @@
         \begin{block}{Regime tradeoff}
             \vspace{.5em}
             \footnotesize
-            Centralization solves the externality and representation problems, but may create an information problem. Decentralization uses local information, but may ignore citywide benefits and underrepresented residents.
+            Centralization solves the externality and representation problems, but may create an information problem. Decentralization uses local information, but may ignore citywide benefits and underrepresented households.
         \end{block}
 
         \vspace{-0.2em}
@@ -275,13 +278,15 @@
                     \sum_{\ell \neq \tau_0}
                     \beta_\ell
                     \left(
-                    H_j \times \mathbf{1}\{\tau=\ell\}
+                    H_j \times \mathds{1}\{\tau=\ell\}
                     \right)
                     +
                     X_j'\Gamma_\tau
                     +
                     \varepsilon_{j\tau}
                 \]
+                \item \(Y_{j\tau}\) is housing production; \(\tau_0\) is the omitted baseline period.
+                \item \(b(j)\) is district \(j\)'s assigned majority borough.
                 \item \(\beta_\ell\) estimates the period-specific political supply gradient.
             \end{itemize}
         }

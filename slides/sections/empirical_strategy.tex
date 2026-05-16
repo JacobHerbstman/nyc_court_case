@@ -10,7 +10,7 @@
     \frametitle{Empirical Strategy}
     \small
 
-    \textbf{Variation}: baseline homeownership differences across Council districts within borough
+    \textbf{Variation}: baseline homeownership differences across Council districts within assigned majority borough
     \begin{itemize}
         \item Fix political geography using 2010 Council districts
         \item Use 1990 homeownership as pre-period exposure to local opposition
@@ -20,13 +20,13 @@
     \textbf{Main comparison}
     \begin{itemize}
         \item Compare post-reform production in high- and low-\(H_j\) districts
-        \item Use within-borough contrasts to absorb borough-level market differences
+        \item Use within-assigned-borough contrasts to absorb borough-level market differences
     \end{itemize}
 
     \vspace{0.25em}
     \textbf{Key assumption}
     \begin{itemize}
-        \item Absent increased local control, homeowner-heavy districts in the same borough would not differentially lose new housing supply after reform
+        \item Absent increased local control, homeowner-heavy districts in the same assigned borough would not differentially lose new housing supply after reform
     \end{itemize}
 \end{frame}
 
@@ -56,7 +56,9 @@
     \begin{itemize}
         \item \(j\): Council district
         \item \(\tau\): period
-        \item \(H_j\): within-borough standardized 1990 homeownership
+        \item \(b(j)\): district \(j\)'s assigned majority borough
+        \item \(H_j\): 1990 homeownership standardized within assigned majority borough
+        \item \(\tau_0\): omitted baseline period
         \item \(\beta_\ell\) traces whether high-homeownership districts lose housing production after reform
     \end{itemize}
 \end{frame}
