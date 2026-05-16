@@ -6,6 +6,7 @@ import hashlib
 import html as html_module
 import json
 import re
+import sys
 import time
 from datetime import date
 from pathlib import Path
@@ -17,7 +18,10 @@ from bs4 import BeautifulSoup
 
 
 BASE_URL = "https://legistar.council.nyc.gov/Legislation.aspx"
-PILOT_YEAR = "2001"
+if len(sys.argv) != 2 or not re.fullmatch(r"\d{4}", sys.argv[1]):
+    raise RuntimeError("Usage: python3 fetch_legistar_broad_recall.py <year>")
+
+QUERY_YEAR = sys.argv[1]
 SOURCE_ID = "nyc_council_legistar_land_use_broad_recall"
 PULL_DATE = date.today().strftime("%Y%m%d")
 
@@ -95,8 +99,8 @@ def legislation_payload(html: str, matter_type: str, type_value: str, event_targ
             "__EVENTTARGET": event_target,
             "__EVENTARGUMENT": "",
             "ctl00$ContentPlaceHolder1$txtSearch": "",
-            "ctl00$ContentPlaceHolder1$lstYears": PILOT_YEAR,
-            "ctl00_ContentPlaceHolder1_lstYears_ClientState": combo_client_state(PILOT_YEAR, PILOT_YEAR),
+            "ctl00$ContentPlaceHolder1$lstYears": QUERY_YEAR,
+            "ctl00_ContentPlaceHolder1_lstYears_ClientState": combo_client_state(QUERY_YEAR, QUERY_YEAR),
             "ctl00$ContentPlaceHolder1$lstTypeBasic": matter_type,
             "ctl00_ContentPlaceHolder1_lstTypeBasic_ClientState": combo_client_state(type_value, matter_type),
             "ctl00$ContentPlaceHolder1$chkID": "on",
@@ -243,7 +247,7 @@ def parse_grid_rows(html: str, query: dict[str, str], page_info: dict[str, int |
             {
                 "source_id": SOURCE_ID,
                 "pull_date": PULL_DATE,
-                "query_year": PILOT_YEAR,
+                "query_year": QUERY_YEAR,
                 "query_matter_type": query["matter_type"],
                 "query_matter_type_value": query["type_value"],
                 "query_page": page_info["current_page"],
@@ -287,17 +291,33 @@ def save_text(path: Path, text: str) -> None:
     path.write_text(text, encoding="utf-8")
 
 
+def request_with_retries(session: requests.Session, method: str, url: str, **kwargs) -> requests.Response:
+    last_error = None
+    for attempt in range(1, 4):
+        try:
+            response = session.request(method, url, **kwargs)
+            response.raise_for_status()
+            return response
+        except requests.RequestException as error:
+            last_error = error
+            if attempt == 3:
+                break
+            time.sleep(5 * attempt)
+    raise last_error
+
+
 def safe_stub(value: object) -> str:
     stub = re.sub(r"[^a-z0-9]+", "_", normalize_space(value).lower()).strip("_")
     return stub or "missing"
 
 
 def fetch_search_pages(session: requests.Session, query: dict[str, str]) -> tuple[list[dict[str, object]], list[dict[str, object]]]:
-    raw_dir = Path("../../../data_raw") / SOURCE_ID / PULL_DATE / f"year_{PILOT_YEAR}" / query["slug"] / "index_pages"
-    response = session.get(BASE_URL, timeout=60)
-    response.raise_for_status()
+    raw_dir = Path("../output/source_files") / SOURCE_ID / PULL_DATE / f"year_{QUERY_YEAR}" / query["slug"] / "index_pages"
+    response = request_with_retries(session, "GET", BASE_URL, timeout=90)
 
-    response = session.post(
+    response = request_with_retries(
+        session,
+        "POST",
         BASE_URL,
         data=legislation_payload(
             response.text,
@@ -305,9 +325,8 @@ def fetch_search_pages(session: requests.Session, query: dict[str, str]) -> tupl
             query["type_value"],
             "ctl00$ContentPlaceHolder1$btnSearch",
         ),
-        timeout=60,
+        timeout=90,
     )
-    response.raise_for_status()
 
     page_fetch_rows: list[dict[str, object]] = []
     matter_rows: list[dict[str, object]] = []
@@ -321,7 +340,9 @@ def fetch_search_pages(session: requests.Session, query: dict[str, str]) -> tupl
             if page_number not in page_links:
                 raise RuntimeError(f"Missing pager link for {query['matter_type']} page {page_number}.")
 
-            response = session.post(
+            response = request_with_retries(
+                session,
+                "POST",
                 BASE_URL,
                 data=legislation_payload(
                     current_html,
@@ -329,9 +350,8 @@ def fetch_search_pages(session: requests.Session, query: dict[str, str]) -> tupl
                     query["type_value"],
                     page_links[page_number],
                 ),
-                timeout=60,
+                timeout=90,
             )
-            response.raise_for_status()
             current_html = response.text
             page_info = parse_page_info(current_html)
             page_links.update(parse_page_links(current_html))
@@ -344,7 +364,7 @@ def fetch_search_pages(session: requests.Session, query: dict[str, str]) -> tupl
             {
                 "source_id": SOURCE_ID,
                 "pull_date": PULL_DATE,
-                "query_year": PILOT_YEAR,
+                "query_year": QUERY_YEAR,
                 "query_matter_type": query["matter_type"],
                 "query_matter_type_value": query["type_value"],
                 "query_page": page_number,
@@ -469,29 +489,34 @@ def parse_history_events(html: str) -> list[dict[str, object]]:
 def fetch_detail_pages(session: requests.Session, matter_index: pd.DataFrame) -> tuple[list[dict[str, object]], list[dict[str, object]]]:
     detail_rows: list[dict[str, object]] = []
     history_rows: list[dict[str, object]] = []
-    raw_dir = Path("../../../data_raw") / SOURCE_ID / PULL_DATE / f"year_{PILOT_YEAR}" / "detail_pages"
+    raw_dir = Path("../output/source_files") / SOURCE_ID / PULL_DATE / f"year_{QUERY_YEAR}" / "detail_pages"
     detail_targets = matter_index[matter_index["land_use_recall_flag"]].copy()
 
     sorted_targets = detail_targets.sort_values(["query_matter_type", "matter_file", "matter_id"]).to_dict("records")
     for i, row in enumerate(sorted_targets, start=1):
-        response = session.get(row["matter_url"], timeout=60)
-        response.raise_for_status()
         raw_path = raw_dir / safe_stub(row["query_matter_type"]) / f"{safe_stub(row['matter_file'])}_{row['matter_id']}.html"
-        save_text(raw_path, response.text)
-        detail_history = parse_history_events(response.text)
-        summary = parse_detail_summary(response.text, detail_history)
+        if raw_path.exists() and raw_path.stat().st_size > 0:
+            page_html = raw_path.read_text(encoding="utf-8")
+            fetch_status = "cached"
+        else:
+            response = request_with_retries(session, "GET", row["matter_url"], timeout=90)
+            page_html = response.text
+            save_text(raw_path, page_html)
+            fetch_status = "downloaded"
+        detail_history = parse_history_events(page_html)
+        summary = parse_detail_summary(page_html, detail_history)
 
         detail_rows.append(
             {
                 "source_id": SOURCE_ID,
                 "pull_date": PULL_DATE,
-                "query_year": PILOT_YEAR,
+                "query_year": QUERY_YEAR,
                 "query_matter_type": row["query_matter_type"],
                 "matter_id": row["matter_id"],
                 "matter_guid": row["matter_guid"],
                 "matter_file": row["matter_file"],
                 "matter_url": row["matter_url"],
-                "fetch_status": "downloaded",
+                "fetch_status": fetch_status,
                 "raw_path": str(raw_path),
                 "file_size_bytes": raw_path.stat().st_size,
                 "checksum_sha256": sha256(raw_path),
@@ -503,7 +528,7 @@ def fetch_detail_pages(session: requests.Session, matter_index: pd.DataFrame) ->
                 {
                     "source_id": SOURCE_ID,
                     "pull_date": PULL_DATE,
-                    "query_year": PILOT_YEAR,
+                    "query_year": QUERY_YEAR,
                     "query_matter_type": row["query_matter_type"],
                     "matter_id": row["matter_id"],
                     "matter_guid": row["matter_guid"],
@@ -513,7 +538,8 @@ def fetch_detail_pages(session: requests.Session, matter_index: pd.DataFrame) ->
                     **event,
                 }
             )
-        time.sleep(0.03)
+        if fetch_status == "downloaded":
+            time.sleep(0.03)
         if i == 1 or i % 100 == 0 or i == len(sorted_targets):
             print(f"Fetched detail page {i} of {len(sorted_targets)}", flush=True)
 
@@ -584,98 +610,104 @@ def main() -> None:
     detail_ids = set(detail_files["matter_id"].astype(str))
     recall_ids = set(recall_rows["matter_id"].astype(str))
 
-    qc = pd.DataFrame(
-        [
-            {
-                "check_name": "all_query_counts_reconciled",
-                "passed": bool(count_check["matches_reported_records"].all()),
-                "detail": "; ".join(
-                    f"{row.query_matter_type}: parsed {row.parsed_rows} of reported {row.reported_records}"
-                    for row in count_check.itertuples()
-                ),
-            },
-            {
-                "check_name": "unique_matter_ids_in_index",
-                "passed": not matter_index["matter_id"].duplicated().any(),
-                "detail": "Each parsed Legistar matter ID appears once in the combined pilot index.",
-            },
-            {
-                "check_name": "land_use_application_count_438",
-                "passed": bool(
-                    count_check.loc[
-                        count_check["query_matter_type"] == "Land Use Application",
-                        "parsed_rows",
-                    ].eq(438).any()
-                ),
-                "detail": "The 2001 Land Use Application search should parse the 438 records reported by Legistar.",
-            },
-            {
-                "check_name": "land_use_call_up_count_68",
-                "passed": bool(
-                    count_check.loc[
-                        count_check["query_matter_type"] == "Land Use Call-Up",
-                        "parsed_rows",
-                    ].eq(68).any()
-                ),
-                "detail": "The 2001 Land Use Call-Up search should parse the 68 records reported by Legistar.",
-            },
-            {
-                "check_name": "resolution_query_returns_records",
-                "passed": bool(
-                    count_check.loc[
-                        count_check["query_matter_type"] == "Resolution",
-                        "parsed_rows",
-                    ].gt(0).any()
-                ),
-                "detail": "The 2001 Resolution query is included so land-use resolutions can be linked to LU matters.",
-            },
-            {
-                "check_name": "laguardia_hotel_seed_found",
-                "passed": bool(matter_index["laguardia_hotel_seed_flag"].any()),
-                "detail": "Known Charter seed case M 820995 appears in the 2001 Land Use Application recall universe.",
-            },
-            {
-                "check_name": "detail_pages_downloaded_for_recall_rows",
-                "passed": recall_ids.issubset(detail_ids),
-                "detail": f"Downloaded detail pages for {len(detail_ids)} of {len(recall_ids)} recall rows.",
-            },
-            {
-                "check_name": "resolution_land_use_candidates_present",
-                "passed": bool(
-                    (
-                        (matter_index["query_matter_type"] == "Resolution")
-                        & matter_index["land_use_recall_flag"]
-                    ).any()
-                ),
-                "detail": "At least one 2001 resolution is flagged by committee or title as land-use-relevant.",
-            },
-            {
-                "check_name": "history_events_parsed_for_details",
-                "passed": bool(len(history_events) >= len(detail_files)),
-                "detail": f"Parsed {len(history_events)} history rows from {len(detail_files)} downloaded detail pages.",
-            },
-            {
-                "check_name": "laguardia_resolution_history_present",
-                "passed": bool(
-                    (
-                        (history_events["matter_file"] == "Res 1939-2001")
-                        & (history_events["history_action_by"] == "City Council")
-                    ).any()
-                ),
-                "detail": "The known LaGuardia hotel resolution has a City Council history event.",
-            },
-        ]
-    )
+    qc_rows = [
+        {
+            "check_name": "all_query_counts_reconciled",
+            "passed": bool(count_check["matches_reported_records"].all()),
+            "detail": "; ".join(
+                f"{row.query_matter_type}: parsed {row.parsed_rows} of reported {row.reported_records}"
+                for row in count_check.itertuples()
+            ),
+        },
+        {
+            "check_name": "unique_matter_ids_in_index",
+            "passed": not matter_index["matter_id"].duplicated().any(),
+            "detail": f"Each parsed {QUERY_YEAR} Legistar matter ID appears once in the combined index.",
+        },
+        {
+            "check_name": "land_use_application_query_returns_records",
+            "passed": bool(
+                count_check.loc[
+                    count_check["query_matter_type"] == "Land Use Application",
+                    "parsed_rows",
+                ].gt(0).any()
+            ),
+            "detail": f"The {QUERY_YEAR} Land Use Application query returns at least one record.",
+        },
+        {
+            "check_name": "land_use_call_up_query_returns_records",
+            "passed": bool(
+                count_check.loc[
+                    count_check["query_matter_type"] == "Land Use Call-Up",
+                    "parsed_rows",
+                ].gt(0).any()
+            ),
+            "detail": f"The {QUERY_YEAR} Land Use Call-Up query returns at least one record.",
+        },
+        {
+            "check_name": "resolution_query_returns_records",
+            "passed": bool(
+                count_check.loc[
+                    count_check["query_matter_type"] == "Resolution",
+                    "parsed_rows",
+                ].gt(0).any()
+            ),
+            "detail": f"The {QUERY_YEAR} Resolution query is included so land-use resolutions can be linked to LU matters.",
+        },
+        {
+            "check_name": "detail_pages_downloaded_for_recall_rows",
+            "passed": recall_ids.issubset(detail_ids),
+            "detail": f"Downloaded detail pages for {len(detail_ids)} of {len(recall_ids)} recall rows.",
+        },
+        {
+            "check_name": "resolution_land_use_candidates_present",
+            "passed": bool(
+                (
+                    (matter_index["query_matter_type"] == "Resolution")
+                    & matter_index["land_use_recall_flag"]
+                ).any()
+            ),
+            "detail": f"At least one {QUERY_YEAR} resolution is flagged by committee or title as land-use-relevant.",
+        },
+        {
+            "check_name": "history_events_parsed_for_details",
+            "passed": bool(len(history_events) >= len(detail_files)),
+            "detail": f"Parsed {len(history_events)} history rows from {len(detail_files)} downloaded detail pages.",
+        },
+    ]
 
-    page_fetch.to_csv("../output/legistar_2001_broad_recall_page_fetches.csv", index=False)
-    matter_index.to_csv("../output/legistar_2001_broad_recall_matter_index.csv", index=False)
-    detail_files.to_csv("../output/legistar_2001_broad_recall_detail_files.csv", index=False)
-    history_events.to_csv("../output/legistar_2001_broad_recall_history_events.csv", index=False)
-    count_check.to_csv("../output/legistar_2001_broad_recall_count_check.csv", index=False)
-    qc.to_csv("../output/legistar_2001_broad_recall_qc.csv", index=False)
+    if QUERY_YEAR == "2001":
+        qc_rows.extend(
+            [
+                {
+                    "check_name": "laguardia_hotel_seed_found",
+                    "passed": bool(matter_index["laguardia_hotel_seed_flag"].any()),
+                    "detail": "Known Charter seed case M 820995 appears in the 2001 Land Use Application recall universe.",
+                },
+                {
+                    "check_name": "laguardia_resolution_history_present",
+                    "passed": bool(
+                        (
+                            (history_events["matter_file"] == "Res 1939-2001")
+                            & (history_events["history_action_by"] == "City Council")
+                        ).any()
+                    ),
+                    "detail": "The known LaGuardia hotel resolution has a City Council history event.",
+                },
+            ]
+        )
+
+    qc = pd.DataFrame(qc_rows)
+
+    page_fetch.to_csv(f"../output/legistar_{QUERY_YEAR}_broad_recall_page_fetches.csv", index=False)
+    matter_index.to_csv(f"../output/legistar_{QUERY_YEAR}_broad_recall_matter_index.csv", index=False)
+    detail_files.to_csv(f"../output/legistar_{QUERY_YEAR}_broad_recall_detail_files.csv", index=False)
+    history_events.to_csv(f"../output/legistar_{QUERY_YEAR}_broad_recall_history_events.csv", index=False)
+    count_check.to_csv(f"../output/legistar_{QUERY_YEAR}_broad_recall_count_check.csv", index=False)
+    qc.to_csv(f"../output/legistar_{QUERY_YEAR}_broad_recall_qc.csv", index=False)
 
     if not qc["passed"].all():
-        raise RuntimeError("Legistar 2001 broad-recall pilot failed QC.")
+        raise RuntimeError(f"Legistar {QUERY_YEAR} broad-recall pull failed QC.")
 
 
 if __name__ == "__main__":

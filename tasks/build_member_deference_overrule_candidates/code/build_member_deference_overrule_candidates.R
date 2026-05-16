@@ -241,6 +241,8 @@ project_bundles <- seed_cases %>%
     zap_matched_flag = !is.na(zap_project_ids),
     evidence_tier_rank = case_when(
       evidence_tier == "official_transcript_local_member_no_vote" ~ 1L,
+      evidence_tier == "official_minutes_local_member_no_vote" ~ 1L,
+      evidence_tier == "official_action_detail_local_member_no_vote" ~ 1L,
       evidence_tier == "official_split_vote_charter_seed" ~ 2L,
       str_detect(evidence_tier, "charter_staff_table") ~ 3L,
       TRUE ~ 9L
@@ -428,11 +430,12 @@ candidate_qc <- tibble(
       str_detect(dock_row$lu_numbers, "1073") &&
       str_detect(dock_row$lu_numbers, "1074") &&
       str_detect(dock_row$lu_numbers, "1075") &&
-      str_detect(dock_row$ulurp_numbers, "C090181ZSK") &&
+      str_detect(dock_row$ulurp_numbers, "C090181ZMK") &&
       str_detect(dock_row$ulurp_numbers, "C090183ZSK") &&
       str_detect(dock_row$ulurp_numbers, "C090184ZSK") &&
       dock_row$local_members == "David Yassky" &&
       dock_row$council_disposition == "approved" &&
+      dock_row$vote_margin == "41-10-0" &&
       dock_row$overrule_status == "confirmed",
     nrow(broadway_row) == 1 &&
       str_detect(broadway_row$lu_numbers, "1227") &&
