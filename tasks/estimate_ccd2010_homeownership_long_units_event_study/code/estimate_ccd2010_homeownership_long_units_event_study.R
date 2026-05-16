@@ -119,6 +119,12 @@ outcome_defs <- tribble(
   "units_built_5_plus", "5+ unit buildings"
 )
 
+raw_count_outcome_defs <- tribble(
+  ~outcome_id, ~outcome_label,
+  "units_built_1_4", "1-4 unit buildings",
+  "units_built_5_plus", "5+ unit buildings"
+)
+
 series_df <- read_csv("../input/ccdist2010_homeownership_long_units_series.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(
     district_id = sprintf("%02d", suppressWarnings(as.integer(district_id))),
@@ -134,7 +140,7 @@ series_df <- read_csv("../input/ccdist2010_homeownership_long_units_series.csv",
   filter(
     series_kind == "preferred_long_series",
     source_family == "mappluto_proxy_25v4",
-    series_family %in% outcome_defs$outcome_id,
+    series_family %in% union(outcome_defs$outcome_id, raw_count_outcome_defs$outcome_id),
     !is.na(year),
     year >= 1980,
     year <= 2025,
@@ -283,6 +289,117 @@ print(
       title = "Four-control event study, five-year bins: 1-4 vs 5+ unit buildings",
       x = NULL,
       y = "Coefficient on homeowner exposure",
+      color = NULL
+    ) +
+    theme_minimal(base_size = 11) +
+    theme(legend.position = "bottom", axis.text.x = element_text(angle = 45, hjust = 1))
+)
+dev.off()
+
+pre_count_df <- series_df %>%
+  filter(year >= 1980, year <= 1988) %>%
+  group_by(series_family, district_id) %>%
+  summarise(pre_1980_1988_count = mean(outcome_value, na.rm = TRUE), .groups = "drop") %>%
+  group_by(series_family) %>%
+  mutate(pre_1980_1988_count_z = z_score(pre_1980_1988_count)) %>%
+  ungroup() %>%
+  select(series_family, district_id, pre_1980_1988_count_z)
+
+raw_design_df <- series_df %>%
+  left_join(pre_count_df, by = c("series_family", "district_id"), relationship = "many-to-one") %>%
+  left_join(control_lookup, by = "district_id", relationship = "many-to-one") %>%
+  mutate(
+    pre_1980_1988_count_z = coalesce(pre_1980_1988_count_z, 0),
+    log_occupied_units_1990_z = coalesce(log_occupied_units_1990_z, 0),
+    vacancy_rate_1990_z = coalesce(vacancy_rate_1990_z, 0),
+    median_household_income_1990_z = coalesce(median_household_income_1990_z, 0)
+  )
+
+raw_control_vars <- c("log_occupied_units_1990_z", "median_household_income_1990_z", "vacancy_rate_1990_z", "pre_1980_1988_count_z")
+
+for (period_value in estimated_event_periods) {
+  raw_design_df[[paste0("treat_z_boro_x_", sanitize_period(period_value))]] <- raw_design_df$treat_z_boro * as.integer(as.character(raw_design_df$event_period) == period_value)
+
+  for (control_var in raw_control_vars) {
+    raw_design_df[[paste0(control_var, "_x_", sanitize_period(period_value))]] <- raw_design_df[[control_var]] * as.integer(as.character(raw_design_df$event_period) == period_value)
+  }
+}
+
+raw_control_terms <- unlist(lapply(raw_control_vars, function(control_var) paste0(control_var, "_x_", sanitize_period(estimated_event_periods))))
+raw_event_rows <- list()
+
+for (outcome_id in raw_count_outcome_defs$outcome_id) {
+  raw_outcome_design <- raw_design_df %>%
+    filter(series_family == outcome_id)
+
+  raw_model <- feols(
+    as.formula(paste0("outcome_value ~ ", paste(c(treat_terms, raw_control_terms), collapse = " + "), " | district_id + borough_period")),
+    cluster = ~district_id,
+    data = raw_outcome_design
+  )
+  raw_event_model_nobs <- model_nobs(raw_model)
+  raw_event_model_within_r2 <- tryCatch(as.numeric(r2(raw_model, type = "wr2")), error = function(e) NA_real_)
+
+  raw_event_rows[[outcome_id]] <- bind_rows(
+    tibble(
+      term = NA_character_,
+      event_period = reference_event_period,
+      is_reference = TRUE,
+      estimate = 0,
+      std_error = NA_real_,
+      statistic = NA_real_,
+      p_value = NA_real_,
+      conf_low = NA_real_,
+      conf_high = NA_real_
+    ),
+    extract_model_terms(
+      raw_model,
+      tibble(term = treat_terms, event_period = estimated_event_periods, is_reference = FALSE)
+    )
+  ) %>%
+    mutate(
+      event_period = factor(event_period, levels = event_periods),
+      event_period_index = match(as.character(event_period), event_periods),
+      source_family = "mappluto_proxy_25v4",
+      source_label = "25v4 MapPLUTO yearbuilt proxy on 2010 Council districts",
+      series_family = outcome_id,
+      outcome_label = raw_count_outcome_defs$outcome_label[raw_count_outcome_defs$outcome_id == outcome_id],
+      outcome_scale = "raw_units",
+      reference_period = reference_event_period,
+      model = "district_fe_borough_period_fe_controls",
+      control_label = "log occupied units + median income + vacancy + raw pre-production",
+      n_obs = raw_event_model_nobs,
+      within_r2 = raw_event_model_within_r2
+    )
+}
+
+raw_event_df <- bind_rows(raw_event_rows) %>%
+  arrange(series_family, event_period)
+
+write_csv_if_changed(raw_event_df, "../output/ccdist2010_homeownership_long_units_event_coefficients_raw_counts_5yr_bins.csv")
+
+raw_plot_df <- raw_event_df %>%
+  mutate(outcome_label = factor(outcome_label, levels = c("1-4 unit buildings", "5+ unit buildings")))
+
+pdf("../output/ccdist2010_homeownership_long_units_event_coefficients_raw_counts_5yr_bins.pdf", width = 11, height = 8.5)
+print(
+  ggplot(raw_plot_df, aes(x = event_period_index, y = estimate, color = outcome_label, group = outcome_label)) +
+    geom_hline(yintercept = 0, linetype = "dashed", color = "#666666", linewidth = 0.35) +
+    geom_errorbar(
+      data = filter(raw_plot_df, !is_reference),
+      aes(ymin = conf_low, ymax = conf_high),
+      width = 0.12,
+      linewidth = 0.45,
+      position = position_dodge(width = 0.28)
+    ) +
+    geom_line(linewidth = 0.75, position = position_dodge(width = 0.28)) +
+    geom_point(size = 2.1, position = position_dodge(width = 0.28)) +
+    scale_color_manual(values = c("1-4 unit buildings" = "#666666", "5+ unit buildings" = "#2f7d32")) +
+    scale_x_continuous(breaks = seq_along(event_periods), labels = event_periods) +
+    labs(
+      title = "Raw-count event study, five-year bins: 1-4 vs 5+ unit buildings",
+      x = NULL,
+      y = "Coefficient on homeowner exposure (units built)",
       color = NULL
     ) +
     theme_minimal(base_size = 11) +

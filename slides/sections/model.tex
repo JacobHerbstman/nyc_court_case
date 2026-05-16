@@ -1,0 +1,327 @@
+% ==============================================================================
+% Model Section
+% ==============================================================================
+
+
+\begin{frame}[t]
+    \frametitle{A minimal spatial model with politics}
+
+    \small
+    \begin{itemize}
+
+        \only<1->{
+        \item \alert<1>{\textbf{Locations}} \(j = 1,\dots,J\)
+        \only<1>{
+            \begin{itemize}
+                \footnotesize
+                \item Existing housing stock \(S_j^0\); approved new housing \(q_j\).
+                \item Total housing:
+                \[
+                    S_j = S_j^0 + q_j
+                \]
+                \item Location fundamentals: amenity \(a_j\), access cost \(\tau_j\), construction cost \(K_j(q_j)\), local development cost \(C_j(q_j)\).
+            \end{itemize}
+        }
+        }
+
+        \only<2->{
+        \item \alert<2>{\textbf{Households}} \(g \in \{O,R,F\}\)
+        \only<2>{
+            \begin{itemize}
+                \footnotesize
+                \item Owners \(O\), incumbent renters \(R\), future residents \(F\).
+                \item Indirect utility:
+                \[
+                    v_{gj}
+                    =
+                    a_j
+                    +
+                    \log w(N)
+                    -
+                    \alpha_g \log r_j
+                    -
+                    \tau_j
+                    -
+                    \chi_g C_j(q_j)
+                    +
+                    \varepsilon_{gj}
+                \]
+                \item \(C_j(q_j)\) lets local opposition reflect real neighborhood costs.
+            \end{itemize}
+        }
+        }
+
+        \only<3->{
+        \item \alert<3>{\textbf{Citywide spillover}}
+        \only<3>{
+            \begin{itemize}
+                \footnotesize
+                \item More housing allows more people to live in the city.
+                \item Agglomeration:
+                \[
+                    \log w(N) = \bar w + \gamma \log N
+                \]
+                \item This creates a diffuse benefit that local districts may not internalize.
+            \end{itemize}
+        }
+        }
+
+        \only<4->{
+        \item \alert<4>{\textbf{Homeowners hold local assets}}
+        \only<4>{
+            \begin{itemize}
+                \footnotesize
+                \item Owners receive consumption utility and capital gains/losses.
+                \[
+                    W_j^O = CS_j^O + m_j^O \Delta P_j
+                \]
+                \item This separates homeowner welfare from renter welfare.
+                \item New supply can raise aggregate welfare while reducing local scarcity rents.
+            \end{itemize}
+        }
+        }
+
+        \only<5->{
+        \item \alert<5>{\textbf{Land-use authority approves or rejects}} \(q_j\)
+        \only<5>{
+            \begin{itemize}
+                \footnotesize
+                \item Developers propose projects.
+                \item The political regime determines whether projects clear the approval stage.
+                \item Key welfare channels: rents, wages, amenities, local costs, and owner asset values.
+            \end{itemize}
+        }
+        }
+
+    \end{itemize}
+\end{frame}
+
+
+% ------------------------------------------------------------
+% Slide 2
+% ------------------------------------------------------------
+
+\begin{frame}[t]
+    \frametitle{Two regimes, three wedges}
+
+    \small
+    \begin{itemize}
+
+        \only<1->{
+        \item \alert<1>{\textbf{Social benchmark}}
+        \only<1>{
+            \begin{itemize}
+                \footnotesize
+                \item A project is socially valuable if:
+                \[
+                    B_j^L + B_j^E - C_j - K_j \geq 0
+                \]
+                \item \(B_j^L\): local benefits.
+                \item \(B_j^E\): external citywide benefits.
+                \item \(C_j\): true local cost.
+                \item \(K_j\): resource/construction cost.
+            \end{itemize}
+        }
+        }
+
+        \only<2->{
+        \item \alert<2>{\textbf{Decentralized approval}}
+        \only<2>{
+            \begin{itemize}
+                \footnotesize
+                \item Local politician observes local costs but weighs only local political benefits:
+                \[
+                    \widetilde{B}_j^L - C_j - K_j \geq 0
+                \]
+                \item Strength: local information.
+                \item Weakness: ignores citywide and future-resident benefits.
+            \end{itemize}
+        }
+        }
+
+        \only<3->{
+        \item \alert<3>{\textbf{Centralized approval}}
+        \only<3>{
+            \begin{itemize}
+                \footnotesize
+                \item Central authority internalizes citywide benefits but may mismeasure local costs:
+                \[
+                    B_j^L + B_j^E - \widetilde{C}_j - K_j \geq 0
+                \]
+                \item Strength: internalizes spillovers.
+                \item Weakness: imperfect local information.
+            \end{itemize}
+        }
+        }
+
+        \only<4->{
+        \item \alert<4>{\textbf{Externality wedge:} \(B_j^E\)}
+        \only<4>{
+            \begin{itemize}
+                \footnotesize
+                \item Rent reductions outside the district.
+                \item Benefits to future residents.
+                \item Agglomeration/productivity effects.
+                \item Fiscal or labor-market benefits outside the approving district.
+            \end{itemize}
+        }
+        }
+
+        \only<5->{
+        \item \alert<5>{\textbf{Representation wedge:} \(B_j^L - \widetilde{B}_j^L\)}
+        \only<5>{
+            \begin{itemize}
+                \footnotesize
+                \item Local politics may overweight incumbent homeowners.
+                \item Renters, future residents, and nonlocal beneficiaries may be underweighted.
+                \item This is the political-economy channel.
+            \end{itemize}
+        }
+        }
+
+        \only<6->{
+        \item \alert<6>{\textbf{Information wedge:} \(C_j - \widetilde{C}_j\)}
+        \only<6>{
+            \begin{itemize}
+                \footnotesize
+                \item Central authority may miss true neighborhood costs.
+                \item This is the Jane Jacobs channel \cite{jacobs_life_1961}.
+                \item Decentralization can dominate when this wedge is large.
+            \end{itemize}
+        }
+        }
+
+    \end{itemize}
+
+    \only<7>{
+        \vspace{0.4em}
+        \begin{block}{Regime tradeoff}
+            \vspace{.5em}
+            \footnotesize
+            Centralization solves the externality and representation problems, but may create an information problem. Decentralization uses local information, but may ignore citywide benefits and underrepresented residents.
+        \end{block}
+
+        \vspace{-0.2em}
+
+    }
+
+\end{frame}
+
+
+% ------------------------------------------------------------
+% Slide 3
+% ------------------------------------------------------------
+
+\begin{frame}[t]
+    \frametitle{Mapping the model to the empirics}
+
+    \small
+    \begin{itemize}
+
+        \only<1->{
+        \item \alert<1>{\textbf{Political supply wedge}}
+        \only<1>{
+            \begin{itemize}
+                \footnotesize
+                \item Developers build until price equals marginal cost plus the approval wedge:
+                \[
+                    p_{jt} = K_j'(q_{jt}) + \phi_{jt}
+                \]
+                \item Model the approval wedge as:
+                \[
+                    \phi_{jt}
+                    =
+                    \phi_j^0
+                    +
+                    \lambda_t \rho H_j
+                    +
+                    u_{jt}
+                \]
+                \item \(\rho > 0\): homeowner-heavy districts have higher political costs of approving large projects.
+            \end{itemize}
+        }
+        }
+
+        \only<2->{
+        \item \alert<2>{\textbf{Institutional timing}}
+        \only<2>{
+            \begin{itemize}
+                \footnotesize
+                \item \(\lambda_t\) captures the strength of local control.
+                \item Pre-Morris: final review is less district-specific.
+                \item Post-Morris: district-level authority increases.
+                \item As member deference hardens:
+                \[
+                    \lambda_t \uparrow
+                \]
+                \item Prediction is a growing homeowner gradient, not necessarily an immediate 1990 break.
+            \end{itemize}
+        }
+        }
+
+        \only<3->{
+        \item \alert<3>{\textbf{Reduced-form analogue}}
+        \only<3>{
+            \begin{itemize}
+                \footnotesize
+                \item Estimate how the homeowner gradient evolves over time:
+                \[
+                    Y_{j\tau}
+                    =
+                    \alpha_j
+                    +
+                    \delta_{b(j),\tau}
+                    +
+                    \sum_{\ell \neq \tau_0}
+                    \beta_\ell
+                    \left(
+                    H_j \times \mathbf{1}\{\tau=\ell\}
+                    \right)
+                    +
+                    X_j'\Gamma_\tau
+                    +
+                    \varepsilon_{j\tau}
+                \]
+                \item \(\beta_\ell\) estimates the period-specific political supply gradient.
+            \end{itemize}
+        }
+        }
+
+        \only<4->{
+        \item \alert<4>{\textbf{Predicted margins}}
+        \only<4>{
+            \begin{itemize}
+                \footnotesize
+                \item Large buildings should be most affected:
+                \[
+                    5+ \text{ unit buildings}
+                \]
+                \item Small buildings should be less affected:
+                \[
+                    1\text{--}4 \text{ unit buildings}
+                \]
+                \item The \(1\text{--}4\) unit series is the placebo margin.
+            \end{itemize}
+        }
+        }
+
+        \only<5->{
+        \item \alert<5>{\textbf{What the QSM will use}}
+        \only<5>{
+            \begin{itemize}
+                \footnotesize
+                \item The reduced form disciplines \(\lambda_t \rho\).
+                \item That object becomes the political supply wedge in counterfactuals.
+                \item Compare welfare under:
+                \begin{enumerate}
+                    \scriptsize
+                    \item centralized approval,
+                    \item decentralized approval,
+                    \item decentralized approval with compensation/pricing.
+                \end{enumerate}
+            \end{itemize}
+        }
+        }
+
+    \end{itemize}
+\end{frame}

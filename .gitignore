@@ -61,6 +61,7 @@ slides/*.pdf
 slides/*.synctex.gz
 slides/*.snm
 slides/*.toc
+slides/figures/institutional_timeline_units_total_ma3.csv
 
 # --- Scratch / local working area ---
 tmp/

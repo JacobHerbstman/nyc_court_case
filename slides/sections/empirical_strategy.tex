@@ -1,0 +1,62 @@
+% ==============================================================================
+% EMPIRICAL STRATEGY SECTION
+% Comparisons and identifying assumptions
+% ==============================================================================
+
+% ==============================================================================
+% SLIDE: EMPIRICAL STRATEGY
+% ==============================================================================
+\begin{frame}
+    \frametitle{Empirical Strategy}
+    \small
+
+    \textbf{Variation}: baseline homeownership differences across Council districts within borough
+    \begin{itemize}
+        \item Fix political geography using 2010 Council districts
+        \item Use 1990 homeownership as pre-period exposure to local opposition
+    \end{itemize}
+
+    \vspace{0.25em}
+    \textbf{Main comparison}
+    \begin{itemize}
+        \item Compare post-reform production in high- and low-\(H_j\) districts
+        \item Use within-borough contrasts to absorb borough-level market differences
+    \end{itemize}
+
+    \vspace{0.25em}
+    \textbf{Key assumption}
+    \begin{itemize}
+        \item Absent increased local control, homeowner-heavy districts in the same borough would not differentially lose new housing supply after reform
+    \end{itemize}
+\end{frame}
+
+% ==============================================================================
+% SLIDE: SPECIFICATION PLACEHOLDER
+% ==============================================================================
+\begin{frame}
+    \frametitle{Specification}
+
+    \begin{align*}
+        Y_{j\tau}
+        =
+        \alpha_j
+        +
+        \delta_{b(j),\tau}
+        +
+        \sum_{\ell \neq \tau_0}
+        \beta_\ell
+        \left(H_j \times \mathds{1}\{\tau=\ell\}\right)
+        +
+        X_j'\Gamma_\tau
+        +
+        \varepsilon_{j\tau}
+    \end{align*}
+
+    \vspace{0.5em}
+    \begin{itemize}
+        \item \(j\): Council district
+        \item \(\tau\): period
+        \item \(H_j\): within-borough standardized 1990 homeownership
+        \item \(\beta_\ell\) traces whether high-homeownership districts lose housing production after reform
+    \end{itemize}
+\end{frame}

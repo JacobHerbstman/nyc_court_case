@@ -3,6 +3,8 @@ include ../../shell_functions.make
 
 all: ../output/ccdist2010_homeownership_long_units_event_coefficients_5yr_bins.csv \
 	../output/ccdist2010_homeownership_long_units_event_coefficients_5yr_bins.pdf \
+	../output/ccdist2010_homeownership_long_units_event_coefficients_raw_counts_5yr_bins.csv \
+	../output/ccdist2010_homeownership_long_units_event_coefficients_raw_counts_5yr_bins.pdf \
 	../output/ccdist2010_homeownership_long_units_long_difference_estimates.csv \
 	../output/ccdist2010_homeownership_long_units_long_difference.tex \
 	../output/ccdist2010_homeownership_long_units_design_qc.csv
@@ -11,6 +13,8 @@ all: ../output/ccdist2010_homeownership_long_units_event_coefficients_5yr_bins.c
 	$(R) $<
 
 ../output/ccdist2010_homeownership_long_units_event_coefficients_5yr_bins.pdf \
+../output/ccdist2010_homeownership_long_units_event_coefficients_raw_counts_5yr_bins.csv \
+../output/ccdist2010_homeownership_long_units_event_coefficients_raw_counts_5yr_bins.pdf \
 ../output/ccdist2010_homeownership_long_units_long_difference_estimates.csv \
 ../output/ccdist2010_homeownership_long_units_long_difference.tex \
 ../output/ccdist2010_homeownership_long_units_design_qc.csv: ../output/ccdist2010_homeownership_long_units_event_coefficients_5yr_bins.csv

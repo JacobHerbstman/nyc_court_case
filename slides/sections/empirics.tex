@@ -1,0 +1,224 @@
+% ==============================================================================
+% EMPIRICS SECTION
+% Data, treatment measurement, and institutional timing
+% ==============================================================================
+
+% ==============================================================================
+% SLIDE: Data
+% ==============================================================================
+\begin{frame}[t]
+    \frametitle{Data}
+    \small
+
+    \begin{itemize}
+        \item \textbf{Unit}: 2010 City Council districts
+        \begin{itemize}
+            \footnotesize
+            \item 1990 council districts do not exist online, will need to be digitized from paper maps
+        \end{itemize}
+
+        \item \textbf{Treatment}: 1990 homeownership from NHGIS tenure counts
+        \begin{itemize}
+            \footnotesize
+            \item Area-weight 1990 tracts into 2010 Council districts.
+            \item Standardize within assigned majority borough.
+        \end{itemize}
+
+        \item \textbf{Outcomes}: Primary Land Use Tax Lot Output (PLUTO) dataset
+        \begin{itemize}
+            \footnotesize
+            \item New housing units constructed from 1980-2025
+            \item Allows me to observe the zoning, ownership, and assessed value of every lot in the city
+            \item Main flaw: if a building is demolished and rebuilt, I will not be able to see the old building in the data
+        \end{itemize}
+        \item Plan to use the Zoning Application Portal (ZAP) dataset, Uniform Land-Use Review Procedure (ULURP) dataset, and city council ordinance records
+        to quantify member deference directly in the future
+    \end{itemize}
+\end{frame}
+
+% ==============================================================================
+% SLIDE: Treatment Definition
+% ==============================================================================
+\begin{frame}[t]
+    \frametitle{Measuring Homeowner Exposure}
+    \small
+
+    \only<1>{
+        \begin{itemize}
+            \item Homeownership rates are a good proxy for local resistance to new housing supply \citep{fischel_homevoter_2009,ortalo-magne_political_2014,khan_decentralized_2021}
+            \item Let \(h_j\) be district \(j\)'s raw 1990 homeownership share.
+            \item Define homeowner exposure as:
+        \end{itemize}
+
+        \vspace{0.6em}
+        \[
+            H_j
+            =
+            \frac{
+                h_j
+                -
+                \bar h_{b(j)}
+            }{
+                s_{b(j)}
+            }
+        \]
+
+        \vspace{0.2em}
+        \begin{itemize}
+            \footnotesize
+            \item \(b(j)\): district \(j\)'s assigned majority borough.
+            \item \(\bar h_{b(j)}\) and \(s_{b(j)}\): mean and standard deviation of \(h_j\) among Council districts in the same borough.
+        \end{itemize}
+    }
+
+    \only<2>{
+        \vspace{-1.0em}
+        \begin{center}
+            \includegraphics[page=1,height=0.82\textheight,trim={0.25in 0in 0.25in 0in},clip]{../tasks/build_ccd2010_homeownership_1990_measure/output/ccdist2010_homeownership_1990_map.pdf}
+        \end{center}
+    }
+\end{frame}
+
+% ==============================================================================
+% SLIDE: INSTITUTIONAL CHANGE
+% ==============================================================================
+\begin{frame}[t]
+    \frametitle{Timeline of Land-Use Authority in New York City}
+
+    \begingroup
+    \definecolor{timelineblue}{HTML}{3366CC}
+    \definecolor{timelinegray}{HTML}{777777}
+    \definecolor{timelinered}{HTML}{CC3311}
+    \definecolor{timelinegold}{HTML}{D99A20}
+    \definecolor{timelinegreen}{HTML}{238B45}
+    \definecolor{timelinedark}{HTML}{30343B}
+
+    \pgfplotsset{
+        institutional timeline axis/.style={
+        width=0.97\textwidth,
+        height=0.68\textheight,
+        xmin=1980,
+        xmax=2025,
+        ymin=0.07,
+        ymax=0.56,
+        clip=false,
+        xlabel={Year},
+        xlabel style={font=\scriptsize, yshift=0.2em},
+        xtick={1980,2002,2010,2025},
+        xticklabel={\pgfmathprintnumber[fixed,precision=0,1000 sep={}]{\tick}},
+        ytick={0.1,0.2,0.3,0.4,0.5},
+        minor x tick num=1,
+        minor y tick num=1,
+        tick label style={font=\scriptsize},
+        legend style={
+            draw=none,
+            font=\scriptsize,
+            at={(0.5,-0.20)},
+            anchor=north,
+            legend columns=3
+        },
+        legend cell align=left,
+        }
+    }
+
+    \newcommand{\InstitutionalTimelinePieces}{%
+    % Timeline base, deliberately on the same x-axis as the trends.
+    \draw<1->[line width=2.8pt, draw=timelinedark!85]
+        (axis cs:1980,0.086) -- (axis cs:2025,0.086);
+
+    \path<1->[fill=timelinedark!18, draw=timelinedark!45, rounded corners=1.1pt]
+        (axis cs:1980,0.074) rectangle (axis cs:1989,0.103);
+    \node<1->[font=\scriptsize\bfseries, align=center, text=timelinedark]
+        at (axis cs:1984.5,0.120) {Board of\\Estimate};
+
+    \path<2->[fill=timelinegold!22, draw=timelinegold!65, rounded corners=1.1pt]
+        (axis cs:1989,0.074) rectangle (axis cs:1991,0.103);
+    \node<2->[font=\scriptsize\bfseries, align=center, text=timelinegold!55!black]
+        at (axis cs:1990,0.132) {Morris\\+ Charter};
+
+    \path<3->[fill=timelineblue!12, draw=timelineblue!45, rounded corners=1.1pt]
+        (axis cs:1991,0.074) rectangle (axis cs:2002,0.103);
+    \node<3->[font=\scriptsize\bfseries, align=center, text=timelineblue!70!black]
+        at (axis cs:1996.5,0.122) {New Council\\district map};
+
+    \path<4->[fill=timelinered!12, draw=timelinered!50, rounded corners=1.1pt]
+        (axis cs:2002,0.074) rectangle (axis cs:2024,0.103);
+    \node<4->[font=\scriptsize\bfseries, align=center, text=timelinered!75!black]
+        at (axis cs:2013,0.122) {Member deference\\era};
+
+    \path<4->[fill=timelinegreen!15, draw=timelinegreen!55, rounded corners=1.1pt]
+        (axis cs:2024,0.074) rectangle (axis cs:2025,0.103);
+    \node<4->[font=\scriptsize\bfseries, align=center, text=timelinegreen!55!black]
+        at (axis cs:2024.5,0.132) {City\\of Yes};
+
+    % Event callouts.
+    \draw<2->[densely dashed, line width=0.7pt, draw=timelinegold!80!black]
+        (axis cs:1989,0.105) -- (axis cs:1989,0.515);
+    \node<2>[font=\scriptsize, align=center, text width=2.1cm, fill=white, fill opacity=0.90, text opacity=1, rounded corners=2pt, inner sep=2pt, draw=timelinegold!55]
+        at (axis cs:1989,0.535) {\textbf{1989}\\Supreme Court\\invalidates Board};
+
+    \draw<3->[densely dashed, line width=0.7pt, draw=timelineblue!70!black]
+        (axis cs:1991,0.105) -- (axis cs:1991,0.455);
+    \node<3>[font=\scriptsize, align=center, text width=2.0cm, fill=white, fill opacity=0.90, text opacity=1, rounded corners=2pt, inner sep=2pt, draw=timelineblue!45]
+        at (axis cs:1992.2,0.475) {\textbf{1991}\\districted\\Council begins};
+
+    \draw<4->[densely dashed, line width=0.7pt, draw=timelinered!80!black]
+        (axis cs:2002,0.105) -- (axis cs:2002,0.515);
+    \node<4->[font=\scriptsize, align=center, text width=2.15cm, fill=white, fill opacity=0.90, text opacity=1, rounded corners=2pt, inner sep=2pt, draw=timelinered!45]
+        at (axis cs:2002.3,0.535) {\textbf{2002}\\Vallone exits;\\deference hardens};
+
+    \draw<4->[densely dashed, line width=0.7pt, draw=timelinegreen!70!black]
+        (axis cs:2025,0.105) -- (axis cs:2025,0.455);
+    \node<4->[font=\scriptsize, align=center, text width=2.0cm, fill=white, fill opacity=0.90, text opacity=1, rounded corners=2pt, inner sep=2pt, draw=timelinegreen!45]
+        at (axis cs:2023.4,0.475) {\textbf{2025}\\reform\\frontier};
+    }
+
+    \centering
+    \begin{tikzpicture}
+
+    \only<1-4>{
+    \begin{axis}[
+        institutional timeline axis,
+        axis lines=left,
+        ylabel={Share of units built (3-year centered MA)},
+        ylabel style={font=\scriptsize, opacity=0},
+        yticklabel style={font=\scriptsize, opacity=0},
+        ytick style={draw=none},
+        y axis line style={draw=none},
+        grid=none,
+    ]
+    \InstitutionalTimelinePieces
+    \end{axis}
+    }
+
+    \only<5->{
+    \begin{axis}[
+        institutional timeline axis,
+        axis lines=left,
+        ylabel={Share of units built (3-year centered MA)},
+        ylabel style={font=\scriptsize},
+        yticklabel style={font=\scriptsize},
+        grid=both,
+        major grid style={line width=0.25pt, draw=black!12},
+        minor grid style={line width=0.2pt, draw=black!7},
+    ]
+    \InstitutionalTimelinePieces
+
+        \addplot[line width=1.35pt, draw=timelineblue]
+            table [x=year, y=low, col sep=comma] {figures/institutional_timeline_units_total_ma3.csv};
+        \addlegendentry{Low homeowner exposure}
+
+        \addplot[line width=1.35pt, draw=timelinegray]
+            table [x=year, y=middle, col sep=comma] {figures/institutional_timeline_units_total_ma3.csv};
+        \addlegendentry{Middle}
+
+        \addplot[line width=1.35pt, draw=timelinered]
+            table [x=year, y=high, col sep=comma] {figures/institutional_timeline_units_total_ma3.csv};
+        \addlegendentry{High homeowner exposure}
+
+    \end{axis}
+    }
+
+    \end{tikzpicture}
+    \endgroup
+\end{frame}

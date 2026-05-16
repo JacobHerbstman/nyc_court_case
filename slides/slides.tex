@@ -1,0 +1,128 @@
+\documentclass[11pt,notes=hide,aspectratio=169,mathserif]{beamer}
+
+% PACKAGES
+\usepackage{graphics}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{natbib}
+\usepackage{bibentry}
+\usepackage{verbatim}
+\usepackage{booktabs}
+\usepackage{threeparttable}
+\usepackage{etoolbox}
+\usepackage{datetime}
+\usepackage{bm}
+\usepackage{enumitem}
+
+% Citation styling - smaller and light grey
+\definecolor{citegray}{gray}{0.5}
+
+\let\origcitep\citep
+\let\origcite\cite
+\let\origcitet\citet
+
+\renewcommand{\citep}[2][]{\begingroup\scriptsize\color{citegray}\origcitep[#1]{#2}\endgroup}
+\renewcommand{\cite}[2][]{\begingroup\scriptsize\color{citegray}\origcite[#1]{#2}\endgroup}
+\renewcommand{\citet}[2][]{\begingroup\scriptsize\color{citegray}\origcitet[#1]{#2}\endgroup}
+
+% TikZ for figures
+\usepackage{tikz}
+\usetikzlibrary{calc,3d,positioning,arrows.meta,fit}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\pgfplotsset{compat=1.18}
+
+% PACKAGES (that should already be included by your LyX document settings)
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{dsfont}
+
+% CUSTOM DEFINITIONS
+\def\newblock{}
+\linespread{1.2}
+
+\setlist[itemize,1]{label=\usebeamertemplate{itemize item}}
+\setlist[itemize,2]{label=\usebeamertemplate{itemize subitem}}
+\setlist[itemize,3]{label=\usebeamertemplate{itemize subsubitem}}
+\setlist[enumerate,1]{label=\insertenumlabel.}
+\setlist[enumerate,2]{label=\insertsubenumlabel.}
+\setlist[enumerate,3]{label=\insertsubsubenumlabel.}
+
+% IDENTIFYING INFORMATION
+\title[Local Control]{The Tradeoffs of Local Control in Housing Supply}
+\author[Jacob Herbstman]{Jacob Herbstman (University of Chicago)}
+\date{\monthname[\the\month] \the\year}
+
+% THEMATIC OPTIONS
+\setbeamercovered{transparent}
+\usetheme{metropolis}
+\usecolortheme{default}
+\setbeamerfont{title}{size=\large}
+\pgfplotsset{compat=1.18}
+\beamertemplatenavigationsymbolsempty
+\setbeamertemplate{footline}[frame number]{}
+
+% BACKUP SLIDE NUMBERING
+\usepackage{appendixnumberbeamer}
+
+% SETTINGS
+\newtoggle{shortertalk}
+\togglefalse{shortertalk}
+
+\begin{document}
+
+%---------------------------------------------------------------------
+\begin{frame}[plain]
+\titlepage
+\note{
+    \begin{itemize}
+    \end{itemize}
+}
+\end{frame}
+%---------------------------------------------------------------------
+
+% PART 1: MOTIVATION
+\input{sections/intro.tex}
+
+% PART 2: RELATED LITERATURE
+\input{sections/literature.tex}
+
+% PART 3: EMPIRICS
+\input{sections/empirics.tex}
+
+\input{sections/model.tex}
+
+% PART 4: DATA AND MEASUREMENT
+%\input{sections/data_and_measurement.tex}
+
+% PART 5: EMPIRICAL STRATEGY
+%\input{sections/empirical_strategy.tex}
+
+% PART 6: PRELIMINARY RESULTS
+%\input{sections/preliminary_results.tex}
+
+% PART 7: CONCLUSION
+%\input{sections/conclusion.tex}
+
+%---------------------------------------------------------------------
+\begin{frame}[plain]
+    \begin{center}
+      {\LARGE Thank you!}\\[0.4em]
+      {\large {jherbstman@uchicago.edu}}
+    \end{center}
+\end{frame}
+%---------------------------------------------------------------------
+
+\appendix
+
+%---------------------------------------------------------------------
+\begin{frame}[allowframebreaks]{References}
+    \tiny
+    \bibliographystyle{plainnat}
+    \bibliography{../paper/sections/nyc_court_case}
+\end{frame}
+%---------------------------------------------------------------------
+
+
+\end{document}

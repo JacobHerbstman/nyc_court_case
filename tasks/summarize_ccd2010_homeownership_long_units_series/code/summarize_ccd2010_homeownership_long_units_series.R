@@ -233,6 +233,20 @@ tercile_plot_ma3_df <- tercile_year_ma3_df %>%
     series_label = factor(series_label, levels = c("Units built: total", "Units built: 50+"))
   )
 
+tercile_count_plot_df <- tercile_year_df %>%
+  filter(series_family %in% c("units_built_total", "units_built_50_plus")) %>%
+  mutate(
+    treat_tercile_label = factor(treat_tercile_label, levels = c("Low", "Middle", "High")),
+    series_label = factor(series_label, levels = c("Units built: total", "Units built: 50+"))
+  )
+
+tercile_count_plot_ma3_df <- tercile_year_ma3_df %>%
+  filter(series_family %in% c("units_built_total", "units_built_50_plus")) %>%
+  mutate(
+    treat_tercile_label = factor(treat_tercile_label, levels = c("Low", "Middle", "High")),
+    series_label = factor(series_label, levels = c("Units built: total", "Units built: 50+"))
+  )
+
 brooklyn_rank_plot_df <- brooklyn_rank_df %>%
   transmute(
     district_label,
@@ -310,6 +324,29 @@ print(
       panel.grid.minor = element_blank(),
       panel.grid.major.y = element_blank()
     )
+)
+dev.off()
+
+pdf("../output/ccdist2010_homeownership_long_units_count_plots.pdf", width = 11, height = 8.5)
+print(
+  ggplot(tercile_count_plot_df, aes(x = year, y = outcome_value, color = treat_tercile_label)) +
+    geom_line(linewidth = 0.8) +
+    geom_vline(xintercept = 2010, linetype = "dashed", color = "#666666") +
+    facet_wrap(~series_label, scales = "free_y", ncol = 1) +
+    scale_color_manual(values = c("Low" = "#3366CC", "Middle" = "#999999", "High" = "#CC3311")) +
+    labs(x = NULL, y = "Units built", color = "Treat tercile") +
+    theme_minimal(base_size = 11) +
+    theme(legend.position = "bottom")
+)
+print(
+  ggplot(tercile_count_plot_ma3_df, aes(x = year, y = outcome_value_ma, color = treat_tercile_label, group = treat_tercile_label)) +
+    geom_line(linewidth = 0.9) +
+    geom_vline(xintercept = 2010, linetype = "dashed", color = "#666666") +
+    facet_wrap(~series_label, scales = "free_y", ncol = 1) +
+    scale_color_manual(values = c("Low" = "#3366CC", "Middle" = "#999999", "High" = "#CC3311")) +
+    labs(x = NULL, y = "Units built (3-year centered MA)", color = "Treat tercile") +
+    theme_minimal(base_size = 11) +
+    theme(legend.position = "bottom")
 )
 dev.off()
 
