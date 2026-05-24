@@ -214,6 +214,18 @@ def add_link(link_rows, row):
     link_rows.append(row)
 
 
+def dedupe_links(links):
+    deduped_links = []
+    seen_links = set()
+    for link in links:
+        key = (link["project_id"], link["source_type"], link["document_url"], link["document_title"])
+        if key in seen_links:
+            continue
+        seen_links.add(key)
+        deduped_links.append(link)
+    return deduped_links
+
+
 with open("../input/zap_rezoning_direction_text_candidate_queue.csv", "r", encoding="utf-8", newline="") as input_file:
     queue_rows = [
         row for row in csv.DictReader(input_file)
@@ -237,7 +249,6 @@ link_rows = []
 docket_rows = []
 summary_rows = []
 failure_rows = []
-seen_links = set()
 
 for row_number, queue_row in enumerate(queue_rows, start=1):
     project_id = queue_row["project_id"]
@@ -270,51 +281,47 @@ for row_number, queue_row in enumerate(queue_rows, start=1):
     project_attrs = data.get("data", {}).get("attributes", {}) if data else {}
     ceqr_number = clean_text(project_attrs.get("dcp-ceqrnumber")) or clean_text(queue_row.get("ceqr_number"))
     project_name = clean_text(project_attrs.get("dcp-projectname")) or queue_row.get("project_name", "")
+    project_link_rows = []
+    base_source_row = {
+        "project_id": project_id,
+        "project_name": project_name,
+        "completed_year": queue_row.get("completed_year", ""),
+        "queue_rank": row_number,
+        "api_url": api_url,
+        "ceqr_number": ceqr_number,
+        "fetch_status": fetch_status,
+        "fetch_http_status": fetch_http_status,
+        "fetch_error": fetch_error,
+    }
 
     add_link(
-        link_rows,
+        project_link_rows,
         {
-            "project_id": project_id,
-            "project_name": project_name,
-            "completed_year": queue_row.get("completed_year", ""),
-            "queue_rank": row_number,
+            **base_source_row,
             "source_type": "project_page",
             "source_container_id": project_id,
             "source_container_title": "ZAP project page",
             "document_title": "ZAP project page",
             "document_url": project_page_url,
-            "api_url": api_url,
             "action_code": "",
             "ulurp_number": "",
-            "ceqr_number": ceqr_number,
             "document_created_at": "",
-            "fetch_status": fetch_status,
-            "fetch_http_status": fetch_http_status,
-            "fetch_error": fetch_error,
         },
     )
 
     if ceqr_number:
         add_link(
-            link_rows,
+            project_link_rows,
             {
-                "project_id": project_id,
-                "project_name": project_name,
-                "completed_year": queue_row.get("completed_year", ""),
-                "queue_rank": row_number,
+                **base_source_row,
                 "source_type": "ceqr_access",
                 "source_container_id": ceqr_number,
                 "source_container_title": "CEQR Access",
                 "document_title": ceqr_number,
                 "document_url": "https://a002-ceqraccess.nyc.gov/ceqr/",
-                "api_url": api_url,
                 "action_code": "",
                 "ulurp_number": "",
-                "ceqr_number": ceqr_number,
                 "document_created_at": "",
-                "fetch_status": fetch_status,
-                "fetch_http_status": fetch_http_status,
-                "fetch_error": fetch_error,
             },
         )
 
@@ -340,49 +347,33 @@ for row_number, queue_row in enumerate(queue_rows, start=1):
         action_report = cpc_report_url(ulurp_number, attrs.get("dcp-spabsoluteurl"))
         if action_report:
             add_link(
-                link_rows,
+                project_link_rows,
                 {
-                    "project_id": project_id,
-                    "project_name": project_name,
-                    "completed_year": queue_row.get("completed_year", ""),
-                    "queue_rank": row_number,
+                    **base_source_row,
                     "source_type": "cpc_report",
                     "source_container_id": action.get("id", ""),
                     "source_container_title": action_title,
                     "document_title": f"{ulurp_number} CPC report",
                     "document_url": action_report,
-                    "api_url": api_url,
                     "action_code": action_code,
                     "ulurp_number": ulurp_number,
-                    "ceqr_number": ceqr_number,
                     "document_created_at": "",
-                    "fetch_status": fetch_status,
-                    "fetch_http_status": fetch_http_status,
-                    "fetch_error": fetch_error,
                 },
             )
         nycgov_report = nycgov_cpc_report_url(ulurp_number)
         if nycgov_report:
             add_link(
-                link_rows,
+                project_link_rows,
                 {
-                    "project_id": project_id,
-                    "project_name": project_name,
-                    "completed_year": queue_row.get("completed_year", ""),
-                    "queue_rank": row_number,
+                    **base_source_row,
                     "source_type": "cpc_report_nycgov_fallback",
                     "source_container_id": action.get("id", ""),
                     "source_container_title": action_title,
                     "document_title": f"{ulurp_number} CPC report nyc.gov fallback",
                     "document_url": nycgov_report,
-                    "api_url": api_url,
                     "action_code": action_code,
                     "ulurp_number": ulurp_number,
-                    "ceqr_number": ceqr_number,
                     "document_created_at": "",
-                    "fetch_status": fetch_status,
-                    "fetch_http_status": fetch_http_status,
-                    "fetch_error": fetch_error,
                 },
             )
 
@@ -399,25 +390,17 @@ for row_number, queue_row in enumerate(queue_rows, start=1):
                 if not server_relative_url:
                     continue
                 add_link(
-                    link_rows,
+                    project_link_rows,
                     {
-                        "project_id": project_id,
-                        "project_name": project_name,
-                        "completed_year": queue_row.get("completed_year", ""),
-                        "queue_rank": row_number,
+                        **base_source_row,
                         "source_type": source_type,
                         "source_container_id": record.get("id", ""),
                         "source_container_title": container_title,
                         "document_title": clean_text(document.get("name")),
                         "document_url": f"{ZAP_API_HOST}{url_prefix}{urllib.parse.quote(server_relative_url)}",
-                        "api_url": api_url,
                         "action_code": clean_text(attrs.get("dcp-projectaction-value")),
                         "ulurp_number": "",
-                        "ceqr_number": ceqr_number,
                         "document_created_at": clean_text(document.get("timeCreated")),
-                        "fetch_status": fetch_status,
-                        "fetch_http_status": fetch_http_status,
-                        "fetch_error": fetch_error,
                     },
                 )
 
@@ -444,37 +427,22 @@ for row_number, queue_row in enumerate(queue_rows, start=1):
             )
 
             add_link(
-                link_rows,
+                project_link_rows,
                 {
-                    "project_id": project_id,
-                    "project_name": project_name,
-                    "completed_year": queue_row.get("completed_year", ""),
-                    "queue_rank": row_number,
+                    **base_source_row,
                     "source_type": "docket_description",
                     "source_container_id": disposition.get("id", ""),
                     "source_container_title": clean_text(attrs.get("dcp-name")),
                     "document_title": "ZAP disposition docket description",
                     "document_url": project_page_url,
-                    "api_url": api_url,
                     "action_code": clean_text(attrs.get("dcp-projectaction-value")),
                     "ulurp_number": "",
-                    "ceqr_number": ceqr_number,
                     "document_created_at": clean_text(attrs.get("dcp-datereceived")),
-                    "fetch_status": fetch_status,
-                    "fetch_http_status": fetch_http_status,
-                    "fetch_error": fetch_error,
                 },
             )
 
-    deduped_project_links = []
-    for link in link_rows:
-        if link["project_id"] != project_id:
-            continue
-        key = (link["project_id"], link["source_type"], link["document_url"], link["document_title"])
-        if key in seen_links:
-            continue
-        seen_links.add(key)
-        deduped_project_links.append(link)
+    deduped_project_links = dedupe_links(project_link_rows)
+    link_rows.extend(deduped_project_links)
 
     summary_rows.append(
         {
@@ -503,15 +471,7 @@ for row_number, queue_row in enumerate(queue_rows, start=1):
         }
     )
 
-deduped_links = []
-seen_links = set()
-for link in link_rows:
-    key = (link["project_id"], link["source_type"], link["document_url"], link["document_title"])
-    if key in seen_links:
-        continue
-    seen_links.add(key)
-    deduped_links.append(link)
-
+deduped_links = dedupe_links(link_rows)
 deduped_links.sort(key=lambda row: (int(row["queue_rank"]), int(row["source_priority"]), row["source_type"], row["document_title"]))
 docket_rows.sort(key=lambda row: (int(row["queue_rank"]), row["disposition_name"]))
 summary_rows.sort(key=lambda row: int(row["queue_rank"]))

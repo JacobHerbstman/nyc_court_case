@@ -13,6 +13,8 @@ suppressPackageStartupMessages({
 
 source("../../_lib/source_pipeline_utils.R")
 
+# Small output and model helpers.
+
 write_lines_if_changed <- function(lines, out_path) {
   temp_path <- tempfile(fileext = ".tex")
   writeLines(lines, temp_path, useBytes = TRUE)
@@ -113,6 +115,8 @@ event_periods <- c(
 )
 reference_event_period <- "1985-1989"
 estimated_event_periods <- event_periods[event_periods != reference_event_period]
+
+# Text parser setup.
 
 event_period_from_year <- function(year) {
   case_when(
@@ -434,6 +438,8 @@ extract_zoning_pairs <- function(project_id, project_text) {
     )
 }
 
+# Residential FAR lookup used to score parsed zoning-code transitions.
+
 zoning_far_dictionary <- read_csv("nyc_zoning_district_lookup.csv", show_col_types = FALSE, na = c("", "NA")) |>
   transmute(
     zoning_code = normalize_zoning_code(zoning_code),
@@ -494,6 +500,8 @@ fallback_resid_far <- function(zoning_code) {
 
 direction_levels <- c("upzoning", "downzoning", "mixed", "no_material_residential_change", "unknown")
 magnitude_levels <- c("large_up", "moderate_up", "small_up", "mixed", "no_material", "small_down", "moderate_down", "large_down", "unknown")
+
+# Parse and classify completed ZAP zoning map actions.
 
 project_df <- read_csv("../input/zap_zoning_map_special_permit_project_classification.csv", show_col_types = FALSE, na = c("", "NA")) |>
   transmute(
@@ -784,6 +792,8 @@ project_classification <- project_df |>
     )
   )
 
+# Strict scope assignment uses only project-BBL links that map to CCD2010 and current MapPLUTO.
+
 zap_project_bbl <- read_parquet("../input/zap_project_bbl.parquet") |>
   transmute(
     project_id = as.character(project_id),
@@ -1024,6 +1034,8 @@ project_classification <- project_classification |>
     abs_net_far_acres = abs(net_far_acres)
   ) |>
   arrange(completed_year, project_id)
+
+# Manual/source-reviewed labels are kept separate from parser outputs.
 
 manual_columns <- c(
   "project_id",
@@ -1345,6 +1357,8 @@ write_csv_if_changed(source_reviewed_cases, "../output/zap_rezoning_direction_so
 write_csv_if_changed(reviewed_city_year, "../output/zap_rezoning_direction_reviewed_city_year.csv")
 write_csv_if_changed(reviewed_period_counts, "../output/zap_rezoning_direction_reviewed_period.csv")
 
+# Citywide, district-year, and homeowner-tercile panels.
+
 city_year <- expand_grid(
   completed_year = 1980:2025,
   rezoning_direction = factor(direction_levels, levels = direction_levels),
@@ -1560,6 +1574,8 @@ tercile_year <- expand_grid(
   arrange(homeowner_tercile, year, rezoning_direction, magnitude_bin)
 
 write_csv_if_changed(tercile_year, "../output/zap_rezoning_direction_tercile_year.csv")
+
+# Exploratory event-study and long-difference estimates.
 
 control_lookup <- district_lookup |>
   transmute(
@@ -1874,6 +1890,23 @@ long_diff_wide <- long_diff_df |>
   pivot_wider(names_from = column_label, values_from = cell_label) |>
   arrange(match(outcome_label, outcome_dictionary$outcome_label))
 
+long_diff_table_outcomes <- c(
+  "Upzoning project count",
+  "Downzoning project count",
+  "Gross up FAR-acres",
+  "Gross down FAR-acres",
+  "Net FAR-acres"
+)
+
+long_diff_table_rows <- vapply(long_diff_table_outcomes, function(label) {
+  values <- long_diff_wide |>
+    filter(outcome_label == label) |>
+    select(Placebo, `1990--1999`, `2000--2009`, `2010--2019`, `2020--2025`) |>
+    unlist(use.names = FALSE)
+
+  regression_table_row(label, values)
+}, character(1))
+
 table_lines <- c(
   "\\begin{table}[htbp]",
   "    \\centering",
@@ -1885,11 +1918,7 @@ table_lines <- c(
   "    \\toprule",
   regression_table_row("", c("Placebo", "1990--1999", "2000--2009", "2010--2019", "2020--2025")),
   "    \\midrule",
-  regression_table_row("Upzoning project count", long_diff_wide$Placebo[long_diff_wide$outcome_label == "Upzoning project count"] |> c(long_diff_wide$`1990--1999`[long_diff_wide$outcome_label == "Upzoning project count"], long_diff_wide$`2000--2009`[long_diff_wide$outcome_label == "Upzoning project count"], long_diff_wide$`2010--2019`[long_diff_wide$outcome_label == "Upzoning project count"], long_diff_wide$`2020--2025`[long_diff_wide$outcome_label == "Upzoning project count"])),
-  regression_table_row("Downzoning project count", long_diff_wide$Placebo[long_diff_wide$outcome_label == "Downzoning project count"] |> c(long_diff_wide$`1990--1999`[long_diff_wide$outcome_label == "Downzoning project count"], long_diff_wide$`2000--2009`[long_diff_wide$outcome_label == "Downzoning project count"], long_diff_wide$`2010--2019`[long_diff_wide$outcome_label == "Downzoning project count"], long_diff_wide$`2020--2025`[long_diff_wide$outcome_label == "Downzoning project count"])),
-  regression_table_row("Gross up FAR-acres", long_diff_wide$Placebo[long_diff_wide$outcome_label == "Gross up FAR-acres"] |> c(long_diff_wide$`1990--1999`[long_diff_wide$outcome_label == "Gross up FAR-acres"], long_diff_wide$`2000--2009`[long_diff_wide$outcome_label == "Gross up FAR-acres"], long_diff_wide$`2010--2019`[long_diff_wide$outcome_label == "Gross up FAR-acres"], long_diff_wide$`2020--2025`[long_diff_wide$outcome_label == "Gross up FAR-acres"])),
-  regression_table_row("Gross down FAR-acres", long_diff_wide$Placebo[long_diff_wide$outcome_label == "Gross down FAR-acres"] |> c(long_diff_wide$`1990--1999`[long_diff_wide$outcome_label == "Gross down FAR-acres"], long_diff_wide$`2000--2009`[long_diff_wide$outcome_label == "Gross down FAR-acres"], long_diff_wide$`2010--2019`[long_diff_wide$outcome_label == "Gross down FAR-acres"], long_diff_wide$`2020--2025`[long_diff_wide$outcome_label == "Gross down FAR-acres"])),
-  regression_table_row("Net FAR-acres", long_diff_wide$Placebo[long_diff_wide$outcome_label == "Net FAR-acres"] |> c(long_diff_wide$`1990--1999`[long_diff_wide$outcome_label == "Net FAR-acres"], long_diff_wide$`2000--2009`[long_diff_wide$outcome_label == "Net FAR-acres"], long_diff_wide$`2010--2019`[long_diff_wide$outcome_label == "Net FAR-acres"], long_diff_wide$`2020--2025`[long_diff_wide$outcome_label == "Net FAR-acres"])),
+  long_diff_table_rows,
   "    \\bottomrule",
   "    \\end{tabular}",
   "    \\begin{tablenotes}[flushleft]",
@@ -1901,6 +1930,8 @@ table_lines <- c(
 )
 
 write_lines_if_changed(table_lines, "../output/zap_rezoning_direction_long_difference.tex")
+
+# Coverage, manual-review queues, and parser diagnostics.
 
 parse_coverage <- project_classification |>
   group_by(event_period, rezoning_direction, parse_status) |>
@@ -2582,6 +2613,8 @@ write_csv_if_changed(resolution_waterfall, "../output/zap_rezoning_direction_res
 write_csv_if_changed(tercile_diagnostic_year, "../output/zap_rezoning_direction_tercile_diagnostic_year.csv")
 write_csv_if_changed(top_abs_far_acres, "../output/zap_rezoning_direction_top_abs_far_acres.csv")
 
+# Exploratory diagnostic plots.
+
 city_plot_df <- city_year |>
   group_by(completed_year, rezoning_direction) |>
   summarize(project_count = sum(project_count), net_far_acres = sum(net_far_acres), .groups = "drop") |>
@@ -2648,6 +2681,8 @@ print(
     theme(legend.position = "bottom", axis.text.x = element_text(angle = 45, hjust = 1))
 )
 dev.off()
+
+# Task-level QC.
 
 qc_df <- bind_rows(
   tibble(metric = "zoning_map_project_count_1980_2025", value = as.character(nrow(project_classification)), status = if_else(nrow(project_classification) > 0, "pass", "fail"), note = "Completed 1980-2025 ZAP project records with zoning map changes."),
