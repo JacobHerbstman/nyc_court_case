@@ -1,13 +1,10 @@
 SHELL := bash
 include ../../shell_functions.make
 
-all: ../output/ccdist2010_homeownership_long_units_series.csv ../output/ccdist2010_homeownership_long_units_series_qc.csv
+all: ../output/ccdist2010_homeownership_long_units_series.csv
 
 ../output/ccdist2010_homeownership_long_units_series.csv: build_ccd2010_homeownership_long_units_series.R ../input/ccdist2010_homeownership_1990_measure.csv ../input/ccdist2010_mappluto_construction_proxy_district_year.csv | ../output
 	$(R) $<
-
-../output/ccdist2010_homeownership_long_units_series_qc.csv: ../output/ccdist2010_homeownership_long_units_series.csv
-	@test -s "$@"
 
 ../input/ccdist2010_homeownership_1990_measure.csv: ../../build_ccd2010_homeownership_1990_measure/output/ccdist2010_homeownership_1990_measure.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"

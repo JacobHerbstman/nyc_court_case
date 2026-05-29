@@ -3,7 +3,6 @@
 suppressPackageStartupMessages({
   library(dplyr)
   library(ipumsr)
-  library(jsonlite)
   library(readr)
   library(stringr)
   library(tibble)
@@ -11,31 +10,8 @@ suppressPackageStartupMessages({
 
 source("../../_lib/source_pipeline_utils.R")
 
-api_key <- Sys.getenv("IPUMS_API_KEY")
-
-if (str_trim(api_key) == "") {
-  stop(
-    paste(
-      "IPUMS_API_KEY is not set.",
-      "Run ipumsr::set_ipums_api_key(\"<your key>\", save = TRUE) to write it to ~/.Renviron, then restart R and rerun this task."
-    )
-  )
-}
-
 source_catalog <- read_csv("../input/source_catalog.csv", show_col_types = FALSE, na = c("", "NA"))
 nhgis_table_map <- read_csv("nhgis_table_map.csv", show_col_types = FALSE, na = c("", "NA"))
-
-extract_tables_from_json <- function(path) {
-  spec <- fromJSON(path, simplifyVector = FALSE)
-  dataset_names <- names(spec$datasets)
-
-  bind_rows(lapply(dataset_names, function(dataset_name) {
-    tibble(
-      dataset_name = dataset_name,
-      data_table = unlist(spec$datasets[[dataset_name]]$dataTables)
-    )
-  }))
-}
 
 identify_zip_role <- function(zip_path) {
   listing <- tryCatch(unzip(zip_path, list = TRUE), error = function(e) NULL)
@@ -108,35 +84,10 @@ if (nrow(nhgis_rows) != nrow(nhgis_specs) || !setequal(nhgis_rows$source_id, nhg
 }
 
 audit_rows <- list()
-roundtrip_rows <- list()
 
 for (i in seq_len(nrow(nhgis_rows))) {
   row <- nhgis_rows[i, ]
   extract_spec <- define_extract_from_json(row$spec_json)
-  roundtrip_json <- tempfile(fileext = ".json")
-  save_extract_as_json(extract_spec, roundtrip_json, overwrite = TRUE)
-
-  spec_pairs <- extract_tables_from_json(row$spec_json)
-  table_map_pairs <- nhgis_table_map %>%
-    filter(year == row$year) %>%
-    distinct(dataset_name, data_table)
-
-  roundtrip_rows[[i]] <- tibble(
-    source_id = row$source_id,
-    year = row$year,
-    roundtrip_ok = isTRUE(all.equal(
-      fromJSON(row$spec_json, simplifyVector = FALSE),
-      fromJSON(roundtrip_json, simplifyVector = FALSE),
-      check.attributes = FALSE
-    )),
-    spec_tables_match_table_map = setequal(
-      paste(spec_pairs$dataset_name, spec_pairs$data_table),
-      paste(table_map_pairs$dataset_name, table_map_pairs$data_table)
-    ),
-    datasets = paste(names(extract_spec$datasets), collapse = ";"),
-    shapefiles = paste(extract_spec$shapefiles, collapse = ";")
-  )
-
   raw_dir <- file.path("..", "..", "..", "data_raw", row$source_id, as.character(row$year))
   dir.create(raw_dir, recursive = TRUE, showWarnings = FALSE)
 
@@ -174,6 +125,17 @@ for (i in seq_len(nrow(nhgis_rows))) {
 
   fetch_result <- tryCatch(
     {
+      api_key <- Sys.getenv("IPUMS_API_KEY")
+
+      if (str_trim(api_key) == "") {
+        stop(
+          paste(
+            "IPUMS_API_KEY is not set.",
+            "Run ipumsr::set_ipums_api_key(\"<your key>\", save = TRUE) to write it to ~/.Renviron, then restart R and rerun this task."
+          )
+        )
+      }
+
       submitted_extract <- submit_extract(extract_spec, api_key = api_key)
       ready_extract <- wait_for_extract(
         submitted_extract,
@@ -220,5 +182,4 @@ for (i in seq_len(nrow(nhgis_rows))) {
 }
 
 write_csv_if_changed(bind_rows(audit_rows), "../output/nhgis_extract_downloads.csv")
-write_csv_if_changed(bind_rows(roundtrip_rows), "../output/nhgis_extract_roundtrip_checks.csv")
-cat("Wrote NHGIS extract audit outputs to ../output\n")
+cat("Wrote NHGIS extract downloads to ../output\n")

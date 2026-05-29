@@ -60,8 +60,6 @@ nhgis_raw_files <- read_csv("../input/nhgis_raw_files.csv", show_col_types = FAL
   mutate(year = as.integer(year))
 
 index_rows <- list()
-qc_rows <- list()
-reconciliation_rows <- list()
 
 for (i in seq_len(nrow(nhgis_raw_files))) {
   row <- nhgis_raw_files[i, ]
@@ -78,18 +76,6 @@ for (i in seq_len(nrow(nhgis_raw_files))) {
       parquet_path = NA_character_,
       status = row$status
     )
-
-    qc_rows[[i]] <- tibble(
-      source_id = row$source_id,
-      year = row$year,
-      status = row$status,
-      row_count = NA_real_,
-      homeowner_share_mean = NA_real_,
-      missing_nhgis_codes = NA_character_,
-      vacancy_status_gap_sum = NA_real_,
-      reconciled_housing_balance_gap_sum = NA_real_,
-      unresolved_tract_count = NA_real_
-    )
     next
   }
 
@@ -97,7 +83,6 @@ for (i in seq_len(nrow(nhgis_raw_files))) {
     as.data.frame() %>%
     as_tibble()
   year_map <- nhgis_table_map %>% filter(year == row$year)
-  missing_codes <- year_map$nhgis_code[!normalize_names(year_map$nhgis_code) %in% names(nhgis_df)]
 
   staged_df <- tibble(
     source_id = row$source_id,
@@ -205,43 +190,7 @@ for (i in seq_len(nrow(nhgis_raw_files))) {
     parquet_path = out_parquet,
     status = "staged"
   )
-
-  qc_rows[[i]] <- tibble(
-    source_id = row$source_id,
-    year = row$year,
-    status = "staged",
-    row_count = nrow(staged_df),
-    homeowner_share_mean = mean(staged_df$homeowner_share, na.rm = TRUE),
-    missing_nhgis_codes = if (length(missing_codes) == 0) NA_character_ else paste(missing_codes, collapse = ";"),
-    vacancy_status_gap_sum = sum(staged_df$vacancy_status_gap, na.rm = TRUE),
-    reconciled_housing_balance_gap_sum = sum(staged_df$reconciled_housing_balance_gap, na.rm = TRUE),
-    unresolved_tract_count = sum(staged_df$unresolved_flag, na.rm = TRUE)
-  )
-
-  if (row$year == 1980) {
-    reconciliation_rows[[length(reconciliation_rows) + 1L]] <- staged_df %>%
-      transmute(
-        year,
-        gisjoin,
-        countya,
-        tracta,
-        total_housing_units,
-        occupied_units,
-        vacant_units_status_sum,
-        vacant_units_reconciled = vacant_units,
-        vacancy_status_gap,
-        housing_balance_classification,
-        zero_population_flag,
-        zero_housing_flag,
-        zero_income_flag,
-        income_classification,
-        income_override_reason,
-        unresolved_flag
-      )
-  }
 }
 
 write_csv(bind_rows(index_rows), "../output/nhgis_files.csv", na = "")
-write_csv(bind_rows(qc_rows), "../output/nhgis_qc.csv", na = "")
-write_csv(bind_rows(reconciliation_rows), "../output/nhgis_1980_reconciliation.csv", na = "")
 cat("Wrote NHGIS staging outputs to ../output\n")

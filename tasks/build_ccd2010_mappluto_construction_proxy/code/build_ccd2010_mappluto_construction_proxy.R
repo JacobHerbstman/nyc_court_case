@@ -259,21 +259,4 @@ panel <- expand_grid(
 
 write_csv_if_changed(panel, "../output/ccdist2010_mappluto_construction_proxy_district_year.csv")
 
-write_csv_if_changed(
-  bind_rows(
-    tibble(metric = "source_id", value = as.character(mappluto_row$source_id[[1]]), note = "Staged MapPLUTO source used for the 2010 council district proxy."),
-    tibble(metric = "vintage", value = as.character(mappluto_row$vintage[[1]]), note = "MapPLUTO vintage used for the surviving-stock yearbuilt proxy."),
-    tibble(metric = "source_total_rows", value = as.character(nrow(mappluto_attr)), note = "Total rows in the raw MapPLUTO lot file before proxy restrictions."),
-    tibble(metric = "assigned_2010_council_rows", value = as.character(nrow(mappluto_df)), note = "Rows assigned to archived 2010 Council districts by lot representative point."),
-    tibble(metric = "unassigned_2010_council_rows", value = as.character(nrow(mappluto_attr) - nrow(mappluto_df)), note = "Rows not assigned to any archived 2010 Council district."),
-    tibble(metric = "boundary_tie_rows", value = as.character(sum(mappluto_assignment$council_match_count > 1, na.rm = TRUE)), note = "Rows whose representative point intersected more than one 2010 Council district; first district ordered by district number is used."),
-    tibble(metric = "bbl_lookup_rows", value = as.character(nrow(bbl_lookup)), note = "Non-joint-interest BBLs with a 2010 Council district assignment."),
-    tibble(metric = "proxy_residential_lots", value = as.character(nrow(lot_level)), note = "Residential lots in 2010 Council districts with yearbuilt in 1980-2025."),
-    tibble(metric = "proxy_residential_units", value = as.character(sum(lot_level$unitsres, na.rm = TRUE)), note = "Current residential units on proxy lots."),
-    tibble(metric = "proxy_50_plus_unit_share", value = as.character(mean(lot_level$size_bin == "50_plus", na.rm = TRUE)), note = "Share of proxy lots with 50 or more residential units."),
-    tibble(metric = "proxy_interpretation", value = "25v4_surviving_residential_stock_built_in_year_t", note = "This is a surviving-stock proxy, not a clean construction-flow series.")
-  ),
-  "../output/ccdist2010_mappluto_construction_proxy_qc.csv"
-)
-
 cat("Wrote 2010 Council district MapPLUTO construction proxy outputs to ../output\n")

@@ -23,7 +23,6 @@ expected_rows <- tibble(year = sort(unique(nhgis_table_map$year))) %>%
 nyc_counties <- c("005", "047", "061", "081", "085")
 
 index_rows <- list()
-qc_rows <- list()
 
 for (i in seq_len(nrow(expected_rows))) {
   row <- expected_rows[i, ]
@@ -83,13 +82,6 @@ for (i in seq_len(nrow(expected_rows))) {
       raw_parquet_path = NA_character_,
       status = missing_status
     )
-
-    qc_rows[[i]] <- tibble(
-      source_id = row$source_id,
-      status = missing_status,
-      row_count = NA_real_,
-      validation_notes = "Run tasks/fetch_nhgis_extracts before loading a complete table/GIS extract pair."
-    )
     next
   }
 
@@ -141,13 +133,6 @@ for (i in seq_len(nrow(expected_rows))) {
       raw_parquet_path = NA_character_,
       status = "bundle_validation_failed"
     )
-
-    qc_rows[[i]] <- tibble(
-      source_id = row$source_id,
-      status = "bundle_validation_failed",
-      row_count = NA_real_,
-      validation_notes = paste(validation_notes, collapse = ";")
-    )
     next
   }
 
@@ -198,13 +183,6 @@ for (i in seq_len(nrow(expected_rows))) {
       raw_parquet_path = NA_character_,
       status = "bundle_validation_failed"
     )
-
-    qc_rows[[i]] <- tibble(
-      source_id = row$source_id,
-      status = "bundle_validation_failed",
-      row_count = NA_real_,
-      validation_notes = paste0("missing_nhgis_codes:", paste(missing_codes, collapse = ";"))
-    )
     next
   }
 
@@ -232,15 +210,7 @@ for (i in seq_len(nrow(expected_rows))) {
     raw_parquet_path = out_parquet,
     status = "loaded"
   )
-
-  qc_rows[[i]] <- tibble(
-    source_id = row$source_id,
-    status = "loaded",
-    row_count = nrow(nhgis_df),
-    validation_notes = "validated_table_payload_and_indexed_tl2000_shapefile"
-  )
 }
 
 write_csv(bind_rows(index_rows), "../output/nhgis_raw_files.csv", na = "")
-write_csv(bind_rows(qc_rows), "../output/nhgis_raw_qc.csv", na = "")
 cat("Wrote NHGIS raw outputs to ../output\n")

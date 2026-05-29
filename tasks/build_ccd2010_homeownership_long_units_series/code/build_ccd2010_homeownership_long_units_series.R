@@ -3,7 +3,6 @@
 suppressPackageStartupMessages({
   library(dplyr)
   library(readr)
-  library(stringr)
   library(tibble)
   library(tidyr)
 })
@@ -104,21 +103,5 @@ series_df <- expand_grid(district_skeleton, year = 1980:2025, proxy_map) %>%
   arrange(series_kind, series_family, council_district, year)
 
 write_csv(series_df, "../output/ccdist2010_homeownership_long_units_series.csv", na = "")
-
-write_csv(
-  bind_rows(
-    tibble(metric = "district_count", value = as.character(n_distinct(series_df$district_id)), note = "2010 Council districts in the long units series."),
-    tibble(metric = "year_min", value = as.character(min(series_df$year, na.rm = TRUE)), note = "Minimum year in the long units series."),
-    tibble(metric = "year_max", value = as.character(max(series_df$year, na.rm = TRUE)), note = "Maximum year in the long units series."),
-    tibble(metric = "source_count", value = as.character(n_distinct(series_df$source_family)), note = "Distinct construction-outcome source families in the long units series."),
-    tibble(metric = "source_family", value = paste(sort(unique(series_df$source_family)), collapse = ";"), note = "Construction-outcome source family used for the full 1980-2025 series."),
-    tibble(metric = "missing_treat_count", value = as.character(sum(is.na(series_df$treat_z_boro))), note = "Rows missing the 1990 homeownership treatment."),
-    tibble(metric = "preferred_units_built_total_sum", value = as.character(sum(series_df$outcome_value[series_df$series_family == "units_built_total"], na.rm = TRUE)), note = "Total units in the PLUTO-only compatible long series."),
-    tibble(metric = "preferred_projects_built_50_plus_sum", value = as.character(sum(series_df$outcome_value[series_df$series_family == "projects_built_50_plus"], na.rm = TRUE)), note = "Total 50+ unit project/lot counts in the PLUTO-only compatible long series."),
-    tibble(metric = "series_interpretation", value = "25v4_surviving_residential_stock_built_in_year_t", note = "This is a MapPLUTO surviving-stock proxy, not a clean completion-flow series.")
-  ),
-  "../output/ccdist2010_homeownership_long_units_series_qc.csv",
-  na = ""
-)
 
 cat("Wrote PLUTO-only 2010 Council district long units series outputs to ../output\n")

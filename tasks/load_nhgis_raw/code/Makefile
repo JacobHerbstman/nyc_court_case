@@ -1,13 +1,12 @@
 SHELL := bash
 include ../../shell_functions.make
 
-all: ../output/nhgis_raw_files.csv ../output/nhgis_raw_qc.csv
+all: ../output/nhgis_raw_files.csv \
+	../output/nhgis_1980_tract_extract_raw.parquet \
+	../output/nhgis_1990_tract_extract_raw.parquet
 
 ../output/nhgis_raw_files.csv: load_nhgis_raw.R ../input/nhgis_extract_downloads.csv ../input/nhgis_table_map.csv | ../output
 	$(R) $<
-
-../output/nhgis_raw_qc.csv: ../output/nhgis_raw_files.csv
-	@test -s "$@"
 
 ../output/nhgis_1980_tract_extract_raw.parquet: ../output/nhgis_raw_files.csv
 	@test -s "$@"

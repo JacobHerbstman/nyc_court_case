@@ -1,16 +1,10 @@
 SHELL := bash
 include ../../shell_functions.make
 
-all: ../output/mappluto_files.csv ../output/mappluto_checksums.csv ../output/mappluto_provenance.csv
+all: ../output/mappluto_files.csv
 
 ../output/mappluto_files.csv: fetch_mappluto_archive.R ../input/source_catalog.csv | ../output
 	$(R) $<
-
-../output/mappluto_checksums.csv: ../output/mappluto_files.csv
-	@test -s "$@"
-
-../output/mappluto_provenance.csv: ../output/mappluto_files.csv
-	@test -s "$@"
 
 ../input/source_catalog.csv: ../../source_registry/code/source_catalog.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"

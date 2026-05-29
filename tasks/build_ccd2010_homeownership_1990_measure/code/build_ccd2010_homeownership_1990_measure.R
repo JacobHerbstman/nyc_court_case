@@ -8,7 +8,6 @@ suppressPackageStartupMessages({
   library(sf)
   library(stringr)
   library(tibble)
-  library(tidyr)
 })
 
 source("../../_lib/source_pipeline_utils.R")
@@ -312,122 +311,7 @@ measure_df <- map_sf %>%
     geometry_wkt
   )
 
-assignment_qc <- tract_sf %>%
-  st_drop_geometry() %>%
-  select(gisjoin, total_housing_units, occupied_units, owner_occupied_units, vacant_units, total_population) %>%
-  left_join(
-    intersection_sf %>%
-      st_drop_geometry() %>%
-      group_by(gisjoin) %>%
-      summarise(
-        area_share_sum = sum(area_share, na.rm = TRUE),
-        total_housing_units_alloc_sum = sum(total_housing_units_alloc, na.rm = TRUE),
-        occupied_units_alloc_sum = sum(occupied_units_alloc, na.rm = TRUE),
-        owner_occupied_units_alloc_sum = sum(owner_occupied_units_alloc, na.rm = TRUE),
-        vacant_units_alloc_sum = sum(vacant_units_alloc, na.rm = TRUE),
-        total_population_alloc_sum = sum(total_population_alloc, na.rm = TRUE),
-        .groups = "drop"
-      ),
-    by = "gisjoin",
-    relationship = "one-to-one"
-  ) %>%
-  mutate(
-    area_share_sum = coalesce(area_share_sum, 0),
-    total_housing_units_alloc_sum = coalesce(total_housing_units_alloc_sum, 0),
-    occupied_units_alloc_sum = coalesce(occupied_units_alloc_sum, 0),
-    owner_occupied_units_alloc_sum = coalesce(owner_occupied_units_alloc_sum, 0),
-    vacant_units_alloc_sum = coalesce(vacant_units_alloc_sum, 0),
-    total_population_alloc_sum = coalesce(total_population_alloc_sum, 0)
-  )
-
-cross_borough_qc <- allocation_by_county %>%
-  group_by(district_id, council_district) %>%
-  summarise(
-    borough_piece_count = sum(occupied_units_alloc > 0, na.rm = TRUE),
-    nonmajority_occupied_share = 1 - max(occupied_units_alloc, na.rm = TRUE) / sum(occupied_units_alloc, na.rm = TRUE),
-    .groups = "drop"
-  ) %>%
-  mutate(nonmajority_occupied_share = ifelse(is.finite(nonmajority_occupied_share), nonmajority_occupied_share, 0))
-
-overlap_qc <- bind_rows(
-  tibble(
-    metric = "tract_count",
-    value = nrow(assignment_qc),
-    note = "1990 NHGIS tract polygons joined to staged NYC tract attributes."
-  ),
-  tibble(
-    metric = "district_count",
-    value = nrow(measure_df),
-    note = "2010 City Council districts receiving tract allocations."
-  ),
-  tibble(
-    metric = "occupied_units_assigned_share",
-    value = sum(assignment_qc$occupied_units_alloc_sum, na.rm = TRUE) / sum(assignment_qc$occupied_units, na.rm = TRUE),
-    note = "Share of 1990 NHGIS occupied units assigned to 2010 Council districts."
-  ),
-  tibble(
-    metric = "owner_occupied_units_assigned_share",
-    value = sum(assignment_qc$owner_occupied_units_alloc_sum, na.rm = TRUE) / sum(assignment_qc$owner_occupied_units, na.rm = TRUE),
-    note = "Share of 1990 NHGIS owner-occupied units assigned to 2010 Council districts."
-  ),
-  tibble(
-    metric = "tract_area_share_mean",
-    value = mean(assignment_qc$area_share_sum, na.rm = TRUE),
-    note = "Mean tract polygon area share assigned to 2010 Council districts."
-  ),
-  tibble(
-    metric = "tract_area_share_min",
-    value = min(assignment_qc$area_share_sum, na.rm = TRUE),
-    note = "Minimum tract polygon area share assigned to 2010 Council districts."
-  ),
-  tibble(
-    metric = "cross_borough_district_count",
-    value = sum(cross_borough_qc$borough_piece_count > 1, na.rm = TRUE),
-    note = "Council districts with allocated occupied units in more than one borough."
-  ),
-  tibble(
-    metric = "max_nonmajority_borough_occupied_share",
-    value = max(cross_borough_qc$nonmajority_occupied_share, na.rm = TRUE),
-    note = "Largest 1990 occupied-unit share outside a district's assigned majority borough."
-  )
-)
-
-measure_qc <- bind_rows(
-  tibble(
-    metric = "district_count",
-    value = nrow(measure_df),
-    note = "Council districts in the 2010 geography homeownership measure."
-  ),
-  tibble(
-    metric = "borough_count",
-    value = n_distinct(measure_df$borough_name),
-    note = "Majority boroughs represented in the 2010 Council district measure."
-  ),
-  tibble(
-    metric = "missing_h_ccd_count",
-    value = sum(is.na(measure_df$h_ccd_1990)),
-    note = "Council districts with missing 1990 homeownership rates."
-  ),
-  tibble(
-    metric = "missing_treat_z_boro_count",
-    value = sum(is.na(measure_df$treat_z_boro)),
-    note = "Council districts with missing within-borough standardized treatment."
-  ),
-  tibble(
-    metric = "weighted_mean_treat_pp",
-    value = weighted.mean(measure_df$treat_pp, w = measure_df$occupied_units_1990, na.rm = TRUE),
-    note = "Occupied-unit-weighted mean of treatment percentage-point difference."
-  ),
-  tibble(
-    metric = "status",
-    value = ifelse(nrow(measure_df) == 51 && all(!is.na(measure_df$h_ccd_1990)), 1, 0),
-    note = "One means the first-pass 2010 Council district exposure measure is complete."
-  )
-)
-
 write_csv_if_changed(measure_df, "../output/ccdist2010_homeownership_1990_measure.csv")
-write_csv_if_changed(overlap_qc, "../output/ccdist2010_homeownership_1990_overlap_qc.csv")
-write_csv_if_changed(measure_qc, "../output/ccdist2010_homeownership_1990_measure_qc.csv")
 
 pdf("../output/ccdist2010_homeownership_1990_map.pdf", width = 10, height = 7.5)
 print(
@@ -461,34 +345,6 @@ print(
       legend.title = element_text(size = 9.5, lineheight = 0.95),
       legend.text = element_text(size = 8.5),
       legend.margin = margin(l = 8)
-    )
-)
-dev.off()
-
-pdf("../output/ccdist2010_homeownership_1990_brooklyn_map.pdf", width = 8.5, height = 8)
-print(
-  ggplot(filter(map_sf, borough_name == "Brooklyn")) +
-    geom_sf(aes(fill = treat_z_boro), color = "white", linewidth = 0.35) +
-    geom_sf_text(aes(label = council_district), size = 3.2, color = "#222222", check_overlap = TRUE) +
-    scale_fill_gradient2(
-      low = "#3366CC",
-      mid = "#F7F7F7",
-      high = "#CC3311",
-      midpoint = 0,
-      name = "1990 homeowner\nz-score"
-    ) +
-    coord_sf(datum = NA) +
-    labs(
-      title = "Brooklyn 2010 Council District Homeownership Exposure",
-      subtitle = "1990 tract tenure area-weighted to 2010 Council districts; standardized within borough",
-      caption = "Boundary source: DCP archived City Council Districts, 10C release."
-    ) +
-    theme_void(base_size = 10) +
-    theme(
-      plot.title = element_text(face = "bold", hjust = 0.5),
-      plot.subtitle = element_text(hjust = 0.5, margin = margin(b = 8)),
-      plot.caption = element_text(hjust = 0, color = "#555555"),
-      legend.position = "bottom"
     )
 )
 dev.off()

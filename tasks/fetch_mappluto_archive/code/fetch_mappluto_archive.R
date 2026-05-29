@@ -150,8 +150,6 @@ if (nrow(archive_release_rows) == 0) {
   stop("The DCP archive JSON returned zero archived MapPLUTO shapefile releases.")
 }
 
-archive_mismatch_count <- sum(!archive_release_rows$release_label_url_match, na.rm = TRUE)
-
 inventory_rows <- list()
 inventory_counter <- 0L
 
@@ -254,45 +252,6 @@ for (i in seq_len(nrow(archive_release_rows))) {
 file_inventory <- bind_rows(inventory_rows) |>
   arrange(source_id, vintage, file_role, raw_path)
 
-checksum_table <- file_inventory |>
-  mutate(
-    file_exists = file.exists(raw_path),
-    checksum_sha256 = if_else(file_exists, vapply(raw_path, compute_sha256, character(1)), NA_character_)
-  ) |>
-  select(source_id, vintage, pull_date, file_role, raw_path, checksum_sha256)
-
-provenance_table <- bind_rows(
-  tibble(
-    source_id = "dcp_pluto_current",
-    pull_date = pull_date,
-    current_release = current_release,
-    metadata_path = discovery_pluto_path,
-    metadata_kind = "planning_content_api",
-    note = "Current PLUTO release discovered from the official DCP Planning content API page."
-  ),
-  tibble(
-    source_id = "dcp_mappluto_current",
-    pull_date = pull_date,
-    current_release = current_release,
-    metadata_path = discovery_current_path,
-    metadata_kind = "planning_content_api",
-    note = "Current MapPLUTO release discovered from the official DCP Planning content API page."
-  ),
-  tibble(
-    source_id = "dcp_mappluto_archive",
-    pull_date = pull_date,
-    current_release = NA_character_,
-    metadata_path = archive_json_path,
-    metadata_kind = "dcp_archive_json",
-    note = paste(
-      "Archive JSON listed", nrow(archive_release_rows), "official archived MapPLUTO shapefile releases;",
-      archive_mismatch_count, "release-label/URL mismatches were flagged without downloading under the mismatched label."
-    )
-  )
-)
-
 write_csv_if_changed(file_inventory, "../output/mappluto_files.csv")
-write_csv_if_changed(checksum_table, "../output/mappluto_checksums.csv")
-write_csv_if_changed(provenance_table, "../output/mappluto_provenance.csv")
 
-cat("Wrote DCP PLUTO and MapPLUTO fetch outputs to ../output\n")
+cat("Wrote DCP PLUTO and MapPLUTO file inventory to ../output\n")

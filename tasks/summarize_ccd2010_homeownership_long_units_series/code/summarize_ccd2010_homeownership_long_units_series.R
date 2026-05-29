@@ -106,17 +106,6 @@ preferred_df <- series_df %>%
     district_lookup %>% select(district_id, treat_tercile, treat_tercile_label),
     by = "district_id",
     relationship = "many-to-one"
-  ) %>%
-  mutate(
-    era = case_when(
-      year >= 1980 & year <= 1984 ~ "1980-1984",
-      year >= 1985 & year <= 1989 ~ "1985-1989",
-      year >= 1990 & year <= 1999 ~ "1990-1999",
-      year >= 2000 & year <= 2009 ~ "2000-2009",
-      year >= 2010 & year <= 2019 ~ "2010-2019",
-      year >= 2020 & year <= 2025 ~ "2020-2025",
-      TRUE ~ NA_character_
-    )
   )
 
 tercile_year_df <- preferred_df %>%
@@ -153,23 +142,6 @@ if (nrow(required_tercile_series_gaps) > 0) {
 
 tercile_year_ma3_df <- make_centered_moving_average(tercile_year_df, 3)
 
-tercile_era_df <- preferred_df %>%
-  filter(!is.na(era)) %>%
-  group_by(series_family, series_label, era, borough_code, borough_name, treat_tercile, treat_tercile_label) %>%
-  summarize(
-    outcome_value = sum(outcome_value, na.rm = TRUE),
-    borough_outcome_total = sum(distinct(data.frame(year, borough_outcome_total))$borough_outcome_total, na.rm = TRUE),
-    .groups = "drop"
-  ) %>%
-  group_by(series_family, series_label, era, treat_tercile, treat_tercile_label) %>%
-  summarize(
-    outcome_value = sum(outcome_value, na.rm = TRUE),
-    borough_outcome_total = sum(borough_outcome_total, na.rm = TRUE),
-    borough_outcome_share = if_else(borough_outcome_total > 0, outcome_value / borough_outcome_total, NA_real_),
-    .groups = "drop"
-  ) %>%
-  arrange(series_family, era, treat_tercile)
-
 brooklyn_rank_df <- preferred_df %>%
   filter(
     borough_name == "Brooklyn",
@@ -194,27 +166,6 @@ if (nrow(brooklyn_rank_df) != 16) {
   stop("Expected exactly 16 2010 Council districts assigned to Brooklyn for the Brooklyn rank plot.")
 }
 
-write_csv(city_year_df, "../output/ccdist2010_homeownership_long_units_city_year.csv", na = "")
-write_csv(tercile_year_df, "../output/ccdist2010_homeownership_long_units_tercile_year.csv", na = "")
-write_csv(tercile_year_ma3_df, "../output/ccdist2010_homeownership_long_units_tercile_year_ma3.csv", na = "")
-write_csv(tercile_era_df, "../output/ccdist2010_homeownership_long_units_tercile_era.csv", na = "")
-write_csv(brooklyn_rank_df, "../output/ccdist2010_homeownership_long_units_brooklyn_rank.csv", na = "")
-
-write_csv(
-  bind_rows(
-    tibble(metric = "district_count", value = n_distinct(district_lookup$district_id), note = "2010 Council districts assigned to treatment terciles."),
-    tibble(metric = "preferred_series_year_gap_count", value = nrow(preferred_df %>% count(series_family, year, name = "district_count") %>% filter(district_count != 51)), note = "Preferred series-family-year cells not covering all 51 Council districts."),
-    tibble(metric = "city_year_row_count", value = nrow(city_year_df), note = "Rows in the city-year long units summary."),
-    tibble(metric = "tercile_year_row_count", value = nrow(tercile_year_df), note = "Rows in the annual tercile summary for the preferred series."),
-    tibble(metric = "tercile_year_ma3_row_count", value = nrow(tercile_year_ma3_df), note = "Rows in the 3-year centered moving-average tercile summary."),
-    tibble(metric = "required_tercile_series_gap_count", value = nrow(required_tercile_series_gaps), note = "Required annual series-family-year cells with other than three treatment terciles."),
-    tibble(metric = "tercile_era_row_count", value = nrow(tercile_era_df), note = "Rows in the era tercile summary for the preferred series."),
-    tibble(metric = "brooklyn_rank_row_count", value = nrow(brooklyn_rank_df), note = "Rows in the Brooklyn Council-district rank summary.")
-  ),
-  "../output/ccdist2010_homeownership_long_units_summary_qc.csv",
-  na = ""
-)
-
 city_plot_df <- city_year_df %>%
   filter(series_family %in% c("units_built_total", "gross_add_units_observed")) %>%
   mutate(series_label = factor(series_label, levels = c("Units built: total", "Gross additions observed")))
@@ -227,20 +178,6 @@ tercile_plot_df <- tercile_year_df %>%
   )
 
 tercile_plot_ma3_df <- tercile_year_ma3_df %>%
-  filter(series_family %in% c("units_built_total", "units_built_50_plus")) %>%
-  mutate(
-    treat_tercile_label = factor(treat_tercile_label, levels = c("Low", "Middle", "High")),
-    series_label = factor(series_label, levels = c("Units built: total", "Units built: 50+"))
-  )
-
-tercile_count_plot_df <- tercile_year_df %>%
-  filter(series_family %in% c("units_built_total", "units_built_50_plus")) %>%
-  mutate(
-    treat_tercile_label = factor(treat_tercile_label, levels = c("Low", "Middle", "High")),
-    series_label = factor(series_label, levels = c("Units built: total", "Units built: 50+"))
-  )
-
-tercile_count_plot_ma3_df <- tercile_year_ma3_df %>%
   filter(series_family %in% c("units_built_total", "units_built_50_plus")) %>%
   mutate(
     treat_tercile_label = factor(treat_tercile_label, levels = c("Low", "Middle", "High")),
@@ -324,29 +261,6 @@ print(
       panel.grid.minor = element_blank(),
       panel.grid.major.y = element_blank()
     )
-)
-dev.off()
-
-pdf("../output/ccdist2010_homeownership_long_units_count_plots.pdf", width = 11, height = 8.5)
-print(
-  ggplot(tercile_count_plot_df, aes(x = year, y = outcome_value, color = treat_tercile_label)) +
-    geom_line(linewidth = 0.8) +
-    geom_vline(xintercept = 2010, linetype = "dashed", color = "#666666") +
-    facet_wrap(~series_label, scales = "free_y", ncol = 1) +
-    scale_color_manual(values = c("Low" = "#3366CC", "Middle" = "#999999", "High" = "#CC3311")) +
-    labs(x = NULL, y = "Units built", color = "Treat tercile") +
-    theme_minimal(base_size = 11) +
-    theme(legend.position = "bottom")
-)
-print(
-  ggplot(tercile_count_plot_ma3_df, aes(x = year, y = outcome_value_ma, color = treat_tercile_label, group = treat_tercile_label)) +
-    geom_line(linewidth = 0.9) +
-    geom_vline(xintercept = 2010, linetype = "dashed", color = "#666666") +
-    facet_wrap(~series_label, scales = "free_y", ncol = 1) +
-    scale_color_manual(values = c("Low" = "#3366CC", "Middle" = "#999999", "High" = "#CC3311")) +
-    labs(x = NULL, y = "Units built (3-year centered MA)", color = "Treat tercile") +
-    theme_minimal(base_size = 11) +
-    theme(legend.position = "bottom")
 )
 dev.off()
 

@@ -165,22 +165,6 @@ extract_mappluto_table <- function(raw_path) {
   lot_table
 }
 
-safe_min_int <- function(x) {
-  x <- suppressWarnings(as.integer(x))
-  if (all(is.na(x))) {
-    return(NA_integer_)
-  }
-  min(x, na.rm = TRUE)
-}
-
-safe_max_int <- function(x) {
-  x <- suppressWarnings(as.integer(x))
-  if (all(is.na(x))) {
-    return(NA_integer_)
-  }
-  max(x, na.rm = TRUE)
-}
-
 available_rows <- mappluto_files |>
   filter(file_role == "mappluto_shapefile_zip", file.exists(raw_path)) |>
   mutate(
@@ -200,12 +184,10 @@ available_rows <- mappluto_files |>
 
 if (nrow(available_rows) == 0) {
   write_csv(tibble(), "../output/mappluto_raw_files.csv", na = "")
-  write_csv(tibble(), "../output/mappluto_raw_qc.csv", na = "")
   quit(save = "no")
 }
 
 index_rows <- list()
-qc_rows <- list()
 row_id <- 1L
 
 invalid_rows <- available_rows |>
@@ -221,27 +203,6 @@ if (nrow(invalid_rows) > 0) {
       raw_path = row$raw_path,
       raw_parquet_path = NA_character_,
       file_role = row$file_role,
-      raw_file_release = row$raw_file_release,
-      fetch_status = row$fetch_status,
-      raw_zip_valid = row$raw_zip_valid,
-      status = row$status
-    )
-
-    qc_rows[[row_id]] <- tibble(
-      source_id = row$source_id,
-      vintage = row$vintage,
-      row_count = NA_real_,
-      nonmissing_bbl_share = NA_real_,
-      nonmissing_cd_share = NA_real_,
-      nonmissing_council_share = NA_real_,
-      nonmissing_unitsres_share = NA_real_,
-      nonmissing_yearbuilt_share = NA_real_,
-      nonmissing_zonedist1_share = NA_real_,
-      nonmissing_lotarea_share = NA_real_,
-      nonmissing_builtfar_share = NA_real_,
-      nonmissing_assessland_share = NA_real_,
-      min_raw_yearbuilt = NA_integer_,
-      max_raw_yearbuilt = NA_integer_,
       raw_file_release = row$raw_file_release,
       fetch_status = row$fetch_status,
       raw_zip_valid = row$raw_zip_valid,
@@ -283,30 +244,8 @@ for (i in seq_len(nrow(available_rows))) {
     status = "loaded"
   )
 
-  qc_rows[[row_id]] <- tibble(
-    source_id = row$source_id,
-    vintage = row$vintage,
-    row_count = nrow(lot_table),
-    nonmissing_bbl_share = mean(!is.na(lot_table$bbl)),
-    nonmissing_cd_share = mean(!is.na(lot_table$cd)),
-    nonmissing_council_share = mean(!is.na(lot_table$council)),
-    nonmissing_unitsres_share = mean(!is.na(lot_table$unitsres)),
-    nonmissing_yearbuilt_share = mean(!is.na(lot_table$yearbuilt)),
-    nonmissing_zonedist1_share = mean(!is.na(lot_table$zonedist1)),
-    nonmissing_lotarea_share = mean(!is.na(lot_table$lotarea)),
-    nonmissing_builtfar_share = mean(!is.na(lot_table$builtfar)),
-    nonmissing_assessland_share = mean(!is.na(lot_table$assessland)),
-    min_raw_yearbuilt = safe_min_int(lot_table$yearbuilt),
-    max_raw_yearbuilt = safe_max_int(lot_table$yearbuilt),
-    raw_file_release = row$raw_file_release,
-    fetch_status = row$fetch_status,
-    raw_zip_valid = row$raw_zip_valid,
-    status = "loaded"
-  )
-
   row_id <- row_id + 1L
 }
 
 write_csv(bind_rows(index_rows), "../output/mappluto_raw_files.csv", na = "")
-write_csv(bind_rows(qc_rows), "../output/mappluto_raw_qc.csv", na = "")
 cat("Wrote raw MapPLUTO load outputs to ../output\n")
