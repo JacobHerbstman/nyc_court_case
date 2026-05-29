@@ -1,23 +1,13 @@
-SHELL := bash
-include ../../shell_functions.make
-
 all: ../output/ccdist2010_opportunity_counterfactual_panel.csv \
 	../output/ccdist2010_opportunity_counterfactual_summary.csv \
-	../output/ccdist2010_opportunity_counterfactual_qc.csv \
 	../output/ccdist2010_opportunity_counterfactual_model_summary.csv \
 	../output/ccdist2010_opportunity_counterfactual_main_treatment_coefficients.csv \
-	../output/ccdist2010_opportunity_counterfactual_two_by_two.csv \
-	../output/ccdist2010_opportunity_counterfactual_support_by_borough.csv \
-	../output/ccdist2010_opportunity_counterfactual_district_influence.csv \
-	../output/ccdist2010_opportunity_counterfactual_matched_diagnostic.csv
+	../output/ccdist2010_opportunity_counterfactual_two_by_two.csv
 
 ../output/ccdist2010_opportunity_counterfactual_panel.csv: estimate_ccd2010_opportunity_counterfactual.R ../../_lib/source_pipeline_utils.R ../input/ccdist2010_redevelopment_potential.csv ../input/ccdist2010_homeownership_long_units_series.csv | ../output
-	$(R) $<
+	Rscript --vanilla $<
 
 ../output/ccdist2010_opportunity_counterfactual_summary.csv: ../output/ccdist2010_opportunity_counterfactual_panel.csv
-	@test -s "$@"
-
-../output/ccdist2010_opportunity_counterfactual_qc.csv: ../output/ccdist2010_opportunity_counterfactual_panel.csv
 	@test -s "$@"
 
 ../output/ccdist2010_opportunity_counterfactual_model_summary.csv: ../output/ccdist2010_opportunity_counterfactual_panel.csv
@@ -27,15 +17,6 @@ all: ../output/ccdist2010_opportunity_counterfactual_panel.csv \
 	@test -s "$@"
 
 ../output/ccdist2010_opportunity_counterfactual_two_by_two.csv: ../output/ccdist2010_opportunity_counterfactual_panel.csv
-	@test -s "$@"
-
-../output/ccdist2010_opportunity_counterfactual_support_by_borough.csv: ../output/ccdist2010_opportunity_counterfactual_panel.csv
-	@test -s "$@"
-
-../output/ccdist2010_opportunity_counterfactual_district_influence.csv: ../output/ccdist2010_opportunity_counterfactual_panel.csv
-	@test -s "$@"
-
-../output/ccdist2010_opportunity_counterfactual_matched_diagnostic.csv: ../output/ccdist2010_opportunity_counterfactual_panel.csv
 	@test -s "$@"
 
 ../input/ccdist2010_redevelopment_potential.csv: ../../build_ccd2010_redevelopment_potential/output/ccdist2010_redevelopment_potential.csv | ../input
