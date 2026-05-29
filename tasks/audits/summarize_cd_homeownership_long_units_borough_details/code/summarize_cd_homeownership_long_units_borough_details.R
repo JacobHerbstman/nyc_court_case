@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_cd_homeownership_long_units_borough_details/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/summarize_cd_homeownership_long_units_borough_details/code")
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -45,13 +45,15 @@ if (n_distinct(district_lookup$borocd) != 59) {
 }
 
 hdb_file <- read_csv("../input/dcp_housing_database_files.csv", show_col_types = FALSE, na = c("", "NA")) |>
-  filter(source_id == "dcp_housing_database_project_level", !is.na(parquet_path), file.exists(parquet_path)) |>
+  filter(source_id == "dcp_housing_database_project_level", !is.na(parquet_path)) |>
   mutate(
+    parquet_path = paste0("../../../stage_dcp_housing_database/output/", basename(parquet_path)),
     vintage = as.character(vintage),
     vintage_year = suppressWarnings(as.integer(str_extract(vintage, "^[0-9]{2}"))),
     vintage_quarter = suppressWarnings(as.integer(str_extract(str_to_lower(vintage), "(?<=q)[1-4]$"))),
     vintage_order = 4L * vintage_year + vintage_quarter
   ) |>
+  filter(file.exists(parquet_path)) |>
   arrange(desc(vintage_order), desc(vintage), parquet_path) |>
   slice_head(n = 1)
 

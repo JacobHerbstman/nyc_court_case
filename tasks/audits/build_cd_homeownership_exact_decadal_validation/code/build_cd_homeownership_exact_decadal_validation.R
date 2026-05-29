@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_cd_homeownership_exact_decadal_validation/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/build_cd_homeownership_exact_decadal_validation/code")
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -32,7 +32,9 @@ if (anyDuplicated(treatment_df$borocd)) {
 
 dcp_profile_file <- read_csv("../input/dcp_cd_profiles_1990_2000_files.csv", show_col_types = FALSE, na = c("", "NA")) |>
   mutate(pull_date = as.character(pull_date)) |>
-  filter(!is.na(parquet_path), file.exists(parquet_path)) |>
+  filter(!is.na(parquet_path)) |>
+  mutate(parquet_path = paste0("../../../stage_dcp_cd_profiles_1990_2000/output/", basename(parquet_path))) |>
+  filter(file.exists(parquet_path)) |>
   arrange(desc(pull_date), parquet_path) |>
   slice_head(n = 1)
 
