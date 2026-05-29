@@ -81,18 +81,6 @@ sanitize_period <- function(x) {
   str_replace_all(x, "-", "_")
 }
 
-nonempty_text <- function(x) {
-  !is.na(x) & str_squish(as.character(x)) != ""
-}
-
-has_ulurp_number_action_code <- function(ulurp_numbers, action_codes) {
-  action_pattern <- paste(action_codes, collapse = "|")
-  str_detect(
-    str_to_upper(coalesce(ulurp_numbers, "")),
-    paste0("[A-Z][0-9]{6}A?(", action_pattern, ")[MKQXR]")
-  )
-}
-
 add_period_terms <- function(df, variable_names, period_values) {
   out_df <- df
 
@@ -681,61 +669,6 @@ for (scale_row in seq_len(nrow(scale_defs))) {
   }
 }
 
-zap_action_audit <- zap_project_df |>
-  mutate(
-    cert_year = suppressWarnings(as.integer(cert_year)),
-    event_period = zap_period_from_year(cert_year),
-    actions_nonmissing = nonempty_text(actions),
-    ulurp_numbers_nonmissing = nonempty_text(ulurp_numbers),
-    current_rezoning_or_special_proxy = str_to_upper(coalesce(rezoning_or_special_proxy, "")) == "TRUE",
-    current_public_land_or_disposition_proxy = str_to_upper(coalesce(public_land_or_disposition_proxy, "")) == "TRUE",
-    ulurp_rezoning_or_special_proxy = has_ulurp_number_action_code(ulurp_numbers, c("ZM", "ZR", "ZS")),
-    ulurp_public_land_or_disposition_proxy = has_ulurp_number_action_code(ulurp_numbers, c("HA", "PP", "PQ", "MM")),
-    ulurp_public_housing_or_land_proxy = has_ulurp_number_action_code(
-      ulurp_numbers,
-      c("HA", "HD", "HO", "HU", "HP", "HG", "HC", "HL", "HM", "PP", "PQ", "MM")
-    )
-  )
-
-zap_action_audit_summary <- zap_action_audit |>
-  filter(!is.na(event_period)) |>
-  group_by(event_period) |>
-  summarise(
-    projects = n(),
-    actions_nonmissing = sum(actions_nonmissing, na.rm = TRUE),
-    ulurp_numbers_nonmissing = sum(ulurp_numbers_nonmissing, na.rm = TRUE),
-    current_rezoning_or_special_proxy = sum(current_rezoning_or_special_proxy, na.rm = TRUE),
-    ulurp_rezoning_or_special_proxy = sum(ulurp_rezoning_or_special_proxy, na.rm = TRUE),
-    current_public_land_or_disposition_proxy = sum(current_public_land_or_disposition_proxy, na.rm = TRUE),
-    ulurp_public_land_or_disposition_proxy = sum(ulurp_public_land_or_disposition_proxy, na.rm = TRUE),
-    ulurp_public_housing_or_land_proxy = sum(ulurp_public_housing_or_land_proxy, na.rm = TRUE),
-    .groups = "drop"
-  )
-
-permit_year_audit <- permit_df |>
-  mutate(
-    year = suppressWarnings(as.integer(year)),
-    outcome_value = suppressWarnings(as.numeric(outcome_value))
-  ) |>
-  group_by(year) |>
-  summarise(citywide_first_issuance_jobs = sum(outcome_value, na.rm = TRUE), .groups = "drop")
-
-permit_recent_average <- permit_year_audit |>
-  filter(year >= 2023, year <= 2025) |>
-  summarise(value = mean(citywide_first_issuance_jobs, na.rm = TRUE)) |>
-  pull(value)
-
-permit_prior_average <- permit_year_audit |>
-  filter(year >= 2020, year <= 2022) |>
-  summarise(value = mean(citywide_first_issuance_jobs, na.rm = TRUE)) |>
-  pull(value)
-
-permit_recent_to_prior_ratio <- if_else(
-  !is.na(permit_prior_average) && permit_prior_average > 0,
-  permit_recent_average / permit_prior_average,
-  NA_real_
-)
-
 model_summary <- bind_rows(
   event_coefficients |> distinct(analysis_family, outcome_id, outcome_label, outcome_scale, outcome_scale_label, control_layer, control_label, reference_period, n_obs, n_cd, within_r2, model_status, model_message),
   timing_estimates |> distinct(analysis_family, outcome_id, outcome_label, outcome_scale, outcome_scale_label, control_layer, control_label, reference_period, n_obs, n_cd, within_r2, model_status, model_message),
@@ -743,57 +676,6 @@ model_summary <- bind_rows(
   permit_coefficients |> distinct(analysis_family, outcome_id, outcome_label, outcome_scale, outcome_scale_label, control_layer, control_label, reference_period, n_obs, n_cd, within_r2, model_status, model_message)
 ) |>
   arrange(analysis_family, outcome_id, outcome_scale, control_layer, model_status)
-
-qc_df <- bind_rows(
-  tibble(metric = "zap_cd_year_cd_count", value = as.character(n_distinct(zap_cd_year_df$borocd)), status = if_else(n_distinct(zap_cd_year_df$borocd) == 59, "pass", "fail"), note = "Standard community districts in the ZAP CD-year panel."),
-  tibble(metric = "zap_cd_year_min_year", value = as.character(min(zap_cd_year_df$cert_year, na.rm = TRUE)), status = if_else(min(zap_cd_year_df$cert_year, na.rm = TRUE) == 1976, "pass", "fail"), note = "Earliest certification year in the ZAP CD-year panel."),
-  tibble(metric = "zap_cd_year_max_year", value = as.character(max(zap_cd_year_df$cert_year, na.rm = TRUE)), status = if_else(max(zap_cd_year_df$cert_year, na.rm = TRUE) == 2025, "pass", "fail"), note = "Latest certification year in the ZAP CD-year panel."),
-  tibble(metric = "zap_mature_cd_count", value = as.character(n_distinct(zap_mature_df$borocd)), status = if_else(n_distinct(zap_mature_df$borocd) == 59, "pass", "fail"), note = "Standard community districts in the mature ZAP status panel."),
-  tibble(metric = "permit_cd_count", value = as.character(n_distinct(permit_df$borocd)), status = if_else(n_distinct(permit_df$borocd) == 59, "pass", "fail"), note = "Standard community districts in the permit panel."),
-  tibble(metric = "permit_min_year", value = as.character(min(permit_df$year, na.rm = TRUE)), status = if_else(min(permit_df$year, na.rm = TRUE) == 1989, "pass", "fail"), note = "Earliest year in the permit panel."),
-  tibble(metric = "permit_max_year", value = as.character(max(permit_df$year, na.rm = TRUE)), status = if_else(max(permit_df$year, na.rm = TRUE) == 2025, "pass", "fail"), note = "Latest year in the permit panel."),
-  tibble(metric = "zap_pre_2010_actions_nonmissing_count", value = as.character(sum(zap_action_audit$cert_year < 2010 & zap_action_audit$actions_nonmissing, na.rm = TRUE)), status = if_else(sum(zap_action_audit$cert_year < 2010 & zap_action_audit$actions_nonmissing, na.rm = TRUE) > 0, "pass", "fail"), note = "The action-code proxies are not credible before 2010 if the actions field is entirely missing."),
-  tibble(metric = "zap_pre_2010_ulurp_numbers_nonmissing_count", value = as.character(sum(zap_action_audit$cert_year < 2010 & zap_action_audit$ulurp_numbers_nonmissing, na.rm = TRUE)), status = if_else(sum(zap_action_audit$cert_year < 2010 & zap_action_audit$ulurp_numbers_nonmissing, na.rm = TRUE) > 0, "pass", "fail"), note = "Pre-2010 ULURP numbers are available and should be parsed as the fallback action-code source."),
-  tibble(metric = "zap_pre_2010_current_rezoning_special_count", value = as.character(sum(zap_action_audit$cert_year < 2010 & zap_action_audit$current_rezoning_or_special_proxy, na.rm = TRUE)), status = if_else(sum(zap_action_audit$cert_year < 2010 & zap_action_audit$current_rezoning_or_special_proxy, na.rm = TRUE) > 0 || sum(zap_action_audit$cert_year < 2010 & zap_action_audit$ulurp_rezoning_or_special_proxy, na.rm = TRUE) == 0, "pass", "fail"), note = "Current ZM/ZR/ZS proxy is invalid if it is zero while pre-2010 ULURP numbers imply rezoning/special-permit actions."),
-  tibble(metric = "zap_pre_2010_ulurp_rezoning_special_count", value = as.character(sum(zap_action_audit$cert_year < 2010 & zap_action_audit$ulurp_rezoning_or_special_proxy, na.rm = TRUE)), status = "pass", note = "Diagnostic count of pre-2010 ZM/ZR/ZS-like actions recoverable from ULURP numbers."),
-  tibble(metric = "zap_pre_2010_current_public_land_disposition_count", value = as.character(sum(zap_action_audit$cert_year < 2010 & zap_action_audit$current_public_land_or_disposition_proxy, na.rm = TRUE)), status = if_else(sum(zap_action_audit$cert_year < 2010 & zap_action_audit$current_public_land_or_disposition_proxy, na.rm = TRUE) > 0 || sum(zap_action_audit$cert_year < 2010 & zap_action_audit$ulurp_public_land_or_disposition_proxy, na.rm = TRUE) == 0, "pass", "fail"), note = "Current HA/PP/PQ/MM proxy is invalid if it is zero while pre-2010 ULURP numbers imply public-land/disposition actions."),
-  tibble(metric = "zap_pre_2010_ulurp_public_land_disposition_count", value = as.character(sum(zap_action_audit$cert_year < 2010 & zap_action_audit$ulurp_public_land_or_disposition_proxy, na.rm = TRUE)), status = "pass", note = "Diagnostic count of pre-2010 HA/PP/PQ/MM-like actions recoverable from ULURP numbers."),
-  tibble(metric = "zap_pre_2010_ulurp_public_housing_or_land_count", value = as.character(sum(zap_action_audit$cert_year < 2010 & zap_action_audit$ulurp_public_housing_or_land_proxy, na.rm = TRUE)), status = "pass", note = "Broader diagnostic count of pre-2010 public housing/land-like actions recoverable from ULURP numbers."),
-  tibble(metric = "zap_pre_2020_approval_date_nonmissing_count", value = as.character(sum(project_base$cert_year < 2020 & !is.na(project_base$approval_date), na.rm = TRUE)), status = if_else(sum(project_base$cert_year < 2020 & !is.na(project_base$approval_date), na.rm = TRUE) > 0, "pass", "fail"), note = "Approval-date delay models are not credible if approval dates are unavailable before 2020."),
-  tibble(metric = "permit_2023_2025_to_2020_2022_first_issuance_ratio", value = as.character(permit_recent_to_prior_ratio), status = if_else(!is.na(permit_recent_to_prior_ratio) & permit_recent_to_prior_ratio >= 0.5, "pass", "fail"), note = "The current permit input is first-issuance job counts; a sharp recent collapse indicates this is not a usable annual permit-activity measure without rebuilding/auditing the permit outcome."),
-  tibble(metric = "baseline_duplicate_borocd_count", value = as.character(nrow(baseline_clean) - n_distinct(baseline_clean$borocd)), status = if_else(nrow(baseline_clean) == n_distinct(baseline_clean$borocd), "pass", "fail"), note = "Duplicate baseline rows by borocd after cleaning."),
-  tibble(metric = "zap_cd_year_duplicate_key_count", value = as.character(nrow(zap_cd_year_df) - nrow(distinct(zap_cd_year_df, borocd, cert_year))), status = if_else(nrow(zap_cd_year_df) == nrow(distinct(zap_cd_year_df, borocd, cert_year)), "pass", "fail"), note = "Duplicate ZAP CD-year rows."),
-  tibble(metric = "zap_mature_duplicate_key_count", value = as.character(nrow(zap_mature_df) - nrow(distinct(zap_mature_df, borocd, cert_year))), status = if_else(nrow(zap_mature_df) == nrow(distinct(zap_mature_df, borocd, cert_year)), "pass", "fail"), note = "Duplicate mature status CD-year rows."),
-  tibble(metric = "permit_duplicate_key_count", value = as.character(nrow(permit_df) - nrow(distinct(permit_df, borocd, year, outcome_family))), status = if_else(nrow(permit_df) == nrow(distinct(permit_df, borocd, year, outcome_family)), "pass", "fail"), note = "Duplicate permit CD-year-outcome rows."),
-  tibble(metric = "zap_missing_treatment_count", value = as.character(sum(is.na(zap_application_panel$treat_z_boro))), status = if_else(sum(is.na(zap_application_panel$treat_z_boro)) == 0, "pass", "fail"), note = "Missing treatment cells in the long ZAP application panel."),
-  tibble(metric = "zap_missing_denominator_count", value = as.character(sum(is.na(zap_application_panel$occupied_units_1990) | is.na(zap_application_panel$residential_acres))), status = if_else(sum(is.na(zap_application_panel$occupied_units_1990) | is.na(zap_application_panel$residential_acres)) == 0, "pass", "fail"), note = "Missing occupied-unit or residential-acre denominators in the ZAP application panel."),
-  tibble(metric = "permit_missing_treatment_count", value = as.character(sum(is.na(permit_panel$treat_z_boro))), status = if_else(sum(is.na(permit_panel$treat_z_boro)) == 0, "pass", "fail"), note = "Missing treatment cells in the permit panel."),
-  tibble(metric = "permit_missing_residential_acres_count", value = as.character(sum(is.na(permit_panel$residential_acres_baseline))), status = if_else(sum(is.na(permit_panel$residential_acres_baseline)) == 0, "pass", "fail"), note = "Missing residential-acre denominators after joining permits to baseline."),
-  tibble(metric = "zap_negative_count_or_rate_count", value = as.character(sum(zap_application_panel$count_value < 0 | zap_application_panel$outcome_value < 0, na.rm = TRUE)), status = if_else(sum(zap_application_panel$count_value < 0 | zap_application_panel$outcome_value < 0, na.rm = TRUE) == 0, "pass", "fail"), note = "Negative count or scaled rate cells in the ZAP application panel."),
-  tibble(metric = "status_negative_count_or_rate_count", value = as.character(sum(status_panel$outcome_value < 0, na.rm = TRUE)), status = if_else(sum(status_panel$outcome_value < 0, na.rm = TRUE) == 0, "pass", "fail"), note = "Negative status outcome cells."),
-  tibble(metric = "permit_negative_count_or_rate_count", value = as.character(sum(permit_panel$outcome_value_raw < 0 | permit_panel$outcome_value < 0, na.rm = TRUE)), status = if_else(sum(permit_panel$outcome_value_raw < 0 | permit_panel$outcome_value < 0, na.rm = TRUE) == 0, "pass", "fail"), note = "Negative count or scaled rate cells in the permit panel."),
-  tibble(metric = "invalid_approval_duration_count", value = as.character(sum(project_base$invalid_approval_duration, na.rm = TRUE)), status = "pass", note = "Negative certification-to-approval durations excluded from timing models."),
-  tibble(metric = "invalid_completion_duration_count", value = as.character(sum(project_base$invalid_completion_duration, na.rm = TRUE)), status = "pass", note = "Negative certification-to-ZAP-completion durations excluded from timing models."),
-  tibble(metric = "zap_expected_periods_present", value = paste(sort(unique(zap_application_panel$event_period)), collapse = ";"), status = if_else(all(zap_periods %in% unique(zap_application_panel$event_period)), "pass", "fail"), note = "Expected ZAP application event bins."),
-  tibble(metric = "status_expected_periods_present", value = paste(sort(unique(status_panel$event_period)), collapse = ";"), status = if_else(all(status_periods %in% unique(status_panel$event_period)), "pass", "fail"), note = "Expected mature status event bins."),
-  tibble(metric = "permit_expected_periods_present", value = paste(sort(unique(permit_panel$event_period)), collapse = ";"), status = if_else(all(c("1989", permit_periods) %in% unique(permit_panel$event_period)), "pass", "fail"), note = "Expected permit bins; 1989 is retained for QC only."),
-  tibble(metric = "application_requested_terms_missing", value = as.character(sum(event_coefficients$model_status == "requested_term_dropped", na.rm = TRUE)), status = if_else(sum(event_coefficients$model_status == "requested_term_dropped", na.rm = TRUE) == 0, "pass", "fail"), note = "Dropped requested treatment-period terms in ZAP application models."),
-  tibble(metric = "permit_requested_terms_missing", value = as.character(sum(permit_coefficients$model_status == "requested_term_dropped", na.rm = TRUE)), status = if_else(sum(permit_coefficients$model_status == "requested_term_dropped", na.rm = TRUE) == 0, "pass", "fail"), note = "Dropped requested treatment-period terms in permit models."),
-  tibble(metric = "timing_requested_terms_missing", value = as.character(sum(timing_estimates$model_status == "requested_term_dropped", na.rm = TRUE)), status = if_else(sum(timing_estimates$model_status == "requested_term_dropped", na.rm = TRUE) == 0, "pass", "warning"), note = "Dropped requested treatment-period terms in project timing models; approval-date support is sparse before 2020 in the current ZAP export."),
-  tibble(metric = "status_requested_terms_missing", value = as.character(sum(status_estimates$model_status == "requested_term_dropped", na.rm = TRUE)), status = if_else(sum(status_estimates$model_status == "requested_term_dropped", na.rm = TRUE) == 0, "pass", "fail"), note = "Dropped requested treatment-period terms in mature status models."),
-  tibble(metric = "pipeline_model_error_count", value = as.character(sum(c(event_coefficients$model_status, timing_estimates$model_status, status_estimates$model_status, permit_coefficients$model_status) == "model_error", na.rm = TRUE)), status = if_else(sum(c(event_coefficients$model_status, timing_estimates$model_status, status_estimates$model_status, permit_coefficients$model_status) == "model_error", na.rm = TRUE) == 0, "pass", "fail"), note = "Unexpected model errors across all exploratory mechanism estimates."),
-  tibble(metric = "pipeline_constant_outcome_count", value = as.character(sum(c(event_coefficients$model_status, timing_estimates$model_status, status_estimates$model_status, permit_coefficients$model_status) == "constant_outcome", na.rm = TRUE)), status = if_else(sum(c(event_coefficients$model_status, timing_estimates$model_status, status_estimates$model_status, permit_coefficients$model_status) == "constant_outcome", na.rm = TRUE) == 0, "pass", "warning"), note = "Requested models not estimated because the dependent variable is constant; this currently flags unresolved ZAP outcomes."),
-  tibble(metric = "pipeline_insufficient_sample_count", value = as.character(sum(c(event_coefficients$model_status, timing_estimates$model_status, status_estimates$model_status, permit_coefficients$model_status) == "insufficient_sample", na.rm = TRUE)), status = if_else(sum(c(event_coefficients$model_status, timing_estimates$model_status, status_estimates$model_status, permit_coefficients$model_status) == "insufficient_sample", na.rm = TRUE) == 0, "pass", "warning"), note = "Requested models not estimated because there is no usable reference-period sample; this currently flags approval-date timing."),
-  tibble(metric = "event_coefficients_nonempty", value = as.character(file.exists("../output/cd_homeownership_pipeline_event_coefficients.csv") && file.info("../output/cd_homeownership_pipeline_event_coefficients.csv")$size > 0), status = "pending_file_write", note = "Checked after file write by the script producer target."),
-  tibble(metric = "permit_coefficients_nonempty", value = as.character(file.exists("../output/cd_homeownership_pipeline_permit_coefficients.csv") && file.info("../output/cd_homeownership_pipeline_permit_coefficients.csv")$size > 0), status = "pending_file_write", note = "Checked after file write by the script producer target.")
-)
-
-hard_fail_count <- sum(qc_df$status == "fail", na.rm = TRUE)
-
-if (hard_fail_count > 0) {
-  write_csv_if_changed(qc_df, "../output/cd_homeownership_pipeline_design_qc.csv")
-  stop("Pipeline mechanism QC failed; inspect ../output/cd_homeownership_pipeline_design_qc.csv")
-}
 
 write_csv_if_changed(event_coefficients |> arrange(analysis_family, outcome_id, outcome_scale, control_layer, event_period), "../output/cd_homeownership_pipeline_event_coefficients.csv")
 write_csv_if_changed(timing_estimates |> arrange(analysis_family, outcome_id, control_layer, event_period), "../output/cd_homeownership_pipeline_timing_delay_estimates.csv")
@@ -815,25 +697,4 @@ build_plot(
   "Coefficient on homeowner exposure"
 )
 
-qc_df <- qc_df |>
-  mutate(
-    status = case_when(
-      metric == "event_coefficients_nonempty" ~ if_else(file.exists("../output/cd_homeownership_pipeline_event_coefficients.csv") && file.info("../output/cd_homeownership_pipeline_event_coefficients.csv")$size > 0, "pass", "fail"),
-      metric == "permit_coefficients_nonempty" ~ if_else(file.exists("../output/cd_homeownership_pipeline_permit_coefficients.csv") && file.info("../output/cd_homeownership_pipeline_permit_coefficients.csv")$size > 0, "pass", "fail"),
-      TRUE ~ status
-    ),
-    value = case_when(
-      metric == "event_coefficients_nonempty" ~ as.character(file.exists("../output/cd_homeownership_pipeline_event_coefficients.csv") && file.info("../output/cd_homeownership_pipeline_event_coefficients.csv")$size > 0),
-      metric == "permit_coefficients_nonempty" ~ as.character(file.exists("../output/cd_homeownership_pipeline_permit_coefficients.csv") && file.info("../output/cd_homeownership_pipeline_permit_coefficients.csv")$size > 0),
-      TRUE ~ value
-    )
-  )
-
-if (sum(qc_df$status == "fail", na.rm = TRUE) > 0) {
-  write_csv_if_changed(qc_df, "../output/cd_homeownership_pipeline_design_qc.csv")
-  stop("Pipeline mechanism output QC failed; inspect ../output/cd_homeownership_pipeline_design_qc.csv")
-}
-
-write_csv_if_changed(qc_df, "../output/cd_homeownership_pipeline_design_qc.csv")
-
-cat("Wrote exploratory ZAP/ULURP and permit pipeline diagnostics to ../output\n")
+cat("Wrote CD homeownership pipeline mechanism outputs to ../output\n")

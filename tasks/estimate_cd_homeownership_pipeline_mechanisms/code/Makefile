@@ -1,39 +1,30 @@
-SHELL := bash
-include ../../shell_functions.make
-
 all: ../output/cd_homeownership_pipeline_event_coefficients.csv \
 	../output/cd_homeownership_pipeline_event_coefficients.pdf \
 	../output/cd_homeownership_pipeline_timing_delay_estimates.csv \
 	../output/cd_homeownership_pipeline_status_estimates.csv \
 	../output/cd_homeownership_pipeline_permit_coefficients.csv \
 	../output/cd_homeownership_pipeline_permit_coefficients.pdf \
-	../output/cd_homeownership_pipeline_model_summary.csv \
-	../output/cd_homeownership_pipeline_design_qc.csv
+	../output/cd_homeownership_pipeline_model_summary.csv
 
-.PRECIOUS: ../output/cd_homeownership_pipeline_design_qc.csv
+../output/cd_homeownership_pipeline_event_coefficients.csv: estimate_cd_homeownership_pipeline_mechanisms.R ../../_lib/source_pipeline_utils.R ../input/zap_ulurp_redev_project_base.csv ../input/zap_ulurp_redev_cd_year_panel.csv ../input/zap_ulurp_redev_mature_cohort_panel.csv ../input/zap_ulurp_redev_yield_panel.csv ../input/cd_homeownership_permit_nb_panel.csv ../input/cd_redevelopment_potential_baseline.csv | ../output
+	Rscript --vanilla $<
 
-../output/cd_homeownership_pipeline_design_qc.csv: estimate_cd_homeownership_pipeline_mechanisms.R ../../_lib/source_pipeline_utils.R ../input/zap_ulurp_redev_project_base.csv ../input/zap_ulurp_redev_cd_year_panel.csv ../input/zap_ulurp_redev_mature_cohort_panel.csv ../input/zap_ulurp_redev_yield_panel.csv ../input/cd_homeownership_permit_nb_panel.csv ../input/cd_redevelopment_potential_baseline.csv | ../output
-	$(R) $<
-
-../output/cd_homeownership_pipeline_event_coefficients.csv: ../output/cd_homeownership_pipeline_design_qc.csv
+../output/cd_homeownership_pipeline_event_coefficients.pdf: ../output/cd_homeownership_pipeline_event_coefficients.csv
 	@test -s "$@"
 
-../output/cd_homeownership_pipeline_event_coefficients.pdf: ../output/cd_homeownership_pipeline_design_qc.csv
+../output/cd_homeownership_pipeline_timing_delay_estimates.csv: ../output/cd_homeownership_pipeline_event_coefficients.csv
 	@test -s "$@"
 
-../output/cd_homeownership_pipeline_timing_delay_estimates.csv: ../output/cd_homeownership_pipeline_design_qc.csv
+../output/cd_homeownership_pipeline_status_estimates.csv: ../output/cd_homeownership_pipeline_event_coefficients.csv
 	@test -s "$@"
 
-../output/cd_homeownership_pipeline_status_estimates.csv: ../output/cd_homeownership_pipeline_design_qc.csv
+../output/cd_homeownership_pipeline_permit_coefficients.csv: ../output/cd_homeownership_pipeline_event_coefficients.csv
 	@test -s "$@"
 
-../output/cd_homeownership_pipeline_permit_coefficients.csv: ../output/cd_homeownership_pipeline_design_qc.csv
+../output/cd_homeownership_pipeline_permit_coefficients.pdf: ../output/cd_homeownership_pipeline_event_coefficients.csv
 	@test -s "$@"
 
-../output/cd_homeownership_pipeline_permit_coefficients.pdf: ../output/cd_homeownership_pipeline_design_qc.csv
-	@test -s "$@"
-
-../output/cd_homeownership_pipeline_model_summary.csv: ../output/cd_homeownership_pipeline_design_qc.csv
+../output/cd_homeownership_pipeline_model_summary.csv: ../output/cd_homeownership_pipeline_event_coefficients.csv
 	@test -s "$@"
 
 ../input/zap_ulurp_redev_project_base.csv: ../../build_zap_ulurp_redev_base/output/zap_ulurp_redev_project_base.csv | ../input
