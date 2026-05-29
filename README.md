@@ -11,7 +11,7 @@ This repository is the reproducible data-collection scaffold for the NYC member 
 - Versioned public sources first: current `PLUTO` and `MapPLUTO` come from DCP's versioned release system, not the live Socrata table export.
 - Manual drops are allowed when necessary, but every such file must be documented in tracked manifests under `tasks/source_registry/code/`.
 - NHGIS is scripted through `ipumsr` and reads `IPUMS_API_KEY` from `~/.Renviron`; do not create a repo-local secret file.
-- Human QA and integrity deep dives are preserved under `tasks/archive/` when you want them, but the active `tasks/` tree is limited to source intake, cleaning, canonical builds, and summary outputs.
+- Human QA, diagnostics, and integrity deep dives live under `tasks/audits/`, while the active `tasks/` tree is limited to source intake, cleaning, canonical builds, and summary outputs.
 - Retired integrity and backup tasks live under `tasks/archive/`, which is ignored so the active `tasks/` surface stays readable.
 
 ## Start Here
@@ -58,7 +58,6 @@ This repository is the reproducible data-collection scaffold for the NYC member 
 - `tasks/stage_dcp_housing_database`
 - `tasks/load_furman_coredata_raw`
 - `tasks/stage_furman_coredata`
-- `tasks/archive_locator`
 - `tasks/load_archival_records_raw`
 - `tasks/stage_archival_records`
 - `tasks/build_lot_crosswalks`

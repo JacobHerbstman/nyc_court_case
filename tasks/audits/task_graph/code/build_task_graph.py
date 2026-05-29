@@ -119,7 +119,7 @@ def main():
     edges_csv = Path("../output/task_edges.csv")
     dot_file = Path("../output/task_flow.dot")
     audit_csv = Path("../output/task_graph_audit.csv")
-    tasks_root = Path("..").resolve().parent
+    tasks_root = Path("../../..").resolve()
     audits_root = tasks_root / "audits"
 
     production_makefiles = {
