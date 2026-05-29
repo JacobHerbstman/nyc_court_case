@@ -13,10 +13,10 @@ all: ../output/manual_geocode_upzoning_queue.csv \
 ../output/manual_geocode_upzoning_qc.csv: ../output/manual_geocode_upzoning_queue.csv
 	@test -s "$@"
 
-../input/zap_zoning_map_special_permit_project_classification.csv: ../../../summarize_zap_zoning_actions_by_decade/output/zap_zoning_map_special_permit_project_classification.csv | ../input
+../input/zap_zoning_map_special_permit_project_classification.csv: ../../summarize_zap_zoning_actions_by_decade/output/zap_zoning_map_special_permit_project_classification.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/zap_zoning_map_special_permit_project_ccd2010_fractional.csv: ../../../summarize_zap_zoning_actions_by_decade/output/zap_zoning_map_special_permit_project_ccd2010_fractional.csv | ../input
+../input/zap_zoning_map_special_permit_project_ccd2010_fractional.csv: ../../summarize_zap_zoning_actions_by_decade/output/zap_zoning_map_special_permit_project_ccd2010_fractional.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/zap_project_data.parquet: ../../../stage_zap_datasets/output/zap_project_data.parquet | ../input

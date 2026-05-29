@@ -12,10 +12,10 @@ all: ../output/zap_housing_era_interactions.csv ../output/zap_housing_model_summ
 ../output/zap_housing_model_summary_ref_1985_1989.csv: ../output/zap_housing_era_interactions_ref_1985_1989.csv
 	@test -s "$@"
 
-../input/zap_housing_initial_panel.csv: ../../../summarize_zap_housing_cohorts/output/zap_housing_initial_panel.csv | ../input
+../input/zap_housing_initial_panel.csv: ../../summarize_zap_housing_cohorts/output/zap_housing_initial_panel.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/zap_housing_mature_cohort_panel.csv: ../../../summarize_zap_housing_cohorts/output/zap_housing_mature_cohort_panel.csv | ../input
+../input/zap_housing_mature_cohort_panel.csv: ../../summarize_zap_housing_cohorts/output/zap_housing_mature_cohort_panel.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 link-inputs: ../input/zap_housing_initial_panel.csv ../input/zap_housing_mature_cohort_panel.csv

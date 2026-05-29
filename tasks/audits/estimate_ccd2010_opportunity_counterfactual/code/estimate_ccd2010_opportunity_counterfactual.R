@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/estimate_ccd2010_opportunity_counterfactual/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/estimate_ccd2010_opportunity_counterfactual/code")
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -9,7 +9,7 @@ suppressPackageStartupMessages({
   library(tidyr)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 sanitize_period <- function(x) {
   str_replace_all(x, "-", "_")

@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/estimate_zap_ulurp_redev_pipeline/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/estimate_zap_ulurp_redev_pipeline/code")
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -10,7 +10,7 @@ suppressPackageStartupMessages({
   library(tibble)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 sanitize_era <- function(x) {
   str_replace_all(x, "-", "_")

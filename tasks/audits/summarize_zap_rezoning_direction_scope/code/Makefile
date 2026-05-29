@@ -71,7 +71,7 @@ all: ../output/zap_rezoning_direction_project_classification.csv \
 ../output/zap_rezoning_direction_tercile_trends.pdf: ../output/zap_rezoning_direction_qc.csv
 	@test -s "$@"
 
-../input/zap_zoning_map_special_permit_project_classification.csv: ../../../summarize_zap_zoning_actions_by_decade/output/zap_zoning_map_special_permit_project_classification.csv | ../input
+../input/zap_zoning_map_special_permit_project_classification.csv: ../../summarize_zap_zoning_actions_by_decade/output/zap_zoning_map_special_permit_project_classification.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/zap_project_bbl.parquet: ../../../stage_zap_datasets/output/zap_project_bbl.parquet | ../input

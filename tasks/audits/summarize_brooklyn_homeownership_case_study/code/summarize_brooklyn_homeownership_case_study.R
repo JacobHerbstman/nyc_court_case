@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_brooklyn_homeownership_case_study/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/summarize_brooklyn_homeownership_case_study/code")
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -14,7 +14,7 @@ suppressPackageStartupMessages({
   library(tidyr)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 theme_set(
   theme_minimal(base_size = 11) +
@@ -25,19 +25,6 @@ theme_set(
       legend.position = "bottom"
     )
 )
-
-boundary_file <- read_csv("../input/dcp_boundary_index.csv", show_col_types = FALSE, na = c("", "NA")) %>%
-  filter(source_id == "dcp_boundary_community_districts", !is.na(parquet_path), file.exists(parquet_path)) %>%
-  mutate(
-    pull_date = as.character(pull_date),
-    pull_date_order = suppressWarnings(as.integer(pull_date))
-  ) %>%
-  arrange(desc(pull_date_order), desc(pull_date), parquet_path) %>%
-  slice_head(n = 1)
-
-if (nrow(boundary_file) == 0) {
-  stop("Could not find a staged community-district boundary parquet in ../input/dcp_boundary_index.csv")
-}
 
 safe_standardize <- function(x) {
   x <- suppressWarnings(as.numeric(x))
@@ -808,7 +795,7 @@ qc <- bind_rows(
   ),
   tibble(
     check_name = "boundary_pull_date",
-    check_value = as.character(boundary_file$pull_date[[1]])
+    check_value = "20260501"
   ),
   tibble(
     check_name = "notes",
@@ -830,7 +817,7 @@ write_csv_if_changed(zap_summary, "../output/brooklyn_homeownership_case_study_z
 write_csv_if_changed(zap_block_regressions, "../output/brooklyn_homeownership_case_study_zap_block_regressions.csv")
 write_csv_if_changed(qc, "../output/brooklyn_homeownership_case_study_qc.csv")
 
-boundary_raw <- read_parquet(boundary_file$parquet_path[[1]], col_select = c("district_id", "geometry_wkt", "crs_epsg"))
+boundary_raw <- read_parquet("../input/dcp_boundary_community_districts_20260501.parquet", col_select = c("district_id", "geometry_wkt", "crs_epsg"))
 
 boundary_crs <- unique(boundary_raw$crs_epsg[!is.na(boundary_raw$crs_epsg)])
 if (length(boundary_crs) != 1) {

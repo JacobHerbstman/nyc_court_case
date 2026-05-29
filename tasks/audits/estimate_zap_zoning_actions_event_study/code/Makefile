@@ -19,10 +19,10 @@ all: ../output/zap_zoning_actions_event_coefficients_5yr_bins.csv \
 ../output/zap_zoning_actions_long_difference.tex: ../output/zap_zoning_actions_event_coefficients_5yr_bins.csv
 	@test -s "$@"
 
-../input/zap_zoning_map_special_permit_project_classification.csv: ../../../summarize_zap_zoning_actions_by_decade/output/zap_zoning_map_special_permit_project_classification.csv | ../input
+../input/zap_zoning_map_special_permit_project_classification.csv: ../../summarize_zap_zoning_actions_by_decade/output/zap_zoning_map_special_permit_project_classification.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/zap_zoning_map_special_permit_project_ccd2010_fractional.csv: ../../../summarize_zap_zoning_actions_by_decade/output/zap_zoning_map_special_permit_project_ccd2010_fractional.csv | ../input
+../input/zap_zoning_map_special_permit_project_ccd2010_fractional.csv: ../../summarize_zap_zoning_actions_by_decade/output/zap_zoning_map_special_permit_project_ccd2010_fractional.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/ccdist2010_homeownership_1990_measure.csv: ../../../build_ccd2010_homeownership_1990_measure/output/ccdist2010_homeownership_1990_measure.csv | ../input

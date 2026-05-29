@@ -18,16 +18,16 @@ all: ../output/zap_ulurp_redev_memo.pdf
 ../input/zap_ulurp_redev_2x2_era_summary.csv: ../../../summarize_zap_ulurp_redev_pipeline/output/zap_ulurp_redev_2x2_era_summary.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/zap_ulurp_redev_model_summary.csv: ../../../estimate_zap_ulurp_redev_pipeline/output/zap_ulurp_redev_model_summary.csv | ../input
+../input/zap_ulurp_redev_model_summary.csv: ../../estimate_zap_ulurp_redev_pipeline/output/zap_ulurp_redev_model_summary.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/zap_ulurp_redev_nested_diagnostics.csv: ../../../estimate_zap_ulurp_redev_pipeline/output/zap_ulurp_redev_nested_diagnostics.csv | ../input
+../input/zap_ulurp_redev_nested_diagnostics.csv: ../../estimate_zap_ulurp_redev_pipeline/output/zap_ulurp_redev_nested_diagnostics.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/zap_ulurp_redev_plots.pdf: ../../../summarize_zap_ulurp_redev_pipeline/output/zap_ulurp_redev_plots.pdf | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/zap_ulurp_redev_coefficients.pdf: ../../../estimate_zap_ulurp_redev_pipeline/output/zap_ulurp_redev_coefficients.pdf | ../input
+../input/zap_ulurp_redev_coefficients.pdf: ../../estimate_zap_ulurp_redev_pipeline/output/zap_ulurp_redev_coefficients.pdf | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 link-inputs: ../input/zap_ulurp_redev_project_base.csv ../input/zap_ulurp_redev_project_base_qc.csv ../input/zap_ulurp_redev_2x2_era_summary.csv ../input/zap_ulurp_redev_model_summary.csv ../input/zap_ulurp_redev_nested_diagnostics.csv ../input/zap_ulurp_redev_plots.pdf ../input/zap_ulurp_redev_coefficients.pdf

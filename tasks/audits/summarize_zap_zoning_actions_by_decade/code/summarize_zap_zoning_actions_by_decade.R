@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_zap_zoning_actions_by_decade/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/summarize_zap_zoning_actions_by_decade/code")
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -9,7 +9,7 @@ suppressPackageStartupMessages({
   library(tidyr)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 raw_zap_projects <- read_csv("../input/zap_housing_project_base_audited.csv", show_col_types = FALSE, guess_max = Inf, na = c("", "NA"))
 
