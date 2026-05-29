@@ -1,5 +1,3 @@
-SHELL := bash
-
 all: ../output/zap_project_source_document_links.csv \
 	../output/zap_project_source_project_summary.csv \
 	../output/zap_project_source_docket_text.csv \

@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_zap_rezoning_direction_scope/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/summarize_zap_rezoning_direction_scope/code")
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -11,7 +11,7 @@ suppressPackageStartupMessages({
   library(tidyr)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 # Small output and model helpers.
 
