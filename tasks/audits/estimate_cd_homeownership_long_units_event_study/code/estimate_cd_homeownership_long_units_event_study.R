@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/estimate_cd_homeownership_long_units_event_study/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/estimate_cd_homeownership_long_units_event_study/code")
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -10,7 +10,7 @@ suppressPackageStartupMessages({
   library(tidyr)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 write_lines_if_changed <- function(lines, out_path) {
   temp_path <- tempfile(fileext = ".tex")

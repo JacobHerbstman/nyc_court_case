@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_cd_zoning_capacity_panel/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/summarize_cd_zoning_capacity_panel/code")
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -11,7 +11,7 @@ suppressPackageStartupMessages({
   library(tidyr)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 version_rank <- function(vintage) {
   year_part <- suppressWarnings(as.integer(str_extract(vintage, "^[0-9]{2}")))
@@ -63,6 +63,7 @@ district_lookup <- cd_base %>%
   ungroup()
 
 mappluto_files <- read_csv("../input/mappluto_lot_files.csv", show_col_types = FALSE, na = c("", "NA")) %>%
+  mutate(parquet_path = paste0("../../../stage_mappluto_lots/output/", basename(parquet_path))) %>%
   filter(raw_status == "loaded", str_detect(vintage, "^[0-9]{2}v")) %>%
   mutate(
     year = 2000L + suppressWarnings(as.integer(str_extract(vintage, "^[0-9]{2}"))),
