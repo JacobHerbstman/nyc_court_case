@@ -151,5 +151,4 @@ qc_df <- bind_rows(
   tibble(metric = "bps_descriptive_overlap_years", value = as.character(nrow(bps_compare_df)), note = "Descriptive only: permit-row counts are not unit counts and should not be interpreted as a BPS replacement.")
 )
 
-write_csv(qc_df, "../output/dob_permit_issuance_harmonized_qc.csv", na = "")
-cat("Wrote current-primary DOB permit issuance outputs to ../output\n")
+cat("Wrote current-primary DOB permit issuance output to ../output/dob_permit_issuance_harmonized.parquet\n")

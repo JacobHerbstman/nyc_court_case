@@ -60,16 +60,6 @@ zap_audit_qc <- read_csv("../input/zap_source_integrity_qc.csv", show_col_types 
 
 audit_fail_count <- sum(zap_audit_qc$status == "fail", na.rm = TRUE)
 if (audit_fail_count > 0) {
-  write_csv(
-    tibble(
-      metric = "source_audit_fail_count",
-      value = as.character(audit_fail_count),
-      status = "fail",
-      note = "Source integrity audit has failing hard checks; rebuild is blocked."
-    ),
-    "../output/zap_housing_pipeline_construction_qc.csv",
-    na = ""
-  )
   stop("Source integrity audit has failing hard checks; inspect ../input/zap_source_integrity_qc.csv")
 }
 
@@ -600,8 +590,7 @@ write_csv(primary_cd_year_panel, "../output/zap_housing_cd_year_panel_primary.cs
 write_csv(bbl_cd_year_panel, "../output/zap_housing_cd_year_panel_bbl_fractional.csv", na = "")
 write_csv(primary_mature_status_panel, "../output/zap_housing_mature_status_panel_primary.csv", na = "")
 write_csv(bbl_mature_status_panel, "../output/zap_housing_mature_status_panel_bbl_fractional.csv", na = "")
-write_csv(qc_df, "../output/zap_housing_pipeline_construction_qc.csv", na = "")
 
 if (any(qc_df$status == "fail")) {
-  stop("ZAP housing pipeline construction failed; inspect ../output/zap_housing_pipeline_construction_qc.csv")
+  stop("ZAP housing pipeline construction checks failed.")
 }

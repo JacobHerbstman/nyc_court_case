@@ -46,21 +46,6 @@ job_cd_df <- permit_df %>%
 conflict_jobs <- job_cd_df %>%
   filter(standard_cd_count > 1)
 
-conflict_df <- conflict_jobs %>%
-  select(job_number, standard_cd_count, standard_cd_list) %>%
-  left_join(permit_df, by = "job_number", relationship = "many-to-one") %>%
-  group_by(job_number) %>%
-  summarise(
-    standard_cd_count = first(standard_cd_count),
-    standard_cd_list = first(standard_cd_list),
-    total_row_count = n(),
-    nonmissing_issuance_date_row_count = sum(!is.na(issuance_date)),
-    earliest_issuance_date = ifelse(all(is.na(issuance_date)), NA_character_, as.character(min(issuance_date, na.rm = TRUE))),
-    latest_issuance_date = ifelse(all(is.na(issuance_date)), NA_character_, as.character(max(issuance_date, na.rm = TRUE))),
-    .groups = "drop"
-  ) %>%
-  arrange(job_number)
-
 first_issuance_df <- permit_df %>%
   arrange(job_number, is.na(issuance_date), issuance_date, permit_identifier) %>%
   group_by(job_number) %>%
@@ -199,7 +184,5 @@ qc_df <- bind_rows(
 )
 
 write_csv_if_changed(panel_df, "../output/cd_homeownership_permit_nb_panel.csv")
-write_csv_if_changed(qc_df, "../output/cd_homeownership_permit_nb_panel_qc.csv")
-write_csv_if_changed(conflict_df, "../output/cd_homeownership_permit_nb_job_conflicts.csv")
 
-cat("Wrote CD-year DOB new-building panel outputs to ../output\n")
+cat("Wrote CD-year DOB new-building panel to ../output/cd_homeownership_permit_nb_panel.csv\n")

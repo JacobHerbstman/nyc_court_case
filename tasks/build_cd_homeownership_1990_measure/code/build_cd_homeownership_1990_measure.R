@@ -17,7 +17,6 @@ stage_files <- read_csv("../input/dcp_cd_profiles_1990_2000_files.csv", show_col
 
 if (nrow(stage_files) == 0) {
   write_csv(tibble(), "../output/cd_homeownership_1990_measure.csv", na = "")
-  write_csv(tibble(), "../output/cd_homeownership_1990_measure_qc.csv", na = "")
   quit(save = "no")
 }
 
@@ -181,6 +180,5 @@ qc_df <- bind_rows(
 )
 
 write_csv_if_changed(measure_df, "../output/cd_homeownership_1990_measure.csv")
-write_csv_if_changed(qc_df, "../output/cd_homeownership_1990_measure_qc.csv")
 
-cat("Wrote canonical CD homeownership measure outputs to ../output\n")
+cat("Wrote canonical CD homeownership measure to ../output/cd_homeownership_1990_measure.csv\n")

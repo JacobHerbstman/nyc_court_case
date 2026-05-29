@@ -195,6 +195,5 @@ qc_df <- bind_rows(
 )
 
 write_csv_if_changed(base_df, "../output/zap_housing_cohort_base.csv")
-write_csv_if_changed(qc_df, "../output/zap_housing_cohort_base_qc.csv")
 
-cat("Wrote ZAP housing cohort base outputs to ../output\n")
+cat("Wrote ZAP housing cohort base to ../output/zap_housing_cohort_base.csv\n")

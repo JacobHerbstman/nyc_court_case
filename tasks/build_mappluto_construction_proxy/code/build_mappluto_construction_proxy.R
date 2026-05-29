@@ -33,7 +33,6 @@ mappluto_index <- read_csv("../input/mappluto_lot_files.csv", show_col_types = F
 if (nrow(mappluto_index) == 0) {
   write_parquet(tibble(), "../output/mappluto_construction_proxy_lot_level.parquet")
   write_csv(tibble(), "../output/mappluto_construction_proxy_cd_year.csv", na = "")
-  write_csv(tibble(metric = "status", value = "no_staged_mappluto_files", note = NA_character_), "../output/mappluto_construction_proxy_qc.csv", na = "")
   quit(save = "no")
 }
 
@@ -161,23 +160,5 @@ panel <- expand_grid(
   arrange(borocd, yearbuilt)
 
 write_csv(panel, "../output/mappluto_construction_proxy_cd_year.csv", na = "")
-
-write_csv(
-  bind_rows(
-    tibble(metric = "current_source_id", value = as.character(current_row$source_id[[1]]), note = "Current staged MapPLUTO source used for the proxy."),
-    tibble(metric = "current_vintage", value = as.character(current_row$vintage[[1]]), note = "Current staged MapPLUTO vintage used for the proxy."),
-    tibble(metric = "current_total_rows", value = as.character(nrow(current_df)), note = "Total rows in the current staged MapPLUTO lot file before proxy restrictions."),
-    tibble(metric = "standard_cd_residential_proxy_lots", value = as.character(nrow(lot_level)), note = "Current residential lots in the standard 59 CDs with yearbuilt in 1980-2025."),
-    tibble(metric = "standard_cd_residential_proxy_units", value = as.character(sum(lot_level$unitsres, na.rm = TRUE)), note = "Current residential units on proxy lots."),
-    tibble(metric = "proxy_mixed_use_lot_share", value = as.character(mean(lot_level$mixed_use_flag, na.rm = TRUE)), note = "Share of proxy lots whose current total units exceed current residential units."),
-    tibble(metric = "proxy_residential_only_lot_share", value = as.character(mean(lot_level$residential_only_flag, na.rm = TRUE)), note = "Share of proxy lots whose current total units equal current residential units."),
-    tibble(metric = "proxy_50_plus_unit_share", value = as.character(mean(lot_level$size_bin == "50_plus", na.rm = TRUE)), note = "Share of proxy lots that currently have 50 or more residential units."),
-    tibble(metric = "proxy_min_yearbuilt", value = as.character(min(lot_level$yearbuilt, na.rm = TRUE)), note = "Minimum proxy yearbuilt retained."),
-    tibble(metric = "proxy_max_yearbuilt", value = as.character(max(lot_level$yearbuilt, na.rm = TRUE)), note = "Maximum proxy yearbuilt retained."),
-    tibble(metric = "proxy_interpretation", value = "surviving_residential_stock_built_in_year_t", note = "This is a surviving-stock proxy, not a clean construction-flow series.")
-  ),
-  "../output/mappluto_construction_proxy_qc.csv",
-  na = ""
-)
 
 cat("Wrote MapPLUTO construction proxy outputs to ../output\n")

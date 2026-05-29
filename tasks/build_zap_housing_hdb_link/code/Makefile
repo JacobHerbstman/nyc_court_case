@@ -1,14 +1,12 @@
 SHELL := bash
 include ../../shell_functions.make
 
-all: ../output/zap_housing_hdb_link_candidates.csv ../output/zap_housing_hdb_project_summary.csv ../output/zap_housing_hdb_link_qc.csv
+all: ../output/zap_housing_hdb_link_candidates.csv ../output/zap_housing_hdb_project_summary.csv
 
 ../output/zap_housing_hdb_link_candidates.csv: build_zap_housing_hdb_link.R ../../_lib/source_pipeline_utils.R ../input/zap_housing_cohort_base.csv ../input/zap_project_bbl.parquet ../input/dcp_housing_database_project_level_25q4.parquet | ../output
 	$(R) $<
 
 ../output/zap_housing_hdb_project_summary.csv: ../output/zap_housing_hdb_link_candidates.csv
-
-../output/zap_housing_hdb_link_qc.csv: ../output/zap_housing_hdb_link_candidates.csv
 
 ../input/zap_housing_cohort_base.csv: ../../build_zap_housing_cohort_base/output/zap_housing_cohort_base.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"

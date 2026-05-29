@@ -1,14 +1,10 @@
 SHELL := bash
 include ../../shell_functions.make
 
-all: ../output/cd_homeownership_permit_nb_panel.csv ../output/cd_homeownership_permit_nb_panel_qc.csv ../output/cd_homeownership_permit_nb_job_conflicts.csv
+all: ../output/cd_homeownership_permit_nb_panel.csv
 
 ../output/cd_homeownership_permit_nb_panel.csv: build_cd_homeownership_permit_nb_panel.R ../../_lib/source_pipeline_utils.R ../input/cd_homeownership_1990_measure.csv ../input/dob_permit_issuance_harmonized.parquet | ../output
 	$(R) $<
-
-../output/cd_homeownership_permit_nb_panel_qc.csv: ../output/cd_homeownership_permit_nb_panel.csv
-
-../output/cd_homeownership_permit_nb_job_conflicts.csv: ../output/cd_homeownership_permit_nb_panel.csv
 
 ../input/cd_homeownership_1990_measure.csv: ../../build_cd_homeownership_1990_measure/output/cd_homeownership_1990_measure.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"

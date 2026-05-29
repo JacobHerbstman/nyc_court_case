@@ -317,6 +317,5 @@ qc_df <- bind_rows(
 )
 
 write_csv_if_changed(panel_df, "../output/cd_homeownership_dcp_supply_panel.csv")
-write_csv_if_changed(qc_df, "../output/cd_homeownership_dcp_supply_panel_qc.csv")
 
-cat("Wrote CD-year DCP housing-supply decomposition outputs to ../output\n")
+cat("Wrote CD-year DCP housing-supply panel to ../output/cd_homeownership_dcp_supply_panel.csv\n")

@@ -268,21 +268,4 @@ series_df <- bind_rows(proxy_long, hdb_long) |>
 
 write_csv(series_df, "../output/cd_homeownership_long_units_series.csv", na = "")
 
-write_csv(
-  bind_rows(
-    tibble(metric = "district_count", value = as.character(n_distinct(series_df$borocd)), note = "Standard CDs in the long units series."),
-    tibble(metric = "year_min", value = as.character(min(series_df$year, na.rm = TRUE)), note = "Minimum year in the long units series."),
-    tibble(metric = "year_max", value = as.character(max(series_df$year, na.rm = TRUE)), note = "Maximum year in the long units series."),
-    tibble(metric = "preferred_series_year_min", value = as.character(min(series_df$year[series_df$series_kind == "preferred_long_series"], na.rm = TRUE)), note = "Minimum year in the preferred compatible long series."),
-    tibble(metric = "preferred_series_year_max", value = as.character(max(series_df$year[series_df$series_kind == "preferred_long_series"], na.rm = TRUE)), note = "Maximum year in the preferred compatible long series."),
-    tibble(metric = "source_count", value = as.character(n_distinct(series_df$source_family)), note = "Distinct source families in the long units series."),
-    tibble(metric = "missing_treat_count", value = as.character(sum(is.na(series_df$treat_z_boro))), note = "Rows missing the exact homeownership treatment."),
-    tibble(metric = "preferred_units_built_total_sum", value = as.character(sum(series_df$outcome_value[series_df$series_family == "units_built_total"], na.rm = TRUE)), note = "Total units in the preferred compatible long series."),
-    tibble(metric = "preferred_projects_built_50_plus_sum", value = as.character(sum(series_df$outcome_value[series_df$series_family == "projects_built_50_plus"], na.rm = TRUE)), note = "Total 50+ unit project/lot counts in the preferred compatible long series."),
-    tibble(metric = "observed_gross_add_units_sum_2010_2025", value = as.character(sum(series_df$outcome_value[series_df$series_family == "gross_add_units_observed"], na.rm = TRUE)), note = "Observed gross additions over 2010-2025 from DCP Housing Database completion-year aggregation.")
-  ),
-  "../output/cd_homeownership_long_units_series_qc.csv",
-  na = ""
-)
-
-cat("Wrote long units series outputs to ../output\n")
+cat("Wrote long units series to ../output/cd_homeownership_long_units_series.csv\n")

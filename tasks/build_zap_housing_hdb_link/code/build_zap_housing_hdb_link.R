@@ -345,12 +345,10 @@ qc_df <- bind_rows(
 )
 
 if (any(qc_df$status == "fail")) {
-  write_csv_if_changed(qc_df, "../output/zap_housing_hdb_link_qc.csv")
-  stop("ZAP-HDB linkage QC failed.")
+  stop("ZAP-HDB linkage checks failed.")
 }
 
 write_csv_if_changed(candidate_links, "../output/zap_housing_hdb_link_candidates.csv")
 write_csv_if_changed(project_summary, "../output/zap_housing_hdb_project_summary.csv")
-write_csv_if_changed(qc_df, "../output/zap_housing_hdb_link_qc.csv")
 
 cat("Wrote ZAP-HDB linkage outputs to ../output\n")

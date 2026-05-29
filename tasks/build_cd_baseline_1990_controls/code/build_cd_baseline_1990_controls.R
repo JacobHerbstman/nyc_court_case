@@ -701,7 +701,5 @@ qc_df <- bind_rows(
 )
 
 write_csv_if_changed(controls_df, "../output/cd_baseline_1990_controls.csv")
-write_csv_if_changed(qc_df, "../output/cd_baseline_1990_controls_qc.csv")
-write_csv_if_changed(overlay_qc_df, "../output/cd_baseline_1990_controls_overlay_qc.csv")
 
-cat("Wrote CD baseline control outputs to ../output\n")
+cat("Wrote CD baseline controls to ../output/cd_baseline_1990_controls.csv\n")
