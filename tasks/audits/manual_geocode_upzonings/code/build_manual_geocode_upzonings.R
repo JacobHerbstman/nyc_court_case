@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/manual_geocode_upzonings/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/manual_geocode_upzonings/code")
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -9,7 +9,7 @@ suppressPackageStartupMessages({
   library(tidyr)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 write_lines_if_changed <- function(lines, out_path) {
   temp_path <- tempfile(fileext = ".txt")
