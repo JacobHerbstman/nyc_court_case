@@ -146,6 +146,10 @@ project_ccd2010_weight_bad_count <- project_ccd2010 |>
   filter(abs(weight_sum - 1) > 1e-8) |>
   nrow()
 
+if (project_ccd2010_weight_bad_count > 0) {
+  stop("ZAP project to 2010 Council district assignment weights must sum to one by project.")
+}
+
 district_lookup <- read_csv("../input/ccdist2010_homeownership_1990_measure.csv", show_col_types = FALSE, na = c("", "NA")) |>
   transmute(
     district_id = sprintf("%02d", suppressWarnings(as.integer(district_id))),
@@ -497,24 +501,5 @@ table_lines <- c(
 )
 
 write_lines_if_changed(table_lines, "../output/zap_zoning_actions_long_difference.tex")
-
-write_csv_if_changed(
-  bind_rows(
-    tibble(metric = "district_count", value = as.character(n_distinct(design_df$district_id)), note = "2010 Council districts in the ZAP event-study design."),
-    tibble(metric = "year_min", value = as.character(min(design_df$year, na.rm = TRUE)), note = "Minimum event-study year."),
-    tibble(metric = "year_max", value = as.character(max(design_df$year, na.rm = TRUE)), note = "Maximum event-study year."),
-    tibble(metric = "design_row_count", value = as.character(nrow(design_df)), note = "Rows in the district-year panel."),
-    tibble(metric = "event_coefficient_rows", value = as.character(nrow(event_df)), note = "Rows in the event-study coefficient output, including reference periods."),
-    tibble(metric = "long_difference_rows", value = as.character(nrow(long_diff_df)), note = "Rows in the long-difference output."),
-    tibble(metric = "missing_treat_count", value = as.character(sum(is.na(design_df$treat_z_boro))), note = "Design rows missing the treatment."),
-    tibble(metric = "project_ccd2010_fractional_weight_bad_count", value = as.character(project_ccd2010_weight_bad_count), note = "Assigned project weights should sum to one across 2010 Council districts."),
-    tibble(metric = "increased_residential_project_count_1980_2025", value = as.character(n_distinct(increased_residential_projects$project_id)), note = "Input increased-residential projects in 1980-2025 before requiring BBL-based Council-district assignment."),
-    tibble(metric = "increased_residential_assigned_project_count_1980_2025", value = as.character(n_distinct(assigned_increased_residential_projects$project_id)), note = "Increased-residential projects in 1980-2025 with at least one BBL-based 2010 Council-district assignment."),
-    tibble(metric = "increased_residential_missing_ccd2010_project_count_1980_2025", value = as.character(n_distinct(increased_residential_projects$project_id) - n_distinct(assigned_increased_residential_projects$project_id)), note = "Increased-residential projects excluded from the event-study outcome because no BBL-based 2010 Council-district assignment is available."),
-    tibble(metric = "missing_event_treatment_terms", value = as.character(missing_event_terms), note = "Requested five-year treatment terms missing from output."),
-    tibble(metric = "status", value = as.character(as.integer(n_distinct(design_df$district_id) == 51 && nrow(design_df) == 51 * 46 && missing_event_terms == 0 && project_ccd2010_weight_bad_count == 0)), note = "One means the ZAP event-study design passes core structural checks.")
-  ),
-  "../output/zap_zoning_actions_design_qc.csv"
-)
 
 cat("Wrote ZAP zoning action event-study outputs to ../output\n")

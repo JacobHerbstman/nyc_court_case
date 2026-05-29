@@ -335,6 +335,10 @@ project_ccd2010_weight_bad_count <- project_ccd2010_fractional |>
   filter(abs(weight_sum - 1) > 1e-8) |>
   nrow()
 
+if (project_ccd2010_weight_bad_count > 0) {
+  stop("Project-2010-Council fractional assignment weights must sum to one by project.")
+}
+
 homeowner_tercile_year_counts <- expand_grid(
   completed_year = 1976:2025,
   council_homeowner_tercile_counts
@@ -594,90 +598,5 @@ homeowner_tercile_line_3yr_plot <- homeowner_tercile_year_smoothed |>
   )
 
 ggsave("../output/zap_zoning_map_special_permit_increased_residential_homeowner_tercile_lines_3yr.pdf", homeowner_tercile_line_3yr_plot, width = 7.5, height = 4.5)
-
-increased_residential_project_ids <- project_scope_rows |>
-  filter(count_scope == "zm_plus_residential_zs", increased_residential_proxy) |>
-  distinct(project_id)
-
-increased_residential_assigned_project_count <- increased_residential_project_ids |>
-  inner_join(project_ccd2010_fractional |> distinct(project_id), by = "project_id", relationship = "one-to-one") |>
-  nrow()
-
-qc_df <- bind_rows(
-  tibble(
-    metric = "classified_project_row_count",
-    value = as.character(nrow(zap_projects)),
-    status = if_else(nrow(zap_projects) > 0, "pass", "fail"),
-    note = "Completed 1976-2025 ZAP ULURP project records with a recovered ZM or ZS code."
-  ),
-  tibble(
-    metric = "classified_project_duplicate_id_count",
-    value = as.character(nrow(zap_projects) - n_distinct(zap_projects$project_id)),
-    status = if_else(nrow(zap_projects) == n_distinct(zap_projects$project_id), "pass", "fail"),
-    note = "Project classification must remain unique by project_id."
-  ),
-  tibble(
-    metric = "all_zm_zs_project_count",
-    value = as.character(sum(zap_projects$included_all_zm_zs, na.rm = TRUE)),
-    status = "pass",
-    note = "Literal denominator: completed project records with ZM or ZS in actions or ULURP numbers."
-  ),
-  tibble(
-    metric = "zm_plus_residential_zs_project_count",
-    value = as.character(sum(zap_projects$included_zm_plus_residential_zs, na.rm = TRUE)),
-    status = "pass",
-    note = "Narrower denominator: completed ZM records plus completed ZS records with residential/housing text proxy."
-  ),
-  tibble(
-    metric = "zm_plus_residential_zs_mixed_use_project_count",
-    value = as.character(sum(zap_projects$included_zm_plus_residential_zs & zap_projects$mixed_use_text_flag, na.rm = TRUE)),
-    status = "pass",
-    note = "Projects in the narrower denominator whose ZAP name/brief/applicant/lead-agency text includes mixed-use language."
-  ),
-  tibble(
-    metric = "ccd2010_homeowner_tercile_district_counts",
-    value = paste0(council_homeowner_tercile_counts$ccd2010_homeowner_tercile_label, "=", council_homeowner_tercile_counts$council_district_count, collapse = ";"),
-    status = if_else(all(council_homeowner_tercile_counts$council_district_count == 17), "pass", "fail"),
-    note = "Homeowner terciles use the 2010 Council-district homeownership measure and contain 17 districts each."
-  ),
-  tibble(
-    metric = "project_ccd2010_fractional_weight_bad_count",
-    value = as.character(project_ccd2010_weight_bad_count),
-    status = if_else(project_ccd2010_weight_bad_count == 0, "pass", "fail"),
-    note = "Assigned project weights should sum to one across 2010 Council districts."
-  ),
-  tibble(
-    metric = "increased_residential_ccd2010_assigned_project_count",
-    value = as.character(increased_residential_assigned_project_count),
-    status = "pass",
-    note = "Increased residential projects in the narrower denominator with at least one BBL assigned to a 2010 Council district."
-  ),
-  tibble(
-    metric = "increased_residential_missing_ccd2010_project_count",
-    value = as.character(nrow(increased_residential_project_ids) - increased_residential_assigned_project_count),
-    status = "pass",
-    note = "Increased residential projects in the narrower denominator without a BBL-based 2010 Council district assignment."
-  ),
-  tibble(
-    metric = "increased_residential_definition",
-    value = "text_proxy",
-    status = "pass",
-    note = "Increased Residential is not a native ZAP field. It requires a housing proxy and an MIH, unit-count, residential-growth, or rezoning-to-residential text signal, excluding explicit downzoning/restriction text."
-  ),
-  tibble(
-    metric = "minor_residential_definition",
-    value = "text_proxy",
-    status = "pass",
-    note = "Minor Residential is a housing proxy without the increased-residential signals and without explicit downzoning/restriction text."
-  ),
-  tibble(
-    metric = "decade_year_denominators",
-    value = "1970s=4;1980s=10;1990s=10;2000s=10;2010s=10;2020s=6",
-    status = "pass",
-    note = "The ZAP support window here is 1976-2025, so the 1970s and 2020s are partial decades."
-  )
-)
-
-write_csv_if_changed(qc_df, "../output/zap_zoning_map_special_permit_qc.csv")
 
 cat("Wrote ZAP zoning map/special permit decade summaries to ../output\n")
