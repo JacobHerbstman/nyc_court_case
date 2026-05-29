@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/write_brooklyn_homeownership_case_study_memo/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/write_brooklyn_homeownership_case_study_memo/code")
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -7,7 +7,7 @@ suppressPackageStartupMessages({
   library(tidyr)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 fmt_num <- function(x, digits = 3) {
   ifelse(is.na(x), "NA", formatC(x, digits = digits, format = "f", big.mark = ","))
