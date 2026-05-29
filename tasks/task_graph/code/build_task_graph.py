@@ -44,7 +44,7 @@ def is_rule_line(line):
     return True
 
 
-def parse_makefile(path):
+def parse_makefile(path, scope):
     output_targets = set()
     upstream_outputs = set()
 
@@ -59,8 +59,20 @@ def parse_makefile(path):
             if target.startswith("../output/"):
                 output_targets.add(target)
 
-        for task, output_rel in re.findall(r"\.\./\.\./([^/\s]+)/output/([^\s|]+)", normal_prereqs):
-            upstream_outputs.add((task, output_rel))
+        for prereq in normal_prereqs.split():
+            if scope == "production":
+                match = re.match(r"\.\./\.\./([^/\s]+)/output/([^\s|]+)", prereq)
+                if match:
+                    upstream_outputs.add((match.group(1), match.group(2)))
+
+            if scope == "audit":
+                production_match = re.match(r"\.\./\.\./\.\./([^/\s]+)/output/([^\s|]+)", prereq)
+                audit_match = re.match(r"\.\./\.\./([^/\s]+)/output/([^\s|]+)", prereq)
+
+                if production_match:
+                    upstream_outputs.add((production_match.group(1), production_match.group(2)))
+                elif audit_match:
+                    upstream_outputs.add((f"audits/{audit_match.group(1)}", audit_match.group(2)))
 
     return output_targets, upstream_outputs
 
@@ -108,19 +120,31 @@ def main():
     dot_file = Path("../output/task_flow.dot")
     audit_csv = Path("../output/task_graph_audit.csv")
     tasks_root = Path("..").resolve().parent
+    audits_root = tasks_root / "audits"
 
-    task_makefiles = {
-        path.parents[1].name: path
+    production_makefiles = {
+        path.parents[1].name: (path, "production")
         for path in sorted(tasks_root.glob("*/code/Makefile"))
+        if path.parents[1].name not in {"archive", "_lib", "audits"}
     }
 
+    audit_makefiles = {}
+    if audits_root.exists():
+        audit_makefiles = {
+            f"audits/{path.parents[1].name}": (path, "audit")
+            for path in sorted(audits_root.glob("*/code/Makefile"))
+        }
+
+    task_makefiles = {**production_makefiles, **audit_makefiles}
     task_outputs = {}
     upstream_refs = {}
+    task_scopes = {}
 
-    for task, makefile in task_makefiles.items():
-        outputs, refs = parse_makefile(makefile)
+    for task, (makefile, scope) in task_makefiles.items():
+        outputs, refs = parse_makefile(makefile, scope)
         task_outputs[task] = outputs
         upstream_refs[task] = refs
+        task_scopes[task] = scope
 
     edges = []
     missing_tasks = []
@@ -142,8 +166,23 @@ def main():
 
     with edges_csv.open("w", newline="") as f:
         writer = csv.writer(f)
-        writer.writerow(["upstream_task", "downstream_task", "upstream_output"])
-        writer.writerows(edges)
+        writer.writerow([
+            "upstream_task",
+            "upstream_scope",
+            "downstream_task",
+            "downstream_scope",
+            "upstream_output",
+        ])
+        writer.writerows([
+            [
+                upstream,
+                task_scopes.get(upstream, "missing"),
+                downstream,
+                task_scopes.get(downstream, "missing"),
+                output_rel,
+            ]
+            for upstream, downstream, output_rel in edges
+        ])
 
     with dot_file.open("w") as f:
         f.write("digraph G {\n")
@@ -153,7 +192,11 @@ def main():
         f.write("}\n")
 
     audit_rows = [
+        ["production_task_count", "ok", str(len(production_makefiles))],
+        ["audit_task_count", "ok", str(len(audit_makefiles))],
         ["task_count", "ok", str(len(task_makefiles))],
+        ["production_edge_count", "ok", str(sum(1 for _, downstream, _ in edges if task_scopes.get(downstream) == "production"))],
+        ["audit_edge_count", "ok", str(sum(1 for _, downstream, _ in edges if task_scopes.get(downstream) == "audit"))],
         ["edge_count", "ok", str(len(edges))],
         ["missing_upstream_tasks", "fail" if missing_tasks else "ok", str(len(missing_tasks))],
         ["missing_upstream_targets", "fail" if missing_targets else "ok", str(len(missing_targets))],
