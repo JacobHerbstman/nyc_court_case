@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/map_ccd2010_redevelopment_potential/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/map_ccd2010_redevelopment_potential/code")
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -10,7 +10,7 @@ suppressPackageStartupMessages({
   library(tibble)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 theme_map <- function() {
   theme_void(base_size = 11) +
