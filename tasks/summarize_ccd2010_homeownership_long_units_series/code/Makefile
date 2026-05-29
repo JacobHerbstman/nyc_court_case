@@ -1,10 +1,7 @@
-SHELL := bash
-include ../../shell_functions.make
-
 all: ../output/ccdist2010_homeownership_long_units_plots.pdf
 
 ../output/ccdist2010_homeownership_long_units_plots.pdf: summarize_ccd2010_homeownership_long_units_series.R ../input/ccdist2010_homeownership_long_units_series.csv | ../output
-	$(R) $<
+	Rscript --vanilla $<
 
 ../input/ccdist2010_homeownership_long_units_series.csv: ../../build_ccd2010_homeownership_long_units_series/output/ccdist2010_homeownership_long_units_series.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
