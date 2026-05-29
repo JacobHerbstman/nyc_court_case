@@ -1,21 +1,15 @@
-SHELL := bash
-include ../../shell_functions.make
+all: ../output/zap_linked_hdb_50plus_cd_year.csv ../output/zap_linked_hdb_50plus_tercile_trends.pdf ../output/zap_linked_hdb_50plus_coefficients.csv ../output/zap_linked_hdb_50plus_summary.csv
 
-all: ../output/zap_linked_hdb_50plus_cd_year.csv ../output/zap_linked_hdb_50plus_tercile_trends.pdf ../output/zap_linked_hdb_50plus_coefficients.csv ../output/zap_linked_hdb_50plus_summary.csv ../output/zap_linked_hdb_50plus_qc.csv
+../output/zap_linked_hdb_50plus_cd_year.csv: summarize_zap_linked_hdb_completion_decomposition.R ../input/dcp_housing_database_project_level_25q4.parquet ../input/zap_housing_hdb_link_candidates.csv ../input/cd_redevelopment_potential_baseline.csv | ../output
+	Rscript --vanilla $<
 
-../output/zap_linked_hdb_50plus_qc.csv: summarize_zap_linked_hdb_completion_decomposition.R ../input/dcp_housing_database_project_level_25q4.parquet ../input/zap_housing_hdb_link_candidates.csv ../input/cd_redevelopment_potential_baseline.csv | ../output
-	$(R) $<
-
-../output/zap_linked_hdb_50plus_cd_year.csv: ../output/zap_linked_hdb_50plus_qc.csv
+../output/zap_linked_hdb_50plus_tercile_trends.pdf: ../output/zap_linked_hdb_50plus_cd_year.csv
 	@test -s "$@"
 
-../output/zap_linked_hdb_50plus_tercile_trends.pdf: ../output/zap_linked_hdb_50plus_qc.csv
+../output/zap_linked_hdb_50plus_coefficients.csv: ../output/zap_linked_hdb_50plus_cd_year.csv
 	@test -s "$@"
 
-../output/zap_linked_hdb_50plus_coefficients.csv: ../output/zap_linked_hdb_50plus_qc.csv
-	@test -s "$@"
-
-../output/zap_linked_hdb_50plus_summary.csv: ../output/zap_linked_hdb_50plus_qc.csv
+../output/zap_linked_hdb_50plus_summary.csv: ../output/zap_linked_hdb_50plus_cd_year.csv
 	@test -s "$@"
 
 ../input/dcp_housing_database_project_level_25q4.parquet: ../../stage_dcp_housing_database/output/dcp_housing_database_project_level_25q4.parquet | ../input

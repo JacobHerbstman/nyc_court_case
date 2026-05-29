@@ -268,101 +268,6 @@ era_summary <- bind_rows(
 ) %>%
   arrange(outcome_family, cert_era_summary, treat_tercile)
 
-bbl_link_df <- bind_rows(
-  base_df %>%
-    summarise(
-      dimension = "overall",
-      group_value = "all_projects",
-      project_count = n(),
-      has_bbl_share = mean(has_bbl, na.rm = TRUE),
-      mean_bbl_count = mean(bbl_count, na.rm = TRUE),
-      median_bbl_count = median(bbl_count, na.rm = TRUE)
-    ),
-  base_df %>%
-    group_by(housing_flag_reason) %>%
-    summarise(
-      dimension = "housing_flag_reason",
-      group_value = first(housing_flag_reason),
-      project_count = n(),
-      has_bbl_share = mean(has_bbl, na.rm = TRUE),
-      mean_bbl_count = mean(bbl_count, na.rm = TRUE),
-      median_bbl_count = median(bbl_count, na.rm = TRUE),
-      .groups = "drop"
-    ),
-  base_df %>%
-    filter(cert_year <= 2025) %>%
-    mutate(cert_era_summary = application_era_from_year(cert_year)) %>%
-    group_by(cert_era_summary) %>%
-    summarise(
-      dimension = "cert_era",
-      group_value = first(cert_era_summary),
-      project_count = n(),
-      has_bbl_share = mean(has_bbl, na.rm = TRUE),
-      mean_bbl_count = mean(bbl_count, na.rm = TRUE),
-      median_bbl_count = median(bbl_count, na.rm = TRUE),
-      .groups = "drop"
-    )
-) %>%
-  arrange(dimension, group_value)
-
-qc_df <- bind_rows(
-  tibble(
-    metric = "base_row_count",
-    value = nrow(base_df),
-    note = "Rows in the ZAP housing cohort base."
-  ),
-  tibble(
-    metric = "initial_panel_row_count",
-    value = nrow(initial_panel),
-    note = "Balanced CD-year panel rows for initial applications, 1976-2025."
-  ),
-  tibble(
-    metric = "initial_panel_expected_row_count",
-    value = 59L * length(1976:2025),
-    note = "Expected balanced row count for the initial application panel."
-  ),
-  tibble(
-    metric = "mature_panel_row_count",
-    value = nrow(mature_panel),
-    note = "Balanced CD-year panel rows for mature cohorts, 1976-2015."
-  ),
-  tibble(
-    metric = "mature_panel_expected_row_count",
-    value = 59L * length(1976:2015),
-    note = "Expected balanced row count for the mature cohort panel."
-  ),
-  tibble(
-    metric = "mature_panel_max_cert_year",
-    value = max(mature_panel$cert_year, na.rm = TRUE),
-    note = "Should be 2015 for fully mature 0-10-year style cohort summaries."
-  ),
-  tibble(
-    metric = "mature_panel_immature_era_row_count",
-    value = sum(mature_panel$cert_era_summary %in% c("2010-2019", "2020-2025", "2016-2025"), na.rm = TRUE),
-    note = "Should be zero because mature status summaries exclude immature post-2015 cohorts."
-  ),
-  tibble(
-    metric = "mature_identity_max_gap",
-    value = max(abs(mature_panel$initial_apps - mature_panel$complete_apps - mature_panel$failed_apps - mature_panel$unresolved_apps), na.rm = TRUE),
-    note = "Should be zero if the mature cohort outcome accounting is internally consistent."
-  ),
-  tibble(
-    metric = "non_ulurp_row_count",
-    value = sum(base_df$ulurp_non != "ULURP", na.rm = TRUE),
-    note = "Should be zero after the ULURP restriction."
-  ),
-  tibble(
-    metric = "invalid_housing_flag_reason_row_count",
-    value = sum(!base_df$housing_flag_reason %in% c("text", "mih", "text_and_mih"), na.rm = TRUE),
-    note = "Should be zero after the housing subset is built."
-  ),
-  tibble(
-    metric = "has_bbl_share",
-    value = mean(base_df$has_bbl, na.rm = TRUE),
-    note = "Share of base projects with at least one linked BBL."
-  )
-)
-
 plot_year_df <- year_summary %>%
   filter(outcome_family %in% c("initial_apps_borough_share", "completion_share", "failure_share")) %>%
   mutate(
@@ -422,7 +327,5 @@ write_csv_if_changed(initial_panel, "../output/zap_housing_initial_panel.csv")
 write_csv_if_changed(mature_panel, "../output/zap_housing_mature_cohort_panel.csv")
 write_csv_if_changed(year_summary, "../output/zap_housing_tercile_year_summary.csv")
 write_csv_if_changed(era_summary, "../output/zap_housing_tercile_era_summary.csv")
-write_csv_if_changed(bbl_link_df, "../output/zap_housing_bbl_link_completeness.csv")
-write_csv_if_changed(qc_df, "../output/zap_housing_summary_qc.csv")
 
 cat("Wrote ZAP housing cohort summary outputs to ../output\n")

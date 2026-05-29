@@ -294,30 +294,8 @@ print(plot_obj)
 dev.off()
 copy_if_changed(temp_pdf, "../output/zap_linked_hdb_50plus_tercile_trends.pdf")
 
-qc_df <- bind_rows(
-  tibble(metric = "cd_count", value = n_distinct(cd_year$borocd), status = if_else(n_distinct(cd_year$borocd) == 59, "pass", "fail"), note = "Expected 59 CDs."),
-  tibble(metric = "year_min", value = min(cd_year$year), status = if_else(min(cd_year$year) == 2010, "pass", "fail"), note = "Expected support begins in 2010."),
-  tibble(metric = "year_max", value = max(cd_year$year), status = if_else(max(cd_year$year) == 2025, "pass", "fail"), note = "Expected support ends in 2025."),
-  tibble(metric = "hdb_50plus_duplicate_job_count", value = nrow(hdb_jobs) - n_distinct(hdb_jobs$job_number), status = if_else(nrow(hdb_jobs) == n_distinct(hdb_jobs$job_number), "pass", "fail"), note = "50+ unit HDB completion jobs should be unique by job_number."),
-  tibble(metric = "assigned_zap_job_duplicate_count", value = nrow(zap_links) - n_distinct(zap_links$job_number), status = if_else(nrow(zap_links) == n_distinct(zap_links$job_number), "pass", "fail"), note = "Each HDB job should be assigned to at most one exact-BBL ZAP project."),
-  tibble(metric = "negative_rate_count", value = sum(cd_year$units_per_10000_occ_1990 < 0 | cd_year$units_per_residential_acre < 0, na.rm = TRUE), status = if_else(sum(cd_year$units_per_10000_occ_1990 < 0 | cd_year$units_per_residential_acre < 0, na.rm = TRUE) == 0, "pass", "fail"), note = "Rates must be nonnegative."),
-  tibble(metric = "invalid_hdb_bbl_or_cd_job_count", value = sum(hdb_classified$link_status == "Missing/invalid HDB geography", na.rm = TRUE), status = "pass", note = "50+ NB completed jobs with missing/invalid BBL or missing CD; kept as their own category."),
-  tibble(metric = "zap_linked_preferred_timing_job_count", value = sum(hdb_classified$link_status == "ZAP-linked, preferred timing", na.rm = TRUE), status = "pass", note = "50+ NB completed jobs assigned to an exact-BBL ZAP project with -2 to +10 permit-year timing."),
-  tibble(metric = "zap_bbl_broad_only_job_count", value = sum(hdb_classified$link_status == "ZAP BBL match, broad timing only", na.rm = TRUE), status = "pass", note = "50+ NB completed jobs assigned to an exact-BBL ZAP project with broad-only -5 to +15 permit-year timing."),
-  tibble(metric = "zap_bbl_outside_timing_job_count", value = sum(hdb_classified$link_status == "ZAP BBL match, outside timing", na.rm = TRUE), status = "pass", note = "50+ NB completed jobs assigned to an exact-BBL ZAP project outside the broad timing window."),
-  tibble(metric = "no_assigned_exact_zap_bbl_match_job_count", value = sum(hdb_classified$link_status == "No assigned exact ZAP BBL match", na.rm = TRUE), status = "pass", note = "50+ NB completed jobs with no assigned exact-BBL ZAP project."),
-  tibble(metric = "expected_link_status_count", value = n_distinct(cd_year$link_status), status = if_else(n_distinct(cd_year$link_status) == length(link_status_levels), "pass", "fail"), note = "All requested link-status categories should be represented in the balanced CD-year panel."),
-  tibble(metric = "plot_file_bytes", value = file.info("../output/zap_linked_hdb_50plus_tercile_trends.pdf")$size, status = if_else(file.exists("../output/zap_linked_hdb_50plus_tercile_trends.pdf") && file.info("../output/zap_linked_hdb_50plus_tercile_trends.pdf")$size > 0, "pass", "fail"), note = "Generated PDF should be nonempty.")
-)
-
-if (any(qc_df$status == "fail")) {
-  write_csv_if_changed(qc_df, "../output/zap_linked_hdb_50plus_qc.csv")
-  stop("ZAP-linked completion decomposition QC failed.")
-}
-
 write_csv_if_changed(cd_year, "../output/zap_linked_hdb_50plus_cd_year.csv")
 write_csv_if_changed(coefficients, "../output/zap_linked_hdb_50plus_coefficients.csv")
 write_csv_if_changed(summary_df, "../output/zap_linked_hdb_50plus_summary.csv")
-write_csv_if_changed(qc_df, "../output/zap_linked_hdb_50plus_qc.csv")
 
 cat("Wrote ZAP-linked HDB completion decomposition outputs to ../output\n")

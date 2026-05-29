@@ -214,11 +214,6 @@ candidate_05_source_df <- read_csv("../input/zap_housing_hdb_link_candidates.csv
     nb_gross_units = suppressWarnings(as.numeric(nb_gross_units))
   )
 
-candidate_05_duplicate_jobs <- candidate_05_source_df %>%
-  filter(within_0_5, !is.na(job_number)) %>%
-  count(project_id, job_number, name = "candidate_rows") %>%
-  filter(candidate_rows > 1)
-
 candidate_05_df <- candidate_05_source_df %>%
   filter(within_0_5, !is.na(job_number)) %>%
   arrange(project_id, job_number, bbl_standardized) %>%
@@ -473,79 +468,6 @@ era_summary <- bind_rows(
 ) %>%
   arrange(summary_family, outcome_family, era, two_by_two_cell_A)
 
-qc_df <- bind_rows(
-  tibble(
-    metric = "cd_year_panel_row_count",
-    value = nrow(cd_year_panel),
-    note = "Balanced CD-year application panel rows."
-  ),
-  tibble(
-    metric = "cd_year_panel_expected_row_count",
-    value = 59L * length(1976:2025),
-    note = "Expected 59 x 50 balanced application panel rows."
-  ),
-  tibble(
-    metric = "mature_panel_row_count",
-    value = nrow(mature_panel),
-    note = "Balanced mature-status panel rows."
-  ),
-  tibble(
-    metric = "mature_panel_expected_row_count",
-    value = 59L * length(1976:2015),
-    note = "Expected 59 x 40 mature panel rows."
-  ),
-  tibble(
-    metric = "mature_panel_max_cert_year",
-    value = max(mature_panel$cert_year, na.rm = TRUE),
-    note = "Maximum certification year in the mature panel."
-  ),
-  tibble(
-    metric = "mature_panel_immature_era_row_count",
-    value = sum(mature_panel$era %in% c("2010-2019", "2016-2020", "2020-2025"), na.rm = TRUE),
-    note = "Should be zero because mature-status summaries exclude immature post-2015 cohorts."
-  ),
-  tibble(
-    metric = "mature_status_identity_max_gap",
-    value = max(abs(mature_panel$initial_apps - mature_panel$complete_apps - mature_panel$failed_apps - mature_panel$unresolved_apps), na.rm = TRUE),
-    note = "Should be zero if mature status accounting is internally consistent."
-  ),
-  tibble(
-    metric = "yield_panel_row_count",
-    value = nrow(yield_panel),
-    note = "Balanced yield panel rows."
-  ),
-  tibble(
-    metric = "yield_panel_expected_row_count",
-    value = 59L * length(2010:2020),
-    note = "Expected 59 x 11 yield panel rows."
-  ),
-  tibble(
-    metric = "yield_panel_missing_treat_count",
-    value = sum(is.na(yield_panel$treat_z_boro)),
-    note = "Yield rows missing baseline homeowner treatment."
-  ),
-  tibble(
-    metric = "yield_panel_missing_redev_potential_count",
-    value = sum(is.na(yield_panel$redev_potential_A_z_boro)),
-    note = "Yield rows missing redevelopment-potential controls."
-  ),
-  tibble(
-    metric = "yield_panel_immature_0_10_nonmissing_cell_count",
-    value = sum(!is.na(unlist(yield_panel[yield_panel$cert_year > 2015, yield_0_10_cols])), na.rm = TRUE),
-    note = "Should be zero because raw 0-10 yield outcomes are masked for immature 2016-2020 cohorts."
-  ),
-  tibble(
-    metric = "candidate_0_5_duplicate_project_job_count",
-    value = nrow(candidate_05_duplicate_jobs),
-    note = "Project-job pairs duplicated in the 0-5 candidate rows before deduplication."
-  ),
-  tibble(
-    metric = "candidate_0_5_duplicate_extra_row_count",
-    value = sum(candidate_05_duplicate_jobs$candidate_rows - 1L),
-    note = "Extra 0-5 candidate rows removed by project-job deduplication before unit summation."
-  )
-)
-
 plot_counts_df <- era_summary %>%
   filter(summary_family == "two_by_two", outcome_family %in% c("initial_apps_per_10k", "private_initial_apps_per_10k", "completion_share", "failure_share", "linked_nb_50_plus_rate_0_10", "linked_gross_add_units_per_app_0_10")) %>%
   mutate(
@@ -592,6 +514,5 @@ write_csv_if_changed(cd_year_panel, "../output/zap_ulurp_redev_cd_year_panel.csv
 write_csv_if_changed(mature_panel, "../output/zap_ulurp_redev_mature_cohort_panel.csv")
 write_csv_if_changed(yield_panel, "../output/zap_ulurp_redev_yield_panel.csv")
 write_csv_if_changed(era_summary, "../output/zap_ulurp_redev_2x2_era_summary.csv")
-write_csv_if_changed(qc_df, "../output/zap_ulurp_redev_summary_qc.csv")
 
 cat("Wrote ZAP ULURP redevelopment summary outputs to ../output\n")

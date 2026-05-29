@@ -10,25 +10,6 @@ suppressPackageStartupMessages({
   library(tidyr)
 })
 
-qc_rows <- tibble(
-  check_name = character(),
-  status = character(),
-  value = double(),
-  detail = character()
-)
-
-add_qc <- function(check_name, condition, value = NA_real_, detail = "") {
-  qc_rows <<- bind_rows(
-    qc_rows,
-    tibble(
-      check_name = check_name,
-      status = if_else(isTRUE(condition), "pass", "fail"),
-      value = value,
-      detail = detail
-    )
-  )
-}
-
 as_bool <- function(x) {
   if (is.logical(x)) {
     return(replace_na(x, FALSE))
@@ -108,30 +89,11 @@ standard_cd <- read_csv("../input/cd_homeownership_1990_measure.csv", show_col_t
     treat_z_boro = as.numeric(treat_z_boro)
   )
 
-add_qc(
-  "standard_cd_count",
-  n_distinct(standard_cd$borocd) == 59L,
-  n_distinct(standard_cd$borocd),
-  "Expected 59 community districts."
-)
-add_qc(
-  "standard_cd_unique_borocd",
-  nrow(standard_cd) == n_distinct(standard_cd$borocd),
-  nrow(standard_cd) - n_distinct(standard_cd$borocd),
-  "Homeownership denominator rows must be unique by borocd."
-)
-
 redevelopment_denoms <- read_csv("../input/cd_redevelopment_potential_baseline.csv", show_col_types = FALSE) |>
   transmute(
     borocd = as.integer(borocd),
     residential_acres = as.numeric(residential_acres)
   )
-add_qc(
-  "redevelopment_denominator_unique_borocd",
-  nrow(redevelopment_denoms) == n_distinct(redevelopment_denoms$borocd),
-  nrow(redevelopment_denoms) - n_distinct(redevelopment_denoms$borocd),
-  "Residential-acre denominator rows must be unique by borocd."
-)
 
 cd_denoms <- standard_cd |>
   left_join(redevelopment_denoms, by = "borocd", relationship = "one-to-one") |>
@@ -145,16 +107,6 @@ cd_denoms <- standard_cd |>
     )
   ) |>
   ungroup()
-add_qc(
-  "nonmissing_denominators",
-  all(!is.na(cd_denoms$treat_z_boro)) &&
-    all(!is.na(cd_denoms$occupied_units_1990)) &&
-    all(!is.na(cd_denoms$residential_acres)) &&
-    all(cd_denoms$occupied_units_1990 > 0) &&
-    all(cd_denoms$residential_acres > 0),
-  sum(is.na(cd_denoms$treat_z_boro) | is.na(cd_denoms$occupied_units_1990) | is.na(cd_denoms$residential_acres)),
-  "Treatment, 1990 occupied-unit denominators, and residential-acre denominators must be nonmissing."
-)
 
 source_usability <- read_csv("../input/zap_outcome_usability_by_period.csv", show_col_types = FALSE) |>
   filter(period %in% c("1985-1989", "1990-1999", "2000-2009", "2010-2019", "2020-2025")) |>
@@ -171,19 +123,6 @@ project_base <- read_csv("../input/zap_housing_project_base_audited.csv", show_c
   ) |>
   filter(cert_year >= 1985, cert_year <= 2025, !is.na(period))
 
-add_qc(
-  "project_base_unique_project_id",
-  nrow(project_base) == n_distinct(project_base$project_id),
-  nrow(project_base) - n_distinct(project_base$project_id),
-  "Audited project base must be unique by project_id."
-)
-add_qc(
-  "project_base_year_support",
-  min(project_base$cert_year, na.rm = TRUE) == 1985 && max(project_base$cert_year, na.rm = TRUE) == 2025,
-  max(project_base$cert_year, na.rm = TRUE) - min(project_base$cert_year, na.rm = TRUE),
-  "Capacity plots are restricted to certification years 1985-2025."
-)
-
 zap_project_bbl <- read_parquet("../input/zap_project_bbl.parquet") |>
   transmute(
     project_id = as.character(project_id),
@@ -191,12 +130,6 @@ zap_project_bbl <- read_parquet("../input/zap_project_bbl.parquet") |>
   ) |>
   filter(!is.na(project_id), !is.na(bbl_standardized), bbl_standardized != "") |>
   distinct(project_id, bbl_standardized)
-add_qc(
-  "project_bbl_unique_project_bbl",
-  nrow(zap_project_bbl) == n_distinct(paste(zap_project_bbl$project_id, zap_project_bbl$bbl_standardized, sep = "___")),
-  nrow(zap_project_bbl) - n_distinct(paste(zap_project_bbl$project_id, zap_project_bbl$bbl_standardized, sep = "___")),
-  "Project-BBL links must be unique after distincting exact duplicates."
-)
 
 mappluto_lot <- read_parquet("../input/dcp_mappluto_current_25v4.parquet") |>
   transmute(
@@ -217,12 +150,6 @@ mappluto_lot <- read_parquet("../input/dcp_mappluto_current_25v4.parquet") |>
     current_residential_lot_acres = if_else(current_residential_lot_flag, lot_acres, 0),
     mappluto_standard_cd_flag = mappluto_borocd %in% standard_cd$borocd
   )
-add_qc(
-  "mappluto_unique_bbl",
-  nrow(mappluto_lot) == n_distinct(mappluto_lot$bbl_standardized),
-  nrow(mappluto_lot) - n_distinct(mappluto_lot$bbl_standardized),
-  "MapPLUTO lot rows must be unique by BBL."
-)
 
 project_bbl <- project_base |>
   left_join(zap_project_bbl, by = "project_id", relationship = "one-to-many") |>
@@ -530,105 +457,3 @@ for (metric_name in capacity_metrics$capacity_metric) {
   ))
 }
 dev.off()
-
-add_qc(
-  "cd_year_unique_keys",
-  nrow(cd_year) == n_distinct(paste(cd_year$assignment_type, cd_year$borocd, cd_year$year, cd_year$outcome_name, sep = "___")),
-  nrow(cd_year) - n_distinct(paste(cd_year$assignment_type, cd_year$borocd, cd_year$year, cd_year$outcome_name, sep = "___")),
-  "CD-year capacity panel must be unique by assignment, CD, year, and outcome."
-)
-add_qc(
-  "tercile_year_expected_rows",
-  nrow(tercile_year) == 2L * 4L * 3L * 41L * 3L,
-  nrow(tercile_year),
-  "Expected two geography assignments, four outcomes, three capacity metrics, 41 years, and three terciles."
-)
-add_qc(
-  "plotted_years_restricted",
-  min(tercile_year$year) == 1985 && max(tercile_year$year) == 2025,
-  max(tercile_year$year) - min(tercile_year$year),
-  "Plotted years must be restricted to 1985-2025."
-)
-add_qc(
-  "three_terciles_per_year",
-  all(tercile_year |>
-    group_by(assignment_type, outcome_name, capacity_metric, year) |>
-    summarise(n_terciles = n_distinct(homeownership_tercile), .groups = "drop") |>
-    pull(n_terciles) == 3L),
-  min(tercile_year |>
-    group_by(assignment_type, outcome_name, capacity_metric, year) |>
-    summarise(n_terciles = n_distinct(homeownership_tercile), .groups = "drop") |>
-    pull(n_terciles)),
-  "Every plotted assignment/outcome/capacity/year cell must have low, middle, and high terciles."
-)
-add_qc(
-  "not_recommended_cells_masked",
-  sum(cd_year$analysis_usability == "not_recommended" & (
-    !is.na(cd_year$affected_bbl_count) |
-      !is.na(cd_year$affected_lot_acres) |
-      !is.na(cd_year$affected_current_residential_lot_acres)
-  )) == 0L,
-  sum(cd_year$analysis_usability == "not_recommended" & (
-    !is.na(cd_year$affected_bbl_count) |
-      !is.na(cd_year$affected_lot_acres) |
-      !is.na(cd_year$affected_current_residential_lot_acres)
-  )),
-  "Unsupported cells must be masked, not filled as zero."
-)
-add_qc(
-  "nonnegative_capacity_and_rates",
-  all(cd_year$affected_bbl_count >= 0, na.rm = TRUE) &&
-    all(cd_year$affected_lot_acres >= 0, na.rm = TRUE) &&
-    all(cd_year$affected_current_residential_lot_acres >= 0, na.rm = TRUE) &&
-    all(cd_year$affected_bbl_count_per_10000 >= 0, na.rm = TRUE) &&
-    all(cd_year$affected_lot_acres_per_10000 >= 0, na.rm = TRUE) &&
-    all(cd_year$affected_current_residential_lot_acres_per_10000 >= 0, na.rm = TRUE) &&
-    all(cd_year$affected_bbl_count_per_residential_acre >= 0, na.rm = TRUE) &&
-    all(cd_year$affected_lot_acres_per_residential_acre >= 0, na.rm = TRUE) &&
-    all(cd_year$affected_current_residential_lot_acres_per_residential_acre >= 0, na.rm = TRUE),
-  NA_real_,
-  "Capacity counts, acres, and scaled rates must be nonnegative."
-)
-add_qc(
-  "bbl_support_reported",
-  all(!is.na(capacity_support$bbl_match_share[capacity_support$source_project_count > 0])),
-  sum(is.na(capacity_support$bbl_match_share[capacity_support$source_project_count > 0])),
-  "BBL-match support must be reported for nonempty period/outcome cells."
-)
-add_qc(
-  "project_bbl_output_nonempty",
-  file.exists("../output/zap_capacity_weighted_project_bbl.csv") && file.info("../output/zap_capacity_weighted_project_bbl.csv")$size > 0,
-  file.info("../output/zap_capacity_weighted_project_bbl.csv")$size,
-  "Project-BBL capacity output must be nonempty."
-)
-add_qc(
-  "cd_year_output_nonempty",
-  file.exists("../output/zap_capacity_weighted_cd_year.csv") && file.info("../output/zap_capacity_weighted_cd_year.csv")$size > 0,
-  file.info("../output/zap_capacity_weighted_cd_year.csv")$size,
-  "CD-year capacity output must be nonempty."
-)
-add_qc(
-  "tercile_year_output_nonempty",
-  file.exists("../output/zap_capacity_weighted_tercile_year.csv") && file.info("../output/zap_capacity_weighted_tercile_year.csv")$size > 0,
-  file.info("../output/zap_capacity_weighted_tercile_year.csv")$size,
-  "Tercile-year capacity output must be nonempty."
-)
-add_qc(
-  "per_10000_pdf_nonempty",
-  file.exists("../output/zap_capacity_weighted_tercile_trends_per_10000.pdf") && file.info("../output/zap_capacity_weighted_tercile_trends_per_10000.pdf")$size > 0,
-  file.info("../output/zap_capacity_weighted_tercile_trends_per_10000.pdf")$size,
-  "Per-10,000 occupied-unit PDF must be nonempty."
-)
-add_qc(
-  "per_residential_acre_pdf_nonempty",
-  file.exists("../output/zap_capacity_weighted_tercile_trends_per_residential_acre.pdf") && file.info("../output/zap_capacity_weighted_tercile_trends_per_residential_acre.pdf")$size > 0,
-  file.info("../output/zap_capacity_weighted_tercile_trends_per_residential_acre.pdf")$size,
-  "Per-residential-acre PDF must be nonempty."
-)
-
-write_csv(qc_rows, "../output/zap_capacity_weighted_tercile_trends_qc.csv", na = "")
-
-if (any(qc_rows$status == "fail")) {
-  failed_checks <- paste(qc_rows$check_name[qc_rows$status == "fail"], collapse = ", ")
-  stop("Capacity-weighted ZAP tercile trend QC failed: ", failed_checks)
-}

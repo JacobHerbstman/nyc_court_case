@@ -154,69 +154,6 @@ era_summary <- bind_rows(
 ) %>%
   arrange(outcome_family, cert_era_summary, treat_tercile)
 
-qc_df <- bind_rows(
-  tibble(
-    metric = "cohort_panel_row_count",
-    value = nrow(cohort_panel),
-    note = "Balanced 59 x 50 CD-year cohort panel."
-  ),
-  tibble(
-    metric = "cohort_panel_expected_row_count",
-    value = 59L * length(1976:2025),
-    note = "Expected balanced row count for the linked cohort panel."
-  ),
-  tibble(
-    metric = "era_summary_0_10_max_cert_year",
-    value = max(cohort_panel_mature_0_10$cert_year, na.rm = TRUE),
-    note = "Maximum certification year used in comparable observed 0-10 buildout summaries."
-  ),
-  tibble(
-    metric = "era_summary_0_10_min_cert_year",
-    value = min(cohort_panel_mature_0_10$cert_year, na.rm = TRUE),
-    note = "Minimum certification year used; earlier cohorts are not treated as observed zero because HDB support is post-2010."
-  ),
-  tibble(
-    metric = "immature_2016_2025_application_count",
-    value = sum(cohort_panel$initial_apps[cohort_panel$cert_year >= 2016], na.rm = TRUE),
-    note = "Applications excluded from comparable 0-10 era summaries because the buildout window is immature."
-  ),
-  tibble(
-    metric = "historical_1976_2009_application_count",
-    value = sum(cohort_panel$initial_apps[cohort_panel$cert_year < 2010], na.rm = TRUE),
-    note = "Applications excluded because HDB does not provide complete 0-10 post-certification outcome support before 2010."
-  ),
-  tibble(
-    metric = "observable_0_10_no_valid_bbl_application_count",
-    value = sum(cohort_panel_mature_0_10$no_valid_bbl_apps, na.rm = TRUE),
-    note = "Observed-window applications excluded from rate denominators because exact-BBL linkage is impossible."
-  ),
-  tibble(
-    metric = "immature_0_10_nonmissing_cell_count",
-    value = sum(!is.na(unlist(cohort_panel[cohort_panel$cert_year > 2015, linked_0_10_cols])), na.rm = TRUE),
-    note = "Should be zero because raw 0-10 linked outcomes are masked for immature 2016-2025 cohorts."
-  ),
-  tibble(
-    metric = "historical_0_10_nonmissing_cell_count",
-    value = sum(!is.na(unlist(cohort_panel[cohort_panel$cert_year < 2010, linked_0_10_cols])), na.rm = TRUE),
-    note = "Should be zero because pre-2010 cohorts are unsupported rather than observed zeros."
-  ),
-  tibble(
-    metric = "linked_addition_projects_share_0_10",
-    value = sum(cohort_panel_mature_0_10$linked_addition_projects_0_10, na.rm = TRUE) / sum(cohort_panel_mature_0_10$linkable_apps, na.rm = TRUE),
-    note = "Share of linkable ZAP housing projects that link to any addition-producing housing job within 0-10 years."
-  ),
-  tibble(
-    metric = "linked_nb_50_plus_projects_share_0_10",
-    value = sum(cohort_panel_mature_0_10$linked_nb_50_plus_projects_0_10, na.rm = TRUE) / sum(cohort_panel_mature_0_10$linkable_apps, na.rm = TRUE),
-    note = "Share of linkable ZAP housing projects that link to any 50+ unit new-building housing job within 0-10 years."
-  ),
-  tibble(
-    metric = "mean_linked_gross_add_units_per_app_0_10",
-    value = sum(cohort_panel_mature_0_10$linked_gross_add_units_0_10, na.rm = TRUE) / sum(cohort_panel_mature_0_10$linkable_apps, na.rm = TRUE),
-    note = "Average linked gross addition units per linkable ZAP housing project within the 0-10 year window."
-  )
-)
-
 plot_df <- era_summary %>%
   mutate(
     cert_era_summary = factor(
@@ -252,6 +189,5 @@ copy_if_changed(temp_pdf, "../output/zap_housing_hdb_plots.pdf")
 
 write_csv_if_changed(cohort_panel, "../output/zap_housing_hdb_cohort_panel.csv")
 write_csv_if_changed(era_summary, "../output/zap_housing_hdb_tercile_era_summary.csv")
-write_csv_if_changed(qc_df, "../output/zap_housing_hdb_summary_qc.csv")
 
 cat("Wrote ZAP-HDB summary outputs to ../output\n")

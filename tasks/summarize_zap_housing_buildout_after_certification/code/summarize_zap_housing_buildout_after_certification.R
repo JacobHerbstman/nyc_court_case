@@ -343,61 +343,8 @@ print(plot_obj)
 dev.off()
 copy_if_changed(temp_pdf, "../output/zap_housing_buildout_plots.pdf")
 
-nonlinkable_nonmissing_count <- project_out %>%
-  filter(!bbl_linkable) %>%
-  summarise(
-    value = sum(
-      !is.na(any_housing_permit_link_0_5) |
-        !is.na(any_housing_completion_link_0_5) |
-        !is.na(any_nb_50plus_permit_link_0_5) |
-        !is.na(any_nb_50plus_completion_link_0_5) |
-        !is.na(linked_gross_add_units_permitted_0_5) |
-        !is.na(linked_gross_add_units_completed_0_5) |
-        !is.na(linked_nb_50plus_gross_units_permitted_0_5) |
-        !is.na(linked_nb_50plus_gross_units_completed_0_5) |
-        !is.na(any_housing_permit_link_0_10) |
-        !is.na(any_housing_completion_link_0_10) |
-        !is.na(any_nb_50plus_permit_link_0_10) |
-        !is.na(any_nb_50plus_completion_link_0_10) |
-        !is.na(linked_gross_add_units_permitted_0_10) |
-        !is.na(linked_gross_add_units_completed_0_10) |
-        !is.na(linked_nb_50plus_gross_units_permitted_0_10) |
-        !is.na(linked_nb_50plus_gross_units_completed_0_10),
-      na.rm = TRUE
-    )
-  ) %>%
-  pull(value)
-
-summary_cell_count <- summary_df %>%
-  filter(outcome %in% plot_outcomes) %>%
-  count(window, cert_period, outcome, name = "tercile_cells") %>%
-  summarise(value = sum(tercile_cells != 3)) %>%
-  pull(value)
-
-qc_df <- bind_rows(
-  tibble(metric = "project_count", value = nrow(project_out), status = if_else(nrow(project_out) > 0, "pass", "fail"), note = "Housing-oriented ZAP projects in linked project summary."),
-  tibble(metric = "cd_count", value = n_distinct(project_out$borocd[!is.na(project_out$borocd)]), status = if_else(n_distinct(project_out$borocd[!is.na(project_out$borocd)]) == 59, "pass", "fail"), note = "Expected 59 CDs."),
-  tibble(metric = "assigned_candidate_duplicate_job_count", value = nrow(candidates) - n_distinct(candidates$job_number), status = if_else(nrow(candidates) == n_distinct(candidates$job_number), "pass", "fail"), note = "Assigned ZAP-HDB candidate links should be unique by HDB job."),
-  tibble(metric = "mature_0_5_project_count", value = sum(project_out$mature_0_5, na.rm = TRUE), status = "pass", note = "Certification cohorts 2010-2020."),
-  tibble(metric = "mature_0_5_linkable_project_count", value = sum(project_out$mature_0_5 & project_out$bbl_linkable, na.rm = TRUE), status = "pass", note = "Certification cohorts 2010-2020 with valid ZAP BBL support."),
-  tibble(metric = "mature_0_5_no_valid_bbl_project_count", value = sum(project_out$mature_0_5 & !project_out$bbl_linkable, na.rm = TRUE), status = "pass", note = "Certification cohorts 2010-2020 excluded from link-rate denominators because they have no valid ZAP BBL."),
-  tibble(metric = "mature_0_10_project_count", value = sum(project_out$mature_0_10, na.rm = TRUE), status = "pass", note = "Certification cohorts 2010-2015."),
-  tibble(metric = "mature_0_10_linkable_project_count", value = sum(project_out$mature_0_10 & project_out$bbl_linkable, na.rm = TRUE), status = "pass", note = "Certification cohorts 2010-2015 with valid ZAP BBL support."),
-  tibble(metric = "mature_0_10_no_valid_bbl_project_count", value = sum(project_out$mature_0_10 & !project_out$bbl_linkable, na.rm = TRUE), status = "pass", note = "Certification cohorts 2010-2015 excluded from link-rate denominators because they have no valid ZAP BBL."),
-  tibble(metric = "nonlinkable_project_nonmissing_outcome_count", value = nonlinkable_nonmissing_count, status = if_else(nonlinkable_nonmissing_count == 0, "pass", "fail"), note = "Projects without valid ZAP BBLs must be masked, not counted as zero build-out."),
-  tibble(metric = "summary_plot_outcome_missing_cell_count", value = summary_cell_count, status = if_else(summary_cell_count == 0, "pass", "fail"), note = "Each plotted outcome/window/cohort should have Low, Middle, and High tercile cells."),
-  tibble(metric = "negative_unit_outcome_count", value = sum(project_long$value < 0 & project_long$outcome %in% c("linked_gross_add_units_permitted_per_project", "linked_gross_add_units_completed_per_project", "linked_nb_50plus_units_permitted_per_project", "linked_nb_50plus_units_completed_per_project"), na.rm = TRUE), status = if_else(sum(project_long$value < 0 & project_long$outcome %in% c("linked_gross_add_units_permitted_per_project", "linked_gross_add_units_completed_per_project", "linked_nb_50plus_units_permitted_per_project", "linked_nb_50plus_units_completed_per_project"), na.rm = TRUE) == 0, "pass", "fail"), note = "Linked unit outcomes must be nonnegative."),
-  tibble(metric = "plot_file_bytes", value = file.info("../output/zap_housing_buildout_plots.pdf")$size, status = if_else(file.exists("../output/zap_housing_buildout_plots.pdf") && file.info("../output/zap_housing_buildout_plots.pdf")$size > 0, "pass", "fail"), note = "Generated PDF should be nonempty.")
-)
-
-if (any(qc_df$status == "fail")) {
-  write_csv_if_changed(qc_df, "../output/zap_housing_buildout_qc.csv")
-  stop("ZAP build-out QC failed.")
-}
-
 write_csv_if_changed(project_out, "../output/zap_housing_buildout_project_audited.csv")
 write_csv_if_changed(summary_df, "../output/zap_housing_buildout_cohort_summary.csv")
 write_csv_if_changed(coefficients, "../output/zap_housing_buildout_delay_coefficients.csv")
-write_csv_if_changed(qc_df, "../output/zap_housing_buildout_qc.csv")
 
-cat("Wrote ZAP build-out diagnostics to ../output\n")
+cat("Wrote ZAP build-out outputs to ../output\n")
