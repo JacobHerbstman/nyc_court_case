@@ -14,12 +14,10 @@ boundary_files <- read_csv("../input/dcp_boundary_files.csv", show_col_types = F
 
 if (nrow(boundary_files) == 0) {
   write_csv_if_changed(tibble(), "../output/dcp_boundary_raw_files.csv")
-  write_csv_if_changed(tibble(), "../output/dcp_boundary_raw_qc.csv")
   quit(save = "no")
 }
 
 index_rows <- list()
-qc_rows <- list()
 
 for (i in seq_len(nrow(boundary_files))) {
   row <- boundary_files[i, ]
@@ -37,16 +35,6 @@ for (i in seq_len(nrow(boundary_files))) {
       raw_path = row$raw_path,
       shapefile_inside_zip = if (length(shp_paths) == 0) NA_character_ else paste(basename(shp_paths), collapse = ";"),
       raw_parquet_path = NA_character_,
-      status = if (length(shp_paths) == 0) "shapefile_not_found_in_zip" else "unexpected_shapefile_payload"
-    )
-
-    qc_rows[[i]] <- tibble(
-      source_id = row$source_id,
-      pull_date = row$pull_date,
-      row_count = NA_real_,
-      column_count = NA_real_,
-      raw_crs_epsg = NA_integer_,
-      shapefile_inside_zip = if (length(shp_paths) == 0) NA_character_ else paste(basename(shp_paths), collapse = ";"),
       status = if (length(shp_paths) == 0) "shapefile_not_found_in_zip" else "unexpected_shapefile_payload"
     )
     next
@@ -83,18 +71,7 @@ for (i in seq_len(nrow(boundary_files))) {
     raw_parquet_path = out_parquet,
     status = "loaded"
   )
-
-  qc_rows[[i]] <- tibble(
-    source_id = row$source_id,
-    pull_date = row$pull_date,
-    row_count = nrow(raw_df),
-    column_count = ncol(raw_df),
-    raw_crs_epsg = st_crs(boundary_sf)$epsg,
-    shapefile_inside_zip = basename(shp_path),
-    status = "loaded"
-  )
 }
 
 write_csv_if_changed(bind_rows(index_rows), "../output/dcp_boundary_raw_files.csv")
-write_csv_if_changed(bind_rows(qc_rows), "../output/dcp_boundary_raw_qc.csv")
 cat("Wrote raw DCP boundary outputs to ../output\n")

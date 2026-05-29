@@ -16,8 +16,7 @@ bps_files <- bps_files |>
   arrange(year)
 
 if (nrow(bps_files) == 0) {
-  write_csv(tibble(), "../output/census_bps_index.csv", na = "")
-  write_csv(tibble(status = "no_bps_raw_files"), "../output/census_bps_qc.csv", na = "")
+  write_parquet_if_changed(tibble(), "../output/census_bps_city_year.parquet")
   quit(save = "no")
 }
 
@@ -27,9 +26,6 @@ borough_lookup <- tibble(
   place_name_normalized = c("bronx borough", "brooklyn borough", "manhattan borough", "queens borough", "staten island borough")
 )
 
-index_rows <- list()
-qc_rows <- list()
-borough_rows <- list()
 city_rows <- list()
 
 for (i in seq_len(nrow(bps_files))) {
@@ -39,21 +35,8 @@ for (i in seq_len(nrow(bps_files))) {
     as_tibble()
 
   if (nrow(parsed_df) == 0) {
-    qc_rows[[i]] <- tibble(
-      year = row$year,
-      schema_fields = NA_integer_,
-      raw_row_count = 0L,
-      matched_borough_count = 0L,
-      duplicate_match_count = 0L,
-      unmatched_expected_count = 5L,
-      county_match_share = NA_real_,
-      city_total_units = NA_real_,
-      status = "no_parseable_rows"
-    )
     next
   }
-
-  schema_fields <- parsed_df$schema_fields[1]
 
   borough_df <- parsed_df |>
     filter(state_code == "36") |>
@@ -62,12 +45,6 @@ for (i in seq_len(nrow(bps_files))) {
 
   borough_df <- borough_df |>
     mutate(county_matches_name = county_code == expected_county_code)
-
-  out_parquet_local <- file.path("..", "output", paste0("census_bps_", row$year, ".parquet"))
-  out_parquet <- file.path("..", "..", "stage_census_bps", "output", basename(out_parquet_local))
-  write_parquet_if_changed(borough_df, out_parquet_local)
-
-  borough_rows[[length(borough_rows) + 1L]] <- borough_df
 
   city_df <- if (nrow(borough_df) == 0) {
     tibble(
@@ -94,35 +71,10 @@ for (i in seq_len(nrow(bps_files))) {
   }
 
   city_rows[[length(city_rows) + 1L]] <- city_df
-
-  index_rows[[i]] <- tibble(
-    year = row$year,
-    raw_path = row$raw_path,
-    raw_parquet_path = row$raw_parquet_path,
-    parquet_path = out_parquet
-  )
-
-  qc_rows[[i]] <- tibble(
-    year = row$year,
-    schema_fields = schema_fields,
-    raw_row_count = nrow(parsed_df),
-    matched_borough_count = nrow(borough_df),
-    duplicate_match_count = sum(duplicated(borough_df$borough_name)),
-    unmatched_expected_count = 5L - n_distinct(borough_df$borough_name),
-    county_match_share = if (nrow(borough_df) == 0) NA_real_ else mean(borough_df$county_matches_name),
-    city_total_units = if (nrow(city_df) == 0) NA_real_ else city_df$city_total_units[1],
-    status = if (nrow(borough_df) == 5 && !any(duplicated(borough_df$borough_name))) "ok" else "review_required"
-  )
 }
-
-borough_year_df <- bind_rows(borough_rows) |>
-  select(year, borough_name, county_code, place_name_raw, place_name_normalized, schema_fields, one_unit_units, two_unit_units, three_four_unit_units, five_plus_unit_units, total_units, county_matches_name, source_raw_path)
 
 city_year_df <- bind_rows(city_rows)
 
-write_parquet_if_changed(borough_year_df, "../output/census_bps_borough_year.parquet")
 write_parquet_if_changed(city_year_df, "../output/census_bps_city_year.parquet")
-write_csv(bind_rows(index_rows), "../output/census_bps_index.csv", na = "")
-write_csv(bind_rows(qc_rows), "../output/census_bps_qc.csv", na = "")
 
 cat("Wrote Census BPS staging outputs to ../output\n")

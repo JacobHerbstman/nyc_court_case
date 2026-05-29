@@ -19,7 +19,6 @@ dob_files <- read_csv("../input/dob_open_data_files.csv", show_col_types = FALSE
 
 if (nrow(dob_files) == 0) {
   write_csv_if_changed(tibble(), "../output/dob_open_data_raw_files.csv")
-  write_csv_if_changed(tibble(), "../output/dob_open_data_raw_qc.csv")
   quit(save = "no")
 }
 
@@ -41,7 +40,6 @@ if (nrow(multi_pull_sources) > 0) {
 }
 
 index_rows <- list()
-qc_rows <- list()
 
 for (i in seq_len(nrow(dob_files))) {
   row <- dob_files[i, ]
@@ -74,18 +72,7 @@ for (i in seq_len(nrow(dob_files))) {
     checksum_sha256 = raw_checksum,
     status = row$status
   )
-
-  qc_rows[[i]] <- tibble(
-    source_id = row$source_id,
-    pull_date = row$pull_date,
-    raw_path = row$raw_path,
-    checksum_sha256 = raw_checksum,
-    row_count = nrow(raw_df),
-    column_count = ncol(raw_df),
-    status = row$status
-  )
 }
 
 write_csv_if_changed(bind_rows(index_rows), "../output/dob_open_data_raw_files.csv")
-write_csv_if_changed(bind_rows(qc_rows), "../output/dob_open_data_raw_qc.csv")
 cat("Wrote DOB raw load outputs to ../output\n")

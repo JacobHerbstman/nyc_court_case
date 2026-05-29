@@ -74,17 +74,13 @@ inventory <- read_csv("../input/dof_421a_raw_files.csv", show_col_types = FALSE,
       file.path(dirname(inventory_csv_target), raw_path)
     )
   ) %>%
-  filter(status == "downloaded", file.exists(raw_path_resolved))
+  filter(status %in% c("downloaded", "available"), file.exists(raw_path_resolved))
 
 if (nrow(inventory) == 0) {
-  qc_df <- tibble(metric = "input_file_count", value = 0, status = "fail", note = "No downloaded 421-a Excel files were found at resolved paths.")
-  write_csv_if_changed(qc_df, "../output/dof_421a_stage_qc.csv")
-  stop("DOF 421-a staging QC failed.")
+  stop("No downloaded 421-a Excel files were found at resolved paths.")
 }
 
 rows <- bind_rows(lapply(seq_len(nrow(inventory)), function(i) parse_421a_file(inventory[i, ]))) %>%
-  mutate(source_row_id = row_number()) %>%
-  select(source_row_id, everything()) %>%
   arrange(fiscal_year_end, borough_file, block, lot)
 
 bbl_year <- rows %>%
@@ -105,23 +101,22 @@ bbl_year <- rows %>%
     max_year_built = ifelse(is.infinite(max_year_built), NA_integer_, max_year_built)
   )
 
-qc_df <- bind_rows(
-  tibble(metric = "input_file_count", value = nrow(inventory), status = if_else(nrow(inventory) > 0, "pass", "fail"), note = "Downloaded 421-a Excel files staged."),
-  tibble(metric = "staged_row_count", value = nrow(rows), status = if_else(nrow(rows) > 0, "pass", "fail"), note = "Property rows parsed from Excel files."),
-  tibble(metric = "source_row_id_duplicate_count", value = nrow(rows) - n_distinct(rows$source_row_id), status = if_else(nrow(rows) == n_distinct(rows$source_row_id), "pass", "fail"), note = "Staged row id should be unique."),
-  tibble(metric = "bbl_year_duplicate_count", value = nrow(bbl_year) - n_distinct(paste(bbl_year$bbl, bbl_year$fiscal_year_end)), status = if_else(nrow(bbl_year) == n_distinct(paste(bbl_year$bbl, bbl_year$fiscal_year_end)), "pass", "fail"), note = "Collapsed BBL-fiscal-year table should be unique."),
-  tibble(metric = "negative_unit_count", value = sum(rows$residential_units < 0 | rows$total_units < 0, na.rm = TRUE), status = if_else(sum(rows$residential_units < 0 | rows$total_units < 0, na.rm = TRUE) == 0, "pass", "fail"), note = "Unit counts must be nonnegative."),
-  tibble(metric = "fiscal_year_min", value = min(rows$fiscal_year_end, na.rm = TRUE), status = if_else(min(rows$fiscal_year_end, na.rm = TRUE) <= 2014, "pass", "fail"), note = "Expected support to FY2013/14."),
-  tibble(metric = "fiscal_year_max", value = max(rows$fiscal_year_end, na.rm = TRUE), status = if_else(max(rows$fiscal_year_end, na.rm = TRUE) >= 2025, "pass", "fail"), note = "Expected support through at least FY2024/25.")
-)
-
-if (any(qc_df$status == "fail")) {
-  write_csv_if_changed(qc_df, "../output/dof_421a_stage_qc.csv")
-  stop("DOF 421-a staging QC failed.")
+if (nrow(rows) == 0) {
+  stop("No DOF 421-a property rows were parsed from downloaded files.")
 }
 
-write_csv_if_changed(rows, "../output/dof_421a_exempt_property_rows.csv")
-write_csv_if_changed(bbl_year, "../output/dof_421a_exempt_bbl_year.csv")
-write_csv_if_changed(qc_df, "../output/dof_421a_stage_qc.csv")
+if (nrow(bbl_year) != n_distinct(paste(bbl_year$bbl, bbl_year$fiscal_year_end))) {
+  stop("DOF 421-a BBL-fiscal-year output is not unique.")
+}
 
-cat("Staged DOF 421-a exemption records to ../output/dof_421a_exempt_property_rows.csv\n")
+if (sum(rows$residential_units < 0 | rows$total_units < 0, na.rm = TRUE) > 0) {
+  stop("DOF 421-a staging found negative unit counts.")
+}
+
+if (min(rows$fiscal_year_end, na.rm = TRUE) > 2014 || max(rows$fiscal_year_end, na.rm = TRUE) < 2025) {
+  stop("DOF 421-a fiscal-year coverage is outside the expected range.")
+}
+
+write_csv_if_changed(bbl_year, "../output/dof_421a_exempt_bbl_year.csv")
+
+cat("Staged DOF 421-a exemption BBL-year data to ../output/dof_421a_exempt_bbl_year.csv\n")

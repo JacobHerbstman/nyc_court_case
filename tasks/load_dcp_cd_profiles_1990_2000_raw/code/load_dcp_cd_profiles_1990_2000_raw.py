@@ -119,7 +119,6 @@ def main() -> None:
 
     if file_inventory.empty:
         pd.DataFrame().to_csv("../output/dcp_cd_profiles_1990_2000_raw_files.csv", index=False)
-        pd.DataFrame().to_csv("../output/dcp_cd_profiles_1990_2000_raw_qc.csv", index=False)
         return
 
     file_inventory = file_inventory[
@@ -130,7 +129,6 @@ def main() -> None:
 
     if file_inventory.empty:
         pd.DataFrame().to_csv("../output/dcp_cd_profiles_1990_2000_raw_files.csv", index=False)
-        pd.DataFrame().to_csv("../output/dcp_cd_profiles_1990_2000_raw_qc.csv", index=False)
         return
 
     index_rows: list[dict[str, object]] = []
@@ -331,7 +329,6 @@ def main() -> None:
         )
 
     pd.DataFrame(index_rows).to_csv("../output/dcp_cd_profiles_1990_2000_raw_files.csv", index=False)
-    pd.DataFrame(qc_rows).to_csv("../output/dcp_cd_profiles_1990_2000_raw_qc.csv", index=False)
     print("Wrote raw DCP CD profile outputs to ../output")
 
 

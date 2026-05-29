@@ -55,15 +55,6 @@ matter_sources <- source_files %>%
   ) %>%
   arrange(vote_date, project_name)
 
-source_files_out <- source_files %>%
-  select(
-    source_id, source_role, source_label, seed_id, matter_id, matter_guid,
-    matter_file, project_name, lu_numbers, resolution_numbers, ulurp_numbers,
-    vote_date, council_disposition, vote_margin, url, raw_path, fetch_status,
-    file_available, file_size_bytes, checksum_sha256, notes
-  ) %>%
-  arrange(seed_id, source_role, source_label)
-
 records_qc <- tibble(
   check_name = c(
     "unique_seed_matter_rows",
@@ -89,9 +80,7 @@ records_qc <- tibble(
 )
 
 write_csv_if_changed(matter_sources, "../output/council_land_use_matter.csv")
-write_csv_if_changed(source_files_out, "../output/council_land_use_source_files.csv")
-write_csv_if_changed(records_qc, "../output/council_land_use_records_qc.csv")
 
 if (any(!records_qc$passed)) {
-  stop("Council land-use staging failed QC. See ../output/council_land_use_records_qc.csv")
+  stop("Council land-use staging failed: ", paste(records_qc$check_name[!records_qc$passed], collapse = ", "))
 }

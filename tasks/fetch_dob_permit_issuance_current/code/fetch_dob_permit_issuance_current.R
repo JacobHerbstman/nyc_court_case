@@ -40,14 +40,5 @@ index_df <- tibble(
   status = status
 )
 
-qc_df <- tibble(
-  source_id = source_id,
-  dataset_id = dataset_id,
-  pull_date = pull_date,
-  status = status,
-  raw_file_present = file.exists(raw_path)
-)
-
 write_csv_if_changed(index_df, "../output/dob_permit_issuance_current_files.csv")
-write_csv_if_changed(qc_df, "../output/dob_permit_issuance_current_qc.csv")
 cat("Wrote DOB permit issuance current fetch outputs to ../output\n")

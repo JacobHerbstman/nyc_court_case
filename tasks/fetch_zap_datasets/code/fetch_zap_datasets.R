@@ -26,23 +26,7 @@ pull_date <- resolve_raw_pull_date(setNames(
   source_rows$source_id
 ))
 inventory_rows <- list()
-provenance_rows <- list()
 inventory_counter <- 0L
-provenance_counter <- 0L
-
-count_downloaded_csv_rows <- function(path) {
-  if (!file.exists(path)) {
-    return(NA_integer_)
-  }
-
-  tryCatch(
-    nrow(read_csv(path, show_col_types = FALSE, progress = FALSE)),
-    error = function(e) {
-      message(e$message)
-      NA_integer_
-    }
-  )
-}
 
 for (i in seq_len(nrow(source_rows))) {
   source_row <- source_rows[i, ]
@@ -68,16 +52,6 @@ for (i in seq_len(nrow(source_rows))) {
 
   metadata_json <- fromJSON(metadata_json_path, simplifyVector = FALSE)
   attachment_rows <- metadata_json$metadata$attachments
-  rows_updated_at <- if (!is.null(metadata_json$rowsUpdatedAt)) {
-    as.character(as.POSIXct(as.numeric(metadata_json$rowsUpdatedAt), origin = "1970-01-01", tz = "UTC"))
-  } else {
-    NA_character_
-  }
-  view_last_modified <- if (!is.null(metadata_json$viewLastModified)) {
-    as.character(as.POSIXct(as.numeric(metadata_json$viewLastModified), origin = "1970-01-01", tz = "UTC"))
-  } else {
-    NA_character_
-  }
 
   inventory_counter <- inventory_counter + 1L
   inventory_rows[[inventory_counter]] <- tibble(
@@ -128,37 +102,11 @@ for (i in seq_len(nrow(source_rows))) {
       )
     }
   }
-
-  provenance_counter <- provenance_counter + 1L
-  provenance_rows[[provenance_counter]] <- tibble(
-    source_id = source_id,
-    dataset_id = dataset_id,
-    pull_date = pull_date,
-    dataset_name = as.character(metadata_json$name),
-    rows_updated_at_utc = rows_updated_at,
-    view_last_modified_utc = view_last_modified,
-    row_count_downloaded = count_downloaded_csv_rows(rows_csv_path),
-    first_column_nonnull_count = as.character(metadata_json$columns[[1]]$cachedContents$count),
-    column_count = length(metadata_json$columns),
-    attachment_count = length(attachment_rows),
-    rows_csv_url = rows_csv_url,
-    metadata_url = metadata_url,
-    note = "Fetched the current NYC Open Data snapshot, metadata JSON, and attached data dictionary files for the ZAP dataset."
-  )
 }
 
 file_inventory <- bind_rows(inventory_rows) |>
   arrange(source_id, file_role, raw_path)
 
-checksum_table <- file_inventory |>
-  mutate(checksum_sha256 = if_else(file.exists(raw_path), vapply(raw_path, compute_sha256, character(1)), NA_character_)) |>
-  select(source_id, vintage, pull_date, file_role, raw_path, checksum_sha256)
-
-provenance_table <- bind_rows(provenance_rows) |>
-  arrange(source_id)
-
 write_csv_if_changed(file_inventory, "../output/zap_files.csv")
-write_csv_if_changed(checksum_table, "../output/zap_checksums.csv")
-write_csv_if_changed(provenance_table, "../output/zap_provenance.csv")
 
 cat("Wrote ZAP fetch outputs to ../output\n")

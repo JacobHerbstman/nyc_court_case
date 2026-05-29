@@ -56,7 +56,6 @@ status_for_empty_request <- function(request_status) {
 }
 
 index_rows <- list()
-qc_rows <- list()
 row_id <- 1
 
 for (i in seq_len(nrow(archive_sources))) {
@@ -78,28 +77,9 @@ for (i in seq_len(nrow(archive_sources))) {
       file_size_bytes = NA_real_,
       status = empty_status
     )
-    qc_rows[[i]] <- tibble(
-      source_id = source_row$source_id,
-      request_id = source_row$request_id,
-      request_status = request_row$status[[1]],
-      submitted_date = request_row$submitted_date[[1]],
-      returned_filename = request_row$returned_filename[[1]],
-      returned_file_count = 0,
-      status = empty_status
-    )
     row_id <- row_id + 1
     next
   }
-
-  qc_rows[[i]] <- tibble(
-    source_id = source_row$source_id,
-    request_id = source_row$request_id,
-    request_status = request_row$status[[1]],
-    submitted_date = request_row$submitted_date[[1]],
-    returned_filename = request_row$returned_filename[[1]],
-    returned_file_count = length(raw_files),
-    status = "returned_file_present"
-  )
 
   for (raw_path in raw_files) {
     raw_request_id <- str_split(raw_path, .Platform$file.sep)[[1]]
@@ -129,5 +109,4 @@ for (i in seq_len(nrow(archive_sources))) {
 }
 
 write_csv_if_changed(bind_rows(index_rows), "../output/archival_record_raw_files.csv")
-write_csv_if_changed(bind_rows(qc_rows), "../output/archival_record_raw_qc.csv")
 cat("Wrote archival raw inventory to ../output\n")

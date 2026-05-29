@@ -16,7 +16,7 @@ fetch_df <- read_csv("../input/dob_permit_issuance_current_files.csv", show_col_
 
 if (nrow(fetch_df) == 0) {
   write_csv(tibble(), "../output/dob_permit_issuance_current_raw_files.csv", na = "")
-  write_csv(tibble(), "../output/dob_permit_issuance_current_raw_qc.csv", na = "")
+  write_parquet_if_changed(tibble(), "../output/dob_permit_issuance_current_raw.parquet")
   quit(save = "no")
 }
 
@@ -60,15 +60,5 @@ index_df <- tibble(
   status = row$status[1]
 )
 
-qc_df <- tibble(
-  source_id = row$source_id[1],
-  dataset_id = row$dataset_id[1],
-  pull_date = row$pull_date[1],
-  row_count = nrow(raw_df),
-  column_count = ncol(raw_df),
-  status = row$status[1]
-)
-
 write_csv(index_df, "../output/dob_permit_issuance_current_raw_files.csv", na = "")
-write_csv(qc_df, "../output/dob_permit_issuance_current_raw_qc.csv", na = "")
 cat("Wrote DOB permit issuance current raw outputs to ../output\n")

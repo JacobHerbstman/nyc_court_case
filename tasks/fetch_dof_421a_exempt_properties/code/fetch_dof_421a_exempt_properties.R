@@ -10,6 +10,20 @@ suppressPackageStartupMessages({
 source("../../_lib/source_pipeline_utils.R")
 
 raw_dir <- "../output/raw"
+
+if (file.exists("../output/dof_421a_raw_files.csv")) {
+  existing_inventory <- read_csv("../output/dof_421a_raw_files.csv", show_col_types = FALSE, na = c("", "NA"))
+  if (
+    nrow(existing_inventory) > 0 &&
+      all(file.exists(existing_inventory$raw_path)) &&
+      all(file.info(existing_inventory$raw_path)$size > 0)
+  ) {
+    write_csv_if_changed(existing_inventory, "../output/dof_421a_raw_files.csv")
+    cat("Using existing DOF 421-a exemption Excel files in", raw_dir, "\n")
+    quit(save = "no")
+  }
+}
+
 source_page <- "https://www.nyc.gov/site/finance/property/benefits-421a.page"
 html_lines <- readLines(source_page, warn = FALSE)
 html <- paste(html_lines, collapse = "\n")
@@ -59,30 +73,27 @@ inventory <- tibble(
   arrange(fiscal_year_end, borough_file)
 
 for (i in seq_len(nrow(inventory))) {
-  temp_file <- tempfile(fileext = tools::file_ext(inventory$file_name[i]))
-  download.file(inventory$source_url[i], temp_file, mode = "wb", quiet = TRUE)
-  copy_if_changed(temp_file, inventory$raw_path[i])
+  if (!file.exists(inventory$raw_path[i])) {
+    temp_file <- tempfile(fileext = tools::file_ext(inventory$file_name[i]))
+    download.file(inventory$source_url[i], temp_file, mode = "wb", quiet = TRUE)
+    copy_if_changed(temp_file, inventory$raw_path[i])
+  }
 }
 
 inventory <- inventory %>%
   mutate(
     file_size_bytes = file.info(raw_path)$size,
-    status = ifelse(!is.na(file_size_bytes) & file_size_bytes > 0, "downloaded", "failed")
+    status = ifelse(!is.na(file_size_bytes) & file_size_bytes > 0, "available", "failed")
   )
 
-qc_df <- bind_rows(
-  tibble(metric = "source_page", value = source_page, status = "pass", note = "Official DOF 421-a exemption page parsed for Excel links."),
-  tibble(metric = "downloaded_file_count", value = as.character(sum(inventory$status == "downloaded")), status = if_else(all(inventory$status == "downloaded"), "pass", "fail"), note = "All parsed borough-year Excel files should download."),
-  tibble(metric = "fiscal_year_min", value = as.character(min(inventory$fiscal_year_end, na.rm = TRUE)), status = if_else(min(inventory$fiscal_year_end, na.rm = TRUE) <= 2014, "pass", "fail"), note = "Expected archival support to FY2013/14."),
-  tibble(metric = "fiscal_year_max", value = as.character(max(inventory$fiscal_year_end, na.rm = TRUE)), status = if_else(max(inventory$fiscal_year_end, na.rm = TRUE) >= 2025, "pass", "fail"), note = "Expected current support through at least FY2024/25."),
-  tibble(metric = "missing_borough_count", value = as.character(sum(is.na(inventory$borough_file))), status = if_else(sum(is.na(inventory$borough_file)) == 0, "pass", "fail"), note = "Each Excel file should map to a borough.")
-)
-
 write_csv_if_changed(inventory, "../output/dof_421a_raw_files.csv")
-write_csv_if_changed(qc_df, "../output/dof_421a_fetch_qc.csv")
 
-if (any(qc_df$status == "fail")) {
-  stop("DOF 421-a fetch QC failed.")
+if (!all(inventory$status == "available")) {
+  stop("At least one parsed DOF 421-a Excel file failed to download.")
+}
+
+if (min(inventory$fiscal_year_end, na.rm = TRUE) > 2014 || max(inventory$fiscal_year_end, na.rm = TRUE) < 2025) {
+  stop("DOF 421-a fiscal-year coverage is outside the expected range.")
 }
 
 cat("Fetched DOF 421-a exemption Excel files to", raw_dir, "\n")

@@ -53,18 +53,6 @@ inventory_df <- source_catalog %>%
     official_url
   )
 
-qc_df <- inventory_df %>%
-  group_by(source_id) %>%
-  summarise(
-    inventory_rows = n(),
-    returned_file_rows = sum(inventory_status == "returned_file_present", na.rm = TRUE),
-    distinct_request_ids = n_distinct(request_id[!is.na(request_id)]),
-    planned_request_rows = sum(request_status == "planned", na.rm = TRUE),
-    deferred_request_rows = sum(request_status == "defer_until_needed", na.rm = TRUE),
-    submitted_no_return_rows = sum(inventory_status == "request_submitted_no_returned_files", na.rm = TRUE),
-    .groups = "drop"
-  )
-
 if (nrow(inventory_df) == 0) {
   inventory_df <- tibble(
     source_id = character(),
@@ -83,18 +71,7 @@ if (nrow(inventory_df) == 0) {
     returned_filename = character(),
     official_url = character()
   )
-
-  qc_df <- tibble(
-    source_id = character(),
-    inventory_rows = double(),
-    returned_file_rows = double(),
-    distinct_request_ids = double(),
-    planned_request_rows = double(),
-    deferred_request_rows = double(),
-    submitted_no_return_rows = double()
-  )
 }
 
 write_csv(inventory_df, "../output/archival_record_inventory.csv", na = "")
-write_csv(qc_df, "../output/archival_record_inventory_qc.csv", na = "")
 cat("Wrote archival record inventory to ../output/archival_record_inventory.csv\n")

@@ -24,7 +24,6 @@ reference_rows <- zap_files |>
   mutate(raw_path = as.character(raw_path), vintage = as.character(vintage))
 
 index_rows <- list()
-qc_rows <- list()
 column_rows <- list()
 row_id <- 1L
 
@@ -41,26 +40,12 @@ if (nrow(reference_rows) > 0) {
       status = row$status
     )
 
-    qc_rows[[row_id]] <- tibble(
-      source_id = row$source_id,
-      vintage = row$vintage,
-      file_role = row$file_role,
-      raw_path = row$raw_path,
-      row_count = NA_real_,
-      column_count = NA_real_,
-      unique_project_id_count = NA_integer_,
-      nonmissing_project_id_share = NA_real_,
-      nonmissing_bbl_share = NA_real_,
-      status = row$status
-    )
-
     row_id <- row_id + 1L
   }
 }
 
 if (nrow(csv_rows) == 0) {
   write_csv(bind_rows(index_rows), "../output/zap_raw_files.csv", na = "")
-  write_csv(bind_rows(qc_rows), "../output/zap_raw_qc.csv", na = "")
   write_csv(tibble(), "../output/zap_columns_metadata.csv", na = "")
   quit(save = "no")
 }
@@ -123,24 +108,10 @@ for (i in seq_len(nrow(csv_rows))) {
     status = row$status
   )
 
-  qc_rows[[row_id]] <- tibble(
-    source_id = row$source_id,
-    vintage = row$vintage,
-    file_role = row$file_role,
-    raw_path = row$raw_path,
-    row_count = nrow(raw_df),
-    column_count = ncol(raw_df),
-    unique_project_id_count = if ("project_id" %in% names(raw_df)) n_distinct(raw_df$project_id) else NA_integer_,
-    nonmissing_project_id_share = if ("project_id" %in% names(raw_df)) mean(!is.na(raw_df$project_id) & raw_df$project_id != "") else NA_real_,
-    nonmissing_bbl_share = if ("bbl" %in% names(raw_df)) mean(!is.na(raw_df$bbl) & raw_df$bbl != "") else NA_real_,
-    status = row$status
-  )
-
   row_id <- row_id + 1L
 }
 
 write_csv(bind_rows(index_rows), "../output/zap_raw_files.csv", na = "")
-write_csv(bind_rows(qc_rows), "../output/zap_raw_qc.csv", na = "")
 write_csv(bind_rows(column_rows), "../output/zap_columns_metadata.csv", na = "")
 
 cat("Wrote ZAP raw load outputs to ../output\n")

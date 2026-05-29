@@ -20,6 +20,8 @@ if len(sys.argv) != 2 or not re.fullmatch(r"\d{4}", sys.argv[1]):
     raise RuntimeError("Usage: python3 fetch_legistar_action_votes.py <year>")
 
 QUERY_YEAR = sys.argv[1]
+ACTION_DETAILS_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_action_details.csv")
+SPLIT_VOTE_SIGNALS_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_split_vote_signals.csv")
 
 
 def normalize_space(value: object) -> str:
@@ -42,6 +44,19 @@ def sha256(path: Path) -> str:
 def save_text(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8")
+
+
+def existing_outputs_complete() -> bool:
+    if not ACTION_DETAILS_OUTPUT.exists() or not SPLIT_VOTE_SIGNALS_OUTPUT.exists():
+        return False
+
+    action_details = pd.read_csv(ACTION_DETAILS_OUTPUT, dtype=str, keep_default_na=False)
+    split_vote_signals = pd.read_csv(SPLIT_VOTE_SIGNALS_OUTPUT, dtype=str, keep_default_na=False)
+
+    if action_details.empty or "raw_path" not in action_details.columns:
+        return False
+
+    return all(Path(raw_path).exists() for raw_path in action_details["raw_path"].drop_duplicates() if raw_path)
 
 
 def table_value(soup: BeautifulSoup, table_id: str) -> str | None:
@@ -138,6 +153,9 @@ def parse_action_detail(html: str) -> tuple[dict[str, object], list[dict[str, ob
 
     return summary, votes
 
+
+if existing_outputs_complete():
+    raise SystemExit(0)
 
 history_events = pd.read_csv(
     f"../output/legistar_{QUERY_YEAR}_broad_recall_history_events.csv",
@@ -366,10 +384,8 @@ if QUERY_YEAR == "2001":
 qc = pd.DataFrame(qc_rows)
 
 action_details.to_csv(f"../output/legistar_{QUERY_YEAR}_broad_recall_action_details.csv", index=False)
-member_votes.to_csv(f"../output/legistar_{QUERY_YEAR}_broad_recall_member_votes.csv", index=False)
 split_vote_signals.to_csv(f"../output/legistar_{QUERY_YEAR}_broad_recall_split_vote_signals.csv", index=False)
-vote_count_check.to_csv(f"../output/legistar_{QUERY_YEAR}_broad_recall_vote_count_check.csv", index=False)
-qc.to_csv(f"../output/legistar_{QUERY_YEAR}_broad_recall_action_vote_qc.csv", index=False)
 
 if not qc["passed"].all():
-    raise RuntimeError(f"Legistar {QUERY_YEAR} action-vote fetch failed QC.")
+    failed_checks = ", ".join(qc.loc[~qc["passed"], "check_name"].astype(str))
+    raise RuntimeError(f"Legistar {QUERY_YEAR} action-vote fetch failed: {failed_checks}.")

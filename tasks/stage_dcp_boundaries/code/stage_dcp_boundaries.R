@@ -20,15 +20,14 @@ hex_to_raw <- function(x) {
 
 boundary_files <- read_csv("../input/dcp_boundary_raw_files.csv", show_col_types = FALSE, na = c("", "NA"))
 boundary_files <- boundary_files[!is.na(boundary_files$raw_parquet_path) & file.exists(boundary_files$raw_parquet_path), ]
+boundary_files <- boundary_files[boundary_files$source_id == "dcp_boundary_community_districts", ]
 
 if (nrow(boundary_files) == 0) {
   write_csv(tibble(), "../output/dcp_boundary_index.csv", na = "")
-  write_csv(tibble(status = "no_boundary_raw_files"), "../output/dcp_boundary_qc.csv", na = "")
   quit(save = "no")
 }
 
 index_rows <- list()
-qc_rows <- list()
 
 for (i in seq_len(nrow(boundary_files))) {
   row <- boundary_files[i, ]
@@ -83,8 +82,6 @@ for (i in seq_len(nrow(boundary_files))) {
   out_parquet <- file.path("..", "..", "stage_dcp_boundaries", "output", basename(out_parquet_local))
   write_parquet_if_changed(staged_df, out_parquet_local)
 
-  validity <- st_is_valid(boundary_sf)
-
   index_rows[[i]] <- tibble(
     source_id = row$source_id,
     pull_date = row$pull_date,
@@ -92,19 +89,8 @@ for (i in seq_len(nrow(boundary_files))) {
     raw_parquet_path = row$raw_parquet_path,
     parquet_path = out_parquet
   )
-
-  qc_rows[[i]] <- tibble(
-    source_id = row$source_id,
-    pull_date = row$pull_date,
-    district_count = nrow(staged_df),
-    duplicated_district_id_count = sum(duplicated(staged_df$district_id) & !is.na(staged_df$district_id) & staged_df$district_id != ""),
-    missing_district_id_count = sum(is.na(staged_df$district_id) | staged_df$district_id == ""),
-    invalid_geometry_count = sum(!validity, na.rm = TRUE),
-    total_area = as.numeric(sum(st_area(boundary_sf), na.rm = TRUE))
-  )
 }
 
 write_csv(bind_rows(index_rows), "../output/dcp_boundary_index.csv", na = "")
-write_csv(bind_rows(qc_rows), "../output/dcp_boundary_qc.csv", na = "")
 
 cat("Wrote DCP boundary staging outputs to ../output\n")

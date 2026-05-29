@@ -9,10 +9,14 @@ suppressPackageStartupMessages({
 
 source("../../_lib/source_pipeline_utils.R")
 
-seed_sources <- read_csv("council_land_use_seed_sources.csv", show_col_types = FALSE, na = c("", "NA")) %>%
+seed_sources_raw <- read_csv("council_land_use_seed_sources.csv", show_col_types = FALSE, na = c("", "NA"))
+
+pull_date <- resolve_raw_pull_date(split(seed_sources_raw$expected_filename, seed_sources_raw$source_id))
+
+seed_sources <- seed_sources_raw %>%
   mutate(
     required_flag = str_to_upper(str_squish(as.character(required_flag))) == "TRUE",
-    pull_date = format(Sys.Date(), "%Y%m%d"),
+    pull_date = pull_date,
     raw_path = file.path("..", "..", "..", "data_raw", source_id, pull_date, expected_filename)
   )
 
@@ -20,7 +24,11 @@ fetch_rows <- vector("list", nrow(seed_sources))
 
 for (i in seq_len(nrow(seed_sources))) {
   source_row <- seed_sources[i, ]
-  status <- download_with_status(source_row$url, source_row$raw_path)
+  status <- if (file.exists(source_row$raw_path)) {
+    "downloaded"
+  } else {
+    download_with_status(source_row$url, source_row$raw_path)
+  }
   file_exists <- file.exists(source_row$raw_path)
 
   fetch_rows[[i]] <- source_row %>%
@@ -66,8 +74,7 @@ fetch_qc <- tibble(
 )
 
 write_csv_if_changed(fetch_files, "../output/council_land_use_fetch_files.csv")
-write_csv_if_changed(fetch_qc, "../output/council_land_use_fetch_qc.csv")
 
 if (any(!fetch_qc$passed)) {
-  stop("Council land-use source fetch failed QC. See ../output/council_land_use_fetch_qc.csv")
+  stop("Council land-use source fetch failed: ", paste(fetch_qc$check_name[!fetch_qc$passed], collapse = ", "))
 }

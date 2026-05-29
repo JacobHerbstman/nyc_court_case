@@ -1,16 +1,10 @@
 SHELL := bash
 include ../../shell_functions.make
 
-all: ../output/dob_open_data_files.csv ../output/dob_open_data_qc.csv ../output/dob_field_dictionary.csv
+all: ../output/dob_open_data_files.csv
 
 ../output/dob_open_data_files.csv: stage_dob_open_data.R ../input/dob_open_data_raw_files.csv | ../output
 	$(R) $<
-
-../output/dob_open_data_qc.csv: ../output/dob_open_data_files.csv
-	@test -s "$@"
-
-../output/dob_field_dictionary.csv: ../output/dob_open_data_files.csv
-	@test -s "$@"
 
 ../input/dob_open_data_raw_files.csv: ../../load_dob_open_data_raw/output/dob_open_data_raw_files.csv | ../input
 	@test "$$(readlink "$@")" = "../../load_dob_open_data_raw/output/dob_open_data_raw_files.csv" || ln -sf "../../load_dob_open_data_raw/output/dob_open_data_raw_files.csv" "$@"

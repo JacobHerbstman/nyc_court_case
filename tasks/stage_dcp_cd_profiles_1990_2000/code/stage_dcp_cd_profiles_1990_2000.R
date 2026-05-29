@@ -10,16 +10,6 @@ suppressPackageStartupMessages({
 
 source("../../_lib/source_pipeline_utils.R")
 
-expected_page_types <- c(
-  "social",
-  "social_education",
-  "labor_employment",
-  "labor_income",
-  "income_poverty",
-  "housing",
-  "housing_economic"
-)
-
 token_pattern <- "^-$|^\\$?-?[0-9][0-9,]*(\\.[0-9]+)?$|^\\(\\$?[0-9][0-9,]*(\\.[0-9]+)?\\)$"
 footnote_token_pattern <- "^[0-9]{1,2}$"
 
@@ -183,12 +173,10 @@ raw_index <- raw_index[!is.na(raw_index$raw_parquet_path) & file.exists(raw_inde
 
 if (nrow(raw_index) == 0) {
   write_csv(tibble(), "../output/dcp_cd_profiles_1990_2000_files.csv", na = "")
-  write_csv(tibble(), "../output/dcp_cd_profiles_1990_2000_qc.csv", na = "")
   quit(save = "no")
 }
 
 index_rows <- list()
-qc_rows <- list()
 
 for (i in seq_len(nrow(raw_index))) {
   row <- raw_index[i, ]
@@ -201,12 +189,6 @@ for (i in seq_len(nrow(raw_index))) {
       district_id = str_pad(as.character(district_id), width = 3, side = "left", pad = "0"),
       pdf_page_number = as.integer(pdf_page_number),
       line_number = as.integer(line_number)
-    )
-
-  page_df <- read_csv(row$page_index_csv_path, show_col_types = FALSE, na = c("", "NA")) %>%
-    mutate(
-      district_id = str_pad(as.character(district_id), width = 3, side = "left", pad = "0"),
-      pdf_page_number = as.integer(pdf_page_number)
     )
 
   parsed_rows <- list()
@@ -369,32 +351,7 @@ for (i in seq_len(nrow(raw_index))) {
     raw_review_required = !is.na(row$status) & row$status != "loaded",
     status = "staged"
   )
-
-  district_coverage <- page_df %>%
-    distinct(district_id, profile_page_type)
-
-  qc_rows[[i]] <- tibble(
-    source_id = row$source_id,
-    pull_date = row$pull_date,
-    raw_status = row$status,
-    raw_review_required = !is.na(row$status) & row$status != "loaded",
-    parsed_metric_count = nrow(parsed_df),
-    unresolved_row_count = nrow(unresolved_df),
-    district_count = n_distinct(parsed_df$district_id),
-    page_type_count = n_distinct(parsed_df$profile_page_type),
-    districts_with_seven_page_types = district_coverage %>%
-      count(district_id, name = "page_type_n") %>%
-      summarise(sum(page_type_n == length(expected_page_types))) %>%
-      pull(),
-    distinct_section_count = n_distinct(parsed_df$section_name),
-    parsed_with_footnotes_count = sum(!is.na(parsed_df$footnote_markers)),
-    status = if (
-      n_distinct(parsed_df$district_id) == 59 &&
-        all(expected_page_types %in% parsed_df$profile_page_type)
-    ) "staged" else "review_required"
-  )
 }
 
 write_csv(bind_rows(index_rows), "../output/dcp_cd_profiles_1990_2000_files.csv", na = "")
-write_csv(bind_rows(qc_rows), "../output/dcp_cd_profiles_1990_2000_qc.csv", na = "")
 cat("Wrote DCP CD profile staging outputs to ../output\n")

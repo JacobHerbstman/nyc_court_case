@@ -1,13 +1,10 @@
 SHELL := bash
 include ../../shell_functions.make
 
-all: ../output/archival_record_inventory.csv ../output/archival_record_inventory_qc.csv
+all: ../output/archival_record_inventory.csv
 
 ../output/archival_record_inventory.csv: stage_archival_records.R ../input/source_catalog.csv ../input/archive_requests.csv ../input/archival_record_raw_files.csv | ../output
 	$(R) $<
-
-../output/archival_record_inventory_qc.csv: ../output/archival_record_inventory.csv
-	@test -s "$@"
 
 ../input/source_catalog.csv: ../../source_registry/code/source_catalog.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"

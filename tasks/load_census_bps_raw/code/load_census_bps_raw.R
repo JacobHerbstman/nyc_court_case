@@ -28,17 +28,14 @@ bps_files <- read_csv("../input/census_bps_files.csv", show_col_types = FALSE, n
 
 if (nrow(bps_files) == 0) {
   write_csv_if_changed(tibble(), "../output/census_bps_raw_files.csv")
-  write_csv_if_changed(tibble(), "../output/census_bps_raw_qc.csv")
   quit(save = "no")
 }
 
 index_rows <- list()
-qc_rows <- list()
 
 for (i in seq_len(nrow(bps_files))) {
   row <- bps_files[i, ]
   raw_lines <- readLines(row$raw_path, warn = FALSE, encoding = "UTF-8")
-  control_z_line_count <- sum(raw_lines == "\032")
   raw_lines <- raw_lines[raw_lines != "\032"]
   raw_lines <- raw_lines[!str_detect(raw_lines, "^(Survey|Date|\\s*$)")]
   split_rows_all <- strsplit(raw_lines, ",", fixed = TRUE)
@@ -53,16 +50,6 @@ for (i in seq_len(nrow(bps_files))) {
       raw_parquet_path = NA_character_,
       status = "no_parseable_rows"
     )
-
-    qc_rows[[i]] <- tibble(
-      year = row$vintage,
-      schema_fields = NA_integer_,
-      raw_line_count = length(raw_lines),
-      parsed_row_count = 0L,
-      dropped_line_count = dropped_line_count,
-      ignored_control_z_line_count = control_z_line_count,
-      status = "no_parseable_rows"
-    )
     next
   }
 
@@ -71,16 +58,6 @@ for (i in seq_len(nrow(bps_files))) {
       year = row$vintage,
       raw_path = row$raw_path,
       raw_parquet_path = NA_character_,
-      status = "unexpected_line_width"
-    )
-
-    qc_rows[[i]] <- tibble(
-      year = row$vintage,
-      schema_fields = NA_integer_,
-      raw_line_count = length(raw_lines),
-      parsed_row_count = length(split_rows),
-      dropped_line_count = dropped_line_count,
-      ignored_control_z_line_count = control_z_line_count,
       status = "unexpected_line_width"
     )
     next
@@ -126,18 +103,7 @@ for (i in seq_len(nrow(bps_files))) {
     raw_parquet_path = out_parquet,
     status = "parsed"
   )
-
-  qc_rows[[i]] <- tibble(
-    year = row$vintage,
-    schema_fields = schema_fields,
-    raw_line_count = length(raw_lines),
-    parsed_row_count = nrow(raw_bps_df),
-    dropped_line_count = dropped_line_count,
-    ignored_control_z_line_count = control_z_line_count,
-    status = "parsed"
-  )
 }
 
 write_csv_if_changed(bind_rows(index_rows), "../output/census_bps_raw_files.csv")
-write_csv_if_changed(bind_rows(qc_rows), "../output/census_bps_raw_qc.csv")
 cat("Wrote raw Census BPS outputs to ../output\n")

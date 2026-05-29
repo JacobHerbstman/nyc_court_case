@@ -24,6 +24,8 @@ if len(sys.argv) != 2 or not re.fullmatch(r"\d{4}", sys.argv[1]):
 QUERY_YEAR = sys.argv[1]
 SOURCE_ID = "nyc_council_legistar_land_use_broad_recall"
 PULL_DATE = date.today().strftime("%Y%m%d")
+MATTER_INDEX_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_matter_index.csv")
+HISTORY_EVENTS_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_history_events.csv")
 
 MATTER_TYPE_QUERIES = [
     {"matter_type": "Land Use Application", "type_value": "10", "slug": "land_use_application"},
@@ -291,6 +293,31 @@ def save_text(path: Path, text: str) -> None:
     path.write_text(text, encoding="utf-8")
 
 
+def output_raw_paths_exist(path: Path, raw_path_columns: list[str]) -> bool:
+    if not path.exists():
+        return False
+
+    rows = pd.read_csv(path, dtype=str, keep_default_na=False)
+    if rows.empty:
+        return False
+
+    for column in raw_path_columns:
+        if column not in rows.columns:
+            return False
+        for raw_path in rows[column].drop_duplicates():
+            if raw_path and not Path(raw_path).exists():
+                return False
+
+    return True
+
+
+def existing_outputs_complete() -> bool:
+    return output_raw_paths_exist(MATTER_INDEX_OUTPUT, ["detail_raw_path"]) and output_raw_paths_exist(
+        HISTORY_EVENTS_OUTPUT,
+        ["detail_raw_path"],
+    )
+
+
 def request_with_retries(session: requests.Session, method: str, url: str, **kwargs) -> requests.Response:
     last_error = None
     for attempt in range(1, 4):
@@ -547,6 +574,9 @@ def fetch_detail_pages(session: requests.Session, matter_index: pd.DataFrame) ->
 
 
 def main() -> None:
+    if existing_outputs_complete():
+        return
+
     session = requests.Session()
     session.headers.update(
         {
@@ -699,15 +729,12 @@ def main() -> None:
 
     qc = pd.DataFrame(qc_rows)
 
-    page_fetch.to_csv(f"../output/legistar_{QUERY_YEAR}_broad_recall_page_fetches.csv", index=False)
     matter_index.to_csv(f"../output/legistar_{QUERY_YEAR}_broad_recall_matter_index.csv", index=False)
-    detail_files.to_csv(f"../output/legistar_{QUERY_YEAR}_broad_recall_detail_files.csv", index=False)
     history_events.to_csv(f"../output/legistar_{QUERY_YEAR}_broad_recall_history_events.csv", index=False)
-    count_check.to_csv(f"../output/legistar_{QUERY_YEAR}_broad_recall_count_check.csv", index=False)
-    qc.to_csv(f"../output/legistar_{QUERY_YEAR}_broad_recall_qc.csv", index=False)
 
     if not qc["passed"].all():
-        raise RuntimeError(f"Legistar {QUERY_YEAR} broad-recall pull failed QC.")
+        failed_checks = ", ".join(qc.loc[~qc["passed"], "check_name"].astype(str))
+        raise RuntimeError(f"Legistar {QUERY_YEAR} broad-recall pull failed: {failed_checks}.")
 
 
 if __name__ == "__main__":

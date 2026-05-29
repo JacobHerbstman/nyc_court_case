@@ -19,6 +19,7 @@ LEGISTAR_URL = (
     "DepartmentDetail.aspx?ID=6897&GUID=CDC6E691-8A8C-4F25-97CB-86F31EDAB081&Mode=MainBody"
 )
 SOURCE_FILE_ROOT = Path("../../fetch_council_member_roster_sources/output/source_files")
+OUTPUT_FILE = Path("../output/council_member_roster_source_files.csv")
 
 
 def normalize_space(value: object) -> str:
@@ -55,7 +56,6 @@ def parse_form_inputs(html: str) -> dict[str, str]:
 
 def write_csv(path: str, rows: list[dict[str, object]], fieldnames: list[str]) -> None:
     new_path = Path(path)
-    new_path.parent.mkdir(parents=True, exist_ok=True)
     temp_path = new_path.with_suffix(new_path.suffix + ".tmp")
 
     with temp_path.open("w", newline="", encoding="utf-8") as file:
@@ -67,6 +67,25 @@ def write_csv(path: str, rows: list[dict[str, object]], fieldnames: list[str]) -
         temp_path.unlink()
     else:
         temp_path.replace(new_path)
+
+
+def existing_inventory_is_complete(path: Path) -> bool:
+    if not path.exists():
+        return False
+
+    with path.open(newline="", encoding="utf-8") as file:
+        rows = list(csv.DictReader(file))
+
+    if not rows:
+        return False
+
+    return all(
+        row.get("fetch_status") == "downloaded"
+        and row.get("file_exists") == "True"
+        and Path(row["raw_path"]).exists()
+        and Path(row["raw_path"]).stat().st_size > 0
+        for row in rows
+    )
 
 
 def source_row(
@@ -162,6 +181,9 @@ def ordinal(value: int) -> str:
         suffix = {1: "st", 2: "nd", 3: "rd"}.get(value % 10, "th")
     return f"{value}{suffix}"
 
+
+if existing_inventory_is_complete(OUTPUT_FILE):
+    raise SystemExit(0)
 
 session = requests.Session()
 session.headers.update({"User-Agent": "nyc-court-case-roster-research/0.1"})
@@ -390,7 +412,7 @@ write_csv(
         "notes",
     ],
 )
-write_csv("../output/council_member_roster_fetch_qc.csv", fetch_qc, ["check_name", "passed", "detail"])
 
 if any(not row["passed"] for row in fetch_qc):
-    raise RuntimeError("Council member roster source fetch failed QC.")
+    failed_checks = ", ".join(row["check_name"] for row in fetch_qc if not row["passed"])
+    raise RuntimeError(f"Council member roster source fetch failed: {failed_checks}.")

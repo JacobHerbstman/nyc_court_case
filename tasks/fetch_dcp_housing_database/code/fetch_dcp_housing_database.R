@@ -152,22 +152,6 @@ file_inventory <- bind_rows(
 ) %>%
   arrange(file_role, vintage)
 
-checksum_table <- file_inventory %>%
-  mutate(checksum_sha256 = if_else(file.exists(raw_path), vapply(raw_path, compute_sha256, character(1)), NA_character_)) %>%
-  select(source_id, vintage, pull_date, file_role, raw_path, checksum_sha256)
-
-provenance_table <- tibble(
-  source_id = "dcp_housing_database_project_level",
-  pull_date = pull_date,
-  current_release = release_tag,
-  csv_zip_url = csv_zip_url,
-  dictionary_url = dictionary_url,
-  archive_json_url = archive_json_url,
-  note = "Fetched the current DCP Housing Database project-level CSV zip, data dictionary, and both current/archive metadata from official DCP content API endpoints."
-)
-
 write_csv_if_changed(file_inventory, "../output/dcp_housing_database_files.csv")
-write_csv_if_changed(checksum_table, "../output/dcp_housing_database_checksums.csv")
-write_csv_if_changed(provenance_table, "../output/dcp_housing_database_provenance.csv")
 
 cat("Wrote DCP Housing Database fetch outputs to ../output\n")

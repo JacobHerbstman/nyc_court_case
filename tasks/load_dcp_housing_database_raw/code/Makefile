@@ -1,13 +1,10 @@
 SHELL := bash
 include ../../shell_functions.make
 
-all: ../output/dcp_housing_database_raw_files.csv ../output/dcp_housing_database_raw_qc.csv
+all: ../output/dcp_housing_database_raw_files.csv
 
 ../output/dcp_housing_database_raw_files.csv: load_dcp_housing_database_raw.R ../input/dcp_housing_database_files.csv | ../output
 	$(R) $<
-
-../output/dcp_housing_database_raw_qc.csv: ../output/dcp_housing_database_raw_files.csv
-	@test -s "$@"
 
 ../input/dcp_housing_database_files.csv: ../../fetch_dcp_housing_database/output/dcp_housing_database_files.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"

@@ -1,16 +1,10 @@
 SHELL := bash
 include ../../shell_functions.make
 
-all: ../output/dcp_boundary_index.csv ../output/dcp_boundary_qc.csv
+all: ../output/dcp_boundary_index.csv ../output/dcp_boundary_community_districts_20260501.parquet
 
 ../output/dcp_boundary_index.csv: stage_dcp_boundaries.R ../input/dcp_boundary_raw_files.csv | ../output
 	$(R) $<
-
-../output/dcp_boundary_qc.csv: ../output/dcp_boundary_index.csv
-	@test -s "$@"
-
-../output/dcp_boundary_city_council_districts_20260501.parquet: ../output/dcp_boundary_index.csv
-	@test -s "$@"
 
 ../output/dcp_boundary_community_districts_20260501.parquet: ../output/dcp_boundary_index.csv
 	@test -s "$@"

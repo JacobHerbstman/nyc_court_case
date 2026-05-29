@@ -1,13 +1,10 @@
 SHELL := bash
 include ../../shell_functions.make
 
-all: ../output/dob_permit_issuance_current_raw_files.csv ../output/dob_permit_issuance_current_raw_qc.csv
+all: ../output/dob_permit_issuance_current_raw_files.csv ../output/dob_permit_issuance_current_raw.parquet
 
 ../output/dob_permit_issuance_current_raw_files.csv: load_dob_permit_issuance_current_raw.R ../input/dob_permit_issuance_current_files.csv | ../output
 	$(R) $<
-
-../output/dob_permit_issuance_current_raw_qc.csv: ../output/dob_permit_issuance_current_raw_files.csv
-	@test -s "$@"
 
 ../output/dob_permit_issuance_current_raw.parquet: ../output/dob_permit_issuance_current_raw_files.csv
 	@test -s "$@"

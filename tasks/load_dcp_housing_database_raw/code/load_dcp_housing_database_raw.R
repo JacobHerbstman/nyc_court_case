@@ -14,12 +14,10 @@ file_index <- read_csv("../input/dcp_housing_database_files.csv", show_col_types
 
 if (nrow(file_index) == 0) {
   write_csv_if_changed(tibble(), "../output/dcp_housing_database_raw_files.csv")
-  write_csv_if_changed(tibble(), "../output/dcp_housing_database_raw_qc.csv")
   quit(save = "no")
 }
 
 index_rows <- list()
-qc_rows <- list()
 
 for (i in seq_len(nrow(file_index))) {
   row <- file_index[i, ]
@@ -36,15 +34,6 @@ for (i in seq_len(nrow(file_index))) {
       raw_path = row$raw_path,
       csv_inside_zip = if (length(csv_candidates) == 0) NA_character_ else paste(csv_candidates, collapse = ";"),
       raw_parquet_path = NA_character_,
-      status = if (length(csv_candidates) == 0) "csv_not_found_in_zip" else "unexpected_csv_payload"
-    )
-
-    qc_rows[[i]] <- tibble(
-      source_id = row$source_id,
-      vintage = row$vintage,
-      row_count = NA_real_,
-      column_count = NA_real_,
-      csv_inside_zip = if (length(csv_candidates) == 0) NA_character_ else paste(csv_candidates, collapse = ";"),
       status = if (length(csv_candidates) == 0) "csv_not_found_in_zip" else "unexpected_csv_payload"
     )
     next
@@ -75,16 +64,7 @@ for (i in seq_len(nrow(file_index))) {
     raw_parquet_path = out_parquet,
     status = "loaded"
   )
-
-  qc_rows[[i]] <- tibble(
-    source_id = row$source_id,
-    vintage = row$vintage,
-    row_count = nrow(raw_df),
-    column_count = ncol(raw_df),
-    status = "loaded"
-  )
 }
 
 write_csv_if_changed(bind_rows(index_rows), "../output/dcp_housing_database_raw_files.csv")
-write_csv_if_changed(bind_rows(qc_rows), "../output/dcp_housing_database_raw_qc.csv")
 cat("Wrote DCP Housing Database raw load outputs to ../output\n")

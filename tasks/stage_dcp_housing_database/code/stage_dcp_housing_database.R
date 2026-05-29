@@ -25,16 +25,11 @@ raw_index <- read_csv("../input/dcp_housing_database_raw_files.csv", show_col_ty
 
 if (nrow(raw_index) == 0) {
   write_csv(tibble(), "../output/dcp_housing_database_files.csv", na = "")
-  write_csv(tibble(), "../output/dcp_housing_database_qc.csv", na = "")
-  write_parquet_if_changed(tibble(), "../output/dcp_housing_database_city_year.parquet")
-  write_parquet_if_changed(tibble(), "../output/dcp_housing_database_borough_year.parquet")
+  write_parquet_if_changed(tibble(), "../output/dcp_housing_database_project_level_25q4.parquet")
   quit(save = "no")
 }
 
 index_rows <- list()
-qc_rows <- list()
-latest_city_year <- tibble()
-latest_borough_year <- tibble()
 
 for (i in seq_len(nrow(raw_index))) {
   row <- raw_index[i, ]
@@ -76,7 +71,6 @@ for (i in seq_len(nrow(raw_index))) {
   out_parquet_local <- file.path("..", "output", paste0("dcp_housing_database_project_level_", sanitize_file_stub(row$vintage), ".parquet"))
   out_parquet <- file.path("..", "..", "stage_dcp_housing_database", "output", basename(out_parquet_local))
   write_parquet_if_changed(staged_df, out_parquet_local)
-  pre_2010_permit_year_flag <- !is.na(staged_df$permit_year) & staged_df$permit_year < 2010
 
   index_rows[[i]] <- tibble(
     source_id = row$source_id,
@@ -86,58 +80,7 @@ for (i in seq_len(nrow(raw_index))) {
     parquet_path = out_parquet,
     status = "staged"
   )
-
-  qc_rows[[i]] <- tibble(
-    source_id = row$source_id,
-    vintage = row$vintage,
-    row_count = nrow(staged_df),
-    nonmissing_bbl_share = mean(!is.na(staged_df$bbl) & staged_df$bbl != ""),
-    nonmissing_bin_share = mean(!is.na(staged_df$bin) & staged_df$bin != ""),
-    nonmissing_address_share = mean(!is.na(staged_df$address)),
-    nonmissing_cd_share = mean(!is.na(staged_df$community_district)),
-    nonmissing_council_share = mean(!is.na(staged_df$council_district)),
-    permit_year_start = min(staged_df$permit_year, na.rm = TRUE),
-    permit_year_end = max(staged_df$permit_year, na.rm = TRUE),
-    permit_year_missing_count = sum(is.na(staged_df$permit_year)),
-    permit_year_before_2010_count = sum(pre_2010_permit_year_flag),
-    permit_year_before_2010_classa_net = sum(staged_df$classa_net[pre_2010_permit_year_flag], na.rm = TRUE),
-    completion_year_start = min(staged_df$completion_year, na.rm = TRUE),
-    completion_year_end = max(staged_df$completion_year, na.rm = TRUE),
-    status = "staged"
-  )
-
-  if (i == 1) {
-    latest_city_year <- staged_df %>%
-      filter(!is.na(permit_year)) %>%
-      group_by(permit_year) %>%
-      summarise(
-        release = first(release),
-        permit_year = first(permit_year),
-        classa_init = sum(classa_init, na.rm = TRUE),
-        classa_prop = sum(classa_prop, na.rm = TRUE),
-        classa_net = sum(classa_net, na.rm = TRUE),
-        units_co = sum(units_co, na.rm = TRUE),
-        .groups = "drop"
-      ) %>%
-      rename(year = permit_year)
-
-    latest_borough_year <- staged_df %>%
-      filter(!is.na(permit_year), !is.na(borough_name)) %>%
-      group_by(permit_year, borough_name) %>%
-      summarise(
-        release = first(release),
-        classa_init = sum(classa_init, na.rm = TRUE),
-        classa_prop = sum(classa_prop, na.rm = TRUE),
-        classa_net = sum(classa_net, na.rm = TRUE),
-        units_co = sum(units_co, na.rm = TRUE),
-        .groups = "drop"
-      ) %>%
-      rename(year = permit_year)
-  }
 }
 
-write_parquet_if_changed(latest_city_year, "../output/dcp_housing_database_city_year.parquet")
-write_parquet_if_changed(latest_borough_year, "../output/dcp_housing_database_borough_year.parquet")
 write_csv(bind_rows(index_rows), "../output/dcp_housing_database_files.csv", na = "")
-write_csv(bind_rows(qc_rows), "../output/dcp_housing_database_qc.csv", na = "")
 cat("Wrote DCP Housing Database staging outputs to ../output\n")

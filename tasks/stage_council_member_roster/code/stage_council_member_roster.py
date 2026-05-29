@@ -5,7 +5,6 @@ from __future__ import annotations
 import csv
 import re
 from datetime import date, datetime, timedelta
-from io import StringIO
 from pathlib import Path
 from urllib.parse import parse_qs, urljoin, urlparse
 
@@ -61,7 +60,6 @@ def date_value(value: object, fallback: str = "2100-12-31") -> date:
 
 def write_csv(path: str, rows: list[dict[str, object]], fieldnames: list[str]) -> None:
     new_path = Path(path)
-    new_path.parent.mkdir(parents=True, exist_ok=True)
     temp_path = new_path.with_suffix(new_path.suffix + ".tmp")
 
     with temp_path.open("w", newline="", encoding="utf-8") as file:
@@ -90,6 +88,39 @@ def wiki_year_term(value: str, is_end: bool = False) -> str | None:
     if re.fullmatch(r"\d{4}", text):
         return f"{text}-12-31" if is_end else f"{text}-01-01"
     return parse_wiki_date(text)
+
+
+def parse_html_tables(html: str) -> list[pd.DataFrame]:
+    soup = BeautifulSoup(html, "html.parser")
+    out: list[pd.DataFrame] = []
+
+    for table in soup.find_all("table"):
+        headers: list[str] = []
+        rows: list[dict[str, str]] = []
+
+        for table_row in table.find_all("tr"):
+            header_cells = table_row.find_all("th", recursive=False)
+            data_cells = table_row.find_all("td", recursive=False)
+
+            if header_cells:
+                headers = []
+                for cell in header_cells:
+                    headers.extend([normalize_space(cell.get_text(" "))] * int(cell.get("colspan") or 1))
+                continue
+
+            if not headers or not data_cells:
+                continue
+
+            values = []
+            for cell in data_cells:
+                values.extend([normalize_space(cell.get_text(" "))] * int(cell.get("colspan") or 1))
+            values.extend([""] * max(0, len(headers) - len(values)))
+            rows.append(dict(zip(headers, values[: len(headers)])))
+
+        if rows:
+            out.append(pd.DataFrame(rows))
+
+    return out
 
 
 source_files = pd.read_csv("../input/council_member_roster_source_files.csv").fillna("")
@@ -189,14 +220,11 @@ for source in source_files_out:
     html = Path(source["raw_path"]).read_text(encoding="utf-8")
     district = int(source["district"])
 
-    try:
-        tables = pd.read_html(StringIO(html))
-    except ValueError:
-        tables = []
+    tables = parse_html_tables(html)
 
     member_table = None
     for table in tables:
-        table.columns = [normalize_space(col[-1] if isinstance(col, tuple) else col) for col in table.columns]
+        table.columns = [normalize_space(col) for col in table.columns]
         if {"Members", "Party", "Years served"}.issubset(set(table.columns)):
             member_table = table
             break
@@ -674,68 +702,7 @@ fields = [
 ]
 
 write_csv("../output/council_member_roster_master.csv", master_rows, fields)
-write_csv("../output/council_member_roster_terms.csv", term_rows, fields)
-write_csv("../output/council_member_roster_source_files.csv", source_files_out, list(source_files.columns))
-write_csv(
-    "../output/council_member_roster_coverage.csv",
-    coverage_rows,
-    [
-        "district",
-        "term_rows",
-        "coverage_start_date",
-        "coverage_end_date",
-        "has_active_1990_07_01",
-        "has_active_1998_01_01",
-        "has_active_2001_05_23",
-        "has_official_legistar_row",
-        "has_secondary_backfill_row",
-    ],
-)
-write_csv(
-    "../output/council_member_roster_known_date_checks.csv",
-    known_date_checks,
-    [
-        "check_name",
-        "district",
-        "check_date",
-        "expected_member_name",
-        "matched_rows",
-        "matched_member_names",
-        "matched_source_tiers",
-        "passed",
-    ],
-)
-write_csv(
-    "../output/council_member_roster_manual_review.csv",
-    manual_review_rows,
-    [
-        "reason_code",
-        "source_tier",
-        "district",
-        "member_name",
-        "term_start_date",
-        "term_end_date",
-        "source_url",
-        "raw_path",
-        "detail",
-    ],
-)
-write_csv(
-    "../output/council_member_roster_overlap_qc.csv",
-    overlap_rows,
-    [
-        "district",
-        "left_record_id",
-        "left_member_name",
-        "left_start_date",
-        "left_end_date",
-        "right_record_id",
-        "right_member_name",
-        "right_start_date",
-        "right_end_date",
-    ],
-)
-write_csv("../output/council_member_roster_stage_qc.csv", stage_qc, ["check_name", "passed", "detail"])
 
 if any(not row["passed"] for row in stage_qc):
-    raise RuntimeError("Council member roster staging failed QC.")
+    failed_checks = ", ".join(row["check_name"] for row in stage_qc if not row["passed"])
+    raise RuntimeError(f"Council member roster staging failed: {failed_checks}.")

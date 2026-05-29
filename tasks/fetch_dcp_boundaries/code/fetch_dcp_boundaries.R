@@ -3,7 +3,6 @@
 suppressPackageStartupMessages({
   library(dplyr)
   library(readr)
-  library(stringr)
   library(tibble)
 })
 
@@ -39,7 +38,6 @@ pull_date <- resolve_raw_pull_date(setNames(
   names(download_names)
 ))
 inventory_rows <- list()
-provenance_rows <- list()
 
 for (i in seq_len(nrow(boundary_rows))) {
   row <- boundary_rows[i, ]
@@ -78,24 +76,10 @@ for (i in seq_len(nrow(boundary_rows))) {
     status = zip_status,
     official_url = row$official_url
   )
-
-  provenance_rows[[length(provenance_rows) + 1L]] <- tibble(
-    source_id = source_id,
-    pull_date = pull_date,
-    dataset_id = dataset_id,
-    metadata_path = metadata_path,
-    note = "Current official boundary geometry and matching Socrata metadata snapshot."
-  )
 }
 
 file_inventory <- bind_rows(inventory_rows) |> arrange(source_id, file_role, raw_path)
-checksum_table <- file_inventory |>
-  mutate(checksum_sha256 = if_else(file.exists(raw_path), vapply(raw_path, compute_sha256, character(1)), NA_character_)) |>
-  select(source_id, pull_date, file_role, raw_path, checksum_sha256)
-provenance_table <- bind_rows(provenance_rows) |> arrange(source_id)
 
 write_csv_if_changed(file_inventory, "../output/dcp_boundary_files.csv")
-write_csv_if_changed(checksum_table, "../output/dcp_boundary_checksums.csv")
-write_csv_if_changed(provenance_table, "../output/dcp_boundary_provenance.csv")
 
 cat("Wrote DCP boundary fetch outputs to ../output\n")

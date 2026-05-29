@@ -60,22 +60,6 @@ for (i in seq_len(nrow(profile_urls))) {
 file_inventory <- bind_rows(inventory_rows) %>%
   arrange(borough_code)
 
-checksum_table <- file_inventory %>%
-  mutate(checksum_sha256 = if_else(file.exists(raw_path), vapply(raw_path, compute_sha256, character(1)), NA_character_)) %>%
-  select(source_id, pull_date, borough_code, borough_name, file_role, raw_path, checksum_sha256)
-
-provenance_table <- file_inventory %>%
-  transmute(
-    source_id,
-    pull_date,
-    borough_code,
-    borough_name,
-    official_url,
-    note = "Official DCP borough profile PDF for the 1990 and 2000 community district census profiles."
-  )
-
 write_csv_if_changed(file_inventory, "../output/dcp_cd_profiles_1990_2000_files.csv")
-write_csv_if_changed(checksum_table, "../output/dcp_cd_profiles_1990_2000_checksums.csv")
-write_csv_if_changed(provenance_table, "../output/dcp_cd_profiles_1990_2000_provenance.csv")
 
 cat("Wrote DCP 1990-2000 community district profile fetch outputs to ../output\n")

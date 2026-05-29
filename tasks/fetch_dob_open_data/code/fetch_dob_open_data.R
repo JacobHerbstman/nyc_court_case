@@ -24,7 +24,6 @@ if (nrow(dob_rows) != length(dob_open_data_source_ids) || !setequal(dob_rows$sou
 }
 
 index_rows <- list()
-qc_rows <- list()
 pull_date <- resolve_raw_pull_date(setNames(
   lapply(dob_rows$expected_filename, c),
   dob_rows$source_id
@@ -50,13 +49,6 @@ for (i in seq_len(nrow(dob_rows))) {
       pull_date = pull_date,
       status = status
     )
-
-    qc_rows[[i]] <- tibble(
-      source_id = row$source_id,
-      status = status,
-      raw_file_present = FALSE,
-      pull_date = pull_date
-    )
     next
   }
 
@@ -66,15 +58,7 @@ for (i in seq_len(nrow(dob_rows))) {
     pull_date = pull_date,
     status = status
   )
-
-  qc_rows[[i]] <- tibble(
-    source_id = row$source_id,
-    status = status,
-    raw_file_present = TRUE,
-    pull_date = pull_date
-  )
 }
 
 write_csv_if_changed(bind_rows(index_rows), "../output/dob_open_data_files.csv")
-write_csv_if_changed(bind_rows(qc_rows), "../output/dob_open_data_qc.csv")
 cat("Wrote DOB Open Data fetch outputs to ../output\n")

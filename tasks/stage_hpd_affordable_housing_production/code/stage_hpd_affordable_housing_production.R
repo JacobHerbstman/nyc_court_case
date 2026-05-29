@@ -79,24 +79,26 @@ bbl_year <- staged %>%
     .groups = "drop"
   )
 
-qc_df <- bind_rows(
-  tibble(metric = "raw_row_count", value = nrow(raw_df), status = if_else(nrow(raw_df) > 0, "pass", "fail"), note = "Raw HPD building rows."),
-  tibble(metric = "staged_row_count", value = nrow(staged), status = if_else(nrow(staged) > 0, "pass", "fail"), note = "Staged HPD building rows."),
-  tibble(metric = "source_row_id_duplicate_count", value = nrow(staged) - n_distinct(staged$hpd_row_id), status = if_else(nrow(staged) == n_distinct(staged$hpd_row_id), "pass", "fail"), note = "Staged row id should be unique."),
-  tibble(metric = "nonmissing_bbl_share", value = mean(!is.na(staged$bbl)), status = if_else(mean(!is.na(staged$bbl)) > 0.70, "pass", "fail"), note = "Only HPD rows with BBL are available for BBL matching; missingness is reported rather than imputed."),
-  tibble(metric = "missing_bbl_row_count", value = sum(is.na(staged$bbl)), status = "pass", note = "Rows without BBL remain in the staged building file but are excluded from BBL-year matching."),
-  tibble(metric = "negative_units_count", value = sum(staged$total_units < 0 | staged$all_counted_units < 0, na.rm = TRUE), status = if_else(sum(staged$total_units < 0 | staged$all_counted_units < 0, na.rm = TRUE) == 0, "pass", "fail"), note = "Unit counts must be nonnegative."),
-  tibble(metric = "bbl_year_duplicate_count", value = nrow(bbl_year) - n_distinct(paste(bbl_year$bbl, bbl_year$hpd_year)), status = if_else(nrow(bbl_year) == n_distinct(paste(bbl_year$bbl, bbl_year$hpd_year)), "pass", "fail"), note = "Collapsed HPD BBL-year table should be unique.")
-)
-
-if (any(qc_df$status == "fail")) {
-  write_csv_if_changed(qc_df, "../output/hpd_affordable_housing_stage_qc.csv")
-  stop("HPD affordable housing staging QC failed.")
+if (nrow(raw_df) == 0 || nrow(staged) == 0) {
+  stop("HPD affordable housing input produced no staged rows.")
 }
 
-write_csv_if_changed(staged, "../output/hpd_affordable_housing_building_staged.csv")
-write_parquet_if_changed(staged, "../output/hpd_affordable_housing_building_staged.parquet")
-write_csv_if_changed(bbl_year, "../output/hpd_affordable_housing_bbl_year.csv")
-write_csv_if_changed(qc_df, "../output/hpd_affordable_housing_stage_qc.csv")
+if (nrow(staged) != n_distinct(staged$hpd_row_id)) {
+  stop("HPD staged row id is not unique.")
+}
 
-cat("Staged HPD affordable housing production to ../output/hpd_affordable_housing_building_staged.csv\n")
+if (mean(!is.na(staged$bbl)) <= 0.70) {
+  stop("HPD staged BBL coverage is below the expected threshold.")
+}
+
+if (sum(staged$total_units < 0 | staged$all_counted_units < 0, na.rm = TRUE) > 0) {
+  stop("HPD staging found negative unit counts.")
+}
+
+if (nrow(bbl_year) != n_distinct(paste(bbl_year$bbl, bbl_year$hpd_year))) {
+  stop("HPD BBL-year output is not unique.")
+}
+
+write_csv_if_changed(bbl_year, "../output/hpd_affordable_housing_bbl_year.csv")
+
+cat("Staged HPD affordable housing BBL-year data to ../output/hpd_affordable_housing_bbl_year.csv\n")

@@ -10,14 +10,6 @@ suppressPackageStartupMessages({
 
 source("../../_lib/source_pipeline_utils.R")
 
-matched_column_name <- function(df, candidates) {
-  hits <- candidates[candidates %in% names(df)]
-  if (length(hits) == 0) {
-    return(NA_character_)
-  }
-  hits[1]
-}
-
 append_reason <- function(existing_reason, new_flag, new_reason) {
   existing_reason <- ifelse(is.na(existing_reason), "", existing_reason)
   updated_reason <- ifelse(new_flag, paste(existing_reason, new_reason, sep = ";"), existing_reason)
@@ -95,8 +87,6 @@ dob_raw_files <- read_csv("../input/dob_open_data_raw_files.csv", show_col_types
 
 if (nrow(dob_raw_files) == 0) {
   write_csv(tibble(), "../output/dob_open_data_files.csv", na = "")
-  write_csv(tibble(), "../output/dob_open_data_qc.csv", na = "")
-  write_csv(tibble(), "../output/dob_field_dictionary.csv", na = "")
   quit(save = "no")
 }
 
@@ -124,8 +114,6 @@ if (nrow(multi_pull_sources) > 0) {
 }
 
 index_rows <- list()
-qc_rows <- list()
-field_rows <- list()
 
 for (i in seq_len(nrow(dob_raw_files))) {
   row <- dob_raw_files[i, ]
@@ -314,44 +302,7 @@ for (i in seq_len(nrow(dob_raw_files))) {
     pull_date = row$pull_date,
     status = "staged"
   )
-
-  qc_rows[[i]] <- tibble(
-    source_id = row$source_id,
-    status = "staged",
-    row_count = nrow(staged_df),
-    start_date = safe_min_date(staged_df$record_date),
-    end_date = safe_max_date(staged_df$record_date),
-    nonmissing_bbl_share = mean(!is.na(staged_df$bbl)),
-    nonmissing_bin_share = mean(!is.na(staged_df$bin)),
-    nonmissing_address_share = mean(!is.na(staged_df$address)),
-    nonmissing_cd_share = mean(!is.na(staged_df$community_district)),
-    nonmissing_council_share = mean(!is.na(staged_df$council_district)),
-    nonmissing_record_year_share = mean(!is.na(staged_df$record_year)),
-    unresolved_share = mean(!is.na(staged_df$unresolved_reason)),
-    nb_row_count = sum(staged_df$job_type_standard == "New Building", na.rm = TRUE)
-  )
-
-  field_rows[[i]] <- bind_rows(
-    tibble(source_id = row$source_id, canonical_field = "source_record_id", matched_raw_column = matched_column_name(dob_df, c("job_filing_number", "job_filing_name", "job_number", "job")), note = "Primary identifier used for staged source_record_id."),
-    tibble(source_id = row$source_id, canonical_field = "job_number", matched_raw_column = matched_column_name(dob_df, c("job_filing_number", "job_number", "job", "job_filing_name")), note = "Job number field used in staging."),
-    tibble(source_id = row$source_id, canonical_field = "doc_number", matched_raw_column = matched_column_name(dob_df, c("doc", "doc_number")), note = "Document number field used in staging."),
-    tibble(source_id = row$source_id, canonical_field = "house_number", matched_raw_column = matched_column_name(dob_df, c("house_no", "house", "house_number", "number")), note = "House or building number field."),
-    tibble(source_id = row$source_id, canonical_field = "street_name", matched_raw_column = matched_column_name(dob_df, c("street_name", "street")), note = "Street name field."),
-    tibble(source_id = row$source_id, canonical_field = "bbl", matched_raw_column = matched_column_name(dob_df, c("bbl")), note = "If missing, staging builds BBL from borough, block, and lot."),
-    tibble(source_id = row$source_id, canonical_field = "bin", matched_raw_column = matched_column_name(dob_df, c("bin", "bin_number", "gis_bin")), note = "BIN priority order."),
-    tibble(source_id = row$source_id, canonical_field = "community_district", matched_raw_column = matched_column_name(dob_df, c("community_board", "commmunity_board", "community___board", "community_district", "community_districts")), note = "Small values are borough-prefixed to current three-digit community districts."),
-    tibble(source_id = row$source_id, canonical_field = "council_district", matched_raw_column = matched_column_name(dob_df, c("gis_council_district", "council_district", "city_council_districts")), note = "Citywide council district field."),
-    tibble(source_id = row$source_id, canonical_field = "filing_date", matched_raw_column = matched_column_name(dob_df, c("pre_filing_date", "filing_date", "submitted_date")), note = "Primary filing date candidates."),
-    tibble(source_id = row$source_id, canonical_field = "approved_date", matched_raw_column = matched_column_name(dob_df, c("approved_date", "approved")), note = "Approved date candidates."),
-    tibble(source_id = row$source_id, canonical_field = "permit_date", matched_raw_column = matched_column_name(dob_df, c("first_permit_date")), note = "Permit issuance date candidate."),
-    tibble(source_id = row$source_id, canonical_field = "fully_permitted_date", matched_raw_column = matched_column_name(dob_df, c("fully_permitted")), note = "BIS fully permitted field."),
-    tibble(source_id = row$source_id, canonical_field = "co_issue_date", matched_raw_column = matched_column_name(dob_df, c("c_o_issue_date", "c_of_o_issuance_date", "certificate_of_occupancy_date")), note = "Certificate of occupancy date candidates."),
-    tibble(source_id = row$source_id, canonical_field = "existing_dwelling_units", matched_raw_column = matched_column_name(dob_df, c("existing_dwelling_units", "ex_dwelling_unit")), note = "Existing dwelling units candidates."),
-    tibble(source_id = row$source_id, canonical_field = "proposed_dwelling_units", matched_raw_column = matched_column_name(dob_df, c("proposed_dwelling_units", "pr_dwelling_unit", "number_of_dwelling_units")), note = "Proposed or issued dwelling units candidates.")
-  )
 }
 
 write_csv(bind_rows(index_rows), "../output/dob_open_data_files.csv", na = "")
-write_csv(bind_rows(qc_rows), "../output/dob_open_data_qc.csv", na = "")
-write_csv(bind_rows(field_rows), "../output/dob_field_dictionary.csv", na = "")
 cat("Wrote DOB staging outputs to ../output\n")

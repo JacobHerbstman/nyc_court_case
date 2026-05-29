@@ -50,21 +50,7 @@ inventory_rows[[length(inventory_rows) + 1L]] <- tibble(
 )
 
 file_inventory <- bind_rows(inventory_rows) |> arrange(vintage, file_role)
-checksum_table <- file_inventory |>
-  mutate(checksum_sha256 = if_else(file.exists(raw_path), vapply(raw_path, compute_sha256, character(1)), NA_character_)) |>
-  select(source_id, vintage, pull_date, file_role, raw_path, checksum_sha256)
-
-provenance_table <- tibble(
-  source_id = "census_bps_place_ascii",
-  pull_date = pull_date,
-  year_start = min(years),
-  year_end = max(years),
-  documentation_path = documentation_path,
-  note = "Downloaded Northeast regional annual place ASCII files ne<YYYY>a.txt for 1980 through 2024 plus the official place ASCII documentation PDF."
-)
 
 write_csv_if_changed(file_inventory, "../output/census_bps_files.csv")
-write_csv_if_changed(checksum_table, "../output/census_bps_checksums.csv")
-write_csv_if_changed(provenance_table, "../output/census_bps_provenance.csv")
 
 cat("Wrote Census BPS fetch outputs to ../output\n")
