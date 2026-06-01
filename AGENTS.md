@@ -1,5 +1,17 @@
 # Aldermanic Privilege Project Guidelines
 
+## Code Quality Standard
+- Working code is not enough. In this repo, clarity, traceability, and simplicity are part of correctness.
+- A reader should be able to start from the final paper/report output, follow concrete Makefile prerequisites backward through the pipeline, and understand how each table, figure, dataset, or result is produced without hidden defaults, orchestration scripts, side outputs, or exploratory clutter.
+- Prefer boring, linear, explicit code over clever abstractions.
+- The Makefile dependency graph is the source of truth. Final documents or reports should depend on task outputs through Make, not manual copying.
+- Expose real analytical choices as scalar Make variables: years, samples, bandwidths, outcomes, cutoffs, fixed effects, controls, clustering, and thresholds.
+- Fixed task-local file paths belong directly in scripts at the read/write call site, not as command-line arguments.
+- Active scripts should run top-to-bottom from the task `code/` folder.
+- Production tasks should produce the primary output they exist to produce. Put audits, diagnostics, QC files, logs, manifests, exploratory tables, and diagnostic plots in dedicated audit tasks unless they are actual final outputs.
+- Keep output filenames stable, informative, and tied to real specifications. Do not rename outputs casually.
+- Before committing a meaningful change, run `make` from each changed task's `code/` folder, confirm incrementality with `make -n`, rebuild the final document/report through its Makefile, run `git diff --check`, review the diff for scope, and commit with a short literal message.
+
 ## Data Analysis workflow
 - This project uses a task-based workflow. Every task in the paper has a dedicated folder in `tasks/` with its own `code/`, `input/`, and `output/` subfolders.
 - Each task should have its own makefile. Each makefile should be as clean and simple as possible to make them readable.
