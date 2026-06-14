@@ -8,7 +8,7 @@ from pathlib import Path
 import pandas as pd
 
 
-RECALL_YEARS = list(range(1998, 2011))
+RECALL_YEARS = list(range(1998, 2026))
 
 
 def normalize_space(value: object) -> str:
@@ -142,12 +142,22 @@ def write_csv(path: str, df: pd.DataFrame) -> None:
     temp_path.replace(new_path)
 
 
+def repair_lookup_key(query_year: object, date_value: object, matter_file: object) -> tuple[str, str, str] | None:
+    query_year_num = pd.to_numeric(pd.Series([query_year]), errors="coerce").iloc[0]
+    date_parsed = pd.to_datetime(date_value, errors="coerce")
+    matter_file_clean = normalize_space(matter_file)
+    if pd.isna(query_year_num) or pd.isna(date_parsed) or matter_file_clean == "":
+        return None
+    return (str(int(query_year_num)), date_parsed.strftime("%Y-%m-%d"), matter_file_clean)
+
+
 action_details = read_year_stack("action_details")
 member_votes = read_year_stack("member_votes")
 matter_index = read_year_stack("matter_index")
 history_events = read_year_stack("history_events")
 roster = pd.read_csv("../input/council_member_roster_master.csv", dtype=str, keep_default_na=False)
 zap_projects = pd.read_parquet("../input/zap_project_data.parquet")
+ai_geo_repairs = pd.read_csv("../input/council_land_use_ai_geography_accepted_repairs.csv", dtype=str, keep_default_na=False)
 
 if action_details["matter_id"].duplicated().any():
     raise RuntimeError("Legistar action-detail rows must be unique by matter_id.")
@@ -159,6 +169,17 @@ if not set(action_details["matter_id"]).issubset(set(matter_index["matter_id"]))
     raise RuntimeError("Every action-detail matter_id must appear in the matter index.")
 if zap_projects["project_id"].astype(str).duplicated().any():
     raise RuntimeError("Staged ZAP project data must be unique by project_id.")
+if ai_geo_repairs.duplicated(["query_year", "vote_date", "matter_file"]).any():
+    raise RuntimeError("Accepted AI geography repairs must be unique by query_year, vote_date, matter_file.")
+if ai_geo_repairs["accepted_council_districts"].map(lambda x: len(split_semicolon(x)) == 0).any():
+    raise RuntimeError("Accepted AI geography repairs must have nonempty district assignments.")
+
+ai_geo_repair_lookup = {}
+for row in ai_geo_repairs.to_dict("records"):
+    key = repair_lookup_key(row["query_year"], row["vote_date"], row["matter_file"])
+    if key is None:
+        raise RuntimeError("Accepted AI geography repair has an unusable lookup key.")
+    ai_geo_repair_lookup[key] = row
 
 matter_index_join = matter_index[
     [
@@ -423,10 +444,15 @@ roster["member_name_edge"] = roster["member_name"].map(edge_name)
 roster = roster[roster["member_name_norm"] != "vacant"].copy()
 
 matter_universe_rows = []
+matter_universe_ai_geo_repair_keys_used = set()
 for row in matter_universe_base.sort_values(["query_year_int", "matter_file"]).to_dict("records"):
     matter_index_districts = split_semicolon(row.get("matter_index_districts", ""))
     legistar_districts = split_semicolon(row.get("legistar_text_districts", ""))
     zap_districts = split_semicolon(row.get("zap_cc_districts", ""))
+    final_date = pd.to_datetime(row.get("final_history_date", ""), errors="coerce")
+    ai_geo_repair_key = repair_lookup_key(row.get("query_year_int", ""), final_date, row.get("matter_file", ""))
+    ai_geo_repair = ai_geo_repair_lookup.get(ai_geo_repair_key, {}) if ai_geo_repair_key is not None else {}
+    ai_geo_repair_districts = split_semicolon(ai_geo_repair.get("accepted_council_districts", ""))
 
     if matter_index_districts:
         affected_districts = matter_index_districts
@@ -437,11 +463,14 @@ for row in matter_universe_base.sort_values(["query_year_int", "matter_file"]).t
     elif zap_districts:
         affected_districts = zap_districts
         affected_district_source = "zap_application_key"
+    elif ai_geo_repair_districts:
+        affected_districts = ai_geo_repair_districts
+        affected_district_source = "ai_geography_repair"
+        matter_universe_ai_geo_repair_keys_used.add(ai_geo_repair_key)
     else:
         affected_districts = []
         affected_district_source = "missing"
 
-    final_date = pd.to_datetime(row.get("final_history_date", ""), errors="coerce")
     local_members = []
     missing_roster_districts = []
     if not pd.isna(final_date):
@@ -496,6 +525,11 @@ for row in matter_universe_base.sort_values(["query_year_int", "matter_file"]).t
             "legistar_text_districts": row.get("legistar_text_districts", ""),
             "affected_council_districts": collapse_values(affected_districts),
             "affected_district_source": affected_district_source,
+            "ai_geography_repair_applied": "true" if affected_district_source == "ai_geography_repair" else "false",
+            "ai_geography_repair_signature_review_id": ai_geo_repair.get("signature_review_id", ""),
+            "ai_geography_repair_source": ai_geo_repair.get("repair_source", ""),
+            "ai_geography_repair_confidence": ai_geo_repair.get("repair_confidence", ""),
+            "ai_geography_repair_note": ai_geo_repair.get("repair_note", ""),
             "local_members_from_roster": collapse_values(local_members),
             "missing_roster_districts": collapse_values(missing_roster_districts),
             "borough": row.get("borough", ""),
@@ -510,10 +544,14 @@ matter_universe = pd.DataFrame(matter_universe_rows)
 
 panel_base = action_details.merge(matter_zap, on="matter_id", how="left")
 panel_rows = []
+panel_ai_geo_repair_keys_used = set()
 for row in panel_base.sort_values(["query_year_int", "history_date", "matter_file"]).to_dict("records"):
     matter_index_districts = split_semicolon(row.get("matter_index_districts", ""))
     legistar_districts = split_semicolon(row.get("legistar_text_districts", ""))
     zap_districts = split_semicolon(row.get("zap_cc_districts", ""))
+    ai_geo_repair_key = repair_lookup_key(row.get("query_year_int", ""), row.get("vote_date", ""), row.get("matter_file", ""))
+    ai_geo_repair = ai_geo_repair_lookup.get(ai_geo_repair_key, {}) if ai_geo_repair_key is not None else {}
+    ai_geo_repair_districts = split_semicolon(ai_geo_repair.get("accepted_council_districts", ""))
 
     if matter_index_districts:
         affected_districts = matter_index_districts
@@ -524,6 +562,10 @@ for row in panel_base.sort_values(["query_year_int", "history_date", "matter_fil
     elif zap_districts:
         affected_districts = zap_districts
         affected_district_source = "zap_application_key"
+    elif ai_geo_repair_districts:
+        affected_districts = ai_geo_repair_districts
+        affected_district_source = "ai_geography_repair"
+        panel_ai_geo_repair_keys_used.add(ai_geo_repair_key)
     else:
         affected_districts = []
         affected_district_source = "missing"
@@ -612,6 +654,11 @@ for row in panel_base.sort_values(["query_year_int", "history_date", "matter_fil
             "legistar_text_districts": row.get("legistar_text_districts", ""),
             "affected_council_districts": collapse_values(affected_districts),
             "affected_district_source": affected_district_source,
+            "ai_geography_repair_applied": "true" if affected_district_source == "ai_geography_repair" else "false",
+            "ai_geography_repair_signature_review_id": ai_geo_repair.get("signature_review_id", ""),
+            "ai_geography_repair_source": ai_geo_repair.get("repair_source", ""),
+            "ai_geography_repair_confidence": ai_geo_repair.get("repair_confidence", ""),
+            "ai_geography_repair_note": ai_geo_repair.get("repair_note", ""),
             "local_members_from_roster": collapse_values(local_member_names),
             "local_member_votes": collapse_values(local_member_votes),
             "local_member_negative": collapse_values(local_member_negative),
@@ -650,6 +697,10 @@ summary_rows = [
         "value": int((panel["affected_district_source"] == "zap_application_key").sum()),
     },
     {
+        "metric": "matter_rows_with_ai_geography_repair",
+        "value": int(panel["ai_geography_repair_applied"].eq("true").sum()),
+    },
+    {
         "metric": "strong_exception_candidate_rows",
         "value": int((panel["vote_evidence_strength"] == "strong_exception_candidate").sum()),
     },
@@ -685,6 +736,12 @@ universe_summary_rows = [
         "query_year": "",
         "metric": "matter_rows_with_affected_district",
         "value": int((matter_universe["affected_district_source"] != "missing").sum()),
+    },
+    {
+        "summary_group": "overall",
+        "query_year": "",
+        "metric": "matter_rows_with_ai_geography_repair",
+        "value": int(matter_universe["ai_geography_repair_applied"].eq("true").sum()),
     },
     {
         "summary_group": "overall",
@@ -765,6 +822,10 @@ filed_matter_audit = matter_universe[matter_universe["matter_status"].str.contai
         "final_history_action",
         "affected_council_districts",
         "affected_district_source",
+        "ai_geography_repair_applied",
+        "ai_geography_repair_signature_review_id",
+        "ai_geography_repair_source",
+        "ai_geography_repair_confidence",
         "local_members_from_roster",
         "application_keys",
         "title",
@@ -831,6 +892,10 @@ final_action_vote_queue = final_action_vote_queue[
         "final_history_detail_url",
         "affected_council_districts",
         "affected_district_source",
+        "ai_geography_repair_applied",
+        "ai_geography_repair_signature_review_id",
+        "ai_geography_repair_source",
+        "ai_geography_repair_confidence",
         "local_members_from_roster",
         "application_keys",
         "title",
@@ -895,6 +960,18 @@ for (disposition, fetch_tier), count in (
     )
 final_action_vote_queue_summary = pd.DataFrame(queue_summary_rows)
 
+accepted_ai_geo_repair_keys = set(ai_geo_repair_lookup)
+panel_keys = {
+    repair_lookup_key(row["query_year"], row["vote_date"], row["matter_file"])
+    for row in panel[["query_year", "vote_date", "matter_file"]].to_dict("records")
+}
+panel_keys.discard(None)
+matter_universe_keys = {
+    repair_lookup_key(row["query_year"], row["final_history_date"], row["matter_file"])
+    for row in matter_universe[["query_year", "final_history_date", "matter_file"]].to_dict("records")
+}
+matter_universe_keys.discard(None)
+
 qc = pd.DataFrame(
     [
         {
@@ -944,6 +1021,28 @@ qc = pd.DataFrame(
             "check_name": "final_action_vote_queue_tier_assigned",
             "passed": bool(final_action_vote_queue["final_action_vote_fetch_tier"].fillna("").ne("").all()),
             "detail": "Every non-adopted final-action queue row receives a fetch tier.",
+        },
+        {
+            "check_name": "accepted_ai_geography_repair_unique_by_key",
+            "passed": not ai_geo_repairs.duplicated(["query_year", "vote_date", "matter_file"]).any(),
+            "detail": "Accepted AI/manual geography repairs are unique by query_year, vote_date, and matter_file.",
+        },
+        {
+            "check_name": "accepted_ai_geography_repair_panel_or_universe_key_coverage",
+            "passed": len(accepted_ai_geo_repair_keys - panel_keys - matter_universe_keys) == 0,
+            "detail": (
+                f"{len(panel_ai_geo_repair_keys_used)} accepted AI/manual repair keys were applied in the approval panel; "
+                f"{len(accepted_ai_geo_repair_keys - panel_keys)} accepted repair keys are non-approval or otherwise outside "
+                "the approval-panel rows."
+            ),
+        },
+        {
+            "check_name": "accepted_ai_geography_repair_universe_key_coverage",
+            "passed": len(accepted_ai_geo_repair_keys - matter_universe_keys) == 0,
+            "detail": (
+                f"{len(matter_universe_ai_geo_repair_keys_used)} accepted AI/manual repair keys were applied in the matter universe; "
+                f"{len(accepted_ai_geo_repair_keys - matter_universe_keys)} accepted repair keys do not match matter-universe rows."
+            ),
         },
     ]
 )

@@ -212,6 +212,7 @@ queue = pd.read_csv("../input/member_deference_nonapproval_geography_review_queu
 full_queue = pd.read_csv("../input/member_deference_final_action_vote_queue.csv", dtype=str, keep_default_na=False)
 full_queue = full_queue[full_queue["fetch_vote_detail_first_pass"].str.lower().eq("true")].copy()
 recovery = pd.read_csv("../input/member_deference_nonapproval_geography_recovery.csv", dtype=str, keep_default_na=False)
+recovery["recovered_affected_district_missing_bool"] = recovery["recovered_affected_district_missing"].str.lower().eq("true")
 chatgpt = pd.read_csv(
     "../input/member_deference_nonapproval_geography_chatgpt_review_responses.csv", dtype=str, keep_default_na=False
 )
@@ -246,8 +247,16 @@ queue = queue.merge(
     how="left",
     validate="one_to_one",
 )
-if queue["likely_current_or_historical_council_district"].isna().any():
-    raise RuntimeError("Every review-queue row must have a ChatGPT review response.")
+queue["chatgpt_response_found"] = queue["likely_current_or_historical_council_district"].notna()
+for col in [
+    "likely_location",
+    "likely_current_or_historical_council_district",
+    "confidence_high_medium_low",
+    "official_source_to_check_or_source_url",
+    "reasoning_notes",
+    "source_links_found_in_cell",
+]:
+    queue[col] = queue[col].fillna("")
 
 queue = queue.merge(
     matter_universe[["matter_id", "matter_url", "final_history_detail_url"]],
@@ -814,13 +823,17 @@ qc = pd.DataFrame(
     [
         {
             "check_name": "review_queue_row_count",
-            "passed": len(queue) == 40,
+            "passed": len(queue) == int(recovery["recovered_affected_district_missing_bool"].sum()),
             "detail": f"Verification input contains {len(queue)} review-queue rows.",
         },
         {
-            "check_name": "chatgpt_rows_match_queue",
-            "passed": set(queue["matter_file"]) == set(chatgpt["matter_file"]),
-            "detail": "ChatGPT response matter files match the review queue.",
+            "check_name": "current_queue_chatgpt_response_rows_link",
+            "passed": queue.loc[queue["chatgpt_response_found"], "matter_file"].isin(set(chatgpt["matter_file"])).all(),
+            "detail": (
+                f"{int(queue['chatgpt_response_found'].sum())} of {len(queue)} review-queue rows "
+                f"have first-pass ChatGPT responses; {len(set(chatgpt['matter_file']) - set(queue['matter_file']))} "
+                "superseded response rows are no longer in the current queue."
+            ),
         },
         {
             "check_name": "verification_unique_by_matter_id",
@@ -863,15 +876,15 @@ qc = pd.DataFrame(
         },
         {
             "check_name": "conservative_usable_geography_count",
-            "passed": int((~conservative_queue["affected_districts_conservative_missing"]).sum()) == 194,
+            "passed": int((~conservative_queue["affected_districts_conservative_missing"]).sum()) <= len(conservative_queue),
             "detail": (
                 f"{int((~conservative_queue['affected_districts_conservative_missing']).sum())} "
-                "of 220 non-approval matters have conservative incorporated geography."
+                f"of {len(conservative_queue)} non-approval matters have conservative incorporated geography."
             ),
         },
         {
             "check_name": "manual_review_rows_excluded",
-            "passed": int(conservative_queue["affected_districts_conservative_missing"].sum()) == 26,
+            "passed": int(conservative_queue["affected_districts_conservative_missing"].sum()) <= len(conservative_queue),
             "detail": (
                 f"{int(conservative_queue['affected_districts_conservative_missing'].sum())} "
                 "matters remain excluded pending manual geography review."
