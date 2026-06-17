@@ -1,0 +1,10 @@
+signature_review_id,researcher_adjudication,final_recommended_council_districts,final_include_in_geography_repair,decision_note
+clu_geo_005,exclude_for_now,,no,"Defer JFK AirTrain corridor until complete ROW/property geography can be overlaid on historical Council districts."
+clu_geo_061,exclude_for_now,,no,"Exclude bundled roll-call signature for now; component matters require matter-level decomposition."
+clu_geo_067,promote_with_caveat,2;3;5,yes,"Promote bundled-union districts for now: East River Science Park, MSK, and Chelsea Art Museum component geographies."
+clu_geo_068,exclude_for_now,,no,"Exclude bundled call-up signature for now; component matters require matter-level decomposition."
+clu_geo_083,exclude_for_now,,no,"Exclude bundled Brooklyn/Bronx roll-call signature for now; component matters require matter-level decomposition."
+clu_geo_085,exclude_for_now,,no,"Defer bundled Whitehall Ferry/property disposition signature until unresolved component geography is decomposed."
+clu_geo_100,promote_with_caveat,8;19;31,yes,"Promote bundled-union districts for now using official component district fields."
+clu_geo_103,promote_with_caveat,3;6;19;20,yes,"Promote bundled-union districts for now using official component district fields."
+clu_geo_115,exclude_for_now,,no,"Defer bundled consent vote with mixed and inconsistent component records until matter-level decomposition."

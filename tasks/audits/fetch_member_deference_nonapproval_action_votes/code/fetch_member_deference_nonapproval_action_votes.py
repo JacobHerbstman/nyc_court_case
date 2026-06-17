@@ -63,6 +63,21 @@ def save_text(path: Path, text: str) -> None:
     path.write_text(text, encoding="utf-8")
 
 
+def request_with_retries(session: requests.Session, url: str) -> requests.Response:
+    last_error = None
+    for attempt in range(1, 4):
+        try:
+            response = session.get(url, timeout=90)
+            response.raise_for_status()
+            return response
+        except requests.RequestException as error:
+            last_error = error
+            if attempt == 3:
+                break
+            time.sleep(5 * attempt)
+    raise last_error
+
+
 def table_value(soup: BeautifulSoup, table_id: str) -> str | None:
     table = soup.find("table", id=table_id)
     if table is None:
@@ -187,10 +202,9 @@ fetch_failures = []
 for i, row in enumerate(target_queue.to_dict("records"), start=1):
     raw_path = raw_dir / f"{safe_stub(row['matter_file'])}_{row['matter_id']}.html"
 
-    if not raw_path.exists():
+    if not raw_path.exists() or raw_path.stat().st_size == 0:
         try:
-            response = session.get(row["final_history_detail_url"], timeout=60)
-            response.raise_for_status()
+            response = request_with_retries(session, row["final_history_detail_url"])
             save_text(raw_path, response.text)
             time.sleep(0.03)
         except requests.RequestException as exc:

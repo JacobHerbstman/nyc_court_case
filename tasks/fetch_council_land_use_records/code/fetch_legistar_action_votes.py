@@ -22,6 +22,18 @@ if len(sys.argv) != 2 or not re.fullmatch(r"\d{4}", sys.argv[1]):
 QUERY_YEAR = sys.argv[1]
 ACTION_DETAILS_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_action_details.csv")
 SPLIT_VOTE_SIGNALS_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_split_vote_signals.csv")
+MEMBER_VOTES_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_member_votes.csv")
+VOTE_COUNT_CHECK_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_vote_count_check.csv")
+ACTION_VOTE_QC_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_action_vote_qc.csv")
+ZERO_VOTE_PAGES_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_zero_vote_pages.csv")
+DECLARED_OUTPUTS = [
+    ACTION_DETAILS_OUTPUT,
+    SPLIT_VOTE_SIGNALS_OUTPUT,
+    MEMBER_VOTES_OUTPUT,
+    VOTE_COUNT_CHECK_OUTPUT,
+    ACTION_VOTE_QC_OUTPUT,
+    ZERO_VOTE_PAGES_OUTPUT,
+]
 
 
 def normalize_space(value: object) -> str:
@@ -47,16 +59,39 @@ def save_text(path: Path, text: str) -> None:
 
 
 def existing_outputs_complete() -> bool:
-    if not ACTION_DETAILS_OUTPUT.exists() or not SPLIT_VOTE_SIGNALS_OUTPUT.exists():
+    if any(not path.exists() or path.stat().st_size == 0 for path in DECLARED_OUTPUTS):
         return False
 
     action_details = pd.read_csv(ACTION_DETAILS_OUTPUT, dtype=str, keep_default_na=False)
     split_vote_signals = pd.read_csv(SPLIT_VOTE_SIGNALS_OUTPUT, dtype=str, keep_default_na=False)
+    member_votes = pd.read_csv(MEMBER_VOTES_OUTPUT, dtype=str, keep_default_na=False)
 
     if action_details.empty or "raw_path" not in action_details.columns:
         return False
+    if "matter_id" not in split_vote_signals.columns or member_votes.empty:
+        return False
 
     return all(Path(raw_path).exists() for raw_path in action_details["raw_path"].drop_duplicates() if raw_path)
+
+
+def refresh_declared_output_mtimes() -> None:
+    for path in DECLARED_OUTPUTS:
+        path.touch()
+
+
+def request_with_retries(session: requests.Session, url: str) -> requests.Response:
+    last_error = None
+    for attempt in range(1, 4):
+        try:
+            response = session.get(url, timeout=90)
+            response.raise_for_status()
+            return response
+        except requests.RequestException as error:
+            last_error = error
+            if attempt == 3:
+                break
+            time.sleep(5 * attempt)
+    raise last_error
 
 
 def table_value(soup: BeautifulSoup, table_id: str) -> str | None:
@@ -155,6 +190,7 @@ def parse_action_detail(html: str) -> tuple[dict[str, object], list[dict[str, ob
 
 
 if existing_outputs_complete():
+    refresh_declared_output_mtimes()
     raise SystemExit(0)
 
 history_events = pd.read_csv(
@@ -220,12 +256,16 @@ raw_dir = (
 action_rows = []
 member_vote_rows = []
 for i, row in enumerate(target_events.sort_values(["history_date", "matter_file"]).to_dict("records"), start=1):
-    response = session.get(row["history_detail_url"], timeout=60)
-    response.raise_for_status()
-
     raw_path = raw_dir / f"{safe_stub(row['matter_file'])}_{row['matter_id']}.html"
-    save_text(raw_path, response.text)
-    summary, votes = parse_action_detail(response.text)
+    if raw_path.exists() and raw_path.stat().st_size > 0:
+        page_html = raw_path.read_text(encoding="utf-8")
+        fetch_status = "cached"
+    else:
+        response = request_with_retries(session, row["history_detail_url"])
+        page_html = response.text
+        save_text(raw_path, page_html)
+        fetch_status = "downloaded"
+    summary, votes = parse_action_detail(page_html)
 
     action_rows.append(
         {
@@ -243,6 +283,7 @@ for i, row in enumerate(target_events.sort_values(["history_date", "matter_file"
             "history_action": row["history_action"],
             "history_result": row["history_result"],
             "history_detail_url": row["history_detail_url"],
+            "fetch_status": fetch_status,
             "raw_path": str(raw_path),
             "file_size_bytes": raw_path.stat().st_size,
             "checksum_sha256": sha256(raw_path),
@@ -268,7 +309,8 @@ for i, row in enumerate(target_events.sort_values(["history_date", "matter_file"
             }
         )
 
-    time.sleep(0.03)
+    if fetch_status == "downloaded":
+        time.sleep(0.03)
     if i == 1 or i % 100 == 0 or i == len(target_events):
         print(f"Fetched action-detail page {i} of {len(target_events)}", flush=True)
 
@@ -383,8 +425,12 @@ if QUERY_YEAR == "2001":
 
 qc = pd.DataFrame(qc_rows)
 
-action_details.to_csv(f"../output/legistar_{QUERY_YEAR}_broad_recall_action_details.csv", index=False)
-split_vote_signals.to_csv(f"../output/legistar_{QUERY_YEAR}_broad_recall_split_vote_signals.csv", index=False)
+action_details.to_csv(ACTION_DETAILS_OUTPUT, index=False)
+member_votes.to_csv(MEMBER_VOTES_OUTPUT, index=False)
+vote_count_check.to_csv(VOTE_COUNT_CHECK_OUTPUT, index=False)
+qc.to_csv(ACTION_VOTE_QC_OUTPUT, index=False)
+zero_vote_pages.to_csv(ZERO_VOTE_PAGES_OUTPUT, index=False)
+split_vote_signals.to_csv(SPLIT_VOTE_SIGNALS_OUTPUT, index=False)
 
 if not qc["passed"].all():
     failed_checks = ", ".join(qc.loc[~qc["passed"], "check_name"].astype(str))

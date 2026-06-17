@@ -6,7 +6,7 @@ exceptions to member deference from votes that are only consistent with member
 deference and from unresolved geography/member-match cases.
 
 The panel uses Legistar final Council approval action details and member vote
-rows for 1998-2010. It recovers affected Council districts from Legistar text
+rows for 1998-2025. It recovers affected Council districts from Legistar text
 when available and otherwise uses application-number matches to staged ZAP
 projects as a secondary geography source.
 

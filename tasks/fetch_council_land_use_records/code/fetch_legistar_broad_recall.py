@@ -26,6 +26,18 @@ SOURCE_ID = "nyc_council_legistar_land_use_broad_recall"
 PULL_DATE = date.today().strftime("%Y%m%d")
 MATTER_INDEX_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_matter_index.csv")
 HISTORY_EVENTS_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_history_events.csv")
+PAGE_FETCHES_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_page_fetches.csv")
+DETAIL_FILES_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_detail_files.csv")
+COUNT_CHECK_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_count_check.csv")
+QC_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_qc.csv")
+DECLARED_OUTPUTS = [
+    MATTER_INDEX_OUTPUT,
+    HISTORY_EVENTS_OUTPUT,
+    PAGE_FETCHES_OUTPUT,
+    DETAIL_FILES_OUTPUT,
+    COUNT_CHECK_OUTPUT,
+    QC_OUTPUT,
+]
 
 MATTER_TYPE_QUERIES = [
     {"matter_type": "Land Use Application", "type_value": "10", "slug": "land_use_application"},
@@ -312,10 +324,18 @@ def output_raw_paths_exist(path: Path, raw_path_columns: list[str]) -> bool:
 
 
 def existing_outputs_complete() -> bool:
-    return output_raw_paths_exist(MATTER_INDEX_OUTPUT, ["detail_raw_path"]) and output_raw_paths_exist(
-        HISTORY_EVENTS_OUTPUT,
-        ["detail_raw_path"],
+    return (
+        output_raw_paths_exist(MATTER_INDEX_OUTPUT, ["detail_raw_path"])
+        and output_raw_paths_exist(HISTORY_EVENTS_OUTPUT, ["detail_raw_path"])
+        and output_raw_paths_exist(PAGE_FETCHES_OUTPUT, ["raw_path"])
+        and output_raw_paths_exist(DETAIL_FILES_OUTPUT, ["raw_path"])
+        and all(path.exists() and path.stat().st_size > 0 for path in [COUNT_CHECK_OUTPUT, QC_OUTPUT])
     )
+
+
+def refresh_declared_output_mtimes() -> None:
+    for path in DECLARED_OUTPUTS:
+        path.touch()
 
 
 def request_with_retries(session: requests.Session, method: str, url: str, **kwargs) -> requests.Response:
@@ -575,6 +595,7 @@ def fetch_detail_pages(session: requests.Session, matter_index: pd.DataFrame) ->
 
 def main() -> None:
     if existing_outputs_complete():
+        refresh_declared_output_mtimes()
         return
 
     session = requests.Session()
@@ -729,8 +750,12 @@ def main() -> None:
 
     qc = pd.DataFrame(qc_rows)
 
-    matter_index.to_csv(f"../output/legistar_{QUERY_YEAR}_broad_recall_matter_index.csv", index=False)
-    history_events.to_csv(f"../output/legistar_{QUERY_YEAR}_broad_recall_history_events.csv", index=False)
+    matter_index.to_csv(MATTER_INDEX_OUTPUT, index=False)
+    history_events.to_csv(HISTORY_EVENTS_OUTPUT, index=False)
+    page_fetch.to_csv(PAGE_FETCHES_OUTPUT, index=False)
+    detail_files.to_csv(DETAIL_FILES_OUTPUT, index=False)
+    count_check.to_csv(COUNT_CHECK_OUTPUT, index=False)
+    qc.to_csv(QC_OUTPUT, index=False)
 
     if not qc["passed"].all():
         failed_checks = ", ".join(qc.loc[~qc["passed"], "check_name"].astype(str))

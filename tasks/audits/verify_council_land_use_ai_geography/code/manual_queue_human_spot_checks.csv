@@ -1,0 +1,6 @@
+signature_review_id,human_spot_check_verdict,human_spot_check_note,human_review_needed_after_spot_check
+clu_geo_125,correct,"User reviewed random spot-check case and confirmed the District 3 assignment is correct.",no
+clu_geo_101,correct,"User reviewed random spot-check case and confirmed the District 3 assignment is correct.",no
+clu_geo_133,correct,"User reviewed random spot-check case and confirmed the District 1 assignment is correct.",no
+clu_geo_081,correct,"User reviewed random spot-check case and confirmed the District 3 assignment is correct.",no
+clu_geo_126,primarily_correct,"User reviewed random spot-check case and said the Eastern Rail Yard / Hudson Yards district assignment is primarily correct because the Hudson Yards district is primarily in District 3.",no

@@ -4,7 +4,7 @@ This task builds the main matter-level Council land-use decision panel from the
 audited Legistar/member-deference workflow.
 
 The output unit is a Legistar matter. The panel keeps the full land-use-recalled
-matter universe from 1998-2010 and attaches final-action vote evidence where the
+matter universe from 1998-2025 and attaches final-action vote evidence where the
 upstream audit tasks have parsed it: adopted matters from the approval vote
 panel and core City Council non-approval matters from the conservative
 non-approval queue. The local-member vote output is one row per affected local
