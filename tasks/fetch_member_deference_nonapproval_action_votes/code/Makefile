@@ -35,4 +35,4 @@ all: ../output/member_deference_nonapproval_action_details.csv \
 
 link-inputs: ../input/member_deference_final_action_vote_queue.csv
 
-include ../../../generic.make
+include ../../generic.make

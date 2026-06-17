@@ -15,22 +15,22 @@ all: ../output/council_land_use_decision_panel.csv \
 ../output/council_land_use_local_member_votes.csv: ../output/council_land_use_decision_panel.csv
 	@test -s "$@"
 
-../input/member_deference_matter_universe.csv: ../../audits/build_member_deference_vote_panel/output/member_deference_matter_universe.csv | ../input
+../input/member_deference_matter_universe.csv: ../../build_member_deference_vote_panel/output/member_deference_matter_universe.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/member_deference_vote_panel.csv: ../../audits/build_member_deference_vote_panel/output/member_deference_vote_panel.csv | ../input
+../input/member_deference_vote_panel.csv: ../../build_member_deference_vote_panel/output/member_deference_vote_panel.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/member_deference_nonapproval_geography_conservative_queue.csv: ../../audits/verify_member_deference_nonapproval_geography/output/member_deference_nonapproval_geography_conservative_queue.csv | ../input
+../input/member_deference_nonapproval_geography_conservative_queue.csv: ../../verify_member_deference_nonapproval_geography/output/member_deference_nonapproval_geography_conservative_queue.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/member_deference_nonapproval_action_details.csv: ../../audits/fetch_member_deference_nonapproval_action_votes/output/member_deference_nonapproval_action_details.csv | ../input
+../input/member_deference_nonapproval_action_details.csv: ../../fetch_member_deference_nonapproval_action_votes/output/member_deference_nonapproval_action_details.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/member_deference_nonapproval_local_member_matter_audit.csv: ../../audits/fetch_member_deference_nonapproval_action_votes/output/member_deference_nonapproval_local_member_matter_audit.csv | ../input
+../input/member_deference_nonapproval_local_member_matter_audit.csv: ../../fetch_member_deference_nonapproval_action_votes/output/member_deference_nonapproval_local_member_matter_audit.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/member_deference_nonapproval_local_member_votes.csv: ../../audits/fetch_member_deference_nonapproval_action_votes/output/member_deference_nonapproval_local_member_votes.csv | ../input
+../input/member_deference_nonapproval_local_member_votes.csv: ../../fetch_member_deference_nonapproval_action_votes/output/member_deference_nonapproval_local_member_votes.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 link-inputs: ../input/member_deference_matter_universe.csv \

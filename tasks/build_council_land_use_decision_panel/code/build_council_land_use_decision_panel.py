@@ -240,8 +240,7 @@ nonapproval_actions = nonapproval_actions[
 
 decision_panel = matter_universe.merge(approval_panel, on="matter_id", how="left", validate="one_to_one")
 decision_panel = decision_panel.merge(nonapproval_actions, on="matter_id", how="left", validate="one_to_one")
-for col in decision_panel.columns:
-    decision_panel[col] = decision_panel[col].fillna("")
+decision_panel = decision_panel.fillna("").copy()
 
 decision_panel["has_approval_vote_detail"] = decision_panel["approval_source_row"].eq("true")
 decision_panel["has_nonapproval_vote_detail"] = decision_panel["nonapproval_source_row"].eq("true")

@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/fetch_member_deference_nonapproval_action_votes/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/fetch_member_deference_nonapproval_action_votes/code")
 
 from __future__ import annotations
 

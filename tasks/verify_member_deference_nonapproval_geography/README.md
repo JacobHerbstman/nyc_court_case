@@ -1,6 +1,6 @@
 # Verify Member-Deference Non-Approval Geography
 
-This audit task verifies ChatGPT geography leads for unresolved first-pass
+This production-support task verifies geography leads for unresolved first-pass
 non-approval land-use matters against official records.
 
 The task treats ChatGPT as a lead source only. A row is verified only when an

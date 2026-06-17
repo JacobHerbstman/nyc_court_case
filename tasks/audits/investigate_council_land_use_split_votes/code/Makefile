@@ -202,7 +202,7 @@ all: ../output/council_land_use_split_vote_annual_decomposition.csv \
 ../input/council_land_use_decision_universe_validation_summary.csv: ../../../validate_council_land_use_decision_universe/output/council_land_use_decision_universe_validation_summary.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/member_deference_nonapproval_member_votes.csv: ../../fetch_member_deference_nonapproval_action_votes/output/member_deference_nonapproval_member_votes.csv | ../input
+../input/member_deference_nonapproval_member_votes.csv: ../../../fetch_member_deference_nonapproval_action_votes/output/member_deference_nonapproval_member_votes.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/charter_overrule_seed_cases.csv: ../../build_member_deference_overrule_candidates/code/charter_overrule_seed_cases.csv | ../input

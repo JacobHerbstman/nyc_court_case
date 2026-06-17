@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/build_member_deference_vote_panel/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_member_deference_vote_panel/code")
 
 from __future__ import annotations
 

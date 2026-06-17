@@ -1,8 +1,8 @@
 # Recover Member-Deference Non-Approval Geography
 
-This audit task tests two backup geography strategies for first-pass non-approval
-City Council land-use actions that do not already have affected Council districts
-in the Legistar matter index.
+This production-support task recovers geography for first-pass non-approval City
+Council land-use actions that do not already have affected Council districts in
+the Legistar matter index.
 
 The task keeps source flags explicit:
 
@@ -14,9 +14,9 @@ The task keeps source flags explicit:
 - deterministic title-address variants, mainly small numeric address ranges,
   matched to current MapPLUTO
 
-Current MapPLUTO matches are locational backups, not final historical district
-assignments. They should be reviewed before being used as main member-deference
-evidence.
+Current MapPLUTO matches are locational backups, not direct historical district
+statements. They are carried with source flags and reviewed before entering the
+main member-deference decision panel.
 
 The unresolved rows are also exported as a plain-text review queue. Those prompts
 are for research assistance only; any recovered geography should be entered back

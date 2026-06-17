@@ -1,16 +1,16 @@
 # Fetch Member-Deference Non-Approval Action Votes
 
-This audit task fetches Legistar action-detail pages for the first-pass non-approval
+This task fetches Legistar action-detail pages for the first-pass non-approval
 City Council land-use actions identified by
-`tasks/audits/build_member_deference_vote_panel`, after the conservative
+`tasks/build_member_deference_vote_panel`, after the conservative
 geography incorporation step in
-`tasks/audits/verify_member_deference_nonapproval_geography`.
+`tasks/verify_member_deference_nonapproval_geography`.
 
 The upstream approval-vote pull only captured final Council approvals. This task
 checks the adjacent margin: land-use matters that were disapproved, filed by the
 Council, or filed through a withdrawal/motion-to-file path. The goal is to learn
 whether those final action pages contain individual member votes and, when they
-do, make them available for the member-deference audit.
+do, make them available for the production decision panel.
 
 The task is intentionally separate from the offline vote-panel builder because it
 downloads web pages.

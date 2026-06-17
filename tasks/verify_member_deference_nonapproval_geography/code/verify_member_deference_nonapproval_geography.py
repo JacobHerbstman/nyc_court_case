@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/verify_member_deference_nonapproval_geography/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/verify_member_deference_nonapproval_geography/code")
 
 from __future__ import annotations
 
@@ -433,8 +433,12 @@ for col in [
     "official_matter_bbl_current_mappluto_districts",
     "official_matter_bbl_examples",
 ]:
+    if col not in verification.columns:
+        verification[col] = ""
     verification[col] = verification[col].fillna("")
 for col in ["official_matter_bbl_count", "official_matter_bbl_current_mappluto_match_count"]:
+    if col not in verification.columns:
+        verification[col] = 0
     verification[col] = verification[col].fillna(0).astype(int)
 
 verification["chatgpt_suggested_districts_parsed"] = verification[
