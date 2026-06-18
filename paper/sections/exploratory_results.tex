@@ -6,22 +6,23 @@ The goal is to assess whether the raw data move in the direction the institution
 
 \subsection{Raw Trends by Treatment Tercile}
 
-Figure~\ref{fig:tercile_trends} groups 2010 Council districts into low, middle, and high terciles of the within-borough homeownership treatment, then plots each group's share of borough-total housing production over time.
-The comparison is made within borough before aggregating to the citywide figure.
-The displayed series are centered 3-year moving averages of annual shares.
+Figure~\ref{fig:tercile_trends} groups 2010 Council districts into low, middle, and high terciles of the within-borough homeownership treatment, then plots raw units built from 1970 through 2025.
+The displayed series are centered 3-year moving averages of annual unit counts.
+These raw counts are useful for the first descriptive question: where did new units actually appear?
+The 1970s and 1980s should be read as pre-history for the geography and treatment, not as years in which the 2010 Council districts were the operative political units.
 
 The large-building panel is the main focus.
-Before the reform, high-treatment districts account for a substantial share of large-building construction.
-After 2010, the ranking reverses: low-homeownership Council districts account for a larger share of borough construction than high-homeownership Council districts.
+Before the reform, high-treatment districts produce a substantial number of large-building units.
+After 2010, the ranking reverses: low-homeownership Council districts produce many more large-building units than high-homeownership Council districts.
 The total-units panel shows a similar pattern.
 The 1--4 unit margin, by contrast, does not exhibit the same late decline in the regression analogue below, which is reassuring because small buildings are less likely to be the margin where member deference operates.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[page=3,width=0.86\textwidth]{../tasks/summarize_ccd2010_homeownership_long_units_series/output/ccdist2010_homeownership_long_units_plots.pdf}
+    \includegraphics[page=1,width=0.86\textwidth]{../tasks/summarize_ccd2010_homeownership_long_units_series/output/ccdist2010_homeownership_long_units_raw_units_plots.pdf}
     \caption{Housing Production by Homeownership Tercile}
     \label{fig:tercile_trends}
-\figurenotes{Figure plots centered 3-year moving averages of annual borough-total housing-production shares by tercile of the within-borough standardized 1990 homeownership treatment. The unit is the 2010 City Council district. Construction outcomes are measured with the 25v4 MapPLUTO yearbuilt proxy, assigning lots to archived 2010 Council districts by lot representative point. The figure uses explicit borough-year denominators before aggregating across boroughs.}
+\figurenotes{Figure plots centered 3-year moving averages of raw annual housing-production units by tercile of the within-borough standardized 1990 homeownership treatment. The unit is the 2010 City Council district. Construction outcomes cover 1970--2025 and are measured with the 25v4 MapPLUTO yearbuilt proxy, assigning lots to archived 2010 Council districts by lot representative point.}
 \end{figure}
 
 \subsection{Brooklyn Case Study}
@@ -32,17 +33,17 @@ This is descriptive, but it makes the empirical margin transparent: the post-202
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[page=4,width=0.86\textwidth]{../tasks/summarize_ccd2010_homeownership_long_units_series/output/ccdist2010_homeownership_long_units_plots.pdf}
+    \includegraphics[page=2,width=0.86\textwidth]{../tasks/summarize_ccd2010_homeownership_long_units_series/output/ccdist2010_homeownership_long_units_raw_units_plots.pdf}
     \caption{Brooklyn Homeownership Gradient by Housing Margin}
     \label{fig:brooklyn_case_study}
-\figurenotes{Figure orders the 16 2010 City Council districts assigned to Brooklyn by within-borough standardized 1990 homeownership and plots later construction margins alongside the treatment. Construction outcomes are annual 2020--2025 rates per 10,000 occupied housing units in 1990, measured with the 25v4 MapPLUTO yearbuilt proxy.}
+\figurenotes{Figure orders the 16 2010 City Council districts assigned to Brooklyn by within-borough standardized 1990 homeownership and plots later construction margins alongside the treatment. Construction outcomes are raw 2020--2025 unit totals, measured with the 25v4 MapPLUTO yearbuilt proxy.}
 \end{figure}
 
 \subsection{Event-Study Results}
 \label{subsec:regression_analogues}
 
 I next estimate a Council-district regression analogue of Figure~\ref{fig:tercile_trends}.
-The preferred outcome is units in 5+ unit new buildings per 10,000 occupied housing units in 1990 --- a margin broad enough to be well-powered, but one that still excludes the 1--4 unit range where discretionary review should matter less.
+The preferred outcome is raw units in 5+ unit new buildings --- a margin broad enough to be well-powered, but one that still excludes the 1--4 unit range where discretionary review should matter less.
 I plot the 1--4 unit series alongside as a placebo.
 
 The event-study specification is
@@ -56,25 +57,25 @@ Y_{dbt}
 \end{equation}
 where \(d\) indexes 2010 Council districts, \(b\) assigned majority boroughs, and \(p(t)\) period bins.
 The omitted period \(p_0\) is 1985--1989.
-The event-study figure uses five-year bins, with 2020--2025 as the final partial bin.
+The event-study figure uses five-year bins from 1970--1974 onward, with 2020--2025 as the final partial bin.
 The treatment \(T_d\) is the 1990 homeownership share, standardized within borough after allocating 1990 tracts to the 2010 Council geography.
-Controls include log 1990 occupied units, 1990 median household income, 1990 vacancy rate, and pre-1989 production on the same outcome scale, interacted with the period bins.
+Controls include log 1990 occupied units, 1990 median household income, 1990 vacancy rate, and 1970--1988 raw production on the same outcome scale, interacted with the period bins.
 Fixed effects absorb permanent Council-district differences and borough-period housing cycles; standard errors are clustered by Council district.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[page=1,width=0.86\textwidth]{../tasks/estimate_ccd2010_homeownership_long_units_event_study/output/ccdist2010_homeownership_long_units_event_coefficients_5yr_bins.pdf}
+    \includegraphics[page=1,width=0.86\textwidth]{../tasks/estimate_ccd2010_homeownership_long_units_event_study/output/ccdist2010_homeownership_long_units_event_coefficients_raw_units_5yr_bins.pdf}
     \caption{Event-Study Gradients by Housing Margin}
     \label{fig:homeownership_event_study_5_plus}
-\figurenotes{Figure plots coefficients on within-borough standardized 1990 homeownership from Equation~\ref{eq:homeownership_event_study}. Outcomes are units in 1--4 unit and 5+ unit new buildings per 10,000 occupied housing units in 1990. The unit is the 2010 City Council district. Construction outcomes are measured with the 25v4 MapPLUTO yearbuilt proxy. The omitted period is 1985--1989. The event-study bins are five-year periods, except for the final 2020--2025 bin. Controls include log 1990 occupied units, 1990 median household income, 1990 vacancy rate, and pre-1989 production on the same outcome scale, interacted with period bins. Standard errors are clustered by Council district.}
+\figurenotes{Figure plots coefficients on within-borough standardized 1990 homeownership from Equation~\ref{eq:homeownership_event_study}. Outcomes are raw annual units in 1--4 unit and 5+ unit new buildings. The unit is the 2010 City Council district. Construction outcomes are measured with the 25v4 MapPLUTO yearbuilt proxy. The omitted period is 1985--1989. The event-study bins are five-year periods from 1970--1974 through 2015--2019, plus a final 2020--2025 bin. Controls include log 1990 occupied units, 1990 median household income, 1990 vacancy rate, and 1970--1988 raw production on the same outcome scale, interacted with period bins. Standard errors are clustered by Council district.}
 \end{figure}
 
-Figure~\ref{fig:homeownership_event_study_5_plus} shows a delayed homeowner gradient rather than an immediate post-1990 break.
-For 5+ unit buildings, the gradient is already negative in the 2000s and becomes larger after 2010.
+Figure~\ref{fig:homeownership_event_study_5_plus} does not show a clean break exactly at 1990.
+For 5+ unit buildings, the homeowner gradient is negative in several earlier bins but becomes much larger after 2010, especially in the 2015--2019 and 2020--2025 periods.
 The 1--4 unit placebo shows no comparable late decline.
 
-\input{../tasks/estimate_ccd2010_homeownership_long_units_event_study/output/ccdist2010_homeownership_long_units_long_difference.tex}
+\input{../tasks/estimate_ccd2010_homeownership_long_units_event_study/output/ccdist2010_homeownership_long_units_long_difference_raw_units.tex}
 
-Table~\ref{tab:ccdist2010_homeownership_long_units_long_difference} reports the corresponding long-difference estimates.
-The results are consistent with the event study: the 5+ unit placebo difference is small relative to the post-2010 differences, while the 2010s and 2020s long differences are large and negative.
+Table~\ref{tab:ccdist2010_homeownership_long_units_long_difference_raw_units} reports the corresponding long-difference estimates.
+The results are consistent with the event study: the pre-1990 placebo comparison and the early post windows are imprecise, while the 2010s and especially the 2020--2025 long differences are negative.
 These estimates do not capture the total citywide effect of Morris or member deference; they measure whether post-2010 production shifted away from homeowner-heavy 2010 Council districts within the same borough.

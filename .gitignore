@@ -66,6 +66,20 @@ slides/*.synctex.gz
 slides/*.snm
 slides/*.toc
 slides/figures/institutional_timeline_units_total_ma3.csv
+class_slides/*.aux
+class_slides/*.bbl
+class_slides/*.blg
+class_slides/*.fdb_latexmk
+class_slides/*.fls
+class_slides/*.log
+class_slides/*.nav
+class_slides/*.out
+class_slides/*.pdf
+class_slides/*.synctex.gz
+class_slides/*.snm
+class_slides/*.toc
+class_slides/figures/institutional_timeline_units_total_ma3.csv
+class_slides/figures/institutional_timeline_units_total_count_ma3.csv
 
 # --- Scratch / local working area ---
 tmp/

@@ -20,26 +20,10 @@ The post-Morris shift did not necessarily imply an immediate local-member veto.
 The 1989 Charter revision created the institutional conditions for district-level land-use control by moving many final land-use decisions into a 51-member Council. But the informal norm of member deference appears to have hardened over time. 
 During the 1990s, Speaker control could still override local members; by the 2000s and 2010s, the local member’s position had become increasingly decisive. This delayed institutional consolidation is important for the empirical design: the expected effect is not an immediate 1990 break, but a growing homeowner gradient as member deference became binding.
 
-\subsection{Unit of Analysis}
-
-In this first Council-district version, I use the 51 City Council districts from the 2010 redistricting cycle as the unit of analysis.
-This is the political geography through which member deference operates, and it is the relevant geography for a post-2010 descriptive test.
-The cost is that the geography is not available consistently for the full pre-period, so I treat the 2010 districts as fixed and project historical exposure into those boundaries.
-
-This is deliberately a first pass.
-I do not claim that the 2010 districts were the operative political districts in the 1980s or 1990s.
-Instead, the exercise asks whether the places that became homeowner-heavy 2010 Council districts, measured using 1990 tenure, are the places that lost large-building production once member deference became more important.
-
-Housing production is measured from a single construction source: 25v4 MapPLUTO.
-I assign each MapPLUTO lot to the archived 2010 Council district containing the lot's representative point, then aggregate \texttt{yearbuilt} and residential units to Council-district-by-year cells.
-This keeps the construction outcome source fixed over 1980--2025.
-The tradeoff is that MapPLUTO provides a surviving-stock year-built proxy, not a clean annual completion-flow series.
-
-\subsection{Treatment Definition}
+\subsection{Empirical Comparison}
 
 The treatment captures baseline homeowner concentration relative to the borough.
-I start with 1990 NHGIS tract owner-occupied and occupied housing counts, intersect the 1990 tract polygons with the 2010 Council-district boundaries, and allocate tract counts to Council districts by area share.
-Let $H_{db,1990}$ be the resulting 1990 owner-occupied share of occupied housing units in Council district $d$, assigned to majority borough $b$, and let $H_{b,1990}$ be the corresponding borough-wide owner-occupied share.
+Let $H_{db,1990}$ be the 1990 owner-occupied share of occupied housing units in Council district $d$, assigned to majority borough $b$.
 I define the treatment as a within-borough standardized homeownership score:
 
 \begin{equation}
@@ -56,13 +40,15 @@ where $\overline{H}_{b,1990}^{\mathrm{Council}}$ and $s_b(H_{db,1990})$ are the 
 standard deviation of 1990 homeownership across 2010 Council districts in
 borough $b$.
 
-This score compares each Council district to others assigned to the same borough. A value of zero indicates average homeownership for the borough; positive values indicate a more homeowner-heavy district; negative values indicate a more renter-heavy one.
+This score compares each Council district to others assigned to the same borough.
+A value of zero indicates average homeownership for the borough; positive values indicate a more homeowner-heavy district; negative values indicate a more renter-heavy one.
 
 This within-borough standardization matters because boroughs differ substantially in housing stock, density, transit access, baseline ownership rates, and long-run development pressure.
 A citywide measure would partly conflate Staten Island with Manhattan or outer Queens with the Bronx.
 The within-borough score instead asks whether homeowner-heavy Council districts within the same borough experienced different post-reform construction trajectories than their lower-homeownership neighbors.
 
-The identifying logic is straightforward. If member deference gives local councilmembers effective control over discretionary land use, then places with stronger homeowner constituencies should have greater political capacity to resist large buildings.
+The identifying logic is straightforward.
+If member deference gives local councilmembers effective control over discretionary land use, then places with stronger homeowner constituencies should have greater political capacity to resist large buildings.
 That prediction should be sharpest for multi-unit and large-building construction, where local opposition and discretionary review are most consequential, and weaker for small buildings, which are less likely to require the same political process.
 Figure~\ref{fig:treatment_map} illustrates the variation in the treatment measure across the city, with substantial within-borough dispersion that permits comparisons free of borough-level confounds.
 

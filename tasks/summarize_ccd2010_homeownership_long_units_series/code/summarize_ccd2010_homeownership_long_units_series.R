@@ -18,6 +18,10 @@ assert_unique_keys <- function(df, keys, label) {
   }
 }
 
+comma_label <- function(x) {
+  format(x, big.mark = ",", scientific = FALSE, trim = TRUE)
+}
+
 make_centered_moving_average <- function(df, window_years) {
   half_window <- (window_years - 1) / 2
 
@@ -142,7 +146,7 @@ if (nrow(required_tercile_series_gaps) > 0) {
 
 tercile_year_ma3_df <- make_centered_moving_average(tercile_year_df, 3)
 
-brooklyn_rank_df <- preferred_df %>%
+brooklyn_rank_base_df <- preferred_df %>%
   filter(
     borough_name == "Brooklyn",
     year >= 2020,
@@ -152,12 +156,26 @@ brooklyn_rank_df <- preferred_df %>%
   group_by(district_id, council_district, borough_code, borough_name, treat_z_boro, occupied_units_1990, series_family) %>%
   summarize(
     annual_rate_per_10000_occupied = sum(outcome_value, na.rm = TRUE) / n_distinct(year) * 10000 / first(occupied_units_1990),
+    units_built_2020_2025 = sum(outcome_value, na.rm = TRUE),
     .groups = "drop"
-  ) %>%
+  )
+
+brooklyn_rank_df <- brooklyn_rank_base_df %>%
+  select(-units_built_2020_2025) %>%
   pivot_wider(
     names_from = series_family,
     values_from = annual_rate_per_10000_occupied,
     names_glue = "{series_family}_2020_2025_per_10000_occupied"
+  ) %>%
+  mutate(district_label = paste0("Council ", council_district)) %>%
+  arrange(desc(treat_z_boro))
+
+brooklyn_rank_units_df <- brooklyn_rank_base_df %>%
+  select(-annual_rate_per_10000_occupied) %>%
+  pivot_wider(
+    names_from = series_family,
+    values_from = units_built_2020_2025,
+    names_glue = "{series_family}_2020_2025_units"
   ) %>%
   mutate(district_label = paste0("Council ", council_district)) %>%
   arrange(desc(treat_z_boro))
@@ -184,6 +202,13 @@ tercile_plot_ma3_df <- tercile_year_ma3_df %>%
     series_label = factor(series_label, levels = c("Units built: total", "Units built: 50+"))
   )
 
+tercile_units_plot_ma3_df <- tercile_year_ma3_df %>%
+  filter(series_family %in% c("units_built_total", "units_built_50_plus")) %>%
+  mutate(
+    treat_tercile_label = factor(treat_tercile_label, levels = c("Low", "Middle", "High")),
+    series_label = factor(series_label, levels = c("Units built: total", "Units built: 50+"))
+  )
+
 brooklyn_rank_plot_df <- brooklyn_rank_df %>%
   transmute(
     district_label,
@@ -200,6 +225,33 @@ brooklyn_rank_plot_df <- brooklyn_rank_df %>%
   ) %>%
   mutate(
     district_label = factor(district_label, levels = rev(brooklyn_rank_df$district_label)),
+    metric = factor(
+      metric,
+      levels = c(
+        "1990 homeowner exposure",
+        "Total units, 2020-2025",
+        "1-2 unit building units, 2020-2025",
+        "50+ units, 2020-2025"
+      )
+    )
+  )
+
+brooklyn_rank_units_plot_df <- brooklyn_rank_units_df %>%
+  transmute(
+    district_label,
+    treat_z_boro,
+    `1990 homeowner exposure` = treat_z_boro,
+    `Total units, 2020-2025` = units_built_total_2020_2025_units,
+    `1-2 unit building units, 2020-2025` = units_built_1_2_2020_2025_units,
+    `50+ units, 2020-2025` = units_built_50_plus_2020_2025_units
+  ) %>%
+  pivot_longer(
+    cols = -c(district_label, treat_z_boro),
+    names_to = "metric",
+    values_to = "metric_value"
+  ) %>%
+  mutate(
+    district_label = factor(district_label, levels = rev(brooklyn_rank_units_df$district_label)),
     metric = factor(
       metric,
       levels = c(
@@ -249,6 +301,42 @@ print(
     labs(
       title = "Brooklyn rank plot",
       subtitle = "Council districts ordered by homeowner exposure, with later construction margins alongside",
+      x = NULL,
+      y = NULL
+    ) +
+    theme_minimal(base_size = 11) +
+    theme(
+      plot.background = element_rect(fill = "white", color = NA),
+      panel.background = element_rect(fill = "white", color = NA),
+      strip.background = element_blank(),
+      strip.text = element_text(face = "bold"),
+      panel.grid.minor = element_blank(),
+      panel.grid.major.y = element_blank()
+    )
+)
+dev.off()
+
+pdf("../output/ccdist2010_homeownership_long_units_raw_units_plots.pdf", width = 11, height = 8.5)
+print(
+  ggplot(tercile_units_plot_ma3_df, aes(x = year, y = outcome_value_ma, color = treat_tercile_label, group = treat_tercile_label)) +
+    geom_line(linewidth = 0.9) +
+    geom_vline(xintercept = 2010, linetype = "dashed", color = "#666666") +
+    facet_wrap(~series_label, scales = "free_y", ncol = 1) +
+    scale_color_manual(values = c("Low" = "#3366CC", "Middle" = "#999999", "High" = "#CC3311")) +
+    scale_y_continuous(labels = comma_label) +
+    labs(x = NULL, y = "Units built (3-year centered MA)", color = "Treat tercile") +
+    theme_minimal(base_size = 11) +
+    theme(legend.position = "bottom")
+)
+print(
+  ggplot(brooklyn_rank_units_plot_df, aes(x = district_label, y = metric_value)) +
+    geom_col(fill = "#c44e52") +
+    coord_flip() +
+    facet_wrap(~metric, scales = "free_x", ncol = 2) +
+    scale_y_continuous(labels = comma_label) +
+    labs(
+      title = "Brooklyn rank plot",
+      subtitle = "Council districts ordered by homeowner exposure, with raw 2020-2025 unit totals alongside",
       x = NULL,
       y = NULL
     ) +

@@ -102,7 +102,13 @@ sanitize_period <- function(x) {
   str_replace_all(x, "-", "_")
 }
 
+analysis_year_start <- 1976L
+analysis_year_end <- 2025L
+analysis_years <- analysis_year_start:analysis_year_end
+analysis_year_count <- length(analysis_years)
+
 event_periods <- c(
+  "1976-1979",
   "1980-1984",
   "1985-1989",
   "1990-1994",
@@ -120,6 +126,7 @@ estimated_event_periods <- event_periods[event_periods != reference_event_period
 
 event_period_from_year <- function(year) {
   case_when(
+    year >= 1976 & year <= 1979 ~ "1976-1979",
     year >= 1980 & year <= 1984 ~ "1980-1984",
     year >= 1985 & year <= 1989 ~ "1985-1989",
     year >= 1990 & year <= 1994 ~ "1990-1994",
@@ -574,8 +581,8 @@ project_df <- read_csv("../input/zap_zoning_map_special_permit_project_classific
     )
   ) |>
   filter(
-    completed_year >= 1980,
-    completed_year <= 2025,
+    completed_year >= analysis_year_start,
+    completed_year <= analysis_year_end,
     !is.na(event_period),
     has_zoning_map_change
   ) |>
@@ -793,17 +800,32 @@ project_classification <- project_df |>
   )
 
 # Strict scope assignment uses only project-BBL links that map to CCD2010 and current MapPLUTO.
+# Block-expanded scope is kept separately for ZAP links recorded as borough-block-lot 0000.
 
-zap_project_bbl <- read_parquet("../input/zap_project_bbl.parquet") |>
+zap_project_bbl_raw <- read_parquet("../input/zap_project_bbl.parquet") |>
   transmute(
     project_id = as.character(project_id),
-    bbl_standardized = as.character(bbl_standardized)
+    bbl_standardized = str_trim(as.character(bbl_standardized))
   ) |>
   filter(!is.na(project_id), project_id != "", !is.na(bbl_standardized), bbl_standardized != "") |>
+  mutate(
+    bbl_valid_format = str_detect(bbl_standardized, "^[1-5][0-9]{9}$"),
+    bbl_block_key = if_else(bbl_valid_format, str_sub(bbl_standardized, 1, 6), NA_character_),
+    bbl_lot_code = if_else(bbl_valid_format, str_sub(bbl_standardized, 7, 10), NA_character_),
+    block_level_bbl_flag = bbl_valid_format & bbl_lot_code == "0000"
+  ) |>
+  distinct(project_id, bbl_standardized, .keep_all = TRUE)
+
+zap_project_bbl <- zap_project_bbl_raw |>
+  select(project_id, bbl_standardized) |>
   distinct(project_id, bbl_standardized)
 
 if (nrow(zap_project_bbl) != nrow(distinct(zap_project_bbl, project_id, bbl_standardized))) {
   stop("ZAP project-BBL input is not unique by project_id and BBL.")
+}
+
+if (nrow(zap_project_bbl_raw) != nrow(distinct(zap_project_bbl_raw, project_id, bbl_standardized))) {
+  stop("Raw ZAP project-BBL input is not unique by project_id and BBL.")
 }
 
 ccdist2010_bbl_lookup <- read_parquet("../input/ccdist2010_mappluto_bbl_lookup.parquet") |>
@@ -836,6 +858,8 @@ mappluto_lot <- read_parquet(
   filter(!coalesce(is_joint_interest_area, FALSE), !is.na(bbl_standardized), bbl_standardized != "") |>
   distinct(bbl_standardized, .keep_all = TRUE) |>
   mutate(
+    bbl_valid_format = str_detect(bbl_standardized, "^[1-5][0-9]{9}$"),
+    bbl_block_key = if_else(bbl_valid_format, str_sub(bbl_standardized, 1, 6), NA_character_),
     lot_acres = pmax(coalesce(lotarea, 0), 0) / 43560,
     current_residential_lot_flag = landuse %in% c("01", "02", "03", "04") |
       coalesce(unitsres, 0) > 0 |
@@ -915,6 +939,51 @@ tercile_denominators <- district_lookup |>
     .groups = "drop"
   )
 
+zap_lot_scope_bbl <- zap_project_bbl_raw |>
+  filter(!block_level_bbl_flag) |>
+  transmute(
+    project_id,
+    bbl_standardized,
+    scope_from_lot_level_bbl_flag = TRUE,
+    scope_from_block_level_bbl_flag = FALSE
+  ) |>
+  distinct()
+
+mappluto_block_lot_list <- mappluto_lot |>
+  filter(!is.na(bbl_block_key)) |>
+  group_by(bbl_block_key) |>
+  summarize(expanded_bbls = list(sort(unique(bbl_standardized))), .groups = "drop")
+
+if (nrow(mappluto_block_lot_list) != n_distinct(mappluto_block_lot_list$bbl_block_key)) {
+  stop("Current MapPLUTO block-to-lot list is not unique by borough-block key.")
+}
+
+zap_block_expanded_bbl <- zap_project_bbl_raw |>
+  filter(block_level_bbl_flag, !is.na(bbl_block_key)) |>
+  select(project_id, block_level_bbl = bbl_standardized, bbl_block_key) |>
+  distinct() |>
+  inner_join(mappluto_block_lot_list, by = "bbl_block_key", relationship = "many-to-one") |>
+  unnest_longer(expanded_bbls, values_to = "bbl_standardized") |>
+  transmute(
+    project_id,
+    bbl_standardized,
+    scope_from_lot_level_bbl_flag = FALSE,
+    scope_from_block_level_bbl_flag = TRUE
+  ) |>
+  distinct()
+
+project_block_expanded_bbl <- bind_rows(zap_lot_scope_bbl, zap_block_expanded_bbl) |>
+  group_by(project_id, bbl_standardized) |>
+  summarize(
+    scope_from_lot_level_bbl_flag = any(scope_from_lot_level_bbl_flag),
+    scope_from_block_level_bbl_flag = any(scope_from_block_level_bbl_flag),
+    .groups = "drop"
+  )
+
+if (nrow(project_block_expanded_bbl) != nrow(distinct(project_block_expanded_bbl, project_id, bbl_standardized))) {
+  stop("Block-expanded ZAP scope BBL input is not unique by project_id and BBL.")
+}
+
 project_bbl_match_quality <- project_classification |>
   select(
     project_id,
@@ -926,9 +995,20 @@ project_bbl_match_quality <- project_classification |>
     magnitude_bin,
     parse_status
   ) |>
-  left_join(zap_project_bbl, by = "project_id", relationship = "one-to-many") |>
+  left_join(zap_project_bbl_raw, by = "project_id", relationship = "one-to-many") |>
   left_join(ccdist2010_bbl_lookup, by = "bbl_standardized", relationship = "many-to-one") |>
   left_join(mappluto_lot |> select(bbl_standardized, lot_acres), by = "bbl_standardized", relationship = "many-to-one") |>
+  left_join(
+    project_block_expanded_bbl |>
+      group_by(project_id) |>
+      summarize(
+        block_expanded_matched_lot_count = n_distinct(bbl_standardized),
+        block_expanded_from_block_lot_count = n_distinct(bbl_standardized[scope_from_block_level_bbl_flag]),
+        .groups = "drop"
+      ),
+    by = "project_id",
+    relationship = "many-to-one"
+  ) |>
   group_by(
     project_id,
     completed_year,
@@ -941,11 +1021,15 @@ project_bbl_match_quality <- project_classification |>
   ) |>
   summarize(
     linked_bbl_count = n_distinct(bbl_standardized[!is.na(bbl_standardized) & bbl_standardized != ""]),
+    block_level_linked_bbl_count = n_distinct(bbl_standardized[!is.na(bbl_standardized) & bbl_standardized != "" & block_level_bbl_flag]),
+    lot_level_linked_bbl_count = n_distinct(bbl_standardized[!is.na(bbl_standardized) & bbl_standardized != "" & !block_level_bbl_flag]),
     ccd_matched_bbl_count = n_distinct(bbl_standardized[!is.na(bbl_standardized) & bbl_standardized != "" & !is.na(district_id)]),
     lot_matched_bbl_count = n_distinct(bbl_standardized[!is.na(bbl_standardized) & bbl_standardized != "" & !is.na(lot_acres)]),
     strict_matched_bbl_count = n_distinct(bbl_standardized[!is.na(bbl_standardized) & bbl_standardized != "" & !is.na(district_id) & !is.na(lot_acres)]),
     strict_bbl_match_share = if_else(linked_bbl_count > 0, strict_matched_bbl_count / linked_bbl_count, NA_real_),
     high_confidence_scope_flag = linked_bbl_count > 0 & strict_bbl_match_share >= 0.8,
+    block_expanded_matched_lot_count = coalesce(first(block_expanded_matched_lot_count), 0L),
+    block_expanded_from_block_lot_count = coalesce(first(block_expanded_from_block_lot_count), 0L),
     .groups = "drop"
   ) |>
   arrange(event_period, project_id)
@@ -1011,15 +1095,73 @@ project_scope_summary <- project_bbl_assigned |>
     .groups = "drop"
   )
 
+project_block_expanded_assigned <- project_classification |>
+  select(
+    project_id,
+    completed_year,
+    event_period,
+    rezoning_direction,
+    magnitude_bin,
+    commercial_overlay_project_flag,
+    commercial_overlay_unknown_flag,
+    c1_c2_project_flag,
+    mixed_use_text_flag,
+    mixed_use_unknown_flag,
+    project_net_far_delta,
+    project_gross_up_far_delta,
+    project_gross_down_far_delta
+  ) |>
+  inner_join(project_block_expanded_bbl, by = "project_id", relationship = "one-to-many") |>
+  left_join(ccdist2010_bbl_lookup, by = "bbl_standardized", relationship = "many-to-one") |>
+  left_join(mappluto_lot, by = "bbl_standardized", relationship = "many-to-one") |>
+  filter(!is.na(district_id), !is.na(lot_acres)) |>
+  group_by(project_id) |>
+  mutate(
+    project_block_expanded_bbl_count = n_distinct(bbl_standardized),
+    project_block_expanded_assignment_weight = 1 / project_block_expanded_bbl_count
+  ) |>
+  ungroup() |>
+  mutate(
+    block_expanded_gross_up_far_acres = if_else(!is.na(project_gross_up_far_delta), project_gross_up_far_delta * lot_acres, NA_real_),
+    block_expanded_gross_down_far_acres = if_else(!is.na(project_gross_down_far_delta), project_gross_down_far_delta * lot_acres, NA_real_),
+    block_expanded_net_far_acres = if_else(!is.na(project_net_far_delta), project_net_far_delta * lot_acres, NA_real_)
+  )
+
+project_block_expanded_weight_bad_count <- project_block_expanded_assigned |>
+  distinct(project_id, bbl_standardized, project_block_expanded_assignment_weight) |>
+  group_by(project_id) |>
+  summarize(weight_sum = sum(project_block_expanded_assignment_weight), .groups = "drop") |>
+  filter(abs(weight_sum - 1) > 1e-8) |>
+  nrow()
+
+project_block_expanded_scope_summary <- project_block_expanded_assigned |>
+  group_by(project_id) |>
+  summarize(
+    block_expanded_assigned_bbl_count = n_distinct(bbl_standardized),
+    block_expanded_assigned_district_count = n_distinct(district_id),
+    block_expanded_from_block_bbl_count = n_distinct(bbl_standardized[scope_from_block_level_bbl_flag]),
+    block_expanded_affected_lot_acres = sum(lot_acres, na.rm = TRUE),
+    block_expanded_affected_current_residential_lot_acres = sum(current_residential_lot_acres, na.rm = TRUE),
+    block_expanded_gross_up_far_acres = sum(block_expanded_gross_up_far_acres, na.rm = TRUE),
+    block_expanded_gross_down_far_acres = sum(block_expanded_gross_down_far_acres, na.rm = TRUE),
+    block_expanded_net_far_acres = sum(block_expanded_net_far_acres, na.rm = TRUE),
+    .groups = "drop"
+  )
+
 project_classification <- project_classification |>
   left_join(project_bbl_match_quality, by = c("project_id", "completed_year", "event_period", "project_name", "borough_name_standardized", "rezoning_direction", "magnitude_bin", "parse_status"), relationship = "one-to-one") |>
   left_join(project_scope_summary, by = "project_id", relationship = "one-to-one") |>
+  left_join(project_block_expanded_scope_summary, by = "project_id", relationship = "one-to-one") |>
   mutate(
     linked_bbl_count = coalesce(linked_bbl_count, 0L),
+    block_level_linked_bbl_count = coalesce(block_level_linked_bbl_count, 0L),
+    lot_level_linked_bbl_count = coalesce(lot_level_linked_bbl_count, 0L),
     ccd_matched_bbl_count = coalesce(ccd_matched_bbl_count, 0L),
     lot_matched_bbl_count = coalesce(lot_matched_bbl_count, 0L),
     strict_matched_bbl_count = coalesce(strict_matched_bbl_count, 0L),
     high_confidence_scope_flag = coalesce(high_confidence_scope_flag, FALSE),
+    block_expanded_matched_lot_count = coalesce(block_expanded_matched_lot_count, 0L),
+    block_expanded_from_block_lot_count = coalesce(block_expanded_from_block_lot_count, 0L),
     strict_assigned_bbl_count = coalesce(strict_assigned_bbl_count, 0L),
     strict_assigned_district_count = coalesce(strict_assigned_district_count, 0L),
     strict_bbl_scope_flag = strict_assigned_bbl_count > 0,
@@ -1031,6 +1173,17 @@ project_classification <- project_classification |>
     high_confidence_gross_up_far_acres = coalesce(high_confidence_gross_up_far_acres, 0),
     high_confidence_gross_down_far_acres = coalesce(high_confidence_gross_down_far_acres, 0),
     high_confidence_net_far_acres = coalesce(high_confidence_net_far_acres, 0),
+    block_expanded_assigned_bbl_count = coalesce(block_expanded_assigned_bbl_count, 0L),
+    block_expanded_assigned_district_count = coalesce(block_expanded_assigned_district_count, 0L),
+    block_expanded_from_block_bbl_count = coalesce(block_expanded_from_block_bbl_count, 0L),
+    block_expanded_scope_flag = block_expanded_assigned_bbl_count > 0,
+    block_expanded_scope_only_flag = block_expanded_scope_flag & !strict_bbl_scope_flag,
+    block_expanded_affected_lot_acres = coalesce(block_expanded_affected_lot_acres, 0),
+    block_expanded_affected_current_residential_lot_acres = coalesce(block_expanded_affected_current_residential_lot_acres, 0),
+    block_expanded_gross_up_far_acres = coalesce(block_expanded_gross_up_far_acres, 0),
+    block_expanded_gross_down_far_acres = coalesce(block_expanded_gross_down_far_acres, 0),
+    block_expanded_net_far_acres = coalesce(block_expanded_net_far_acres, 0),
+    block_expanded_acre_gain = block_expanded_affected_lot_acres - affected_lot_acres,
     abs_net_far_acres = abs(net_far_acres)
   ) |>
   arrange(completed_year, project_id)
@@ -1139,6 +1292,9 @@ reviewed_scope_levels <- c(
   "source_large_neighborhood",
   "source_neighborhood",
   "source_small_area",
+  "block_expanded_very_large_scope",
+  "block_expanded_large_scope",
+  "block_expanded_parcel_or_small_area",
   "strict_very_large_scope",
   "strict_large_scope",
   "strict_parcel_or_small_area",
@@ -1192,20 +1348,24 @@ project_classification <- project_classification |>
     reviewed_policy_scope_source = case_when(
       review_source_verified_flag &
         (!is.na(review_source_scope_blocks) | !is.na(review_source_scope_acres) | !is.na(review_source_scope_lots)) ~ "source_stated_scope",
+      block_expanded_scope_flag & block_level_linked_bbl_count > 0 ~ "block_expanded_bbl_scope",
       strict_bbl_scope_flag ~ "strict_bbl_scope",
       TRUE ~ "no_scope"
     ),
     reviewed_policy_scope_blocks = if_else(review_source_verified_flag, coalesce(review_source_scope_blocks, 0), 0),
     reviewed_policy_scope_acres = if_else(
       review_source_verified_flag,
-      coalesce(review_source_scope_acres, if_else(strict_bbl_scope_flag, affected_lot_acres, 0)),
-      if_else(strict_bbl_scope_flag, affected_lot_acres, 0)
+      coalesce(review_source_scope_acres, if_else(block_expanded_scope_flag, block_expanded_affected_lot_acres, if_else(strict_bbl_scope_flag, affected_lot_acres, 0))),
+      if_else(block_expanded_scope_flag, block_expanded_affected_lot_acres, if_else(strict_bbl_scope_flag, affected_lot_acres, 0))
     ),
     reviewed_scope_bin = case_when(
       review_source_verified_flag & !is.na(review_source_scope_blocks) & review_source_scope_blocks >= 250 ~ "source_very_large_neighborhood",
       review_source_verified_flag & !is.na(review_source_scope_blocks) & review_source_scope_blocks >= 100 ~ "source_large_neighborhood",
       review_source_verified_flag & !is.na(review_source_scope_blocks) & review_source_scope_blocks >= 25 ~ "source_neighborhood",
       review_source_verified_flag & !is.na(review_source_scope_blocks) & review_source_scope_blocks > 0 ~ "source_small_area",
+      block_level_linked_bbl_count > 0 & block_expanded_affected_lot_acres >= 100 ~ "block_expanded_very_large_scope",
+      block_level_linked_bbl_count > 0 & block_expanded_affected_lot_acres >= 20 ~ "block_expanded_large_scope",
+      block_level_linked_bbl_count > 0 & block_expanded_scope_flag ~ "block_expanded_parcel_or_small_area",
       strict_bbl_scope_flag & affected_lot_acres >= 100 ~ "strict_very_large_scope",
       strict_bbl_scope_flag & affected_lot_acres >= 20 ~ "strict_large_scope",
       strict_bbl_scope_flag ~ "strict_parcel_or_small_area",
@@ -1224,12 +1384,22 @@ project_bbl_match_quality <- project_classification |>
     magnitude_bin,
     parse_status,
     linked_bbl_count,
+    block_level_linked_bbl_count,
+    lot_level_linked_bbl_count,
     ccd_matched_bbl_count,
     lot_matched_bbl_count,
     strict_matched_bbl_count,
     strict_bbl_match_share,
     strict_bbl_scope_flag,
-    high_confidence_scope_flag
+    high_confidence_scope_flag,
+    block_expanded_matched_lot_count,
+    block_expanded_from_block_lot_count,
+    block_expanded_assigned_bbl_count,
+    block_expanded_assigned_district_count,
+    block_expanded_scope_flag,
+    block_expanded_scope_only_flag,
+    block_expanded_affected_lot_acres,
+    block_expanded_acre_gain
   ) |>
   arrange(event_period, project_id)
 
@@ -1253,8 +1423,17 @@ source_reviewed_cases <- project_classification |>
     reviewed_policy_scope_blocks,
     reviewed_policy_scope_acres,
     reviewed_scope_bin,
+    linked_bbl_count,
+    block_level_linked_bbl_count,
+    lot_level_linked_bbl_count,
+    strict_assigned_bbl_count,
     affected_lot_acres,
+    block_expanded_assigned_bbl_count,
+    block_expanded_from_block_bbl_count,
+    block_expanded_affected_lot_acres,
+    block_expanded_acre_gain,
     net_far_acres,
+    block_expanded_net_far_acres,
     review_source_status,
     review_source_rezoning_direction,
     review_source_rezoning_class,
@@ -1273,8 +1452,54 @@ source_reviewed_cases <- project_classification |>
     review_source_note
   )
 
+block_expanded_scope_audit <- project_classification |>
+  filter(
+    block_level_linked_bbl_count > 0 |
+      block_expanded_scope_only_flag |
+      block_expanded_acre_gain > 0
+  ) |>
+  arrange(desc(block_expanded_acre_gain), completed_year, project_id) |>
+  select(
+    project_id,
+    completed_year,
+    event_period,
+    project_name,
+    borough_name_standardized,
+    rezoning_direction,
+    reviewed_rezoning_direction,
+    reviewed_direction_source,
+    magnitude_bin,
+    parsed_zoning_changes,
+    linked_bbl_count,
+    block_level_linked_bbl_count,
+    lot_level_linked_bbl_count,
+    strict_assigned_bbl_count,
+    affected_lot_acres,
+    block_expanded_assigned_bbl_count,
+    block_expanded_from_block_bbl_count,
+    block_expanded_assigned_district_count,
+    block_expanded_affected_lot_acres,
+    block_expanded_acre_gain,
+    reviewed_policy_scope_source,
+    reviewed_policy_scope_blocks,
+    reviewed_policy_scope_acres,
+    reviewed_scope_bin,
+    gross_up_far_acres,
+    gross_down_far_acres,
+    net_far_acres,
+    block_expanded_gross_up_far_acres,
+    block_expanded_gross_down_far_acres,
+    block_expanded_net_far_acres,
+    review_source_status,
+    review_source_scope_blocks,
+    review_source_scope_acres,
+    review_source_scope_description,
+    review_source_url,
+    review_source_note
+  )
+
 reviewed_city_year <- expand_grid(
-  completed_year = 1980:2025,
+  completed_year = analysis_years,
   reviewed_rezoning_direction = factor(direction_levels, levels = direction_levels),
   reviewed_scope_bin = factor(reviewed_scope_levels, levels = reviewed_scope_levels)
 ) |>
@@ -1289,13 +1514,19 @@ reviewed_city_year <- expand_grid(
         restrictive_rezoning_project_count = sum(reviewed_restrictive_rezoning_flag),
         contextual_or_form_restriction_project_count = sum(reviewed_contextual_or_form_restriction_flag),
         strict_scope_project_count = sum(strict_bbl_scope_flag),
+        block_expanded_scope_project_count = sum(block_expanded_scope_flag),
+        block_expanded_scope_only_project_count = sum(block_expanded_scope_only_flag),
         affected_lot_acres = sum(affected_lot_acres, na.rm = TRUE),
+        block_expanded_affected_lot_acres = sum(block_expanded_affected_lot_acres, na.rm = TRUE),
         source_scope_blocks = sum(review_source_scope_blocks, na.rm = TRUE),
         source_scope_acres = sum(review_source_scope_acres, na.rm = TRUE),
         reviewed_policy_scope_acres = sum(reviewed_policy_scope_acres, na.rm = TRUE),
         gross_up_far_acres = sum(gross_up_far_acres, na.rm = TRUE),
         gross_down_far_acres = sum(gross_down_far_acres, na.rm = TRUE),
         net_far_acres = sum(net_far_acres, na.rm = TRUE),
+        block_expanded_gross_up_far_acres = sum(block_expanded_gross_up_far_acres, na.rm = TRUE),
+        block_expanded_gross_down_far_acres = sum(block_expanded_gross_down_far_acres, na.rm = TRUE),
+        block_expanded_net_far_acres = sum(block_expanded_net_far_acres, na.rm = TRUE),
         .groups = "drop"
       ),
     by = c("completed_year", "event_period", "reviewed_rezoning_direction", "reviewed_scope_bin"),
@@ -1309,19 +1540,25 @@ reviewed_city_year <- expand_grid(
         source_review_seed_project_count,
         restrictive_rezoning_project_count,
         contextual_or_form_restriction_project_count,
-        strict_scope_project_count
+        strict_scope_project_count,
+        block_expanded_scope_project_count,
+        block_expanded_scope_only_project_count
       ),
       ~ coalesce(.x, 0L)
     ),
     across(
       c(
         affected_lot_acres,
+        block_expanded_affected_lot_acres,
         source_scope_blocks,
         source_scope_acres,
         reviewed_policy_scope_acres,
         gross_up_far_acres,
         gross_down_far_acres,
-        net_far_acres
+        net_far_acres,
+        block_expanded_gross_up_far_acres,
+        block_expanded_gross_down_far_acres,
+        block_expanded_net_far_acres
       ),
       ~ coalesce(.x, 0)
     )
@@ -1337,13 +1574,19 @@ reviewed_period_counts <- reviewed_city_year |>
     restrictive_rezoning_project_count = sum(restrictive_rezoning_project_count),
     contextual_or_form_restriction_project_count = sum(contextual_or_form_restriction_project_count),
     strict_scope_project_count = sum(strict_scope_project_count),
+    block_expanded_scope_project_count = sum(block_expanded_scope_project_count),
+    block_expanded_scope_only_project_count = sum(block_expanded_scope_only_project_count),
     affected_lot_acres = sum(affected_lot_acres),
+    block_expanded_affected_lot_acres = sum(block_expanded_affected_lot_acres),
     source_scope_blocks = sum(source_scope_blocks),
     source_scope_acres = sum(source_scope_acres),
     reviewed_policy_scope_acres = sum(reviewed_policy_scope_acres),
     gross_up_far_acres = sum(gross_up_far_acres),
     gross_down_far_acres = sum(gross_down_far_acres),
     net_far_acres = sum(net_far_acres),
+    block_expanded_gross_up_far_acres = sum(block_expanded_gross_up_far_acres),
+    block_expanded_gross_down_far_acres = sum(block_expanded_gross_down_far_acres),
+    block_expanded_net_far_acres = sum(block_expanded_net_far_acres),
     .groups = "drop"
   ) |>
   mutate(event_period = factor(event_period, levels = event_periods)) |>
@@ -1354,13 +1597,14 @@ write_csv_if_changed(pair_df, "../output/zap_rezoning_direction_parse_pairs.csv"
 write_csv_if_changed(project_bbl_match_quality, "../output/zap_rezoning_direction_scope_match_quality.csv")
 write_csv_if_changed(zoning_far_dictionary, "../output/zap_rezoning_direction_zoning_district_lookup.csv")
 write_csv_if_changed(source_reviewed_cases, "../output/zap_rezoning_direction_source_reviewed_cases.csv")
+write_csv_if_changed(block_expanded_scope_audit, "../output/zap_rezoning_direction_block_expanded_scope_audit.csv")
 write_csv_if_changed(reviewed_city_year, "../output/zap_rezoning_direction_reviewed_city_year.csv")
 write_csv_if_changed(reviewed_period_counts, "../output/zap_rezoning_direction_reviewed_period.csv")
 
 # Citywide, district-year, and homeowner-tercile panels.
 
 city_year <- expand_grid(
-  completed_year = 1980:2025,
+  completed_year = analysis_years,
   rezoning_direction = factor(direction_levels, levels = direction_levels),
   magnitude_bin = factor(magnitude_levels, levels = magnitude_levels)
 ) |>
@@ -1372,12 +1616,20 @@ city_year <- expand_grid(
         project_count = n_distinct(project_id),
         strict_scope_project_count = sum(strict_bbl_scope_flag),
         high_confidence_scope_project_count = sum(high_confidence_scope_flag),
+        block_expanded_scope_project_count = sum(block_expanded_scope_flag),
+        block_expanded_scope_only_project_count = sum(block_expanded_scope_only_flag),
         affected_bbl_count = sum(strict_assigned_bbl_count, na.rm = TRUE),
+        block_expanded_affected_bbl_count = sum(block_expanded_assigned_bbl_count, na.rm = TRUE),
         affected_lot_acres = sum(affected_lot_acres, na.rm = TRUE),
         affected_current_residential_lot_acres = sum(affected_current_residential_lot_acres, na.rm = TRUE),
+        block_expanded_affected_lot_acres = sum(block_expanded_affected_lot_acres, na.rm = TRUE),
+        block_expanded_affected_current_residential_lot_acres = sum(block_expanded_affected_current_residential_lot_acres, na.rm = TRUE),
         gross_up_far_acres = sum(gross_up_far_acres, na.rm = TRUE),
         gross_down_far_acres = sum(gross_down_far_acres, na.rm = TRUE),
         net_far_acres = sum(net_far_acres, na.rm = TRUE),
+        block_expanded_gross_up_far_acres = sum(block_expanded_gross_up_far_acres, na.rm = TRUE),
+        block_expanded_gross_down_far_acres = sum(block_expanded_gross_down_far_acres, na.rm = TRUE),
+        block_expanded_net_far_acres = sum(block_expanded_net_far_acres, na.rm = TRUE),
         high_confidence_gross_up_far_acres = sum(high_confidence_gross_up_far_acres, na.rm = TRUE),
         high_confidence_gross_down_far_acres = sum(high_confidence_gross_down_far_acres, na.rm = TRUE),
         high_confidence_net_far_acres = sum(high_confidence_net_far_acres, na.rm = TRUE),
@@ -1387,8 +1639,8 @@ city_year <- expand_grid(
     relationship = "one-to-one"
   ) |>
   mutate(
-    across(c(project_count, strict_scope_project_count, high_confidence_scope_project_count, affected_bbl_count), ~ coalesce(.x, 0L)),
-    across(c(affected_lot_acres, affected_current_residential_lot_acres, gross_up_far_acres, gross_down_far_acres, net_far_acres, high_confidence_gross_up_far_acres, high_confidence_gross_down_far_acres, high_confidence_net_far_acres), ~ coalesce(.x, 0))
+    across(c(project_count, strict_scope_project_count, high_confidence_scope_project_count, block_expanded_scope_project_count, block_expanded_scope_only_project_count, affected_bbl_count, block_expanded_affected_bbl_count), ~ coalesce(.x, 0L)),
+    across(c(affected_lot_acres, affected_current_residential_lot_acres, block_expanded_affected_lot_acres, block_expanded_affected_current_residential_lot_acres, gross_up_far_acres, gross_down_far_acres, net_far_acres, block_expanded_gross_up_far_acres, block_expanded_gross_down_far_acres, block_expanded_net_far_acres, high_confidence_gross_up_far_acres, high_confidence_gross_down_far_acres, high_confidence_net_far_acres), ~ coalesce(.x, 0))
   ) |>
   arrange(completed_year, rezoning_direction, magnitude_bin)
 
@@ -1398,12 +1650,20 @@ period_counts <- city_year |>
     project_count = sum(project_count),
     strict_scope_project_count = sum(strict_scope_project_count),
     high_confidence_scope_project_count = sum(high_confidence_scope_project_count),
+    block_expanded_scope_project_count = sum(block_expanded_scope_project_count),
+    block_expanded_scope_only_project_count = sum(block_expanded_scope_only_project_count),
     affected_bbl_count = sum(affected_bbl_count),
+    block_expanded_affected_bbl_count = sum(block_expanded_affected_bbl_count),
     affected_lot_acres = sum(affected_lot_acres),
     affected_current_residential_lot_acres = sum(affected_current_residential_lot_acres),
+    block_expanded_affected_lot_acres = sum(block_expanded_affected_lot_acres),
+    block_expanded_affected_current_residential_lot_acres = sum(block_expanded_affected_current_residential_lot_acres),
     gross_up_far_acres = sum(gross_up_far_acres),
     gross_down_far_acres = sum(gross_down_far_acres),
     net_far_acres = sum(net_far_acres),
+    block_expanded_gross_up_far_acres = sum(block_expanded_gross_up_far_acres),
+    block_expanded_gross_down_far_acres = sum(block_expanded_gross_down_far_acres),
+    block_expanded_net_far_acres = sum(block_expanded_net_far_acres),
     high_confidence_gross_up_far_acres = sum(high_confidence_gross_up_far_acres),
     high_confidence_gross_down_far_acres = sum(high_confidence_gross_down_far_acres),
     high_confidence_net_far_acres = sum(high_confidence_net_far_acres),
@@ -1467,11 +1727,36 @@ observed_ccd_year <- project_bbl_assigned |>
   ) |>
   rename(year = completed_year)
 
+observed_block_expanded_ccd_year <- project_block_expanded_assigned |>
+  left_join(
+    district_lookup |>
+      select(district_id, homeowner_tercile, homeowner_tercile_label),
+    by = "district_id",
+    relationship = "many-to-one"
+  ) |>
+  group_by(district_id, completed_year) |>
+  summarize(
+    block_expanded_upzoning_project_count = sum(project_block_expanded_assignment_weight[rezoning_direction == "upzoning"], na.rm = TRUE),
+    block_expanded_downzoning_project_count = sum(project_block_expanded_assignment_weight[rezoning_direction == "downzoning"], na.rm = TRUE),
+    block_expanded_mixed_project_count = sum(project_block_expanded_assignment_weight[rezoning_direction == "mixed"], na.rm = TRUE),
+    block_expanded_no_material_project_count = sum(project_block_expanded_assignment_weight[rezoning_direction == "no_material_residential_change"], na.rm = TRUE),
+    block_expanded_unknown_project_count = sum(project_block_expanded_assignment_weight[rezoning_direction == "unknown"], na.rm = TRUE),
+    block_expanded_affected_bbl_count = n_distinct(bbl_standardized),
+    block_expanded_affected_lot_acres = sum(lot_acres, na.rm = TRUE),
+    block_expanded_affected_current_residential_lot_acres = sum(current_residential_lot_acres, na.rm = TRUE),
+    block_expanded_gross_up_far_acres = sum(block_expanded_gross_up_far_acres, na.rm = TRUE),
+    block_expanded_gross_down_far_acres = sum(block_expanded_gross_down_far_acres, na.rm = TRUE),
+    block_expanded_net_far_acres = sum(block_expanded_net_far_acres, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  rename(year = completed_year)
+
 ccd_year_panel <- expand_grid(
   district_lookup,
-  year = 1980:2025
+  year = analysis_years
 ) |>
   left_join(observed_ccd_year, by = c("district_id", "year"), relationship = "one-to-one") |>
+  left_join(observed_block_expanded_ccd_year, by = c("district_id", "year"), relationship = "one-to-one") |>
   mutate(
     across(
       c(
@@ -1493,7 +1778,18 @@ ccd_year_panel <- expand_grid(
         net_far_acres,
         high_confidence_gross_up_far_acres,
         high_confidence_gross_down_far_acres,
-        high_confidence_net_far_acres
+        high_confidence_net_far_acres,
+        block_expanded_upzoning_project_count,
+        block_expanded_downzoning_project_count,
+        block_expanded_mixed_project_count,
+        block_expanded_no_material_project_count,
+        block_expanded_unknown_project_count,
+        block_expanded_affected_bbl_count,
+        block_expanded_affected_lot_acres,
+        block_expanded_affected_current_residential_lot_acres,
+        block_expanded_gross_up_far_acres,
+        block_expanded_gross_down_far_acres,
+        block_expanded_net_far_acres
       ),
       ~ coalesce(.x, 0)
     ),
@@ -1507,20 +1803,25 @@ ccd_year_panel <- expand_grid(
     gross_up_far_acres_per_residential_acre = gross_up_far_acres / residential_acres,
     gross_down_far_acres_per_residential_acre = gross_down_far_acres / residential_acres,
     net_far_acres_per_residential_acre = net_far_acres / residential_acres,
+    block_expanded_upzoning_project_count_per_10000 = 10000 * block_expanded_upzoning_project_count / occupied_units_1990,
+    block_expanded_downzoning_project_count_per_10000 = 10000 * block_expanded_downzoning_project_count / occupied_units_1990,
+    block_expanded_gross_up_far_acres_per_residential_acre = block_expanded_gross_up_far_acres / residential_acres,
+    block_expanded_gross_down_far_acres_per_residential_acre = block_expanded_gross_down_far_acres / residential_acres,
+    block_expanded_net_far_acres_per_residential_acre = block_expanded_net_far_acres / residential_acres,
     high_confidence_gross_up_far_acres_per_residential_acre = high_confidence_gross_up_far_acres / residential_acres,
     high_confidence_gross_down_far_acres_per_residential_acre = high_confidence_gross_down_far_acres / residential_acres,
     high_confidence_net_far_acres_per_residential_acre = high_confidence_net_far_acres / residential_acres
   ) |>
   arrange(district_id, year)
 
-if (nrow(ccd_year_panel) != 51 * 46 || nrow(ccd_year_panel) != nrow(distinct(ccd_year_panel, district_id, year))) {
-  stop("CCD-year rezoning direction panel must be unique and complete by 51 districts and 46 years.")
+if (nrow(ccd_year_panel) != 51 * analysis_year_count || nrow(ccd_year_panel) != nrow(distinct(ccd_year_panel, district_id, year))) {
+  stop("CCD-year rezoning direction panel must be unique and complete by 51 districts and the analysis-year window.")
 }
 
 write_csv_if_changed(ccd_year_panel, "../output/zap_rezoning_direction_ccd_year_panel.csv")
 
 tercile_year <- expand_grid(
-  year = 1980:2025,
+  year = analysis_years,
   tercile_denominators,
   rezoning_direction = factor(direction_levels, levels = direction_levels),
   magnitude_bin = factor(magnitude_levels, levels = magnitude_levels)
@@ -1558,8 +1859,37 @@ tercile_year <- expand_grid(
     by = c("year", "event_period", "homeowner_tercile", "homeowner_tercile_label", "rezoning_direction", "magnitude_bin"),
     relationship = "one-to-one"
   ) |>
+  left_join(
+    project_block_expanded_assigned |>
+      left_join(
+        district_lookup |>
+          select(district_id, homeowner_tercile, homeowner_tercile_label),
+        by = "district_id",
+        relationship = "many-to-one"
+      ) |>
+      group_by(
+        year = completed_year,
+        event_period,
+        homeowner_tercile,
+        homeowner_tercile_label,
+        rezoning_direction,
+        magnitude_bin
+      ) |>
+      summarize(
+        block_expanded_project_count = sum(project_block_expanded_assignment_weight, na.rm = TRUE),
+        block_expanded_affected_bbl_count = n_distinct(bbl_standardized),
+        block_expanded_affected_lot_acres = sum(lot_acres, na.rm = TRUE),
+        block_expanded_affected_current_residential_lot_acres = sum(current_residential_lot_acres, na.rm = TRUE),
+        block_expanded_gross_up_far_acres = sum(block_expanded_gross_up_far_acres, na.rm = TRUE),
+        block_expanded_gross_down_far_acres = sum(block_expanded_gross_down_far_acres, na.rm = TRUE),
+        block_expanded_net_far_acres = sum(block_expanded_net_far_acres, na.rm = TRUE),
+        .groups = "drop"
+      ),
+    by = c("year", "event_period", "homeowner_tercile", "homeowner_tercile_label", "rezoning_direction", "magnitude_bin"),
+    relationship = "one-to-one"
+  ) |>
   mutate(
-    across(c(project_count, affected_bbl_count, affected_lot_acres, affected_current_residential_lot_acres, gross_up_far_acres, gross_down_far_acres, net_far_acres, high_confidence_gross_up_far_acres, high_confidence_gross_down_far_acres, high_confidence_net_far_acres), ~ coalesce(.x, 0)),
+    across(c(project_count, affected_bbl_count, affected_lot_acres, affected_current_residential_lot_acres, gross_up_far_acres, gross_down_far_acres, net_far_acres, high_confidence_gross_up_far_acres, high_confidence_gross_down_far_acres, high_confidence_net_far_acres, block_expanded_project_count, block_expanded_affected_bbl_count, block_expanded_affected_lot_acres, block_expanded_affected_current_residential_lot_acres, block_expanded_gross_up_far_acres, block_expanded_gross_down_far_acres, block_expanded_net_far_acres), ~ coalesce(.x, 0)),
     project_count_per_10000 = 10000 * project_count / occupied_units_1990,
     affected_bbl_count_per_10000 = 10000 * affected_bbl_count / occupied_units_1990,
     affected_lot_acres_per_residential_acre = affected_lot_acres / residential_acres,
@@ -1567,6 +1897,13 @@ tercile_year <- expand_grid(
     gross_up_far_acres_per_residential_acre = gross_up_far_acres / residential_acres,
     gross_down_far_acres_per_residential_acre = gross_down_far_acres / residential_acres,
     net_far_acres_per_residential_acre = net_far_acres / residential_acres,
+    block_expanded_project_count_per_10000 = 10000 * block_expanded_project_count / occupied_units_1990,
+    block_expanded_affected_bbl_count_per_10000 = 10000 * block_expanded_affected_bbl_count / occupied_units_1990,
+    block_expanded_affected_lot_acres_per_residential_acre = block_expanded_affected_lot_acres / residential_acres,
+    block_expanded_affected_current_residential_lot_acres_per_residential_acre = block_expanded_affected_current_residential_lot_acres / residential_acres,
+    block_expanded_gross_up_far_acres_per_residential_acre = block_expanded_gross_up_far_acres / residential_acres,
+    block_expanded_gross_down_far_acres_per_residential_acre = block_expanded_gross_down_far_acres / residential_acres,
+    block_expanded_net_far_acres_per_residential_acre = block_expanded_net_far_acres / residential_acres,
     high_confidence_gross_up_far_acres_per_residential_acre = high_confidence_gross_up_far_acres / residential_acres,
     high_confidence_gross_down_far_acres_per_residential_acre = high_confidence_gross_down_far_acres / residential_acres,
     high_confidence_net_far_acres_per_residential_acre = high_confidence_net_far_acres / residential_acres
@@ -2044,7 +2381,7 @@ observed_tercile_diagnostic_year <- project_tercile_assignment |>
   rename(year = completed_year)
 
 tercile_diagnostic_year <- expand_grid(
-  year = 1980:2025,
+  year = analysis_years,
   tercile_denominators
 ) |>
   mutate(event_period = factor(event_period_from_year(year), levels = event_periods)) |>
@@ -2230,6 +2567,297 @@ project_classification_review_flags <- project_classification |>
       if_else(source_lookup_priority == "high", "high_source_lookup_priority", "")
     ))
   )
+
+review_ledger <- project_classification_review_flags |>
+  mutate(
+    strict_or_expanded_acres = pmax(affected_lot_acres, block_expanded_affected_lot_acres, na.rm = TRUE),
+    source_or_mapped_large_scope_flag = strict_or_expanded_acres >= 20 |
+      coalesce(review_source_scope_blocks, 0) >= 25 |
+      coalesce(review_source_scope_acres, 0) >= 20 |
+      linked_bbl_count >= 100,
+    direction_missing_flag = reviewed_rezoning_direction == "unknown",
+    scope_missing_flag = reviewed_policy_scope_source == "no_scope",
+    source_scope_needs_geography_flag = reviewed_policy_scope_source == "source_stated_scope" &
+      !strict_bbl_scope_flag &
+      !block_expanded_scope_flag,
+    block_expanded_scope_needs_map_check_flag = block_level_linked_bbl_count > 0,
+    low_confidence_strict_scope_flag = strict_bbl_scope_flag & !high_confidence_scope_flag,
+    mixed_split_needed_flag = reviewed_rezoning_direction == "mixed",
+    magnitude_missing_or_weak_flag = reviewed_rezoning_direction %in% c("upzoning", "downzoning", "mixed") &
+      (
+        is.na(project_max_abs_far_delta) |
+          project_max_abs_far_delta == 0 |
+          reviewed_direction_source %in% c("manual_text_review", "official_source_review") |
+          reviewed_contextual_or_form_restriction_flag |
+          reviewed_rezoning_direction == "mixed"
+      ),
+    large_upzoning_review_flag = reviewed_rezoning_direction == "upzoning" & source_or_mapped_large_scope_flag,
+    large_downzoning_review_flag = reviewed_rezoning_direction == "downzoning" & source_or_mapped_large_scope_flag,
+    large_mixed_review_flag = reviewed_rezoning_direction == "mixed" & source_or_mapped_large_scope_flag,
+    large_unknown_review_flag = reviewed_rezoning_direction == "unknown" & source_or_mapped_large_scope_flag,
+    review_needed_flag = direction_missing_flag |
+      scope_missing_flag |
+      source_scope_needs_geography_flag |
+      block_expanded_scope_needs_map_check_flag |
+      low_confidence_strict_scope_flag |
+      mixed_split_needed_flag |
+      magnitude_missing_or_weak_flag |
+      large_upzoning_review_flag |
+      large_downzoning_review_flag |
+      large_mixed_review_flag |
+      large_unknown_review_flag,
+    review_need_count =
+      as.integer(direction_missing_flag) +
+      as.integer(scope_missing_flag) +
+      as.integer(source_scope_needs_geography_flag) +
+      as.integer(block_expanded_scope_needs_map_check_flag) +
+      as.integer(low_confidence_strict_scope_flag) +
+      as.integer(mixed_split_needed_flag) +
+      as.integer(magnitude_missing_or_weak_flag) +
+      as.integer(large_upzoning_review_flag) +
+      as.integer(large_downzoning_review_flag) +
+      as.integer(large_mixed_review_flag) +
+      as.integer(large_unknown_review_flag),
+    review_priority_score =
+      100 * as.integer(large_unknown_review_flag) +
+      95 * as.integer(large_mixed_review_flag) +
+      90 * as.integer(large_downzoning_review_flag) +
+      85 * as.integer(large_upzoning_review_flag) +
+      80 * as.integer(source_scope_needs_geography_flag) +
+      70 * as.integer(block_expanded_scope_needs_map_check_flag & source_or_mapped_large_scope_flag) +
+      65 * as.integer(direction_missing_flag) +
+      55 * as.integer(magnitude_missing_or_weak_flag) +
+      45 * as.integer(scope_missing_flag) +
+      35 * as.integer(low_confidence_strict_scope_flag) +
+      25 * as.integer(mixed_split_needed_flag) +
+      pmin(strict_or_expanded_acres, 500) / 10 +
+      pmin(coalesce(review_source_scope_blocks, 0), 500) / 10,
+    review_priority = case_when(
+      review_priority_score >= 120 ~ "highest",
+      review_priority_score >= 80 ~ "high",
+      review_priority_score >= 40 ~ "medium",
+      review_needed_flag ~ "low",
+      TRUE ~ "no_immediate_gap"
+    ),
+    primary_review_need = case_when(
+      large_unknown_review_flag ~ "large_direction_unknown",
+      large_mixed_review_flag ~ "large_mixed_split_needed",
+      large_downzoning_review_flag ~ "large_downzoning_validate_scope_magnitude",
+      large_upzoning_review_flag ~ "large_upzoning_validate_scope_magnitude",
+      direction_missing_flag ~ "direction_unknown",
+      source_scope_needs_geography_flag ~ "source_scope_needs_mappable_geography",
+      block_expanded_scope_needs_map_check_flag ~ "block_expanded_scope_needs_map_check",
+      scope_missing_flag ~ "scope_missing",
+      mixed_split_needed_flag ~ "mixed_split_needed",
+      magnitude_missing_or_weak_flag ~ "magnitude_missing_or_weak",
+      low_confidence_strict_scope_flag ~ "low_strict_scope_match_quality",
+      TRUE ~ "no_immediate_gap"
+    ),
+    review_reason_all = str_squish(paste(
+      if_else(direction_missing_flag, "direction_unknown", ""),
+      if_else(scope_missing_flag, "scope_missing", ""),
+      if_else(source_scope_needs_geography_flag, "source_scope_needs_mappable_geography", ""),
+      if_else(block_expanded_scope_needs_map_check_flag, "block_expanded_scope_needs_map_check", ""),
+      if_else(low_confidence_strict_scope_flag, "low_strict_scope_match_quality", ""),
+      if_else(mixed_split_needed_flag, "mixed_split_needed", ""),
+      if_else(magnitude_missing_or_weak_flag, "magnitude_missing_or_weak", ""),
+      if_else(large_upzoning_review_flag, "large_upzoning", ""),
+      if_else(large_downzoning_review_flag, "large_downzoning", ""),
+      if_else(large_mixed_review_flag, "large_mixed", ""),
+      if_else(large_unknown_review_flag, "large_unknown", "")
+    )),
+    next_document_step = case_when(
+      direction_missing_flag | magnitude_missing_or_weak_flag ~ "find_official_cpc_ulurp_dcp_report",
+      source_scope_needs_geography_flag | block_expanded_scope_needs_map_check_flag ~ "inspect_official_report_scope_text_before_map",
+      scope_missing_flag ~ "find_official_scope_or_bbl_geography",
+      TRUE ~ "spot_check_if_selected"
+    ),
+    map_or_polygon_last_resort_flag = source_scope_needs_geography_flag |
+      (block_expanded_scope_needs_map_check_flag & source_or_mapped_large_scope_flag) |
+      (scope_missing_flag & source_or_mapped_large_scope_flag)
+  ) |>
+  arrange(desc(review_needed_flag), desc(review_priority_score), completed_year, project_id) |>
+  select(
+    project_id,
+    completed_year,
+    completed_date,
+    event_period,
+    project_name,
+    project_brief,
+    borough_name_standardized,
+    community_district,
+    applicant_type,
+    primary_applicant,
+    reviewed_rezoning_direction,
+    reviewed_direction_source,
+    rezoning_direction,
+    initial_rezoning_direction,
+    classification_source_tier,
+    manual_review_status,
+    manual_rezoning_class,
+    manual_confidence,
+    review_source_status,
+    review_source_title,
+    review_source_url,
+    reviewed_policy_scope_source,
+    reviewed_scope_bin,
+    reviewed_policy_scope_blocks,
+    reviewed_policy_scope_acres,
+    review_source_scope_blocks,
+    review_source_scope_acres,
+    review_source_scope_lots,
+    review_source_scope_description,
+    linked_bbl_count,
+    block_level_linked_bbl_count,
+    lot_level_linked_bbl_count,
+    strict_assigned_bbl_count,
+    strict_assigned_district_count,
+    strict_bbl_match_share,
+    high_confidence_scope_flag,
+    affected_lot_acres,
+    block_expanded_assigned_bbl_count,
+    block_expanded_from_block_bbl_count,
+    block_expanded_assigned_district_count,
+    block_expanded_affected_lot_acres,
+    block_expanded_acre_gain,
+    strict_or_expanded_acres,
+    project_net_far_delta,
+    project_gross_up_far_delta,
+    project_gross_down_far_delta,
+    project_max_abs_far_delta,
+    gross_up_far_acres,
+    gross_down_far_acres,
+    net_far_acres,
+    block_expanded_gross_up_far_acres,
+    block_expanded_gross_down_far_acres,
+    block_expanded_net_far_acres,
+    magnitude_bin,
+    parsed_pair_count,
+    known_pair_count,
+    parsed_zoning_changes,
+    unrecognized_zoning_codes,
+    missing_direction_reason,
+    text_candidate_direction,
+    text_candidate_confidence,
+    text_candidate_basis,
+    source_lookup_priority,
+    review_needed_flag,
+    review_priority,
+    review_priority_score,
+    primary_review_need,
+    review_reason_all,
+    direction_missing_flag,
+    scope_missing_flag,
+    source_scope_needs_geography_flag,
+    block_expanded_scope_needs_map_check_flag,
+    low_confidence_strict_scope_flag,
+    mixed_split_needed_flag,
+    magnitude_missing_or_weak_flag,
+    source_or_mapped_large_scope_flag,
+    large_upzoning_review_flag,
+    large_downzoning_review_flag,
+    large_mixed_review_flag,
+    large_unknown_review_flag,
+    next_document_step,
+    map_or_polygon_last_resort_flag,
+    review_need_count
+  )
+
+review_ledger_summary <- bind_rows(
+  review_ledger |>
+    summarize(
+      project_count = n(),
+      review_needed_project_count = sum(review_needed_flag, na.rm = TRUE),
+      highest_or_high_priority_project_count = sum(review_priority %in% c("highest", "high"), na.rm = TRUE),
+      direction_missing_project_count = sum(direction_missing_flag, na.rm = TRUE),
+      scope_missing_project_count = sum(scope_missing_flag, na.rm = TRUE),
+      mixed_split_project_count = sum(mixed_split_needed_flag, na.rm = TRUE),
+      magnitude_missing_or_weak_project_count = sum(magnitude_missing_or_weak_flag, na.rm = TRUE),
+      large_scope_project_count = sum(source_or_mapped_large_scope_flag, na.rm = TRUE),
+      .groups = "drop"
+    ) |>
+    mutate(summary_type = "overall", group_1 = "all_projects", group_2 = "all"),
+  review_ledger |>
+    group_by(review_priority) |>
+    summarize(
+      project_count = n(),
+      review_needed_project_count = sum(review_needed_flag, na.rm = TRUE),
+      highest_or_high_priority_project_count = sum(review_priority %in% c("highest", "high"), na.rm = TRUE),
+      direction_missing_project_count = sum(direction_missing_flag, na.rm = TRUE),
+      scope_missing_project_count = sum(scope_missing_flag, na.rm = TRUE),
+      mixed_split_project_count = sum(mixed_split_needed_flag, na.rm = TRUE),
+      magnitude_missing_or_weak_project_count = sum(magnitude_missing_or_weak_flag, na.rm = TRUE),
+      large_scope_project_count = sum(source_or_mapped_large_scope_flag, na.rm = TRUE),
+      .groups = "drop"
+    ) |>
+    rename(group_1 = review_priority) |>
+    mutate(summary_type = "by_review_priority", group_2 = "all"),
+  review_ledger |>
+    group_by(primary_review_need) |>
+    summarize(
+      project_count = n(),
+      review_needed_project_count = sum(review_needed_flag, na.rm = TRUE),
+      highest_or_high_priority_project_count = sum(review_priority %in% c("highest", "high"), na.rm = TRUE),
+      direction_missing_project_count = sum(direction_missing_flag, na.rm = TRUE),
+      scope_missing_project_count = sum(scope_missing_flag, na.rm = TRUE),
+      mixed_split_project_count = sum(mixed_split_needed_flag, na.rm = TRUE),
+      magnitude_missing_or_weak_project_count = sum(magnitude_missing_or_weak_flag, na.rm = TRUE),
+      large_scope_project_count = sum(source_or_mapped_large_scope_flag, na.rm = TRUE),
+      .groups = "drop"
+    ) |>
+    rename(group_1 = primary_review_need) |>
+    mutate(summary_type = "by_primary_review_need", group_2 = "all"),
+  review_ledger |>
+    group_by(reviewed_rezoning_direction, primary_review_need) |>
+    summarize(
+      project_count = n(),
+      review_needed_project_count = sum(review_needed_flag, na.rm = TRUE),
+      highest_or_high_priority_project_count = sum(review_priority %in% c("highest", "high"), na.rm = TRUE),
+      direction_missing_project_count = sum(direction_missing_flag, na.rm = TRUE),
+      scope_missing_project_count = sum(scope_missing_flag, na.rm = TRUE),
+      mixed_split_project_count = sum(mixed_split_needed_flag, na.rm = TRUE),
+      magnitude_missing_or_weak_project_count = sum(magnitude_missing_or_weak_flag, na.rm = TRUE),
+      large_scope_project_count = sum(source_or_mapped_large_scope_flag, na.rm = TRUE),
+      .groups = "drop"
+    ) |>
+    rename(group_1 = reviewed_rezoning_direction, group_2 = primary_review_need) |>
+    mutate(summary_type = "by_direction_and_need"),
+  review_ledger |>
+    group_by(event_period, primary_review_need) |>
+    summarize(
+      project_count = n(),
+      review_needed_project_count = sum(review_needed_flag, na.rm = TRUE),
+      highest_or_high_priority_project_count = sum(review_priority %in% c("highest", "high"), na.rm = TRUE),
+      direction_missing_project_count = sum(direction_missing_flag, na.rm = TRUE),
+      scope_missing_project_count = sum(scope_missing_flag, na.rm = TRUE),
+      mixed_split_project_count = sum(mixed_split_needed_flag, na.rm = TRUE),
+      magnitude_missing_or_weak_project_count = sum(magnitude_missing_or_weak_flag, na.rm = TRUE),
+      large_scope_project_count = sum(source_or_mapped_large_scope_flag, na.rm = TRUE),
+      .groups = "drop"
+    ) |>
+    rename(group_1 = event_period, group_2 = primary_review_need) |>
+    mutate(summary_type = "by_period_and_need")
+) |>
+  mutate(
+    share_of_all_projects = project_count / nrow(review_ledger),
+    share_review_needed = if_else(project_count > 0, review_needed_project_count / project_count, NA_real_)
+  ) |>
+  select(
+    summary_type,
+    group_1,
+    group_2,
+    project_count,
+    share_of_all_projects,
+    review_needed_project_count,
+    share_review_needed,
+    highest_or_high_priority_project_count,
+    direction_missing_project_count,
+    scope_missing_project_count,
+    mixed_split_project_count,
+    magnitude_missing_or_weak_project_count,
+    large_scope_project_count
+  ) |>
+  arrange(summary_type, desc(review_needed_project_count), desc(project_count), group_1, group_2)
 
 top_abs_far_acres <- project_classification |>
   filter(strict_bbl_scope_flag, !is.na(project_net_far_delta)) |>
@@ -2611,6 +3239,8 @@ write_csv_if_changed(unknown_audit, "../output/zap_rezoning_direction_unknown_au
 write_csv_if_changed(unknown_audit_summary, "../output/zap_rezoning_direction_unknown_audit_summary.csv")
 write_csv_if_changed(resolution_waterfall, "../output/zap_rezoning_direction_resolution_waterfall.csv")
 write_csv_if_changed(tercile_diagnostic_year, "../output/zap_rezoning_direction_tercile_diagnostic_year.csv")
+write_csv_if_changed(review_ledger, "../output/zap_rezoning_direction_review_ledger.csv")
+write_csv_if_changed(review_ledger_summary, "../output/zap_rezoning_direction_review_ledger_summary.csv")
 write_csv_if_changed(top_abs_far_acres, "../output/zap_rezoning_direction_top_abs_far_acres.csv")
 
 # Exploratory diagnostic plots.
@@ -2626,7 +3256,7 @@ print(
     geom_vline(xintercept = 1989, linetype = "dashed", linewidth = 0.35, color = "gray55") +
     geom_line(linewidth = 0.7) +
     scale_color_manual(values = c(upzoning = "#1B9E77", downzoning = "#D95F02", mixed = "#7570B3", unknown = "#6B6B6B")) +
-    scale_x_continuous(breaks = seq(1980, 2020, by = 10), minor_breaks = seq(1980, 2025, by = 5)) +
+    scale_x_continuous(breaks = seq(1980, 2020, by = 10), minor_breaks = seq(analysis_year_start, analysis_year_end, by = 5)) +
     labs(
       title = "Completed ZAP zoning map changes by parsed direction",
       x = NULL,
@@ -2670,7 +3300,7 @@ print(
     geom_line(linewidth = 0.6, na.rm = TRUE) +
     facet_grid(outcome_label ~ rezoning_direction, scales = "free_y") +
     scale_color_manual(values = c("Low homeowner" = "#2B8CBE", "Middle homeowner" = "#7B7B7B", "High homeowner" = "#D95F0E")) +
-    scale_x_continuous(breaks = seq(1980, 2020, by = 10), minor_breaks = seq(1980, 2025, by = 5)) +
+    scale_x_continuous(breaks = seq(1980, 2020, by = 10), minor_breaks = seq(analysis_year_start, analysis_year_end, by = 5)) +
     labs(
       title = "Rezoning direction and scope by 2010 Council district homeowner tercile",
       x = NULL,
@@ -2685,7 +3315,7 @@ dev.off()
 # Task-level QC.
 
 qc_df <- bind_rows(
-  tibble(metric = "zoning_map_project_count_1980_2025", value = as.character(nrow(project_classification)), status = if_else(nrow(project_classification) > 0, "pass", "fail"), note = "Completed 1980-2025 ZAP project records with zoning map changes."),
+  tibble(metric = "zoning_map_project_count_1976_2025", value = as.character(nrow(project_classification)), status = if_else(nrow(project_classification) > 0, "pass", "fail"), note = "Completed 1976-2025 ZAP project records with zoning map changes."),
   tibble(metric = "project_id_duplicate_count", value = as.character(nrow(project_classification) - n_distinct(project_classification$project_id)), status = if_else(nrow(project_classification) == n_distinct(project_classification$project_id), "pass", "fail"), note = "Project classification output must be unique by project_id."),
   tibble(metric = "parsed_any_pair_project_count", value = as.character(sum(project_classification$parsed_pair_count > 0)), status = "pass", note = "Projects with at least one parsed zoning-code transition."),
   tibble(metric = "known_direction_project_count", value = as.character(sum(project_classification$rezoning_direction != "unknown")), status = "pass", note = "Projects with known first-pass residential FAR direction."),
@@ -2702,6 +3332,11 @@ qc_df <- bind_rows(
   tibble(metric = "strict_bbl_scope_project_share", value = as.character(mean(project_classification$strict_bbl_scope_flag)), status = "pass", note = "Share of ZM projects with strict scope assignment."),
   tibble(metric = "high_confidence_scope_project_count", value = as.character(sum(project_classification$high_confidence_scope_flag)), status = "pass", note = "Strict-scope projects with at least 80 percent of linked BBLs matched to CCD2010 and current MapPLUTO."),
   tibble(metric = "low_match_strict_scope_project_count", value = as.character(sum(project_classification$strict_bbl_scope_flag & !project_classification$high_confidence_scope_flag)), status = "pass", note = "Strict-scope projects below the high-confidence BBL match threshold."),
+  tibble(metric = "block_level_linked_project_count", value = as.character(sum(project_classification$block_level_linked_bbl_count > 0)), status = "pass", note = "Projects with ZAP BBL links ending in lot 0000, interpreted as borough-block links for block-expanded scope diagnostics."),
+  tibble(metric = "block_expanded_scope_project_count", value = as.character(sum(project_classification$block_expanded_scope_flag)), status = "pass", note = "Projects with at least one block-expanded or lot-level BBL/current-MapPLUTO/CCD2010 scope assignment."),
+  tibble(metric = "block_expanded_scope_only_project_count", value = as.character(sum(project_classification$block_expanded_scope_only_flag)), status = "pass", note = "Projects with block-expanded scope assignment but no strict lot-level scope assignment."),
+  tibble(metric = "block_expanded_project_assignment_weight_bad_count", value = as.character(project_block_expanded_weight_bad_count), status = if_else(project_block_expanded_weight_bad_count == 0, "pass", "fail"), note = "Block-expanded project BBL assignment weights should sum to one for assigned projects."),
+  tibble(metric = "block_expanded_scope_audit_rows", value = as.character(nrow(block_expanded_scope_audit)), status = if_else(nrow(block_expanded_scope_audit) == sum(project_classification$block_level_linked_bbl_count > 0 | project_classification$block_expanded_scope_only_flag | project_classification$block_expanded_acre_gain > 0), "pass", "fail"), note = "One audit row per project with block-level BBL links or a positive acreage gain from block expansion."),
   tibble(metric = "scope_match_quality_rows", value = as.character(nrow(project_bbl_match_quality)), status = if_else(nrow(project_bbl_match_quality) == nrow(project_classification), "pass", "fail"), note = "Project-level BBL link and matching diagnostics."),
   tibble(metric = "coverage_by_period_group_rows", value = as.character(nrow(coverage_by_period_group)), status = if_else(nrow(coverage_by_period_group) > 0, "pass", "fail"), note = "Coverage diagnostics by period, borough, direction, and strict-scope homeowner tercile."),
   tibble(metric = "manual_classification_rows", value = as.character(nrow(manual_rezoning_classification)), status = if_else(nrow(manual_rezoning_classification) > 0, "pass", "fail"), note = "Rows in task-local manual rezoning classification seed file."),
@@ -2721,13 +3356,16 @@ qc_df <- bind_rows(
   tibble(metric = "reviewed_source_direction_gain_count", value = as.character(sum(project_classification$rezoning_direction == "unknown" & project_classification$reviewed_rezoning_direction != "unknown")), status = "pass", note = "Parser-unknown projects resolved in the separate source-reviewed direction field."),
   tibble(metric = "reviewed_manual_parser_conflict_count", value = as.character(sum(project_classification$manual_reviewed_direction_flag & project_classification$rezoning_direction != "unknown" & project_classification$reviewed_rezoning_direction != as.character(project_classification$rezoning_direction))), status = "pass", note = "Parser-known projects where manual text review changes the separate reviewed direction field."),
   tibble(metric = "source_reviewed_cases_rows", value = as.character(nrow(source_reviewed_cases)), status = if_else(nrow(source_reviewed_cases) == nrow(source_rezoning_scope), "pass", "fail"), note = "One project-level output row per source-reviewed or source-seeded case."),
-  tibble(metric = "reviewed_city_year_rows", value = as.character(nrow(reviewed_city_year)), status = if_else(nrow(reviewed_city_year) == 46 * length(direction_levels) * length(reviewed_scope_levels), "pass", "fail"), note = "Reviewed-source city-year output by direction and source/scope bin."),
+  tibble(metric = "review_ledger_rows", value = as.character(nrow(review_ledger)), status = if_else(nrow(review_ledger) == nrow(project_classification), "pass", "fail"), note = "Review ledger must contain one row for every project classification row."),
+  tibble(metric = "review_ledger_unique_key_bad_count", value = as.character(nrow(review_ledger) - n_distinct(review_ledger$project_id)), status = if_else(nrow(review_ledger) == n_distinct(review_ledger$project_id), "pass", "fail"), note = "Review ledger must be unique by project_id."),
+  tibble(metric = "review_ledger_summary_rows", value = as.character(nrow(review_ledger_summary)), status = if_else(nrow(review_ledger_summary) > 0, "pass", "fail"), note = "Review ledger summary must contain grouped missingness and priority diagnostics."),
+  tibble(metric = "reviewed_city_year_rows", value = as.character(nrow(reviewed_city_year)), status = if_else(nrow(reviewed_city_year) == analysis_year_count * length(direction_levels) * length(reviewed_scope_levels), "pass", "fail"), note = "Reviewed-source city-year output by direction and source/scope bin."),
   tibble(metric = "reviewed_period_rows", value = as.character(nrow(reviewed_period_counts)), status = if_else(nrow(reviewed_period_counts) > 0, "pass", "fail"), note = "Reviewed-source period output by direction and source/scope bin."),
-  tibble(metric = "tercile_diagnostic_year_rows", value = as.character(nrow(tercile_diagnostic_year)), status = if_else(nrow(tercile_diagnostic_year) == 46 * 3, "pass", "fail"), note = "Rows in strict-scope homeowner-tercile diagnostic trend output."),
+  tibble(metric = "tercile_diagnostic_year_rows", value = as.character(nrow(tercile_diagnostic_year)), status = if_else(nrow(tercile_diagnostic_year) == analysis_year_count * 3, "pass", "fail"), note = "Rows in strict-scope homeowner-tercile diagnostic trend output."),
   tibble(metric = "project_assignment_weight_bad_count", value = as.character(project_weight_bad_count), status = if_else(project_weight_bad_count == 0, "pass", "fail"), note = "Project BBL assignment weights should sum to one for strictly assigned projects."),
-  tibble(metric = "ccd_year_row_count", value = as.character(nrow(ccd_year_panel)), status = if_else(nrow(ccd_year_panel) == 51 * 46, "pass", "fail"), note = "Rows in the 2010 Council district-year panel."),
+  tibble(metric = "ccd_year_row_count", value = as.character(nrow(ccd_year_panel)), status = if_else(nrow(ccd_year_panel) == 51 * analysis_year_count, "pass", "fail"), note = "Rows in the 2010 Council district-year panel."),
   tibble(metric = "ccd_year_unique_key_bad_count", value = as.character(nrow(ccd_year_panel) - nrow(distinct(ccd_year_panel, district_id, year))), status = if_else(nrow(ccd_year_panel) == nrow(distinct(ccd_year_panel, district_id, year)), "pass", "fail"), note = "CCD-year panel must be unique by district and year."),
-  tibble(metric = "tercile_year_row_count", value = as.character(nrow(tercile_year)), status = if_else(nrow(tercile_year) == 46 * 3 * length(direction_levels) * length(magnitude_levels), "pass", "fail"), note = "Rows in tercile-year direction-magnitude output."),
+  tibble(metric = "tercile_year_row_count", value = as.character(nrow(tercile_year)), status = if_else(nrow(tercile_year) == analysis_year_count * 3 * length(direction_levels) * length(magnitude_levels), "pass", "fail"), note = "Rows in tercile-year direction-magnitude output."),
   tibble(metric = "event_coefficient_rows", value = as.character(nrow(event_df)), status = if_else(nrow(event_df) == nrow(outcome_dictionary) * length(event_periods), "pass", "fail"), note = "Rows in event-study coefficient output, including reference periods."),
   tibble(metric = "missing_event_treatment_terms", value = as.character(missing_event_terms), status = if_else(missing_event_terms == 0, "pass", "fail"), note = "Requested event-study treatment terms missing from output."),
   tibble(metric = "long_difference_rows", value = as.character(nrow(long_diff_df)), status = if_else(nrow(long_diff_df) == nrow(outcome_dictionary) * nrow(window_defs), "pass", "fail"), note = "Rows in long-difference estimate output."),

@@ -1,0 +1,39 @@
+\section{Data}
+\label{sec:data}
+
+The empirical analysis uses a Council-district-by-year panel of housing production in New York City.
+The unit is the 2010 City Council district.
+I hold this geography fixed because it is the political scale through which member deference operates in the post-Morris period.
+The panel covers annual housing production from 1970 through 2025, so the same districts can be followed before and after the court-induced shift from borough-scale to district-scale land-use review.
+
+\subsection{Council-District Panel}
+
+The sample contains the 51 City Council districts from the 2010 redistricting cycle.
+Each district is assigned to its majority borough.
+This fixed geography is a first pass rather than a claim that the 2010 districts were the operative political districts throughout the entire sample period.
+The design asks whether places that later became homeowner-heavy Council districts are the places where housing production shifted away as district-level land-use control became more important.
+
+\subsection{Homeownership Exposure}
+
+The treatment variable measures how homeowner-heavy a Council district was at baseline relative to other districts in the same borough.
+I use 1990 NHGIS tract counts of owner-occupied and occupied housing units, allocate those counts into 2010 Council districts, and compute each district's 1990 homeownership rate.
+The main treatment is this rate standardized within borough.
+A value of zero means the district had average homeownership for its borough; positive values indicate a more homeowner-heavy district; negative values indicate a more renter-heavy district.
+
+The within-borough scale is important for interpretation.
+Homeownership, density, housing stock, and development pressure differ sharply across boroughs.
+The comparison is therefore not Staten Island against Manhattan, but homeowner-heavy districts against lower-homeownership districts within the same borough.
+
+\subsection{Housing Production}
+
+Housing production is measured from 25v4 MapPLUTO.
+I assign lots to 2010 Council districts and use the \texttt{yearbuilt} field and residential-unit counts to construct district-year measures of new housing.
+The main outcomes are total residential units and units on building-size margins where discretionary review should matter differently.
+The descriptive figures show total units, small-building units, and very large buildings.
+The main figures use raw unit counts throughout.
+The event-study results focus on raw units in 5+ unit buildings and plot the 1--4 unit margin as a placebo.
+
+MapPLUTO has one important limitation.
+It is a surviving-stock year-built proxy, not a clean annual completion-flow series.
+That limitation becomes more important further back in time, because older buildings are only observed if they survive into the current MapPLUTO vintage.
+The current results are therefore descriptive and best interpreted as evidence on whether post-reform production shifted across political districts, rather than as a complete measure of every unit completed in each year.

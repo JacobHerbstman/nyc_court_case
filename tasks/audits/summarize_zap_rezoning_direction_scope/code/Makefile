@@ -25,6 +25,9 @@ all: ../output/zap_rezoning_direction_project_classification.csv \
 	../output/zap_rezoning_direction_unknown_audit_summary.csv \
 	../output/zap_rezoning_direction_resolution_waterfall.csv \
 	../output/zap_rezoning_direction_source_reviewed_cases.csv \
+	../output/zap_rezoning_direction_block_expanded_scope_audit.csv \
+	../output/zap_rezoning_direction_review_ledger.csv \
+	../output/zap_rezoning_direction_review_ledger_summary.csv \
 	../output/zap_rezoning_direction_reviewed_city_year.csv \
 	../output/zap_rezoning_direction_reviewed_period.csv \
 	../output/zap_rezoning_direction_top_abs_far_acres.csv \
@@ -63,6 +66,9 @@ all: ../output/zap_rezoning_direction_project_classification.csv \
 ../output/zap_rezoning_direction_unknown_audit_summary.csv \
 ../output/zap_rezoning_direction_resolution_waterfall.csv \
 ../output/zap_rezoning_direction_source_reviewed_cases.csv \
+../output/zap_rezoning_direction_block_expanded_scope_audit.csv \
+../output/zap_rezoning_direction_review_ledger.csv \
+../output/zap_rezoning_direction_review_ledger_summary.csv \
 ../output/zap_rezoning_direction_reviewed_city_year.csv \
 ../output/zap_rezoning_direction_reviewed_period.csv \
 ../output/zap_rezoning_direction_top_abs_far_acres.csv \

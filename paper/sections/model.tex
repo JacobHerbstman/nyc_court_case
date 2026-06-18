@@ -1,0 +1,325 @@
+\section{A Quantitative Spatial Model of Land-Use Approval}
+\label{sec:model}
+
+The reduced-form evidence shows that, after land-use authority shifts toward district-based control, large multifamily production shifts away from homeowner-heavy Council districts.
+This quantity response is not by itself a welfare result.
+Lower production in homeowner-heavy districts could reflect inefficient local veto power, but it could also reflect local officials screening out projects with high neighborhood costs.
+To separate these interpretations, I outline a within-city quantitative spatial model with an institution-dependent land-use approval stage.
+
+The household and firm side of the model follows the standard quantitative spatial tradition: households sort across locations, firms operate in locations with different productivity, and rents, wages, commuting flows, and housing supply clear in equilibrium.
+The additional object is the land-use approval stage.
+Developers may find housing projects privately feasible, but the amount of housing that actually enters the spatial equilibrium depends on whether those projects clear the political approval process.
+
+The political structure borrows from the urban-growth logic in \citet{duranton_urban_2023}.
+Incumbents may favor restrictions when they weigh agglomeration or affordability benefits against local urban costs, but they need not internalize the welfare of excluded newcomers.
+I adapt this logic to a within-city setting.
+District-level decision makers may use valuable local information about neighborhood costs, but they may also overweight incumbent homeowners and ignore benefits to entrants and other districts.
+Centralized decision makers may internalize broader benefits, but may mismeasure true local costs.
+
+\subsection{Overview and timing}
+
+The model has three blocks.
+First, given approved housing, a standard spatial equilibrium determines household location choices, rents, wages, entry, and asset values.
+Second, developers face physical construction costs and a political or regulatory approval wedge.
+Third, the approval regime determines approved housing.
+The decentralized regime maximizes a politically weighted incumbent objective and observes local costs; the centralized regime maximizes a broader citywide objective but observes local costs imperfectly.
+
+The timing is as follows.
+Locations have baseline fundamentals and predetermined homeowner exposure.
+Developers face market returns and physical redevelopment costs.
+The approval regime determines which privately feasible housing clears the political process.
+Households and firms then sort across the resulting spatial equilibrium.
+For notational simplicity I suppress time in the model exposition.
+Empirically, approved housing should be interpreted as new approved or built housing over a period, corresponding to the flow outcome used in the reduced form.
+
+\subsection{Environment}
+
+The city consists of neighborhoods indexed by \(n\in\mathcal{N}\).
+Each neighborhood has baseline housing stock \(\bar H_n\), approved new housing \(q_n\), total housing
+\[
+    H_n = \bar H_n + q_n,
+\]
+residential rents or floor-space prices \(Q_n\), and predetermined homeowner exposure \(T_n\).
+The object \(q_n\) is approved and built housing, not proposed housing.
+This distinction matters because the political approval process is the margin the model is designed to capture.
+
+Locations are stamped with baseline physical and amenity fundamentals: existing housing, developable capacity, construction costs, residential amenities, commuting access, and true local costs of additional development.
+Rents, wages, population, home values, and approved housing are equilibrium outcomes.
+Homeowner exposure \(T_n\) is treated as a predetermined political exposure measure.
+
+There are three household groups:
+\[
+    g\in\{O,R,N\},
+\]
+where \(O\) denotes incumbent homeowners, \(R\) denotes incumbent renters, and \(N\) denotes potential entrants.
+Homeowners hold local housing assets and may gain or lose through capitalization.
+Incumbent renters are current residents who experience rents, amenities, access, and local development costs.
+Potential entrants are not represented in local land-use politics, but may gain when additional housing lets them live in New York rather than take an outside option.
+
+\subsection{Household location choice and entry}
+
+Households choose where to live and work.
+A type-\(g\) household choosing residence \(n\) and workplace \(i\) consumes a non-housing good \(c\) and residential floor space \(\ell\).
+Direct utility is
+\[
+    \mathcal{U}_{gni\omega}
+    =
+    \varepsilon_{gni\omega}
+    \frac{B_{gn}(q,L)}{\exp(\kappa \tau_{ni})}
+    \left(\frac{c_{gni}}{1-\alpha_g}\right)^{1-\alpha_g}
+    \left(\frac{\ell_{gni}}{\alpha_g}\right)^{\alpha_g},
+\]
+subject to
+\[
+    c_{gni}+Q_n\ell_{gni}=w_i.
+\]
+Here \(B_{gn}(q,L)\) is group-specific residential amenity, \(w_i\) is the workplace wage, \(Q_n\) is the residential rent or floor-space price, \(\tau_{ni}\) is commuting time, and \(\alpha_g\) is the housing expenditure share.
+The Cobb--Douglas problem implies
+\[
+    c_{gni}=(1-\alpha_g)w_i,
+    \qquad
+    Q_n\ell_{gni}=\alpha_g w_i.
+\]
+Substituting these demands into direct utility yields indirect utility
+\[
+    U_{gni\omega}
+    =
+    \varepsilon_{gni\omega}
+    \frac{B_{gn}(q,L)w_i}{Q_n^{\alpha_g}\exp(\kappa\tau_{ni})}.
+\]
+
+The amenity term contains both positive spatial spillovers and local urban costs:
+\[
+    B_{gn}(q,L)
+    =
+    \bar B_{gn}\Omega_n(q,L)^{\eta_g}
+    \exp[-\chi_g C_n(q_n,L_n)].
+\]
+Here \(\bar B_{gn}\) is a baseline amenity, \(\Omega_n(q,L)\) captures positive agglomeration or access spillovers, and \(C_n(q_n,L_n)\) is the true local development cost.
+The term \(C_n\) captures congestion, crowding, infrastructure pressure, construction disruption, or other local costs of development.
+It is evaluated as an amenity cost in household welfare; it should not also be subtracted as a separate resource cost.
+
+Assume the idiosyncratic term \(\varepsilon_{gni\omega}\) is Fr\'echet with shape parameter \(\theta_g\).
+The probability that a type-\(g\) household chooses residence \(n\) and workplace \(i\) is
+\[
+    \pi_{gni}
+    =
+    \frac{
+    \left[
+    B_{gn}(q,L)w_i Q_n^{-\alpha_g}\exp(-\kappa\tau_{ni})
+    \right]^{\theta_g}
+    }{
+    \sum_{n'}\sum_{i'}
+    \left[
+    B_{gn'}(q,L)w_{i'}Q_{n'}^{-\alpha_g}\exp(-\kappa\tau_{n'i'})
+    \right]^{\theta_g}
+    }.
+\]
+The associated inclusive value is
+\[
+    \Phi_g
+    =
+    \left[
+    \sum_{n'}\sum_{i'}
+    \left[
+    B_{gn'}(q,L)w_{i'}Q_{n'}^{-\alpha_g}\exp(-\kappa\tau_{n'i'})
+    \right]^{\theta_g}
+    \right]^{1/\theta_g}.
+\]
+
+For incumbent owners and incumbent renters, group populations are fixed in the baseline.
+Potential entrants enter the city when the inclusive value of living in New York exceeds the outside option.
+A parsimonious entry equation is
+\[
+    L_N
+    =
+    \bar L_N
+    \left(\frac{\Phi_N}{\bar U_0}\right)^{\psi_N},
+\]
+where \(\bar U_0\) is the outside option and \(\psi_N\) is the entry elasticity.
+This is the channel through which restrictive land use can harm people who are not currently represented in local politics.
+
+\subsection{Housing markets and homeowner assets}
+
+Residential floor-space demand in neighborhood \(n\) is the sum of household demands across groups and workplaces.
+Market clearing requires
+\[
+    \sum_g \sum_i L_g \pi_{gni}\ell_{gni}
+    =
+    H_n
+    =
+    \bar H_n+q_n.
+\]
+Thus, approved housing affects rents, location choices, entry, and ultimately wages and amenities.
+
+Incumbent homeowners differ from renters because they hold claims to local housing assets.
+Let \(h_n^O\) denote baseline owner claims on housing assets in neighborhood \(n\).
+I treat these claims as fixed at baseline, so that asset-value incidence is evaluated using pre-policy ownership.
+A simple capitalization equation is
+\[
+    P_n = \frac{Q_n}{\iota},
+\]
+where \(P_n\) is the local housing asset price and \(\iota\) is a capitalization rate.
+Homeowner welfare includes both consumption-equivalent utility and capitalization:
+\[
+    W_O
+    =
+    \Phi_O
+    +
+    \sum_n h_n^O(P_n-P_n^0).
+\]
+Renters and entrants do not receive this asset-value term.
+
+\subsection{Developers and the approval wedge}
+
+Developers produce new housing at physical cost \(K_n(q_n)\), with marginal cost \(K_n'(q_n)\).
+Let \(R_n\) denote the marginal market return to new housing in neighborhood \(n\), for example the capitalized value of the marginal unit.
+Absent approval frictions, developers would build until
+\[
+    R_n=K_n'(q_n).
+\]
+With land-use approval frictions, the supply condition is
+\[
+    R_n=K_n'(q_n)+\phi_n^s,
+    \qquad s\in\{D,C\},
+\]
+where \(s\) indexes the approval regime and \(\phi_n^s\) is the political or regulatory approval wedge.
+The wedge summarizes delay, uncertainty, bargaining, downscaling, required concessions, litigation risk, and outright rejection.
+
+The approval rule below determines the approved quantity \(q_n^s\).
+The wedge \(\phi_n^s\) is the implied regulatory cost that rationalizes that approved quantity in the developer's supply condition.
+Thus the approval objective and the approval wedge are not two separate supply mechanisms; they are two representations of the same institutional process.
+
+\subsection{Centralized and decentralized approval}
+
+The approval regime determines which privately feasible housing enters the spatial equilibrium.
+The social benchmark would evaluate approved housing using true local costs and all affected groups.
+The two institutional regimes differ in which benefits and costs they internalize.
+
+\paragraph{Decentralized approval.}
+Under decentralized approval, the local decision maker chooses approved housing in neighborhood \(n\) to maximize a politically weighted incumbent objective:
+\[
+    q_n^D
+    \in
+    \arg\max_{q_n}\;\widetilde W_n^{inc}(q_n,q_{-n};T_n),
+\]
+where
+\[
+    \widetilde W_n^{inc}
+    =
+    \omega_O(T_n)W_n^O+
+    \omega_R(T_n)W_n^R,
+    \qquad
+    \omega_O'(T_n)>0.
+\]
+The political weights need not equal welfare weights.
+In particular, homeowner exposure can increase the weight placed on incumbent owners.
+The decentralized decision maker observes true local costs \(C_n(q_n,L_n)\), but may underweight incumbent renters, potential entrants, and benefits that spill over to other districts.
+This is the within-city analogue of an incumbent-controlled planning problem: local incumbents choose growth by trading off the benefits of additional housing against local urban costs, while not fully internalizing the welfare of excluded newcomers.
+
+\paragraph{Centralized approval.}
+Under centralized approval, a citywide authority chooses approved housing across neighborhoods:
+\[
+    q^C
+    \in
+    \arg\max_q\;\widetilde W^C(q).
+\]
+A schematic centralized objective is
+\[
+    \widetilde W^C(q)
+    =
+    \left[\sum_n W_n^O(q)+\sum_n W_n^R(q)+W^N(q)\right]_{\widetilde C},
+\]
+where the subscript \(\widetilde C\) indicates that the authority evaluates local development costs using perceived rather than true costs.
+The centralized authority internalizes broader benefits, including effects on entrants, rents outside the approving district, and agglomeration.
+Its disadvantage is information.
+I represent perceived local costs as
+\[
+    \widetilde C_n(q_n,L_n)
+    =
+    \psi C_n(q_n,L_n)+\xi_n,
+\]
+where \(C_n(q_n,L_n)\) is the true local cost of development.
+When \(\psi<1\) or \(\xi_n\neq 0\), the central authority mismeasures neighborhood costs.
+This is the channel through which decentralized approval can dominate: local officials may observe costs that a citywide authority misses.
+
+\subsection{Three wedges}
+
+The welfare comparison is governed by three wedges.
+Let \(W_n^{inc}=W_n^O+W_n^R\) denote local incumbent welfare evaluated with welfare weights, and let \(W^N\) denote entrant welfare.
+Suppressing equilibrium feedbacks, the externality wedge is
+\[
+    \underbrace{
+    \frac{\partial W^N}{\partial q_n}
+    +
+    \sum_{m\neq n}
+    \frac{\partial W_m}{\partial q_n}
+    }_{\text{externality wedge}}.
+\]
+This captures benefits to entrants, other districts, citywide rents, labor markets, and agglomeration that a local decision maker may not internalize.
+
+The representation wedge is
+\[
+    \underbrace{
+    \frac{\partial W_n^{inc}}{\partial q_n}
+    -
+    \frac{\partial \widetilde W_n^{inc}}{\partial q_n}
+    }_{\text{representation wedge}}.
+\]
+This captures the gap between welfare weights and local political weights, especially when incumbent homeowners are overweighted relative to renters and future residents.
+
+The information wedge is
+\[
+    \underbrace{
+    \frac{\partial C_n(q_n,L_n)}{\partial q_n}
+    -
+    \frac{\partial \widetilde C_n(q_n,L_n)}{\partial q_n}
+    }_{\text{information wedge}}.
+\]
+This captures the part of true local development cost missed by a centralized authority.
+
+Centralized approval is more attractive when the externality and representation wedges are large.
+Decentralized approval is more attractive when the information wedge is large.
+The model therefore does not assume that either regime is always efficient.
+It asks whether the gains from internalizing broader benefits outweigh the loss from imperfect local information.
+
+\subsection{Empirical mapping}
+
+The reduced-form estimates discipline the homeowner-related component of the decentralized approval wedge.
+I parameterize this component as
+\[
+    \phi_{nt}^D
+    =
+    \phi_n^0+
+    \lambda_t\rho T_n+
+    u_{nt},
+\]
+where \(\phi_n^0\) is baseline neighborhood approval difficulty, \(T_n\) is predetermined homeowner exposure, \(\rho\) measures how homeowner exposure affects approval restrictiveness, and \(\lambda_t\) captures the strength of district-based local control over time.
+
+The event-study coefficients are not literal estimates of \(\lambda_t\rho\), because they are quantity responses.
+A linearized supply relationship gives
+\[
+    Y_{nt}
+    \approx
+    -\eta_q\phi_{nt}^D+\text{controls},
+    \qquad
+    \beta_t
+    \approx
+    -\eta_q\lambda_t\rho.
+\]
+A growing negative homeowner gradient for large-building production therefore disciplines the sign and magnitude of the homeowner-related approval wedge.
+Recovering the level of the wedge requires an estimate or calibration of \(\eta_q\), the elasticity of approved housing with respect to the approval wedge.
+The reduced-form estimates identify a relative spatial reallocation away from homeowner-heavy districts, not total citywide welfare directly.
+
+\subsection{Welfare counterfactuals}
+
+The model will be used to compare welfare under three regimes.
+The first is decentralized approval, in which local political weights and homeowner exposure shape the approval wedge.
+The second is centralized approval, in which citywide benefits and entrants receive greater weight but local costs may be mismeasured.
+The third is decentralized approval with compensation or pricing.
+In that counterfactual, the local decision maker retains local information, but receives a transfer or price that partially internalizes the externality and representation wedges.
+
+Welfare is evaluated separately for incumbent homeowners, incumbent renters, and entrants.
+For renters and entrants, welfare is summarized by the group-specific inclusive value.
+For homeowners, welfare also includes housing-asset capitalization.
+This distinction is important because a regime can reduce local asset values for incumbent owners while increasing welfare for renters and excluded entrants.

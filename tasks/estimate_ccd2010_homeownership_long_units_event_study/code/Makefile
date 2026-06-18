@@ -1,18 +1,34 @@
 all: ../output/ccdist2010_homeownership_long_units_event_coefficients_5yr_bins.csv \
 	../output/ccdist2010_homeownership_long_units_event_coefficients_5yr_bins.pdf \
+	../output/ccdist2010_homeownership_long_units_event_coefficients_raw_units_5yr_bins.csv \
+	../output/ccdist2010_homeownership_long_units_event_coefficients_raw_units_5yr_bins.pdf \
 	../output/ccdist2010_homeownership_long_units_long_difference_estimates.csv \
-	../output/ccdist2010_homeownership_long_units_long_difference.tex
+	../output/ccdist2010_homeownership_long_units_long_difference.tex \
+	../output/ccdist2010_homeownership_long_units_long_difference_raw_units_estimates.csv \
+	../output/ccdist2010_homeownership_long_units_long_difference_raw_units.tex
 
-../output/ccdist2010_homeownership_long_units_event_coefficients_5yr_bins.csv: estimate_ccd2010_homeownership_long_units_event_study.R ../../_lib/source_pipeline_utils.R ../input/ccdist2010_homeownership_long_units_series.csv | ../output
+../output/ccdist2010_homeownership_long_units_event_coefficients_raw_units_5yr_bins.csv: estimate_ccd2010_homeownership_long_units_event_study.R ../../_lib/source_pipeline_utils.R ../input/ccdist2010_homeownership_long_units_series.csv | ../output
 	Rscript --vanilla $<
 
+../output/ccdist2010_homeownership_long_units_event_coefficients_5yr_bins.csv: ../output/ccdist2010_homeownership_long_units_event_coefficients_raw_units_5yr_bins.csv
+	@test -s "$@"
+
 ../output/ccdist2010_homeownership_long_units_event_coefficients_5yr_bins.pdf: ../output/ccdist2010_homeownership_long_units_event_coefficients_5yr_bins.csv
+	@test -s "$@"
+
+../output/ccdist2010_homeownership_long_units_event_coefficients_raw_units_5yr_bins.pdf: ../output/ccdist2010_homeownership_long_units_event_coefficients_raw_units_5yr_bins.csv
 	@test -s "$@"
 
 ../output/ccdist2010_homeownership_long_units_long_difference_estimates.csv: ../output/ccdist2010_homeownership_long_units_event_coefficients_5yr_bins.csv
 	@test -s "$@"
 
 ../output/ccdist2010_homeownership_long_units_long_difference.tex: ../output/ccdist2010_homeownership_long_units_event_coefficients_5yr_bins.csv
+	@test -s "$@"
+
+../output/ccdist2010_homeownership_long_units_long_difference_raw_units_estimates.csv: ../output/ccdist2010_homeownership_long_units_event_coefficients_raw_units_5yr_bins.csv
+	@test -s "$@"
+
+../output/ccdist2010_homeownership_long_units_long_difference_raw_units.tex: ../output/ccdist2010_homeownership_long_units_event_coefficients_raw_units_5yr_bins.csv
 	@test -s "$@"
 
 ../input/ccdist2010_homeownership_long_units_series.csv: ../../build_ccd2010_homeownership_long_units_series/output/ccdist2010_homeownership_long_units_series.csv | ../input

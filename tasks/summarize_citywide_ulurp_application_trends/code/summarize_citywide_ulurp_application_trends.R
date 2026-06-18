@@ -1087,14 +1087,12 @@ plot_number_main_df <- citywide_year_counts |>
     count_unit == "parsed_ulurp_numbers",
     outcome_id %in% c(
       "all_ulurp_applications",
-      "residential_candidate_applications",
-      "housing_production_conservative_applications"
+      "residential_candidate_applications"
     )
   ) |>
   mutate(outcome_label = factor(outcome_label, levels = c(
     "All ULURP applications",
-    "Housing-oriented applications: candidate",
-    "Housing-production applications: conservative"
+    "Housing-oriented applications: candidate"
   )))
 
 plot_project_main_df <- citywide_year_counts |>
@@ -1102,35 +1100,13 @@ plot_project_main_df <- citywide_year_counts |>
     count_unit == "zap_project_records",
     outcome_id %in% c(
       "all_ulurp_applications",
-      "residential_candidate_applications",
-      "housing_production_conservative_applications"
+      "residential_candidate_applications"
     )
   ) |>
   mutate(outcome_label = factor(outcome_label, levels = c(
     "All ULURP applications",
-    "Housing-oriented applications: candidate",
-    "Housing-production applications: conservative"
+    "Housing-oriented applications: candidate"
   )))
-
-plot_sensitivity_df <- citywide_year_counts |>
-  filter(
-    count_unit == "parsed_ulurp_numbers",
-    outcome_id %in% c(
-      "residential_strict_text_applications",
-      "residential_broad_text_applications",
-      "residential_candidate_applications",
-      "housing_production_conservative_applications"
-    )
-  ) |>
-  mutate(outcome_label = factor(
-    outcome_label,
-    levels = c(
-      "Residential applications: strict text",
-      "Residential applications: broad text",
-      "Housing-oriented applications: candidate",
-      "Housing-production applications: conservative"
-    )
-  ))
 
 plot_tercile_number_df <- tercile_year_counts |>
   filter(
@@ -1573,8 +1549,7 @@ print(
     geom_line(aes(y = application_count_ma3), linewidth = 0.9, na.rm = TRUE) +
     scale_color_manual(values = c(
       "All ULURP applications" = "#333333",
-      "Housing-oriented applications: candidate" = "#2f7d32",
-      "Housing-production applications: conservative" = "#8c510a"
+      "Housing-oriented applications: candidate" = "#2f7d32"
     )) +
     scale_x_continuous(breaks = seq(1975, 2025, by = 5)) +
     labs(
@@ -1594,8 +1569,7 @@ print(
     geom_line(aes(y = application_count_ma3), linewidth = 0.9, na.rm = TRUE) +
     scale_color_manual(values = c(
       "All ULURP applications" = "#333333",
-      "Housing-oriented applications: candidate" = "#2f7d32",
-      "Housing-production applications: conservative" = "#8c510a"
+      "Housing-oriented applications: candidate" = "#2f7d32"
     )) +
     scale_x_continuous(breaks = seq(1975, 2025, by = 5)) +
     labs(
@@ -1603,28 +1577,6 @@ print(
       subtitle = "Project records are more complete historically but can bundle multiple ULURP application numbers.",
       x = NULL,
       y = "ZAP project records",
-      color = NULL
-    ) +
-    theme_minimal(base_size = 11) +
-    theme(legend.position = "bottom")
-)
-print(
-  ggplot(plot_sensitivity_df, aes(x = cert_year, y = application_count, color = outcome_label)) +
-    geom_vline(xintercept = 1989.5, color = "#666666", linetype = "dashed", linewidth = 0.35) +
-    geom_line(alpha = 0.35, linewidth = 0.45) +
-    geom_line(aes(y = application_count_ma3), linewidth = 0.9, na.rm = TRUE) +
-    scale_color_manual(values = c(
-      "Residential applications: strict text" = "#666666",
-      "Residential applications: broad text" = "#1f78b4",
-      "Housing-oriented applications: candidate" = "#2f7d32",
-      "Housing-production applications: conservative" = "#8c510a"
-    )) +
-    scale_x_continuous(breaks = seq(1975, 2025, by = 5)) +
-    labs(
-      title = "Housing-oriented ULURP application-number definition sensitivity",
-      subtitle = "Counts parse distinct ULURP numbers. Candidate adds MIH, HPD text, and HPD/housing action-code proxies.",
-      x = NULL,
-      y = "Applications",
       color = NULL
     ) +
     theme_minimal(base_size = 11) +

@@ -174,7 +174,7 @@ lot_level <- mappluto_df %>%
   filter(
     !is_joint_interest_area,
     !is.na(council_district),
-    yearbuilt >= 1980,
+    yearbuilt >= 1970,
     yearbuilt <= 2025,
     unitsres > 0
   ) %>%
@@ -229,7 +229,7 @@ panel_base <- lot_level %>%
 
 panel <- expand_grid(
   standard_ccd,
-  yearbuilt = 1980:2025
+  yearbuilt = 1970:2025
 ) %>%
   left_join(panel_base, by = c("district_id", "council_district", "borough_code", "borough_name", "yearbuilt"), relationship = "one-to-one") %>%
   mutate(
