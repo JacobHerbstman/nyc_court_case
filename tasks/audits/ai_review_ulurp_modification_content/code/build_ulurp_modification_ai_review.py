@@ -15,7 +15,7 @@ from pathlib import Path
 import pandas as pd
 
 
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/ai_review_ulurp_modification_content/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/ai_review_ulurp_modification_content/code")
 # batch_size <- 5
 # max_review_projects <- 0
 # random_audit_per_stratum <- 0

@@ -33,10 +33,10 @@ all: ../output/zap_housing_project_base_audited.csv ../output/zap_housing_projec
 ../input/cd_redevelopment_potential_baseline.csv: ../../redevelopment_potential_first_pass/output/cd_redevelopment_potential_baseline.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/zap_outcome_usability_by_period.csv: ../../audit_zap_source_integrity/output/zap_outcome_usability_by_period.csv | ../input
+../input/zap_outcome_usability_by_period.csv: ../../audits/audit_zap_source_integrity/output/zap_outcome_usability_by_period.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/zap_source_integrity_qc.csv: ../../audit_zap_source_integrity/output/zap_source_integrity_qc.csv | ../input
+../input/zap_source_integrity_qc.csv: ../../audits/audit_zap_source_integrity/output/zap_source_integrity_qc.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 link-inputs: ../input/zap_project_data.parquet ../input/zap_project_bbl.parquet ../input/dcp_mappluto_current_25v4.parquet ../input/cd_homeownership_1990_measure.csv ../input/cd_redevelopment_potential_baseline.csv ../input/zap_outcome_usability_by_period.csv ../input/zap_source_integrity_qc.csv

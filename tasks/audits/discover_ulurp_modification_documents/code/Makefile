@@ -36,8 +36,8 @@ all: ../output/ulurp_modification_zap_document_links.csv \
 ../output/ulurp_modification_zap_document_discovery_qc.csv: ../output/ulurp_modification_zap_document_links.csv
 	@test -s "$@"
 
-../input/ulurp_modification_project_spine.csv: ../../build_ulurp_modification_spine/output/ulurp_modification_project_spine.csv | ../input
-	@target="$$(cd ../../build_ulurp_modification_spine/output && pwd)/ulurp_modification_project_spine.csv"; \
+../input/ulurp_modification_project_spine.csv: ../../../build_ulurp_modification_spine/output/ulurp_modification_project_spine.csv | ../input
+	@target="$$(cd ../../../build_ulurp_modification_spine/output && pwd)/ulurp_modification_project_spine.csv"; \
 	if [ "$$(readlink "$@")" != "$$target" ]; then ln -sf "$$target" "$@"; fi
 
 link-inputs: ../input/ulurp_modification_project_spine.csv

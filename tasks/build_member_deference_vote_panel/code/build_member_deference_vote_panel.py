@@ -1058,18 +1058,5 @@ qc = pd.DataFrame(
 )
 
 write_csv("../output/member_deference_vote_panel.csv", panel)
-write_csv("../output/member_deference_vote_panel_summary.csv", summary)
-write_csv("../output/member_deference_vote_panel_qc.csv", qc)
 write_csv("../output/member_deference_matter_universe.csv", matter_universe)
-write_csv("../output/member_deference_matter_universe_summary.csv", universe_summary)
-write_csv("../output/member_deference_filed_matter_audit.csv", filed_matter_audit)
 write_csv("../output/member_deference_final_action_vote_queue.csv", final_action_vote_queue)
-write_csv("../output/member_deference_final_action_vote_queue_summary.csv", final_action_vote_queue_summary)
-write_csv(
-    "../output/member_deference_vote_panel_exception_candidates.csv",
-    panel[panel["vote_evidence_strength"] == "strong_exception_candidate"].copy(),
-)
-write_csv(
-    "../output/member_deference_vote_panel_unresolved.csv",
-    panel[panel["vote_evidence_strength"] == "unresolved"].copy(),
-)

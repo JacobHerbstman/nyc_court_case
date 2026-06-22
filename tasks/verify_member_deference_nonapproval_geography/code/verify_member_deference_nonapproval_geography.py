@@ -676,16 +676,6 @@ conservative_queue = conservative_queue[
     ]
 ]
 
-conservative_summary = (
-    conservative_queue.groupby("geography_incorporation_status", as_index=False)
-    .agg(
-        matter_count=("matter_id", "size"),
-        usable_geography_count=("affected_districts_conservative_missing", lambda x: int((~x).sum())),
-        local_member_count=("local_members_from_roster", lambda x: int(x.ne("").sum())),
-    )
-    .sort_values("geography_incorporation_status")
-)
-
 verification = verification[
     [
         "query_year",
@@ -722,106 +712,6 @@ verification = verification[
         "title",
     ]
 ]
-
-summary = (
-    verification.groupby(["verification_status", "verification_evidence_level"], as_index=False)
-    .agg(
-        matter_count=("matter_id", "size"),
-        chatgpt_agreement_count=("verified_districts_match_chatgpt", lambda x: int(x.sum())),
-    )
-    .sort_values(["verification_status", "verification_evidence_level"])
-)
-
-source_prompt_summary = (
-    sources.groupby("matter_id", as_index=False)
-    .agg(
-        official_urls_checked=("source_url", collapse_values),
-        official_source_relations=("source_relation_to_matter", collapse_values),
-        official_direct_districts_seen=("official_direct_council_districts", collapse_districts),
-        official_bbls_seen=("official_bbls", collapse_values),
-        official_text_snippets=("official_text_snippet", lambda x: " || ".join(dict.fromkeys(str(v) for v in x if str(v).strip()))[:2500]),
-    )
-)
-
-second_pass_queue = verification[~verification["verification_status"].str.startswith("verified_")].copy()
-second_pass_queue = second_pass_queue.merge(source_prompt_summary, on="matter_id", how="left", validate="one_to_one")
-for col in [
-    "official_urls_checked",
-    "official_source_relations",
-    "official_direct_districts_seen",
-    "official_bbls_seen",
-    "official_text_snippets",
-]:
-    second_pass_queue[col] = second_pass_queue[col].fillna("")
-
-
-def second_pass_prompt(row: pd.Series) -> str:
-    return "\n".join(
-        [
-            f"Matter: {row['matter_file']} ({row['query_year']})",
-            f"Matter ID: {row['matter_id']}",
-            f"Application keys: {row['application_keys'] or 'none parsed'}",
-            f"Initial ChatGPT suggested district(s): {row['chatgpt_suggested_districts_parsed'] or 'none parsed'}",
-            f"First official verification status: {row['verification_status']}",
-            f"First official verification notes: {row['verification_notes']}",
-            f"Official matter URL: {row['matter_url']}",
-            f"Official source URLs already checked: {row['official_urls_checked'] or 'none'}",
-            f"Official source relations already checked: {row['official_source_relations'] or 'none'}",
-            f"Official direct Council Districts seen in checked sources: {row['official_direct_districts_seen'] or 'none'}",
-            f"Official BBLs seen in exact matter text: {row['official_matter_bbl_examples'] or 'none'}",
-            f"Official BBL current MapPLUTO match count: {row['official_matter_bbl_current_mappluto_match_count']} of {row['official_matter_bbl_count']}",
-            f"Official BBL current MapPLUTO district(s): {row['official_matter_bbl_current_mappluto_districts'] or 'none'}",
-            f"Title: {row['title']}",
-            f"Official text snippets already extracted: {row['official_text_snippets'] or 'none'}",
-            (
-                "Task: Find whether this matter can be verified to a Council district using official records only. "
-                "Prefer official Legistar LU pages, Council pages, CPC/DCP calendars or reports, HPD/LPC/DOT records, "
-                "ZAP records, or official city GIS/district tools. Do not use property websites as final evidence. "
-                "Return: matter_file, final_status, verified_districts, official_source_url, official_record_type, "
-                "why_the_source_matches_this_matter, exact_evidence_text_or_page, remaining_uncertainty. "
-                "Use final_status='still_unverified' if no official source supports the district."
-            ),
-        ]
-    )
-
-
-second_pass_queue["second_pass_chatgpt_prompt"] = second_pass_queue.apply(second_pass_prompt, axis=1)
-second_pass_queue = second_pass_queue[
-    [
-        "query_year",
-        "matter_id",
-        "matter_file",
-        "disposition_group",
-        "verification_status",
-        "verification_evidence_level",
-        "chatgpt_suggested_districts_parsed",
-        "application_keys",
-        "official_matter_bbl_count",
-        "official_matter_bbl_current_mappluto_match_count",
-        "official_matter_bbl_unmatched_count",
-        "official_matter_bbl_current_mappluto_districts",
-        "official_matter_bbl_examples",
-        "official_urls_checked",
-        "official_direct_districts_seen",
-        "official_bbls_seen",
-        "title",
-        "second_pass_chatgpt_prompt",
-    ]
-]
-
-batch_lines = [
-    "# Member-Deference Non-Approval Geography Second-Pass Review Batches",
-    "",
-    (
-        "These prompts are for unresolved rows after the first official verification pass. "
-        "Any ChatGPT answer remains a lead until the official source is checked and entered into the ledger."
-    ),
-]
-for batch_start in range(0, len(second_pass_queue), 5):
-    batch = second_pass_queue.iloc[batch_start : batch_start + 5]
-    batch_lines.extend(["", f"## Batch {batch_start // 5 + 1}", ""])
-    for _, row in batch.iterrows():
-        batch_lines.extend(["```text", row["second_pass_chatgpt_prompt"], "```", ""])
 
 qc = pd.DataFrame(
     [
@@ -898,16 +788,7 @@ qc = pd.DataFrame(
 )
 
 write_csv("../output/member_deference_nonapproval_geography_official_verification.csv", verification)
-write_csv("../output/member_deference_nonapproval_geography_official_sources.csv", sources)
 write_csv("../output/member_deference_nonapproval_geography_conservative_queue.csv", conservative_queue)
-write_csv("../output/member_deference_nonapproval_geography_conservative_summary.csv", conservative_summary)
-write_csv("../output/member_deference_nonapproval_geography_second_pass_review_queue.csv", second_pass_queue)
-Path("../output/member_deference_nonapproval_geography_second_pass_review_batches.md").write_text(
-    "\n".join(batch_lines),
-    encoding="utf-8",
-)
-write_csv("../output/member_deference_nonapproval_geography_official_verification_summary.csv", summary)
-write_csv("../output/member_deference_nonapproval_geography_official_verification_qc.csv", qc)
 
 if not qc["passed"].all():
     failed_checks = ", ".join(qc.loc[~qc["passed"], "check_name"].astype(str))

@@ -769,19 +769,6 @@ qc = pd.DataFrame(
 )
 
 write_csv("../output/member_deference_nonapproval_geography_recovery.csv", recovery)
-write_csv("../output/member_deference_nonapproval_geography_recovery_summary.csv", summary)
-write_csv(
-    "../output/member_deference_nonapproval_geography_recovery_unresolved.csv",
-    recovery[recovery["recovered_affected_district_missing"]].copy(),
-)
-write_csv("../output/member_deference_nonapproval_application_crosswalk.csv", matter_application_crosswalk)
-write_csv("../output/member_deference_nonapproval_title_location_candidates.csv", title_location)
-write_csv("../output/member_deference_nonapproval_geography_review_queue.csv", review_queue)
-Path("../output/member_deference_nonapproval_geography_review_batches.md").write_text(
-    "\n".join(batch_lines),
-    encoding="utf-8",
-)
-write_csv("../output/member_deference_nonapproval_geography_recovery_qc.csv", qc)
 
 if not qc["passed"].all():
     failed_checks = ", ".join(qc.loc[~qc["passed"], "check_name"].astype(str))
