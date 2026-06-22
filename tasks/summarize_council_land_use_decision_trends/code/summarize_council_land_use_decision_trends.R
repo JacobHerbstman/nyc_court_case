@@ -108,6 +108,22 @@ normalize_application_key <- function(x) {
   if_else(out == "", NA_character_, out)
 }
 
+canonical_semicolon_values <- function(x, normalize_values = FALSE) {
+  vapply(
+    str_split(coalesce(as.character(x), ""), ";"),
+    function(parts) {
+      parts <- str_trim(parts)
+      parts <- parts[parts != ""]
+      if (normalize_values) {
+        parts <- normalize_application_key(parts)
+        parts <- parts[!is.na(parts)]
+      }
+      paste(sort(unique(parts)), collapse = ";")
+    },
+    character(1)
+  )
+}
+
 classify_action_code <- function(action_code) {
   case_when(
     action_code %in% c("ZM", "ZR") ~ "Zoning map/text amendments",
@@ -398,6 +414,9 @@ local_vote_year <- local_votes |>
   arrange(query_year, vote_source, local_member_final_action_vote_category)
 
 local_member_rollcall_position_rows <- decision |>
+  filter(
+    !as.character(matter_id) %in% c("450009", "444462")
+  ) |>
   mutate(
     local_member_rollcall_adoption_position = case_when(
       approval_vote_source & local_member_affirmative_only ~ "supports_adoption",
@@ -415,6 +434,25 @@ local_member_rollcall_position_rows <- decision |>
     )
   ) |>
   filter(!is.na(local_member_rollcall_adoption_position))
+
+local_member_rollcall_event_rows <- local_member_rollcall_position_rows |>
+  mutate(
+    canonical_zap_project_ids = canonical_semicolon_values(zap_project_ids),
+    canonical_application_keys = canonical_semicolon_values(application_keys, normalize_values = TRUE),
+    local_member_rollcall_event_key = case_when(
+      canonical_zap_project_ids != "" ~ str_c("zap:", canonical_zap_project_ids),
+      canonical_application_keys != "" ~ str_c("app:", canonical_application_keys),
+      TRUE ~ str_c("matter:", matter_id)
+    )
+  ) |>
+  group_by(local_member_rollcall_event_key, local_member_rollcall_adoption_position) |>
+  summarise(
+    query_year = min(query_year, na.rm = TRUE),
+    event_matter_rows = n(),
+    adopted_event = any(disposition_group == "adopted"),
+    nonadopted_event = !adopted_event,
+    .groups = "drop"
+  )
 
 local_member_rollcall_adoption_position_year <- local_member_rollcall_position_rows |>
   group_by(query_year, local_member_rollcall_adoption_position) |>
@@ -438,6 +476,20 @@ local_member_rollcall_adoption_position_year <- local_member_rollcall_position_r
   ) |>
   mutate(
     adoption_rate = adopted_rows / matter_rows
+  ) |>
+  arrange(query_year, local_member_rollcall_adoption_position)
+
+local_member_rollcall_adoption_position_event_year <- local_member_rollcall_event_rows |>
+  group_by(query_year, local_member_rollcall_adoption_position) |>
+  summarise(
+    event_rows = n(),
+    adopted_events = sum(adopted_event),
+    nonadopted_events = sum(nonadopted_event),
+    source_matter_rows = sum(event_matter_rows),
+    .groups = "drop"
+  ) |>
+  mutate(
+    adoption_rate = adopted_events / event_rows
   ) |>
   arrange(query_year, local_member_rollcall_adoption_position)
 
@@ -519,6 +571,10 @@ write_csv(local_vote_year, "../output/council_land_use_local_member_vote_trends_
 write_csv(
   local_member_rollcall_adoption_position_year,
   "../output/council_land_use_local_member_rollcall_adoption_position_year.csv"
+)
+write_csv(
+  local_member_rollcall_adoption_position_event_year,
+  "../output/council_land_use_local_member_rollcall_adoption_position_event_year.csv"
 )
 write_csv(
   local_member_rollcall_adoption_position_period,
@@ -1018,9 +1074,9 @@ local_member_rollcall_opposition_rolling5_exclude2025_plot <- local_member_rollc
   scale_x_continuous(breaks = seq(2002, 2024, 2)) +
   scale_y_continuous(
     labels = function(x) paste0(round(100 * x), "%"),
-    limits = c(0, 0.25),
-    breaks = seq(0, 0.25, 0.05)
+    breaks = seq(0, 0.45, 0.05)
   ) +
+  expand_limits(y = 0) +
   labs(
     x = NULL,
     y = "Council adoption rate",
@@ -1052,9 +1108,9 @@ local_member_rollcall_opposition_rolling4_plot <- local_member_rollcall_adoption
   scale_x_continuous(breaks = seq(2001, max(year$query_year), 2)) +
   scale_y_continuous(
     labels = function(x) paste0(round(100 * x), "%"),
-    limits = c(0, 0.30),
-    breaks = seq(0, 0.30, 0.05)
+    breaks = seq(0, 0.45, 0.05)
   ) +
+  expand_limits(y = 0) +
   labs(
     x = NULL,
     y = "Council adoption rate",
@@ -1110,7 +1166,7 @@ local_member_rollcall_opposition_rolling5_with_raw_clean_plot <-
   geom_point(aes(y = adoption_rate), color = "grey60", size = 1.4, alpha = 0.8, na.rm = TRUE) +
   geom_line(aes(y = adoption_rate_rolling_5), color = "#d95f02", linewidth = 0.95, na.rm = TRUE) +
   geom_point(aes(y = adoption_rate_rolling_5), color = "#d95f02", size = 1.6, na.rm = TRUE) +
-  scale_x_continuous(breaks = seq(2002, 2024, 2)) +
+  scale_x_continuous(breaks = seq(1998, 2024, 2)) +
   scale_y_continuous(labels = function(x) paste0(round(100 * x), "%")) +
   labs(
     title = "Trend over time: adoption over local member roll-call opposition",
@@ -1139,9 +1195,9 @@ local_member_rollcall_opposition_rolling5_clean_plot <-
   scale_x_continuous(breaks = seq(2002, 2024, 2)) +
   scale_y_continuous(
     labels = function(x) paste0(round(100 * x), "%"),
-    limits = c(0, 0.25),
-    breaks = seq(0, 0.25, 0.05)
+    breaks = seq(0, 0.45, 0.05)
   ) +
+  expand_limits(y = 0) +
   labs(
     title = "Trend over time: adoption over local member roll-call opposition",
     x = "Year",
@@ -1162,6 +1218,249 @@ ggsave(
 ggsave(
   "../output/council_land_use_adoption_over_local_member_rollcall_opposition_rolling5_clean.pdf",
   local_member_rollcall_opposition_rolling5_clean_plot,
+  width = 7.5,
+  height = 4.5
+)
+
+local_member_rollcall_opposition_count_rolling5_year <-
+  local_member_rollcall_opposition_rolling5_year |>
+  mutate(
+    adopted_rows_rolling_5 = rolling_average_5(adopted_rows)
+  )
+
+local_member_rollcall_opposition_count_rolling3_with_raw_clean_plot <-
+  local_member_rollcall_opposition_count_rolling5_year |>
+  mutate(
+    adopted_rows_rolling_3 = rolling_average_3(adopted_rows)
+  ) |>
+  ggplot(aes(x = query_year)) +
+  geom_line(aes(y = adopted_rows), color = "grey70", linewidth = 0.55, na.rm = TRUE) +
+  geom_point(aes(y = adopted_rows), color = "grey60", size = 1.4, alpha = 0.8, na.rm = TRUE) +
+  geom_line(aes(y = adopted_rows_rolling_3), color = "#d95f02", linewidth = 0.95, na.rm = TRUE) +
+  geom_point(aes(y = adopted_rows_rolling_3), color = "#d95f02", size = 1.6, na.rm = TRUE) +
+  scale_x_continuous(breaks = seq(1998, 2024, 2)) +
+  expand_limits(y = 0) +
+  labs(
+    title = "Trend over time: adoption over local member roll-call opposition",
+    x = "Year",
+    y = "Council adoption count",
+    caption = "Grey series is the annual raw count."
+  ) +
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+
+ggsave(
+  "../output/council_land_use_adoption_over_local_member_rollcall_opposition_count_rolling3_with_raw_clean.pdf",
+  local_member_rollcall_opposition_count_rolling3_with_raw_clean_plot,
+  width = 7.5,
+  height = 4.5
+)
+
+local_member_rollcall_opposition_count_rolling4_with_raw_clean_plot <-
+  local_member_rollcall_opposition_count_rolling5_year |>
+  mutate(
+    adopted_rows_rolling_4 = rolling_average_4(adopted_rows)
+  ) |>
+  ggplot(aes(x = query_year)) +
+  geom_line(aes(y = adopted_rows), color = "grey70", linewidth = 0.55, na.rm = TRUE) +
+  geom_point(aes(y = adopted_rows), color = "grey60", size = 1.4, alpha = 0.8, na.rm = TRUE) +
+  geom_line(aes(y = adopted_rows_rolling_4), color = "#d95f02", linewidth = 0.95, na.rm = TRUE) +
+  geom_point(aes(y = adopted_rows_rolling_4), color = "#d95f02", size = 1.6, na.rm = TRUE) +
+  scale_x_continuous(breaks = seq(1998, 2024, 2)) +
+  expand_limits(y = 0) +
+  labs(
+    title = "Trend over time: adoption over local member roll-call opposition",
+    x = "Year",
+    y = "Council adoption count",
+    caption = "Grey series is the annual raw count."
+  ) +
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+
+ggsave(
+  "../output/council_land_use_adoption_over_local_member_rollcall_opposition_count_rolling4_with_raw_clean.pdf",
+  local_member_rollcall_opposition_count_rolling4_with_raw_clean_plot,
+  width = 7.5,
+  height = 4.5
+)
+
+local_member_rollcall_opposition_count_rolling5_with_raw_clean_plot <-
+  local_member_rollcall_opposition_count_rolling5_year |>
+  ggplot(aes(x = query_year)) +
+  geom_line(aes(y = adopted_rows), color = "grey70", linewidth = 0.55, na.rm = TRUE) +
+  geom_point(aes(y = adopted_rows), color = "grey60", size = 1.4, alpha = 0.8, na.rm = TRUE) +
+  geom_line(aes(y = adopted_rows_rolling_5), color = "#d95f02", linewidth = 0.95, na.rm = TRUE) +
+  geom_point(aes(y = adopted_rows_rolling_5), color = "#d95f02", size = 1.6, na.rm = TRUE) +
+  scale_x_continuous(breaks = seq(1998, 2024, 2)) +
+  expand_limits(y = 0) +
+  labs(
+    title = "Trend over time: adoption over local member roll-call opposition",
+    x = "Year",
+    y = "Council adoption count",
+    caption = "Grey series is the annual raw count."
+  ) +
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+
+ggsave(
+  "../output/council_land_use_adoption_over_local_member_rollcall_opposition_count_rolling5_with_raw_clean.pdf",
+  local_member_rollcall_opposition_count_rolling5_with_raw_clean_plot,
+  width = 7.5,
+  height = 4.5
+)
+
+local_member_rollcall_opposition_count_rolling5_clean_plot <-
+  local_member_rollcall_opposition_count_rolling5_year |>
+  filter(!is.na(adopted_rows_rolling_5)) |>
+  ggplot(aes(x = query_year, y = adopted_rows_rolling_5)) +
+  geom_line(color = "#d95f02", linewidth = 0.95) +
+  geom_point(color = "#d95f02", size = 1.6) +
+  scale_x_continuous(breaks = seq(2002, 2024, 2)) +
+  expand_limits(y = 0) +
+  labs(
+    title = "Trend over time: adoption over local member roll-call opposition",
+    x = "Year",
+    y = "Council adoption count (5-year rolling avg.)"
+  ) +
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+
+ggsave(
+  "../output/council_land_use_adoption_over_local_member_rollcall_opposition_count_rolling5_clean.pdf",
+  local_member_rollcall_opposition_count_rolling5_clean_plot,
+  width = 7.5,
+  height = 4.5
+)
+
+local_member_rollcall_opposition_event_rolling5_year <-
+  local_member_rollcall_adoption_position_event_year |>
+  filter(
+    query_year <= 2024,
+    local_member_rollcall_adoption_position == "opposes_adoption"
+  ) |>
+  complete(
+    query_year = seq(min(year$query_year), 2024),
+    fill = list(event_rows = 0L, adopted_events = 0L, nonadopted_events = 0L, source_matter_rows = 0L)
+  ) |>
+  arrange(query_year) |>
+  mutate(
+    adoption_rate = if_else(event_rows > 0L, adopted_events / event_rows, NA_real_),
+    adoption_rate_rolling_5 = rolling_rate_5(adopted_events, event_rows),
+    adopted_events_rolling_5 = rolling_average_5(adopted_events)
+  )
+
+local_member_rollcall_opposition_event_rolling5_with_raw_clean_plot <-
+  local_member_rollcall_opposition_event_rolling5_year |>
+  ggplot(aes(x = query_year)) +
+  geom_line(aes(y = adoption_rate), color = "grey70", linewidth = 0.55, na.rm = TRUE) +
+  geom_point(aes(y = adoption_rate), color = "grey60", size = 1.4, alpha = 0.8, na.rm = TRUE) +
+  geom_line(aes(y = adoption_rate_rolling_5), color = "#d95f02", linewidth = 0.95, na.rm = TRUE) +
+  geom_point(aes(y = adoption_rate_rolling_5), color = "#d95f02", size = 1.6, na.rm = TRUE) +
+  scale_x_continuous(breaks = seq(1998, 2024, 2)) +
+  scale_y_continuous(labels = function(x) paste0(round(100 * x), "%")) +
+  labs(
+    title = "Trend over time: adoption over local member roll-call opposition",
+    x = "Year",
+    y = "Council adoption rate (unique events, 5-year rolling avg.)",
+    caption = "Grey series is the annual raw event rate."
+  ) +
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+
+ggsave(
+  "../output/council_land_use_adoption_over_local_member_rollcall_opposition_event_rolling5_with_raw_clean.pdf",
+  local_member_rollcall_opposition_event_rolling5_with_raw_clean_plot,
+  width = 7.5,
+  height = 4.5
+)
+
+local_member_rollcall_opposition_event_rolling5_clean_plot <-
+  local_member_rollcall_opposition_event_rolling5_year |>
+  filter(!is.na(adoption_rate_rolling_5)) |>
+  ggplot(aes(x = query_year, y = adoption_rate_rolling_5)) +
+  geom_line(color = "#d95f02", linewidth = 0.95) +
+  geom_point(color = "#d95f02", size = 1.6) +
+  scale_x_continuous(breaks = seq(2002, 2024, 2)) +
+  scale_y_continuous(
+    labels = function(x) paste0(round(100 * x), "%"),
+    breaks = seq(0, 0.45, 0.05)
+  ) +
+  expand_limits(y = 0) +
+  labs(
+    title = "Trend over time: adoption over local member roll-call opposition",
+    x = "Year",
+    y = "Council adoption rate (unique events, 5-year rolling avg.)"
+  ) +
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+
+ggsave(
+  "../output/council_land_use_adoption_over_local_member_rollcall_opposition_event_rolling5_clean.pdf",
+  local_member_rollcall_opposition_event_rolling5_clean_plot,
+  width = 7.5,
+  height = 4.5
+)
+
+local_member_rollcall_opposition_event_count_rolling5_with_raw_clean_plot <-
+  local_member_rollcall_opposition_event_rolling5_year |>
+  ggplot(aes(x = query_year)) +
+  geom_line(aes(y = adopted_events), color = "grey70", linewidth = 0.55, na.rm = TRUE) +
+  geom_point(aes(y = adopted_events), color = "grey60", size = 1.4, alpha = 0.8, na.rm = TRUE) +
+  geom_line(aes(y = adopted_events_rolling_5), color = "#d95f02", linewidth = 0.95, na.rm = TRUE) +
+  geom_point(aes(y = adopted_events_rolling_5), color = "#d95f02", size = 1.6, na.rm = TRUE) +
+  scale_x_continuous(breaks = seq(1998, 2024, 2)) +
+  expand_limits(y = 0) +
+  labs(
+    title = "Trend over time: adoption over local member roll-call opposition",
+    x = "Year",
+    y = "Council adoption count (unique events)",
+    caption = "Grey series is the annual raw event count."
+  ) +
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+
+ggsave(
+  "../output/council_land_use_adoption_over_local_member_rollcall_opposition_event_count_rolling5_with_raw_clean.pdf",
+  local_member_rollcall_opposition_event_count_rolling5_with_raw_clean_plot,
+  width = 7.5,
+  height = 4.5
+)
+
+local_member_rollcall_opposition_event_count_rolling5_clean_plot <-
+  local_member_rollcall_opposition_event_rolling5_year |>
+  filter(!is.na(adopted_events_rolling_5)) |>
+  ggplot(aes(x = query_year, y = adopted_events_rolling_5)) +
+  geom_line(color = "#d95f02", linewidth = 0.95) +
+  geom_point(color = "#d95f02", size = 1.6) +
+  scale_x_continuous(breaks = seq(2002, 2024, 2)) +
+  expand_limits(y = 0) +
+  labs(
+    title = "Trend over time: adoption over local member roll-call opposition",
+    x = "Year",
+    y = "Council adoption count (unique events, 5-year rolling avg.)"
+  ) +
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+
+ggsave(
+  "../output/council_land_use_adoption_over_local_member_rollcall_opposition_event_count_rolling5_clean.pdf",
+  local_member_rollcall_opposition_event_count_rolling5_clean_plot,
   width = 7.5,
   height = 4.5
 )

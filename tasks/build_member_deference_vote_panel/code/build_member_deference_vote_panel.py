@@ -605,6 +605,8 @@ for row in panel_base.sort_values(["query_year_int", "history_date", "matter_fil
 
     local_vote_count = len(local_member_votes)
     local_affirmative_count = sum(vote.endswith(": Affirmative") for vote in local_member_votes)
+    # Hamilton Avenue transfer station was a motion to disapprove; a local no vote means project-side support.
+    hamilton_transfer_disapproval = str(row["matter_id"]) in {"450009", "444462"}
 
     if not affected_districts:
         vote_evidence_status = "unresolved_no_affected_district"
@@ -618,6 +620,9 @@ for row in panel_base.sort_values(["query_year_int", "history_date", "matter_fil
     elif local_vote_count == 0:
         vote_evidence_status = "unresolved_no_local_member_vote_match"
         vote_evidence_strength = "unresolved"
+    elif hamilton_transfer_disapproval:
+        vote_evidence_status = "excluded_inverted_disapproval_motion"
+        vote_evidence_strength = "excluded"
     elif local_member_negative:
         vote_evidence_status = "approved_with_local_member_negative"
         vote_evidence_strength = "strong_exception_candidate"
@@ -659,6 +664,7 @@ for row in panel_base.sort_values(["query_year_int", "history_date", "matter_fil
             "ai_geography_repair_source": ai_geo_repair.get("repair_source", ""),
             "ai_geography_repair_confidence": ai_geo_repair.get("repair_confidence", ""),
             "ai_geography_repair_note": ai_geo_repair.get("repair_note", ""),
+            "excluded_inverted_disapproval_motion": "true" if hamilton_transfer_disapproval else "false",
             "local_members_from_roster": collapse_values(local_member_names),
             "local_member_votes": collapse_values(local_member_votes),
             "local_member_negative": collapse_values(local_member_negative),
@@ -703,6 +709,10 @@ summary_rows = [
     {
         "metric": "strong_exception_candidate_rows",
         "value": int((panel["vote_evidence_strength"] == "strong_exception_candidate").sum()),
+    },
+    {
+        "metric": "excluded_inverted_disapproval_motion_rows",
+        "value": int((panel["vote_evidence_status"] == "excluded_inverted_disapproval_motion").sum()),
     },
     {
         "metric": "weakly_deference_consistent_rows",
