@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_hdb_public_affordable_421a_split/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/build_hdb_public_affordable_421a_split/code")
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -10,7 +10,7 @@ suppressPackageStartupMessages({
   library(tidyr)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 assert_unique_keys <- function(df, key_cols, df_name) {
   duplicate_keys <- df %>%

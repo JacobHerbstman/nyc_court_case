@@ -59,31 +59,6 @@ decision_panel["has_local_member_vote_observed_bool"] = decision_panel["has_loca
     "true"
 )
 
-fetch_query_year = (
-    count_checks.assign(matches_reported_records_bool=count_checks["matches_reported_records"].str.lower().eq("true"))
-    .loc[
-        :,
-        [
-            "query_year",
-            "query_matter_type",
-            "parsed_rows",
-            "reported_records",
-            "matches_reported_records_bool",
-        ],
-    ]
-    .rename(columns={"matches_reported_records_bool": "matches_reported_records"})
-    .sort_values(["query_year", "query_matter_type"])
-)
-
-recall_year = (
-    count_checks.groupby("query_year", as_index=False)
-    .agg(
-        broad_recall_parsed_rows=("parsed_rows", "sum"),
-        broad_recall_reported_records=("reported_records", "sum"),
-        broad_recall_queries_reconciled=("matches_reported_records", lambda x: bool(x.str.lower().eq("true").all())),
-    )
-)
-
 decision_year = (
     decision_panel.groupby("query_year", as_index=False)
     .agg(
@@ -98,52 +73,6 @@ decision_year = (
         local_member_vote_rows=("has_local_member_vote_observed_bool", "sum"),
     )
 )
-
-year = recall_year.merge(decision_year, on="query_year", how="outer", validate="one_to_one").sort_values("query_year")
-for col in [
-    "broad_recall_parsed_rows",
-    "broad_recall_reported_records",
-    "matter_rows",
-    "adopted_rows",
-    "disapproved_rows",
-    "filed_or_withdrawn_rows",
-    "main_vote_sample_rows",
-    "not_fetched_rows",
-    "affected_district_rows",
-    "local_member_roster_rows",
-    "local_member_vote_rows",
-]:
-    year[col] = pd.to_numeric(year[col], errors="coerce").fillna(0).astype(int)
-year["matter_rows_share_of_broad_recall"] = year["matter_rows"] / year["broad_recall_reported_records"]
-year["main_vote_sample_share_of_matters"] = year["main_vote_sample_rows"] / year["matter_rows"]
-year["affected_district_share_of_matters"] = year["affected_district_rows"] / year["matter_rows"]
-year["local_member_vote_share_of_matters"] = year["local_member_vote_rows"] / year["matter_rows"]
-
-disposition_year = (
-    decision_panel.groupby(["query_year", "disposition_group"], as_index=False)
-    .agg(matter_rows=("matter_id", "size"))
-    .sort_values(["query_year", "disposition_group"])
-)
-disposition_year = disposition_year.merge(
-    decision_year[["query_year", "matter_rows"]].rename(columns={"matter_rows": "year_matter_rows"}),
-    on="query_year",
-    how="left",
-    validate="many_to_one",
-)
-disposition_year["matter_share"] = disposition_year["matter_rows"] / disposition_year["year_matter_rows"]
-
-vote_source_year = (
-    decision_panel.groupby(["query_year", "vote_source"], as_index=False)
-    .agg(matter_rows=("matter_id", "size"))
-    .sort_values(["query_year", "vote_source"])
-)
-vote_source_year = vote_source_year.merge(
-    decision_year[["query_year", "matter_rows"]].rename(columns={"matter_rows": "year_matter_rows"}),
-    on="query_year",
-    how="left",
-    validate="many_to_one",
-)
-vote_source_year["matter_share"] = vote_source_year["matter_rows"] / vote_source_year["year_matter_rows"]
 
 fetch_qc["passed_bool"] = fetch_qc["passed"].str.lower().eq("true")
 action_vote_qc["passed_bool"] = action_vote_qc["passed"].str.lower().eq("true")
@@ -207,10 +136,6 @@ summary = pd.DataFrame(
 )
 
 write_csv("../output/council_land_use_decision_universe_validation_summary.csv", summary)
-write_csv("../output/council_land_use_decision_universe_year.csv", year)
-write_csv("../output/council_land_use_decision_universe_fetch_query_year.csv", fetch_query_year)
-write_csv("../output/council_land_use_decision_universe_disposition_year.csv", disposition_year)
-write_csv("../output/council_land_use_decision_universe_vote_source_year.csv", vote_source_year)
 
 if not summary["passed"].all():
     failed_checks = ", ".join(summary.loc[~summary["passed"], "check_name"].astype(str))
