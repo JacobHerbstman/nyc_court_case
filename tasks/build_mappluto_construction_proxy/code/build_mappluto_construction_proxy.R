@@ -21,30 +21,7 @@ if (anyDuplicated(standard_cd$borocd)) {
   stop("Treatment input is not unique by borocd.")
 }
 
-mappluto_index <- read_csv("../input/mappluto_lot_files.csv", show_col_types = FALSE, na = c("", "NA")) |>
-  mutate(
-    source_priority = if_else(source_id == "dcp_mappluto_current", 1L, 0L),
-    vintage = as.character(vintage),
-    vintage_order = release_order_key(vintage)
-  ) |>
-  filter(!is.na(parquet_path), file.exists(parquet_path)) |>
-  arrange(desc(source_priority), desc(vintage_order), desc(vintage))
-
-if (nrow(mappluto_index) == 0) {
-  write_parquet(tibble(), "../output/mappluto_construction_proxy_lot_level.parquet")
-  write_csv(tibble(), "../output/mappluto_construction_proxy_cd_year.csv", na = "")
-  quit(save = "no")
-}
-
-current_row <- mappluto_index |>
-  filter(source_id == "dcp_mappluto_current") |>
-  slice(1)
-
-if (nrow(current_row) == 0) {
-  current_row <- mappluto_index |> slice(1)
-}
-
-current_df <- read_parquet(current_row$parquet_path[[1]]) |>
+current_df <- read_parquet("../input/mappluto_current_lot_lookup.parquet") |>
   transmute(
     bbl = as.character(bbl),
     address = as.character(address),

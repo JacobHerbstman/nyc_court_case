@@ -6,7 +6,6 @@ suppressPackageStartupMessages({
   library(sf)
   library(stringr)
   library(tibble)
-  library(tidyr)
 })
 
 source("../../_lib/source_pipeline_utils.R")
@@ -57,8 +56,7 @@ council_sf <- council_measure |>
   st_as_sf() |>
   arrange(council_district)
 
-mappluto_lot_files <- read_csv("../input/mappluto_lot_files.csv", show_col_types = FALSE, na = c("", "NA"))
-mappluto_qc <- read_csv("../input/mappluto_lot_qc.csv", show_col_types = FALSE, na = c("", "NA"))
+mappluto_files <- read_csv("../input/mappluto_files.csv", show_col_types = FALSE, na = c("", "NA"))
 
 normalize_text_field <- function(x) {
   out <- trimws(as.character(x))
@@ -153,17 +151,19 @@ read_legacy_mappluto_02b_sf <- function(raw_path) {
 }
 
 get_mappluto_raw_path <- function(source_id_value, vintage_value) {
-  row_df <- mappluto_lot_files |>
+  row_df <- mappluto_files |>
     filter(
       source_id == source_id_value,
       vintage == vintage_value,
+      file_role == "mappluto_shapefile_zip",
+      status %in% c("downloaded", "already_present", "redownloaded_after_validation_failure"),
       !is.na(raw_path),
       file.exists(raw_path)
     ) |>
     arrange(raw_path)
 
   if (nrow(row_df) == 0) {
-    stop("Could not find staged MapPLUTO raw path for ", source_id_value, " ", vintage_value, ".")
+    stop("Could not find MapPLUTO shapefile zip for ", source_id_value, " ", vintage_value, ".")
   }
 
   if (nrow(row_df) > 1) {
@@ -586,254 +586,6 @@ baseline_df <- main_build$ccd_df |>
   ) |>
   arrange(council_district)
 
-index_corr_df <- expand_grid(
-  scope_name = c("city", sort(unique(baseline_df$borough_name))),
-  index_1 = c("A", "A_all_lots", "A2002_allowed", "A2002_allowed_all_lots", "B", "C", "D", "A2010approx"),
-  index_2 = c("A", "A_all_lots", "A2002_allowed", "A2002_allowed_all_lots", "B", "C", "D", "A2010approx")
-) |>
-  filter(index_1 < index_2) |>
-  rowwise() |>
-  mutate(
-    correlation = {
-      work_df <- if (scope_name == "city") baseline_df else filter(baseline_df, borough_name == scope_name)
-      stats::cor(work_df[[paste0("redev_", index_1, "_z_boro")]], work_df[[paste0("redev_", index_2, "_z_boro")]], use = "pairwise.complete.obs")
-    },
-    n_district = if (scope_name == "city") nrow(baseline_df) else nrow(filter(baseline_df, borough_name == scope_name))
-  ) |>
-  ungroup()
-
-sensitivity_df <- bind_rows(
-  tibble(
-    comparison_family = "release",
-    comparison_name = "18v1.1_vs_25v4",
-    metric = c("redev_A_z_boro", "redev_A_all_lots_z_boro", "redev_C_z_boro"),
-    value = c(
-      stats::cor(main_build$ccd_df$redev_A_z_boro, current_build$ccd_df$redev_A_z_boro, use = "pairwise.complete.obs"),
-      stats::cor(main_build$ccd_df$redev_A_all_lots_z_boro, current_build$ccd_df$redev_A_all_lots_z_boro, use = "pairwise.complete.obs"),
-      stats::cor(main_build$ccd_df$redev_C_z_boro, current_build$ccd_df$redev_C_z_boro, use = "pairwise.complete.obs")
-    ),
-    note = "Correlation between main baseline release and current release on fixed 2010 Council districts."
-  ),
-  tibble(
-    comparison_family = "pre_period_proxy",
-    comparison_name = "02b_allowed_vs_18v1.1_residential_capacity",
-    metric = c("redev_A2002_allowed_z_boro_vs_redev_A_z_boro", "redev_A2002_allowed_all_lots_z_boro_vs_redev_A_all_lots_z_boro"),
-    value = c(
-      stats::cor(baseline_df$redev_A2002_allowed_z_boro, baseline_df$redev_A_z_boro, use = "pairwise.complete.obs"),
-      stats::cor(baseline_df$redev_A2002_allowed_all_lots_z_boro, baseline_df$redev_A_all_lots_z_boro, use = "pairwise.complete.obs")
-    ),
-    note = "Correlation between 2002 allowed-FAR residual-capacity indices and the 2018 residual-capacity indices on fixed 2010 Council districts."
-  ),
-  tibble(
-    comparison_family = "weighting",
-    comparison_name = "weighted_vs_unweighted",
-    metric = c("redev_A_z_boro", "redev_A_all_lots_z_boro", "redev_C_z_boro"),
-    value = c(
-      1,
-      1,
-      stats::cor(main_build$ccd_df$redev_C_z_boro, main_unweighted_build$ccd_df$redev_C_z_boro, use = "pairwise.complete.obs")
-    ),
-    note = c(
-      "Index A is invariant to weighting because it uses the log of a summed unused residential floor-area measure.",
-      "All-lots index A is invariant to weighting because it uses the log of a summed unused residential floor-area measure.",
-      "Correlation between weighted and unweighted Index C."
-    )
-  ),
-  tibble(
-    comparison_family = "valid_far_subset",
-    comparison_name = "full_vs_valid_far_only",
-    metric = c("redev_A_z_boro", "redev_A_all_lots_z_boro", "redev_C_z_boro"),
-    value = c(
-      stats::cor(main_build$ccd_df$redev_A_z_boro, main_valid_far_build$ccd_df$redev_A_z_boro, use = "pairwise.complete.obs"),
-      stats::cor(main_build$ccd_df$redev_A_all_lots_z_boro, main_valid_far_build$ccd_df$redev_A_all_lots_z_boro, use = "pairwise.complete.obs"),
-      stats::cor(main_build$ccd_df$redev_C_z_boro, main_valid_far_build$ccd_df$redev_C_z_boro, use = "pairwise.complete.obs")
-    ),
-    note = "Correlation between full-sample and valid-FAR-only versions."
-  ),
-  tibble(
-    comparison_family = "pre_period_proxy",
-    comparison_name = "A_vs_A2010approx",
-    metric = "redev_A_z_boro",
-    value = stats::cor(main_build$ccd_df$redev_A_z_boro, main_build$ccd_df$redev_A2010approx_z_boro, use = "pairwise.complete.obs"),
-    note = "Correlation between 2018 unused-capacity index A and the approximate-2010 index A."
-  ),
-  tibble(
-    comparison_family = "lot_universe",
-    comparison_name = "residential_lots_vs_all_lots",
-    metric = "redev_A_z_boro",
-    value = stats::cor(main_build$ccd_df$redev_A_z_boro, main_build$ccd_df$redev_A_all_lots_z_boro, use = "pairwise.complete.obs"),
-    note = "Correlation between main residential-lot index A and robustness index A using unused residential FAR across all lots."
-  )
-)
-
-comparison_2002_df <- baseline_df |>
-  group_by(borough_code, borough_name) |>
-  mutate(
-    rank_2002_allowed_boro = min_rank(desc(redev_A2002_allowed_z_boro)),
-    rank_2018_residential_boro = min_rank(desc(redev_A_z_boro)),
-    rank_2025_residential_boro = min_rank(desc(redev_A_25v4_z_boro)),
-    rank_change_2002_to_2018 = rank_2018_residential_boro - rank_2002_allowed_boro,
-    high_redev_switch_2002_to_2018 = case_when(
-      high_redev_A2002_allowed & high_redev_A ~ "high_in_both",
-      high_redev_A2002_allowed & !high_redev_A ~ "high_2002_only",
-      !high_redev_A2002_allowed & high_redev_A ~ "high_2018_only",
-      !high_redev_A2002_allowed & !high_redev_A ~ "low_in_both",
-      TRUE ~ NA_character_
-    )
-  ) |>
-  ungroup() |>
-  select(
-    district_id, council_district, borough_code, borough_name,
-    treat_z_boro, h_ccd_1990, occupied_units_1990,
-    redev_A2002_allowed_z_boro, high_redev_A2002_allowed,
-    redev_A_z_boro, high_redev_A,
-    redev_A_25v4_z_boro, high_redev_A_25v4,
-    redev_A2002_allowed_all_lots_z_boro, high_redev_A2002_allowed_all_lots,
-    redev_A_all_lots_z_boro, high_redev_A_all_lots,
-    rank_2002_allowed_boro, rank_2018_residential_boro, rank_2025_residential_boro,
-    rank_change_2002_to_2018, high_redev_switch_2002_to_2018,
-    ccd_sum_unused_allowed_floor_area_2002,
-    ccd_sum_unused_res_floor_area,
-    ccd_sum_unused_res_floor_area_all_lots
-  ) |>
-  arrange(borough_code, rank_2002_allowed_boro, council_district)
-
-main_release_qc <- mappluto_qc |>
-  filter(vintage == "18v1.1") |>
-  slice_head(n = 1)
-
-current_release_qc <- mappluto_qc |>
-  filter(vintage == "25v4") |>
-  slice_head(n = 1)
-
-qc_df <- bind_rows(
-  tibble(
-    section = "coverage",
-    item = c("district_count", "districts_all_51_present", "main_release", "current_release"),
-    subgroup = NA_character_,
-    district_id = NA_character_,
-    borough_name = NA_character_,
-    value = as.character(c(
-      nrow(baseline_df),
-      as.numeric(nrow(baseline_df) == 51),
-      "18v1.1",
-      "25v4"
-    )),
-    note = c(
-      "Number of 2010 Council districts in the main redevelopment baseline.",
-      "Indicator for exact 51-district coverage.",
-      "Main redevelopment baseline release.",
-      "Sensitivity release."
-    )
-  ),
-  tibble(
-    section = "spatial_assignment",
-    item = c(
-      "main_raw_row_count",
-      "main_assigned_2010_council_rows",
-      "main_unassigned_2010_council_rows",
-      "main_boundary_tie_rows",
-      "legacy_2002_raw_row_count",
-      "legacy_2002_assigned_2010_council_rows",
-      "legacy_2002_unassigned_2010_council_rows",
-      "legacy_2002_boundary_tie_rows",
-      "current_raw_row_count",
-      "current_assigned_2010_council_rows",
-      "current_unassigned_2010_council_rows",
-      "current_boundary_tie_rows"
-    ),
-    subgroup = NA_character_,
-    district_id = NA_character_,
-    borough_name = NA_character_,
-    value = as.character(c(
-      main_build$raw_row_count,
-      main_build$assigned_row_count,
-      main_build$unassigned_row_count,
-      main_build$boundary_tie_count,
-      legacy_2002_build$raw_row_count,
-      legacy_2002_build$assigned_row_count,
-      legacy_2002_build$unassigned_row_count,
-      legacy_2002_build$boundary_tie_count,
-      current_build$raw_row_count,
-      current_build$assigned_row_count,
-      current_build$unassigned_row_count,
-      current_build$boundary_tie_count
-    )),
-    note = "Lot representative points assigned to archived 2010 Council districts."
-  ),
-  tibble(
-    section = "source_qc",
-    item = c(
-      "main_nonmissing_lotarea_share",
-      "main_nonmissing_builtfar_share",
-      "main_nonmissing_unitsres_share",
-      "current_nonmissing_lotarea_share",
-      "current_nonmissing_builtfar_share",
-      "current_nonmissing_unitsres_share"
-    ),
-    subgroup = NA_character_,
-    district_id = NA_character_,
-    borough_name = NA_character_,
-    value = as.character(c(
-      main_release_qc$nonmissing_lotarea_share,
-      main_release_qc$nonmissing_builtfar_share,
-      main_release_qc$nonmissing_unitsres_share,
-      current_release_qc$nonmissing_lotarea_share,
-      current_release_qc$nonmissing_builtfar_share,
-      current_release_qc$nonmissing_unitsres_share
-    )),
-    note = "Source-level nonmissing shares from staged MapPLUTO QC."
-  ),
-  main_build$borough_pre_df |>
-    left_join(main_build$borough_post_df, by = c("borough_code", "borough_name"), relationship = "one-to-one") |>
-    pivot_longer(cols = c(lot_count_before, lot_area_before, lot_count_after, lot_area_after), names_to = "item", values_to = "value") |>
-    mutate(section = "borough_pre_post", subgroup = "18v1.1", district_id = NA_character_, value = as.character(value), note = "Borough totals before and after main redevelopment restrictions.") |>
-    select(section, item, subgroup, district_id, borough_name, value, note),
-  tibble(
-    section = "missingness",
-    item = c(
-      "missing_treat_z_boro",
-      "missing_redev_A_z_boro",
-      "missing_redev_A_all_lots_z_boro",
-      "missing_redev_A2002_allowed_z_boro",
-      "missing_redev_A2002_allowed_all_lots_z_boro",
-      "missing_redev_C_z_boro",
-      "missing_redev_A_25v4_z_boro",
-      "missing_redev_A2010approx_z_boro"
-    ),
-    subgroup = NA_character_,
-    district_id = NA_character_,
-    borough_name = NA_character_,
-    value = as.character(c(
-      sum(is.na(baseline_df$treat_z_boro)),
-      sum(is.na(baseline_df$redev_A_z_boro)),
-      sum(is.na(baseline_df$redev_A_all_lots_z_boro)),
-      sum(is.na(baseline_df$redev_A2002_allowed_z_boro)),
-      sum(is.na(baseline_df$redev_A2002_allowed_all_lots_z_boro)),
-      sum(is.na(baseline_df$redev_C_z_boro)),
-      sum(is.na(baseline_df$redev_A_25v4_z_boro)),
-      sum(is.na(baseline_df$redev_A2010approx_z_boro))
-    )),
-    note = "Missing key treatment and opportunity fields in the 51-district baseline."
-  ),
-  bind_rows(
-    baseline_df |>
-      arrange(desc(redev_A_z_boro)) |>
-      slice_head(n = 5) |>
-      mutate(section = "index_extremes", item = "redev_A_z_boro", subgroup = "top", value = as.character(redev_A_z_boro), note = "Top 5 Council districts by main redevelopment index.") |>
-      select(section, item, subgroup, district_id, borough_name, value, note),
-    baseline_df |>
-      arrange(redev_A_z_boro) |>
-      slice_head(n = 5) |>
-      mutate(section = "index_extremes", item = "redev_A_z_boro", subgroup = "bottom", value = as.character(redev_A_z_boro), note = "Bottom 5 Council districts by main redevelopment index.") |>
-      select(section, item, subgroup, district_id, borough_name, value, note)
-  )
-)
-
 write_csv_if_changed(baseline_df, "../output/ccdist2010_redevelopment_potential.csv")
-write_csv_if_changed(qc_df, "../output/ccdist2010_redevelopment_potential_qc.csv")
-write_csv_if_changed(index_corr_df, "../output/ccdist2010_redevelopment_potential_index_correlations.csv")
-write_csv_if_changed(sensitivity_df, "../output/ccdist2010_redevelopment_potential_sensitivity.csv")
-write_csv_if_changed(comparison_2002_df, "../output/ccdist2010_redevelopment_potential_2002_comparison.csv")
 
-cat("Wrote 2010 Council district redevelopment-potential outputs to ../output\n")
+cat("Wrote 2010 Council district redevelopment-potential output to ../output\n")

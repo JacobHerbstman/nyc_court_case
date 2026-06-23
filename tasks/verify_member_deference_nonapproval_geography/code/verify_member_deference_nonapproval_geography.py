@@ -217,7 +217,7 @@ chatgpt = pd.read_csv(
     "../input/member_deference_nonapproval_geography_chatgpt_review_responses.csv", dtype=str, keep_default_na=False
 )
 matter_universe = pd.read_csv("../input/member_deference_matter_universe.csv", dtype=str, keep_default_na=False)
-mappluto = pd.read_parquet("../input/dcp_mappluto_current_25v4.parquet", columns=["bbl", "council"])
+mappluto = pd.read_parquet("../input/mappluto_current_lot_lookup.parquet", columns=["bbl", "council"])
 roster = pd.read_csv("../input/council_member_roster_master.csv", dtype=str, keep_default_na=False)
 
 if queue["matter_id"].duplicated().any():

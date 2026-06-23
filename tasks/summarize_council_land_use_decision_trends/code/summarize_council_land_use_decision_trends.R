@@ -264,34 +264,6 @@ ggsave(
   height = 4.5
 )
 
-rate_clean_plot <- plot_rate_5 |>
-  filter(!is.na(adoption_rate_rolling_5)) |>
-  ggplot(aes(x = query_year, y = adoption_rate_rolling_5)) +
-  geom_line(color = "#d95f02", linewidth = 0.95) +
-  geom_point(color = "#d95f02", size = 1.6) +
-  scale_x_continuous(breaks = seq(2002, 2024, 2)) +
-  scale_y_continuous(
-    labels = function(x) paste0(round(100 * x), "%"),
-    breaks = seq(0, 0.45, 0.05)
-  ) +
-  expand_limits(y = 0) +
-  labs(
-    title = "Trend over time: adoption over local member roll-call opposition",
-    x = "Year",
-    y = "Council adoption rate (5-year rolling avg.)"
-  ) +
-  theme(
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank()
-  )
-
-ggsave(
-  "../output/council_land_use_adoption_over_local_member_rollcall_opposition_rolling5_clean.pdf",
-  rate_clean_plot,
-  width = 7.5,
-  height = 4.5
-)
-
 count_with_raw_plot <- plot_rate_5 |>
   ggplot(aes(x = query_year)) +
   geom_line(aes(y = adopted_rows), color = "grey70", linewidth = 0.55, na.rm = TRUE) +
@@ -314,30 +286,6 @@ count_with_raw_plot <- plot_rate_5 |>
 ggsave(
   "../output/council_land_use_adoption_over_local_member_rollcall_opposition_count_rolling5_with_raw_clean.pdf",
   count_with_raw_plot,
-  width = 7.5,
-  height = 4.5
-)
-
-count_clean_plot <- plot_rate_5 |>
-  filter(!is.na(adopted_rows_rolling_5)) |>
-  ggplot(aes(x = query_year, y = adopted_rows_rolling_5)) +
-  geom_line(color = "#d95f02", linewidth = 0.95) +
-  geom_point(color = "#d95f02", size = 1.6) +
-  scale_x_continuous(breaks = seq(2002, 2024, 2)) +
-  expand_limits(y = 0) +
-  labs(
-    title = "Trend over time: adoption over local member roll-call opposition",
-    x = "Year",
-    y = "Council adoption count (5-year rolling avg.)"
-  ) +
-  theme(
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank()
-  )
-
-ggsave(
-  "../output/council_land_use_adoption_over_local_member_rollcall_opposition_count_rolling5_clean.pdf",
-  count_clean_plot,
   width = 7.5,
   height = 4.5
 )
@@ -384,34 +332,6 @@ ggsave(
   height = 4.5
 )
 
-event_rate_clean_plot <- plot_event_5 |>
-  filter(!is.na(adoption_rate_rolling_5)) |>
-  ggplot(aes(x = query_year, y = adoption_rate_rolling_5)) +
-  geom_line(color = "#d95f02", linewidth = 0.95) +
-  geom_point(color = "#d95f02", size = 1.6) +
-  scale_x_continuous(breaks = seq(2002, 2024, 2)) +
-  scale_y_continuous(
-    labels = function(x) paste0(round(100 * x), "%"),
-    breaks = seq(0, 0.45, 0.05)
-  ) +
-  expand_limits(y = 0) +
-  labs(
-    title = "Trend over time: adoption over local member roll-call opposition",
-    x = "Year",
-    y = "Council adoption rate (5-year rolling avg.)"
-  ) +
-  theme(
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank()
-  )
-
-ggsave(
-  "../output/council_land_use_adoption_over_local_member_rollcall_opposition_event_rolling5_clean.pdf",
-  event_rate_clean_plot,
-  width = 7.5,
-  height = 4.5
-)
-
 event_count_with_raw_plot <- plot_event_5 |>
   ggplot(aes(x = query_year)) +
   geom_line(aes(y = adopted_events), color = "grey70", linewidth = 0.55, na.rm = TRUE) +
@@ -434,30 +354,6 @@ event_count_with_raw_plot <- plot_event_5 |>
 ggsave(
   "../output/council_land_use_adoption_over_local_member_rollcall_opposition_event_count_rolling5_with_raw_clean.pdf",
   event_count_with_raw_plot,
-  width = 7.5,
-  height = 4.5
-)
-
-event_count_clean_plot <- plot_event_5 |>
-  filter(!is.na(adopted_events_rolling_5)) |>
-  ggplot(aes(x = query_year, y = adopted_events_rolling_5)) +
-  geom_line(color = "#d95f02", linewidth = 0.95) +
-  geom_point(color = "#d95f02", size = 1.6) +
-  scale_x_continuous(breaks = seq(2002, 2024, 2)) +
-  expand_limits(y = 0) +
-  labs(
-    title = "Trend over time: adoption over local member roll-call opposition",
-    x = "Year",
-    y = "Council adoption count (5-year rolling avg.)"
-  ) +
-  theme(
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank()
-  )
-
-ggsave(
-  "../output/council_land_use_adoption_over_local_member_rollcall_opposition_event_count_rolling5_clean.pdf",
-  event_count_clean_plot,
   width = 7.5,
   height = 4.5
 )

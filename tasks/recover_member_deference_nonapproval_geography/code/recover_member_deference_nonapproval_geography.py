@@ -227,7 +227,7 @@ queue = pd.read_csv("../input/member_deference_final_action_vote_queue.csv", dty
 zap_project_data = pd.read_parquet("../input/zap_project_data.parquet")
 zap_project_bbl = pd.read_parquet("../input/zap_project_bbl.parquet")
 mappluto = pd.read_parquet(
-    "../input/dcp_mappluto_current_25v4.parquet",
+    "../input/mappluto_current_lot_lookup.parquet",
     columns=["bbl", "borough", "address", "council"],
 )
 
