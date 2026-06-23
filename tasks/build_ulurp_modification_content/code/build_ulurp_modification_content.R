@@ -1,6 +1,5 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_ulurp_modification_content/code")
 # content_mode <- "first_pass"
-# validation_case_set <- "known_cases"
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -13,18 +12,14 @@ suppressPackageStartupMessages({
 source("../../_lib/source_pipeline_utils.R")
 
 cli_args <- commandArgs(trailingOnly = TRUE)
-if (length(cli_args) != 2) {
-  stop("Usage: Rscript build_ulurp_modification_content.R <content_mode> <validation_case_set>")
+if (length(cli_args) != 1) {
+  stop("Usage: Rscript build_ulurp_modification_content.R <content_mode>")
 }
 
 content_mode <- as.character(cli_args[1])
-validation_case_set <- as.character(cli_args[2])
 
 if (!content_mode %in% c("first_pass")) {
   stop("Unsupported content_mode: ", content_mode)
-}
-if (!validation_case_set %in% c("known_cases")) {
-  stop("Unsupported validation_case_set: ", validation_case_set)
 }
 
 collapse_values <- function(x) {
@@ -610,7 +605,6 @@ write_csv_if_changed(discrete_modifications, "../output/ulurp_modification_discr
 write_csv_if_changed(commitments, "../output/ulurp_modification_commitments.csv")
 write_csv_if_changed(citywide_text_district_modifications, "../output/ulurp_modification_citywide_text_district_modifications.csv")
 write_csv_if_changed(manual_review_queue, "../output/ulurp_modification_manual_review_queue.csv")
-write_csv_if_changed(qc_rows, "../output/ulurp_modification_content_qc.csv")
 
 if (any(qc_rows$status == "fail")) {
   stop("ULURP modification content QC failed.")

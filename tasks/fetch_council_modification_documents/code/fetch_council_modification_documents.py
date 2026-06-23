@@ -41,8 +41,6 @@ if ATTACHMENT_FETCH_MODE not in {"reports_only", "candidate_attachments"}:
 DOCUMENT_LINKS_OUTPUT = Path("../output/ulurp_modification_council_document_links.csv")
 DOCUMENT_TEXT_OUTPUT = Path("../output/ulurp_modification_council_document_text.csv")
 DOCUMENT_SNIPPETS_OUTPUT = Path("../output/ulurp_modification_council_document_snippets.csv")
-FETCH_FAILURES_OUTPUT = Path("../output/ulurp_modification_council_document_fetch_failures.csv")
-QC_OUTPUT = Path("../output/ulurp_modification_council_document_qc.csv")
 DOWNLOAD_DIR = Path("../temp/council_documents")
 
 LINK_COLUMNS = [
@@ -99,16 +97,6 @@ SNIPPET_COLUMNS = [
     "extraction_method",
     "confidence",
 ]
-FAILURE_COLUMNS = [
-    "document_id",
-    "matter_id",
-    "source_url",
-    "failure_stage",
-    "failure_reason",
-]
-QC_COLUMNS = ["check_name", "check_value", "status"]
-
-
 def normalize_space(value: object) -> str:
     text = "" if pd.isna(value) else str(value)
     text = text.replace("\x00", " ")
@@ -763,8 +751,6 @@ qc_rows = [
 write_csv(DOCUMENT_LINKS_OUTPUT, link_rows, LINK_COLUMNS)
 write_csv(DOCUMENT_TEXT_OUTPUT, text_rows, TEXT_COLUMNS)
 write_csv(DOCUMENT_SNIPPETS_OUTPUT, snippet_rows, SNIPPET_COLUMNS)
-write_csv(FETCH_FAILURES_OUTPUT, failure_rows, FAILURE_COLUMNS)
-write_csv(QC_OUTPUT, qc_rows, QC_COLUMNS)
 
 if any(row["status"] == "fail" for row in qc_rows):
     raise RuntimeError("Council modification document fetch QC failed.")

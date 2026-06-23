@@ -2,7 +2,6 @@
 # start_year <- 2002
 # end_year <- 2025
 # sample_mode <- "core"
-# validation_case_set <- "known_cases"
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -15,23 +14,19 @@ suppressPackageStartupMessages({
 source("../../_lib/source_pipeline_utils.R")
 
 cli_args <- commandArgs(trailingOnly = TRUE)
-if (length(cli_args) != 4) {
-  stop("Usage: Rscript build_ulurp_modification_spine.R <start_year> <end_year> <sample_mode> <validation_case_set>")
+if (length(cli_args) != 3) {
+  stop("Usage: Rscript build_ulurp_modification_spine.R <start_year> <end_year> <sample_mode>")
 }
 
 start_year <- suppressWarnings(as.integer(cli_args[1]))
 end_year <- suppressWarnings(as.integer(cli_args[2]))
 sample_mode <- as.character(cli_args[3])
-validation_case_set <- as.character(cli_args[4])
 
 if (is.na(start_year) || is.na(end_year) || start_year > end_year) {
   stop("Invalid start/end year arguments.")
 }
 if (!sample_mode %in% c("core")) {
   stop("Unsupported sample_mode: ", sample_mode)
-}
-if (!validation_case_set %in% c("known_cases")) {
-  stop("Unsupported validation_case_set: ", validation_case_set)
 }
 
 collapse_values <- function(x) {
@@ -453,36 +448,6 @@ project_spine <- zap_project |>
   ) |>
   arrange(cert_year, borough_name, project_id)
 
-validation_case_patterns <- tribble(
-  ~validation_case_id, ~case_label, ~search_pattern,
-  "dock_street_2009", "60 Water Street / Dock Street", "DOCK STREET|60 WATER",
-  "ny_blood_center_2021", "NY Blood Center", "BLOOD CENTER",
-  "industry_city_2020", "Industry City", "INDUSTRY CITY",
-  "flatbush_80_2018", "80 Flatbush", "\\b80 FLATBUSH\\b",
-  "innovation_qns_2022", "Innovation QNS", "INNOVATION QNS",
-  "one45_2022", "One45", "ONE45|ONE 45|145TH STREET",
-  "bruckner_boulevard_2022", "Bruckner Boulevard", "BRUCKNER",
-  "east_new_york_2016", "East New York Rezoning", "EAST NEW YORK",
-  "inwood_2018", "Inwood Rezoning", "\\bINWOOD\\b",
-  "haven_green", "Haven Green / Elizabeth Street Garden", "HAVEN GREEN|ELIZABETH STREET",
-  "greenpoint_williamsburg_2005", "Greenpoint-Williamsburg", "GREENPOINT|WILLIAMSBURG",
-  "hudson_yards_2005", "Hudson Yards", "HUDSON YARDS"
-)
-
-validation_cases <- validation_case_patterns |>
-  rowwise() |>
-  mutate(
-    matched_project_ids = collapse_values(project_spine$project_id[str_detect(
-      str_to_upper(str_squish(paste(project_spine$project_name, project_spine$project_brief, project_spine$council_titles))),
-      search_pattern
-    )]),
-    matched_project_names = collapse_values(project_spine$project_name[project_spine$project_id %in% str_split(coalesce(matched_project_ids, ""), "\\s*;\\s*")[[1]]]),
-    validation_match_status = if_else(is.na(matched_project_ids), "not_matched_in_spine", "matched_in_spine")
-  ) |>
-  ungroup() |>
-  mutate(validation_case_set = validation_case_set) |>
-  select(validation_case_set, validation_case_id, case_label, search_pattern, validation_match_status, matched_project_ids, matched_project_names)
-
 qc_df <- bind_rows(
   tibble(metric = "spine_row_count", value = as.character(nrow(project_spine)), status = if_else(nrow(project_spine) > 0, "pass", "fail"), note = "Rows in the modification project spine."),
   tibble(metric = "unique_project_id_count", value = as.character(n_distinct(project_spine$project_id)), status = if_else(nrow(project_spine) == n_distinct(project_spine$project_id), "pass", "fail"), note = "Spine should be unique by project_id."),
@@ -491,18 +456,14 @@ qc_df <- bind_rows(
   tibble(metric = "council_exact_match_project_count", value = as.character(sum(project_spine$council_exact_match_flag)), status = if_else(sum(project_spine$council_exact_match_flag) > 0, "pass", "fail"), note = "Projects linked to Council matters by exact normalized ULURP/application keys."),
   tibble(metric = "post_certification_withdrawal_unmatched_count", value = as.character(sum(project_spine$post_certification_withdrawal_flag & !project_spine$council_exact_match_flag)), status = "pass", note = "Post-certification withdrawn/terminated projects retained without exact Council matter matches."),
   tibble(metric = "approve_with_mods_project_count", value = as.character(sum(project_spine$council_outcome == "approve_w_mods")), status = "pass", note = "Projects with a Council modification history signal and adopted disposition."),
-  tibble(metric = "ambiguous_application_key_count", value = as.character(nrow(ambiguous_application_keys)), status = "pass", note = "Application keys excluded from exact production join because they match multiple ZAP projects."),
-  tibble(metric = "validation_case_matched_count", value = as.character(sum(validation_cases$validation_match_status == "matched_in_spine")), status = "pass", note = "Known validation cases matched by text pattern in the current exact-key spine.")
+  tibble(metric = "ambiguous_application_key_count", value = as.character(nrow(ambiguous_application_keys)), status = "pass", note = "Application keys excluded from exact production join because they match multiple ZAP projects.")
 )
 
 write_csv_if_changed(project_spine, "../output/ulurp_modification_project_spine.csv")
 write_csv_if_changed(project_matter_crosswalk, "../output/ulurp_modification_project_matter_crosswalk.csv")
-write_csv_if_changed(ambiguous_application_keys, "../output/ulurp_modification_ambiguous_application_keys.csv")
-write_csv_if_changed(validation_cases, "../output/ulurp_modification_validation_cases.csv")
-write_csv_if_changed(qc_df, "../output/ulurp_modification_spine_qc.csv")
 
 if (any(qc_df$status == "fail")) {
-  stop("ULURP modification spine QC failed; inspect ../output/ulurp_modification_spine_qc.csv.")
+  stop("ULURP modification spine checks failed.")
 }
 
 cat("Wrote ULURP modification spine outputs to ../output\n")

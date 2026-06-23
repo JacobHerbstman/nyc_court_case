@@ -7,9 +7,7 @@ ATTACHMENT_FETCH_MODE := candidate_attachments
 
 all: ../output/ulurp_modification_council_document_links.csv \
 	../output/ulurp_modification_council_document_text.csv \
-	../output/ulurp_modification_council_document_snippets.csv \
-	../output/ulurp_modification_council_document_fetch_failures.csv \
-	../output/ulurp_modification_council_document_qc.csv
+	../output/ulurp_modification_council_document_snippets.csv
 
 ../output/ulurp_modification_council_document_links.csv: fetch_council_modification_documents.py \
 	../input/ulurp_modification_project_spine.csv \
@@ -24,27 +22,17 @@ all: ../output/ulurp_modification_council_document_links.csv \
 ../output/ulurp_modification_council_document_snippets.csv: ../output/ulurp_modification_council_document_links.csv
 	@test -s "$@"
 
-../output/ulurp_modification_council_document_fetch_failures.csv: ../output/ulurp_modification_council_document_links.csv
-	@test -s "$@"
-
-../output/ulurp_modification_council_document_qc.csv: ../output/ulurp_modification_council_document_links.csv
-	@test -s "$@"
-
 ../input/ulurp_modification_project_spine.csv: ../../build_ulurp_modification_spine/output/ulurp_modification_project_spine.csv | ../input
-	@target="$$(cd ../../build_ulurp_modification_spine/output && pwd)/ulurp_modification_project_spine.csv"; \
-	if [ "$$(readlink "$@")" != "$$target" ]; then ln -sf "$$target" "$@"; fi
+	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/ulurp_modification_project_matter_crosswalk.csv: ../../build_ulurp_modification_spine/output/ulurp_modification_project_matter_crosswalk.csv | ../input
-	@target="$$(cd ../../build_ulurp_modification_spine/output && pwd)/ulurp_modification_project_matter_crosswalk.csv"; \
-	if [ "$$(readlink "$@")" != "$$target" ]; then ln -sf "$$target" "$@"; fi
+	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/legistar_%_broad_recall_detail_files.csv: ../../fetch_council_land_use_records/output/legistar_%_broad_recall_detail_files.csv | ../input
-	@target="$$(cd ../../fetch_council_land_use_records/output && pwd)/legistar_$*_broad_recall_detail_files.csv"; \
-	if [ "$$(readlink "$@")" != "$$target" ]; then ln -sf "$$target" "$@"; fi
+	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/legistar_%_broad_recall_action_details.csv: ../../fetch_council_land_use_records/output/legistar_%_broad_recall_action_details.csv | ../input
-	@target="$$(cd ../../fetch_council_land_use_records/output && pwd)/legistar_$*_broad_recall_action_details.csv"; \
-	if [ "$$(readlink "$@")" != "$$target" ]; then ln -sf "$$target" "$@"; fi
+	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 link-inputs: ../input/ulurp_modification_project_spine.csv \
 	../input/ulurp_modification_project_matter_crosswalk.csv \

@@ -1,6 +1,5 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_ulurp_modification_content/code")
 # summary_mode <- "first_pass"
-# validation_case_set <- "known_cases"
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -13,18 +12,14 @@ suppressPackageStartupMessages({
 source("../../_lib/source_pipeline_utils.R")
 
 cli_args <- commandArgs(trailingOnly = TRUE)
-if (length(cli_args) != 2) {
-  stop("Usage: Rscript summarize_ulurp_modification_content.R <summary_mode> <validation_case_set>")
+if (length(cli_args) != 1) {
+  stop("Usage: Rscript summarize_ulurp_modification_content.R <summary_mode>")
 }
 
 summary_mode <- as.character(cli_args[1])
-validation_case_set <- as.character(cli_args[2])
 
 if (!summary_mode %in% c("first_pass")) {
   stop("Unsupported summary_mode: ", summary_mode)
-}
-if (!validation_case_set %in% c("known_cases")) {
-  stop("Unsupported validation_case_set: ", validation_case_set)
 }
 
 collapse_values <- function(x) {
@@ -231,8 +226,7 @@ project_summary <- project_summary |>
       member_deference_vote_signals,
       regex("over.*objection|negative|abstain|deference.*violation", ignore_case = TRUE)
     ),
-    summary_mode = summary_mode,
-    validation_case_set = validation_case_set
+    summary_mode = summary_mode
   ) |>
   select(
     project_id,
@@ -278,8 +272,7 @@ project_summary <- project_summary |>
     member_deference_vote_signals,
     local_member_objection_signal,
     deference_exception_signal,
-    summary_mode,
-    validation_case_set
+    summary_mode
   )
 
 category_summary <- discrete_modifications |>
@@ -338,7 +331,6 @@ qc_rows <- tribble(
 write_csv_if_changed(project_summary, "../output/ulurp_modification_project_summary.csv")
 write_csv_if_changed(category_summary, "../output/ulurp_modification_category_summary.csv")
 write_csv_if_changed(stratum_year_summary, "../output/ulurp_modification_stratum_year_summary.csv")
-write_csv_if_changed(qc_rows, "../output/ulurp_modification_summary_qc.csv")
 
 if (any(qc_rows$status == "fail")) {
   stop("ULURP modification content summary QC failed.")
