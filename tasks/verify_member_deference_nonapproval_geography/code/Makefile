@@ -22,10 +22,10 @@ all: ../output/member_deference_nonapproval_geography_official_verification.csv 
 ../input/member_deference_nonapproval_geography_recovery.csv: ../../recover_member_deference_nonapproval_geography/output/member_deference_nonapproval_geography_recovery.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/member_deference_nonapproval_geography_review_queue.csv: ../../audits/audit_member_deference_nonapproval_geography_recovery/output/member_deference_nonapproval_geography_review_queue.csv | ../input
+../input/member_deference_nonapproval_geography_review_queue.csv: ../../stage_member_deference_nonapproval_geography_review/output/member_deference_nonapproval_geography_review_queue.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/member_deference_nonapproval_geography_chatgpt_review_responses.csv: ../../audits/audit_member_deference_nonapproval_geography_recovery/output/member_deference_nonapproval_geography_chatgpt_review_responses.csv | ../input
+../input/member_deference_nonapproval_geography_chatgpt_review_responses.csv: ../../stage_member_deference_nonapproval_geography_review/output/member_deference_nonapproval_geography_chatgpt_review_responses.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/member_deference_matter_universe.csv: ../../build_member_deference_vote_panel/output/member_deference_matter_universe.csv | ../input

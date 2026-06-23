@@ -6,11 +6,7 @@ suppressPackageStartupMessages({
   library(lubridate)
   library(readr)
   library(stringr)
-  library(tibble)
-  library(tidyr)
 })
-
-source("../../_lib/source_pipeline_utils.R")
 
 assign_period <- function(year_value) {
   case_when(
@@ -58,8 +54,7 @@ simple_status <- function(project_status) {
 
 zap_audit_qc <- read_csv("../input/zap_source_integrity_qc.csv", show_col_types = FALSE, na = c("", "NA"))
 
-audit_fail_count <- sum(zap_audit_qc$status == "fail", na.rm = TRUE)
-if (audit_fail_count > 0) {
+if (sum(zap_audit_qc$status == "fail", na.rm = TRUE) > 0) {
   stop("Source integrity audit has failing hard checks; inspect ../input/zap_source_integrity_qc.csv")
 }
 
@@ -68,71 +63,12 @@ standard_cd <- read_csv("../input/cd_homeownership_1990_measure.csv", show_col_t
     borocd = suppressWarnings(as.integer(borocd)),
     borough_code = suppressWarnings(as.integer(borough_code)),
     borough_name,
-    occupied_units_1990 = suppressWarnings(as.numeric(occupied_units_1990)),
     treat_z_boro = suppressWarnings(as.numeric(treat_z_boro))
   ) |>
   arrange(borocd)
 
 if (nrow(standard_cd) != n_distinct(standard_cd$borocd)) {
   stop("Homeownership measure is not unique by borocd.")
-}
-
-redevelopment_denoms <- read_csv("../input/cd_redevelopment_potential_baseline.csv", show_col_types = FALSE, na = c("", "NA")) |>
-  transmute(
-    borocd = suppressWarnings(as.integer(borocd)),
-    residential_acres = suppressWarnings(as.numeric(residential_acres))
-  ) |>
-  arrange(borocd)
-
-if (nrow(redevelopment_denoms) != n_distinct(redevelopment_denoms$borocd)) {
-  stop("Redevelopment potential baseline is not unique by borocd.")
-}
-
-cd_denoms <- standard_cd |>
-  left_join(redevelopment_denoms, by = "borocd", relationship = "one-to-one")
-
-if (any(is.na(cd_denoms$occupied_units_1990)) || any(is.na(cd_denoms$residential_acres))) {
-  stop("Missing occupied-unit or residential-acre denominators.")
-}
-
-outcome_usability <- read_csv("../input/zap_outcome_usability_by_period.csv", show_col_types = FALSE, na = c("", "NA")) |>
-  select(period, outcome_type, usability) |>
-  pivot_wider(names_from = outcome_type, values_from = usability, names_prefix = "usability_")
-
-required_usability_cols <- c(
-  "period",
-  "usability_application_count",
-  "usability_action_category_split",
-  "usability_status_outcome",
-  "usability_bbl_fractional_geography"
-)
-
-if (!all(required_usability_cols %in% names(outcome_usability))) {
-  stop("Outcome usability file is missing required support columns.")
-}
-
-mappluto_cd <- read_parquet("../input/dcp_mappluto_current_25v4.parquet", col_select = c("bbl", "cd")) |>
-  transmute(
-    bbl_standardized = as.character(bbl),
-    borocd = suppressWarnings(as.integer(cd))
-  ) |>
-  filter(!is.na(bbl_standardized), bbl_standardized != "") |>
-  distinct(bbl_standardized, .keep_all = TRUE)
-
-if (nrow(mappluto_cd) != n_distinct(mappluto_cd$bbl_standardized)) {
-  stop("Current MapPLUTO BBL-CD crosswalk is not unique by BBL.")
-}
-
-zap_bbl <- read_parquet("../input/zap_project_bbl.parquet", col_select = c("project_id", "bbl_standardized")) |>
-  transmute(
-    project_id = as.character(project_id),
-    bbl_standardized = as.character(bbl_standardized)
-  ) |>
-  filter(!is.na(project_id), project_id != "", !is.na(bbl_standardized), bbl_standardized != "") |>
-  distinct(project_id, bbl_standardized)
-
-if (nrow(zap_bbl) != nrow(distinct(zap_bbl, project_id, bbl_standardized))) {
-  stop("Staged ZAP BBL links are not unique by project_id and bbl_standardized.")
 }
 
 project_df <- read_parquet("../input/zap_project_data.parquet") |>
@@ -290,307 +226,12 @@ project_base <- project_df |>
   ) |>
   arrange(cert_year, borocd_primary, project_id)
 
-outcome_dictionary <- tribble(
-  ~outcome_name, ~outcome_label, ~requires_action_split,
-  "all_ulurp_apps", "All ULURP applications", FALSE,
-  "housing_any_candidate_apps", "Housing-oriented ULURP applications", FALSE,
-  "housing_strict_text_apps", "Strict-text housing applications", FALSE,
-  "housing_broad_text_apps", "Broad-text housing applications", FALSE,
-  "housing_mih_apps", "MIH-flagged housing applications", FALSE,
-  "housing_action_code_apps", "Housing-action proxy applications", TRUE,
-  "housing_any_private_apps", "Private housing-oriented applications", FALSE,
-  "housing_any_public_apps", "Public housing-oriented applications", FALSE,
-  "housing_any_rezoning_special_apps", "Housing-oriented rezoning/special-permit applications", TRUE,
-  "housing_any_public_land_disposition_apps", "Housing-oriented public-land/disposition applications", TRUE,
-  "housing_any_hpd_public_housing_apps", "Housing-oriented HPD/public-housing proxy applications", TRUE
-)
-
-make_project_outcome_rows <- function(df, assignment_type) {
-  df |>
-    pivot_longer(
-      cols = all_of(outcome_dictionary$outcome_name),
-      names_to = "outcome_name",
-      values_to = "outcome_included"
-    ) |>
-    filter(outcome_included) |>
-    left_join(outcome_dictionary, by = "outcome_name", relationship = "many-to-one") |>
-    mutate(assignment_type = assignment_type) |>
-    select(
-      assignment_type,
-      project_id,
-      outcome_name,
-      outcome_label,
-      requires_action_split,
-      borocd,
-      assignment_weight,
-      cert_year,
-      period,
-      project_status,
-      status_simple,
-      primary_applicant,
-      applicant_type,
-      private_applicant_flag,
-      public_applicant_flag,
-      project_name,
-      actions,
-      ulurp_numbers
-    ) |>
-    arrange(outcome_name, cert_year, borocd, project_id)
+if (nrow(project_base) == 0) {
+  stop("Audited ZAP housing project base has no rows.")
 }
 
-primary_project_cd <- project_base |>
-  filter(primary_standard_cd_flag) |>
-  mutate(
-    borocd = borocd_primary,
-    assignment_weight = 1
-  ) |>
-  make_project_outcome_rows("primary_zap_cd")
-
-bbl_cd_weights <- zap_bbl |>
-  left_join(mappluto_cd, by = "bbl_standardized", relationship = "many-to-one") |>
-  filter(borocd %in% standard_cd$borocd) |>
-  count(project_id, borocd, name = "matched_bbl_count_in_cd") |>
-  group_by(project_id) |>
-  mutate(
-    matched_bbl_count_total = sum(matched_bbl_count_in_cd),
-    assignment_weight = matched_bbl_count_in_cd / matched_bbl_count_total
-  ) |>
-  ungroup()
-
-if (nrow(bbl_cd_weights) != nrow(distinct(bbl_cd_weights, project_id, borocd))) {
-  stop("BBL-CD weights are not unique by project_id and borocd.")
+if (nrow(project_base) != n_distinct(project_base$project_id)) {
+  stop("Audited ZAP housing project base is not unique by project_id.")
 }
-
-bbl_project_cd <- bbl_cd_weights |>
-  left_join(project_base, by = "project_id", relationship = "many-to-one") |>
-  filter(!is.na(cert_year)) |>
-  make_project_outcome_rows("bbl_fractional_current_mappluto")
-
-make_cd_year_panel <- function(project_cd_df, assignment_type_value) {
-  observed_counts <- project_cd_df |>
-    group_by(borocd, year = cert_year, outcome_name) |>
-    summarise(
-      project_count_observed = sum(assignment_weight),
-      distinct_project_count_observed = n_distinct(project_id),
-      .groups = "drop"
-    )
-
-  expand_grid(
-    cd_denoms,
-    year = 1976:2025,
-    outcome_dictionary
-  ) |>
-    mutate(
-      period = assign_period(year),
-      assignment_type = assignment_type_value
-    ) |>
-    left_join(outcome_usability, by = "period", relationship = "many-to-one") |>
-    left_join(observed_counts, by = c("borocd", "year", "outcome_name"), relationship = "one-to-one") |>
-    mutate(
-      project_count_observed = coalesce(project_count_observed, 0),
-      distinct_project_count_observed = coalesce(distinct_project_count_observed, 0L),
-      support_problem = case_when(
-        usability_application_count == "not_recommended" ~ "not_recommended_application_count",
-        requires_action_split & usability_action_category_split == "not_recommended" ~ "not_recommended_action_category_split",
-        assignment_type == "bbl_fractional_current_mappluto" & usability_bbl_fractional_geography == "not_recommended" ~ "not_recommended_bbl_fractional_geography",
-        TRUE ~ NA_character_
-      ),
-      analysis_usability = case_when(
-        !is.na(support_problem) ~ "not_recommended",
-        usability_application_count == "limited" ~ "limited",
-        requires_action_split & usability_action_category_split == "limited" ~ "limited",
-        assignment_type == "bbl_fractional_current_mappluto" & usability_bbl_fractional_geography == "limited" ~ "limited",
-        TRUE ~ "usable"
-      ),
-      project_count = if_else(analysis_usability == "not_recommended", NA_real_, project_count_observed),
-      rate_per_10000_occupied_units_1990 = 10000 * project_count / occupied_units_1990,
-      rate_per_residential_acre = project_count / residential_acres
-    ) |>
-    arrange(outcome_name, year, borocd)
-}
-
-primary_cd_year_panel <- make_cd_year_panel(primary_project_cd, "primary_zap_cd")
-bbl_cd_year_panel <- make_cd_year_panel(bbl_project_cd, "bbl_fractional_current_mappluto")
-
-make_mature_status_panel <- function(project_cd_df, assignment_type_value) {
-  observed_status <- project_cd_df |>
-    filter(cert_year <= 2015) |>
-    group_by(borocd, year = cert_year, outcome_name, status_simple) |>
-    summarise(
-      status_project_count_observed = sum(assignment_weight),
-      distinct_status_project_count_observed = n_distinct(project_id),
-      .groups = "drop"
-    )
-
-  expand_grid(
-    cd_denoms,
-    year = 1976:2015,
-    outcome_dictionary,
-    status_simple = c("completed", "withdrawn_terminated", "unresolved_or_in_process", "other_closed", "missing_status")
-  ) |>
-    mutate(
-      period = assign_period(year),
-      assignment_type = assignment_type_value
-    ) |>
-    left_join(outcome_usability, by = "period", relationship = "many-to-one") |>
-    left_join(observed_status, by = c("borocd", "year", "outcome_name", "status_simple"), relationship = "one-to-one") |>
-    mutate(
-      status_project_count_observed = coalesce(status_project_count_observed, 0),
-      distinct_status_project_count_observed = coalesce(distinct_status_project_count_observed, 0L),
-      support_problem = case_when(
-        usability_application_count == "not_recommended" ~ "not_recommended_application_count",
-        usability_status_outcome == "not_recommended" ~ "not_recommended_status_outcome",
-        requires_action_split & usability_action_category_split == "not_recommended" ~ "not_recommended_action_category_split",
-        assignment_type == "bbl_fractional_current_mappluto" & usability_bbl_fractional_geography == "not_recommended" ~ "not_recommended_bbl_fractional_geography",
-        TRUE ~ NA_character_
-      ),
-      analysis_usability = case_when(
-        !is.na(support_problem) ~ "not_recommended",
-        usability_application_count == "limited" | usability_status_outcome == "limited" ~ "limited",
-        requires_action_split & usability_action_category_split == "limited" ~ "limited",
-        assignment_type == "bbl_fractional_current_mappluto" & usability_bbl_fractional_geography == "limited" ~ "limited",
-        TRUE ~ "usable"
-      ),
-      status_project_count = if_else(analysis_usability == "not_recommended", NA_real_, status_project_count_observed),
-      status_rate_per_10000_occupied_units_1990 = 10000 * status_project_count / occupied_units_1990,
-      status_rate_per_residential_acre = status_project_count / residential_acres
-    ) |>
-    group_by(assignment_type, borocd, year, outcome_name) |>
-    mutate(
-      total_project_count = sum(status_project_count, na.rm = TRUE),
-      status_share = if_else(total_project_count > 0, status_project_count / total_project_count, NA_real_)
-    ) |>
-    ungroup() |>
-    arrange(outcome_name, year, borocd, status_simple)
-}
-
-primary_mature_status_panel <- make_mature_status_panel(primary_project_cd, "primary_zap_cd")
-bbl_mature_status_panel <- make_mature_status_panel(bbl_project_cd, "bbl_fractional_current_mappluto")
-
-pre_2016_base <- project_base |>
-  filter(cert_year <= 2015)
-
-qc_df <- bind_rows(
-  tibble(
-    metric = "source_audit_fail_count",
-    value = as.character(audit_fail_count),
-    status = if_else(audit_fail_count == 0, "pass", "fail"),
-    note = "The conservative source audit must pass before this rebuild runs."
-  ),
-  tibble(
-    metric = "project_base_duplicate_id_count",
-    value = as.character(nrow(project_base) - n_distinct(project_base$project_id)),
-    status = if_else(nrow(project_base) == n_distinct(project_base$project_id), "pass", "fail"),
-    note = "Audited project base should be unique by project_id."
-  ),
-  tibble(
-    metric = "project_base_row_count",
-    value = as.character(nrow(project_base)),
-    status = if_else(nrow(project_base) > 0, "pass", "fail"),
-    note = "ULURP project rows in 1976-2025 with raw fields and construction flags."
-  ),
-  tibble(
-    metric = "primary_project_cd_duplicate_key_count",
-    value = as.character(nrow(primary_project_cd) - nrow(distinct(primary_project_cd, project_id, outcome_name, borocd))),
-    status = if_else(nrow(primary_project_cd) == nrow(distinct(primary_project_cd, project_id, outcome_name, borocd)), "pass", "fail"),
-    note = "Primary project-CD rows should be unique by project, outcome, and CD."
-  ),
-  tibble(
-    metric = "bbl_project_cd_duplicate_key_count",
-    value = as.character(nrow(bbl_project_cd) - nrow(distinct(bbl_project_cd, project_id, outcome_name, borocd))),
-    status = if_else(nrow(bbl_project_cd) == nrow(distinct(bbl_project_cd, project_id, outcome_name, borocd)), "pass", "fail"),
-    note = "BBL-fractional project-CD rows should be unique by project, outcome, and CD."
-  ),
-  tibble(
-    metric = "bbl_weight_sum_bad_project_count",
-    value = as.character(
-      bbl_cd_weights |>
-        group_by(project_id) |>
-        summarise(weight_sum = sum(assignment_weight), .groups = "drop") |>
-        filter(abs(weight_sum - 1) > 1e-8) |>
-        nrow()
-    ),
-    status = if_else(
-      bbl_cd_weights |>
-        group_by(project_id) |>
-        summarise(weight_sum = sum(assignment_weight), .groups = "drop") |>
-        filter(abs(weight_sum - 1) > 1e-8) |>
-        nrow() == 0,
-      "pass",
-      "fail"
-    ),
-    note = "Fractional BBL weights should sum to one among matched standard-CD projects."
-  ),
-  tibble(
-    metric = "pre_2016_rezoning_special_ulurp_recovered_count",
-    value = as.character(sum(pre_2016_base$rezoning_special_ulurp_numbers_flag, na.rm = TRUE)),
-    status = if_else(sum(pre_2016_base$rezoning_special_ulurp_numbers_flag, na.rm = TRUE) > 0, "pass", "fail"),
-    note = "Historical rezoning/special-permit recovery must come from ULURP numbers rather than blank actions."
-  ),
-  tibble(
-    metric = "pre_2016_public_land_ulurp_recovered_count",
-    value = as.character(sum(pre_2016_base$public_land_disposition_ulurp_numbers_flag, na.rm = TRUE)),
-    status = if_else(sum(pre_2016_base$public_land_disposition_ulurp_numbers_flag, na.rm = TRUE) > 0, "pass", "fail"),
-    note = "Historical public-land recovery must come from ULURP numbers rather than blank actions."
-  ),
-  tibble(
-    metric = "primary_panel_cd_count",
-    value = as.character(n_distinct(primary_cd_year_panel$borocd)),
-    status = if_else(n_distinct(primary_cd_year_panel$borocd) == 59, "pass", "fail"),
-    note = "Primary CD-year panel should cover the 59 standard CDs."
-  ),
-  tibble(
-    metric = "primary_panel_year_range",
-    value = str_c(min(primary_cd_year_panel$year), "-", max(primary_cd_year_panel$year)),
-    status = if_else(min(primary_cd_year_panel$year) == 1976 & max(primary_cd_year_panel$year) == 2025, "pass", "fail"),
-    note = "Primary CD-year panel support window."
-  ),
-  tibble(
-    metric = "bbl_panel_not_recommended_unmasked_count",
-    value = as.character(sum(bbl_cd_year_panel$analysis_usability == "not_recommended" & !is.na(bbl_cd_year_panel$project_count))),
-    status = if_else(sum(bbl_cd_year_panel$analysis_usability == "not_recommended" & !is.na(bbl_cd_year_panel$project_count)) == 0, "pass", "fail"),
-    note = "Unsupported BBL-fractional period/outcome cells must be masked, not filled as zeros."
-  ),
-  tibble(
-    metric = "primary_panel_not_recommended_unmasked_count",
-    value = as.character(sum(primary_cd_year_panel$analysis_usability == "not_recommended" & !is.na(primary_cd_year_panel$project_count))),
-    status = if_else(sum(primary_cd_year_panel$analysis_usability == "not_recommended" & !is.na(primary_cd_year_panel$project_count)) == 0, "pass", "fail"),
-    note = "Unsupported primary period/outcome cells must be masked if any exist."
-  ),
-  tibble(
-    metric = "negative_count_or_rate_cell_count",
-    value = as.character(
-      sum(primary_cd_year_panel$project_count_observed < 0, na.rm = TRUE) +
-        sum(bbl_cd_year_panel$project_count_observed < 0, na.rm = TRUE) +
-        sum(primary_cd_year_panel$rate_per_10000_occupied_units_1990 < 0, na.rm = TRUE) +
-        sum(bbl_cd_year_panel$rate_per_10000_occupied_units_1990 < 0, na.rm = TRUE)
-    ),
-    status = if_else(
-      sum(primary_cd_year_panel$project_count_observed < 0, na.rm = TRUE) +
-        sum(bbl_cd_year_panel$project_count_observed < 0, na.rm = TRUE) +
-        sum(primary_cd_year_panel$rate_per_10000_occupied_units_1990 < 0, na.rm = TRUE) +
-        sum(bbl_cd_year_panel$rate_per_10000_occupied_units_1990 < 0, na.rm = TRUE) == 0,
-      "pass",
-      "fail"
-    ),
-    note = "Counts and rates should be nonnegative."
-  ),
-  tibble(
-    metric = "approval_timing_output_created",
-    value = "0",
-    status = "pass",
-    note = "Approval-delay outputs are intentionally not constructed because audit marks historical approval timing as unsupported."
-  )
-)
 
 write_csv(project_base, "../output/zap_housing_project_base_audited.csv", na = "")
-write_csv(primary_project_cd, "../output/zap_housing_project_cd_primary.csv", na = "")
-write_csv(bbl_project_cd, "../output/zap_housing_project_cd_bbl_fractional.csv", na = "")
-write_csv(primary_cd_year_panel, "../output/zap_housing_cd_year_panel_primary.csv", na = "")
-write_csv(bbl_cd_year_panel, "../output/zap_housing_cd_year_panel_bbl_fractional.csv", na = "")
-write_csv(primary_mature_status_panel, "../output/zap_housing_mature_status_panel_primary.csv", na = "")
-write_csv(bbl_mature_status_panel, "../output/zap_housing_mature_status_panel_bbl_fractional.csv", na = "")
-
-if (any(qc_df$status == "fail")) {
-  stop("ZAP housing pipeline construction checks failed.")
-}

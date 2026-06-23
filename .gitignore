@@ -24,6 +24,14 @@ tasks/audits/*/output/
 tasks/audits/*/temp/
 tasks/audits/*/slurmlogs/
 
+# Production source ledgers intentionally committed for replication.
+!tasks/stage_member_deference_nonapproval_geography_review/output/
+!tasks/stage_member_deference_nonapproval_geography_review/output/*.csv
+!tasks/stage_zap_source_integrity/output/
+!tasks/stage_zap_source_integrity/output/*.csv
+!tasks/stage_ulurp_modification_zap_documents/output/
+!tasks/stage_ulurp_modification_zap_documents/output/*.csv
+
 # --- Secrets ---
 .Renviron
 

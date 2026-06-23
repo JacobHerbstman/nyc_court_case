@@ -1,0 +1,13 @@
+metric,value,status,note
+standard_cd_count,59,pass,Standard community districts in the treatment denominator file.
+project_duplicate_id_count,0,pass,Staged ZAP projects should be unique by project_id.
+project_bbl_duplicate_key_count,0,pass,Staged ZAP project-BBL links should be unique.
+mappluto_bbl_duplicate_count,0,pass,Current MapPLUTO BBL-CD crosswalk should be unique by BBL.
+ulurp_1976_2025_project_count,11975,pass,ULURP projects in the construction window.
+pre_2016_actions_nonmissing_share,0.000714860155482084,info,Historical actions are expected to be sparse; action proxies must not rely on this field alone.
+pre_2016_ulurp_numbers_nonmissing_share,0.87141452953266,pass,Historical action recovery should rely on ULURP numbers if this support is high.
+pre_2016_rezoning_special_recovered_count,2195,pass,Guard against all-zero historical rezoning/special-permit proxies caused by blank actions.
+pre_2016_public_land_recovered_count,4666,pass,Guard against all-zero historical public-land proxies caused by blank actions.
+approval_timing_not_recommended_period_count,6,info,Approval timing is diagnostic only; sparse approval dates should not block the source audit.
+source_field_coverage_row_count,594,pass,Audit field coverage output rows.
+outcome_usability_row_count,42,pass,Outcome usability output rows.

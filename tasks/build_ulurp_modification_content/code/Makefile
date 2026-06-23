@@ -39,12 +39,12 @@ all: ../output/ulurp_modification_project_versions.csv \
 	@target="$$(cd ../../build_ulurp_modification_spine/output && pwd)/ulurp_modification_project_spine.csv"; \
 	if [ "$$(readlink "$@")" != "$$target" ]; then ln -sf "$$target" "$@"; fi
 
-../input/ulurp_modification_zap_document_links.csv: ../../audits/discover_ulurp_modification_documents/output/ulurp_modification_zap_document_links.csv | ../input
-	@target="$$(cd ../../audits/discover_ulurp_modification_documents/output && pwd)/ulurp_modification_zap_document_links.csv"; \
+../input/ulurp_modification_zap_document_links.csv: ../../stage_ulurp_modification_zap_documents/output/ulurp_modification_zap_document_links.csv | ../input
+	@target="$$(cd ../../stage_ulurp_modification_zap_documents/output && pwd)/ulurp_modification_zap_document_links.csv"; \
 	if [ "$$(readlink "$@")" != "$$target" ]; then ln -sf "$$target" "$@"; fi
 
-../input/ulurp_modification_zap_docket_text.csv: ../../audits/discover_ulurp_modification_documents/output/ulurp_modification_zap_docket_text.csv | ../input
-	@target="$$(cd ../../audits/discover_ulurp_modification_documents/output && pwd)/ulurp_modification_zap_docket_text.csv"; \
+../input/ulurp_modification_zap_docket_text.csv: ../../stage_ulurp_modification_zap_documents/output/ulurp_modification_zap_docket_text.csv | ../input
+	@target="$$(cd ../../stage_ulurp_modification_zap_documents/output && pwd)/ulurp_modification_zap_docket_text.csv"; \
 	if [ "$$(readlink "$@")" != "$$target" ]; then ln -sf "$$target" "$@"; fi
 
 ../input/ulurp_modification_council_document_links.csv: ../../fetch_council_modification_documents/output/ulurp_modification_council_document_links.csv | ../input

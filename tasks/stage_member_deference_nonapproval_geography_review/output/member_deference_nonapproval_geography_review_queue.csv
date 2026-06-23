@@ -1,0 +1,904 @@
+query_year,matter_id,matter_file,disposition_group,review_difficulty,application_keys,title_bbls,title_address_candidate,title,chatgpt_plain_text_prompt
+1998,449747,Res 0124-1998,disapproved,medium_historical_bbl_review,970776PPM,1016740003; 1016740004,,"Resolution disapproving the decision of the City Planning Commission on ULURP No. C 970776 PPM, for the disposition of two (2) city-owned properties located 1988 and 1990 Second Avenue (Block 1674/Lots 3 and 4), Manhattan (L.U. No. 65).","Matter: Res 0124-1998 (1998)
+Disposition: disapproved / Disapproved by Council
+Application keys: 970776PPM
+Parsed title BBLs: 1016740003; 1016740004
+Parsed title address: none parsed
+Full title: Resolution disapproving the decision of the City Planning Commission on ULURP No. C 970776 PPM, for the disposition of two (2) city-owned properties located 1988 and 1990 Second Avenue (Block 1674/Lots 3 and 4), Manhattan (L.U. No. 65).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+1998,432037,Res 0512-1998,filed_withdrawal_or_motion,medium_historical_bbl_review,980036ZSM,1004890042,,"Resolution approving a motion to file pursuant to withdrawal on the decision of the City Planning Commission on ULURP No. C 980036 ZSM, for a special permit to allow an attended 5-story public parking garage (Block 489/Lot 42), Manhattan (L.U. No. 245).","Matter: Res 0512-1998 (1998)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 980036ZSM
+Parsed title BBLs: 1004890042
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal on the decision of the City Planning Commission on ULURP No. C 980036 ZSM, for a special permit to allow an attended 5-story public parking garage (Block 489/Lot 42), Manhattan (L.U. No. 245).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+1999,433103,Res 0892-1999,filed_withdrawal_or_motion,medium_address_or_range_review,19995036TCM,,1602 Second Avenue,"Resolution approving the motion to file pursuant to withdrawal of the petition for a revocable consent for an enclosed sidewalk cafe located at 1602 Second Avenue, Manhattan (19995036 TCM; L.U. No. 461).","Matter: Res 0892-1999 (1999)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 19995036TCM
+Parsed title BBLs: none parsed
+Parsed title address: 1602 Second Avenue
+Full title: Resolution approving the motion to file pursuant to withdrawal of the petition for a revocable consent for an enclosed sidewalk cafe located at 1602 Second Avenue, Manhattan (19995036 TCM; L.U. No. 461).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2000,433957,Res 1220-2000,filed_withdrawal_or_motion,medium_historical_bbl_review,19995075HAK,3020040015; 3020040016; 3020040017; 3020040065; 3020040066; 3020040067; 3020040068; 3020040069; 3020040070; 3020040071; 3020040072; 3020040073; 3020040074; 3020040075; 3020040076; 3020040077; 3020040001; 3020040002; 3020040007; 3020040012; 3020040013; 3020040078; 3020040079; 3020040175,,"Resolution approving a motion to file pursuant to withdrawal an Urban Development Action Area Project located at located at 173-209 South Portland Avenue and 172-208, 214 South Oxford Street (Block 2004/Lots p/o 1, p/o 2, 7, 12, 13, 15-17, 65-77, p/o 78, p/o 79 and 175), Brooklyn (L.U. No. 277; 19995075 HAK).","Matter: Res 1220-2000 (2000)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 19995075HAK
+Parsed title BBLs: 3020040015; 3020040016; 3020040017; 3020040065; 3020040066; 3020040067; 3020040068; 3020040069; 3020040070; 3020040071; 3020040072; 3020040073; 3020040074; 3020040075; 3020040076; 3020040077; 3020040001; 3020040002; 3020040007; 3020040012; 3020040013; 3020040078; 3020040079; 3020040175
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal an Urban Development Action Area Project located at located at 173-209 South Portland Avenue and 172-208, 214 South Oxford Street (Block 2004/Lots p/o 1, p/o 2, 7, 12, 13, 15-17, 65-77, p/o 78, p/o 79 and 175), Brooklyn (L.U. No. 277; 19995075 HAK).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2000,435104,Res 1615-2000,filed_withdrawal_or_motion,document_lookup_review,990127ZMR,,,"Resolution approving a motion to file pursuant to withdrawal on an application submitted by Natalie Lyn, LLC, for a Zoning Map change (ULURP No. C 990127 ZMR; L.U. No. 794).","Matter: Res 1615-2000 (2000)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 990127ZMR
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal on an application submitted by Natalie Lyn, LLC, for a Zoning Map change (ULURP No. C 990127 ZMR; L.U. No. 794).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2000,435270,Res 1667-2000,filed_withdrawal_or_motion,medium_address_or_range_review,000577PPK,3002110015,72 Poplar Street,"Resolution approving the motion to file pursuant to withdrawal of ULURP No. C 000577 PPK, the disposition of one (1) city-owned property located at 72 Poplar Street (Block 211/Lot 15), Brooklyn (L.U. No. 929).","Matter: Res 1667-2000 (2000)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 000577PPK
+Parsed title BBLs: 3002110015
+Parsed title address: 72 Poplar Street
+Full title: Resolution approving the motion to file pursuant to withdrawal of ULURP No. C 000577 PPK, the disposition of one (1) city-owned property located at 72 Poplar Street (Block 211/Lot 15), Brooklyn (L.U. No. 929).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2002,449949,Res 0481-2002,disapproved,medium_address_or_range_review,20025407TCQ,,41-02 Broadway,"Resolution disapproving the petition for a revocable consent for an unenclosed sidewalk café located at 41-02 Broadway, Queens (20025407 TCQ; L.U. No. 236).","Matter: Res 0481-2002 (2002)
+Disposition: disapproved / Disapproved by Council
+Application keys: 20025407TCQ
+Parsed title BBLs: none parsed
+Parsed title address: 41-02 Broadway
+Full title: Resolution disapproving the petition for a revocable consent for an unenclosed sidewalk café located at 41-02 Broadway, Queens (20025407 TCQ; L.U. No. 236).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2002,449950,Res 0487-2002,disapproved,low_information_manual_review,,,,"Resolution disapproving the disposition of city-owned property located at Block 7487, part of Lot 100 in Charleston, Staten Island to the Metropolitan Transportation Authority/New York City Transit for use as a bus maintenance facility (L.U. 262).","Matter: Res 0487-2002 (2002)
+Disposition: disapproved / Disapproved by Council
+Application keys: none parsed
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution disapproving the disposition of city-owned property located at Block 7487, part of Lot 100 in Charleston, Staten Island to the Metropolitan Transportation Authority/New York City Transit for use as a bus maintenance facility (L.U. 262).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2003,440018,Res 0934-2003,filed_withdrawal_or_motion,document_lookup_review,030245HAM,,,"Resolution approving a motion to file pursuant to withdrawal of an application submitted by the Department of Housing Preservation and Development, ULURP No. C 030245 HAM (L.U. No. 361).","Matter: Res 0934-2003 (2003)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 030245HAM
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of an application submitted by the Department of Housing Preservation and Development, ULURP No. C 030245 HAM (L.U. No. 361).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2004,442585,Res 0484-2004,filed_withdrawal_or_motion,document_lookup_review,040203HAK,,,"Resolution approving the motion to file pursuant to withdrawal an application submitted by the Department of Housing Preservation and Development, ULURP No. C 040203 HAK (L.U. No. 91; C 040203 HAK).","Matter: Res 0484-2004 (2004)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 040203HAK
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving the motion to file pursuant to withdrawal an application submitted by the Department of Housing Preservation and Development, ULURP No. C 040203 HAK (L.U. No. 91; C 040203 HAK).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2004,442574,Res 0490-2004,filed_withdrawal_or_motion,document_lookup_review,020666ZMQ,,,Resolution approving a motion to file pursuant to withdrawal of an application submitted by Lawrence Avroch (ULURP No. C 020666 ZMQ; L.U. No. 116).,"Matter: Res 0490-2004 (2004)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 020666ZMQ
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of an application submitted by Lawrence Avroch (ULURP No. C 020666 ZMQ; L.U. No. 116).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2004,442578,Res 0499-2004,filed_withdrawal_or_motion,medium_address_or_range_review,20045679TCM,,87 7th Avenue South,"Resolution approving a motion to file pursuant to withdrawal of the petition for a modification of a revocable consent for an unenclosed sidewalk café located at 87 7th Avenue South, Manhattan (20045679 TCM; L.U. No. 201).","Matter: Res 0499-2004 (2004)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 20045679TCM
+Parsed title BBLs: none parsed
+Parsed title address: 87 7th Avenue South
+Full title: Resolution approving a motion to file pursuant to withdrawal of the petition for a modification of a revocable consent for an unenclosed sidewalk café located at 87 7th Avenue South, Manhattan (20045679 TCM; L.U. No. 201).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2005,443708,Res 0845-2005,filed_by_council_other,document_lookup_review,000189ZMX,,,"Resolution disapproving the decision of the City Planning Commission on ULURP No. C 000189 ZMX, a Zoning Map change (L.U. No. 377).","Matter: Res 0845-2005 (2005)
+Disposition: filed_by_council_other / Filed by Council
+Application keys: 000189ZMX
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution disapproving the decision of the City Planning Commission on ULURP No. C 000189 ZMX, a Zoning Map change (L.U. No. 377).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2005,443709,Res 0846-2005,filed_by_council_other,document_lookup_review,040123ZSX,,,"Resolution disapproving the decision of the City Planning Commission on ULURP No. C 040123 ZSX (L.U. No. 378), grant of a special permit pursuant to Section 74-922 of the Zoning Resolution to allow a large retail establishment with no limitation on floor area in an M1-1 District.","Matter: Res 0846-2005 (2005)
+Disposition: filed_by_council_other / Filed by Council
+Application keys: 040123ZSX
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution disapproving the decision of the City Planning Commission on ULURP No. C 040123 ZSX (L.U. No. 378), grant of a special permit pursuant to Section 74-922 of the Zoning Resolution to allow a large retail establishment with no limitation on floor area in an M1-1 District.
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2005,443796,Res 0881-2005,filed_withdrawal_or_motion,medium_address_or_range_review,20045677TCK,,311 Henry Street,"Resolution approving the motion to file pursuant to withdrawal of the petition for a revocable consent for an unenclosed sidewalk café located at 311 Henry Street, Brooklyn (20045677 TCK; L.U. No. 396).","Matter: Res 0881-2005 (2005)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 20045677TCK
+Parsed title BBLs: none parsed
+Parsed title address: 311 Henry Street
+Full title: Resolution approving the motion to file pursuant to withdrawal of the petition for a revocable consent for an unenclosed sidewalk café located at 311 Henry Street, Brooklyn (20045677 TCK; L.U. No. 396).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2005,444694,Res 1107-2005,filed_withdrawal_or_motion,medium_address_or_range_review,20055633TCQ,,35-27 30th Avenue,"Resolution approving the motion to file pursuant to withdrawal of the petition for the proposed modification of a revocable consent for an unenclosed sidewalk café located at 35-27 30th Avenue, Queens (20055633 TCQ; L.U. No. 512).","Matter: Res 1107-2005 (2005)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 20055633TCQ
+Parsed title BBLs: none parsed
+Parsed title address: 35-27 30th Avenue
+Full title: Resolution approving the motion to file pursuant to withdrawal of the petition for the proposed modification of a revocable consent for an unenclosed sidewalk café located at 35-27 30th Avenue, Queens (20055633 TCQ; L.U. No. 512).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2005,444695,Res 1108-2005,filed_withdrawal_or_motion,medium_address_or_range_review,20055545TCM,,50 Gansevoort Street,"Resolution approving the motion to file pursuant to withdrawal of the petition for a revocable consent for an unenclosed sidewalk café located at 50 Gansevoort Street, Manhattan (20055545 TCM; L.U. No. 513).","Matter: Res 1108-2005 (2005)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 20055545TCM
+Parsed title BBLs: none parsed
+Parsed title address: 50 Gansevoort Street
+Full title: Resolution approving the motion to file pursuant to withdrawal of the petition for a revocable consent for an unenclosed sidewalk café located at 50 Gansevoort Street, Manhattan (20055545 TCM; L.U. No. 513).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2005,444698,Res 1109-2005,filed_withdrawal_or_motion,medium_address_or_range_review,20055515TCM,,237 Columbus Avenue,"Resolution approving the motion to file pursuant to withdrawal of the petition for a revocable consent for an unenclosed sidewalk café located at 237 Columbus Avenue, Manhattan (20055515 TCM; L.U. No. 514).","Matter: Res 1109-2005 (2005)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 20055515TCM
+Parsed title BBLs: none parsed
+Parsed title address: 237 Columbus Avenue
+Full title: Resolution approving the motion to file pursuant to withdrawal of the petition for a revocable consent for an unenclosed sidewalk café located at 237 Columbus Avenue, Manhattan (20055515 TCM; L.U. No. 514).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2005,450020,Res 1176-2005,disapproved,document_lookup_review,020488ZMX,,,"Resolution disapproving the decision of the City Planning Commission on ULURP No. C 020488 ZMX, a Zoning Map change (L.U. No. 462).","Matter: Res 1176-2005 (2005)
+Disposition: disapproved / Disapproved by Council
+Application keys: 020488ZMX
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution disapproving the decision of the City Planning Commission on ULURP No. C 020488 ZMX, a Zoning Map change (L.U. No. 462).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2005,450021,Res 1191-2005,disapproved,medium_address_or_range_review,20055567TCM,,46 Gansevoort Street,"Resolution disapproving the petition for a revocable consent for an unenclosed sidewalk café located at 46 Gansevoort Street, Manhattan (20055567 TCM; L.U. No. 585).","Matter: Res 1191-2005 (2005)
+Disposition: disapproved / Disapproved by Council
+Application keys: 20055567TCM
+Parsed title BBLs: none parsed
+Parsed title address: 46 Gansevoort Street
+Full title: Resolution disapproving the petition for a revocable consent for an unenclosed sidewalk café located at 46 Gansevoort Street, Manhattan (20055567 TCM; L.U. No. 585).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2005,450023,Res 1231-2005,disapproved,document_lookup_review,030276ZMK,,,"Resolution disapproving the decision of the City Planning Commission on ULURP No. C 030276 ZMK, a Zoning Map change (L.U. No. 605).","Matter: Res 1231-2005 (2005)
+Disposition: disapproved / Disapproved by Council
+Application keys: 030276ZMK
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution disapproving the decision of the City Planning Commission on ULURP No. C 030276 ZMK, a Zoning Map change (L.U. No. 605).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2006,446561,LU 0341-2006,filed_by_council_other,document_lookup_review,20075151HAX,,,"Application no. 20075151 HAX, a request for Council consent and approval, pursuant to Article 5 of the Private Housing Finance Law, for a conveyance, termination of a partial tax exemption and a voluntary dissolution at the request of the New York City Department of Housing Preservation and Development.","Matter: LU 0341-2006 (2006)
+Disposition: filed_by_council_other / Filed by Council
+Application keys: 20075151HAX
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Application no. 20075151 HAX, a request for Council consent and approval, pursuant to Article 5 of the Private Housing Finance Law, for a conveyance, termination of a partial tax exemption and a voluntary dissolution at the request of the New York City Department of Housing Preservation and Development.
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2006,445490,Res 0126-2006,filed_withdrawal_or_motion,medium_address_or_range_review,,,187 Eldert Street,"Resolution approving a motion to file pursuant to withdrawal of an Urban Development Action Area Project located at 187 Eldert Street (Block 3411/Lot 55), 194 Eldert Street (Block 3417/Lot 10), 202 Wislon Avenue (Block 3256/Lot 26), 248 Cornelia Street (Block 3384/Lot 12), 302 Harman Street (Block 3289/Lot 14), 309 Schaeffer Street (Block 3425/Lot 62), 565 Wilson Avenue (Block 3412/Lot 2), 572 Wilson Avenue a.k. a. 209 Covert Street (Block 3417/Lot 32), 588 Wilson Avenue (Block 3423/Lot 43), 708 Knickerbocker Avenue (Block 3384/Lot 35), 784 Knickerbocker Avenue a.k.a. 1254-64 Halsey Street (Bl","Matter: Res 0126-2006 (2006)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: none parsed
+Parsed title BBLs: none parsed
+Parsed title address: 187 Eldert Street
+Full title: Resolution approving a motion to file pursuant to withdrawal of an Urban Development Action Area Project located at 187 Eldert Street (Block 3411/Lot 55), 194 Eldert Street (Block 3417/Lot 10), 202 Wislon Avenue (Block 3256/Lot 26), 248 Cornelia Street (Block 3384/Lot 12), 302 Harman Street (Block 3289/Lot 14), 309 Schaeffer Street (Block 3425/Lot 62), 565 Wilson Avenue (Block 3412/Lot 2), 572 Wilson Avenue a.k. a. 209 Covert Street (Block 3417/Lot 32), 588 Wilson Avenue (Block 3423/Lot 43), 708 Knickerbocker Avenue (Block 3384/Lot 35), 784 Knickerbocker Avenue a.k.a. 1254-64 Halsey Street (Bl
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2006,446258,Res 0487-2006,filed_withdrawal_or_motion,medium_address_or_range_review,20065428TCM,,87 Seventh Avenue South,"Resolution approving a motion to file pursuant to withdrawal of the petition for a revocable consent for an unenclosed sidewalk café located at 87 Seventh Avenue South, Manhattan (20065428 TCM; L.U. No. 208).","Matter: Res 0487-2006 (2006)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 20065428TCM
+Parsed title BBLs: none parsed
+Parsed title address: 87 Seventh Avenue South
+Full title: Resolution approving a motion to file pursuant to withdrawal of the petition for a revocable consent for an unenclosed sidewalk café located at 87 Seventh Avenue South, Manhattan (20065428 TCM; L.U. No. 208).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2006,446589,Res 0650-2006,filed_withdrawal_or_motion,document_lookup_review,20075151HAX,,,"Resolution approving a motion to file the conveyance of property and a project located at 717-719, 739, 741 Coster Street and 671 Manida Street, the Bronx (L.U. No. 341; 20075151 HAX).","Matter: Res 0650-2006 (2006)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 20075151HAX
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file the conveyance of property and a project located at 717-719, 739, 741 Coster Street and 671 Manida Street, the Bronx (L.U. No. 341; 20075151 HAX).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2007,447149,Res 0874-2007,filed_withdrawal_or_motion,medium_address_or_range_review,070258HAM,,2735 Frederick Douglass Boulevard,"Resolution approving a motion to file pursuant to withdrawal respecting the decision of the City Planning Commission on an application submitted by the Department of Housing Preservation and Development, ULURP No. C 070258 HAM, approving the designation of property located at 2735 Frederick Douglass Boulevard (Block 2045; Lot 13), Manhattan, as an Urban Development Action Area, approving the project for the area as an Urban Development Action Area Project, and approving the disposition of such property to a developer selected by the Department of Housing Preservation and Development (L.U. No.","Matter: Res 0874-2007 (2007)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 070258HAM
+Parsed title BBLs: none parsed
+Parsed title address: 2735 Frederick Douglass Boulevard
+Full title: Resolution approving a motion to file pursuant to withdrawal respecting the decision of the City Planning Commission on an application submitted by the Department of Housing Preservation and Development, ULURP No. C 070258 HAM, approving the designation of property located at 2735 Frederick Douglass Boulevard (Block 2045; Lot 13), Manhattan, as an Urban Development Action Area, approving the project for the area as an Urban Development Action Area Project, and approving the disposition of such property to a developer selected by the Department of Housing Preservation and Development (L.U. No.
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2007,447395,Res 0976-2007,filed_withdrawal_or_motion,medium_address_or_range_review,20075390HHQ,,149 Rockaway Beach Boulevard,"Resolution approving a motion to file pursuant to the withdrawal of the surrender of real property located at 149 Rockaway Beach Boulevard, Queens (20075390 HHQ; Preconsidered L.U. No. 486).","Matter: Res 0976-2007 (2007)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 20075390HHQ
+Parsed title BBLs: none parsed
+Parsed title address: 149 Rockaway Beach Boulevard
+Full title: Resolution approving a motion to file pursuant to the withdrawal of the surrender of real property located at 149 Rockaway Beach Boulevard, Queens (20075390 HHQ; Preconsidered L.U. No. 486).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2008,448800,Res 1654-2008,filed_withdrawal_or_motion,medium_address_or_range_review,20085712TCQ,,29-02A Francis Lewis Boulevard,"Resolution approving the motion to file pursuant to withdrawal of the petition for a revocable consent for an unenclosed sidewalk café located at 29-02A Francis Lewis Boulevard, Borough of Queens (20085712 TCQ; L.U. No. 893).","Matter: Res 1654-2008 (2008)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 20085712TCQ
+Parsed title BBLs: none parsed
+Parsed title address: 29-02A Francis Lewis Boulevard
+Full title: Resolution approving the motion to file pursuant to withdrawal of the petition for a revocable consent for an unenclosed sidewalk café located at 29-02A Francis Lewis Boulevard, Borough of Queens (20085712 TCQ; L.U. No. 893).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2008,452235,Res 1675-2008,disapproved,medium_address_or_range_review,20095159TCQ,,29-02A Francis Lewis Boulevard,"Resolution disapproving the petition for a revocable consent for an unenclosed sidewalk café located at 29-02A Francis Lewis Boulevard, Borough of Queens (20095159 TCQ; L.U. No. 911).","Matter: Res 1675-2008 (2008)
+Disposition: disapproved / Disapproved by Council
+Application keys: 20095159TCQ
+Parsed title BBLs: none parsed
+Parsed title address: 29-02A Francis Lewis Boulevard
+Full title: Resolution disapproving the petition for a revocable consent for an unenclosed sidewalk café located at 29-02A Francis Lewis Boulevard, Borough of Queens (20095159 TCQ; L.U. No. 911).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2009,535123,LU 1256-2009,disapproved,document_lookup_review,090236MMX,,,"Application no. C 090236 MMX submitted by the Economic Development Corporation and Related Retail Armory, LLC pursuant to Sections 197-c and 199 of the New York City Charter, and Section 5-430 et seq. of the New York City Administrative Code, for an amendment to the City Map. This application is subject to review and action by the Land Use Committee only if appealed to the Council pursuant to §197-d (b)(2) of the Charter or called up by vote of the Council pursuant to §197-d (b)(3) of the Charter.","Matter: LU 1256-2009 (2009)
+Disposition: disapproved / Overridden by Council
+Application keys: 090236MMX
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Application no. C 090236 MMX submitted by the Economic Development Corporation and Related Retail Armory, LLC pursuant to Sections 197-c and 199 of the New York City Charter, and Section 5-430 et seq. of the New York City Administrative Code, for an amendment to the City Map. This application is subject to review and action by the Land Use Committee only if appealed to the Council pursuant to §197-d (b)(2) of the Charter or called up by vote of the Council pursuant to §197-d (b)(3) of the Charter.
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2009,535116,LU 1257-2009,disapproved,document_lookup_review,090237MMX,,,"Application no. C 090237 MMX submitted by the Economic Development Corporation pursuant to Sections 197-c and 199 of the New York City Charter, and Section 5-430 et seq. of the New York City Administrative Code, for an amendment to the City Map. This application is subject to review and action by the Land Use Committee only if appealed to the Council pursuant to §197-d (b)(2) of the Charter or called up by vote of the Council pursuant to §197-d (b)(3) of the Charter","Matter: LU 1257-2009 (2009)
+Disposition: disapproved / Overridden by Council
+Application keys: 090237MMX
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Application no. C 090237 MMX submitted by the Economic Development Corporation pursuant to Sections 197-c and 199 of the New York City Charter, and Section 5-430 et seq. of the New York City Administrative Code, for an amendment to the City Map. This application is subject to review and action by the Land Use Committee only if appealed to the Council pursuant to §197-d (b)(2) of the Charter or called up by vote of the Council pursuant to §197-d (b)(3) of the Charter
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2009,535125,LU 1258-2009,disapproved,document_lookup_review,090437ZMX,,,"Application no. C 090437 ZMX submitted by Related Retail Armory, LLC and the Economic Development Corporation pursuant to Sections 197-c and 201 of the New York City Charter for an amendment of the Zoning Map, Section No. 3c: changing from an R6 District to a C4-4 District property bounded by West 195th Street*, Jerome Avenue, West Kingsbridge Road, and Reservoir Avenue.","Matter: LU 1258-2009 (2009)
+Disposition: disapproved / Overridden by Council
+Application keys: 090437ZMX
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Application no. C 090437 ZMX submitted by Related Retail Armory, LLC and the Economic Development Corporation pursuant to Sections 197-c and 201 of the New York City Charter for an amendment of the Zoning Map, Section No. 3c: changing from an R6 District to a C4-4 District property bounded by West 195th Street*, Jerome Avenue, West Kingsbridge Road, and Reservoir Avenue.
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2009,548437,Res 2276-2009,filed_withdrawal_or_motion,medium_address_or_range_review,20105053TCM,,98 Kenmare Street,"Resolution approving a motion to file pursuant to withdrawal of the petition for a revocable consent for an unenclosed sidewalk café located at 98 Kenmare Street, Borough of Manhattan (20105053 TCM; L.U. No. 1252).","Matter: Res 2276-2009 (2009)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 20105053TCM
+Parsed title BBLs: none parsed
+Parsed title address: 98 Kenmare Street
+Full title: Resolution approving a motion to file pursuant to withdrawal of the petition for a revocable consent for an unenclosed sidewalk café located at 98 Kenmare Street, Borough of Manhattan (20105053 TCM; L.U. No. 1252).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2009,558010,Res 2295-2009,disapproved,document_lookup_review,090236MMX,,,"Resolution disapproving the decision of the City Planning Commission on ULURP No. C 090236 MMX, an amendment to the City Map (L.U. No. 1256).","Matter: Res 2295-2009 (2009)
+Disposition: disapproved / Overridden by Council
+Application keys: 090236MMX
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution disapproving the decision of the City Planning Commission on ULURP No. C 090236 MMX, an amendment to the City Map (L.U. No. 1256).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2009,558011,Res 2296-2009,disapproved,document_lookup_review,090237MMX,,,"Resolution disapproving the decision of the City Planning Commission on ULURP No. C 090237 MMX, an amendment to the City Map (L.U. No. 1257).","Matter: Res 2296-2009 (2009)
+Disposition: disapproved / Overridden by Council
+Application keys: 090237MMX
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution disapproving the decision of the City Planning Commission on ULURP No. C 090237 MMX, an amendment to the City Map (L.U. No. 1257).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2009,558012,Res 2297-2009,disapproved,document_lookup_review,090437ZMX,,,"Resolution disapproving the decision of the City Planning Commission on ULURP No. C 090437 ZMX, a Zoning Map amendment (L.U. No. 1258).","Matter: Res 2297-2009 (2009)
+Disposition: disapproved / Overridden by Council
+Application keys: 090437ZMX
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution disapproving the decision of the City Planning Commission on ULURP No. C 090437 ZMX, a Zoning Map amendment (L.U. No. 1258).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2010,785058,Res 0517-2010,filed_withdrawal_or_motion,medium_address_or_range_review,20095547TCM,,490-494 LaGuardia Place,"Resolution approving a motion the file pursuant to withdrawal of the petition for a revocable consent for an enclosed sidewalk café located at 490-494 LaGuardia Place, Borough of Manhattan (20095547 TCM; L.U. No. 237).","Matter: Res 0517-2010 (2010)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 20095547TCM
+Parsed title BBLs: none parsed
+Parsed title address: 490-494 LaGuardia Place
+Full title: Resolution approving a motion the file pursuant to withdrawal of the petition for a revocable consent for an enclosed sidewalk café located at 490-494 LaGuardia Place, Borough of Manhattan (20095547 TCM; L.U. No. 237).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2011,921910,Res 0949-2011,filed_by_council_other,document_lookup_review,20115507SCQ,,,"Resolution approving the site plan for a new, approximately 416-Seat Primary School Facility and Schoolyard (P.S. 316, Queens) to be located generally at the northeast and northwest corners of 90th Street and 101st Avenue, Ozone Park (Tax Block 9064, Tax Lots 31 and 35; Tax Block 9063, Tax Lot 27), Borough of Queens (Non-ULURP No. 20115507 SCQ; L.U. No. 425).","Matter: Res 0949-2011 (2011)
+Disposition: filed_by_council_other / Filed by Council
+Application keys: 20115507SCQ
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving the site plan for a new, approximately 416-Seat Primary School Facility and Schoolyard (P.S. 316, Queens) to be located generally at the northeast and northwest corners of 90th Street and 101st Avenue, Ozone Park (Tax Block 9064, Tax Lots 31 and 35; Tax Block 9063, Tax Lot 27), Borough of Queens (Non-ULURP No. 20115507 SCQ; L.U. No. 425).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2012,1050074,Res 1238-2012,filed_withdrawal_or_motion,medium_address_or_range_review,20125008TCK,,68 Bergen Street,"Resolution approving a motion to file pursuant to withdrawal of the petition for a revocable consent for an unenclosed sidewalk café located at 68 Bergen Street, Borough of Brooklyn (20125008 TCK; L.U. No. 557).","Matter: Res 1238-2012 (2012)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 20125008TCK
+Parsed title BBLs: none parsed
+Parsed title address: 68 Bergen Street
+Full title: Resolution approving a motion to file pursuant to withdrawal of the petition for a revocable consent for an unenclosed sidewalk café located at 68 Bergen Street, Borough of Brooklyn (20125008 TCK; L.U. No. 557).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2012,1080532,Res 1250-2012,filed_withdrawal_or_motion,medium_address_or_range_review,20125204TCM,,62 Spring Street,"Resolution approving a motion to file pursuant to withdrawal of the petition for a revocable consent for an unenclosed sidewalk café located at 62 Spring Street, Borough of Manhattan (20125204 TCM; L.U. No. 568).","Matter: Res 1250-2012 (2012)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 20125204TCM
+Parsed title BBLs: none parsed
+Parsed title address: 62 Spring Street
+Full title: Resolution approving a motion to file pursuant to withdrawal of the petition for a revocable consent for an unenclosed sidewalk café located at 62 Spring Street, Borough of Manhattan (20125204 TCM; L.U. No. 568).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2012,1101748,Res 1281-2012,filed_withdrawal_or_motion,medium_address_or_range_review,20125298TCM,,127 Mulberry Street,"Resolution approving a motion to file pursuant to withdrawal of the petition for a revocable consent for an unenclosed sidewalk café located at 127 Mulberry Street, Borough of Manhattan (20125298 TCM; L.U. No. 578).","Matter: Res 1281-2012 (2012)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 20125298TCM
+Parsed title BBLs: none parsed
+Parsed title address: 127 Mulberry Street
+Full title: Resolution approving a motion to file pursuant to withdrawal of the petition for a revocable consent for an unenclosed sidewalk café located at 127 Mulberry Street, Borough of Manhattan (20125298 TCM; L.U. No. 578).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2012,1156088,Res 1448-2012,filed_withdrawal_or_motion,medium_address_or_range_review,20125206TCM,,130-138 Seventh Avenue South,"Resolution approving a motion to file pursuant to withdrawal of the petition for a revocable consent for an unenclosed sidewalk café located at 130-138 Seventh Avenue South, Borough of Manhattan (20125206 TCM; L.U. No. 629).","Matter: Res 1448-2012 (2012)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 20125206TCM
+Parsed title BBLs: none parsed
+Parsed title address: 130-138 Seventh Avenue South
+Full title: Resolution approving a motion to file pursuant to withdrawal of the petition for a revocable consent for an unenclosed sidewalk café located at 130-138 Seventh Avenue South, Borough of Manhattan (20125206 TCM; L.U. No. 629).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2012,1201677,Res 1524-2012,filed_withdrawal_or_motion,medium_address_or_range_review,20125783TCM,,131 Seventh Avenue South,"Resolution approving a motion to file pursuant to withdrawal of the petition for a revocable consent for an unenclosed sidewalk café located at 131 Seventh Avenue South, Borough of Manhattan (20125783 TCM; L.U. No. 685).","Matter: Res 1524-2012 (2012)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 20125783TCM
+Parsed title BBLs: none parsed
+Parsed title address: 131 Seventh Avenue South
+Full title: Resolution approving a motion to file pursuant to withdrawal of the petition for a revocable consent for an unenclosed sidewalk café located at 131 Seventh Avenue South, Borough of Manhattan (20125783 TCM; L.U. No. 685).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2013,1322668,Res 1704-2013,filed_withdrawal_or_motion,medium_address_or_range_review,20135381TCM,,140 Seventh Avenue South,"Resolution approving a motion to file pursuant to withdrawal of the application for a revocable consent for an enclosed sidewalk café located at 140 Seventh Avenue South, Borough of Manhattan (20135381 TCM; L.U. No. 780).","Matter: Res 1704-2013 (2013)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 20135381TCM
+Parsed title BBLs: none parsed
+Parsed title address: 140 Seventh Avenue South
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application for a revocable consent for an enclosed sidewalk café located at 140 Seventh Avenue South, Borough of Manhattan (20135381 TCM; L.U. No. 780).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2013,1444089,Res 1820-2013,filed_withdrawal_or_motion,medium_address_or_range_review,20135408TCM,,46 Gansevoort Street,"Resolution approving a motion to file L.U. 828 concerning an application for a revocable consent for an unenclosed sidewalk café located at 46 Gansevoort Street, Borough of Manhattan (20135408 TCM; L.U. No. 828).","Matter: Res 1820-2013 (2013)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 20135408TCM
+Parsed title BBLs: none parsed
+Parsed title address: 46 Gansevoort Street
+Full title: Resolution approving a motion to file L.U. 828 concerning an application for a revocable consent for an unenclosed sidewalk café located at 46 Gansevoort Street, Borough of Manhattan (20135408 TCM; L.U. No. 828).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2013,1448014,Res 1844-2013,filed_withdrawal_or_motion,document_lookup_review,20135759PNM,,,"Resolution approving motion to file pursuant to withdrawal of a Maritime Lease Agreement for certain City-owned berth areas and other improvements located along the East River Waterfront Esplanade on Pier 15 (Block 73, part of Lot 2), Borough of Manhattan (20135759 PNM; L.U. No. 851).","Matter: Res 1844-2013 (2013)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 20135759PNM
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving motion to file pursuant to withdrawal of a Maritime Lease Agreement for certain City-owned berth areas and other improvements located along the East River Waterfront Esplanade on Pier 15 (Block 73, part of Lot 2), Borough of Manhattan (20135759 PNM; L.U. No. 851).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2013,1458865,Res 1877-2013,filed_withdrawal_or_motion,medium_address_or_range_review,20135587TCM,,183 West 10th Street,"Resolution approving a motion to file L.U. 858 concerning an application for a revocable consent for an unenclosed sidewalk café located at 183 West 10th Street, Borough of Manhattan (20135587 TCM; L.U. No. 858).","Matter: Res 1877-2013 (2013)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 20135587TCM
+Parsed title BBLs: none parsed
+Parsed title address: 183 West 10th Street
+Full title: Resolution approving a motion to file L.U. 858 concerning an application for a revocable consent for an unenclosed sidewalk café located at 183 West 10th Street, Borough of Manhattan (20135587 TCM; L.U. No. 858).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2013,1480959,Res 1944-2013,filed_withdrawal_or_motion,medium_address_or_range_review,20135625TCM,,2847 Broadway,"Resolution approving a motion to file L.U. 901 concerning an application for a revocable consent for an unenclosed sidewalk café located at 2847 Broadway, Borough of Manhattan (20135625 TCM; L.U. No. 901).","Matter: Res 1944-2013 (2013)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 20135625TCM
+Parsed title BBLs: none parsed
+Parsed title address: 2847 Broadway
+Full title: Resolution approving a motion to file L.U. 901 concerning an application for a revocable consent for an unenclosed sidewalk café located at 2847 Broadway, Borough of Manhattan (20135625 TCM; L.U. No. 901).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2013,1500399,Res 2018-2013,filed_withdrawal_or_motion,medium_address_or_range_review,20145048TCM,,522 Hudson Street,"Resolution approving a motion to file L.U. 944 concerning an application for a revocable consent for an unenclosed sidewalk café located at 522 Hudson Street, Borough of Manhattan (20145048 TCM; L.U. No. 944).","Matter: Res 2018-2013 (2013)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 20145048TCM
+Parsed title BBLs: none parsed
+Parsed title address: 522 Hudson Street
+Full title: Resolution approving a motion to file L.U. 944 concerning an application for a revocable consent for an unenclosed sidewalk café located at 522 Hudson Street, Borough of Manhattan (20145048 TCM; L.U. No. 944).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2013,1519569,Res 2031-2013,filed_withdrawal_or_motion,document_lookup_review,130247AZRM,,,"Resolution approving a motion to file pursuant to withdrawal of the application of the New City Department of City Planning, Application No. N 130247 (A) ZRM, for an amendment of the Zoning Resolution of the City of New York, concerning Article VIII, Chapter 1 (Special Midtown District), Community Districts 5 and 6, Borough of Manhattan (L.U. No. 945).","Matter: Res 2031-2013 (2013)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 130247AZRM
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application of the New City Department of City Planning, Application No. N 130247 (A) ZRM, for an amendment of the Zoning Resolution of the City of New York, concerning Article VIII, Chapter 1 (Special Midtown District), Community Districts 5 and 6, Borough of Manhattan (L.U. No. 945).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2013,1519570,Res 2032-2013,filed_withdrawal_or_motion,document_lookup_review,130248ZMM,,,"Resolution approving a motion to file pursuant to withdrawal of the application of the New York City Department of City Planning, ULURP No. C 130248 ZMM, a Zoning Map amendment (L.U. No. 946).","Matter: Res 2032-2013 (2013)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 130248ZMM
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application of the New York City Department of City Planning, ULURP No. C 130248 ZMM, a Zoning Map amendment (L.U. No. 946).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2014,1661910,Res 0097-2014,filed_withdrawal_or_motion,document_lookup_review,070194ZMQ,,,"Resolution approving a motion to file pursuant to withdrawal of the decision of the City Planning Commission on ULURP Application No. C 070194 ZMQ, a Zoning Map amendment (L.U. No. 12).","Matter: Res 0097-2014 (2014)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 070194ZMQ
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the decision of the City Planning Commission on ULURP Application No. C 070194 ZMQ, a Zoning Map amendment (L.U. No. 12).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2014,1661911,Res 0098-2014,filed_withdrawal_or_motion,document_lookup_review,090033MMQ,,,"Resolution approving a motion to file pursuant to withdrawal of the decision of the City Planning Commission on ULURP Application No. C 090033 MMQ, an amendment to the City Map (L.U. No. 13).","Matter: Res 0098-2014 (2014)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 090033MMQ
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the decision of the City Planning Commission on ULURP Application No. C 090033 MMQ, an amendment to the City Map (L.U. No. 13).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2014,1685512,Res 0156-2014,disapproved,medium_address_or_range_review,20145354TCQ,,22-30 154th Street,"Resolution disapproving the petition for a revocable consent for an enclosed sidewalk café located at 22-30 154th Street, Borough of Queens (20145354 TCQ; L.U. No. 22).","Matter: Res 0156-2014 (2014)
+Disposition: disapproved / Disapproved by Council
+Application keys: 20145354TCQ
+Parsed title BBLs: none parsed
+Parsed title address: 22-30 154th Street
+Full title: Resolution disapproving the petition for a revocable consent for an enclosed sidewalk café located at 22-30 154th Street, Borough of Queens (20145354 TCQ; L.U. No. 22).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2015,2230067,Res 0604-2015,filed_withdrawal_or_motion,document_lookup_review,140353ZSM,,,"Resolution approving a motion to file pursuant to withdrawal of the application by the Applicant regarding the decision of the City Planning Commission on ULURP No. C 140353 ZSM (L.U. No. 173), for the grant of a special permit pursuant to Section 74-711 of the Zoning Resolution to modify Section 43-17 - to allow the enlargement of an existing 3-story building containing joint living-work quarters for artists (JLWQA) and Section 42-10 - to allow residential use (U.G. 2 use) on portions of the ground floor, 2nd - 3rd floors and within the proposed 4th - 5th floors and duplex penthouse levels on","Matter: Res 0604-2015 (2015)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 140353ZSM
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application by the Applicant regarding the decision of the City Planning Commission on ULURP No. C 140353 ZSM (L.U. No. 173), for the grant of a special permit pursuant to Section 74-711 of the Zoning Resolution to modify Section 43-17 - to allow the enlargement of an existing 3-story building containing joint living-work quarters for artists (JLWQA) and Section 42-10 - to allow residential use (U.G. 2 use) on portions of the ground floor, 2nd - 3rd floors and within the proposed 4th - 5th floors and duplex penthouse levels on
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2015,2482525,Res 0882-2015,filed_withdrawal_or_motion,medium_address_or_range_review,20155746TCM,,221 West Broadway a.k.a. 5 White Street,"Resolution approving a motion to file pursuant to withdrawal of the application for a revocable consent for an unenclosed sidewalk café located at 221 West Broadway a.k.a. 5 White Street, Borough of Manhattan (20155746 TCM; L.U. No. 274).","Matter: Res 0882-2015 (2015)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 20155746TCM
+Parsed title BBLs: none parsed
+Parsed title address: 221 West Broadway a.k.a. 5 White Street
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application for a revocable consent for an unenclosed sidewalk café located at 221 West Broadway a.k.a. 5 White Street, Borough of Manhattan (20155746 TCM; L.U. No. 274).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2016,2549883,Res 0959-2016,filed_withdrawal_or_motion,medium_address_or_range_review,20165077TCM,,270 6th Avenue,"Resolution approving a motion to file pursuant to withdrawal of the application for a revocable consent for an unenclosed sidewalk café located at 270 6th Avenue, Borough of Manhattan (20165077 TCM; L.U. No. 299).","Matter: Res 0959-2016 (2016)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 20165077TCM
+Parsed title BBLs: none parsed
+Parsed title address: 270 6th Avenue
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application for a revocable consent for an unenclosed sidewalk café located at 270 6th Avenue, Borough of Manhattan (20165077 TCM; L.U. No. 299).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2016,2558987,Res 0986-2016,filed_withdrawal_or_motion,medium_address_or_range_review,20165210TCM,,33 Avenue B,"Resolution approving a motion to file pursuant to withdrawal of the petition for a revocable consent for an unenclosed sidewalk café located at 33 Avenue B, Borough of Manhattan (20165210 TCM; L.U. No. 320).","Matter: Res 0986-2016 (2016)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 20165210TCM
+Parsed title BBLs: none parsed
+Parsed title address: 33 Avenue B
+Full title: Resolution approving a motion to file pursuant to withdrawal of the petition for a revocable consent for an unenclosed sidewalk café located at 33 Avenue B, Borough of Manhattan (20165210 TCM; L.U. No. 320).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2016,2593596,Res 1005-2016,filed_withdrawal_or_motion,medium_address_or_range_review,20165174TCM,,210 East 3rd Street,"Resolution approving a motion to file pursuant to withdrawal of the application for a revocable consent for an unenclosed sidewalk café located at 210 East 3rd Street, Borough of Manhattan (20165174 TCM; L.U. No. 332).","Matter: Res 1005-2016 (2016)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 20165174TCM
+Parsed title BBLs: none parsed
+Parsed title address: 210 East 3rd Street
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application for a revocable consent for an unenclosed sidewalk café located at 210 East 3rd Street, Borough of Manhattan (20165174 TCM; L.U. No. 332).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2016,2808436,Res 1189-2016,filed_withdrawal_or_motion,medium_address_or_range_review,20165568TCK,,261 Metropolitan Avenue,"Resolution approving a motion to file pursuant to withdrawal of the application for a revocable consent for an unenclosed sidewalk café located at 261 Metropolitan Avenue, Borough of Brooklyn (20165568 TCK; L.U. No. 425).","Matter: Res 1189-2016 (2016)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 20165568TCK
+Parsed title BBLs: none parsed
+Parsed title address: 261 Metropolitan Avenue
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application for a revocable consent for an unenclosed sidewalk café located at 261 Metropolitan Avenue, Borough of Brooklyn (20165568 TCK; L.U. No. 425).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2016,2829973,Res 1199-2016,filed_withdrawal_or_motion,document_lookup_review,160137ZMM,,,"Resolution approving a motion to file pursuant to withdrawal of the application by the Applicant regarding the decision of the City Planning Commission on ULURP No. C 160137 ZMM, a Zoning Map amendment (L.U. No. 432).","Matter: Res 1199-2016 (2016)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 160137ZMM
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application by the Applicant regarding the decision of the City Planning Commission on ULURP No. C 160137 ZMM, a Zoning Map amendment (L.U. No. 432).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2016,2908356,Res 1340-2016,disapproved,document_lookup_review,150360ZMK,,,"Resolution disapproving the decision of the City Planning Commission on ULURP No. C 150360 ZMK, a Zoning Map amendment (L.U. No. 531).","Matter: Res 1340-2016 (2016)
+Disposition: disapproved / Disapproved by Council
+Application keys: 150360ZMK
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution disapproving the decision of the City Planning Commission on ULURP No. C 150360 ZMK, a Zoning Map amendment (L.U. No. 531).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2016,2908357,Res 1341-2016,disapproved,document_lookup_review,160379ZRK,,,"Resolution disapproving the decision of the City Planning Commission on Application No. N 160379 ZRK, for an amendment of the Zoning Resolution of the City of New York, modifying Appendix F (Inclusionary Housing Designated Areas) for the purpose of establishing a Mandatory Inclusionary Housing area in Community District 6, Borough of Brooklyn (L.U. No. 532).","Matter: Res 1341-2016 (2016)
+Disposition: disapproved / Disapproved by Council
+Application keys: 160379ZRK
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution disapproving the decision of the City Planning Commission on Application No. N 160379 ZRK, for an amendment of the Zoning Resolution of the City of New York, modifying Appendix F (Inclusionary Housing Designated Areas) for the purpose of establishing a Mandatory Inclusionary Housing area in Community District 6, Borough of Brooklyn (L.U. No. 532).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2017,2971438,Res 1396-2017,filed_withdrawal_or_motion,document_lookup_review,160254AZRM,,,"Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on Application No. N 160254 (A) ZRM, for an amendment of the Zoning Resolution of the City of New York, concerning Article VIII, Chapter 1 (Special Midtown District), to modify the regulations governing the transfer of development rights from listed theaters in Community Districts 4 and 5, Borough of Manhattan (L.U. No. 545).","Matter: Res 1396-2017 (2017)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 160254AZRM
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on Application No. N 160254 (A) ZRM, for an amendment of the Zoning Resolution of the City of New York, concerning Article VIII, Chapter 1 (Special Midtown District), to modify the regulations governing the transfer of development rights from listed theaters in Community Districts 4 and 5, Borough of Manhattan (L.U. No. 545).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2017,3054158,Res 1491-2017,filed_withdrawal_or_motion,medium_address_or_range_review,20175260TCM,,151 Elizabeth Street,"Resolution approving a motion to file pursuant to withdrawal of the Application for a new revocable consent for a small unenclosed sidewalk café located at 151 Elizabeth Street, Borough of Manhattan (20175260 TCM; L.U. No. 607).","Matter: Res 1491-2017 (2017)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 20175260TCM
+Parsed title BBLs: none parsed
+Parsed title address: 151 Elizabeth Street
+Full title: Resolution approving a motion to file pursuant to withdrawal of the Application for a new revocable consent for a small unenclosed sidewalk café located at 151 Elizabeth Street, Borough of Manhattan (20175260 TCM; L.U. No. 607).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2017,3065945,Res 1543-2017,filed_withdrawal_or_motion,document_lookup_review,150235ZMK,,,"Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on Application ULURP No. C 150235 ZMK, a Zoning Map amendment (L.U. No. 643).","Matter: Res 1543-2017 (2017)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 150235ZMK
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on Application ULURP No. C 150235 ZMK, a Zoning Map amendment (L.U. No. 643).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2017,3065946,Res 1544-2017,filed_withdrawal_or_motion,document_lookup_review,150234ZRK,,,"Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on Application No. N 150234 ZRK, for an amendment of the Zoning Resolution of the City of New York, modifying Appendix F for the purpose of establishing a Mandatory Inclusionary Housing area, in Community District 2, Borough of Brooklyn (L.U. No. 644).","Matter: Res 1544-2017 (2017)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 150234ZRK
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on Application No. N 150234 ZRK, for an amendment of the Zoning Resolution of the City of New York, modifying Appendix F for the purpose of establishing a Mandatory Inclusionary Housing area, in Community District 2, Borough of Brooklyn (L.U. No. 644).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2018,3673473,LU 0204-2018,disapproved,document_lookup_review,170116ZSM,,,"Application No. C 170116 ZSM (27 East 4th Street) submitted by Kalodop II Park Corporation pursuant to Sections 197-c and 201 of the New York City Charter for the grant of a special permit pursuant to Section 74-712(a) of the Zoning Resolution to modify the use regulations of Section 42-14(D)(2)(b) to allow Use Group 5 uses (transient hotel and accessory uses) and Use Group 6 uses (retail and office uses) below the floor level of the second story of a proposed 8-story commercial building on a zoning lot that, as of December 15, 2003, is improved with a one-story building, on property located","Matter: LU 0204-2018 (2018)
+Disposition: disapproved / Disapproved by Council
+Application keys: 170116ZSM
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Application No. C 170116 ZSM (27 East 4th Street) submitted by Kalodop II Park Corporation pursuant to Sections 197-c and 201 of the New York City Charter for the grant of a special permit pursuant to Section 74-712(a) of the Zoning Resolution to modify the use regulations of Section 42-14(D)(2)(b) to allow Use Group 5 uses (transient hotel and accessory uses) and Use Group 6 uses (retail and office uses) below the floor level of the second story of a proposed 8-story commercial building on a zoning lot that, as of December 15, 2003, is improved with a one-story building, on property located
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2018,3320504,Res 0131-2018,filed_withdrawal_or_motion,medium_address_or_range_review,20185005TCM,,270 6th Avenue,"Resolution approving a motion to file pursuant to withdrawal of the Application for a new revocable consent for an unenclosed sidewalk café located at 270 6th Avenue, Borough of Manhattan (20185005 TCM; L.U. No. 1).","Matter: Res 0131-2018 (2018)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 20185005TCM
+Parsed title BBLs: none parsed
+Parsed title address: 270 6th Avenue
+Full title: Resolution approving a motion to file pursuant to withdrawal of the Application for a new revocable consent for an unenclosed sidewalk café located at 270 6th Avenue, Borough of Manhattan (20185005 TCM; L.U. No. 1).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2018,3595823,Res 0496-2018,filed_withdrawal_or_motion,document_lookup_review,180098ZMQ,,,"Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on ULURP No. C 180098 ZMQ, a Zoning Map amendment (L.U. No. 166).","Matter: Res 0496-2018 (2018)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 180098ZMQ
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on ULURP No. C 180098 ZMQ, a Zoning Map amendment (L.U. No. 166).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2018,3595824,Res 0497-2018,filed_withdrawal_or_motion,document_lookup_review,180099ZRQ,,,"Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on Application No. N 180099 ZRQ (L.U. No. 167), for an amendment of the Zoning Resolution of the City of New York, modifying Appendix F for the purpose of establishing a Mandatory Inclusionary Housing area, Community District 4, Borough of Queens.","Matter: Res 0497-2018 (2018)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 180099ZRQ
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on Application No. N 180099 ZRQ (L.U. No. 167), for an amendment of the Zoning Resolution of the City of New York, modifying Appendix F for the purpose of establishing a Mandatory Inclusionary Housing area, Community District 4, Borough of Queens.
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2018,3595825,Res 0498-2018,disapproved,medium_address_or_range_review,20185483TCM,,461 West 23rd Street,"Resolution disapproving the petition for a new revocable consent for an unenclosed sidewalk café located at 461 West 23rd Street, Borough of Manhattan (Non-ULURP No. 20185483 TCM; L.U. No. 169).","Matter: Res 0498-2018 (2018)
+Disposition: disapproved / Disapproved by Council
+Application keys: 20185483TCM
+Parsed title BBLs: none parsed
+Parsed title address: 461 West 23rd Street
+Full title: Resolution disapproving the petition for a new revocable consent for an unenclosed sidewalk café located at 461 West 23rd Street, Borough of Manhattan (Non-ULURP No. 20185483 TCM; L.U. No. 169).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2018,3595827,Res 0500-2018,disapproved,medium_address_or_range_review,20185391TCM,,4486-4488 Broadway,"Resolution disapproving the petition for a new revocable consent for an unenclosed sidewalk café located at 4486-4488 Broadway, Borough of Manhattan (Non-ULURP No. 20185391 TCM; L.U. No 171.).","Matter: Res 0500-2018 (2018)
+Disposition: disapproved / Disapproved by Council
+Application keys: 20185391TCM
+Parsed title BBLs: none parsed
+Parsed title address: 4486-4488 Broadway
+Full title: Resolution disapproving the petition for a new revocable consent for an unenclosed sidewalk café located at 4486-4488 Broadway, Borough of Manhattan (Non-ULURP No. 20185391 TCM; L.U. No 171.).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2019,3876820,LU 0367-2019,filed_by_council_other,document_lookup_review,180294ZMK,,,"Application No. C 180294 ZMK submitted by 41 Summit Street, LLC pursuant to Sections 197-c and 201 of the New York City Charter for an amendment of the Zoning Map, Section No. 16a, changing from changing from an M1-1 District to an R7A District property bounded by a line midway between Carroll Street and Hamilton Avenue, a line midway between Carroll Street and Summit Street, a line 350 feet westerly of Columbia Street, Summit Street, Hamilton Avenue, and a line perpendicular to the northeasterly street line of Hamilton Avenue distant 70 feet northwesterly (as measured along the street line) f","Matter: LU 0367-2019 (2019)
+Disposition: filed_by_council_other / Filed by Council
+Application keys: 180294ZMK
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Application No. C 180294 ZMK submitted by 41 Summit Street, LLC pursuant to Sections 197-c and 201 of the New York City Charter for an amendment of the Zoning Map, Section No. 16a, changing from changing from an M1-1 District to an R7A District property bounded by a line midway between Carroll Street and Hamilton Avenue, a line midway between Carroll Street and Summit Street, a line 350 feet westerly of Columbia Street, Summit Street, Hamilton Avenue, and a line perpendicular to the northeasterly street line of Hamilton Avenue distant 70 feet northwesterly (as measured along the street line) f
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2019,3908793,Res 0835-2019,filed_withdrawal_or_motion,document_lookup_review,180294ZMK,,,"Resolution approving a motion to file pursuant to withdrawal for Application No. C 180294 ZMK, a Zoning Map amendment (Preconsidered L.U. No. 367).","Matter: Res 0835-2019 (2019)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 180294ZMK
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal for Application No. C 180294 ZMK, a Zoning Map amendment (Preconsidered L.U. No. 367).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2019,3908794,Res 0836-2019,filed_withdrawal_or_motion,document_lookup_review,180295ZRK,,,"Resolution approving a motion to file pursuant to withdrawal for Application No. N 180295 ZRK, for an amendment of the text of the Zoning Resolution (Preconsidered L.U. No. 368).","Matter: Res 0836-2019 (2019)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 180295ZRK
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal for Application No. N 180295 ZRK, for an amendment of the text of the Zoning Resolution (Preconsidered L.U. No. 368).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2019,4066748,Res 1011-2019,filed_withdrawal_or_motion,document_lookup_review,190202ZMQ,,,"Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on ULURP No. C 190202 ZMQ, a Zoning Map amendment (L.U. No. 464).","Matter: Res 1011-2019 (2019)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 190202ZMQ
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on ULURP No. C 190202 ZMQ, a Zoning Map amendment (L.U. No. 464).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2019,4066749,Res 1012-2019,filed_withdrawal_or_motion,document_lookup_review,190203ZRQ,,,"Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on Application No. N 190203 ZRQ, for an amendment of the text of the Zoning Resolution (L.U. No. 465).","Matter: Res 1012-2019 (2019)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 190203ZRQ
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on Application No. N 190203 ZRQ, for an amendment of the text of the Zoning Resolution (L.U. No. 465).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2019,4226726,Res 1158-2019,filed_withdrawal_or_motion,document_lookup_review,190390ZMM,,,"Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on ULURP No. C 190390 ZMM, a Zoning Map amendment (Preconsidered L.U. No. 558).","Matter: Res 1158-2019 (2019)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 190390ZMM
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on ULURP No. C 190390 ZMM, a Zoning Map amendment (Preconsidered L.U. No. 558).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2019,4226740,Res 1161-2019,filed_withdrawal_or_motion,document_lookup_review,190403ZMX,,,"Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on ULURP No. C 190403 ZMX, a Zoning Map amendment (Preconsidered L.U. No. 578).","Matter: Res 1161-2019 (2019)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 190403ZMX
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on ULURP No. C 190403 ZMX, a Zoning Map amendment (Preconsidered L.U. No. 578).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2019,4226741,Res 1162-2019,filed_withdrawal_or_motion,document_lookup_review,190430AZRY,,,"Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on Application No. N 190430(A) ZRY, for an amendment of the text of the Zoning Resolution (Preconsidered L.U. No. 579).","Matter: Res 1162-2019 (2019)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 190430AZRY
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on Application No. N 190430(A) ZRY, for an amendment of the text of the Zoning Resolution (Preconsidered L.U. No. 579).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2020,4326360,LU 0632-2020,filed_by_council_other,document_lookup_review,200050ZSM,,,"Application No. C 200050 ZSM (Lenox Terrace) submitted by Lenox Terrace Development Associates pursuant to Sections 197-c and 201 of the New York City Charter for the grant of a special permit pursuant to Section 74-743 of the Zoning Resolution to modify the height and setback requirements of Sections 23-60 (Height and Setback Regulations) and 35-60 (Modification of Height and Setback Regulations), and the distance between buildings requirements of Section 23- 711 (Standard minimum distance between buildings), in connection with a proposed mixed use development, within a large scale general de","Matter: LU 0632-2020 (2020)
+Disposition: filed_by_council_other / Filed by Council
+Application keys: 200050ZSM
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Application No. C 200050 ZSM (Lenox Terrace) submitted by Lenox Terrace Development Associates pursuant to Sections 197-c and 201 of the New York City Charter for the grant of a special permit pursuant to Section 74-743 of the Zoning Resolution to modify the height and setback requirements of Sections 23-60 (Height and Setback Regulations) and 35-60 (Modification of Height and Setback Regulations), and the distance between buildings requirements of Section 23- 711 (Standard minimum distance between buildings), in connection with a proposed mixed use development, within a large scale general de
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2020,4326363,LU 0635-2020,filed_by_council_other,document_lookup_review,200054ZSM,,,"Application No. C 200054 ZSM (Lenox Terrace) submitted by Lenox Terrace Development Associates pursuant to Sections 197-c and 201 of the New York City Charter for the grant of a special permit pursuant to Section 74-533 of the Zoning Resolution to waive the required number of accessory off-street parking spaces for dwelling units in a development within a Transit Zone, that includes at least 20 percent of all dwelling units as income-restricted housing units, in connection with a proposed mixed-use development, within a large scale general development, on property generally bounded by West 135","Matter: LU 0635-2020 (2020)
+Disposition: filed_by_council_other / Filed by Council
+Application keys: 200054ZSM
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Application No. C 200054 ZSM (Lenox Terrace) submitted by Lenox Terrace Development Associates pursuant to Sections 197-c and 201 of the New York City Charter for the grant of a special permit pursuant to Section 74-533 of the Zoning Resolution to waive the required number of accessory off-street parking spaces for dwelling units in a development within a Transit Zone, that includes at least 20 percent of all dwelling units as income-restricted housing units, in connection with a proposed mixed-use development, within a large scale general development, on property generally bounded by West 135
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2020,4624940,LU 0675-2020,filed_by_council_other,document_lookup_review,190297ZSK; 190298ZRK,,,"Application No. C 190297 ZSK (Industry City) submitted by 1-10 Bush Terminal Owner L.P. and 19-20 Bush Terminal Owner L.P. pursuant to Sections 197-c and 201 of the New York City Charter for the grant of a special permit pursuant to Section 129-21 of the Zoning Resolution, created under concurrent related application N 190298 ZRK, to modify the use regulations of Section 42-10 (Uses Permitted As-Of-Right) and the bulk regulations of Section 43-12 (Maximum Floor Area Ratio), Section 43-20 (Yard Regulations), and Section 43-43 (Maximum Height of Front Wall and Required Front Setbacks), on prope","Matter: LU 0675-2020 (2020)
+Disposition: filed_by_council_other / Filed by Council
+Application keys: 190297ZSK; 190298ZRK
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Application No. C 190297 ZSK (Industry City) submitted by 1-10 Bush Terminal Owner L.P. and 19-20 Bush Terminal Owner L.P. pursuant to Sections 197-c and 201 of the New York City Charter for the grant of a special permit pursuant to Section 129-21 of the Zoning Resolution, created under concurrent related application N 190298 ZRK, to modify the use regulations of Section 42-10 (Uses Permitted As-Of-Right) and the bulk regulations of Section 43-12 (Maximum Floor Area Ratio), Section 43-20 (Yard Regulations), and Section 43-43 (Maximum Height of Front Wall and Required Front Setbacks), on prope
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2020,4624942,LU 0677-2020,filed_by_council_other,document_lookup_review,160146MMK,,,"Application No. C 160146 MMK (Industry City) submitted by 1-10 Bush Terminal Owner L.P. and 19-20 Bush Terminal Owner L.P. pursuant to Sections 197-c and 199 of the New York City Charter for an amendment to the City Map involving: the elimination, discontinuance and closing of 40?? Street between First and Second Avenues; the adjustment of grades and block dimensions necessitated thereby; including authorization for any acquisition or disposition of real property related thereto, in accordance with Map Nos. X-2750 and V-2751 dated November 26, 2018 and signed by the Borough President, Borough","Matter: LU 0677-2020 (2020)
+Disposition: filed_by_council_other / Filed by Council
+Application keys: 160146MMK
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Application No. C 160146 MMK (Industry City) submitted by 1-10 Bush Terminal Owner L.P. and 19-20 Bush Terminal Owner L.P. pursuant to Sections 197-c and 199 of the New York City Charter for an amendment to the City Map involving: the elimination, discontinuance and closing of 40?? Street between First and Second Avenues; the adjustment of grades and block dimensions necessitated thereby; including authorization for any acquisition or disposition of real property related thereto, in accordance with Map Nos. X-2750 and V-2751 dated November 26, 2018 and signed by the Borough President, Borough
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2020,4331860,Res 1271-2020,filed_withdrawal_or_motion,medium_address_or_range_review,20205180TCM,,417 Amsterdam Avenue,"Resolution approving a motion to file pursuant to withdrawal of the Recommendation to approve a renewal revocable consent for an unenclosed sidewalk café located at 417 Amsterdam Avenue, Borough of Manhattan (Non-ULURP No. 20205180 TCM; L.U. No. 624).","Matter: Res 1271-2020 (2020)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 20205180TCM
+Parsed title BBLs: none parsed
+Parsed title address: 417 Amsterdam Avenue
+Full title: Resolution approving a motion to file pursuant to withdrawal of the Recommendation to approve a renewal revocable consent for an unenclosed sidewalk café located at 417 Amsterdam Avenue, Borough of Manhattan (Non-ULURP No. 20205180 TCM; L.U. No. 624).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2020,4331862,Res 1273-2020,filed_withdrawal_or_motion,document_lookup_review,200088ZMX,,,"Resolution approving a motion to file pursuant to withdrawal of the application which was the subject of the decision of the City Planning Commission on ULURP No. C 200088 ZMX, a Zoning Map amendment (L.U. No. 636).","Matter: Res 1273-2020 (2020)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 200088ZMX
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application which was the subject of the decision of the City Planning Commission on ULURP No. C 200088 ZMX, a Zoning Map amendment (L.U. No. 636).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2020,4544933,Res 1327-2020,filed_withdrawal_or_motion,document_lookup_review,200050ZSM,,,"Resolution approving a motion to file pursuant to withdrawal of the application which was the subject of the decision of the City Planning Commission on ULURP No. C 200050 ZSM, for the grant of a special permit (L.U. No. 632).","Matter: Res 1327-2020 (2020)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 200050ZSM
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application which was the subject of the decision of the City Planning Commission on ULURP No. C 200050 ZSM, for the grant of a special permit (L.U. No. 632).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2020,4544934,Res 1328-2020,filed_withdrawal_or_motion,document_lookup_review,200051ZRM,,,"Resolution approving a motion to file pursuant to withdrawal of the application which was the subject of the decision of the City Planning Commission on Application No. N 200051 ZRM, for an amendment of the text of the Zoning Resolution (L.U. No. 633).","Matter: Res 1328-2020 (2020)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 200051ZRM
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application which was the subject of the decision of the City Planning Commission on Application No. N 200051 ZRM, for an amendment of the text of the Zoning Resolution (L.U. No. 633).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2020,4544935,Res 1329-2020,filed_withdrawal_or_motion,document_lookup_review,200052ZMM,,,"Resolution approving a motion to file pursuant to withdrawal of the application which was the subject of the decision of the City Planning Commission on ULURP No. C 200052 ZMM, a Zoning Map amendment (L.U. No. 634).","Matter: Res 1329-2020 (2020)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 200052ZMM
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application which was the subject of the decision of the City Planning Commission on ULURP No. C 200052 ZMM, a Zoning Map amendment (L.U. No. 634).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2020,4544936,Res 1330-2020,filed_withdrawal_or_motion,document_lookup_review,200054ZSM,,,"Resolution approving a motion to file pursuant to withdrawal of the application which was the subject of the decision of the City Planning Commission on ULURP No. C 200054 ZSM, for the grant of a special permit (L.U. No. 635).","Matter: Res 1330-2020 (2020)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 200054ZSM
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application which was the subject of the decision of the City Planning Commission on ULURP No. C 200054 ZSM, for the grant of a special permit (L.U. No. 635).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2020,4667020,Res 1455-2020,filed_withdrawal_or_motion,document_lookup_review,190296ZMK,,,"Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on ULURP No. C 190296 ZMK, a Zoning Map amendment (L.U. No. 674).","Matter: Res 1455-2020 (2020)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 190296ZMK
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on ULURP No. C 190296 ZMK, a Zoning Map amendment (L.U. No. 674).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2020,4667021,Res 1456-2020,filed_withdrawal_or_motion,document_lookup_review,190297ZSK,,,"Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on ULURP No. C 190297 ZSK, for the grant of a special permit (L.U. No. 675).","Matter: Res 1456-2020 (2020)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 190297ZSK
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on ULURP No. C 190297 ZSK, for the grant of a special permit (L.U. No. 675).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2020,4667022,Res 1457-2020,filed_withdrawal_or_motion,document_lookup_review,190298ZRK,,,"Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on Application No. N 190298 ZRK, for an amendment of the text of the Zoning Resolution (L.U. No. 676).","Matter: Res 1457-2020 (2020)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 190298ZRK
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on Application No. N 190298 ZRK, for an amendment of the text of the Zoning Resolution (L.U. No. 676).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2020,4667023,Res 1458-2020,filed_withdrawal_or_motion,document_lookup_review,160146MMK,,,"Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on ULURP No. C 160146 MMK, an amendment to the City Map (L.U. No. 677).","Matter: Res 1458-2020 (2020)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 160146MMK
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on ULURP No. C 160146 MMK, an amendment to the City Map (L.U. No. 677).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2020,4667024,Res 1461-2020,disapproved,document_lookup_review,200077ZSM,,,"Resolution disapproving the decision of the City Planning Commission on ULURP No. C 200077 ZSM, for the grant of a special permit (L.U. No. 680).","Matter: Res 1461-2020 (2020)
+Disposition: disapproved / Disapproved by Council
+Application keys: 200077ZSM
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution disapproving the decision of the City Planning Commission on ULURP No. C 200077 ZSM, for the grant of a special permit (L.U. No. 680).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2020,4735265,Res 1520-2020,filed_withdrawal_or_motion,document_lookup_review,150178ZMK,,,"Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on ULURP No. C 150178 ZMK, a Zoning Map amendment (Preconsidered L.U. No. 707).","Matter: Res 1520-2020 (2020)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 150178ZMK
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on ULURP No. C 150178 ZMK, a Zoning Map amendment (Preconsidered L.U. No. 707).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2020,4735266,Res 1521-2020,filed_withdrawal_or_motion,document_lookup_review,180178ZRK,,,"Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on Application No. N 180178 ZRK, for an amendment of the text of the Zoning Resolution (Preconsidered L.U. No. 708).","Matter: Res 1521-2020 (2020)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 180178ZRK
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on Application No. N 180178 ZRK, for an amendment of the text of the Zoning Resolution (Preconsidered L.U. No. 708).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2021,4807413,Res 1552-2021,disapproved,document_lookup_review,200062ZMK,,,"Resolution disapproving the decision of the City Planning Commission on ULURP No. C 200062 ZMK, a Zoning Map amendment (Preconsidered L.U. No. 722).","Matter: Res 1552-2021 (2021)
+Disposition: disapproved / Disapproved by Council
+Application keys: 200062ZMK
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution disapproving the decision of the City Planning Commission on ULURP No. C 200062 ZMK, a Zoning Map amendment (Preconsidered L.U. No. 722).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2021,4807414,Res 1553-2021,disapproved,document_lookup_review,200063ZRK,,,"Resolution disapproving the decision of the City Planning Commission on Application No. N 200063 ZRK, for an amendment of the text of the Zoning Resolution (Preconsidered L.U. No. 723).","Matter: Res 1553-2021 (2021)
+Disposition: disapproved / Disapproved by Council
+Application keys: 200063ZRK
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution disapproving the decision of the City Planning Commission on Application No. N 200063 ZRK, for an amendment of the text of the Zoning Resolution (Preconsidered L.U. No. 723).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2021,5153317,Res 1755-2021,filed_withdrawal_or_motion,document_lookup_review,210261ZMM,,,"Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on ULURP No. C 210261 ZMM, a Zoning Map amendment (L.U. No. 836).","Matter: Res 1755-2021 (2021)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 210261ZMM
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on ULURP No. C 210261 ZMM, a Zoning Map amendment (L.U. No. 836).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2021,5153318,Res 1756-2021,filed_withdrawal_or_motion,document_lookup_review,210262ZRM,,,"Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on Application No. N 210262 ZRM, for an amendment of the text of the Zoning Resolution (L.U. No. 837).","Matter: Res 1756-2021 (2021)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 210262ZRM
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on Application No. N 210262 ZRM, for an amendment of the text of the Zoning Resolution (L.U. No. 837).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2022,5640117,LU 0055-2022,filed_by_council_other,document_lookup_review,220136ZSM,,,"Application number C 220136 ZSM (One 45/Museum of Civil Rights) submitted by One45 Lenox, LLC, pursuant to Sections 197c and 201 of the New York City Charter for the grant of a special permit pursuant to Section 74-743 of the Zoning Resolution to modify the tower regulations of Section 35-64 (Special Tower Regulations for Mixed Buildings) of a mixed-use building (Building 1), in connection with a proposed mixed-use development, within a large-scale general development, bounded by West 145th Street, Lenox Avenue – Malcolm X. Boulevard, West 144th Street, a line 100 feet northwesterly of Lenox A","Matter: LU 0055-2022 (2022)
+Disposition: filed_by_council_other / Filed by Council
+Application keys: 220136ZSM
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Application number C 220136 ZSM (One 45/Museum of Civil Rights) submitted by One45 Lenox, LLC, pursuant to Sections 197c and 201 of the New York City Charter for the grant of a special permit pursuant to Section 74-743 of the Zoning Resolution to modify the tower regulations of Section 35-64 (Special Tower Regulations for Mixed Buildings) of a mixed-use building (Building 1), in connection with a proposed mixed-use development, within a large-scale general development, bounded by West 145th Street, Lenox Avenue – Malcolm X. Boulevard, West 144th Street, a line 100 feet northwesterly of Lenox A
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2022,5640118,LU 0056-2022,filed_by_council_other,document_lookup_review,220137AZSM,,,"Application number C 220137(A) ZSM (One 45/Museum of Civil Rights) submitted by One45 Lenox, LLC, pursuant to Sections 197-c and 201 and proposed for modification pursuant to Section 2-06(c)(1) of the Uniform Land Use Review Procedure of the New York City Charter for the grant of special permits pursuant to Section 74-744(b) of the Zoning Resolution to modify requirements of Section 32-42 (Location Within Buildings) to allow commercial uses (banquet hall use & office amenity space) to be located above residential use, and to modify the requirements of Section 32-423 (Limitation on ground floor","Matter: LU 0056-2022 (2022)
+Disposition: filed_by_council_other / Filed by Council
+Application keys: 220137AZSM
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Application number C 220137(A) ZSM (One 45/Museum of Civil Rights) submitted by One45 Lenox, LLC, pursuant to Sections 197-c and 201 and proposed for modification pursuant to Section 2-06(c)(1) of the Uniform Land Use Review Procedure of the New York City Charter for the grant of special permits pursuant to Section 74-744(b) of the Zoning Resolution to modify requirements of Section 32-42 (Location Within Buildings) to allow commercial uses (banquet hall use & office amenity space) to be located above residential use, and to modify the requirements of Section 32-423 (Limitation on ground floor
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2022,5640119,LU 0057-2022,filed_by_council_other,document_lookup_review,220142ZSM,,,"Application number C 220142 ZSM (One 45/Museum of Civil Rights) submitted by One45 Lenox, LLC, pursuant to Sections197-c and 201 of the New York City Charter for the grant of a special permit pursuant to Section 74-533 of the Zoning Resolution to reduce the required accessory off-street parking spaces to 130 spaces (20%) for dwelling units in a development within a Transit Zone, that includes at least 20 percent of all dwelling units as income-restricted housing units, in connection with a proposed mixed-use development, within a large-scale general development, bounded by West 145th Street,","Matter: LU 0057-2022 (2022)
+Disposition: filed_by_council_other / Filed by Council
+Application keys: 220142ZSM
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Application number C 220142 ZSM (One 45/Museum of Civil Rights) submitted by One45 Lenox, LLC, pursuant to Sections197-c and 201 of the New York City Charter for the grant of a special permit pursuant to Section 74-533 of the Zoning Resolution to reduce the required accessory off-street parking spaces to 130 spaces (20%) for dwelling units in a development within a Transit Zone, that includes at least 20 percent of all dwelling units as income-restricted housing units, in connection with a proposed mixed-use development, within a large-scale general development, bounded by West 145th Street,
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2022,5649294,Res 0178-2022,filed_withdrawal_or_motion,document_lookup_review,200247ZRQ,,,"Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on Application No. N 200247 ZRQ, for an amendment of the text of the Zoning Resolution (Preconsidered L.U. No. 40).","Matter: Res 0178-2022 (2022)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 200247ZRQ
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on Application No. N 200247 ZRQ, for an amendment of the text of the Zoning Resolution (Preconsidered L.U. No. 40).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2022,5667152,Res 0211-2022,filed_withdrawal_or_motion,document_lookup_review,220134ZMM,,,"Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on ULURP No. C 220134 ZMM, a Zoning Map amendment (L.U. No. 53).","Matter: Res 0211-2022 (2022)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 220134ZMM
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on ULURP No. C 220134 ZMM, a Zoning Map amendment (L.U. No. 53).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2022,5667153,Res 0212-2022,filed_withdrawal_or_motion,document_lookup_review,220135ZRM,,,"Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on Application No. N 220135 ZRM, for an amendment of the text of the Zoning Resolution (L.U. No. 54).","Matter: Res 0212-2022 (2022)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 220135ZRM
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on Application No. N 220135 ZRM, for an amendment of the text of the Zoning Resolution (L.U. No. 54).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2022,5667154,Res 0213-2022,filed_withdrawal_or_motion,document_lookup_review,220136ZSM,,,"Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on ULURP No. C 220136 ZSM, for the grant of a special permit (L.U. No. 55).","Matter: Res 0213-2022 (2022)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 220136ZSM
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on ULURP No. C 220136 ZSM, for the grant of a special permit (L.U. No. 55).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2022,5667155,Res 0214-2022,filed_withdrawal_or_motion,document_lookup_review,220137AZSM,,,"Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on ULURP No. C 220137(A) ZSM, for the grant of a special permit (L.U. No. 56).","Matter: Res 0214-2022 (2022)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 220137AZSM
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on ULURP No. C 220137(A) ZSM, for the grant of a special permit (L.U. No. 56).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2022,5667183,Res 0215-2022,filed_withdrawal_or_motion,document_lookup_review,220142ZSM,,,"Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on ULURP No. C 220142 ZSM, for the grant of a special permit (L.U. No. 57).","Matter: Res 0215-2022 (2022)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 220142ZSM
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on ULURP No. C 220142 ZSM, for the grant of a special permit (L.U. No. 57).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2023,5999942,LU 0165-2023,disapproved,document_lookup_review,200012ZSM,,,"Application number C 200012 ZSM (213-227 West 28th Street Parking Special Permits) submitted by 215 West 28th Street Property Owner LLC, pursuant to Sections 197-c and 201 of the New York City Charter for the grant of a special permit pursuant to Sections 13-45 (Special Permits for additional parking spaces) and 13-451 (Additional parking spaces for residential growth) of the Zoning Resolution to allow an automated accessory parking garage with a maximum capacity of 41 spaces on portions of the ground floor, cellar and sub-cellar levels 1, 2 and 3, of a proposed mixed-use building at 213-219","Matter: LU 0165-2023 (2023)
+Disposition: disapproved / Disapproved by Council
+Application keys: 200012ZSM
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Application number C 200012 ZSM (213-227 West 28th Street Parking Special Permits) submitted by 215 West 28th Street Property Owner LLC, pursuant to Sections 197-c and 201 of the New York City Charter for the grant of a special permit pursuant to Sections 13-45 (Special Permits for additional parking spaces) and 13-451 (Additional parking spaces for residential growth) of the Zoning Resolution to allow an automated accessory parking garage with a maximum capacity of 41 spaces on portions of the ground floor, cellar and sub-cellar levels 1, 2 and 3, of a proposed mixed-use building at 213-219
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2023,5999943,LU 0166-2023,disapproved,document_lookup_review,200013ZSM,,,"Application number C 200013 ZSM (213-227 West 28th Street Parking Special Permits) submitted by 225 West 28th Street Property Owner LLC, pursuant to Sections 197-c and 201 of the New York City Charter for the grant of a special permit pursuant to Sections 13-45 (Special Permits for additional parking spaces) and 13-451 (Additional parking spaces for residential growth) of the Zoning Resolution to allow an automated accessory parking garage with a maximum capacity of 36 spaces on portions of the ground floor, cellar and sub-cellar levels 1, 2 and 3, of a proposed mixed-use building at 221-227 W","Matter: LU 0166-2023 (2023)
+Disposition: disapproved / Disapproved by Council
+Application keys: 200013ZSM
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Application number C 200013 ZSM (213-227 West 28th Street Parking Special Permits) submitted by 225 West 28th Street Property Owner LLC, pursuant to Sections 197-c and 201 of the New York City Charter for the grant of a special permit pursuant to Sections 13-45 (Special Permits for additional parking spaces) and 13-451 (Additional parking spaces for residential growth) of the Zoning Resolution to allow an automated accessory parking garage with a maximum capacity of 36 spaces on portions of the ground floor, cellar and sub-cellar levels 1, 2 and 3, of a proposed mixed-use building at 221-227 W
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2023,6252859,LU 0231-2023,disapproved,document_lookup_review,210323MMQ,,,"Application number C 210323 MMQ (43rd Avenue Demapping) submitted by Anthony Lim, pursuant to Sections 197-c and 199 of the New York City Charter and Section 5-430 et seq. of the New York City Administrative Code for an amendment to the City Map involving: the elimination, discontinuance and closing of a portion of 43rd Avenue between 222nd Street and 223rd Street; the adjustment of grades and block dimensions necessitated thereby; and authorization for any acquisition or disposition of real property related thereto, in accordance with Map No. 5036 dated June 21, 2022, and signed by the Borou","Matter: LU 0231-2023 (2023)
+Disposition: disapproved / Disapproved by Council
+Application keys: 210323MMQ
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Application number C 210323 MMQ (43rd Avenue Demapping) submitted by Anthony Lim, pursuant to Sections 197-c and 199 of the New York City Charter and Section 5-430 et seq. of the New York City Administrative Code for an amendment to the City Map involving: the elimination, discontinuance and closing of a portion of 43rd Avenue between 222nd Street and 223rd Street; the adjustment of grades and block dimensions necessitated thereby; and authorization for any acquisition or disposition of real property related thereto, in accordance with Map No. 5036 dated June 21, 2022, and signed by the Borou
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2023,5998746,Res 0468-2023,disapproved,document_lookup_review,210389ZMQ,,,"Resolution disapproving the decision of the City Planning Commission on ULURP No. C 210389 ZMQ, a Zoning Map amendment (L.U. No. 156).","Matter: Res 0468-2023 (2023)
+Disposition: disapproved / Disapproved by Council
+Application keys: 210389ZMQ
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution disapproving the decision of the City Planning Commission on ULURP No. C 210389 ZMQ, a Zoning Map amendment (L.U. No. 156).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2023,5998747,Res 0469-2023,disapproved,document_lookup_review,210390ZRQ,,,"Resolution disapproving the decision of the City Planning Commission on Application No. N 210390 ZRQ, for an amendment of the text of the Zoning Resolution (L.U. No. 157).","Matter: Res 0469-2023 (2023)
+Disposition: disapproved / Disapproved by Council
+Application keys: 210390ZRQ
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution disapproving the decision of the City Planning Commission on Application No. N 210390 ZRQ, for an amendment of the text of the Zoning Resolution (L.U. No. 157).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2023,6045573,Res 0520-2023,disapproved,document_lookup_review,200012ZSM,,,"Resolution disapproving the decision of the City Planning Commission on ULURP No. C 200012 ZSM, for the grant of a special permit (L.U. No. 165).","Matter: Res 0520-2023 (2023)
+Disposition: disapproved / Disapproved by Council
+Application keys: 200012ZSM
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution disapproving the decision of the City Planning Commission on ULURP No. C 200012 ZSM, for the grant of a special permit (L.U. No. 165).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2023,6045574,Res 0521-2023,disapproved,document_lookup_review,200013ZSM,,,"Resolution disapproving the decision of the City Planning Commission on ULURP No. C 200013 ZSM, for the grant of a special permit (L.U. No. 166).","Matter: Res 0521-2023 (2023)
+Disposition: disapproved / Disapproved by Council
+Application keys: 200013ZSM
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution disapproving the decision of the City Planning Commission on ULURP No. C 200013 ZSM, for the grant of a special permit (L.U. No. 166).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2023,6065231,Res 0536-2023,filed_withdrawal_or_motion,document_lookup_review,210090ZMK,,,"Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on Application No. C 210090 ZMK, a Zoning Map amendment (L.U. No. 168).","Matter: Res 0536-2023 (2023)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 210090ZMK
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on Application No. C 210090 ZMK, a Zoning Map amendment (L.U. No. 168).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2023,6065232,Res 0537-2023,filed_withdrawal_or_motion,document_lookup_review,210091ZRK,,,"Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on Application No. N 210091 ZRK, for an amendment of the text of the Zoning Resolution (L.U. No. 169).","Matter: Res 0537-2023 (2023)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 210091ZRK
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on Application No. N 210091 ZRK, for an amendment of the text of the Zoning Resolution (L.U. No. 169).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2023,6177185,Res 0601-2023,filed_withdrawal_or_motion,document_lookup_review,220330ZRQ,,,"Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on Application No. N 220330 ZRQ, for an amendment of the text of the Zoning Resolution (Pre. L.U. No. 182).","Matter: Res 0601-2023 (2023)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 220330ZRQ
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on Application No. N 220330 ZRQ, for an amendment of the text of the Zoning Resolution (Pre. L.U. No. 182).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2023,6283513,Res 0719-2023,filed_withdrawal_or_motion,document_lookup_review,220218ZMQ,,,"Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on ULURP No. C 220218 ZMQ, a Zoning Map amendment (L.U. No. 230).","Matter: Res 0719-2023 (2023)
+Disposition: filed_withdrawal_or_motion / Filed by Council
+Application keys: 220218ZMQ
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution approving a motion to file pursuant to withdrawal of the application regarding the decision of the City Planning Commission on ULURP No. C 220218 ZMQ, a Zoning Map amendment (L.U. No. 230).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2023,6283514,Res 0720-2023,disapproved,document_lookup_review,210323MMQ,,,"Resolution disapproving the decision of the City Planning Commission on ULURP No. C 210323 MMQ, an amendment to the City Map (L.U. No. 231).","Matter: Res 0720-2023 (2023)
+Disposition: disapproved / Disapproved by Council
+Application keys: 210323MMQ
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution disapproving the decision of the City Planning Commission on ULURP No. C 210323 MMQ, an amendment to the City Map (L.U. No. 231).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2024,6507460,Res 0031-2024,disapproved,document_lookup_review,230157ZMK,,,"Resolution disapproving the decision of the City Planning Commission on ULURP No. C 230157 ZMK, a Zoning Map amendment (L.U. No. 6).","Matter: Res 0031-2024 (2024)
+Disposition: disapproved / Disapproved by Council
+Application keys: 230157ZMK
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution disapproving the decision of the City Planning Commission on ULURP No. C 230157 ZMK, a Zoning Map amendment (L.U. No. 6).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2024,6507461,Res 0032-2024,disapproved,document_lookup_review,230158ZRK,,,"Resolution disapproving the decision of the City Planning Commission on Application No. N 230158 ZRK, for an amendment of the text of the Zoning Resolution (L.U. No. 7).","Matter: Res 0032-2024 (2024)
+Disposition: disapproved / Disapproved by Council
+Application keys: 230158ZRK
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution disapproving the decision of the City Planning Commission on Application No. N 230158 ZRK, for an amendment of the text of the Zoning Resolution (L.U. No. 7).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2024,6507462,Res 0033-2024,disapproved,document_lookup_review,230159ZSK,,,"Resolution disapproving the decision of the City Planning Commission on ULURP No. C 230159 ZSK, for the grant of a special permit (L.U. No. 8).","Matter: Res 0033-2024 (2024)
+Disposition: disapproved / Disapproved by Council
+Application keys: 230159ZSK
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution disapproving the decision of the City Planning Commission on ULURP No. C 230159 ZSK, for the grant of a special permit (L.U. No. 8).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2024,6872788,Res 0593-2024,disapproved,medium_address_or_range_review,,2450082809,6001 70th Avenue,"Resolution disapproving the petition for a revocable consent for a sidewalk café located at 6001 70th Avenue, Borough of Queens (Non-ULURP No. D 2450082809 SWQ; DOT No. 20240404040002; L.U. No. 155).","Matter: Res 0593-2024 (2024)
+Disposition: disapproved / Disapproved by Council
+Application keys: none parsed
+Parsed title BBLs: 2450082809
+Parsed title address: 6001 70th Avenue
+Full title: Resolution disapproving the petition for a revocable consent for a sidewalk café located at 6001 70th Avenue, Borough of Queens (Non-ULURP No. D 2450082809 SWQ; DOT No. 20240404040002; L.U. No. 155).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2025,7103052,LU 0231-2025,disapproved,document_lookup_review,220305MMQ,,,"Application number C 220305 MMQ (49-39 Van Dam Street Demapping) submitted by JPB Realty Co., LLC, pursuant to Sections 197-c and 199 of the New York City Charter and Section 5-430 et seq. of the New York City Administrative Code for an amendment to the City Map involving: the elimination, discontinuance and closing of a portion of Gale Avenue and the adjustment of grades and block dimensions necessitated thereby, including authorization for any acquisition or disposition of real property related thereto, in accordance with Map No. 5041 dated April 25, 2024 and signed by the Borough President,","Matter: LU 0231-2025 (2025)
+Disposition: disapproved / Disapproved by Council
+Application keys: 220305MMQ
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Application number C 220305 MMQ (49-39 Van Dam Street Demapping) submitted by JPB Realty Co., LLC, pursuant to Sections 197-c and 199 of the New York City Charter and Section 5-430 et seq. of the New York City Administrative Code for an amendment to the City Map involving: the elimination, discontinuance and closing of a portion of Gale Avenue and the adjustment of grades and block dimensions necessitated thereby, including authorization for any acquisition or disposition of real property related thereto, in accordance with Map No. 5041 dated April 25, 2024 and signed by the Borough President,
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
+2025,7136463,Res 0766-2025,disapproved,document_lookup_review,220305MMQ,,,"Resolution disapproving the decision of the City Planning Commission on ULURP No. C 220305 MMQ, an amendment to the City Map (L.U. No. 231).","Matter: Res 0766-2025 (2025)
+Disposition: disapproved / Disapproved by Council
+Application keys: 220305MMQ
+Parsed title BBLs: none parsed
+Parsed title address: none parsed
+Full title: Resolution disapproving the decision of the City Planning Commission on ULURP No. C 220305 MMQ, an amendment to the City Map (L.U. No. 231).
+Task: Identify the affected NYC location and likely Council district. Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. Do not guess if the title is ambiguous."
