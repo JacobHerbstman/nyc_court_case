@@ -497,77 +497,10 @@ citywide_text_district_modifications <- spine |>
     confidence
   )
 
-known_case_patterns <- tribble(
-  ~validation_case, ~pattern,
-  "Dock Street", "DOCK STREET",
-  "NY Blood Center", "BLOOD CENTER",
-  "Industry City", "INDUSTRY CITY",
-  "80 Flatbush", "80 FLATBUSH",
-  "Innovation QNS", "INNOVATION QNS|INNOVATION QUEENS",
-  "One45", "ONE45|ONE 45",
-  "Bruckner Boulevard", "BRUCKNER",
-  "East New York", "EAST NEW YORK",
-  "Inwood", "INWOOD",
-  "Haven Green", "HAVEN GREEN",
-  "Greenpoint-Williamsburg", "GREENPOINT|WILLIAMSBURG",
-  "Hudson Yards", "HUDSON YARDS"
-)
-
-known_case_source <- spine |>
-  mutate(search_text = str_to_upper(str_squish(paste(project_name, project_brief, council_titles)))) |>
-  select(project_id, project_name, search_text)
-
-known_case_queue <- tidyr::expand_grid(known_case_source, known_case_patterns) |>
-  filter(str_detect(search_text, regex(pattern, ignore_case = TRUE))) |>
-  transmute(
-    project_id,
-    project_name,
-    queue_reason = paste0("validation_case_", validation_case),
-    source_gap_flag = FALSE,
-    confidence = "manual_review_required",
-    source_doc = "ulurp_modification_project_spine.csv",
-    page = "NA_not_stated",
-    snippet = str_squish(str_sub(search_text, 1, 500))
-  )
-
-source_gap_queue <- source_gap_projects |>
-  transmute(
-    project_id,
-    project_name,
-    queue_reason = "approve_with_mods_without_extracted_council_stage_modification",
-    source_gap_flag,
-    confidence = "low",
-    source_doc,
-    page,
-    snippet
-  )
-
-low_confidence_queue <- discrete_modifications |>
-  filter(confidence == "low") |>
-  transmute(
-    project_id,
-    project_name,
-    queue_reason = paste0("low_confidence_", modification_category_code),
-    source_gap_flag,
-    confidence,
-    source_doc,
-    page,
-    snippet
-  )
-
-manual_review_queue <- bind_rows(known_case_queue, source_gap_queue, low_confidence_queue) |>
-  distinct() |>
-  arrange(project_id, queue_reason, source_doc, snippet) |>
-  group_by(project_id) |>
-  mutate(manual_review_id = sprintf("%s_REVIEW_%03d", project_id, row_number())) |>
-  ungroup() |>
-  select(manual_review_id, everything())
-
 assert_unique_keys(project_versions, "project_version_id", "Project-version quantities")
 assert_unique_keys(discrete_modifications, "modification_id", "Discrete modifications")
 assert_unique_keys(commitments, "commitment_id", "Side commitments")
 assert_unique_keys(citywide_text_district_modifications, "citywide_text_modification_id", "Citywide text district modifications")
-assert_unique_keys(manual_review_queue, "manual_review_id", "Manual review queue")
 
 missing_quantity_metadata <- project_versions |>
   filter(quantity_missing_status == "observed") |>
@@ -595,7 +528,6 @@ qc_rows <- tribble(
   "discrete_modification_rows", nrow(discrete_modifications), if_else(nrow(discrete_modifications) > 0, "pass", "fail"),
   "commitment_rows", nrow(commitments), "pass",
   "citywide_text_district_rows", nrow(citywide_text_district_modifications), "pass",
-  "manual_review_rows", nrow(manual_review_queue), "pass",
   "observed_quantity_rows_missing_metadata", nrow(missing_quantity_metadata), if_else(nrow(missing_quantity_metadata) == 0, "pass", "fail"),
   "approve_with_mods_without_modification_or_source_gap", nrow(approve_with_mods_without_resolution), if_else(nrow(approve_with_mods_without_resolution) == 0, "pass", "fail")
 )
@@ -604,7 +536,6 @@ write_csv_if_changed(project_versions, "../output/ulurp_modification_project_ver
 write_csv_if_changed(discrete_modifications, "../output/ulurp_modification_discrete_modifications.csv")
 write_csv_if_changed(commitments, "../output/ulurp_modification_commitments.csv")
 write_csv_if_changed(citywide_text_district_modifications, "../output/ulurp_modification_citywide_text_district_modifications.csv")
-write_csv_if_changed(manual_review_queue, "../output/ulurp_modification_manual_review_queue.csv")
 
 if (any(qc_rows$status == "fail")) {
   stop("ULURP modification content QC failed.")

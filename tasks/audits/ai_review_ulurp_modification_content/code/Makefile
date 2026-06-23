@@ -93,8 +93,8 @@ all: ../output/ulurp_modification_ai_review_frame.csv \
 	@target="$$(cd ../../../build_ulurp_modification_content/output && pwd)/ulurp_modification_project_versions.csv"; \
 	if [ "$$(readlink "$@")" != "$$target" ]; then ln -sf "$$target" "$@"; fi
 
-../input/ulurp_modification_manual_review_queue.csv: ../../../build_ulurp_modification_content/output/ulurp_modification_manual_review_queue.csv | ../input
-	@target="$$(cd ../../../build_ulurp_modification_content/output && pwd)/ulurp_modification_manual_review_queue.csv"; \
+../input/ulurp_modification_manual_review_queue.csv: ../../build_ulurp_modification_manual_review_queue/output/ulurp_modification_manual_review_queue.csv | ../input
+	@target="$$(cd ../../build_ulurp_modification_manual_review_queue/output && pwd)/ulurp_modification_manual_review_queue.csv"; \
 	if [ "$$(readlink "$@")" != "$$target" ]; then ln -sf "$$target" "$@"; fi
 
 ../input/ulurp_modification_zap_document_links.csv: ../../discover_ulurp_modification_documents/output/ulurp_modification_zap_document_links.csv | ../input
@@ -117,8 +117,8 @@ all: ../output/ulurp_modification_ai_review_frame.csv \
 	@target="$$(cd ../../../fetch_council_modification_documents/output && pwd)/ulurp_modification_council_document_links.csv"; \
 	if [ "$$(readlink "$@")" != "$$target" ]; then ln -sf "$$target" "$@"; fi
 
-../input/ulurp_modification_council_document_text.csv: ../../../fetch_council_modification_documents/output/ulurp_modification_council_document_text.csv | ../input
-	@target="$$(cd ../../../fetch_council_modification_documents/output && pwd)/ulurp_modification_council_document_text.csv"; \
+../input/ulurp_modification_council_document_text.csv: ../../fetch_ulurp_modification_council_document_text/output/ulurp_modification_council_document_text.csv | ../input
+	@target="$$(cd ../../fetch_ulurp_modification_council_document_text/output && pwd)/ulurp_modification_council_document_text.csv"; \
 	if [ "$$(readlink "$@")" != "$$target" ]; then ln -sf "$$target" "$@"; fi
 
 ../input/ulurp_modification_council_document_snippets.csv: ../../../fetch_council_modification_documents/output/ulurp_modification_council_document_snippets.csv | ../input

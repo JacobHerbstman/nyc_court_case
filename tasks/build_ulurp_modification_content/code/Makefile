@@ -6,8 +6,7 @@ CONTENT_MODE := first_pass
 all: ../output/ulurp_modification_project_versions.csv \
 	../output/ulurp_modification_discrete_modifications.csv \
 	../output/ulurp_modification_commitments.csv \
-	../output/ulurp_modification_citywide_text_district_modifications.csv \
-	../output/ulurp_modification_manual_review_queue.csv
+	../output/ulurp_modification_citywide_text_district_modifications.csv
 
 ../output/ulurp_modification_project_versions.csv: build_ulurp_modification_content.R \
 	../input/ulurp_modification_project_spine.csv \
@@ -25,9 +24,6 @@ all: ../output/ulurp_modification_project_versions.csv \
 	@test -s "$@"
 
 ../output/ulurp_modification_citywide_text_district_modifications.csv: ../output/ulurp_modification_project_versions.csv
-	@test -s "$@"
-
-../output/ulurp_modification_manual_review_queue.csv: ../output/ulurp_modification_project_versions.csv
 	@test -s "$@"
 
 ../input/ulurp_modification_project_spine.csv: ../../build_ulurp_modification_spine/output/ulurp_modification_project_spine.csv | ../input

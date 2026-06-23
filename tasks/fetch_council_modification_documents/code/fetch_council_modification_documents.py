@@ -1,4 +1,9 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/fetch_council_modification_documents/code")
+# recall_years <- "2002 2003 2004 2005 2006 2007 2008 2009 2010 2011 2012 2013 2014 2015 2016 2017 2018 2019 2020 2021 2022 2023 2024 2025"
+# fetch_mode <- "download"
+# report_fetch_scope <- "all_matched"
+# attachment_fetch_mode <- "candidate_attachments"
+# full_text_export <- "omit_full_text"
 
 from __future__ import annotations
 
@@ -18,16 +23,17 @@ except ImportError:  # pragma: no cover - optional local parser
     BeautifulSoup = None
 
 
-if len(sys.argv) != 5:
+if len(sys.argv) != 6:
     raise RuntimeError(
         "Usage: python3 fetch_council_modification_documents.py "
-        "<recall_years> <fetch_mode> <report_fetch_scope> <attachment_fetch_mode>"
+        "<recall_years> <fetch_mode> <report_fetch_scope> <attachment_fetch_mode> <full_text_export>"
     )
 
 RECALL_YEARS = [year.strip() for year in sys.argv[1].split() if year.strip()]
 FETCH_MODE = sys.argv[2].strip()
 REPORT_FETCH_SCOPE = sys.argv[3].strip()
 ATTACHMENT_FETCH_MODE = sys.argv[4].strip()
+FULL_TEXT_EXPORT = sys.argv[5].strip()
 
 if not all(re.fullmatch(r"\d{4}", year) for year in RECALL_YEARS):
     raise RuntimeError("recall_years must be a space-separated list of four-digit years.")
@@ -37,6 +43,8 @@ if REPORT_FETCH_SCOPE not in {"all_matched", "modification_signal"}:
     raise RuntimeError("report_fetch_scope must be all_matched or modification_signal.")
 if ATTACHMENT_FETCH_MODE not in {"reports_only", "candidate_attachments"}:
     raise RuntimeError("attachment_fetch_mode must be reports_only or candidate_attachments.")
+if FULL_TEXT_EXPORT not in {"omit_full_text", "write_full_text"}:
+    raise RuntimeError("full_text_export must be omit_full_text or write_full_text.")
 
 DOCUMENT_LINKS_OUTPUT = Path("../output/ulurp_modification_council_document_links.csv")
 DOCUMENT_TEXT_OUTPUT = Path("../output/ulurp_modification_council_document_text.csv")
@@ -749,7 +757,8 @@ qc_rows = [
 ]
 
 write_csv(DOCUMENT_LINKS_OUTPUT, link_rows, LINK_COLUMNS)
-write_csv(DOCUMENT_TEXT_OUTPUT, text_rows, TEXT_COLUMNS)
+if FULL_TEXT_EXPORT == "write_full_text":
+    write_csv(DOCUMENT_TEXT_OUTPUT, text_rows, TEXT_COLUMNS)
 write_csv(DOCUMENT_SNIPPETS_OUTPUT, snippet_rows, SNIPPET_COLUMNS)
 
 if any(row["status"] == "fail" for row in qc_rows):
