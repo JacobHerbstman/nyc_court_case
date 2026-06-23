@@ -36,7 +36,7 @@ all: ../output/brooklyn_homeownership_case_study_cd_summary.csv ../output/brookl
 ../output/brooklyn_homeownership_case_study_control_flip_plots.pdf: ../output/brooklyn_homeownership_case_study_cd_summary.csv
 	@test -s "$@"
 
-../input/brooklyn_homeownership_case_study_controls.csv: ../../../build_brooklyn_homeownership_case_study_controls/output/brooklyn_homeownership_case_study_controls.csv | ../input
+../input/brooklyn_homeownership_case_study_controls.csv: ../../build_brooklyn_homeownership_case_study_controls/output/brooklyn_homeownership_case_study_controls.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/cd_homeownership_long_units_series.csv: ../../../build_cd_homeownership_long_units_series/output/cd_homeownership_long_units_series.csv | ../input
@@ -51,13 +51,13 @@ all: ../output/brooklyn_homeownership_case_study_cd_summary.csv ../output/brookl
 ../input/dcp_boundary_community_districts_20260501.parquet: ../../../stage_dcp_boundaries/output/dcp_boundary_community_districts_20260501.parquet | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/zap_ulurp_redev_cd_year_panel.csv: ../../../summarize_zap_ulurp_redev_pipeline/output/zap_ulurp_redev_cd_year_panel.csv | ../input
+../input/zap_ulurp_redev_cd_year_panel.csv: ../../summarize_zap_ulurp_redev_pipeline/output/zap_ulurp_redev_cd_year_panel.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/zap_ulurp_redev_mature_cohort_panel.csv: ../../../summarize_zap_ulurp_redev_pipeline/output/zap_ulurp_redev_mature_cohort_panel.csv | ../input
+../input/zap_ulurp_redev_mature_cohort_panel.csv: ../../summarize_zap_ulurp_redev_pipeline/output/zap_ulurp_redev_mature_cohort_panel.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/zap_ulurp_redev_yield_panel.csv: ../../../summarize_zap_ulurp_redev_pipeline/output/zap_ulurp_redev_yield_panel.csv | ../input
+../input/zap_ulurp_redev_yield_panel.csv: ../../summarize_zap_ulurp_redev_pipeline/output/zap_ulurp_redev_yield_panel.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 link-inputs: ../input/brooklyn_homeownership_case_study_controls.csv ../input/cd_homeownership_long_units_series.csv ../input/cd_homeownership_dcp_supply_panel.csv ../input/cd_homeownership_permit_nb_panel.csv ../input/dcp_boundary_community_districts_20260501.parquet ../input/zap_ulurp_redev_cd_year_panel.csv ../input/zap_ulurp_redev_mature_cohort_panel.csv ../input/zap_ulurp_redev_yield_panel.csv

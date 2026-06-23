@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_brooklyn_homeownership_case_study_controls/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/build_brooklyn_homeownership_case_study_controls/code")
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -11,7 +11,7 @@ suppressPackageStartupMessages({
   library(tibble)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 sf_use_s2(FALSE)
 

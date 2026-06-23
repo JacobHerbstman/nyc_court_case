@@ -1,5 +1,5 @@
 SHELL := bash
-include ../../shell_functions.make
+include ../../../shell_functions.make
 
 all: ../output/redevelopment_potential_first_pass_memo.pdf
 
@@ -84,39 +84,39 @@ all: ../output/redevelopment_potential_first_pass_memo.pdf
 ../output/tables ../output/figures:
 	mkdir -p $@
 
-../input/cd_homeownership_1990_measure.csv: ../../build_cd_homeownership_1990_measure/output/cd_homeownership_1990_measure.csv | ../input
-	@test "$$(readlink "$@")" = "../../build_cd_homeownership_1990_measure/output/cd_homeownership_1990_measure.csv" || ln -sf "../../build_cd_homeownership_1990_measure/output/cd_homeownership_1990_measure.csv" "$@"
+../input/cd_homeownership_1990_measure.csv: ../../../build_cd_homeownership_1990_measure/output/cd_homeownership_1990_measure.csv | ../input
+	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/cd_baseline_1990_controls.csv: ../../build_cd_baseline_1990_controls/output/cd_baseline_1990_controls.csv | ../input
-	@test "$$(readlink "$@")" = "../../build_cd_baseline_1990_controls/output/cd_baseline_1990_controls.csv" || ln -sf "../../build_cd_baseline_1990_controls/output/cd_baseline_1990_controls.csv" "$@"
+../input/cd_baseline_1990_controls.csv: ../../../build_cd_baseline_1990_controls/output/cd_baseline_1990_controls.csv | ../input
+	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/cd_homeownership_dcp_supply_panel.csv: ../../cd_homeownership_dcp_supply_panel/output/cd_homeownership_dcp_supply_panel.csv | ../input
-	@test "$$(readlink "$@")" = "../../cd_homeownership_dcp_supply_panel/output/cd_homeownership_dcp_supply_panel.csv" || ln -sf "../../cd_homeownership_dcp_supply_panel/output/cd_homeownership_dcp_supply_panel.csv" "$@"
+../input/cd_homeownership_dcp_supply_panel.csv: ../../../cd_homeownership_dcp_supply_panel/output/cd_homeownership_dcp_supply_panel.csv | ../input
+	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/cd_homeownership_long_units_series.csv: ../../build_cd_homeownership_long_units_series/output/cd_homeownership_long_units_series.csv | ../input
-	@test "$$(readlink "$@")" = "../../build_cd_homeownership_long_units_series/output/cd_homeownership_long_units_series.csv" || ln -sf "../../build_cd_homeownership_long_units_series/output/cd_homeownership_long_units_series.csv" "$@"
+../input/cd_homeownership_long_units_series.csv: ../../../build_cd_homeownership_long_units_series/output/cd_homeownership_long_units_series.csv | ../input
+	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/dcp_mappluto_archive_18v1_1.parquet: ../../stage_mappluto_lots/output/dcp_mappluto_archive_18v1_1.parquet | ../input
-	@test "$$(readlink "$@")" = "../../stage_mappluto_lots/output/dcp_mappluto_archive_18v1_1.parquet" || ln -sf "../../stage_mappluto_lots/output/dcp_mappluto_archive_18v1_1.parquet" "$@"
+../input/dcp_mappluto_archive_18v1_1.parquet: ../../../stage_mappluto_lots/output/dcp_mappluto_archive_18v1_1.parquet | ../input
+	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/dcp_mappluto_current_25v4.parquet: ../../stage_mappluto_lots/output/dcp_mappluto_current_25v4.parquet | ../input
-	@test "$$(readlink "$@")" = "../../stage_mappluto_lots/output/dcp_mappluto_current_25v4.parquet" || ln -sf "../../stage_mappluto_lots/output/dcp_mappluto_current_25v4.parquet" "$@"
+../input/dcp_mappluto_current_25v4.parquet: ../../../stage_mappluto_lots/output/dcp_mappluto_current_25v4.parquet | ../input
+	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/mappluto_lot_qc.csv: ../../stage_mappluto_lots/output/mappluto_lot_qc.csv | ../input
-	@test "$$(readlink "$@")" = "../../stage_mappluto_lots/output/mappluto_lot_qc.csv" || ln -sf "../../stage_mappluto_lots/output/mappluto_lot_qc.csv" "$@"
+../input/mappluto_lot_qc.csv: ../../../stage_mappluto_lots/output/mappluto_lot_qc.csv | ../input
+	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/dcp_housing_database_project_level_25q4.parquet: ../../stage_dcp_housing_database/output/dcp_housing_database_project_level_25q4.parquet | ../input
-	@test "$$(readlink "$@")" = "../../stage_dcp_housing_database/output/dcp_housing_database_project_level_25q4.parquet" || ln -sf "../../stage_dcp_housing_database/output/dcp_housing_database_project_level_25q4.parquet" "$@"
+../input/dcp_housing_database_project_level_25q4.parquet: ../../../stage_dcp_housing_database/output/dcp_housing_database_project_level_25q4.parquet | ../input
+	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/cd_homeownership_permit_nb_panel.csv: ../../cd_homeownership_permit_nb_panel/output/cd_homeownership_permit_nb_panel.csv | ../input
-	@test "$$(readlink "$@")" = "../../cd_homeownership_permit_nb_panel/output/cd_homeownership_permit_nb_panel.csv" || ln -sf "../../cd_homeownership_permit_nb_panel/output/cd_homeownership_permit_nb_panel.csv" "$@"
+../input/cd_homeownership_permit_nb_panel.csv: ../../../cd_homeownership_permit_nb_panel/output/cd_homeownership_permit_nb_panel.csv | ../input
+	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/dcp_boundary_community_districts_20260501.parquet: ../../stage_dcp_boundaries/output/dcp_boundary_community_districts_20260501.parquet | ../input
-	@test "$$(readlink "$@")" = "../../stage_dcp_boundaries/output/dcp_boundary_community_districts_20260501.parquet" || ln -sf "../../stage_dcp_boundaries/output/dcp_boundary_community_districts_20260501.parquet" "$@"
+../input/dcp_boundary_community_districts_20260501.parquet: ../../../stage_dcp_boundaries/output/dcp_boundary_community_districts_20260501.parquet | ../input
+	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/mappluto_construction_proxy_lot_level.parquet: ../../build_mappluto_construction_proxy/output/mappluto_construction_proxy_lot_level.parquet | ../input
-	@test "$$(readlink "$@")" = "../../build_mappluto_construction_proxy/output/mappluto_construction_proxy_lot_level.parquet" || ln -sf "../../build_mappluto_construction_proxy/output/mappluto_construction_proxy_lot_level.parquet" "$@"
+../input/mappluto_construction_proxy_lot_level.parquet: ../../../build_mappluto_construction_proxy/output/mappluto_construction_proxy_lot_level.parquet | ../input
+	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 link-inputs: ../input/cd_homeownership_1990_measure.csv ../input/cd_baseline_1990_controls.csv ../input/cd_homeownership_dcp_supply_panel.csv ../input/cd_homeownership_long_units_series.csv ../input/dcp_mappluto_archive_18v1_1.parquet ../input/dcp_mappluto_current_25v4.parquet ../input/mappluto_lot_qc.csv ../input/dcp_housing_database_project_level_25q4.parquet ../input/cd_homeownership_permit_nb_panel.csv ../input/dcp_boundary_community_districts_20260501.parquet ../input/mappluto_construction_proxy_lot_level.parquet
 
-include ../../generic.make
+include ../../../generic.make

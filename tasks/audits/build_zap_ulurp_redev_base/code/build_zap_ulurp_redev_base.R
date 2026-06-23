@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_zap_ulurp_redev_base/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/build_zap_ulurp_redev_base/code")
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -8,7 +8,7 @@ suppressPackageStartupMessages({
   library(tibble)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 has_action_code <- function(actions_string, action_code) {
   str_detect(str_to_upper(coalesce(actions_string, "")), paste0("\\b", action_code, "\\b"))

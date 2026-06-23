@@ -18,7 +18,7 @@ all: ../output/zap_capacity_weighted_project_bbl.csv ../output/zap_capacity_weig
 ../input/cd_homeownership_1990_measure.csv: ../../../build_cd_homeownership_1990_measure/output/cd_homeownership_1990_measure.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/cd_redevelopment_potential_baseline.csv: ../../../redevelopment_potential_first_pass/output/cd_redevelopment_potential_baseline.csv | ../input
+../input/cd_redevelopment_potential_baseline.csv: ../../redevelopment_potential_first_pass/output/cd_redevelopment_potential_baseline.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/zap_outcome_usability_by_period.csv: ../../audit_zap_source_integrity/output/zap_outcome_usability_by_period.csv | ../input

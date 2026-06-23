@@ -83,7 +83,7 @@ assert_unique_keys <- function(df, key_cols, df_name) {
   }
 }
 
-zap_project <- read_csv("../input/zap_ulurp_redev_project_base.csv", show_col_types = FALSE, na = c("", "NA")) |>
+zap_project <- read_csv("../input/zap_ulurp_project_base.csv", show_col_types = FALSE, na = c("", "NA")) |>
   mutate(
     project_id = as.character(project_id),
     cert_year = suppressWarnings(as.integer(cert_year)),
@@ -438,10 +438,6 @@ project_spine <- zap_project |>
     source_gap_reason,
     treat_pp,
     treat_z_boro,
-    redev_potential_A_z_boro,
-    redev_potential_C_z_boro,
-    occupied_units_1990,
-    residential_acres,
     sample_start_year,
     sample_end_year,
     sample_mode

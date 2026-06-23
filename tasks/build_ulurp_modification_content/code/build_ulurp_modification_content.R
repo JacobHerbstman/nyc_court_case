@@ -169,7 +169,7 @@ project_brief_text <- spine |>
   transmute(
     project_id,
     project_name,
-    source_doc = "zap_ulurp_redev_project_base.csv:project_brief",
+    source_doc = "zap_ulurp_project_base.csv:project_brief",
     page = "NA_not_stated",
     source_text = project_brief
   )
@@ -258,7 +258,7 @@ built_quantities <- spine |>
       linked_gross_add_units_0_10 == 0 ~ "true_zero",
       TRUE ~ "observed"
     ),
-    source_doc = "zap_ulurp_redev_project_base.csv:hdb_buildout_link",
+    source_doc = "zap_ulurp_project_base.csv:hdb_buildout_link",
     page = "NA_not_stated",
     snippet = case_when(
       is.na(linked_gross_add_units_0_10) ~ "NA_doc_missing",

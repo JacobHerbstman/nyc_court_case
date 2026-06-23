@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/redevelopment_potential_first_pass/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/redevelopment_potential_first_pass/code")
 
 suppressPackageStartupMessages({
   library(arrow)

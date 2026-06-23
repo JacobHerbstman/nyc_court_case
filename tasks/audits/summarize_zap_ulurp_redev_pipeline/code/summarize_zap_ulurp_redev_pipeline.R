@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_zap_ulurp_redev_pipeline/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/summarize_zap_ulurp_redev_pipeline/code")
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -9,7 +9,7 @@ suppressPackageStartupMessages({
   library(tibble)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 summary_era_from_year <- function(x) {
   case_when(
