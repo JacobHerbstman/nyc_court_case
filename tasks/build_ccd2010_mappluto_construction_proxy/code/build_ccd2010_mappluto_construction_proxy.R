@@ -77,17 +77,19 @@ read_mappluto_sf <- function(raw_path) {
   st_read(shp_path, quiet = TRUE, stringsAsFactors = FALSE)
 }
 
-mappluto_row <- read_csv("../input/mappluto_lot_files.csv", show_col_types = FALSE, na = c("", "NA")) %>%
+mappluto_row <- read_csv("../input/mappluto_files.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   filter(
     source_id == "dcp_mappluto_current",
     vintage == "25v4",
+    file_role == "mappluto_shapefile_zip",
+    status %in% c("downloaded", "already_present", "redownloaded_after_validation_failure"),
     !is.na(raw_path),
     file.exists(raw_path)
   ) %>%
   slice_head(n = 1)
 
 if (nrow(mappluto_row) == 0) {
-  stop("Could not find staged MapPLUTO current vintage 25v4 in ../input/mappluto_lot_files.csv")
+  stop("Could not find current 25v4 MapPLUTO shapefile zip in ../input/mappluto_files.csv")
 }
 
 mappluto_raw_sf <- read_mappluto_sf(mappluto_row$raw_path[[1]])
