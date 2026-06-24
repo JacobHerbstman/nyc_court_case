@@ -1,17 +1,12 @@
 # Summarize Council Land-Use Decision Trends
 
-This task summarizes broad annual trends in the 1998-2025 Council land-use
-decision panel before building district panels or regressions.
-
-The outputs focus on descriptive changes around 2002: total matters, adopted and
-non-adopted dispositions, vote-detail coverage, affected-district coverage, and
-observable local-member final-action vote signals. The figures mark 2002 with a
-dashed vertical line but do not estimate treatment effects.
+This task produces the canonical descriptive member-deference plot from the
+1998-2025 Council land-use decision panel: the annual adoption rate when the
+affected local member opposed adoption, with a trailing 5-year rate overlaid.
 
 ## Production Input Chain
 
-The rolling-average member-deference figures are built from this production
-chain:
+The rolling-average member-deference figure is built from this production chain:
 
 1. `tasks/fetch_council_land_use_records/` downloads Legistar recalled land-use
    matter, action, history, and member-vote records for 1998-2025.
@@ -38,8 +33,8 @@ chain:
     `council_land_use_local_member_votes.csv`.
 11. `tasks/validate_council_land_use_decision_universe/` summarizes decision
     universe coverage.
-12. This task produces the annual series and rolling-average plots, including
-    `council_land_use_adoption_over_local_member_rollcall_opposition_rolling5_clean.pdf`.
+12. This task produces
+    `council_land_use_adoption_over_local_member_rollcall_opposition_rolling5_with_raw_clean.pdf`.
 
 The following remain outside the production chain: prompt-batch construction,
 ChatGPT response workspaces, split-vote investigations, and broader exploratory

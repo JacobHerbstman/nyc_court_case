@@ -8,7 +8,7 @@ all: ../output/council_land_use_decision_panel.csv \
 	../input/member_deference_vote_panel.csv \
 	../input/member_deference_nonapproval_geography_conservative_queue.csv \
 	../input/member_deference_nonapproval_action_details.csv \
-	../input/member_deference_nonapproval_local_member_matter_audit.csv \
+	../input/member_deference_nonapproval_local_member_vote_status.csv \
 	../input/member_deference_nonapproval_local_member_votes.csv | ../output
 	python3 $<
 
@@ -27,7 +27,7 @@ all: ../output/council_land_use_decision_panel.csv \
 ../input/member_deference_nonapproval_action_details.csv: ../../fetch_member_deference_nonapproval_action_votes/output/member_deference_nonapproval_action_details.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/member_deference_nonapproval_local_member_matter_audit.csv: ../../fetch_member_deference_nonapproval_action_votes/output/member_deference_nonapproval_local_member_matter_audit.csv | ../input
+../input/member_deference_nonapproval_local_member_vote_status.csv: ../../fetch_member_deference_nonapproval_action_votes/output/member_deference_nonapproval_local_member_vote_status.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/member_deference_nonapproval_local_member_votes.csv: ../../fetch_member_deference_nonapproval_action_votes/output/member_deference_nonapproval_local_member_votes.csv | ../input
@@ -37,7 +37,7 @@ link-inputs: ../input/member_deference_matter_universe.csv \
 	../input/member_deference_vote_panel.csv \
 	../input/member_deference_nonapproval_geography_conservative_queue.csv \
 	../input/member_deference_nonapproval_action_details.csv \
-	../input/member_deference_nonapproval_local_member_matter_audit.csv \
+	../input/member_deference_nonapproval_local_member_vote_status.csv \
 	../input/member_deference_nonapproval_local_member_votes.csv
 
 include ../../generic.make

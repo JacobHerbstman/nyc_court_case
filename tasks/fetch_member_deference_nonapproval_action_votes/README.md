@@ -1,4 +1,4 @@
-# Fetch Member-Deference Non-Approval Action Votes
+# Fetch Non-Approval Final-Action Votes
 
 This task fetches Legistar action-detail pages for the first-pass non-approval
 City Council land-use actions identified by
@@ -24,3 +24,9 @@ The local-member outputs are descriptive. An `Affirmative` vote is an affirmativ
 vote on the final Council action shown by Legistar, such as filing or
 disapproval; it is not automatically support for the underlying land-use
 application.
+
+The production-facing decision ledger is
+`member_deference_nonapproval_local_member_vote_status.csv`. It records one row
+per queued matter, the affected local members, whether their final-action votes
+were observed, and the standardized local-member vote status used by
+`tasks/build_council_land_use_decision_panel`.

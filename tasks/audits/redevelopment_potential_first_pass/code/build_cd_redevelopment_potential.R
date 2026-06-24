@@ -46,12 +46,38 @@ controls_df <- read_csv("../input/cd_baseline_1990_controls.csv", show_col_types
     homeowner_share_change_1980_1990_pp_approx = suppressWarnings(as.numeric(homeowner_share_change_1980_1990_pp_approx))
   )
 
-mappluto_qc_df <- read_csv("../input/mappluto_lot_qc.csv", show_col_types = FALSE, na = c("", "NA"))
-
 truthy_value <- function(x) {
   x_chr <- str_to_upper(str_trim(coalesce(as.character(x), "")))
   !x_chr %in% c("", "0", "N", "NO", "FALSE", "F", "NA", "NULL")
 }
+
+field_nonmissing_share <- function(x) {
+  x_chr <- str_trim(as.character(x))
+  mean(!is.na(x) & x_chr != "", na.rm = TRUE)
+}
+
+summarize_mappluto_fields <- function(pluto_path, release_label) {
+  read_parquet(
+    pluto_path,
+    col_select = c("cd", "council", "unitsres", "yearbuilt", "zonedist1", "lotarea", "builtfar", "assessland")
+  ) |>
+    summarize(
+      vintage = release_label,
+      nonmissing_cd_share = field_nonmissing_share(cd),
+      nonmissing_council_share = field_nonmissing_share(council),
+      nonmissing_unitsres_share = field_nonmissing_share(unitsres),
+      nonmissing_yearbuilt_share = field_nonmissing_share(yearbuilt),
+      nonmissing_zonedist1_share = field_nonmissing_share(zonedist1),
+      nonmissing_lotarea_share = field_nonmissing_share(lotarea),
+      nonmissing_builtfar_share = field_nonmissing_share(builtfar),
+      nonmissing_assessland_share = field_nonmissing_share(assessland)
+    )
+}
+
+mappluto_field_qc_df <- bind_rows(
+  summarize_mappluto_fields("../input/dcp_mappluto_archive_18v1_1.parquet", "18v1.1"),
+  summarize_mappluto_fields("../input/dcp_mappluto_current_25v4.parquet", "25v4")
+)
 
 z_city <- function(x) {
   spread <- stats::sd(x, na.rm = TRUE)
@@ -373,12 +399,8 @@ sensitivity_df <- bind_rows(
   )
 )
 
-main_release_qc <- mappluto_qc_df |>
+main_release_qc <- mappluto_field_qc_df |>
   filter(vintage == "18v1.1") |>
-  slice_head(n = 1)
-
-current_release_qc <- mappluto_qc_df |>
-  filter(vintage == "25v4") |>
   slice_head(n = 1)
 
 qc_df <- bind_rows(
@@ -417,7 +439,7 @@ qc_df <- bind_rows(
       main_release_qc$nonmissing_builtfar_share,
       main_release_qc$nonmissing_assessland_share
     )),
-    note = "Main release field nonmissing share from staged MapPLUTO QC."
+    note = "Main release field nonmissing share computed inside this audit."
   ),
   main_build$borough_pre_df |>
     left_join(main_build$borough_post_df, by = c("borough_code", "borough_name"), relationship = "many-to-one") |>

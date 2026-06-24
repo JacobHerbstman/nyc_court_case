@@ -531,12 +531,8 @@ qc = pd.DataFrame(
 
 action_details.to_csv("../output/member_deference_nonapproval_action_details.csv", index=False)
 member_votes.to_csv("../output/member_deference_nonapproval_member_votes.csv", index=False)
-qc.to_csv("../output/member_deference_nonapproval_action_vote_qc.csv", index=False)
-zero_vote_pages.to_csv("../output/member_deference_nonapproval_zero_vote_pages.csv", index=False)
 local_member_votes.to_csv("../output/member_deference_nonapproval_local_member_votes.csv", index=False)
-local_member_summary.to_csv("../output/member_deference_nonapproval_local_member_matter_audit.csv", index=False)
-local_member_vote_summary.to_csv("../output/member_deference_nonapproval_local_member_vote_summary.csv", index=False)
-fetch_failures_df.to_csv("../output/member_deference_nonapproval_fetch_failures.csv", index=False)
+local_member_summary.to_csv("../output/member_deference_nonapproval_local_member_vote_status.csv", index=False)
 
 if not qc["passed"].all():
     failed_checks = ", ".join(qc.loc[~qc["passed"], "check_name"].astype(str))

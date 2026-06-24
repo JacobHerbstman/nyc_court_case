@@ -68,8 +68,8 @@ nonapproval_queue = pd.read_csv(
     "../input/member_deference_nonapproval_geography_conservative_queue.csv", dtype=str, keep_default_na=False
 )
 nonapproval_actions = pd.read_csv("../input/member_deference_nonapproval_action_details.csv", dtype=str, keep_default_na=False)
-nonapproval_local_summary = pd.read_csv(
-    "../input/member_deference_nonapproval_local_member_matter_audit.csv", dtype=str, keep_default_na=False
+nonapproval_local_vote_status = pd.read_csv(
+    "../input/member_deference_nonapproval_local_member_vote_status.csv", dtype=str, keep_default_na=False
 )
 nonapproval_local_votes = pd.read_csv(
     "../input/member_deference_nonapproval_local_member_votes.csv", dtype=str, keep_default_na=False
@@ -80,7 +80,7 @@ for name, df in [
     ("approval_panel", approval_panel),
     ("nonapproval_queue", nonapproval_queue),
     ("nonapproval_actions", nonapproval_actions),
-    ("nonapproval_local_summary", nonapproval_local_summary),
+    ("nonapproval_local_vote_status", nonapproval_local_vote_status),
 ]:
     if df["matter_id"].duplicated().any():
         raise RuntimeError(f"{name} must be unique by matter_id.")
@@ -150,7 +150,7 @@ nonapproval_actions = nonapproval_actions.merge(
     validate="one_to_one",
 )
 nonapproval_actions = nonapproval_actions.merge(
-    nonapproval_local_summary[
+    nonapproval_local_vote_status[
         [
             "matter_id",
             "local_member_rows",

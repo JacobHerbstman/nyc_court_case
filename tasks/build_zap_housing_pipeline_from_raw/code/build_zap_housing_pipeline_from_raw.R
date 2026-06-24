@@ -52,12 +52,6 @@ simple_status <- function(project_status) {
   )
 }
 
-zap_audit_qc <- read_csv("../input/zap_source_integrity_qc.csv", show_col_types = FALSE, na = c("", "NA"))
-
-if (sum(zap_audit_qc$status == "fail", na.rm = TRUE) > 0) {
-  stop("Source integrity audit has failing hard checks; inspect ../input/zap_source_integrity_qc.csv")
-}
-
 standard_cd <- read_csv("../input/cd_homeownership_1990_measure.csv", show_col_types = FALSE, na = c("", "NA")) |>
   transmute(
     borocd = suppressWarnings(as.integer(borocd)),

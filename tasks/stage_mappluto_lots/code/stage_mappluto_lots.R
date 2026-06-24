@@ -20,7 +20,6 @@ if (length(missing_index_columns) > 0) {
 
 jia_codes <- c(164L, 226L, 227L, 228L, 355L, 356L, 480L, 481L, 482L, 483L, 484L, 595L)
 min_plausible_yearbuilt <- 1800L
-current_year <- as.integer(format(Sys.Date(), "%Y"))
 
 normalize_text_field <- function(x) {
   out <- trimws(as.character(x))
@@ -43,29 +42,6 @@ normalize_year_field <- function(x) {
   x_int
 }
 
-safe_min_int <- function(x) {
-  x <- suppressWarnings(as.integer(x))
-  if (all(is.na(x))) {
-    return(NA_integer_)
-  }
-  min(x, na.rm = TRUE)
-}
-
-safe_max_int <- function(x) {
-  x <- suppressWarnings(as.integer(x))
-  if (all(is.na(x))) {
-    return(NA_integer_)
-  }
-  max(x, na.rm = TRUE)
-}
-
-excluded_rows <- mappluto_raw_files |>
-  mutate(
-    status = as.character(status),
-    raw_parquet_path = as.character(raw_parquet_path)
-  ) |>
-  filter(is.na(status) | status != "loaded" | is.na(raw_parquet_path) | !file.exists(raw_parquet_path))
-
 available_rows <- mappluto_raw_files |>
   mutate(
     status = as.character(status),
@@ -75,7 +51,6 @@ available_rows <- mappluto_raw_files |>
 
 if (nrow(available_rows) == 0) {
   write_csv(tibble(), "../output/mappluto_lot_files.csv", na = "")
-  write_csv(tibble(), "../output/mappluto_lot_qc.csv", na = "")
   quit(save = "no")
 }
 
@@ -87,7 +62,6 @@ available_rows <- available_rows |>
   )
 
 index_rows <- list()
-qc_rows <- list()
 
 for (i in seq_len(nrow(available_rows))) {
   row <- available_rows[i, ]
@@ -182,30 +156,7 @@ for (i in seq_len(nrow(available_rows))) {
     raw_zip_valid = if ("raw_zip_valid" %in% names(row)) row$raw_zip_valid else NA,
     raw_status = row$status
   )
-
-  qc_rows[[i]] <- tibble(
-    source_id = row$source_id,
-    vintage = row$vintage,
-    row_count = nrow(lot_table),
-    nonmissing_bbl_share = mean(!is.na(lot_table$bbl)),
-    nonmissing_cd_share = mean(!is.na(lot_table$cd)),
-    nonmissing_council_share = mean(!is.na(lot_table$council)),
-    nonmissing_unitsres_share = mean(!is.na(lot_table$unitsres)),
-    nonmissing_yearbuilt_share = mean(!is.na(lot_table$yearbuilt)),
-    nonmissing_zonedist1_share = mean(!is.na(lot_table$zonedist1)),
-    nonmissing_lotarea_share = mean(!is.na(lot_table$lotarea)),
-    nonmissing_builtfar_share = mean(!is.na(lot_table$builtfar)),
-    nonmissing_assessland_share = mean(!is.na(lot_table$assessland)),
-    ordinary_cd_rows = sum(!lot_table$is_joint_interest_area, na.rm = TRUE),
-    joint_interest_area_rows = sum(lot_table$is_joint_interest_area, na.rm = TRUE),
-    min_yearbuilt = safe_min_int(lot_table$yearbuilt),
-    max_yearbuilt = safe_max_int(lot_table$yearbuilt),
-    future_yearbuilt_count = sum(suppressWarnings(as.integer(lot_table$yearbuilt)) > current_year, na.rm = TRUE),
-    excluded_input_rows = nrow(excluded_rows),
-    raw_status = row$status
-  )
 }
 
 write_csv(bind_rows(index_rows), "../output/mappluto_lot_files.csv", na = "")
-write_csv(bind_rows(qc_rows), "../output/mappluto_lot_qc.csv", na = "")
 cat("Wrote MapPLUTO staging outputs to ../output\n")
