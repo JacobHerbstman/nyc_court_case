@@ -26,7 +26,7 @@ all: ../output/overrule_project_bundle_audited.csv \
 ../input/zap_housing_project_base_audited.csv: ../../../build_zap_housing_pipeline_from_raw/output/zap_housing_project_base_audited.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/council_land_use_matter.csv: ../../../stage_council_land_use_records/output/council_land_use_matter.csv | ../input
+../input/council_land_use_matter.csv: ../../stage_member_deference_overrule_seed_records/output/council_land_use_matter.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 link-inputs: ../input/zap_housing_project_base_audited.csv ../input/council_land_use_matter.csv

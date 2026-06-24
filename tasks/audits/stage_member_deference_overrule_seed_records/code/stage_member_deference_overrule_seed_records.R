@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/stage_council_land_use_records/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/stage_member_deference_overrule_seed_records/code")
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -7,7 +7,7 @@ suppressPackageStartupMessages({
   library(tibble)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 collapse_values <- function(x) {
   values <- unique(str_squish(as.character(x)))
