@@ -1,7 +1,7 @@
 SHELL := bash
 include ../../shell_functions.make
 
-all: ../output/zap_raw_files.csv ../output/zap_columns_metadata.csv
+all: ../output/zap_raw_files.csv
 
 ../output/zap_raw_files.csv: load_zap_raw.R ../input/zap_files.csv | ../output
 	$(R) $<
