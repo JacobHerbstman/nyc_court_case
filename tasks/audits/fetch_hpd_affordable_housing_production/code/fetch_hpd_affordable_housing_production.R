@@ -1,10 +1,10 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/fetch_hpd_affordable_housing_production/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/fetch_hpd_affordable_housing_production/code")
 
 suppressPackageStartupMessages({
   library(readr)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 source_csv_url <- "https://data.cityofnewyork.us/api/views/hg8x-zxpr/rows.csv?accessType=DOWNLOAD"
 
@@ -19,5 +19,7 @@ row_count <- nrow(read_csv("../output/hpd_affordable_housing_production_by_build
 if (row_count == 0 || file.info("../output/hpd_affordable_housing_production_by_building.csv")$size == 0) {
   stop("HPD affordable housing production download is empty.")
 }
+
+Sys.setFileTime("../output/hpd_affordable_housing_production_by_building.csv", Sys.time())
 
 cat("Fetched HPD affordable housing production by building to ../output\n")

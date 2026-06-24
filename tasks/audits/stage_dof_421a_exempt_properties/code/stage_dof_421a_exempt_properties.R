@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/stage_dof_421a_exempt_properties/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/stage_dof_421a_exempt_properties/code")
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -8,7 +8,7 @@ suppressPackageStartupMessages({
   library(tibble)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 parse_421a_file <- function(row) {
   raw <- read_excel(row$raw_path_resolved, col_names = FALSE, .name_repair = "unique")

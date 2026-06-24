@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/fetch_dof_421a_exempt_properties/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/fetch_dof_421a_exempt_properties/code")
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -7,7 +7,7 @@ suppressPackageStartupMessages({
   library(tibble)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 raw_dir <- "../output/raw"
 

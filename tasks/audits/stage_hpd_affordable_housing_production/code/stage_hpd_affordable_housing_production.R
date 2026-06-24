@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/stage_hpd_affordable_housing_production/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/stage_hpd_affordable_housing_production/code")
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -7,7 +7,7 @@ suppressPackageStartupMessages({
   library(tibble)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 safe_min_year <- function(x) {
   x <- x[!is.na(x)]

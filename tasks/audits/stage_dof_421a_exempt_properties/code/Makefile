@@ -1,5 +1,5 @@
 SHELL := bash
-include ../../shell_functions.make
+include ../../../shell_functions.make
 
 all: ../output/dof_421a_exempt_bbl_year.csv
 
@@ -11,4 +11,4 @@ all: ../output/dof_421a_exempt_bbl_year.csv
 
 link-inputs: ../input/dof_421a_raw_files.csv
 
-include ../../generic.make
+include ../../../generic.make

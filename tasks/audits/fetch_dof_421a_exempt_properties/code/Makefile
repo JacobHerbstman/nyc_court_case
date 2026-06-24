@@ -1,5 +1,5 @@
 SHELL := bash
-include ../../shell_functions.make
+include ../../../shell_functions.make
 
 all: ../output/dof_421a_raw_files.csv
 
@@ -9,4 +9,4 @@ all: ../output/dof_421a_raw_files.csv
 ../output/raw:
 	mkdir -p $@
 
-include ../../generic.make
+include ../../../generic.make
