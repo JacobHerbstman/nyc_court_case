@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/fetch_dob_open_data/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/fetch_dob_open_data/code")
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -6,7 +6,7 @@ suppressPackageStartupMessages({
   library(tibble)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 source_catalog <- read_csv("../input/source_catalog.csv", show_col_types = FALSE, na = c("", "NA"))
 dob_open_data_source_ids <- c(
@@ -24,14 +24,35 @@ if (nrow(dob_rows) != length(dob_open_data_source_ids) || !setequal(dob_rows$sou
 }
 
 index_rows <- list()
-pull_date <- resolve_raw_pull_date(setNames(
-  lapply(dob_rows$expected_filename, c),
-  dob_rows$source_id
-))
+raw_root <- file.path("..", "..", "..", "..", "data_raw")
+today <- format(Sys.Date(), "%Y%m%d")
+existing_pull_dates <- lapply(seq_len(nrow(dob_rows)), function(i) {
+  raw_dir <- file.path(raw_root, dob_rows$source_id[i])
+  if (!dir.exists(raw_dir)) {
+    return(character())
+  }
+
+  date_dirs <- basename(list.dirs(raw_dir, recursive = FALSE, full.names = TRUE))
+  date_dirs <- date_dirs[str_detect(date_dirs, "^[0-9]{8}$")]
+  date_dirs[vapply(
+    date_dirs,
+    function(date_value) file.exists(file.path(raw_dir, date_value, dob_rows$expected_filename[i])),
+    logical(1)
+  )] |>
+    sort()
+})
+common_pull_dates <- Reduce(intersect, existing_pull_dates)
+pull_date <- if (length(common_pull_dates) == 0) {
+  today
+} else if (today %in% common_pull_dates) {
+  today
+} else {
+  max(common_pull_dates)
+}
 
 for (i in seq_len(nrow(dob_rows))) {
   row <- dob_rows[i, ]
-  raw_dir <- file.path("..", "..", "..", "data_raw", row$source_id, pull_date)
+  raw_dir <- file.path(raw_root, row$source_id, pull_date)
   raw_path <- file.path(raw_dir, row$expected_filename)
 
   status <- if (file.exists(raw_path)) {

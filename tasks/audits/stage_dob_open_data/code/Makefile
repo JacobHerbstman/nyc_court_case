@@ -1,5 +1,5 @@
 SHELL := bash
-include ../../shell_functions.make
+include ../../../shell_functions.make
 
 all: ../output/dob_open_data_files.csv
 

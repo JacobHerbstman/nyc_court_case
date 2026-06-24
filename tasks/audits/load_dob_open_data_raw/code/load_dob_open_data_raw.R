@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/load_dob_open_data_raw/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/load_dob_open_data_raw/code")
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -6,7 +6,7 @@ suppressPackageStartupMessages({
   library(tibble)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 dob_files <- read_csv("../input/dob_open_data_files.csv", show_col_types = FALSE, na = c("", "NA")) |>
   filter(file.exists(raw_path)) |>

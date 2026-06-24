@@ -3,7 +3,6 @@
 suppressPackageStartupMessages({
   library(arrow)
   library(dplyr)
-  library(ggplot2)
   library(readr)
   library(stringr)
   library(tidyr)
@@ -250,58 +249,3 @@ if (min(citywide_year_counts$cert_year) != 1976 || max(citywide_year_counts$cert
 }
 
 write_csv_if_changed(citywide_year_counts, "../output/citywide_ulurp_application_year.csv")
-
-plot_number_main_df <- citywide_year_counts |>
-  filter(
-    count_unit == "parsed_ulurp_numbers",
-    outcome_id %in% c("all_ulurp_applications", "residential_candidate_applications")
-  )
-
-plot_project_main_df <- citywide_year_counts |>
-  filter(
-    count_unit == "zap_project_records",
-    outcome_id %in% c("all_ulurp_applications", "residential_candidate_applications")
-  )
-
-pdf("../output/citywide_ulurp_application_trends.pdf", width = 11, height = 8.5)
-print(
-  ggplot(plot_number_main_df, aes(x = cert_year, y = application_count, color = outcome_label)) +
-    geom_vline(xintercept = 1989.5, color = "#666666", linetype = "dashed", linewidth = 0.35) +
-    geom_line(alpha = 0.35, linewidth = 0.45) +
-    geom_line(aes(y = application_count_ma3), linewidth = 0.9, na.rm = TRUE) +
-    scale_color_manual(values = c(
-      "All ULURP applications" = "#333333",
-      "Housing-oriented applications: candidate" = "#2f7d32"
-    )) +
-    scale_x_continuous(breaks = seq(1975, 2025, by = 5)) +
-    labs(
-      title = "Citywide ULURP application numbers by certification/referral year",
-      subtitle = "Counts parse distinct ULURP numbers from ZAP project rows. Thin lines are annual counts; thick lines are centered three-year moving averages.",
-      x = NULL,
-      y = "Applications",
-      color = NULL
-    ) +
-    theme_minimal(base_size = 11) +
-    theme(legend.position = "bottom")
-)
-print(
-  ggplot(plot_project_main_df, aes(x = cert_year, y = application_count, color = outcome_label)) +
-    geom_vline(xintercept = 1989.5, color = "#666666", linetype = "dashed", linewidth = 0.35) +
-    geom_line(alpha = 0.35, linewidth = 0.45) +
-    geom_line(aes(y = application_count_ma3), linewidth = 0.9, na.rm = TRUE) +
-    scale_color_manual(values = c(
-      "All ULURP applications" = "#333333",
-      "Housing-oriented applications: candidate" = "#2f7d32"
-    )) +
-    scale_x_continuous(breaks = seq(1975, 2025, by = 5)) +
-    labs(
-      title = "Citywide ZAP ULURP project records by certification/referral year",
-      subtitle = "Project records are more complete historically but can bundle multiple ULURP application numbers.",
-      x = NULL,
-      y = "ZAP project records",
-      color = NULL
-    ) +
-    theme_minimal(base_size = 11) +
-    theme(legend.position = "bottom")
-)
-dev.off()

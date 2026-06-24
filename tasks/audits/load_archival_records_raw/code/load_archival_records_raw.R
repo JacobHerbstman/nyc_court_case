@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/load_archival_records_raw/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/load_archival_records_raw/code")
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -7,7 +7,7 @@ suppressPackageStartupMessages({
   library(tibble)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 source_catalog <- read_csv("../input/source_catalog.csv", show_col_types = FALSE, na = c("", "NA"))
 archive_requests <- read_csv("../input/archive_requests.csv", show_col_types = FALSE, na = c("", "NA")) %>%

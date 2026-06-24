@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/stage_dob_open_data/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/stage_dob_open_data/code")
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -8,7 +8,7 @@ suppressPackageStartupMessages({
   library(tibble)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 append_reason <- function(existing_reason, new_flag, new_reason) {
   existing_reason <- ifelse(is.na(existing_reason), "", existing_reason)

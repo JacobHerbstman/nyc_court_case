@@ -1,13 +1,13 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/source_registry/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/validate_source_registry/code")
 
 suppressPackageStartupMessages({
   library(readr)
   library(tibble)
 })
 
-source_catalog <- read_csv("source_catalog.csv", show_col_types = FALSE, na = c("", "NA"))
-manual_manifest <- read_csv("manual_manifest.csv", show_col_types = FALSE, na = c("", "NA"))
-archive_requests <- read_csv("archive_requests.csv", show_col_types = FALSE, na = c("", "NA"))
+source_catalog <- read_csv("../../../source_registry/code/source_catalog.csv", show_col_types = FALSE, na = c("", "NA"))
+manual_manifest <- read_csv("../../../source_registry/code/manual_manifest.csv", show_col_types = FALSE, na = c("", "NA"))
+archive_requests <- read_csv("../../../source_registry/code/archive_requests.csv", show_col_types = FALSE, na = c("", "NA"))
 
 required_source_cols <- c(
   "source_id", "source_name", "access_mode", "official_url", "raw_subdir",
