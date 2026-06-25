@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/stage_census_bps/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/stage_census_bps/code")
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -7,7 +7,7 @@ suppressPackageStartupMessages({
   library(tibble)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 bps_files <- read_csv("../input/census_bps_raw_files.csv", show_col_types = FALSE, na = c("", "NA"))
 bps_files <- bps_files[!is.na(bps_files$raw_parquet_path) & file.exists(bps_files$raw_parquet_path), ]

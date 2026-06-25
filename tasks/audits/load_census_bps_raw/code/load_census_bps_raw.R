@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/load_census_bps_raw/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/load_census_bps_raw/code")
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -7,7 +7,7 @@ suppressPackageStartupMessages({
   library(tibble)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 normalize_bps_place_name <- function(x) {
   x |>

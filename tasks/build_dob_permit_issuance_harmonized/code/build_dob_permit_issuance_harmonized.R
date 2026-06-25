@@ -111,44 +111,4 @@ if (duplicate_permit_identifier_rows > 0) {
 
 write_parquet_if_changed(harmonized_df, "../output/dob_permit_issuance_harmonized.parquet")
 
-bps_city_year <- read_parquet("../input/census_bps_city_year.parquet") %>%
-  as.data.frame() %>%
-  as_tibble()
-
-harmonized_nb_city_year <- harmonized_df %>%
-  filter(job_type == "New Building", !is.na(record_year)) %>%
-  group_by(record_year) %>%
-  summarise(harmonized_nb_permit_rows = n(), .groups = "drop")
-
-bps_city_year_df <- bps_city_year %>%
-  transmute(record_year = as.integer(year), city_total_units = as.numeric(city_total_units))
-
-if (anyDuplicated(bps_city_year_df$record_year)) {
-  stop("Census BPS city-year validation input is not unique by record_year.")
-}
-
-bps_compare_df <- harmonized_nb_city_year %>%
-  inner_join(
-    bps_city_year_df,
-    by = "record_year",
-    relationship = "many-to-one"
-  )
-
-qc_df <- bind_rows(
-  tibble(metric = "canonical_source_id", value = "dob_permit_issuance_current", note = "Canonical public permit issuance source used for the unified dataset."),
-  tibble(metric = "row_count_equals_current_source", value = as.character(nrow(harmonized_df) == nrow(current_canonical)), note = "Unified dataset row count should exactly equal the current-source canonical row count."),
-  tibble(metric = "total_rows_harmonized", value = as.character(nrow(harmonized_df)), note = "Rows retained in the unified public permit issuance dataset."),
-  tibble(metric = "earliest_issuance_date", value = as.character(safe_min_date(harmonized_df$issuance_date)), note = "Earliest nonmissing issuance date in the unified dataset."),
-  tibble(metric = "latest_issuance_date", value = as.character(safe_max_date(harmonized_df$issuance_date)), note = "Latest nonmissing issuance date in the unified dataset."),
-  tibble(metric = "duplicate_permit_identifier_rows_after_harmonization", value = as.character(duplicate_permit_identifier_rows), note = "Duplicate canonical permit identifiers should be zero."),
-  tibble(metric = "missing_issuance_date_rows", value = as.character(sum(harmonized_df$issuance_date_missing_flag, na.rm = TRUE)), note = "Current-source rows retained without issuance dates."),
-  tibble(metric = "missing_issuance_date_share", value = as.character(mean(harmonized_df$issuance_date_missing_flag, na.rm = TRUE)), note = "Share of unified rows retained without issuance dates."),
-  tibble(metric = "record_year_missing_when_issuance_missing", value = as.character(all(is.na(harmonized_df$record_year[harmonized_df$issuance_date_missing_flag]))), note = "Rows missing issuance date should also have missing record year."),
-  tibble(metric = "current_ge_historical_all_years_1989_2013", value = as.character(all(comparison_check_df$current_ge_historical_row_count_flag, na.rm = TRUE)), note = "Current source row counts are at least as large as historical in every year from 1989 through 2013."),
-  tibble(metric = "current_ge_historical_nb_all_years_1989_2013", value = as.character(all(comparison_check_df$current_ge_historical_nb_row_count_flag, na.rm = TRUE)), note = "Current source new-building row counts are at least as large as historical in every year from 1989 through 2013."),
-  tibble(metric = "current_ge_historical_residential_all_years_1989_2013", value = as.character(all(comparison_check_df$current_ge_historical_residential_row_count_flag, na.rm = TRUE)), note = "Current source residential row counts are at least as large as historical in every year from 1989 through 2013."),
-  tibble(metric = "comparison_years_checked", value = as.character(nrow(comparison_check_df)), note = "Number of audit years checked before writing the unified dataset."),
-  tibble(metric = "bps_descriptive_overlap_years", value = as.character(nrow(bps_compare_df)), note = "Descriptive only: permit-row counts are not unit counts and should not be interpreted as a BPS replacement.")
-)
-
 cat("Wrote current-primary DOB permit issuance output to ../output/dob_permit_issuance_harmonized.parquet\n")

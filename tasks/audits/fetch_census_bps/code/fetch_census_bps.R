@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/fetch_census_bps/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/fetch_census_bps/code")
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -6,7 +6,7 @@ suppressPackageStartupMessages({
   library(tibble)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 source_catalog <- read_csv("../input/source_catalog.csv", show_col_types = FALSE, na = c("", "NA"))
 bps_row <- source_catalog |> filter(source_id == "census_bps_place_ascii")
@@ -21,7 +21,7 @@ inventory_rows <- list()
 
 for (year_value in years) {
   file_url <- paste0("https://www2.census.gov/econ/bps/Place/Northeast%20Region/ne", year_value, "a.txt")
-  raw_path <- file.path("..", "..", "..", "data_raw", "census_bps_place_ascii", as.character(year_value), paste0("ne", year_value, "a.txt"))
+  raw_path <- file.path("..", "..", "..", "..", "data_raw", "census_bps_place_ascii", as.character(year_value), paste0("ne", year_value, "a.txt"))
   file_status <- if (file.exists(raw_path)) "already_present" else download_with_status(file_url, raw_path)
 
   inventory_rows[[length(inventory_rows) + 1L]] <- tibble(
@@ -36,7 +36,7 @@ for (year_value in years) {
 }
 
 documentation_url <- "https://www.census.gov/construction/bps/sample/placeasc.pdf"
-documentation_path <- file.path("..", "..", "..", "data_raw", "census_bps_place_ascii", pull_date, "placeasc.pdf")
+documentation_path <- file.path("..", "..", "..", "..", "data_raw", "census_bps_place_ascii", pull_date, "placeasc.pdf")
 documentation_status <- if (file.exists(documentation_path)) "already_present" else download_with_status(documentation_url, documentation_path)
 
 inventory_rows[[length(inventory_rows) + 1L]] <- tibble(
