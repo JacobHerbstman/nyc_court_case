@@ -67,4 +67,4 @@ all: ../output/council_land_use_outside_current_type_candidates.csv \
 
 link-inputs: $(foreach year,$(RECALL_YEARS),../input/legistar_$(year)_broad_recall_matter_index.csv)
 
-include ../../../generic.make
+include ../../generic.make

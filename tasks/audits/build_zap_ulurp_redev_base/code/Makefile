@@ -22,4 +22,4 @@ all: ../output/zap_ulurp_redev_project_base.csv ../output/zap_ulurp_redev_projec
 
 link-inputs: ../input/zap_project_data.parquet ../input/zap_housing_cohort_base.csv ../input/zap_housing_hdb_project_summary.csv ../input/cd_redevelopment_potential_baseline.csv
 
-include ../../../generic.make
+include ../../generic.make

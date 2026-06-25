@@ -125,16 +125,71 @@ def find_cycle(tasks, edges):
     return None
 
 
+def wrapped_label(task):
+    prefix = ""
+    name = task
+    if task.startswith("audits/"):
+        prefix = "audits/\\n"
+        name = task.removeprefix("audits/")
+
+    chunks = []
+    line = ""
+    for part in name.split("_"):
+        candidate = part if not line else f"{line}_{part}"
+        if len(candidate) > 24 and line:
+            chunks.append(line)
+            line = part
+        else:
+            line = candidate
+
+    if line:
+        chunks.append(line)
+
+    return prefix + "\\n".join(chunks)
+
+
+def node_fill(scope):
+    if scope == "production":
+        return "white"
+    if scope == "audit":
+        return "gray90"
+    if scope == "infrastructure":
+        return "lightblue"
+    return "mistyrose"
+
+
+def write_dot(path, nodes, edges, task_scopes):
+    with path.open("w") as f:
+        f.write("digraph G {\n")
+        f.write("  graph [rankdir=LR, nodesep=0.35, ranksep=0.7];\n")
+        f.write('  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10];\n')
+        f.write('  edge [color="gray40"];\n')
+
+        for task in sorted(nodes):
+            label = wrapped_label(task)
+            fill = node_fill(task_scopes.get(task, "missing"))
+            f.write(f'  "{task}" [label="{label}", fillcolor="{fill}"];\n')
+
+        for upstream, downstream, _ in sorted(edges):
+            if upstream in nodes and downstream in nodes:
+                f.write(f'  "{upstream}" -> "{downstream}";\n')
+
+        f.write("}\n")
+
+
 def main():
     edges_csv = Path("../output/task_edges.csv")
     inventory_csv = Path("../output/task_inventory.csv")
     output_inventory_csv = Path("../output/task_output_inventory.csv")
     boundary_edges_csv = Path("../output/task_boundary_edges.csv")
     dot_file = Path("../output/task_flow.dot")
+    production_dot_file = Path("../output/task_flow_production.dot")
+    full_dot_file = Path("../output/task_flow_full.dot")
     summary_csv = Path("../output/task_graph_summary.csv")
-    tasks_root = Path("../../..").resolve()
+    tasks_root = Path("../..").resolve()
     audits_root = tasks_root / "audits"
     repo_root = tasks_root.parent
+    infrastructure_tasks = {"task_graph"}
 
     production_makefiles = {
         path.parents[1].name: (path, "production")
@@ -160,7 +215,23 @@ def main():
         task_outputs[task] = outputs
         task_all_outputs[task] = all_outputs
         upstream_refs[task] = refs
-        task_scopes[task] = scope
+        task_scopes[task] = "infrastructure" if task in infrastructure_tasks else scope
+
+    production_tasks = [
+        task
+        for task, scope in task_scopes.items()
+        if scope == "production"
+    ]
+    audit_tasks = [
+        task
+        for task, scope in task_scopes.items()
+        if scope == "audit"
+    ]
+    infrastructure_task_names = [
+        task
+        for task, scope in task_scopes.items()
+        if scope == "infrastructure"
+    ]
 
     edges = []
     missing_tasks = []
@@ -204,6 +275,25 @@ def main():
         for match in re.finditer(r"\.\./tasks/([^/\s]+)/output/([^\\\s{}]+)", tex_file.read_text()):
             paper_facing_tasks.add(match.group(1))
             paper_facing_outputs.add((match.group(1), match.group(2)))
+
+    parents = defaultdict(set)
+    for upstream, downstream, _ in edges:
+        parents[downstream].add(upstream)
+
+    paper_ancestry_tasks = set(paper_facing_tasks)
+    frontier = list(paper_facing_tasks)
+    while frontier:
+        task = frontier.pop()
+        for upstream in parents[task]:
+            if upstream not in paper_ancestry_tasks:
+                paper_ancestry_tasks.add(upstream)
+                frontier.append(upstream)
+
+    paper_ancestry_tasks = {
+        task
+        for task in paper_ancestry_tasks
+        if task in task_makefiles
+    }
 
     production_sinks = [
         task
@@ -330,24 +420,22 @@ def main():
                 output_rel,
             ])
 
-    with dot_file.open("w") as f:
-        f.write("digraph G {\n")
-        f.write("  rankdir=LR;\n")
-        for upstream, downstream, _ in sorted(edges):
-            f.write(f'  "{upstream}" -> "{downstream}";\n')
-        f.write("}\n")
+    write_dot(dot_file, paper_ancestry_tasks, edges, task_scopes)
+    write_dot(production_dot_file, production_tasks, edges, task_scopes)
+    write_dot(full_dot_file, task_makefiles.keys(), edges, task_scopes)
 
     summary_rows = [
-        ["production_task_count", str(len(production_makefiles))],
-        ["audit_task_count", str(len(audit_makefiles))],
+        ["production_task_count", str(len(production_tasks))],
+        ["audit_task_count", str(len(audit_tasks))],
+        ["infrastructure_task_count", str(len(infrastructure_task_names))],
         ["task_count", str(len(task_makefiles))],
-        ["production_output_target_count", str(sum(len(task_outputs[task]) for task in production_makefiles))],
-        ["production_all_output_target_count", str(sum(len(task_all_outputs[task]) for task in production_makefiles))],
+        ["production_output_target_count", str(sum(len(task_outputs[task]) for task in production_tasks))],
+        ["production_all_output_target_count", str(sum(len(task_all_outputs[task]) for task in production_tasks))],
         [
             "production_terminal_all_output_count",
             str(sum(
                 1
-                for task in production_makefiles
+                for task in production_tasks
                 for output_target in task_all_outputs[task]
                 if len(output_downstream_tasks[(task, output_target.removeprefix("../output/"))]) == 0
                 and (task, output_target.removeprefix("../output/")) not in paper_facing_outputs
@@ -357,7 +445,7 @@ def main():
             "production_sidecar_named_all_output_count",
             str(sum(
                 1
-                for task in production_makefiles
+                for task in production_tasks
                 for output_target in task_all_outputs[task]
                 if any(term in output_target.lower() for term in sidecar_terms)
             )),

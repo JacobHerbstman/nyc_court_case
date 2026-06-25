@@ -28,4 +28,4 @@ all: ../output/brooklyn_homeownership_case_study_controls.csv ../output/brooklyn
 
 link-inputs: ../input/cd_baseline_1990_controls.csv ../input/nhgis_files.csv ../input/nhgis_1990_tract_extract.parquet ../input/dcp_boundary_index.csv ../input/dcp_boundary_community_districts_20260501.parquet ../input/cd_redevelopment_potential_baseline.csv
 
-include ../../../generic.make
+include ../../generic.make

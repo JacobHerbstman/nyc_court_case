@@ -34,4 +34,4 @@ all: ../output/council_zap_land_use_volume_comparison_qc.csv \
 link-inputs: ../input/council_land_use_decision_trends_year.csv \
 	../input/citywide_ulurp_application_year.csv
 
-include ../../../generic.make
+include ../../generic.make

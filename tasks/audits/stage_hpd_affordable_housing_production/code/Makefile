@@ -11,4 +11,4 @@ all: ../output/hpd_affordable_housing_bbl_year.csv
 
 link-inputs: ../input/hpd_affordable_housing_production_by_building.csv
 
-include ../../../generic.make
+include ../../generic.make

@@ -116,4 +116,4 @@ all: ../output/redevelopment_potential_first_pass_memo.pdf
 
 link-inputs: ../input/cd_homeownership_1990_measure.csv ../input/cd_baseline_1990_controls.csv ../input/cd_homeownership_dcp_supply_panel.csv ../input/cd_homeownership_long_units_series.csv ../input/dcp_mappluto_archive_18v1_1.parquet ../input/dcp_mappluto_current_25v4.parquet ../input/dcp_housing_database_project_level_25q4.parquet ../input/cd_homeownership_permit_nb_panel.csv ../input/dcp_boundary_community_districts_20260501.parquet ../input/mappluto_construction_proxy_lot_level.parquet
 
-include ../../../generic.make
+include ../../generic.make

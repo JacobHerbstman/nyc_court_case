@@ -95,4 +95,4 @@ chatgpt_geography_adjudication_responses.jsonl:
 
 link-inputs: ../input/council_land_use_missing_geography_roll_call_repair_queue.csv
 
-include ../../../generic.make
+include ../../generic.make

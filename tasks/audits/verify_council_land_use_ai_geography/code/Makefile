@@ -143,4 +143,4 @@ link-inputs: ../input/council_land_use_missing_geography_adjudication_ai_repair_
 	../input/dcp_council_boundary_archive_index.csv \
 	../input/dcp_council_boundary_archive_output
 
-include ../../../generic.make
+include ../../generic.make

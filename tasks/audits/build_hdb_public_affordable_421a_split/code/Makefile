@@ -31,4 +31,4 @@ all: ../output/hdb_public_affordable_421a_job_classified.csv ../output/hdb_publi
 
 link-inputs: ../input/dcp_housing_database_project_level_25q4.parquet ../input/zap_housing_hdb_link_candidates.csv ../input/zap_housing_project_base_audited.csv ../input/hpd_affordable_housing_bbl_year.csv ../input/dof_421a_exempt_bbl_year.csv ../input/cd_redevelopment_potential_baseline.csv
 
-include ../../../generic.make
+include ../../generic.make

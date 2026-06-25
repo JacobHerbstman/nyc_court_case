@@ -11,4 +11,4 @@ all: ../output/council_land_use_matter.csv
 
 link-inputs: ../input/council_land_use_fetch_files.csv
 
-include ../../../generic.make
+include ../../generic.make

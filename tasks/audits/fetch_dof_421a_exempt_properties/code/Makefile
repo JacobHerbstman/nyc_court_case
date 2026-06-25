@@ -9,4 +9,4 @@ all: ../output/dof_421a_raw_files.csv
 ../output/raw:
 	mkdir -p $@
 
-include ../../../generic.make
+include ../../generic.make

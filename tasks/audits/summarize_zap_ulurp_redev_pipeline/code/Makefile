@@ -26,4 +26,4 @@ all: ../output/zap_ulurp_redev_cd_year_panel.csv ../output/zap_ulurp_redev_matur
 
 link-inputs: ../input/zap_ulurp_redev_project_base.csv ../input/zap_housing_hdb_link_candidates.csv
 
-include ../../../generic.make
+include ../../generic.make

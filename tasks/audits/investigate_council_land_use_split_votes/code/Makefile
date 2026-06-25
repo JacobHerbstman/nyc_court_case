@@ -217,4 +217,4 @@ link-inputs: ../input/council_land_use_decision_panel.csv \
 	../input/charter_overrule_seed_cases.csv \
 	$(foreach year,$(RECALL_YEARS),../input/legistar_$(year)_broad_recall_member_votes.csv)
 
-include ../../../generic.make
+include ../../generic.make

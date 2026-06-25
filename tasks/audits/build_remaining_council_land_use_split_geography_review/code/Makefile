@@ -55,4 +55,4 @@ chatgpt_remaining_split_geography_responses.jsonl:
 link-inputs: ../input/council_land_use_decision_panel.csv \
 	../input/council_land_use_split_vote_nonaffirmative_member_rows.csv
 
-include ../../../generic.make
+include ../../generic.make
