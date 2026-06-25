@@ -12,7 +12,7 @@ all: ../output/zap_linked_hdb_50plus_cd_year.csv ../output/zap_linked_hdb_50plus
 ../output/zap_linked_hdb_50plus_summary.csv: ../output/zap_linked_hdb_50plus_cd_year.csv
 	@test -s "$@"
 
-../input/dcp_housing_database_project_level_25q4.parquet: ../../../stage_dcp_housing_database/output/dcp_housing_database_project_level_25q4.parquet | ../input
+../input/dcp_housing_database_project_level_25q4.parquet: ../../../build_dcp_housing_database/output/dcp_housing_database_project_level_25q4.parquet | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/zap_housing_hdb_link_candidates.csv: ../../../build_zap_housing_hdb_link/output/zap_housing_hdb_link_candidates.csv | ../input

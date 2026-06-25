@@ -12,7 +12,7 @@ all: ../output/cd_homeownership_dcp_supply_panel.csv
 ../input/cd_baseline_1990_controls.csv: ../../build_cd_baseline_1990_controls/output/cd_baseline_1990_controls.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/dcp_housing_database_project_level_25q4.parquet: ../../stage_dcp_housing_database/output/dcp_housing_database_project_level_25q4.parquet | ../input
+../input/dcp_housing_database_project_level_25q4.parquet: ../../build_dcp_housing_database/output/dcp_housing_database_project_level_25q4.parquet | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 link-inputs: ../input/cd_homeownership_1990_measure.csv ../input/cd_baseline_1990_controls.csv ../input/dcp_housing_database_project_level_25q4.parquet

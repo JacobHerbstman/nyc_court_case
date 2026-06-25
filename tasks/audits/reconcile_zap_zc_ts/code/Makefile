@@ -23,7 +23,7 @@ all: ../output/zap_zc_ts_recreated_year.csv \
 ../output/zap_zc_ts_reconciliation.pdf: ../output/zap_zc_ts_recreated_year.csv
 	@test -s "$@"
 
-../input/zap_project_data.parquet: ../../../stage_zap_datasets/output/zap_project_data.parquet | ../input
+../input/zap_project_data.parquet: ../../../build_zap_datasets/output/zap_project_data.parquet | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/council_land_use_decision_panel.csv: ../../../build_council_land_use_decision_panel/output/council_land_use_decision_panel.csv | ../input

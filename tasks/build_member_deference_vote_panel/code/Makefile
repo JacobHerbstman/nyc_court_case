@@ -43,13 +43,13 @@ all: ../output/member_deference_vote_panel.csv \
 ../input/legistar_%_broad_recall_history_events.csv: ../../fetch_council_land_use_records/output/legistar_%_broad_recall_history_events.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/council_member_roster_master.csv: ../../stage_council_member_roster/output/council_member_roster_master.csv | ../input
+../input/council_member_roster_master.csv: ../../build_council_member_roster/output/council_member_roster_master.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/zap_project_data.parquet: ../../stage_zap_datasets/output/zap_project_data.parquet | ../input
+../input/zap_project_data.parquet: ../../build_zap_datasets/output/zap_project_data.parquet | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/council_land_use_ai_geography_accepted_repairs.csv: ../../stage_council_land_use_ai_geography_repairs/output/council_land_use_ai_geography_accepted_repairs.csv | ../input
+../input/council_land_use_ai_geography_accepted_repairs.csv: ../../create_council_land_use_ai_geography_repairs/output/council_land_use_ai_geography_accepted_repairs.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 link-inputs: ../input/council_member_roster_master.csv \

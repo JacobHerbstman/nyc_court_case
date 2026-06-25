@@ -12,7 +12,7 @@ all: ../output/dob_permit_issuance_harmonized_audit_summary.csv ../output/dob_pe
 ../input/current_source_decision_1989_2013.csv: ../../build_dob_permit_issuance_harmonized/code/current_source_decision_1989_2013.csv | ../input
 	ln -sf "$<" "$@"
 
-../input/dcp_boundary_index.csv: ../../stage_dcp_boundaries/output/dcp_boundary_index.csv | ../input
+../input/dcp_boundary_index.csv: ../../build_dcp_boundaries/output/dcp_boundary_index.csv | ../input
 	ln -sf "$<" "$@"
 
 ../input/census_bps_city_year.parquet: ../../stage_census_bps/output/census_bps_city_year.parquet | ../input

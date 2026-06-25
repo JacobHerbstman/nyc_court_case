@@ -29,7 +29,7 @@ all: $(foreach year,$(RECALL_YEARS),../output/legistar_$(year)_member_override_m
 ../input/legistar_%_broad_recall_split_vote_signals.csv: ../../fetch_council_land_use_records/output/legistar_%_broad_recall_split_vote_signals.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/council_member_roster_master.csv: ../../stage_council_member_roster/output/council_member_roster_master.csv | ../input
+../input/council_member_roster_master.csv: ../../build_council_member_roster/output/council_member_roster_master.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 link-inputs: ../input/council_member_roster_master.csv \

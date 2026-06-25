@@ -11,20 +11,20 @@ suppressPackageStartupMessages({
 
 source("../../_lib/source_pipeline_utils.R")
 
-stage_files <- read_csv("../input/dcp_cd_profiles_1990_2000_files.csv", show_col_types = FALSE, na = c("", "NA")) %>%
+profile_files <- read_csv("../input/dcp_cd_profiles_1990_2000_files.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(pull_date = as.character(pull_date)) %>%
   filter(!is.na(parquet_path), file.exists(parquet_path))
 
-if (nrow(stage_files) == 0) {
+if (nrow(profile_files) == 0) {
   write_csv(tibble(), "../output/cd_homeownership_1990_measure.csv", na = "")
   quit(save = "no")
 }
 
-stage_file <- stage_files %>%
+profile_file <- profile_files %>%
   arrange(desc(pull_date), parquet_path) %>%
   slice_head(n = 1)
 
-homeownership_cells <- read_parquet(stage_file$parquet_path[[1]]) %>%
+homeownership_cells <- read_parquet(profile_file$parquet_path[[1]]) %>%
   as.data.frame() %>%
   as_tibble() %>%
   mutate(
@@ -49,7 +49,7 @@ duplicate_homeownership_cells <- homeownership_cells %>%
   filter(source_row_count > 1)
 
 if (nrow(duplicate_homeownership_cells) > 0) {
-  stop("DCP homeownership cells are not unique by district_id and metric_key; fix staged profiles before building the canonical measure.")
+  stop("DCP homeownership cells are not unique by district_id and metric_key; fix parsed profiles before building the canonical measure.")
 }
 
 exact_df <- homeownership_cells %>%
@@ -59,8 +59,8 @@ exact_df <- homeownership_cells %>%
     names_glue = "{metric_key}_{.value}"
   ) %>%
   transmute(
-    source_id = stage_file$source_id[[1]],
-    pull_date = stage_file$pull_date[[1]],
+    source_id = profile_file$source_id[[1]],
+    pull_date = profile_file$pull_date[[1]],
     district_id,
     borough_code,
     borough_name,

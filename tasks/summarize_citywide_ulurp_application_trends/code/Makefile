@@ -8,7 +8,7 @@ all: ../output/citywide_ulurp_application_year.csv
 	../input/zap_project_data.parquet | ../output
 	$(R) $<
 
-../input/zap_project_data.parquet: ../../stage_zap_datasets/output/zap_project_data.parquet | ../input
+../input/zap_project_data.parquet: ../../build_zap_datasets/output/zap_project_data.parquet | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 link-inputs: ../input/zap_project_data.parquet

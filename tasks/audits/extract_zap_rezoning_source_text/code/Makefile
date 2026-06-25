@@ -58,13 +58,13 @@ all: ../output/zap_rezoning_source_document_index.csv \
 ../input/zap_rezoning_direction_project_classification.csv: ../../summarize_zap_rezoning_direction_scope/output/zap_rezoning_direction_project_classification.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/zap_project_bbl.parquet: ../../../stage_zap_datasets/output/zap_project_bbl.parquet | ../input
+../input/zap_project_bbl.parquet: ../../../build_zap_datasets/output/zap_project_bbl.parquet | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/ccdist2010_mappluto_bbl_lookup.parquet: ../../../build_ccd2010_mappluto_construction_proxy/output/ccdist2010_mappluto_bbl_lookup.parquet | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/dcp_mappluto_current_25v4.parquet: ../../../stage_mappluto_lots/output/dcp_mappluto_current_25v4.parquet | ../input
+../input/dcp_mappluto_current_25v4.parquet: ../../../build_mappluto_lots/output/dcp_mappluto_current_25v4.parquet | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/ccdist2010_homeownership_1990_measure.csv: ../../../build_ccd2010_homeownership_1990_measure/output/ccdist2010_homeownership_1990_measure.csv | ../input

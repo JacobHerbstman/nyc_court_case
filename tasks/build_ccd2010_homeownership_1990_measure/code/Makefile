@@ -10,7 +10,7 @@ all: ../output/ccdist2010_homeownership_1990_measure.csv \
 ../output/ccdist2010_homeownership_1990_map.pdf: ../output/ccdist2010_homeownership_1990_measure.csv
 	@test -s "$@"
 
-../input/nhgis_1990_tract_extract.parquet: ../../stage_nhgis/output/nhgis_1990_tract_extract.parquet | ../input
+../input/nhgis_1990_tract_extract.parquet: ../../build_nhgis_extracts/output/nhgis_1990_tract_extract.parquet | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/nhgis_raw_files.csv: ../../load_nhgis_raw/output/nhgis_raw_files.csv | ../input

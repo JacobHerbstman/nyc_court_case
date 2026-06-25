@@ -242,17 +242,17 @@ qc_df <- bind_rows(
   tibble(
     metric = "source_row_count_total",
     value = nrow(housing_df),
-    note = "Project rows in the staged DCP Housing Database file before year and standard-CD restrictions."
+    note = "Project rows in the DCP Housing Database file before year and standard-CD restrictions."
   ),
   tibble(
     metric = "source_row_share_standard_59_cd",
     value = mean(housing_df$standard_cd_flag, na.rm = TRUE),
-    note = "Share of staged DCP Housing Database rows that carry one of the standard 59 community district codes."
+    note = "Share of DCP Housing Database rows that carry one of the standard 59 community district codes."
   ),
   tibble(
     metric = "missing_permit_year_share",
     value = mean(is.na(housing_df$year)),
-    note = "Share of staged DCP Housing Database rows with missing permit years."
+    note = "Share of DCP Housing Database rows with missing permit years."
   ),
   tibble(
     metric = "nb_gross_units_raw_sum",

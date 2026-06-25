@@ -12,7 +12,7 @@ all: ../output/dcp_council_boundary_archive_inventory.csv ../output/dcp_council_
 ../input/dcp_council_boundary_archive_qc.csv: ../../stage_dcp_council_boundary_archive/output/dcp_council_boundary_archive_qc.csv | ../input
 	ln -sf "$<" "$@"
 
-../input/dcp_boundary_qc.csv: ../../stage_dcp_boundaries/output/dcp_boundary_qc.csv | ../input
+../input/dcp_boundary_qc.csv: ../../build_dcp_boundaries/output/dcp_boundary_qc.csv | ../input
 	ln -sf "$<" "$@"
 
 ../output/dcp_council_boundary_archive_inventory.csv: summarize_dcp_council_boundary_archive.R ../input/dcp_council_boundary_archive_files.csv ../input/dcp_council_boundary_archive_index.csv ../input/dcp_council_boundary_archive_qc.csv ../input/dcp_boundary_qc.csv | ../output

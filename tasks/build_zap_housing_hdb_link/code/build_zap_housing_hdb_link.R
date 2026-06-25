@@ -315,7 +315,7 @@ assigned_duplicate_project_job_count <- candidate_links %>%
 qc_df <- bind_rows(
   tibble(metric = "project_count", value = nrow(project_summary), status = if_else(nrow(project_summary) > 0, "pass", "fail"), note = "Housing-oriented ULURP projects carried into the exact-BBL housing linkage."),
   tibble(metric = "cd_count", value = n_distinct(project_summary$borocd[!is.na(project_summary$borocd)]), status = if_else(n_distinct(project_summary$borocd[!is.na(project_summary$borocd)]) == 59, "pass", "fail"), note = "Expected 59 CDs."),
-  tibble(metric = "zap_project_bbl_raw_row_count", value = nrow(zap_bbl_raw), status = "pass", note = "Raw staged ZAP project-BBL rows before BBL validation."),
+  tibble(metric = "zap_project_bbl_raw_row_count", value = nrow(zap_bbl_raw), status = "pass", note = "Raw ZAP project-BBL rows before BBL validation."),
   tibble(metric = "zap_project_bbl_valid_row_count", value = nrow(zap_bbl), status = "pass", note = "ZAP project-BBL rows passing 10-digit NYC BBL validation."),
   tibble(metric = "zap_project_bbl_invalid_row_count", value = sum(!zap_bbl_raw$valid_bbl, na.rm = TRUE), status = "pass", note = "ZAP project-BBL rows excluded before exact-BBL matching because BBL is blank or malformed."),
   tibble(metric = "hdb_job_raw_row_count", value = nrow(hdb_jobs_raw), status = "pass", note = "Raw HDB project-level rows before BBL validation."),

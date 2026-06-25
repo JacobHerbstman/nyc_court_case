@@ -47,7 +47,7 @@ if (n_distinct(district_lookup$borocd) != 59) {
 hdb_file <- read_csv("../input/dcp_housing_database_files.csv", show_col_types = FALSE, na = c("", "NA")) |>
   filter(source_id == "dcp_housing_database_project_level", !is.na(parquet_path)) |>
   mutate(
-    parquet_path = paste0("../../../stage_dcp_housing_database/output/", basename(parquet_path)),
+    parquet_path = paste0("../../../build_dcp_housing_database/output/", basename(parquet_path)),
     vintage = as.character(vintage),
     vintage_year = suppressWarnings(as.integer(str_extract(vintage, "^[0-9]{2}"))),
     vintage_quarter = suppressWarnings(as.integer(str_extract(str_to_lower(vintage), "(?<=q)[1-4]$"))),

@@ -11,16 +11,16 @@ all: ../output/brooklyn_homeownership_case_study_controls.csv ../output/brooklyn
 ../input/cd_baseline_1990_controls.csv: ../../../build_cd_baseline_1990_controls/output/cd_baseline_1990_controls.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/nhgis_files.csv: ../../../stage_nhgis/output/nhgis_files.csv | ../input
+../input/nhgis_files.csv: ../../../build_nhgis_extracts/output/nhgis_files.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/nhgis_1990_tract_extract.parquet: ../../../stage_nhgis/output/nhgis_1990_tract_extract.parquet | ../input
+../input/nhgis_1990_tract_extract.parquet: ../../../build_nhgis_extracts/output/nhgis_1990_tract_extract.parquet | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/dcp_boundary_index.csv: ../../../stage_dcp_boundaries/output/dcp_boundary_index.csv | ../input
+../input/dcp_boundary_index.csv: ../../../build_dcp_boundaries/output/dcp_boundary_index.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/dcp_boundary_community_districts_20260501.parquet: ../../../stage_dcp_boundaries/output/dcp_boundary_community_districts_20260501.parquet | ../input
+../input/dcp_boundary_community_districts_20260501.parquet: ../../../build_dcp_boundaries/output/dcp_boundary_community_districts_20260501.parquet | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/cd_redevelopment_potential_baseline.csv: ../../redevelopment_potential_first_pass/output/cd_redevelopment_potential_baseline.csv | ../input

@@ -68,7 +68,7 @@ pull_dcp_metric <- function(df, section_key, metric_key, value_col, out_name) {
       section_key,
       " / ",
       metric_key,
-      ". Fix staged profiles before joining."
+      ". Fix parsed profiles before joining."
     )
   }
 
@@ -316,7 +316,7 @@ dcp_profile_file <- read_csv("../input/dcp_cd_profiles_1990_2000_files.csv", sho
   slice_head(n = 1)
 
 if (nrow(dcp_profile_file) == 0) {
-  stop("Could not find a staged DCP CD profiles parquet in ../input/dcp_cd_profiles_1990_2000_files.csv")
+  stop("Could not find a parsed DCP CD profiles parquet in ../input/dcp_cd_profiles_1990_2000_files.csv")
 }
 
 profiles_df <- read_parquet(dcp_profile_file$parquet_path[[1]]) %>%
@@ -461,7 +461,7 @@ community_district_parquet <- dcp_boundary_index %>%
   pull(parquet_path)
 
 if (length(community_district_parquet) == 0) {
-  stop("Could not find a staged community district parquet path in ../input/dcp_boundary_index.csv")
+  stop("Could not find a community district boundary parquet path in ../input/dcp_boundary_index.csv")
 }
 
 boundary_df <- read_parquet(community_district_parquet[[1]]) %>%

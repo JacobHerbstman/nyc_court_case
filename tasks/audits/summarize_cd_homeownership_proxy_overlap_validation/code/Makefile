@@ -12,7 +12,7 @@ all: ../output/cd_homeownership_proxy_overlap_tercile_year.csv ../output/cd_home
 ../input/mappluto_construction_proxy_cd_year.csv: ../../../build_mappluto_construction_proxy/output/mappluto_construction_proxy_cd_year.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/dcp_housing_database_files.csv: ../../../stage_dcp_housing_database/output/dcp_housing_database_files.csv | ../input
+../input/dcp_housing_database_files.csv: ../../../build_dcp_housing_database/output/dcp_housing_database_files.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 link-inputs: ../input/cd_homeownership_1990_measure.csv ../input/mappluto_construction_proxy_cd_year.csv ../input/dcp_housing_database_files.csv

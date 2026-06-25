@@ -8,7 +8,7 @@ all: ../output/zap_ulurp_redev_project_base.csv ../output/zap_ulurp_redev_projec
 
 ../output/zap_ulurp_redev_project_base_qc.csv: ../output/zap_ulurp_redev_project_base.csv
 
-../input/zap_project_data.parquet: ../../../stage_zap_datasets/output/zap_project_data.parquet | ../input
+../input/zap_project_data.parquet: ../../../build_zap_datasets/output/zap_project_data.parquet | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/zap_housing_cohort_base.csv: ../../../build_zap_housing_cohort_base/output/zap_housing_cohort_base.csv | ../input

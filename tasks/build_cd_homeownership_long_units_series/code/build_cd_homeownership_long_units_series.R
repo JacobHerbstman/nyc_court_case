@@ -112,7 +112,7 @@ hdb_file <- read_csv("../input/dcp_housing_database_files.csv", show_col_types =
   slice_head(n = 1)
 
 if (nrow(hdb_file) == 0) {
-  stop("Could not find a staged DCP Housing Database project-level parquet in ../input/dcp_housing_database_files.csv")
+  stop("Could not find a DCP Housing Database project-level parquet in ../input/dcp_housing_database_files.csv")
 }
 
 hdb_source_df <- read_parquet(
