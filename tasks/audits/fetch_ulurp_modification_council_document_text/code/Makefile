@@ -8,17 +8,17 @@ FULL_TEXT_EXPORT := write_full_text
 
 all: ../output/ulurp_modification_council_document_text.csv
 
-../output/ulurp_modification_council_document_text.csv: ../../../fetch_council_modification_documents/code/fetch_council_modification_documents.py \
+../output/ulurp_modification_council_document_text.csv: ../../fetch_council_modification_documents/code/fetch_council_modification_documents.py \
 	../input/ulurp_modification_project_spine.csv \
 	../input/ulurp_modification_project_matter_crosswalk.csv \
 	$(foreach year,$(RECALL_YEARS),../input/legistar_$(year)_broad_recall_detail_files.csv) \
 	$(foreach year,$(RECALL_YEARS),../input/legistar_$(year)_broad_recall_action_details.csv) | ../output ../temp
 	python3 $< "$(RECALL_YEARS)" "$(FETCH_MODE)" "$(REPORT_FETCH_SCOPE)" "$(ATTACHMENT_FETCH_MODE)" "$(FULL_TEXT_EXPORT)"
 
-../input/ulurp_modification_project_spine.csv: ../../../build_ulurp_modification_spine/output/ulurp_modification_project_spine.csv | ../input
+../input/ulurp_modification_project_spine.csv: ../../build_ulurp_modification_spine/output/ulurp_modification_project_spine.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/ulurp_modification_project_matter_crosswalk.csv: ../../../build_ulurp_modification_spine/output/ulurp_modification_project_matter_crosswalk.csv | ../input
+../input/ulurp_modification_project_matter_crosswalk.csv: ../../build_ulurp_modification_spine/output/ulurp_modification_project_matter_crosswalk.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/legistar_%_broad_recall_detail_files.csv: ../../../fetch_council_land_use_records/output/legistar_%_broad_recall_detail_files.csv | ../input

@@ -1,5 +1,5 @@
 SHELL := bash
-include ../../shell_functions.make
+include ../../../shell_functions.make
 
 CONTENT_MODE := first_pass
 
@@ -14,7 +14,7 @@ all: ../output/ulurp_modification_project_versions.csv \
 	../input/ulurp_modification_zap_docket_text.csv \
 	../input/ulurp_modification_council_document_links.csv \
 	../input/ulurp_modification_council_document_snippets.csv \
-	../../_lib/source_pipeline_utils.R | ../output
+	../../../_lib/source_pipeline_utils.R | ../output
 	$(R) $< $(CONTENT_MODE)
 
 ../output/ulurp_modification_discrete_modifications.csv: ../output/ulurp_modification_project_versions.csv

@@ -1,5 +1,5 @@
 SHELL := bash
-include ../../shell_functions.make
+include ../../../shell_functions.make
 
 SUMMARY_MODE := first_pass
 
@@ -11,7 +11,7 @@ all: ../output/ulurp_modification_project_summary.csv
 	../input/ulurp_modification_discrete_modifications.csv \
 	../input/ulurp_modification_commitments.csv \
 	../input/ulurp_modification_citywide_text_district_modifications.csv \
-	../../_lib/source_pipeline_utils.R | ../output
+	../../../_lib/source_pipeline_utils.R | ../output
 	$(R) $< $(SUMMARY_MODE)
 
 ../input/ulurp_modification_project_spine.csv: ../../build_ulurp_modification_spine/output/ulurp_modification_project_spine.csv | ../input

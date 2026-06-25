@@ -25,10 +25,10 @@ all: ../output/ulurp_modification_council_document_links.csv \
 ../input/ulurp_modification_project_matter_crosswalk.csv: ../../build_ulurp_modification_spine/output/ulurp_modification_project_matter_crosswalk.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/legistar_%_broad_recall_detail_files.csv: ../../fetch_council_land_use_records/output/legistar_%_broad_recall_detail_files.csv | ../input
+../input/legistar_%_broad_recall_detail_files.csv: ../../../fetch_council_land_use_records/output/legistar_%_broad_recall_detail_files.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/legistar_%_broad_recall_action_details.csv: ../../fetch_council_land_use_records/output/legistar_%_broad_recall_action_details.csv | ../input
+../input/legistar_%_broad_recall_action_details.csv: ../../../fetch_council_land_use_records/output/legistar_%_broad_recall_action_details.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 link-inputs: ../input/ulurp_modification_project_spine.csv \
