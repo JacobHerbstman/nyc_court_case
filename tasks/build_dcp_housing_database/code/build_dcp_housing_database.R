@@ -19,7 +19,7 @@ quarter_order_key <- function(x) {
   out
 }
 
-raw_index <- read_csv("../input/dcp_housing_database_raw_files.csv", show_col_types = FALSE, na = c("", "NA")) %>%
+raw_index <- read_csv("../output/dcp_housing_database_raw_files.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   filter(!is.na(raw_parquet_path), file.exists(raw_parquet_path)) %>%
   arrange(desc(quarter_order_key(vintage)), desc(vintage))
 

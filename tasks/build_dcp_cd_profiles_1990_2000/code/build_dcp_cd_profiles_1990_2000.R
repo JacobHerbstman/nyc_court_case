@@ -168,7 +168,7 @@ parse_metric_line <- function(line) {
   tibble(parse_status = "unparsed")
 }
 
-raw_index <- read_csv("../input/dcp_cd_profiles_1990_2000_raw_files.csv", show_col_types = FALSE, na = c("", "NA"))
+raw_index <- read_csv("../output/dcp_cd_profiles_1990_2000_raw_files.csv", show_col_types = FALSE, na = c("", "NA"))
 raw_index <- raw_index[!is.na(raw_index$raw_parquet_path) & file.exists(raw_index$raw_parquet_path), ]
 
 if (nrow(raw_index) == 0) {

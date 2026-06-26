@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/load_dob_permit_issuance_current_raw/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_dob_permit_issuance_harmonized/code")
 
 suppressPackageStartupMessages({
   library(data.table)
@@ -10,7 +10,7 @@ suppressPackageStartupMessages({
 
 source("../../_lib/source_pipeline_utils.R")
 
-fetch_df <- read_csv("../input/dob_permit_issuance_current_files.csv", show_col_types = FALSE, na = c("", "NA")) %>%
+fetch_df <- read_csv("../output/dob_permit_issuance_current_files.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   filter(file.exists(raw_path), !str_detect(as.character(status), "failed")) %>%
   mutate(pull_date_sort = suppressWarnings(as.integer(pull_date)))
 
@@ -54,7 +54,7 @@ index_df <- tibble(
   dataset_id = row$dataset_id[1],
   official_url = row$official_url[1],
   raw_path = row$raw_path[1],
-  raw_parquet_path = "../../load_dob_permit_issuance_current_raw/output/dob_permit_issuance_current_raw.parquet",
+  raw_parquet_path = "../../build_dob_permit_issuance_harmonized/output/dob_permit_issuance_current_raw.parquet",
   pull_date = row$pull_date[1],
   checksum_sha256 = row$checksum_sha256[1],
   status = row$status[1]

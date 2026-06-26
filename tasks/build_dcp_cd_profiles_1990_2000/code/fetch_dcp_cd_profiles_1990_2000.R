@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/fetch_dcp_cd_profiles_1990_2000/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_dcp_cd_profiles_1990_2000/code")
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -60,6 +60,6 @@ for (i in seq_len(nrow(profile_urls))) {
 file_inventory <- bind_rows(inventory_rows) %>%
   arrange(borough_code)
 
-write_csv_if_changed(file_inventory, "../output/dcp_cd_profiles_1990_2000_files.csv")
+write_csv_if_changed(file_inventory, "../output/dcp_cd_profiles_1990_2000_source_files.csv")
 
 cat("Wrote DCP 1990-2000 community district profile fetch outputs to ../output\n")

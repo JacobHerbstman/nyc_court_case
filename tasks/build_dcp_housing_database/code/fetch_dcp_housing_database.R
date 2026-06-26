@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/fetch_dcp_housing_database/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_dcp_housing_database/code")
 
 suppressPackageStartupMessages({
   library(jsonlite)
@@ -152,6 +152,6 @@ file_inventory <- bind_rows(
 ) %>%
   arrange(file_role, vintage)
 
-write_csv_if_changed(file_inventory, "../output/dcp_housing_database_files.csv")
+write_csv_if_changed(file_inventory, "../output/dcp_housing_database_source_files.csv")
 
 cat("Wrote DCP Housing Database fetch outputs to ../output\n")

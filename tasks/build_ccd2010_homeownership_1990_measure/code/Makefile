@@ -13,7 +13,7 @@ all: ../output/ccdist2010_homeownership_1990_measure.csv \
 ../input/nhgis_1990_tract_extract.parquet: ../../build_nhgis_extracts/output/nhgis_1990_tract_extract.parquet | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/nhgis_raw_files.csv: ../../load_nhgis_raw/output/nhgis_raw_files.csv | ../input
+../input/nhgis_raw_files.csv: ../../build_nhgis_extracts/output/nhgis_raw_files.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/nycc_10cav.zip: ../../../data_raw/dcp_boundary_city_council_districts_archive/10C/nycc_10cav.zip | ../input

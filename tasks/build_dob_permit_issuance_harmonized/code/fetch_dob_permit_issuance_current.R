@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/fetch_dob_permit_issuance_current/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_dob_permit_issuance_harmonized/code")
 
 suppressPackageStartupMessages({
   library(dplyr)

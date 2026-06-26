@@ -18,7 +18,7 @@ hex_to_raw <- function(x) {
   as.raw(strtoi(substring(x, seq(1, nchar(x), by = 2), seq(2, nchar(x), by = 2)), 16L))
 }
 
-boundary_files <- read_csv("../input/dcp_boundary_raw_files.csv", show_col_types = FALSE, na = c("", "NA"))
+boundary_files <- read_csv("../output/dcp_boundary_raw_files.csv", show_col_types = FALSE, na = c("", "NA"))
 boundary_files <- boundary_files[!is.na(boundary_files$raw_parquet_path) & file.exists(boundary_files$raw_parquet_path), ]
 boundary_files <- boundary_files[boundary_files$source_id == "dcp_boundary_community_districts", ]
 

@@ -10,7 +10,7 @@ suppressPackageStartupMessages({
 source("../../_lib/source_pipeline_utils.R")
 source("../../_lib/dob_permit_issuance_utils.R")
 
-current_index <- read_csv("../input/dob_permit_issuance_current_raw_files.csv", show_col_types = FALSE, na = c("", "NA"))
+current_index <- read_csv("../output/dob_permit_issuance_current_raw_files.csv", show_col_types = FALSE, na = c("", "NA"))
 comparison_audit <- read_csv("current_source_decision_1989_2013.csv", show_col_types = FALSE, na = c("", "NA"))
 
 if (
@@ -72,7 +72,7 @@ if (any(!comparison_check_df$current_ge_historical_residential_row_count_flag, n
   stop("Current permit issuance source does not dominate historical residential row coverage in every year from 1989 through 2013.")
 }
 
-current_raw_df <- read_parquet("../input/dob_permit_issuance_current_raw.parquet") %>%
+current_raw_df <- read_parquet("../output/dob_permit_issuance_current_raw.parquet") %>%
   as.data.frame() %>%
   as_tibble()
 

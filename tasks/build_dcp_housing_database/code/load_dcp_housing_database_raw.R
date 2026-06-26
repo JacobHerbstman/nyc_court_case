@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/load_dcp_housing_database_raw/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_dcp_housing_database/code")
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -9,7 +9,7 @@ suppressPackageStartupMessages({
 
 source("../../_lib/source_pipeline_utils.R")
 
-file_index <- read_csv("../input/dcp_housing_database_files.csv", show_col_types = FALSE, na = c("", "NA")) %>%
+file_index <- read_csv("../output/dcp_housing_database_source_files.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   filter(file_role == "project_level_csv_zip", file.exists(raw_path))
 
 if (nrow(file_index) == 0) {
@@ -53,7 +53,7 @@ for (i in seq_len(nrow(file_index))) {
     select(source_id, vintage, source_raw_path, everything())
 
   out_parquet_local <- file.path("..", "output", paste0("dcp_housing_database_project_level_raw_", sanitize_file_stub(row$vintage), ".parquet"))
-  out_parquet <- file.path("..", "..", "load_dcp_housing_database_raw", "output", basename(out_parquet_local))
+  out_parquet <- file.path("..", "..", "build_dcp_housing_database", "output", basename(out_parquet_local))
   write_parquet_if_changed(raw_df, out_parquet_local)
 
   index_rows[[i]] <- tibble(

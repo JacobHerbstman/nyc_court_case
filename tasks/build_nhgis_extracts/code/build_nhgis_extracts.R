@@ -47,7 +47,7 @@ sum_fields <- function(df, fields) {
   out
 }
 
-nhgis_table_map <- read_csv("../input/nhgis_table_map.csv", show_col_types = FALSE, na = c("", "NA"))
+nhgis_table_map <- read_csv("nhgis_table_map.csv", show_col_types = FALSE, na = c("", "NA"))
 nhgis_income_overrides <- read_csv("nhgis_income_overrides.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(
     year = as.integer(year),
@@ -56,7 +56,7 @@ nhgis_income_overrides <- read_csv("nhgis_income_overrides.csv", show_col_types 
     override_reason = as.character(override_reason)
   )
 
-nhgis_raw_files <- read_csv("../input/nhgis_raw_files.csv", show_col_types = FALSE, na = c("", "NA")) %>%
+nhgis_raw_files <- read_csv("../output/nhgis_raw_files.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(year = as.integer(year))
 
 index_rows <- list()

@@ -115,7 +115,7 @@ def main() -> None:
     if len(sys.argv) != 1:
         raise SystemExit("Expected no arguments.")
 
-    file_inventory = pd.read_csv("../input/dcp_cd_profiles_1990_2000_files.csv")
+    file_inventory = pd.read_csv("../output/dcp_cd_profiles_1990_2000_source_files.csv")
 
     if file_inventory.empty:
         pd.DataFrame().to_csv("../output/dcp_cd_profiles_1990_2000_raw_files.csv", index=False)
@@ -308,8 +308,8 @@ def main() -> None:
         line_df.to_parquet(raw_parquet_local, index=False)
         page_df.to_csv(page_index_local, index=False)
 
-        raw_parquet_repo = Path("..") / ".." / "load_dcp_cd_profiles_1990_2000_raw" / "output" / raw_parquet_local.name
-        page_index_repo = Path("..") / ".." / "load_dcp_cd_profiles_1990_2000_raw" / "output" / page_index_local.name
+        raw_parquet_repo = Path("..") / ".." / "build_dcp_cd_profiles_1990_2000" / "output" / raw_parquet_local.name
+        page_index_repo = Path("..") / ".." / "build_dcp_cd_profiles_1990_2000" / "output" / page_index_local.name
 
         index_rows.append(
             {

@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/load_zap_raw/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_zap_datasets/code")
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -8,7 +8,7 @@ suppressPackageStartupMessages({
 
 source("../../_lib/source_pipeline_utils.R")
 
-zap_files <- read_csv("../input/zap_files.csv", show_col_types = FALSE, na = c("", "NA"))
+zap_files <- read_csv("../output/zap_files.csv", show_col_types = FALSE, na = c("", "NA"))
 csv_rows <- zap_files |>
   filter(file_role == "rows_csv", file.exists(raw_path)) |>
   mutate(raw_path = as.character(raw_path), vintage = as.character(vintage)) |>
@@ -65,7 +65,7 @@ for (i in seq_len(nrow(csv_rows))) {
     select(source_id, source_vintage, source_raw_path, everything())
 
   out_parquet_local <- file.path("..", "output", paste0(sanitize_file_stub(paste(row$source_id, row$vintage, sep = "_")), "_raw.parquet"))
-  out_parquet <- file.path("..", "..", "load_zap_raw", "output", basename(out_parquet_local))
+  out_parquet <- file.path("..", "..", "build_zap_datasets", "output", basename(out_parquet_local))
   write_parquet_if_changed(raw_df, out_parquet_local)
 
   index_rows[[row_id]] <- tibble(

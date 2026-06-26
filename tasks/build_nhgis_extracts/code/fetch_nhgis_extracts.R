@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/fetch_nhgis_extracts/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_nhgis_extracts/code")
 
 suppressPackageStartupMessages({
   library(dplyr)

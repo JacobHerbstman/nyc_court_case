@@ -31,7 +31,7 @@ has_compact_multi_council <- function(x) {
   !is.na(raw_value) & str_detect(raw_value, "^[0-9]{3,}$")
 }
 
-raw_index <- read_csv("../input/zap_raw_files.csv", show_col_types = FALSE, na = c("", "NA")) |>
+raw_index <- read_csv("../output/zap_raw_files.csv", show_col_types = FALSE, na = c("", "NA")) |>
   filter(!is.na(raw_parquet_path), file.exists(raw_parquet_path)) |>
   mutate(vintage = as.character(vintage), raw_parquet_path = as.character(raw_parquet_path))
 

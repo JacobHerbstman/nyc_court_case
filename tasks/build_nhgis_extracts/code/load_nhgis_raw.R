@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/load_nhgis_raw/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_nhgis_extracts/code")
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -13,8 +13,8 @@ extract_number_from_path <- function(path) {
   suppressWarnings(as.integer(str_extract(basename(path), "(?<=nhgis)[0-9]{4}")))
 }
 
-nhgis_table_map <- read_csv("../input/nhgis_table_map.csv", show_col_types = FALSE, na = c("", "NA"))
-nhgis_extract_downloads <- read_csv("../input/nhgis_extract_downloads.csv", show_col_types = FALSE, na = c("", "NA")) %>%
+nhgis_table_map <- read_csv("nhgis_table_map.csv", show_col_types = FALSE, na = c("", "NA"))
+nhgis_extract_downloads <- read_csv("../output/nhgis_extract_downloads.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(extract_number = coalesce(extract_number, extract_number_from_path(raw_path)))
 
 expected_rows <- tibble(year = sort(unique(nhgis_table_map$year))) %>%
@@ -196,7 +196,7 @@ for (i in seq_len(nrow(expected_rows))) {
     mutate(source_id = row$source_id, source_year = row$year, table_zip_path = table_zip, gis_zip_path = gis_zip)
 
   out_parquet_local <- file.path("..", "output", paste0(row$source_id, "_raw.parquet"))
-  out_parquet <- file.path("..", "..", "load_nhgis_raw", "output", basename(out_parquet_local))
+  out_parquet <- file.path("..", "..", "build_nhgis_extracts", "output", basename(out_parquet_local))
   write_parquet_if_changed(nhgis_df, out_parquet_local)
 
   index_rows[[i]] <- tibble(

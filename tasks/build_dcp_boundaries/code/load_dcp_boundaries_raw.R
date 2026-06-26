@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/load_dcp_boundaries_raw/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_dcp_boundaries/code")
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -9,7 +9,7 @@ suppressPackageStartupMessages({
 
 source("../../_lib/source_pipeline_utils.R")
 
-boundary_files <- read_csv("../input/dcp_boundary_files.csv", show_col_types = FALSE, na = c("", "NA")) |>
+boundary_files <- read_csv("../output/dcp_boundary_files.csv", show_col_types = FALSE, na = c("", "NA")) |>
   filter(file_role == "boundary_shapefile_zip", file.exists(raw_path))
 
 if (nrow(boundary_files) == 0) {
@@ -60,7 +60,7 @@ for (i in seq_len(nrow(boundary_files))) {
     select(source_id, pull_date, source_raw_path, raw_crs_epsg, raw_geometry_wkb_hex, everything())
 
   out_parquet_local <- file.path("..", "output", paste0(sanitize_file_stub(paste(row$source_id, row$pull_date, "raw", sep = "_")), ".parquet"))
-  out_parquet <- file.path("..", "..", "load_dcp_boundaries_raw", "output", basename(out_parquet_local))
+  out_parquet <- file.path("..", "..", "build_dcp_boundaries", "output", basename(out_parquet_local))
   write_parquet_if_changed(raw_df, out_parquet_local)
 
   index_rows[[i]] <- tibble(
