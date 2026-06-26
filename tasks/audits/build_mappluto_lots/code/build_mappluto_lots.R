@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_mappluto_lots/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/build_mappluto_lots/code")
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -7,7 +7,7 @@ suppressPackageStartupMessages({
   library(tibble)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 mappluto_raw_files <- read_csv("../input/mappluto_raw_files.csv", show_col_types = FALSE, na = c("", "NA"))
 

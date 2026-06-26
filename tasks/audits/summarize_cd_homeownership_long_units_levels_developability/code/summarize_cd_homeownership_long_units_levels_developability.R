@@ -64,7 +64,7 @@ if (nrow(hdb_file) == 0) {
 }
 
 mappluto_file <- read_csv("../input/mappluto_lot_files.csv", show_col_types = FALSE, na = c("", "NA")) |>
-  mutate(parquet_path = paste0("../../../build_mappluto_lots/output/", basename(parquet_path))) |>
+  mutate(parquet_path = paste0("../../build_mappluto_lots/output/", basename(parquet_path))) |>
   filter(!is.na(parquet_path), file.exists(parquet_path)) |>
   mutate(
     source_priority = if_else(source_id == "dcp_mappluto_current", 1L, 0L),

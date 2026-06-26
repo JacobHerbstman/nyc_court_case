@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_ccd2010_redevelopment_potential/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/build_ccd2010_redevelopment_potential/code")
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -8,7 +8,7 @@ suppressPackageStartupMessages({
   library(tibble)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 council_measure <- read_csv("../input/ccdist2010_homeownership_1990_measure.csv", show_col_types = FALSE, na = c("", "NA")) |>
   transmute(
@@ -56,7 +56,8 @@ council_sf <- council_measure |>
   st_as_sf() |>
   arrange(council_district)
 
-mappluto_files <- read_csv("../input/mappluto_files.csv", show_col_types = FALSE, na = c("", "NA"))
+mappluto_files <- read_csv("../input/mappluto_files.csv", show_col_types = FALSE, na = c("", "NA")) |>
+  mutate(raw_path = if_else(!is.na(raw_path) & file.exists(raw_path), raw_path, file.path("..", raw_path)))
 
 normalize_text_field <- function(x) {
   out <- trimws(as.character(x))

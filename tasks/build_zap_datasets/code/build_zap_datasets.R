@@ -46,7 +46,6 @@ bbl_row <- raw_index |>
   slice_head(n = 1)
 
 if (nrow(project_row) == 0 || nrow(bbl_row) == 0) {
-  write_csv(tibble(status = "missing_zap_source"), "../output/zap_stage_qc.csv", na = "")
   write_parquet_if_changed(tibble(), "../output/zap_project_data.parquet")
   write_parquet_if_changed(tibble(), "../output/zap_project_bbl.parquet")
   quit(save = "no")
@@ -56,7 +55,6 @@ raw_project_df <- read_parquet(project_row$raw_parquet_path[[1]]) |>
   as.data.frame() |>
   as_tibble()
 
-project_input_row_count <- nrow(raw_project_df)
 missing_raw_project_id_count <- sum(is.na(normalize_text_field(raw_project_df$project_id)))
 
 if (missing_raw_project_id_count > 0) {
@@ -115,9 +113,7 @@ raw_bbl_df <- read_parquet(bbl_row$raw_parquet_path[[1]]) |>
   as.data.frame() |>
   as_tibble()
 
-bbl_input_row_count <- nrow(raw_bbl_df)
-
-bbl_pre_dedup <- raw_bbl_df |>
+bbl_df <- raw_bbl_df |>
   mutate(
     project_id = normalize_text_field(project_id),
     bbl = normalize_text_field(bbl),
@@ -144,60 +140,12 @@ bbl_pre_dedup <- raw_bbl_df |>
       TRUE ~ NA
     ),
     input_row_number = row_number()
-  )
-
-bbl_old_selection <- bbl_pre_dedup |>
-  arrange(project_id, bbl_standardized, desc(is_validated), desc(!is.na(validated_date_parsed)), input_row_number) |>
-  distinct(project_id, bbl_standardized, .keep_all = TRUE) |>
-  select(project_id, bbl_standardized, old_input_row_number = input_row_number)
-
-bbl_latest_selection <- bbl_pre_dedup |>
+  ) |>
   arrange(project_id, bbl_standardized, desc(is_validated), desc(!is.na(validated_date_parsed)), desc(validated_date_parsed), input_row_number) |>
-  distinct(project_id, bbl_standardized, .keep_all = TRUE)
-
-bbl_df <- bbl_latest_selection |>
+  distinct(project_id, bbl_standardized, .keep_all = TRUE) |>
   select(-input_row_number)
-
-bbl_latest_selection_changes <- bbl_latest_selection |>
-  select(project_id, bbl_standardized, new_input_row_number = input_row_number) |>
-  inner_join(bbl_old_selection, by = c("project_id", "bbl_standardized"), relationship = "many-to-one") |>
-  filter(new_input_row_number != old_input_row_number)
 
 write_parquet_if_changed(project_df, "../output/zap_project_data.parquet")
 write_parquet_if_changed(bbl_df, "../output/zap_project_bbl.parquet")
-
-projects_with_any_bbl <- n_distinct(bbl_df$project_id[!is.na(bbl_df$project_id) & !is.na(bbl_df$bbl_standardized)])
-bbl_raw_nonmissing_count <- sum(!is.na(bbl_pre_dedup$bbl))
-
-qc_df <- tibble(
-  project_source_vintage = project_row$vintage[[1]],
-  bbl_source_vintage = bbl_row$vintage[[1]],
-  project_input_row_count = project_input_row_count,
-  project_row_count = nrow(project_df),
-  project_duplicate_rows_dropped = project_input_row_count - nrow(project_df),
-  project_unique_project_id_count = n_distinct(project_df$project_id),
-  project_nonmissing_borough_share = mean(!is.na(project_df$borough_name_standardized)),
-  project_nonmissing_cd_share = mean(!is.na(project_df$community_district_standardized)),
-  project_multi_cd_count = sum(project_df$community_district_multi_flag, na.rm = TRUE),
-  project_multi_council_count = sum(project_df$council_district_multi_flag, na.rm = TRUE),
-  project_min_reference_date = safe_min_date(project_df$project_reference_date),
-  project_max_reference_date = safe_max_date(project_df$project_reference_date),
-  project_reference_before_1976_07_19_count = sum(!is.na(project_df$project_reference_date) & project_df$project_reference_date < as.Date("1976-07-19")),
-  bbl_input_row_count = bbl_input_row_count,
-  bbl_row_count = nrow(bbl_df),
-  bbl_duplicate_rows_dropped = bbl_input_row_count - nrow(bbl_df),
-  bbl_unique_project_id_count = n_distinct(bbl_df$project_id),
-  bbl_unique_project_bbl_count = n_distinct(paste(bbl_df$project_id, bbl_df$bbl_standardized, sep = "_")),
-  bbl_nonmissing_bbl_share = mean(!is.na(bbl_df$bbl_standardized)),
-  bbl_raw_valid_format_share = if (bbl_raw_nonmissing_count == 0) NA_real_ else mean(bbl_pre_dedup$bbl_valid_format[!is.na(bbl_pre_dedup$bbl)]),
-  bbl_raw_invalid_format_count = sum(!is.na(bbl_pre_dedup$bbl) & !bbl_pre_dedup$bbl_valid_format),
-  bbl_standardized_valid_format_share = mean(valid_bbl_format(bbl_df$bbl_standardized)),
-  bbl_raw_conflicts_with_validated_components_count = sum(bbl_pre_dedup$raw_bbl_conflicts_with_validated_components, na.rm = TRUE),
-  bbl_latest_validation_date_reselection_count = nrow(bbl_latest_selection_changes),
-  bbl_validated_true_share = mean(bbl_df$is_validated %in% TRUE, na.rm = TRUE),
-  project_share_with_any_bbl = projects_with_any_bbl / n_distinct(project_df$project_id)
-)
-
-write_csv(qc_df, "../output/zap_stage_qc.csv", na = "")
 
 cat("Wrote ZAP dataset outputs to ../output\n")

@@ -8,7 +8,6 @@ suppressPackageStartupMessages({
   library(tibble)
 })
 
-stage_qc <- read_csv("../input/zap_stage_qc.csv", show_col_types = FALSE, na = c("", "NA"))
 project_df <- read_parquet("../input/zap_project_data.parquet") |>
   as.data.frame() |>
   as_tibble() |>
@@ -25,7 +24,7 @@ if (nrow(project_df) == 0) {
   write_csv(tibble(), "../output/zap_project_counts_by_decade_status.csv", na = "")
   write_csv(tibble(), "../output/zap_bbl_link_completeness.csv", na = "")
   write_csv(tibble(), "../output/zap_geography_coverage.csv", na = "")
-  write_csv(bind_rows(stage_qc, tibble(metric = "status", value = "missing_staged_zap_project_data")), "../output/zap_summary_qc.csv", na = "")
+  write_csv(tibble(metric = "status", value = "missing_staged_zap_project_data"), "../output/zap_summary_qc.csv", na = "")
   quit(save = "no")
 }
 
@@ -102,24 +101,18 @@ geo_df <- project_df |>
   ) |>
   arrange(borough_name_standardized, community_district_standardized)
 
-summary_qc <- bind_rows(
-  tibble(
-    metric = names(stage_qc),
-    value = vapply(stage_qc[1, ], function(x) as.character(x[[1]]), character(1))
+summary_qc <- tibble(
+  metric = c(
+    "summary_project_min_reference_year",
+    "summary_project_max_reference_year",
+    "summary_nonmissing_borough_share",
+    "summary_nonmissing_cd_share"
   ),
-  tibble(
-    metric = c(
-      "summary_project_min_reference_year",
-      "summary_project_max_reference_year",
-      "summary_nonmissing_borough_share",
-      "summary_nonmissing_cd_share"
-    ),
-    value = c(
-      as.character(min(project_df$project_reference_year, na.rm = TRUE)),
-      as.character(max(project_df$project_reference_year, na.rm = TRUE)),
-      as.character(mean(!is.na(project_df$borough_name_standardized))),
-      as.character(mean(!is.na(project_df$community_district_standardized)))
-    )
+  value = c(
+    as.character(min(project_df$project_reference_year, na.rm = TRUE)),
+    as.character(max(project_df$project_reference_year, na.rm = TRUE)),
+    as.character(mean(!is.na(project_df$borough_name_standardized))),
+    as.character(mean(!is.na(project_df$community_district_standardized)))
   )
 )
 

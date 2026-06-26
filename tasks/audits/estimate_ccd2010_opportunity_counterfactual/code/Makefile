@@ -19,7 +19,7 @@ all: ../output/ccdist2010_opportunity_counterfactual_panel.csv \
 ../output/ccdist2010_opportunity_counterfactual_two_by_two.csv: ../output/ccdist2010_opportunity_counterfactual_panel.csv
 	@test -s "$@"
 
-../input/ccdist2010_redevelopment_potential.csv: ../../../build_ccd2010_redevelopment_potential/output/ccdist2010_redevelopment_potential.csv | ../input
+../input/ccdist2010_redevelopment_potential.csv: ../../build_ccd2010_redevelopment_potential/output/ccdist2010_redevelopment_potential.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/ccdist2010_homeownership_long_units_series.csv: ../../../build_ccd2010_homeownership_long_units_series/output/ccdist2010_homeownership_long_units_series.csv | ../input

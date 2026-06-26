@@ -9,9 +9,6 @@ all: ../output/zap_project_data.parquet ../output/zap_project_bbl.parquet
 ../output/zap_project_bbl.parquet: ../output/zap_project_data.parquet
 	@test -s "$@"
 
-../output/zap_stage_qc.csv: ../output/zap_project_data.parquet
-	@test -s "$@"
-
 ../input/zap_raw_files.csv: ../../load_zap_raw/output/zap_raw_files.csv | ../input
 	@test "$$(readlink "$@")" = "../../load_zap_raw/output/zap_raw_files.csv" || ln -sf "../../load_zap_raw/output/zap_raw_files.csv" "$@"
 

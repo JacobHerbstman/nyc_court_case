@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/load_mappluto_raw/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/load_mappluto_raw/code")
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -9,9 +9,10 @@ suppressPackageStartupMessages({
   library(tibble)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
-mappluto_files <- read_csv("../input/mappluto_files.csv", show_col_types = FALSE, na = c("", "NA"))
+mappluto_files <- read_csv("../input/mappluto_files.csv", show_col_types = FALSE, na = c("", "NA")) |>
+  mutate(raw_path = if_else(!is.na(raw_path) & file.exists(raw_path), raw_path, file.path("..", raw_path)))
 
 extract_mappluto_release_from_path <- function(path) {
   release <- str_match(

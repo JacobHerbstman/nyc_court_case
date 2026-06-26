@@ -14,8 +14,8 @@ The rolling-average member-deference figure is built from this production chain:
    used to identify the affected local member.
 3. `tasks/build_zap_datasets/` builds ZAP project and project-BBL data used as
    secondary geography when Legistar text does not list affected districts.
-4. `tasks/build_mappluto_lots/` builds current MapPLUTO lots used only for BBL
-   and address-based geography recovery.
+4. `tasks/build_mappluto_current_lookup/` builds the current MapPLUTO BBL lookup
+   used for BBL and address-based geography recovery.
 5. `tasks/create_council_land_use_ai_geography_repairs/` creates reviewed and
    accepted manual/AI geography repairs.
 6. `tasks/build_member_deference_vote_panel/` builds the approval-side matter

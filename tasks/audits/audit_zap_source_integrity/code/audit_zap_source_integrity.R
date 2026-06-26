@@ -3,6 +3,7 @@
 suppressPackageStartupMessages({
   library(arrow)
   library(dplyr)
+  library(jsonlite)
   library(lubridate)
   library(purrr)
   library(readr)
@@ -11,7 +12,7 @@ suppressPackageStartupMessages({
   library(tidyr)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 period_lookup <- tibble(
   period = c("pre_1976", "1976-1979", "1980-1984", "1985-1989", "1990-1999", "2000-2009", "2010-2019", "2020-2025", "2026_plus", "missing_year"),
@@ -186,14 +187,31 @@ coverage_fields <- c(
   "mih_flag"
 )
 
-metadata_df <- read_csv("../input/zap_columns_metadata.csv", show_col_types = FALSE, na = c("", "NA")) |>
-  filter(source_id == "dcp_zap_project_data") |>
-  transmute(
-    field = field_name,
-    metadata_cached_non_null = suppressWarnings(as.numeric(cached_non_null)),
-    metadata_cached_null = suppressWarnings(as.numeric(cached_null)),
-    metadata_cached_cardinality = suppressWarnings(as.numeric(cached_cardinality))
+metadata_path <- read_csv("../input/zap_files.csv", show_col_types = FALSE, na = c("", "NA")) |>
+  filter(source_id == "dcp_zap_project_data", file_role == "metadata_json", !is.na(raw_path)) |>
+  arrange(desc(vintage)) |>
+  slice_head(n = 1) |>
+  mutate(raw_path = if_else(file.exists(raw_path), raw_path, file.path("..", raw_path))) |>
+  pull(raw_path)
+
+metadata_df <- if (length(metadata_path) == 1 && file.exists(metadata_path)) {
+  metadata_json <- fromJSON(metadata_path, simplifyVector = FALSE)
+  bind_rows(lapply(metadata_json$columns, function(column_row) {
+    tibble(
+      field = as.character(column_row$fieldName),
+      metadata_cached_non_null = suppressWarnings(as.numeric(column_row$cachedContents$non_null)),
+      metadata_cached_null = suppressWarnings(as.numeric(column_row$cachedContents$null)),
+      metadata_cached_cardinality = suppressWarnings(as.numeric(column_row$cachedContents$cardinality))
+    )
+  }))
+} else {
+  tibble(
+    field = character(),
+    metadata_cached_non_null = numeric(),
+    metadata_cached_null = numeric(),
+    metadata_cached_cardinality = numeric()
   )
+}
 
 make_field_coverage <- function(df, scope_label) {
   map_dfr(coverage_fields, function(field_value) {

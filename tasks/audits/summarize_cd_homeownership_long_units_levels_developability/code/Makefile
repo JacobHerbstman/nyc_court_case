@@ -15,7 +15,7 @@ all: ../output/cd_homeownership_long_units_level_year.csv ../output/cd_homeowner
 ../input/mappluto_construction_proxy_cd_year.csv: ../../../build_mappluto_construction_proxy/output/mappluto_construction_proxy_cd_year.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/mappluto_lot_files.csv: ../../../build_mappluto_lots/output/mappluto_lot_files.csv | ../input
+../input/mappluto_lot_files.csv: ../../build_mappluto_lots/output/mappluto_lot_files.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/cd_baseline_1990_controls.csv: ../../../build_cd_baseline_1990_controls/output/cd_baseline_1990_controls.csv | ../input
