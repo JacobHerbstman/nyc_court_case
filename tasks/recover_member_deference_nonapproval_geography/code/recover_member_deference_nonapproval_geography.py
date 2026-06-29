@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import re
 import sys
-from pathlib import Path
 
 import pandas as pd
 
@@ -13,9 +12,11 @@ from member_deference_utils import (
     application_keys,
     collapse_districts,
     collapse_examples,
+    collapse_semicolon_values as collapse_values,
     district_from_scalar,
     normalize_space,
     split_semicolon,
+    write_csv,
 )
 
 ordinal_words = {
@@ -32,18 +33,6 @@ ordinal_words = {
     "ELEVENTH": "11",
     "TWELFTH": "12",
 }
-
-
-def collapse_values(values: object) -> str:
-    clean_values = []
-    for value in values:
-        if pd.isna(value) or str(value).strip() == "":
-            continue
-        for part in split_semicolon(value):
-            if part not in clean_values:
-                clean_values.append(part)
-    return "; ".join(clean_values)
-
 
 def collapse_long_examples(values: object) -> str:
     return collapse_examples(values, limit=20)
@@ -174,13 +163,6 @@ def address_variants(value: object) -> list[str]:
             variants.extend(f"{number} {street}" for number in range(start, end + 1, step))
 
     return list(dict.fromkeys(variants))
-
-
-def write_csv(path: str, df: pd.DataFrame) -> None:
-    temp_path = Path(path).with_suffix(Path(path).suffix + ".tmp")
-    df.to_csv(temp_path, index=False)
-    temp_path.replace(path)
-
 
 queue = pd.read_csv("../input/member_deference_final_action_vote_queue.csv", dtype=str, keep_default_na=False)
 zap_project_data = pd.read_parquet("../input/zap_project_data.parquet")

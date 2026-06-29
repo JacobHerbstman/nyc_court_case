@@ -1,6 +1,7 @@
 all: ../output/council_land_use_decision_panel.csv
 
 ../output/council_land_use_decision_panel.csv: build_council_land_use_decision_panel.py \
+	../../_lib/member_deference_utils.py \
 	../input/member_deference_matter_universe.csv \
 	../input/member_deference_vote_panel.csv \
 	../input/member_deference_nonapproval_geography_conservative_queue.csv \

@@ -2,9 +2,12 @@
 
 from __future__ import annotations
 
-from pathlib import Path
+import sys
 
 import pandas as pd
+
+sys.path.append("../../_lib")
+from member_deference_utils import write_csv
 
 
 def approval_vote_status(value: object) -> str:
@@ -25,13 +28,6 @@ def approval_vote_status(value: object) -> str:
     if value == "unresolved_partial_local_member_vote_match":
         return "partial_local_member_vote_match"
     return "not_classified"
-
-
-def write_csv(path: str, df: pd.DataFrame) -> None:
-    temp_path = Path(path).with_suffix(Path(path).suffix + ".tmp")
-    df.to_csv(temp_path, index=False)
-    temp_path.replace(path)
-
 
 matter_universe = pd.read_csv("../input/member_deference_matter_universe.csv", dtype=str, keep_default_na=False)
 approval_panel = pd.read_csv("../input/member_deference_vote_panel.csv", dtype=str, keep_default_na=False)

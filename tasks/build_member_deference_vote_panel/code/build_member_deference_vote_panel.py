@@ -9,32 +9,17 @@ import time
 import pandas as pd
 
 sys.path.append("../../_lib")
-from member_deference_utils import application_keys, edge_name, norm_name, normalize_space, split_semicolon
+from member_deference_utils import (
+    application_keys,
+    collapse_districts as collapse_int_strings,
+    collapse_values,
+    edge_name,
+    norm_name,
+    normalize_space,
+    split_semicolon,
+)
 
 RECALL_YEARS = list(range(1998, 2026))
-
-
-def collapse_values(values: object) -> str:
-    clean_values = []
-    for value in values:
-        if pd.isna(value) or str(value).strip() == "":
-            continue
-        if str(value) not in clean_values:
-            clean_values.append(str(value))
-    return "; ".join(clean_values)
-
-
-def collapse_int_strings(values: object) -> str:
-    clean_values = []
-    for value in values:
-        if pd.isna(value) or str(value).strip() == "":
-            continue
-        for match in re.findall(r"\d{1,2}", str(value)):
-            district = str(int(match))
-            if district not in clean_values and 1 <= int(district) <= 51:
-                clean_values.append(district)
-    return "; ".join(clean_values)
-
 
 district_patterns = [
     re.compile(

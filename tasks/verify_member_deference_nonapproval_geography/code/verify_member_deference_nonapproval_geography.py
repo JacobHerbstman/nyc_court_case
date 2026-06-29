@@ -18,27 +18,17 @@ from member_deference_utils import (
     application_keys,
     collapse_districts,
     collapse_examples,
+    collapse_semicolon_values as collapse_values,
     norm_name,
     normalize_space,
     split_semicolon,
+    write_csv,
 )
 district_re = re.compile(
     r"Council District(?:s)?(?:\s*(?:No\.?|Nos\.?|no\.?|nos\.?|number)?)?\s*([0-9,\sand-]+)",
     flags=re.IGNORECASE,
 )
 lu_re = re.compile(r"\bL\.?\s*U\.?\s*(?:No\.?)?\s*(\d{1,4})(?:\s*-\s*\d{4})?\b", flags=re.IGNORECASE)
-
-
-def collapse_values(values: object) -> str:
-    clean_values = []
-    for value in values:
-        if pd.isna(value) or str(value).strip() == "":
-            continue
-        for part in split_semicolon(value):
-            if part not in clean_values:
-                clean_values.append(part)
-    return "; ".join(clean_values)
-
 
 def lu_numbers(value: object) -> list[str]:
     numbers = []
@@ -194,13 +184,6 @@ def source_snippet(text: str, needles: list[str]) -> str:
             end = min(len(text), match.end() + 320)
             return text[start:end].strip()
     return text[:500].strip()
-
-
-def write_csv(path: str, df: pd.DataFrame) -> None:
-    temp_path = Path(path).with_suffix(Path(path).suffix + ".tmp")
-    df.to_csv(temp_path, index=False)
-    temp_path.replace(path)
-
 
 queue = pd.read_csv("../input/member_deference_nonapproval_geography_review_queue.csv", dtype=str, keep_default_na=False)
 full_queue = pd.read_csv("../input/member_deference_final_action_vote_queue.csv", dtype=str, keep_default_na=False)

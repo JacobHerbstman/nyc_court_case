@@ -12,17 +12,7 @@ import requests
 
 sys.path.append("../../_lib")
 from legistar_utils import parse_action_detail, request_with_retries, safe_stub, save_text, sha256
-from member_deference_utils import edge_name, normalize_space, split_semicolon
-
-
-def collapse_values(values: object) -> str:
-    clean_values = []
-    for value in values:
-        if value is None or pd.isna(value) or str(value).strip() == "":
-            continue
-        if str(value) not in clean_values:
-            clean_values.append(str(value))
-    return "; ".join(clean_values)
+from member_deference_utils import collapse_values, edge_name, normalize_space, split_semicolon
 
 
 queue = pd.read_csv(
