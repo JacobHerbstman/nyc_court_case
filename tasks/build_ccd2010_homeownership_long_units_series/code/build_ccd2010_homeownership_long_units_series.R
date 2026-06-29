@@ -7,6 +7,8 @@ suppressPackageStartupMessages({
   library(tidyr)
 })
 
+source("../../_lib/source_pipeline_utils.R")
+
 measure_df <- read_csv("../input/ccdist2010_homeownership_1990_measure.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(
     district_id = sprintf("%02d", suppressWarnings(as.integer(district_id))),
@@ -102,6 +104,6 @@ series_df <- expand_grid(district_skeleton, year = 1970:2025, proxy_map) %>%
   ungroup() %>%
   arrange(series_kind, series_family, council_district, year)
 
-write_csv(series_df, "../output/ccdist2010_homeownership_long_units_series.csv", na = "")
+write_csv_if_changed(series_df, "../output/ccdist2010_homeownership_long_units_series.csv")
 
-cat("Wrote PLUTO-only 2010 Council district long units series outputs to ../output\n")
+cat("Wrote 2010 Council district housing series to ../output\n")

@@ -695,9 +695,6 @@ final_action_vote_queue.loc[
 final_action_vote_queue["fetch_vote_detail_first_pass"] = final_action_vote_queue[
     "final_action_vote_fetch_tier"
 ].isin(["core_city_council_nonapproval"])
-final_action_vote_queue["fetch_vote_detail_second_pass"] = final_action_vote_queue[
-    "final_action_vote_fetch_tier"
-].isin(["committee_or_subcommittee_nonapproval", "low_information_final_action"])
 final_action_vote_queue = final_action_vote_queue[
     [
         "query_year",
@@ -709,7 +706,6 @@ final_action_vote_queue = final_action_vote_queue[
         "filed_age_group",
         "final_action_vote_fetch_tier",
         "fetch_vote_detail_first_pass",
-        "fetch_vote_detail_second_pass",
         "final_history_date",
         "final_history_action_by",
         "final_history_action",

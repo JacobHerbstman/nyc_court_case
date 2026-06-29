@@ -691,7 +691,6 @@ conservative_queue = conservative_queue[
         "filed_age_group",
         "final_action_vote_fetch_tier",
         "fetch_vote_detail_first_pass",
-        "fetch_vote_detail_second_pass",
         "final_history_date",
         "final_history_action_by",
         "final_history_action",
