@@ -3,6 +3,8 @@
 Reads public Legistar source pages for NYC Council member names, districts, and
 term dates.
 
-The inputs are public Legistar office and person-detail pages. The output is
-`council_member_roster_source_files.csv`, an index of cached source-page files
-under this task's output folder.
+The task downloads or reuses cached Legistar office-record pages, Legistar
+person-detail pages, and district-history pages. The output is
+`council_member_roster_source_files.csv`, an index of the cached source files.
+
+Recent cached rebuild runtime: about 1 second.
