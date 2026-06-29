@@ -256,6 +256,7 @@ def main():
         task
         for task, scope in sorted(task_scopes.items())
         if scope == "production"
+        and task_all_outputs[task]
         and downstream_counts[task] == 0
         and task not in paper_facing_tasks
         and task != "setup_environment"
