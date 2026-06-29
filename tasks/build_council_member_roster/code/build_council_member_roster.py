@@ -11,15 +11,15 @@ from urllib.parse import parse_qs, urljoin, urlparse
 import pandas as pd
 from bs4 import BeautifulSoup
 
+import sys
+
+sys.path.append("../../_lib")
+from legistar_utils import normalize_space
 
 LEGISTAR_URL = (
     "https://legistar.council.nyc.gov/"
     "DepartmentDetail.aspx?ID=6897&GUID=CDC6E691-8A8C-4F25-97CB-86F31EDAB081&Mode=MainBody"
 )
-
-
-def normalize_space(value: object) -> str:
-    return re.sub(r"\s+", " ", "" if value is None else str(value)).strip()
 
 
 def clean_name(value: object) -> str:
