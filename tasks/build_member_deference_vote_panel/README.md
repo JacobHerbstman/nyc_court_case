@@ -5,11 +5,11 @@ matters from 1998-2025.
 
 Inputs are annual Legistar matter, history, action-detail, and member-vote
 files; the Council member roster; ZAP project records; and the accepted
-geography repair ledger. Some repair-ledger rows started as ChatGPT-assisted
-location reads for matters without clear affected districts. Those suggestions
-were reviewed before promotion; this task reads only the committed accepted
-ledger with district assignments, promotion decisions, evidence notes, and source
-URLs.
+geography repair ledger. The repair ledger covers matters whose affected
+districts were missing after the deterministic Legistar/ZAP geography pass. Some
+rows began as ChatGPT-assisted location reads, but this task reads only the
+committed accepted ledger with reviewed district assignments, promotion
+decisions, evidence notes, and source URLs.
 
 Creates `member_deference_matter_universe.csv`,
 `member_deference_vote_panel.csv`, and

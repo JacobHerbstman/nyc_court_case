@@ -5,10 +5,11 @@ non-approval vote workflows.
 
 Inputs are the recalled land-use matter universe, approval-side local-member
 votes, the conservative non-approval geography queue, and parsed non-approval
-final-action vote files. Some affected-district assignments come from accepted
-AI-assisted repair ledgers upstream. The AI step was used to surface likely
-locations for matters with missing geography; this task reads only reviewed or
-officially verified ledger decisions with source notes, not raw AI suggestions.
+final-action vote files. Some affected-district assignments come from upstream
+review ledgers for matters whose geography was missing after deterministic
+matching. ChatGPT was used only to surface likely locations and source records;
+this task reads reviewed repair decisions or official verification outputs with
+source notes, not raw AI suggestions.
 
 Creates `council_land_use_decision_panel.csv` with one row per Legistar matter
 and `council_land_use_local_member_votes.csv` with one row per affected local

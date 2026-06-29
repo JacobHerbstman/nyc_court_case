@@ -7,5 +7,3 @@ Inputs are `source_catalog.csv`, the task's NHGIS extract request JSON files,
 and the task-local table map. Creates `nhgis_1990_tract_extract.parquet`, the
 cleaned 1990 tract covariate file, and `nhgis_1990_tract_gis_zip.csv`, the GIS
 zip pointer used to read tract geometry downstream.
-
-Recent cached rebuild runtime: about 5 seconds.
