@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+import time
 
 import pandas as pd
 
@@ -125,10 +126,23 @@ def filed_age_group(status: object, query_year: object, matter_file_year: object
     return "filed_future_matter_year"
 
 
+def read_legistar_csv(path: str) -> pd.DataFrame:
+    last_error = None
+    for attempt in range(1, 4):
+        try:
+            return pd.read_csv(path, dtype=str, keep_default_na=False)
+        except TimeoutError as error:
+            last_error = error
+            if attempt == 3:
+                break
+            time.sleep(2 * attempt)
+    raise last_error
+
+
 def read_year_stack(file_suffix: str) -> pd.DataFrame:
     rows = []
     for year in RECALL_YEARS:
-        df = pd.read_csv(f"../input/legistar_{year}_broad_recall_{file_suffix}.csv", dtype=str, keep_default_na=False)
+        df = read_legistar_csv(f"../input/legistar_{year}_broad_recall_{file_suffix}.csv")
         df["query_year_int"] = year
         rows.append(df)
     return pd.concat(rows, ignore_index=True)
@@ -141,6 +155,70 @@ def repair_lookup_key(query_year: object, date_value: object, matter_file: objec
     if pd.isna(query_year_num) or pd.isna(date_parsed) or matter_file_clean == "":
         return None
     return (str(int(query_year_num)), date_parsed.strftime("%Y-%m-%d"), matter_file_clean)
+
+
+def build_matter_zap_lookup(matter_application_keys: pd.DataFrame, zap_application_lookup: pd.DataFrame) -> pd.DataFrame:
+    app_rows = []
+    for row in matter_application_keys[["matter_id", "application_keys"]].to_dict("records"):
+        for key in split_semicolon(row["application_keys"]):
+            app_rows.append({"matter_id": row["matter_id"], "application_key": key})
+
+    if not app_rows:
+        return pd.DataFrame(
+            columns=[
+                "matter_id",
+                "zap_matched_application_keys",
+                "zap_project_ids",
+                "zap_project_names",
+                "zap_cc_districts",
+                "zap_project_reference_years",
+                "zap_project_count",
+            ]
+        )
+
+    matter_app_key = pd.DataFrame(app_rows)
+    matter_zap_long = matter_app_key.merge(
+        zap_application_lookup,
+        on="application_key",
+        how="left",
+        validate="many_to_one",
+    )
+    return (
+        matter_zap_long[matter_zap_long["zap_project_ids"].notna()]
+        .sort_values(["matter_id", "application_key"])
+        .groupby("matter_id", as_index=False)
+        .agg(
+            zap_matched_application_keys=("application_key", collapse_values),
+            zap_project_ids=("zap_project_ids", collapse_values),
+            zap_project_names=("zap_project_names", collapse_values),
+            zap_cc_districts=("zap_cc_districts", collapse_int_strings),
+            zap_project_reference_years=("zap_project_reference_years", collapse_values),
+            zap_project_count=("zap_project_count", "sum"),
+        )
+    )
+
+
+def affected_district_assignment(
+    row: dict[str, object],
+    date_value: object,
+    repair_lookup: dict[tuple[str, str, str], dict[str, object]],
+) -> tuple[list[str], str, tuple[str, str, str] | None, dict[str, object]]:
+    matter_index_districts = split_semicolon(row.get("matter_index_districts", ""))
+    legistar_districts = split_semicolon(row.get("legistar_text_districts", ""))
+    zap_districts = split_semicolon(row.get("zap_cc_districts", ""))
+    repair_key = repair_lookup_key(row.get("query_year_int", ""), date_value, row.get("matter_file", ""))
+    repair = repair_lookup.get(repair_key, {}) if repair_key is not None else {}
+    repair_districts = split_semicolon(repair.get("accepted_council_districts", ""))
+
+    if matter_index_districts:
+        return matter_index_districts, "legistar_matter_index", repair_key, repair
+    if legistar_districts:
+        return legistar_districts, "legistar_text", repair_key, repair
+    if zap_districts:
+        return zap_districts, "zap_application_key", repair_key, repair
+    if repair_districts:
+        return repair_districts, "ai_geography_repair", repair_key, repair
+    return [], "missing", repair_key, repair
 
 
 action_details = read_year_stack("action_details")
@@ -221,7 +299,6 @@ action_details["matter_index_districts"] = action_details["matter_index_affected
 action_details["application_keys"] = action_details["text_for_parse"].map(lambda x: collapse_values(application_keys(x)))
 
 zap_projects["project_id"] = zap_projects["project_id"].astype(str)
-zap_projects["zap_text_for_app_key"] = zap_projects["ulurp_numbers"].fillna("").astype(str)
 zap_app_rows = []
 for row in zap_projects[
     [
@@ -259,39 +336,7 @@ zap_app_key_base = (
     )
 )
 
-matter_app_rows = []
-for row in action_details[["matter_id", "application_keys"]].to_dict("records"):
-    for key in split_semicolon(row["application_keys"]):
-        matter_app_rows.append({"matter_id": row["matter_id"], "application_key": key})
-matter_app_key = pd.DataFrame(matter_app_rows)
-
-if matter_app_key.empty:
-    matter_zap = pd.DataFrame(
-        columns=[
-            "matter_id",
-            "zap_matched_application_keys",
-            "zap_project_ids",
-            "zap_project_names",
-            "zap_cc_districts",
-            "zap_project_reference_years",
-            "zap_project_count",
-        ]
-    )
-else:
-    matter_zap_long = matter_app_key.merge(zap_app_key_base, on="application_key", how="left", validate="many_to_one")
-    matter_zap = (
-        matter_zap_long[matter_zap_long["zap_project_ids"].notna()]
-        .sort_values(["matter_id", "application_key"])
-        .groupby("matter_id", as_index=False)
-        .agg(
-            zap_matched_application_keys=("application_key", collapse_values),
-            zap_project_ids=("zap_project_ids", collapse_values),
-            zap_project_names=("zap_project_names", collapse_values),
-            zap_cc_districts=("zap_cc_districts", collapse_int_strings),
-            zap_project_reference_years=("zap_project_reference_years", collapse_values),
-            zap_project_count=("zap_project_count", "sum"),
-        )
-    )
+matter_zap = build_matter_zap_lookup(action_details[["matter_id", "application_keys"]], zap_app_key_base)
 
 history_events["history_date_parsed"] = pd.to_datetime(history_events["history_date"], errors="coerce")
 history_events["history_sequence_int"] = pd.to_numeric(history_events["history_sequence"], errors="coerce")
@@ -370,44 +415,10 @@ matter_universe_base["application_keys"] = matter_universe_base["matter_text_for
     lambda x: collapse_values(application_keys(x))
 )
 
-universe_app_rows = []
-for row in matter_universe_base[["matter_id", "application_keys"]].to_dict("records"):
-    for key in split_semicolon(row["application_keys"]):
-        universe_app_rows.append({"matter_id": row["matter_id"], "application_key": key})
-universe_app_key = pd.DataFrame(universe_app_rows)
-
-if universe_app_key.empty:
-    universe_matter_zap = pd.DataFrame(
-        columns=[
-            "matter_id",
-            "zap_matched_application_keys",
-            "zap_project_ids",
-            "zap_project_names",
-            "zap_cc_districts",
-            "zap_project_reference_years",
-            "zap_project_count",
-        ]
-    )
-else:
-    universe_zap_long = universe_app_key.merge(
-        zap_app_key_base,
-        on="application_key",
-        how="left",
-        validate="many_to_one",
-    )
-    universe_matter_zap = (
-        universe_zap_long[universe_zap_long["zap_project_ids"].notna()]
-        .sort_values(["matter_id", "application_key"])
-        .groupby("matter_id", as_index=False)
-        .agg(
-            zap_matched_application_keys=("application_key", collapse_values),
-            zap_project_ids=("zap_project_ids", collapse_values),
-            zap_project_names=("zap_project_names", collapse_values),
-            zap_cc_districts=("zap_cc_districts", collapse_int_strings),
-            zap_project_reference_years=("zap_project_reference_years", collapse_values),
-            zap_project_count=("zap_project_count", "sum"),
-        )
-    )
+universe_matter_zap = build_matter_zap_lookup(
+    matter_universe_base[["matter_id", "application_keys"]],
+    zap_app_key_base,
+)
 
 matter_universe_base = (
     matter_universe_base.merge(final_history, on="matter_id", how="left", validate="one_to_one")
@@ -441,32 +452,13 @@ roster["member_name_edge"] = roster["member_name"].map(edge_name)
 roster = roster[roster["member_name_norm"] != "vacant"].copy()
 
 matter_universe_rows = []
-matter_universe_ai_geo_repair_keys_used = set()
 for row in matter_universe_base.sort_values(["query_year_int", "matter_file"]).to_dict("records"):
-    matter_index_districts = split_semicolon(row.get("matter_index_districts", ""))
-    legistar_districts = split_semicolon(row.get("legistar_text_districts", ""))
-    zap_districts = split_semicolon(row.get("zap_cc_districts", ""))
     final_date = pd.to_datetime(row.get("final_history_date", ""), errors="coerce")
-    ai_geo_repair_key = repair_lookup_key(row.get("query_year_int", ""), final_date, row.get("matter_file", ""))
-    ai_geo_repair = ai_geo_repair_lookup.get(ai_geo_repair_key, {}) if ai_geo_repair_key is not None else {}
-    ai_geo_repair_districts = split_semicolon(ai_geo_repair.get("accepted_council_districts", ""))
-
-    if matter_index_districts:
-        affected_districts = matter_index_districts
-        affected_district_source = "legistar_matter_index"
-    elif legistar_districts:
-        affected_districts = legistar_districts
-        affected_district_source = "legistar_text"
-    elif zap_districts:
-        affected_districts = zap_districts
-        affected_district_source = "zap_application_key"
-    elif ai_geo_repair_districts:
-        affected_districts = ai_geo_repair_districts
-        affected_district_source = "ai_geography_repair"
-        matter_universe_ai_geo_repair_keys_used.add(ai_geo_repair_key)
-    else:
-        affected_districts = []
-        affected_district_source = "missing"
+    affected_districts, affected_district_source, _, ai_geo_repair = affected_district_assignment(
+        row,
+        final_date,
+        ai_geo_repair_lookup,
+    )
 
     local_members = []
     missing_roster_districts = []
@@ -543,29 +535,13 @@ panel_base = action_details.merge(matter_zap, on="matter_id", how="left", valida
 panel_rows = []
 panel_ai_geo_repair_keys_used = set()
 for row in panel_base.sort_values(["query_year_int", "history_date", "matter_file"]).to_dict("records"):
-    matter_index_districts = split_semicolon(row.get("matter_index_districts", ""))
-    legistar_districts = split_semicolon(row.get("legistar_text_districts", ""))
-    zap_districts = split_semicolon(row.get("zap_cc_districts", ""))
-    ai_geo_repair_key = repair_lookup_key(row.get("query_year_int", ""), row.get("vote_date", ""), row.get("matter_file", ""))
-    ai_geo_repair = ai_geo_repair_lookup.get(ai_geo_repair_key, {}) if ai_geo_repair_key is not None else {}
-    ai_geo_repair_districts = split_semicolon(ai_geo_repair.get("accepted_council_districts", ""))
-
-    if matter_index_districts:
-        affected_districts = matter_index_districts
-        affected_district_source = "legistar_matter_index"
-    elif legistar_districts:
-        affected_districts = legistar_districts
-        affected_district_source = "legistar_text"
-    elif zap_districts:
-        affected_districts = zap_districts
-        affected_district_source = "zap_application_key"
-    elif ai_geo_repair_districts:
-        affected_districts = ai_geo_repair_districts
-        affected_district_source = "ai_geography_repair"
+    affected_districts, affected_district_source, ai_geo_repair_key, ai_geo_repair = affected_district_assignment(
+        row,
+        row.get("vote_date", ""),
+        ai_geo_repair_lookup,
+    )
+    if affected_district_source == "ai_geography_repair":
         panel_ai_geo_repair_keys_used.add(ai_geo_repair_key)
-    else:
-        affected_districts = []
-        affected_district_source = "missing"
 
     vote_date = row["vote_date"]
     local_rows = []

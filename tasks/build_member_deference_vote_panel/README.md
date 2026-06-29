@@ -18,4 +18,4 @@ Creates `member_deference_matter_universe.csv`,
 Final votes do not capture pre-vote bargaining, withdrawals, modifications,
 committee gatekeeping, or agenda control.
 
-Runtime is about 35 seconds.
+Runtime is about 1 minute.
