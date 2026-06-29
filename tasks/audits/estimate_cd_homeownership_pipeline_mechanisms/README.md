@@ -11,4 +11,4 @@ strongly by period.
 Use the audited reconstruction path instead:
 
 - `tasks/audits/audit_zap_source_integrity/`
-- `tasks/build_zap_housing_pipeline_from_raw/`
+- `tasks/audits/build_zap_housing_pipeline_from_raw/`

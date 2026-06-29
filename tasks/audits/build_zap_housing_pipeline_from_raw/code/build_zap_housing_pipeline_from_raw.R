@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_zap_housing_pipeline_from_raw/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/build_zap_housing_pipeline_from_raw/code")
 
 suppressPackageStartupMessages({
   library(arrow)

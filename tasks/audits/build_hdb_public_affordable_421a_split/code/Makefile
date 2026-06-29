@@ -17,7 +17,7 @@ all: ../output/hdb_public_affordable_421a_job_classified.csv ../output/hdb_publi
 ../input/zap_housing_hdb_link_candidates.csv: ../../../build_zap_housing_hdb_link/output/zap_housing_hdb_link_candidates.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/zap_housing_project_base_audited.csv: ../../../build_zap_housing_pipeline_from_raw/output/zap_housing_project_base_audited.csv | ../input
+../input/zap_housing_project_base_audited.csv: ../../build_zap_housing_pipeline_from_raw/output/zap_housing_project_base_audited.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/hpd_affordable_housing_bbl_year.csv: ../../stage_hpd_affordable_housing_production/output/hpd_affordable_housing_bbl_year.csv | ../input

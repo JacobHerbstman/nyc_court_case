@@ -9,7 +9,7 @@ all: ../output/zap_housing_pipeline_tercile_year.csv ../output/zap_housing_pipel
 ../output/zap_housing_pipeline_tercile_trends_per_residential_acre.pdf: ../output/zap_housing_pipeline_tercile_year.csv
 	@test -s "$@"
 
-../input/zap_housing_project_base_audited.csv: ../../../build_zap_housing_pipeline_from_raw/output/zap_housing_project_base_audited.csv | ../input
+../input/zap_housing_project_base_audited.csv: ../../build_zap_housing_pipeline_from_raw/output/zap_housing_project_base_audited.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/zap_project_bbl.parquet: ../../../build_zap_datasets/output/zap_project_bbl.parquet | ../input

@@ -63,7 +63,7 @@ all: ../output/zap_zoning_map_special_permit_project_classification.csv \
 ../output/zap_zoning_map_special_permit_increased_residential_homeowner_tercile_lines_3yr.pdf: ../output/zap_zoning_map_special_permit_project_classification.csv
 	@test -s "$@"
 
-../input/zap_housing_project_base_audited.csv: ../../../build_zap_housing_pipeline_from_raw/output/zap_housing_project_base_audited.csv | ../input
+../input/zap_housing_project_base_audited.csv: ../../build_zap_housing_pipeline_from_raw/output/zap_housing_project_base_audited.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/zap_project_bbl.parquet: ../../../build_zap_datasets/output/zap_project_bbl.parquet | ../input
