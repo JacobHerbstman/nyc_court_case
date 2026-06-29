@@ -1,10 +1,7 @@
-SHELL := bash
-include ../../shell_functions.make
-
 all: ../output/zap_project_data.parquet ../output/zap_project_bbl.parquet
 
 ../output/zap_project_data.parquet: build_zap_datasets.R ../../_lib/source_pipeline_utils.R ../input/source_catalog.csv | ../output
-	$(R) $<
+	Rscript --vanilla $<
 
 ../output/zap_project_bbl.parquet: ../output/zap_project_data.parquet
 	@test -s "$@"

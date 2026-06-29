@@ -83,7 +83,7 @@ if (nrow(nhgis_rows) != nrow(nhgis_specs) || !setequal(nhgis_rows$source_id, nhg
   stop("Source catalog must contain the scripted NHGIS 1990 tract extract row.")
 }
 
-audit_rows <- list()
+download_rows <- list()
 
 for (i in seq_len(nrow(nhgis_rows))) {
   row <- nhgis_rows[i, ]
@@ -109,7 +109,7 @@ for (i in seq_len(nrow(nhgis_rows))) {
     complete_gis_bundle <- length(gis_zips) > 0
 
     if (complete_table_bundle && complete_gis_bundle) {
-      audit_rows[[i]] <- tibble(
+      download_rows[[i]] <- tibble(
         source_id = row$source_id,
         year = row$year,
         extract_number = vapply(existing_zips, extract_number_from_path, integer(1)),
@@ -178,8 +178,8 @@ for (i in seq_len(nrow(nhgis_rows))) {
     }
   )
 
-  audit_rows[[i]] <- fetch_result
+  download_rows[[i]] <- fetch_result
 }
 
-write_csv_if_changed(bind_rows(audit_rows), "../temp/nhgis_extract_downloads.csv")
+write_csv_if_changed(bind_rows(download_rows), "../temp/nhgis_extract_downloads.csv")
 cat("Wrote NHGIS extract downloads to ../temp\n")

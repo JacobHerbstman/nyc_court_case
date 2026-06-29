@@ -1,11 +1,8 @@
-SHELL := bash
-include ../../shell_functions.make
-
 all: ../output/ccdist2010_homeownership_1990_measure.csv \
 	../output/ccdist2010_homeownership_1990_map.pdf
 
 ../output/ccdist2010_homeownership_1990_measure.csv: build_ccd2010_homeownership_1990_measure.R ../../_lib/source_pipeline_utils.R ../input/nhgis_1990_tract_extract.parquet ../input/nhgis_1990_tract_gis_zip.csv ../input/nycc_10cav.zip | ../output
-	$(R) $<
+	Rscript --vanilla $<
 
 ../output/ccdist2010_homeownership_1990_map.pdf: ../output/ccdist2010_homeownership_1990_measure.csv
 	@test -s "$@"
