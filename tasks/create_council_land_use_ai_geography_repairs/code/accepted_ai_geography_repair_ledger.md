@@ -8,7 +8,7 @@ The ledger is not a raw ChatGPT export. ChatGPT and other AI tools were used onl
 
 Some Council land-use roll-call matters are bundled, missing direct affected-district fields, or only indirectly linked to ZAP/ULURP geography. Those rows cannot enter the local-member deference series unless we can assign affected Council district geography. This ledger records the cases where we accepted a geography repair after deterministic checks, official-source review, AI-assisted review, or researcher adjudication.
 
-Rows not represented here are not silently promoted by the production task. Audit tasks may generate candidate rows, prompts, and ChatGPT responses, but a candidate affects the production dataset only after it is entered into this ledger.
+Rows not represented here are not silently promoted by the production task. Review tasks may generate candidate rows, prompts, and ChatGPT responses, but a candidate affects the production dataset only after it is entered into this ledger.
 
 ## Key Fields
 
@@ -31,14 +31,14 @@ Treat `deterministic_geography_verification` rows as mechanical or near-mechanic
 
 Treat `manual_queue_ai_review_researcher_accepted` and `remaining_queue_ai_review_researcher_adjudicated` rows as researcher-accepted subjective geography decisions. These are appropriate for the main repaired series only because the final accepted decision is recorded here with evidence and caveats.
 
-The `remaining_split_vote_geography_ai_review_researcher_accepted` pass is not accepted in this production ledger. A later audit found that 107 of 109 ChatGPT responses from that pass cited Council matter files outside the queued review bundle, indicating a batch-alignment failure. Those rows must be re-reviewed before entering the production series.
+The `remaining_split_vote_geography_ai_review_researcher_accepted` pass is not accepted in this production ledger. A later review found that 107 of 109 ChatGPT responses from that pass cited Council matter files outside the queued review bundle, indicating a batch-alignment failure. Those rows must be re-reviewed before entering the production series.
 
-Rows with `promote_with_caveat`, medium confidence, or low confidence should be easy to audit from this file. They are included in the repaired production series, but they should remain visible in robustness checks and discussion of measurement uncertainty.
+Rows with `promote_with_caveat`, medium confidence, or low confidence should be easy to inspect from this file. They are included in the repaired production series, but they should remain visible in robustness checks and discussion of measurement uncertainty.
 
-## Audit Trail
+## Review Trail
 
-The prompt batches, raw ChatGPT response JSONL, candidate classifications, missing-response lists, and response-error diagnostics live in:
+The prompt batches, raw ChatGPT response JSONL, candidate classifications, missing-response lists, and response-error notes live in:
 
 `tasks/audits/build_remaining_council_land_use_split_geography_review/`
 
-That audit task documents how candidate decisions were generated. This production task documents which decisions were accepted.
+That review task documents how candidate decisions were generated. This production task documents which decisions were accepted.
