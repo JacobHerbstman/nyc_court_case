@@ -16,3 +16,5 @@ verification outputs with source notes, not raw AI suggestions.
 Creates `council_land_use_decision_panel.csv` with one row per Legistar matter
 and the vote/geography fields needed for the Council land-use decision trend
 series.
+
+Rebuild runtime: about 1 second.

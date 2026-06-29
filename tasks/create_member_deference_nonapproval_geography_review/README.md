@@ -19,3 +19,5 @@ These files are geography leads, not final assignments. Downstream verification
 decides which leads are supported by official records or BBL-to-district checks
 before they enter the production decision panel. This task does not call
 ChatGPT; it preserves the review records needed to reproduce the judgment trail.
+
+Runtime: under 1 second.

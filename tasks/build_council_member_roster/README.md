@@ -7,3 +7,5 @@ The input is `council_member_roster_source_files.csv`, which indexes the fetched
 Legistar roster source pages. The output is
 `council_member_roster_master.csv`, a district-by-date roster used by the
 member-deference vote tasks.
+
+Rebuild runtime: about 4 seconds.

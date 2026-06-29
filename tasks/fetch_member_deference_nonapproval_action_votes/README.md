@@ -13,5 +13,5 @@ local-member vote-status file used by the decision panel.
 
 An `Affirmative` vote here is a vote on the final Council action shown by
 Legistar, such as filing or disapproval; it is not automatically support for the
-underlying land-use application. Recent cached rebuild runtime is about 2
-minutes; a first run can take longer because it downloads Legistar pages.
+underlying land-use application. Cached rebuild runtime is about 6 seconds; a
+first run can take longer because it downloads Legistar pages.

@@ -13,4 +13,6 @@ small deterministic address variants.
 
 Current MapPLUTO matches are location-based backups rather than direct
 historical district statements, so the output carries source flags for downstream
-review. Recent rebuild runtime: about 1 minute.
+review.
+
+Rebuild runtime: about 1 minute.

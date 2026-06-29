@@ -9,3 +9,5 @@ which shows the annual adoption rate when an affected local member opposed
 adoption, with the raw annual series in the background and a trailing 5-year
 rate overlaid. The matching CSV contains the plotted annual counts, annual
 rates, and 5-year rolling rate.
+
+Rebuild runtime: about 1 second.

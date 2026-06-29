@@ -3,14 +3,16 @@
 from __future__ import annotations
 
 import csv
-import hashlib
 import re
+import sys
 import time
 from pathlib import Path
 
 import requests
 from bs4 import BeautifulSoup
 
+sys.path.append("../../_lib")
+from legistar_utils import normalize_space, sha256
 
 PULL_DATE = "20260512"
 LEGISTAR_URL = (
@@ -27,18 +29,6 @@ class CachedResponse:
         self.content = path.read_bytes()
         self.text = self.content.decode("utf-8", errors="replace")
         self.from_cache = True
-
-
-def normalize_space(value: object) -> str:
-    return re.sub(r"\s+", " ", "" if value is None else str(value)).strip()
-
-
-def compute_sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as file:
-        for chunk in iter(lambda: file.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def cached_file_is_local(path: Path) -> bool:
@@ -131,7 +121,7 @@ def source_row(
         "http_status": http_status,
         "file_exists": file_exists,
         "file_size_bytes": raw_path.stat().st_size if file_exists else None,
-        "checksum_sha256": compute_sha256(raw_path) if file_exists else None,
+        "checksum_sha256": sha256(raw_path) if file_exists else None,
         "notes": notes,
     }
 

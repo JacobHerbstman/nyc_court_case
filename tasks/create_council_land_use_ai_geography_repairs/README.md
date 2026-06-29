@@ -17,3 +17,5 @@ downstream vote-panel code reads a stable project file rather than a separate
 review workflow.
 
 Creates `council_land_use_ai_geography_accepted_repairs.csv`.
+
+Runtime: under 1 second.

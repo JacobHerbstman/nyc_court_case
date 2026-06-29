@@ -9,3 +9,5 @@ The inputs are production task Makefiles. Outputs are `task_flow.png`,
 their pattern target so the inventory stays compact. `setup_environment`,
 `source_registry`, and `task_graph` are classified as infrastructure rather than
 production analysis tasks.
+
+Runtime: under 1 second.
