@@ -1,6 +1,7 @@
 all: ../output/member_deference_nonapproval_geography_recovery.csv
 
 ../output/member_deference_nonapproval_geography_recovery.csv: recover_member_deference_nonapproval_geography.py \
+	../../_lib/member_deference_utils.py \
 	../input/member_deference_final_action_vote_queue.csv \
 	../input/zap_project_data.parquet \
 	../input/zap_project_bbl.parquet \

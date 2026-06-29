@@ -12,28 +12,7 @@ import requests
 
 sys.path.append("../../_lib")
 from legistar_utils import parse_action_detail, request_with_retries, safe_stub, save_text, sha256
-
-
-def normalize_space(value: object) -> str:
-    return re.sub(r"\s+", " ", "" if value is None or pd.isna(value) else str(value)).strip()
-
-
-def norm_name(value: object) -> str:
-    value = re.sub(r"[^A-Za-z0-9 ]", " ", "" if value is None or pd.isna(value) else str(value))
-    return re.sub(r"\s+", " ", value).strip().lower()
-
-
-def edge_name(value: object) -> str:
-    parts = norm_name(value).split()
-    if len(parts) < 2:
-        return norm_name(value)
-    return f"{parts[0]} {parts[-1]}"
-
-
-def split_semicolon(value: object) -> list[str]:
-    if value is None or pd.isna(value) or str(value).strip() == "":
-        return []
-    return [part.strip() for part in str(value).split(";") if part.strip()]
+from member_deference_utils import edge_name, normalize_space, split_semicolon
 
 
 def collapse_values(values: object) -> str:

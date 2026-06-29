@@ -3,14 +3,19 @@
 from __future__ import annotations
 
 import re
+import sys
 from pathlib import Path
 
 import pandas as pd
 
-
-application_re = re.compile(
-    r"\b(?:[CNM]\s*)?\d{6,8}\s*(?:\([A-Z0-9]+\)\s*)?[A-Z]{2,4}\b",
-    flags=re.IGNORECASE,
+sys.path.append("../../_lib")
+from member_deference_utils import (
+    application_keys,
+    collapse_districts,
+    collapse_examples,
+    district_from_scalar,
+    normalize_space,
+    split_semicolon,
 )
 
 ordinal_words = {
@@ -29,25 +34,6 @@ ordinal_words = {
 }
 
 
-def normalize_space(value: object) -> str:
-    return re.sub(r"\s+", " ", "" if pd.isna(value) else str(value)).strip()
-
-
-def application_keys(value: object) -> list[str]:
-    keys = []
-    for match in application_re.finditer("" if pd.isna(value) else str(value)):
-        key = re.sub(r"[^A-Za-z0-9]", "", match.group(0)).upper()
-        key = re.sub(r"^[CNM](?=\d)", "", key)
-        keys.append(key)
-    return list(dict.fromkeys(keys))
-
-
-def split_semicolon(value: object) -> list[str]:
-    if pd.isna(value) or str(value).strip() == "":
-        return []
-    return [part.strip() for part in str(value).split(";") if part.strip()]
-
-
 def collapse_values(values: object) -> str:
     clean_values = []
     for value in values:
@@ -59,35 +45,8 @@ def collapse_values(values: object) -> str:
     return "; ".join(clean_values)
 
 
-def collapse_districts(values: object) -> str:
-    districts = []
-    for value in values:
-        if pd.isna(value):
-            continue
-        for match in re.findall(r"\d{1,2}", str(value)):
-            district = int(match)
-            if 1 <= district <= 51 and str(district) not in districts:
-                districts.append(str(district))
-    return "; ".join(districts)
-
-
-def collapse_examples(values: object, limit: int = 5) -> str:
-    examples = []
-    for value in values:
-        if pd.isna(value) or str(value).strip() == "":
-            continue
-        value_text = str(value)
-        if value_text not in examples:
-            examples.append(value_text)
-    return "; ".join(examples[:limit])
-
-
 def collapse_long_examples(values: object) -> str:
     return collapse_examples(values, limit=20)
-
-
-def district_from_scalar(value: object) -> str:
-    return collapse_districts([value])
 
 
 def borough_from_text(title: object, matter_application_keys: object) -> tuple[str, str]:

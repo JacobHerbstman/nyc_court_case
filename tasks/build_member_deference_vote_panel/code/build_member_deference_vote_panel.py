@@ -3,34 +3,15 @@
 from __future__ import annotations
 
 import re
+import sys
 import time
 
 import pandas as pd
 
+sys.path.append("../../_lib")
+from member_deference_utils import application_keys, edge_name, norm_name, normalize_space, split_semicolon
 
 RECALL_YEARS = list(range(1998, 2026))
-
-
-def normalize_space(value: object) -> str:
-    return re.sub(r"\s+", " ", "" if pd.isna(value) else str(value)).strip()
-
-
-def norm_name(value: object) -> str:
-    value = re.sub(r"[^A-Za-z0-9 ]", " ", "" if pd.isna(value) else str(value))
-    return re.sub(r"\s+", " ", value).strip().lower()
-
-
-def edge_name(value: object) -> str:
-    parts = norm_name(value).split()
-    if len(parts) < 2:
-        return norm_name(value)
-    return f"{parts[0]} {parts[-1]}"
-
-
-def split_semicolon(value: object) -> list[str]:
-    if pd.isna(value) or str(value).strip() == "":
-        return []
-    return [part.strip() for part in str(value).split(";") if part.strip()]
 
 
 def collapse_values(values: object) -> str:
@@ -62,10 +43,6 @@ district_patterns = [
     ),
     re.compile(r"\bCD'?s?\.?\s*([0-9,\sand-]+)", flags=re.IGNORECASE),
 ]
-application_re = re.compile(
-    r"\b(?:[CNM]\s*)?\d{6,8}\s*(?:\([A-Z0-9]+\)\s*)?[A-Z]{2,4}\b",
-    flags=re.IGNORECASE,
-)
 
 
 def districts_from_text(value: object) -> list[str]:
@@ -75,16 +52,6 @@ def districts_from_text(value: object) -> list[str]:
         for match in pattern.finditer(text):
             districts.extend(re.findall(r"\d{1,2}", match.group(1)))
     return [district for district in dict.fromkeys(districts) if 1 <= int(district) <= 51]
-
-
-def application_keys(value: object) -> list[str]:
-    text = "" if pd.isna(value) else str(value)
-    keys = []
-    for match in application_re.finditer(text):
-        key = re.sub(r"[^A-Za-z0-9]", "", match.group(0)).upper()
-        key = re.sub(r"^[CNM](?=\d)", "", key)
-        keys.append(key)
-    return list(dict.fromkeys(keys))
 
 
 def disposition_group(status: object, final_action: object, title: object) -> str:

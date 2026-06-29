@@ -5,6 +5,7 @@ all: ../output/member_deference_vote_panel.csv \
 	../output/member_deference_final_action_vote_queue.csv
 
 ../output/member_deference_vote_panel.csv: build_member_deference_vote_panel.py \
+	../../_lib/member_deference_utils.py \
 	$(foreach year,$(RECALL_YEARS),../input/legistar_$(year)_broad_recall_action_details.csv) \
 	$(foreach year,$(RECALL_YEARS),../input/legistar_$(year)_broad_recall_member_votes.csv) \
 	$(foreach year,$(RECALL_YEARS),../input/legistar_$(year)_broad_recall_matter_index.csv) \

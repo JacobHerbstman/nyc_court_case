@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import re
+import sys
 import time
 from pathlib import Path
 from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
@@ -12,26 +13,20 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-
-application_re = re.compile(
-    r"\b(?:[CNM]\s*)?\d{6,8}\s*(?:\([A-Z0-9]+\)\s*)?[A-Z]{2,4}\b",
-    flags=re.IGNORECASE,
+sys.path.append("../../_lib")
+from member_deference_utils import (
+    application_keys,
+    collapse_districts,
+    collapse_examples,
+    norm_name,
+    normalize_space,
+    split_semicolon,
 )
 district_re = re.compile(
     r"Council District(?:s)?(?:\s*(?:No\.?|Nos\.?|no\.?|nos\.?|number)?)?\s*([0-9,\sand-]+)",
     flags=re.IGNORECASE,
 )
 lu_re = re.compile(r"\bL\.?\s*U\.?\s*(?:No\.?)?\s*(\d{1,4})(?:\s*-\s*\d{4})?\b", flags=re.IGNORECASE)
-
-
-def normalize_space(value: object) -> str:
-    return re.sub(r"\s+", " ", "" if pd.isna(value) else str(value)).strip()
-
-
-def split_semicolon(value: object) -> list[str]:
-    if pd.isna(value) or str(value).strip() == "":
-        return []
-    return [part.strip() for part in str(value).split(";") if part.strip()]
 
 
 def collapse_values(values: object) -> str:
@@ -43,39 +38,6 @@ def collapse_values(values: object) -> str:
             if part not in clean_values:
                 clean_values.append(part)
     return "; ".join(clean_values)
-
-
-def collapse_districts(values: object) -> str:
-    districts = []
-    for value in values:
-        if pd.isna(value):
-            continue
-        for match in re.findall(r"\d{1,2}", str(value)):
-            district = int(match)
-            if 1 <= district <= 51 and str(district) not in districts:
-                districts.append(str(district))
-    return "; ".join(districts)
-
-
-def collapse_examples(values: object, limit: int = 20) -> str:
-    examples = []
-    for value in values:
-        if pd.isna(value) or str(value).strip() == "":
-            continue
-        value_text = str(value)
-        if value_text not in examples:
-            examples.append(value_text)
-    return "; ".join(examples[:limit])
-
-
-def application_keys(value: object) -> list[str]:
-    keys = []
-    for match in application_re.finditer("" if pd.isna(value) else str(value)):
-        key = re.sub(r"[^A-Za-z0-9]", "", match.group(0)).upper()
-        key = re.sub(r"^[CNM](?=\d)", "", key)
-        if key not in keys:
-            keys.append(key)
-    return keys
 
 
 def lu_numbers(value: object) -> list[str]:
@@ -92,11 +54,6 @@ def districts_from_text(value: object) -> str:
     for match in district_re.finditer("" if pd.isna(value) else str(value)):
         districts.extend(re.findall(r"\d{1,2}", match.group(1)))
     return collapse_districts(districts)
-
-
-def norm_name(value: object) -> str:
-    value = re.sub(r"[^A-Za-z0-9 ]", " ", "" if pd.isna(value) else str(value))
-    return re.sub(r"\s+", " ", value).strip().lower()
 
 
 def clean_url(value: object) -> str:

@@ -3,6 +3,7 @@ all: ../output/member_deference_nonapproval_action_details.csv \
 
 ../output/member_deference_nonapproval_action_details.csv: fetch_member_deference_nonapproval_action_votes.py \
 	../../_lib/legistar_utils.py \
+	../../_lib/member_deference_utils.py \
 	../input/member_deference_nonapproval_geography_conservative_queue.csv | ../output
 	python3 $<
 

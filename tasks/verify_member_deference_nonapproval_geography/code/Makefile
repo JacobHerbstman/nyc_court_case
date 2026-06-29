@@ -1,6 +1,7 @@
 all: ../output/member_deference_nonapproval_geography_conservative_queue.csv
 
 ../output/member_deference_nonapproval_geography_conservative_queue.csv: verify_member_deference_nonapproval_geography.py \
+	../../_lib/member_deference_utils.py \
 	../input/member_deference_final_action_vote_queue.csv \
 	../input/member_deference_nonapproval_geography_recovery.csv \
 	../input/member_deference_nonapproval_geography_review_queue.csv \
