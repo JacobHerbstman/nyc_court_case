@@ -337,7 +337,7 @@ for district in range(1, 52):
             url=url,
             raw_path=raw_path,
             response=response,
-            notes="Secondary broad-recall source for pre-Legistar district-member history; audit against official Green Book or archives before treating as final.",
+            notes="Secondary broad-recall source for pre-Legistar district-member history; review against official Green Book or archives before treating as final.",
         )
     )
     if not getattr(response, "from_cache", False):
@@ -362,37 +362,16 @@ wiki_pages = [
     and row["fetch_status"] == "downloaded"
 ]
 
-fetch_qc = [
-    {
-        "check_name": "legistar_all_term_pages_downloaded",
-        "passed": len(official_pages) == (page_count or 0) and len(official_pages) > 0,
-        "detail": f"Downloaded {len(official_pages)} of {page_count or 0} all-term Legistar roster pages.",
-    },
-    {
-        "check_name": "legistar_all_term_record_count_present",
-        "passed": (record_count or 0) > 0,
-        "detail": f"Legistar all-term roster reported {record_count or 0} office records.",
-    },
-    {
-        "check_name": "legistar_missing_district_person_pages_downloaded",
-        "passed": len(person_detail_pages) == len(person_detail_urls),
-        "detail": f"Downloaded {len(person_detail_pages)} of {len(person_detail_urls)} Legistar person-detail pages for office records missing grid districts.",
-    },
-    {
-        "check_name": "wikipedia_district_pages_downloaded",
-        "passed": len(wiki_pages) == 51,
-        "detail": f"Downloaded {len(wiki_pages)} of 51 district-history pages.",
-    },
-    {
-        "check_name": "downloaded_files_have_checksums",
-        "passed": all(row["checksum_sha256"] for row in fetch_rows if row["fetch_status"] == "downloaded"),
-        "detail": "Every downloaded source file has a SHA-256 checksum.",
-    },
-]
-
-if any(not row["passed"] for row in fetch_qc):
-    failed_checks = ", ".join(row["check_name"] for row in fetch_qc if not row["passed"])
-    raise RuntimeError(f"Council member roster source fetch failed: {failed_checks}.")
+if len(official_pages) != (page_count or 0) or len(official_pages) == 0:
+    raise RuntimeError("Every all-term Legistar roster page must be downloaded.")
+if (record_count or 0) <= 0:
+    raise RuntimeError("All-term Legistar roster must report at least one office record.")
+if len(person_detail_pages) != len(person_detail_urls):
+    raise RuntimeError("Every required Legistar person-detail page must be downloaded.")
+if len(wiki_pages) != 51:
+    raise RuntimeError("Every Wikipedia district-history page must be downloaded.")
+if not all(row["checksum_sha256"] for row in fetch_rows if row["fetch_status"] == "downloaded"):
+    raise RuntimeError("Every downloaded roster source file must have a SHA-256 checksum.")
 
 write_csv(
     "../output/council_member_roster_source_files.csv",

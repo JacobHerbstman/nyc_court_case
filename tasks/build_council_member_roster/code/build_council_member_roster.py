@@ -504,74 +504,30 @@ for district in range(1, 52):
 
 known_specs = [
     {
-        "check_name": "helen_marshall_district_21_2001",
         "district": 21,
         "check_date": "2001-05-23",
         "expected_member_name": "Helen Marshall",
     },
     {
-        "check_name": "david_yassky_district_33_2009",
         "district": 33,
         "check_date": "2009-06-10",
         "expected_member_name": "David Yassky",
     },
     {
-        "check_name": "diana_reyna_district_34_2009",
         "district": 34,
         "check_date": "2009-12-21",
         "expected_member_name": "Diana Reyna",
     },
 ]
-known_date_checks: list[dict[str, object]] = []
 
 for spec in known_specs:
     matches = active_rows(master_rows, spec["district"], spec["check_date"])
     member_names = "; ".join(row["member_name"] for row in matches)
     expected_clean = compact_name(spec["expected_member_name"])
-    known_date_checks.append(
-        {
-            **spec,
-            "matched_rows": len(matches),
-            "matched_member_names": member_names,
-            "matched_source_tiers": "; ".join(row["source_tier"] for row in matches),
-            "passed": len(matches) == 1 and compact_name(member_names) == expected_clean,
-        }
-    )
-
-roster_checks = [
-    {
-        "check_name": "official_legistar_terms_parsed",
-        "passed": len(official_terms) > 0,
-        "detail": f"Parsed {len(official_terms)} official Legistar office-record rows.",
-    },
-    {
-        "check_name": "legistar_person_detail_districts_parsed",
-        "passed": len(person_detail_district_by_id) > 0,
-        "detail": f"Parsed district notes from {len(person_detail_district_by_id)} Legistar PersonDetail pages.",
-    },
-    {
-        "check_name": "wikipedia_district_terms_parsed",
-        "passed": len([row for row in wiki_terms if row["member_name"]]) >= 51,
-        "detail": f"Parsed {len([row for row in wiki_terms if row['member_name']])} district-history member rows.",
-    },
-    {
-        "check_name": "master_has_no_overlapping_district_intervals",
-        "passed": len(overlap_rows) == 0,
-        "detail": f"Found {len(overlap_rows)} overlapping master intervals.",
-    },
-    {
-        "check_name": "master_reaches_before_1990",
-        "passed": min(row["term_start_date"] for row in master_rows if row["term_start_date"]) <= "1990-01-01",
-        "detail": "Master roster includes secondary backfill before 1990.",
-    },
-    {
-        "check_name": "known_member_date_checks_pass",
-        "passed": all(row["passed"] for row in known_date_checks),
-        "detail": "; ".join(
-            f"{row['check_name']}={row['matched_member_names'] or 'missing'}" for row in known_date_checks
-        ),
-    },
-]
+    if len(matches) != 1 or compact_name(member_names) != expected_clean:
+        raise RuntimeError(
+            f"{spec['expected_member_name']} must be the district {spec['district']} member on {spec['check_date']}."
+        )
 
 fields = [
     "roster_record_id",
@@ -601,8 +557,15 @@ fields = [
     "source_review_reason",
 ]
 
-if any(not row["passed"] for row in roster_checks):
-    failed_checks = ", ".join(row["check_name"] for row in roster_checks if not row["passed"])
-    raise RuntimeError(f"Council member roster build failed: {failed_checks}.")
+if len(official_terms) == 0:
+    raise RuntimeError("Official Legistar office-record rows must be parsed.")
+if len(person_detail_district_by_id) == 0:
+    raise RuntimeError("Legistar PersonDetail district notes must be parsed.")
+if len([row for row in wiki_terms if row["member_name"]]) < 51:
+    raise RuntimeError("Wikipedia district-history member rows must be parsed.")
+if overlap_rows:
+    raise RuntimeError("Master roster must not have overlapping district intervals.")
+if min(row["term_start_date"] for row in master_rows if row["term_start_date"]) > "1990-01-01":
+    raise RuntimeError("Master roster must reach before 1990.")
 
 write_csv("../output/council_member_roster_master.csv", master_rows, fields)
