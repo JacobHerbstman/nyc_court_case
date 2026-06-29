@@ -13,9 +13,6 @@ all: $(foreach year,$(RECALL_YEARS),../output/legistar_$(year)_broad_recall_matt
 ../output/legistar_%_broad_recall_history_events.csv: ../output/legistar_%_broad_recall_matter_index.csv
 	@test -s "$@"
 
-../output/legistar_%_broad_recall_detail_files.csv: ../output/legistar_%_broad_recall_matter_index.csv
-	@test -s "$@"
-
 ../output/legistar_%_broad_recall_action_details.csv: fetch_legistar_action_votes.py \
 	../output/legistar_%_broad_recall_history_events.csv \
 	../output/legistar_%_broad_recall_matter_index.csv | ../output

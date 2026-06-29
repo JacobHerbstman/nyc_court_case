@@ -46,6 +46,26 @@ def save_text(path: Path, text: str) -> None:
     path.write_text(text, encoding="utf-8")
 
 
+def bad_cached_html_paths(paths: list[Path]) -> list[Path]:
+    bad_paths = []
+    for path in paths:
+        if not path.exists():
+            continue
+        stat_result = path.stat()
+        if stat_result.st_size == 0 or getattr(stat_result, "st_blocks", 1) == 0:
+            bad_paths.append(path)
+    return bad_paths
+
+
+def check_cached_html(paths: list[Path], label: str) -> None:
+    bad_paths = bad_cached_html_paths(paths)
+    if bad_paths:
+        raise RuntimeError(
+            f"{label} has {len(bad_paths)} cached HTML files that are empty or not materialized locally. "
+            f"Hydrate or delete the cached file before rerunning. Example: {bad_paths[0]}"
+        )
+
+
 def request_with_retries(session: requests.Session, url: str) -> requests.Response:
     last_error = None
     for attempt in range(1, 4):
@@ -214,6 +234,7 @@ action_rows = []
 member_vote_rows = []
 for i, row in enumerate(target_events.sort_values(["history_date", "matter_file"]).to_dict("records"), start=1):
     raw_path = raw_dir / f"{safe_stub(row['matter_file'])}_{row['matter_id']}.html"
+    check_cached_html([raw_path], f"{QUERY_YEAR} Legistar action-detail cache")
     if raw_path.exists() and raw_path.stat().st_size > 0:
         page_html = raw_path.read_text(encoding="utf-8")
         fetch_status = "cached"
@@ -364,9 +385,9 @@ if QUERY_YEAR == "2001":
 
 qc = pd.DataFrame(qc_rows)
 
-action_details.to_csv(ACTION_DETAILS_OUTPUT, index=False)
-member_votes.to_csv(MEMBER_VOTES_OUTPUT, index=False)
-
 if not qc["passed"].all():
     failed_checks = ", ".join(qc.loc[~qc["passed"], "check_name"].astype(str))
     raise RuntimeError(f"Legistar {QUERY_YEAR} action-vote fetch failed: {failed_checks}.")
+
+action_details.to_csv(ACTION_DETAILS_OUTPUT, index=False)
+member_votes.to_csv(MEMBER_VOTES_OUTPUT, index=False)

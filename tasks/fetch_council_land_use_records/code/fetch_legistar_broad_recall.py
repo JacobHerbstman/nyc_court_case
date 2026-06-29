@@ -28,7 +28,6 @@ else:
     PULL_DATE = "20260603"
 MATTER_INDEX_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_matter_index.csv")
 HISTORY_EVENTS_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_history_events.csv")
-DETAIL_FILES_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_detail_files.csv")
 
 MATTER_TYPE_QUERIES = [
     {"matter_type": "Land Use Application", "type_value": "10", "slug": "land_use_application"},
@@ -296,6 +295,26 @@ def save_text(path: Path, text: str) -> None:
     path.write_text(text, encoding="utf-8")
 
 
+def bad_cached_html_paths(paths: list[Path]) -> list[Path]:
+    bad_paths = []
+    for path in paths:
+        if not path.exists():
+            continue
+        stat_result = path.stat()
+        if stat_result.st_size == 0 or getattr(stat_result, "st_blocks", 1) == 0:
+            bad_paths.append(path)
+    return bad_paths
+
+
+def check_cached_html(paths: list[Path], label: str) -> None:
+    bad_paths = bad_cached_html_paths(paths)
+    if bad_paths:
+        raise RuntimeError(
+            f"{label} has {len(bad_paths)} cached HTML files that are empty or not materialized locally. "
+            f"Hydrate or delete the cached file before rerunning. Example: {bad_paths[0]}"
+        )
+
+
 def request_with_retries(session: requests.Session, method: str, url: str, **kwargs) -> requests.Response:
     last_error = None
     for attempt in range(1, 4):
@@ -320,6 +339,7 @@ def fetch_search_pages(session: requests.Session, query: dict[str, str]) -> list
     raw_dir = Path("../output/source_files") / SOURCE_ID / PULL_DATE / f"year_{QUERY_YEAR}" / query["slug"] / "index_pages"
     cached_pages = sorted(raw_dir.glob("page_*.html"))
     if cached_pages:
+        check_cached_html(cached_pages, f"{QUERY_YEAR} {query['matter_type']} index cache")
         matter_rows: list[dict[str, object]] = []
         for raw_path in cached_pages:
             current_html = raw_path.read_text(encoding="utf-8")
@@ -493,6 +513,7 @@ def fetch_detail_pages(session: requests.Session, matter_index: pd.DataFrame) ->
     sorted_targets = detail_targets.sort_values(["query_matter_type", "matter_file", "matter_id"]).to_dict("records")
     for i, row in enumerate(sorted_targets, start=1):
         raw_path = raw_dir / safe_stub(row["query_matter_type"]) / f"{safe_stub(row['matter_file'])}_{row['matter_id']}.html"
+        check_cached_html([raw_path], f"{QUERY_YEAR} Legistar detail-page cache")
         if raw_path.exists() and raw_path.stat().st_size > 0:
             page_html = raw_path.read_text(encoding="utf-8")
             fetch_status = "cached"
@@ -693,13 +714,12 @@ def main() -> None:
 
     qc = pd.DataFrame(qc_rows)
 
-    matter_index.to_csv(MATTER_INDEX_OUTPUT, index=False)
-    history_events.to_csv(HISTORY_EVENTS_OUTPUT, index=False)
-    detail_files.to_csv(DETAIL_FILES_OUTPUT, index=False)
-
     if not qc["passed"].all():
         failed_checks = ", ".join(qc.loc[~qc["passed"], "check_name"].astype(str))
         raise RuntimeError(f"Legistar {QUERY_YEAR} broad-recall pull failed: {failed_checks}.")
+
+    matter_index.to_csv(MATTER_INDEX_OUTPUT, index=False)
+    history_events.to_csv(HISTORY_EVENTS_OUTPUT, index=False)
 
 
 if __name__ == "__main__":

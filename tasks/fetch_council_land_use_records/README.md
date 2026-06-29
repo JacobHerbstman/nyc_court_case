@@ -11,7 +11,7 @@ The task saves the raw Legistar HTML under `output/source_files/` and rebuilds
 the tabular outputs from those cached pages when they exist. The current source
 snapshot uses May 13, 2026 cache folders for 1998-2010 and June 3, 2026 cache
 folders for 2011-2025. A full cached rebuild takes roughly 25-35 minutes on the
-local machine.
+local machine when the cached HTML files are materialized locally.
 
 The task extracts matter records, history events, final Council action details,
 and member votes. It creates annual
