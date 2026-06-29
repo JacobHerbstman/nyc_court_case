@@ -56,27 +56,16 @@ nhgis_income_overrides <- read_csv("nhgis_income_overrides.csv", show_col_types 
     override_reason = as.character(override_reason)
   )
 
-nhgis_raw_files <- read_csv("../output/nhgis_raw_files.csv", show_col_types = FALSE, na = c("", "NA")) %>%
+nhgis_raw_files <- read_csv("../temp/nhgis_raw_files.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(year = as.integer(year))
 
-index_rows <- list()
+gis_zip_rows <- list()
 
 for (i in seq_len(nrow(nhgis_raw_files))) {
   row <- nhgis_raw_files[i, ]
 
   if (!file.exists(row$raw_parquet_path)) {
-    index_rows[[i]] <- tibble(
-      source_id = row$source_id,
-      year = row$year,
-      table_zip_path = row$table_zip_path,
-      gis_zip_path = row$gis_zip_path,
-      table_file_inside_zip = row$table_file_inside_zip,
-      shapefile_inside_zip = row$shapefile_inside_zip,
-      raw_parquet_path = row$raw_parquet_path,
-      parquet_path = NA_character_,
-      status = row$status
-    )
-    next
+    stop("NHGIS raw parquet is missing for ", row$source_id, ".")
   }
 
   nhgis_df <- read_parquet(row$raw_parquet_path) %>%
@@ -163,22 +152,20 @@ for (i in seq_len(nrow(nhgis_raw_files))) {
 
   extract_df$unresolved_flag <- extract_df$housing_balance_classification == "concept_mismatch" | extract_df$income_classification == "unresolved"
 
-  out_parquet_local <- file.path("..", "output", paste0(row$source_id, ".parquet"))
-  out_parquet <- file.path("..", "..", "build_nhgis_extracts", "output", paste0(row$source_id, ".parquet"))
-  write_parquet_if_changed(extract_df, out_parquet_local)
+  write_parquet_if_changed(extract_df, file.path("..", "output", paste0(row$source_id, ".parquet")))
 
-  index_rows[[i]] <- tibble(
+  gis_zip_rows[[i]] <- tibble(
     source_id = row$source_id,
     year = row$year,
-    table_zip_path = row$table_zip_path,
-    gis_zip_path = row$gis_zip_path,
-    table_file_inside_zip = row$table_file_inside_zip,
-    shapefile_inside_zip = row$shapefile_inside_zip,
-    raw_parquet_path = row$raw_parquet_path,
-    parquet_path = out_parquet,
-    status = "staged"
+    extract_number = row$extract_number,
+    gis_zip_path = row$gis_zip_path
   )
+
 }
 
-write_csv(bind_rows(index_rows), "../output/nhgis_files.csv", na = "")
+if (length(gis_zip_rows) == 0) {
+  stop("No NHGIS GIS zip path was written.")
+}
+
+write_csv_if_changed(bind_rows(gis_zip_rows), "../output/nhgis_1990_tract_gis_zip.csv")
 cat("Wrote NHGIS extract outputs to ../output\n")

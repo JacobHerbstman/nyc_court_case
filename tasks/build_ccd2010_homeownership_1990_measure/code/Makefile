@@ -4,7 +4,7 @@ include ../../shell_functions.make
 all: ../output/ccdist2010_homeownership_1990_measure.csv \
 	../output/ccdist2010_homeownership_1990_map.pdf
 
-../output/ccdist2010_homeownership_1990_measure.csv: build_ccd2010_homeownership_1990_measure.R ../../_lib/source_pipeline_utils.R ../input/nhgis_1990_tract_extract.parquet ../input/nhgis_raw_files.csv ../input/nycc_10cav.zip | ../output
+../output/ccdist2010_homeownership_1990_measure.csv: build_ccd2010_homeownership_1990_measure.R ../../_lib/source_pipeline_utils.R ../input/nhgis_1990_tract_extract.parquet ../input/nhgis_1990_tract_gis_zip.csv ../input/nycc_10cav.zip | ../output
 	$(R) $<
 
 ../output/ccdist2010_homeownership_1990_map.pdf: ../output/ccdist2010_homeownership_1990_measure.csv
@@ -13,12 +13,12 @@ all: ../output/ccdist2010_homeownership_1990_measure.csv \
 ../input/nhgis_1990_tract_extract.parquet: ../../build_nhgis_extracts/output/nhgis_1990_tract_extract.parquet | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/nhgis_raw_files.csv: ../../build_nhgis_extracts/output/nhgis_raw_files.csv | ../input
+../input/nhgis_1990_tract_gis_zip.csv: ../../build_nhgis_extracts/output/nhgis_1990_tract_gis_zip.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/nycc_10cav.zip: ../../../data_raw/dcp_boundary_city_council_districts_archive/10C/nycc_10cav.zip | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-link-inputs: ../input/nhgis_1990_tract_extract.parquet ../input/nhgis_raw_files.csv ../input/nycc_10cav.zip
+link-inputs: ../input/nhgis_1990_tract_extract.parquet ../input/nhgis_1990_tract_gis_zip.csv ../input/nycc_10cav.zip
 
 include ../../generic.make

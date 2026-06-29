@@ -181,5 +181,5 @@ for (i in seq_len(nrow(nhgis_rows))) {
   audit_rows[[i]] <- fetch_result
 }
 
-write_csv_if_changed(bind_rows(audit_rows), "../output/nhgis_extract_downloads.csv")
-cat("Wrote NHGIS extract downloads to ../output\n")
+write_csv_if_changed(bind_rows(audit_rows), "../temp/nhgis_extract_downloads.csv")
+cat("Wrote NHGIS extract downloads to ../temp\n")

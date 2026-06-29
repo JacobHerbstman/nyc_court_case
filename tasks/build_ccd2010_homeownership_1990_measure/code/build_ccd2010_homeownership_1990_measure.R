@@ -80,15 +80,14 @@ county_lookup <- tribble(
   "085", "5", "Staten Island"
 )
 
-nhgis_files <- read_csv("../input/nhgis_raw_files.csv", show_col_types = FALSE, na = c("", "NA"))
-nhgis_gis_zip <- nhgis_files %>%
+nhgis_gis_zip <- read_csv("../input/nhgis_1990_tract_gis_zip.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   filter(year == 1990, !is.na(gis_zip_path), file.exists(gis_zip_path)) %>%
-  arrange(desc(status == "loaded"), desc(extract_number), gis_zip_path) %>%
+  arrange(desc(extract_number), gis_zip_path) %>%
   slice_head(n = 1) %>%
   pull(gis_zip_path)
 
 if (length(nhgis_gis_zip) == 0) {
-  stop("Could not find a 1990 NHGIS GIS zip path in ../input/nhgis_raw_files.csv")
+  stop("Could not find a 1990 NHGIS GIS zip path in ../input/nhgis_1990_tract_gis_zip.csv")
 }
 
 nhgis_1990 <- read_parquet("../input/nhgis_1990_tract_extract.parquet") %>%

@@ -14,7 +14,7 @@ extract_number_from_path <- function(path) {
 }
 
 nhgis_table_map <- read_csv("nhgis_table_map.csv", show_col_types = FALSE, na = c("", "NA"))
-nhgis_extract_downloads <- read_csv("../output/nhgis_extract_downloads.csv", show_col_types = FALSE, na = c("", "NA")) %>%
+nhgis_extract_downloads <- read_csv("../temp/nhgis_extract_downloads.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(extract_number = coalesce(extract_number, extract_number_from_path(raw_path)))
 
 expected_rows <- tibble(year = sort(unique(nhgis_table_map$year))) %>%
@@ -195,9 +195,8 @@ for (i in seq_len(nrow(expected_rows))) {
     select(-statea_std, -countya_std) %>%
     mutate(source_id = row$source_id, source_year = row$year, table_zip_path = table_zip, gis_zip_path = gis_zip)
 
-  out_parquet_local <- file.path("..", "output", paste0(row$source_id, "_raw.parquet"))
-  out_parquet <- file.path("..", "..", "build_nhgis_extracts", "output", basename(out_parquet_local))
-  write_parquet_if_changed(nhgis_df, out_parquet_local)
+  out_parquet <- file.path("..", "temp", paste0(row$source_id, "_raw.parquet"))
+  write_parquet_if_changed(nhgis_df, out_parquet)
 
   index_rows[[i]] <- tibble(
     source_id = row$source_id,
@@ -212,5 +211,5 @@ for (i in seq_len(nrow(expected_rows))) {
   )
 }
 
-write_csv(bind_rows(index_rows), "../output/nhgis_raw_files.csv", na = "")
-cat("Wrote NHGIS raw outputs to ../output\n")
+write_csv(bind_rows(index_rows), "../temp/nhgis_raw_files.csv", na = "")
+cat("Wrote NHGIS raw outputs to ../temp\n")
