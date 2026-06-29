@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_dcp_boundaries/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/build_dcp_boundaries/code")
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -8,7 +8,7 @@ suppressPackageStartupMessages({
   library(tibble)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 hex_to_raw <- function(x) {
   if (is.na(x) || x == "") {

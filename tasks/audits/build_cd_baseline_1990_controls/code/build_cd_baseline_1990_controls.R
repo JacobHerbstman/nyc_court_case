@@ -456,8 +456,7 @@ if (length(nhgis_1980_gis_zip) == 0 || length(nhgis_1990_gis_zip) == 0) {
 
 dcp_boundary_index <- read_csv("../input/dcp_boundary_index.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(
-    pull_date = as.Date(as.character(pull_date), format = "%Y%m%d"),
-    parquet_path = str_replace(parquet_path, "^\\.\\./\\.\\./build_dcp_boundaries/", "../../../build_dcp_boundaries/")
+    pull_date = as.Date(as.character(pull_date), format = "%Y%m%d")
   )
 
 community_district_parquet <- dcp_boundary_index %>%

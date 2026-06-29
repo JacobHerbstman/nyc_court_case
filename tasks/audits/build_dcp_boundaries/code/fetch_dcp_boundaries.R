@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_dcp_boundaries/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/build_dcp_boundaries/code")
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -6,7 +6,7 @@ suppressPackageStartupMessages({
   library(tibble)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 source_catalog <- read_csv("../input/source_catalog.csv", show_col_types = FALSE, na = c("", "NA"))
 current_boundary_source_ids <- c(
@@ -49,14 +49,14 @@ for (i in seq_len(nrow(boundary_rows))) {
   }
 
   metadata_url <- paste0("https://data.cityofnewyork.us/api/views/", dataset_id)
-  metadata_path <- file.path("..", "..", "..", "data_raw", source_id, pull_date, paste0(dataset_id, "_metadata.json"))
+  metadata_path <- file.path("..", "..", "..", "..", "data_raw", source_id, pull_date, paste0(dataset_id, "_metadata.json"))
   metadata_status <- if (file.exists(metadata_path)) "already_present" else download_with_status(metadata_url, metadata_path)
 
   if (!file.exists(metadata_path)) {
     stop("Could not resolve Socrata metadata for ", source_id, " at dataset id ", dataset_id)
   }
 
-  zip_path <- file.path("..", "..", "..", "data_raw", source_id, pull_date, download_names[[source_id]])
+  zip_path <- file.path("..", "..", "..", "..", "data_raw", source_id, pull_date, download_names[[source_id]])
   zip_status <- if (file.exists(zip_path)) "already_present" else download_with_status(row$official_url, zip_path)
 
   inventory_rows[[length(inventory_rows) + 1L]] <- tibble(

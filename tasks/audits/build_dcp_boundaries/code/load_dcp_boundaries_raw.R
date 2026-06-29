@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_dcp_boundaries/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/build_dcp_boundaries/code")
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -7,7 +7,7 @@ suppressPackageStartupMessages({
   library(tibble)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 boundary_files <- read_csv("../output/dcp_boundary_files.csv", show_col_types = FALSE, na = c("", "NA")) |>
   filter(file_role == "boundary_shapefile_zip", file.exists(raw_path))

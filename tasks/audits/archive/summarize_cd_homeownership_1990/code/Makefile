@@ -9,7 +9,7 @@ all: ../output/nhgis_cd_homeownership_1990.csv ../output/nhgis_cd_homeownership_
 ../input/nhgis_1990_tract_extract.parquet: ../../build_nhgis_extracts/output/nhgis_1990_tract_extract.parquet | ../input
 	ln -sf "$<" "$@"
 
-../input/dcp_boundary_index.csv: ../../build_dcp_boundaries/output/dcp_boundary_index.csv | ../input
+../input/dcp_boundary_index.csv: ../../../build_dcp_boundaries/output/dcp_boundary_index.csv | ../input
 	ln -sf "$<" "$@"
 
 ../output/nhgis_cd_homeownership_1990.csv: summarize_cd_homeownership_1990.R ../input/nhgis_files.csv ../input/nhgis_1990_tract_extract.parquet ../input/dcp_boundary_index.csv | ../output

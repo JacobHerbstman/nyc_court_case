@@ -21,7 +21,7 @@ all: ../output/cd_baseline_1990_controls.csv
 ../input/nhgis_1990_tract_extract.parquet: ../../../build_nhgis_extracts/output/nhgis_1990_tract_extract.parquet | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/dcp_boundary_index.csv: ../../../build_dcp_boundaries/output/dcp_boundary_index.csv | ../input
+../input/dcp_boundary_index.csv: ../../build_dcp_boundaries/output/dcp_boundary_index.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 link-inputs: ../input/cd_homeownership_1990_measure.csv ../input/dcp_cd_profiles_1990_2000_files.csv ../input/nhgis_files.csv ../input/nhgis_1980_tract_extract.parquet ../input/nhgis_1990_tract_extract.parquet ../input/dcp_boundary_index.csv
