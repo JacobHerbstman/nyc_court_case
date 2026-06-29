@@ -8,9 +8,6 @@ all: ../output/member_deference_nonapproval_action_details.csv \
 	../input/member_deference_nonapproval_geography_conservative_queue.csv | ../output
 	python3 $<
 
-../output/member_deference_nonapproval_member_votes.csv: ../output/member_deference_nonapproval_action_details.csv
-	@test -s "$@"
-
 ../output/member_deference_nonapproval_local_member_votes.csv: ../output/member_deference_nonapproval_action_details.csv
 	@test -s "$@"
 
