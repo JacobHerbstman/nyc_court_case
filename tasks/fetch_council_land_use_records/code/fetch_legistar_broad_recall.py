@@ -8,7 +8,6 @@ import json
 import re
 import sys
 import time
-from datetime import date
 from pathlib import Path
 from urllib.parse import parse_qs, urljoin, urlparse
 
@@ -23,15 +22,13 @@ if len(sys.argv) != 2 or not re.fullmatch(r"\d{4}", sys.argv[1]):
 
 QUERY_YEAR = sys.argv[1]
 SOURCE_ID = "nyc_council_legistar_land_use_broad_recall"
-PULL_DATE = date.today().strftime("%Y%m%d")
+if int(QUERY_YEAR) <= 2010:
+    PULL_DATE = "20260513"
+else:
+    PULL_DATE = "20260603"
 MATTER_INDEX_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_matter_index.csv")
 HISTORY_EVENTS_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_history_events.csv")
 DETAIL_FILES_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_detail_files.csv")
-DECLARED_OUTPUTS = [
-    MATTER_INDEX_OUTPUT,
-    HISTORY_EVENTS_OUTPUT,
-    DETAIL_FILES_OUTPUT,
-]
 
 MATTER_TYPE_QUERIES = [
     {"matter_type": "Land Use Application", "type_value": "10", "slug": "land_use_application"},
@@ -299,37 +296,6 @@ def save_text(path: Path, text: str) -> None:
     path.write_text(text, encoding="utf-8")
 
 
-def output_raw_paths_exist(path: Path, raw_path_columns: list[str]) -> bool:
-    if not path.exists():
-        return False
-
-    rows = pd.read_csv(path, dtype=str, keep_default_na=False)
-    if rows.empty:
-        return False
-
-    for column in raw_path_columns:
-        if column not in rows.columns:
-            return False
-        for raw_path in rows[column].drop_duplicates():
-            if raw_path and not Path(raw_path).exists():
-                return False
-
-    return True
-
-
-def existing_outputs_complete() -> bool:
-    return (
-        output_raw_paths_exist(MATTER_INDEX_OUTPUT, ["detail_raw_path"])
-        and output_raw_paths_exist(HISTORY_EVENTS_OUTPUT, ["detail_raw_path"])
-        and output_raw_paths_exist(DETAIL_FILES_OUTPUT, ["raw_path"])
-    )
-
-
-def refresh_declared_output_mtimes() -> None:
-    for path in DECLARED_OUTPUTS:
-        path.touch()
-
-
 def request_with_retries(session: requests.Session, method: str, url: str, **kwargs) -> requests.Response:
     last_error = None
     for attempt in range(1, 4):
@@ -352,6 +318,17 @@ def safe_stub(value: object) -> str:
 
 def fetch_search_pages(session: requests.Session, query: dict[str, str]) -> list[dict[str, object]]:
     raw_dir = Path("../output/source_files") / SOURCE_ID / PULL_DATE / f"year_{QUERY_YEAR}" / query["slug"] / "index_pages"
+    cached_pages = sorted(raw_dir.glob("page_*.html"))
+    if cached_pages:
+        matter_rows: list[dict[str, object]] = []
+        for raw_path in cached_pages:
+            current_html = raw_path.read_text(encoding="utf-8")
+            page_info = parse_page_info(current_html)
+            parsed_rows = parse_grid_rows(current_html, query, page_info)
+            matter_rows.extend(parsed_rows)
+            print(f"Parsed cached {query['matter_type']} {raw_path.name}: {len(parsed_rows)} rows", flush=True)
+        return matter_rows
+
     response = request_with_retries(session, "GET", BASE_URL, timeout=90)
 
     response = request_with_retries(
@@ -568,10 +545,6 @@ def fetch_detail_pages(session: requests.Session, matter_index: pd.DataFrame) ->
 
 
 def main() -> None:
-    if existing_outputs_complete():
-        refresh_declared_output_mtimes()
-        return
-
     session = requests.Session()
     session.headers.update(
         {
