@@ -67,10 +67,7 @@ def write_csv(path: str, rows: list[dict[str, object]], fieldnames: list[str]) -
         writer.writeheader()
         writer.writerows(rows)
 
-    if new_path.exists() and new_path.read_bytes() == temp_path.read_bytes():
-        temp_path.unlink()
-    else:
-        temp_path.replace(new_path)
+    temp_path.replace(new_path)
 
 
 def active_rows(rows: list[dict[str, object]], district: int, check_date: str) -> list[dict[str, object]]:
@@ -429,7 +426,6 @@ master_rows = sorted(
     ),
 )
 
-overlap_adjustments: list[dict[str, object]] = []
 trimmed_master_rows: list[dict[str, object]] = []
 
 for district in range(1, 52):
@@ -455,19 +451,6 @@ for district in range(1, 52):
 
             if row_start < previous_end and row["member_name_clean"] != previous["member_name_clean"]:
                 new_start = (previous_end + timedelta(days=1)).isoformat()
-                overlap_adjustments.append(
-                    {
-                        "district": district,
-                        "record_id": row["roster_record_id"],
-                        "member_name": row["member_name"],
-                        "old_start_date": row["term_start_date"],
-                        "new_start_date": new_start,
-                        "term_end_date": row["term_end_date"],
-                        "overlap_record_id": previous["roster_record_id"],
-                        "overlap_member_name": previous["member_name"],
-                        "reason_code": "trimmed_start_after_prior_member_interval",
-                    }
-                )
                 row["term_start_date"] = new_start
                 row["manual_audit_required"] = True
                 row["audit_reason"] = (
@@ -519,23 +502,6 @@ for district in range(1, 52):
                     }
                 )
 
-coverage_rows: list[dict[str, object]] = []
-for district in range(1, 52):
-    district_rows = [row for row in master_rows if row["district"] == district]
-    coverage_rows.append(
-        {
-            "district": district,
-            "term_rows": len(district_rows),
-            "coverage_start_date": min((row["term_start_date"] for row in district_rows), default=""),
-            "coverage_end_date": max((row["term_end_date"] or "" for row in district_rows), default=""),
-            "has_active_1990_07_01": len(active_rows(master_rows, district, "1990-07-01")) == 1,
-            "has_active_1998_01_01": len(active_rows(master_rows, district, "1998-01-01")) == 1,
-            "has_active_2001_05_23": len(active_rows(master_rows, district, "2001-05-23")) == 1,
-            "has_official_legistar_row": any(row["source_tier"] == "official_legistar" for row in district_rows),
-            "has_secondary_backfill_row": any(row["source_tier"] == "secondary_wikipedia" for row in district_rows),
-        }
-    )
-
 known_specs = [
     {
         "check_name": "helen_marshall_district_21_2001",
@@ -569,72 +535,6 @@ for spec in known_specs:
             "matched_member_names": member_names,
             "matched_source_tiers": "; ".join(row["source_tier"] for row in matches),
             "passed": len(matches) == 1 and compact_name(member_names) == expected_clean,
-        }
-    )
-
-manual_review_rows: list[dict[str, object]] = []
-for row in official_terms:
-    if row["district"] is None and row["term_start_date"]:
-        manual_review_rows.append(
-            {
-                "reason_code": "official_legistar_missing_district",
-                "source_tier": row["source_tier"],
-                "district": "",
-                "member_name": row["member_name"],
-                "term_start_date": row["term_start_date"],
-                "term_end_date": row["term_end_date"],
-                "source_url": row["source_url"],
-                "raw_path": row["raw_path"],
-                "detail": "Official office record has dates but no district after checking the linked Legistar PersonDetail page.",
-            }
-        )
-
-for row in wiki_terms:
-    if not row["member_name"] and row["audit_reason"] == "wikipedia_members_table_unparsed":
-        manual_review_rows.append(
-            {
-                "reason_code": "wikipedia_members_table_unparsed",
-                "source_tier": row["source_tier"],
-                "district": row["district"],
-                "member_name": row["member_name"],
-                "term_start_date": row["term_start_date"],
-                "term_end_date": row["term_end_date"],
-                "source_url": row["source_url"],
-                "raw_path": row["raw_path"],
-                "detail": "District-history page did not expose a Members table for secondary parsing.",
-            }
-        )
-
-for row in overlap_adjustments:
-    manual_review_rows.append(
-        {
-            "reason_code": row["reason_code"],
-            "source_tier": "",
-            "district": row["district"],
-            "member_name": row["member_name"],
-            "term_start_date": row["new_start_date"],
-            "term_end_date": row["term_end_date"],
-            "source_url": "",
-            "raw_path": "",
-            "detail": (
-                f"Trimmed {row['record_id']} from {row['old_start_date']} to {row['new_start_date']} "
-                f"because it overlapped {row['overlap_record_id']} ({row['overlap_member_name']})."
-            ),
-        }
-    )
-
-for row in overlap_rows:
-    manual_review_rows.append(
-        {
-            "reason_code": "master_interval_overlap",
-            "source_tier": "",
-            "district": row["district"],
-            "member_name": f"{row['left_member_name']}; {row['right_member_name']}",
-            "term_start_date": row["left_start_date"],
-            "term_end_date": row["right_end_date"],
-            "source_url": "",
-            "raw_path": "",
-            "detail": "Master roster has overlapping active intervals in one district.",
         }
     )
 
