@@ -460,15 +460,6 @@ def matter_vote_status(row: pd.Series) -> str:
 
 
 local_member_summary["local_member_final_action_vote_status"] = local_member_summary.apply(matter_vote_status, axis=1)
-local_member_vote_summary = (
-    local_member_summary.groupby(["disposition_group", "local_member_final_action_vote_status"], as_index=False)
-    .agg(
-        matter_count=("matter_id", "size"),
-        vote_bearing_matter_count=("parsed_vote_rows", lambda x: int((pd.to_numeric(x, errors="coerce") > 0).sum())),
-        local_member_vote_rows_found=("local_member_vote_rows_found", "sum"),
-    )
-    .sort_values(["disposition_group", "local_member_final_action_vote_status"])
-)
 
 qc = pd.DataFrame(
     [

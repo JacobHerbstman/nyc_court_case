@@ -650,76 +650,6 @@ recovery = recovery[
 ]
 
 
-def review_difficulty(row: pd.Series) -> str:
-    if row["title_address_candidate"] != "":
-        return "medium_address_or_range_review"
-    if row["title_bbls"] != "":
-        return "medium_historical_bbl_review"
-    if row["application_keys"] != "":
-        return "document_lookup_review"
-    return "low_information_manual_review"
-
-
-def review_prompt(row: pd.Series) -> str:
-    return "\n".join(
-        [
-            f"Matter: {row['matter_file']} ({row['query_year']})",
-            f"Disposition: {row['disposition_group']} / {row['final_history_action']}",
-            f"Application keys: {row['application_keys'] or 'none parsed'}",
-            f"Parsed title BBLs: {row['title_bbls'] or 'none parsed'}",
-            f"Parsed title address: {row['title_address_candidate'] or 'none parsed'}",
-            f"Full title: {row['title']}",
-            (
-                "Task: Identify the affected NYC location and likely Council district. "
-                "Prefer official CPC, ULURP, Legistar, HPD, LPC, or city records. "
-                "Do not guess if the title is ambiguous."
-            ),
-        ]
-    )
-
-
-review_queue = recovery[recovery["recovered_affected_district_missing"]].copy()
-review_queue["review_difficulty"] = review_queue.apply(review_difficulty, axis=1)
-review_queue["chatgpt_plain_text_prompt"] = review_queue.apply(review_prompt, axis=1)
-review_queue = review_queue[
-    [
-        "query_year",
-        "matter_id",
-        "matter_file",
-        "disposition_group",
-        "review_difficulty",
-        "application_keys",
-        "title_bbls",
-        "title_address_candidate",
-        "title",
-        "chatgpt_plain_text_prompt",
-    ]
-]
-
-batch_lines = [
-    "# Member-Deference Non-Approval Geography Review Batches",
-    "",
-    (
-        "Use these prompts in small batches. Any answer must be checked against "
-        "official records before becoming final geography."
-    ),
-]
-for batch_start in range(0, len(review_queue), 5):
-    batch = review_queue.iloc[batch_start : batch_start + 5]
-    batch_lines.extend(["", f"## Batch {batch_start // 5 + 1}", ""])
-    for _, row in batch.iterrows():
-        batch_lines.extend(["```text", row["chatgpt_plain_text_prompt"], "```", ""])
-
-summary = (
-    recovery.groupby(["original_affected_district_missing", "geography_recovery_method"], as_index=False)
-    .agg(
-        matter_count=("matter_id", "size"),
-        recovered_matter_count=("recovered_affected_district_missing", lambda x: int((~x).sum())),
-        multi_district_matter_count=("recovered_district_count", lambda x: int((x > 1).sum())),
-    )
-    .sort_values(["original_affected_district_missing", "geography_recovery_method"])
-)
-
 qc = pd.DataFrame(
     [
         {
@@ -759,11 +689,6 @@ qc = pd.DataFrame(
             "check_name": "unresolved_rows_counted",
             "passed": True,
             "detail": f"{int(recovery['recovered_affected_district_missing'].sum())} first-pass rows remain unresolved.",
-        },
-        {
-            "check_name": "review_queue_matches_unresolved",
-            "passed": len(review_queue) == int(recovery["recovered_affected_district_missing"].sum()),
-            "detail": f"Review queue contains {len(review_queue)} unresolved first-pass rows.",
         },
     ]
 )

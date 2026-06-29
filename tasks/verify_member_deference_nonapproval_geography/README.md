@@ -16,5 +16,7 @@ The task also writes a conservative queue for the downstream non-approval
 vote-detail fetch. That queue keeps original affected districts first, then
 uses deterministic geography recovery, then uses first-pass official
 verification. The second-pass ChatGPT-only leads are not incorporated. The
-current conservative queue promotes 194 of 220 first-pass non-approval matters
-and leaves 26 rows blank pending manual review.
+current conservative queue covers 491 core non-approval matters. It keeps 236
+original Legistar/ZAP geography assignments, adds 126 deterministic recovery
+assignments, adds 37 official-verification assignments, and leaves 92 rows blank
+pending manual review.

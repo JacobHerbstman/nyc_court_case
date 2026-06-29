@@ -17,7 +17,3 @@ The task keeps source flags explicit:
 Current MapPLUTO matches are locational backups, not direct historical district
 statements. They are carried with source flags and reviewed before entering the
 main member-deference decision panel.
-
-The unresolved rows are also exported as a plain-text review queue. Those prompts
-are for research assistance only; any recovered geography should be entered back
-with source URLs or official-document references before becoming final.

@@ -15,10 +15,10 @@ do, make them available for the production decision panel.
 The task is intentionally separate from the offline vote-panel builder because it
 downloads web pages.
 
-The input queue keeps all 220 first-pass non-approval matters. It carries usable
-affected-district geography for 194 of them and leaves 26 rows blank pending
-manual review. Local-member vote outputs therefore distinguish matters with no
-geography from matters with known geography but missing roster matches.
+The input queue keeps all 491 core first-pass non-approval matters. It carries
+usable affected-district geography for 399 of them and leaves 92 rows blank
+pending manual review. Local-member vote outputs therefore distinguish matters
+with no geography from matters with known geography but missing roster matches.
 
 The local-member outputs are descriptive. An `Affirmative` vote is an affirmative
 vote on the final Council action shown by Legistar, such as filing or
