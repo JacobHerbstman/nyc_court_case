@@ -12,9 +12,6 @@ all: ../output/member_deference_nonapproval_geography_conservative_queue.csv
 	../input/council_member_roster_master.csv | ../output
 	python3 $<
 
-../output/member_deference_nonapproval_geography_official_verification.csv: ../output/member_deference_nonapproval_geography_conservative_queue.csv
-	@test -s "$@"
-
 ../input/member_deference_final_action_vote_queue.csv: ../../build_member_deference_vote_panel/output/member_deference_final_action_vote_queue.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 

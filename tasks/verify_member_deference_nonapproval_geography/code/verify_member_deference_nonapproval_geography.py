@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import re
 import time
 from pathlib import Path
@@ -114,6 +115,42 @@ def clean_url(value: object) -> str:
 def source_id_from_url(value: object) -> str:
     query = parse_qs(urlparse(normalize_space(value)).query)
     return (query.get("ID") or [""])[0]
+
+
+def source_cache_path(source_url: str, source_role: str) -> Path:
+    source_id = source_id_from_url(source_url)
+    if source_id == "":
+        source_id = hashlib.sha1(source_url.encode("utf-8")).hexdigest()[:16]
+    return Path("../output/source_files/official_legistar_pages") / source_role / f"{source_id}.html"
+
+
+def request_with_retries(session: requests.Session, url: str) -> requests.Response:
+    last_error = None
+    for attempt in range(1, 4):
+        try:
+            response = session.get(url, timeout=60)
+            if response.status_code == 200:
+                return response
+            last_error = RuntimeError(f"HTTP {response.status_code}")
+        except requests.RequestException as exc:
+            last_error = exc
+        time.sleep(2 * attempt)
+    if last_error is not None:
+        raise last_error
+    raise RuntimeError("Legistar request failed without an exception.")
+
+
+def fetch_source_text(session: requests.Session, source_url: str, source_role: str) -> tuple[str, str, str]:
+    raw_path = source_cache_path(source_url, source_role)
+    if raw_path.exists() and raw_path.stat().st_size > 0:
+        html = raw_path.read_text(encoding="utf-8")
+        return "200", "", normalize_space(BeautifulSoup(html, "html.parser").get_text(" "))
+
+    response = request_with_retries(session, source_url)
+    raw_path.parent.mkdir(parents=True, exist_ok=True)
+    raw_path.write_text(response.text, encoding="utf-8")
+    time.sleep(0.05)
+    return str(response.status_code), "", normalize_space(BeautifulSoup(response.text, "html.parser").get_text(" "))
 
 
 def borough_code_from_text(text: object, keys: object) -> tuple[str, str]:
@@ -277,6 +314,13 @@ if mappluto_bbl_lookup["bbl"].duplicated().any():
     raise RuntimeError("Current MapPLUTO BBL lookup must be unique by BBL.")
 
 source_rows = []
+session = requests.Session()
+session.headers.update(
+    {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Safari/537.36",
+        "Referer": "https://legistar.council.nyc.gov/Legislation.aspx",
+    }
+)
 for row in queue.to_dict("records"):
     urls = [
         {
@@ -299,14 +343,14 @@ for row in queue.to_dict("records"):
         fetch_status = ""
         fetch_error = ""
         try:
-            response = requests.get(url_row["source_url"], timeout=30)
-            fetch_status = str(response.status_code)
-            if response.status_code == 200:
-                fetched_text = normalize_space(BeautifulSoup(response.text, "html.parser").get_text(" "))
+            fetch_status, fetch_error, fetched_text = fetch_source_text(
+                session,
+                url_row["source_url"],
+                url_row["source_role"],
+            )
         except Exception as exc:
             fetch_status = "error"
             fetch_error = str(exc)
-        time.sleep(0.05)
 
         row_application_keys = set(split_semicolon(row["application_keys"]))
         source_application_keys = set(application_keys(fetched_text))
@@ -787,7 +831,6 @@ qc = pd.DataFrame(
     ]
 )
 
-write_csv("../output/member_deference_nonapproval_geography_official_verification.csv", verification)
 write_csv("../output/member_deference_nonapproval_geography_conservative_queue.csv", conservative_queue)
 
 if not qc["passed"].all():
