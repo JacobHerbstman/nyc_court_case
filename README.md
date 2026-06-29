@@ -1,63 +1,51 @@
-# NYC Court Case Project
+# NYC Court Case
 
-This repository is the reproducible data-collection scaffold for the NYC member deference project.
+This repository builds the data and draft paper for a project on New York City housing production, homeownership exposure, and Council land-use decision making.
 
-## Principles
+The workflow is task-based. Each production task lives in `tasks/<task_name>/` with `code/`, `input/`, and `output/` folders. Run a task from its `code/` folder with `make`. Run the paper from `paper/` with `make`.
 
-- Lots first: canonical raw outputs stay at the lot, job, certificate, tract, or archival-record level.
-- Archival ready: the workflow includes FOIL, Municipal Archives, and Municipal Library lanes from day one.
-- Reproducible by task: each source family has its own task with a minimal `Makefile`, explicit inputs, and linear scripts.
-- Heavy source access should happen once: every active source family should split into `fetch`, `load_raw`, `stage`, and `summarize` tasks when those phases exist.
-- Versioned public sources first: current `PLUTO` and `MapPLUTO` come from DCP's versioned release system, not the live Socrata table export.
-- Manual drops are allowed when necessary, but every such file must be documented in tracked manifests under `tasks/source_registry/code/`.
-- NHGIS is scripted through `ipumsr` and reads `IPUMS_API_KEY` from `~/.Renviron`; do not create a repo-local secret file.
-- Human QA, diagnostics, and integrity deep dives live under `tasks/audits/`, while the active `tasks/` tree is limited to source intake, cleaning, canonical builds, and summary outputs.
-- Retired integrity and backup tasks live under `tasks/archive/`, which is ignored so the active `tasks/` surface stays readable.
+`tasks/audits/` contains diagnostics, exploratory work, review queues, and validation exercises. The production task graph does not depend on audit tasks.
 
-## Start Here
+## Data Collection and Extraction
 
-1. Run `make` in `tasks/setup_environment/code/`.
-2. Run `make` in `tasks/source_registry/code/`.
-3. Review `tasks/source_registry/code/source_catalog.csv`, `manual_manifest.csv`, and `archive_requests.csv`.
-4. Make sure `IPUMS_API_KEY` is available in `~/.Renviron` for the NHGIS task.
-5. Place any required manual files into `data_raw/<source_id>/<vintage_or_pull_date>/`.
-6. Run source-family tasks from their `code/` folders.
+- `setup_environment`: records the R package environment.
+- `source_registry`: maintains the source catalog used by fetching tasks.
+- `fetch_mappluto_archive`: downloads MapPLUTO release files.
+- `build_dcp_boundaries`: standardizes DCP boundary files.
+- `build_dcp_cd_profiles_1990_2000`: standardizes DCP community district profile files.
+- `build_dcp_housing_database`: standardizes DCP Housing Database records.
+- `build_dob_permit_issuance_harmonized`: builds harmonized DOB permit issuance records.
+- `build_nhgis_extracts`: standardizes 1980 and 1990 NHGIS tract extracts.
+- `build_zap_datasets`: standardizes ZAP project and project-BBL files.
+- `fetch_council_land_use_records`: fetches and parses NYC Council Legistar land-use matter, action, history, and member-vote records.
+- `fetch_council_member_roster_sources`: fetches source pages for Council member rosters.
 
-## Active Task Order
+## Cleaning and Intermediate Data
 
-- `tasks/source_registry`
-- `tasks/fetch_mappluto_archive`
-- `tasks/load_mappluto_raw`
-- `tasks/stage_mappluto_lots`
-- `tasks/summarize_mappluto_lots`
-- `tasks/fetch_dob_permit_issuance_current`
-- `tasks/load_dob_permit_issuance_current_raw`
-- `tasks/build_dob_permit_issuance_harmonized`
-- `tasks/summarize_dob_permit_issuance`
-- `tasks/fetch_dob_open_data`
-- `tasks/load_dob_open_data_raw`
-- `tasks/stage_dob_open_data`
-- `tasks/summarize_dob_open_data`
-- `tasks/fetch_dcp_boundaries`
-- `tasks/load_dcp_boundaries_raw`
-- `tasks/stage_dcp_boundaries`
-- `tasks/summarize_dcp_boundaries`
-- `tasks/fetch_census_bps`
-- `tasks/load_census_bps_raw`
-- `tasks/stage_census_bps`
-- `tasks/summarize_census_bps`
-- `tasks/fetch_nhgis_extracts`
-- `tasks/load_nhgis_raw`
-- `tasks/stage_nhgis`
-- `tasks/summarize_nhgis`
-- `tasks/fetch_census_acs_housing`
-- `tasks/load_census_acs_housing_raw`
-- `tasks/stage_census_acs_housing`
-- `tasks/fetch_dcp_housing_database`
-- `tasks/load_dcp_housing_database_raw`
-- `tasks/stage_dcp_housing_database`
-- `tasks/load_furman_coredata_raw`
-- `tasks/stage_furman_coredata`
-- `tasks/load_archival_records_raw`
-- `tasks/stage_archival_records`
-- `tasks/build_lot_crosswalks`
+- `build_cd_homeownership_1990_measure` and `build_ccd2010_homeownership_1990_measure`: build 1990 homeownership exposure measures.
+- `build_cd_baseline_1990_controls`: builds baseline community-district controls.
+- `build_mappluto_current_lookup`: builds the current parcel lookup used for BBL and address joins.
+- `build_mappluto_construction_proxy` and `build_ccd2010_mappluto_construction_proxy`: build MapPLUTO-based construction proxies.
+- `build_cd_homeownership_long_units_series` and `build_ccd2010_homeownership_long_units_series`: build annual housing production series.
+- `build_zap_housing_cohort_base`, `build_zap_housing_pipeline_from_raw`, and `build_zap_housing_hdb_link`: build ZAP housing project cohorts and ZAP-to-housing links.
+- `cd_homeownership_dcp_supply_panel` and `cd_homeownership_permit_nb_panel`: build auxiliary community-district housing supply panels.
+- `build_council_member_roster`: builds the Council member roster used to identify local members.
+- `create_council_land_use_ai_geography_repairs`: stores accepted geography repairs for Council land-use matters whose affected districts were not clear from source tables. These rows were reviewed with ChatGPT using matter text, application identifiers, source links, and geography clues, then promoted only through a committed decision ledger.
+- `create_member_deference_nonapproval_geography_review`: stores the review queue and structured ChatGPT responses for non-approval land-use matters with unclear affected districts. Downstream tasks use these responses as review leads, not as final evidence by themselves.
+- `build_member_deference_vote_panel`, `recover_member_deference_nonapproval_geography`, `verify_member_deference_nonapproval_geography`, `fetch_member_deference_nonapproval_action_votes`, and `build_council_land_use_decision_panel`: build the Council land-use decision and local-member vote series.
+
+## Paper and Summary Outputs
+
+- `build_ccd2010_homeownership_1990_measure`: creates the 2010 Council district homeownership map used in the paper.
+- `summarize_ccd2010_homeownership_long_units_series`: creates raw-unit descriptive housing production plots.
+- `estimate_ccd2010_homeownership_long_units_event_study`: creates raw-unit event-study and long-difference outputs.
+- `summarize_council_land_use_decision_trends`: creates the member-deference land-use decision trend plot.
+- `summarize_citywide_ulurp_application_trends`: creates annual citywide ULURP application counts.
+- `task_graph`: creates the production task graph and task inventories.
+
+The current paper entry point is:
+
+```sh
+cd paper
+make
+```
