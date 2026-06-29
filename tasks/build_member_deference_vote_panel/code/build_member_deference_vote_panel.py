@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import re
-from pathlib import Path
 
 import pandas as pd
 
@@ -135,13 +134,6 @@ def read_year_stack(file_suffix: str) -> pd.DataFrame:
     return pd.concat(rows, ignore_index=True)
 
 
-def write_csv(path: str, df: pd.DataFrame) -> None:
-    new_path = Path(path)
-    temp_path = new_path.with_suffix(new_path.suffix + ".tmp")
-    df.to_csv(temp_path, index=False)
-    temp_path.replace(new_path)
-
-
 def repair_lookup_key(query_year: object, date_value: object, matter_file: object) -> tuple[str, str, str] | None:
     query_year_num = pd.to_numeric(pd.Series([query_year]), errors="coerce").iloc[0]
     date_parsed = pd.to_datetime(date_value, errors="coerce")
@@ -205,7 +197,7 @@ matter_index_join = matter_index[
         "land_use_recall_reason": "matter_index_land_use_recall_reason",
     }
 )
-action_details = action_details.merge(matter_index_join, on="matter_id", how="left")
+action_details = action_details.merge(matter_index_join, on="matter_id", how="left", validate="one_to_one")
 action_details["vote_date"] = pd.to_datetime(action_details["history_date"], errors="coerce")
 action_details["text_for_parse"] = (
     action_details["matter_index_title"].fillna("")
@@ -286,7 +278,7 @@ if matter_app_key.empty:
         ]
     )
 else:
-    matter_zap_long = matter_app_key.merge(zap_app_key_base, on="application_key", how="left")
+    matter_zap_long = matter_app_key.merge(zap_app_key_base, on="application_key", how="left", validate="many_to_one")
     matter_zap = (
         matter_zap_long[matter_zap_long["zap_project_ids"].notna()]
         .sort_values(["matter_id", "application_key"])
@@ -397,7 +389,12 @@ if universe_app_key.empty:
         ]
     )
 else:
-    universe_zap_long = universe_app_key.merge(zap_app_key_base, on="application_key", how="left")
+    universe_zap_long = universe_app_key.merge(
+        zap_app_key_base,
+        on="application_key",
+        how="left",
+        validate="many_to_one",
+    )
     universe_matter_zap = (
         universe_zap_long[universe_zap_long["zap_project_ids"].notna()]
         .sort_values(["matter_id", "application_key"])
@@ -413,9 +410,9 @@ else:
     )
 
 matter_universe_base = (
-    matter_universe_base.merge(final_history, on="matter_id", how="left")
-    .merge(city_council_summary, on="matter_id", how="left")
-    .merge(universe_matter_zap, on="matter_id", how="left")
+    matter_universe_base.merge(final_history, on="matter_id", how="left", validate="one_to_one")
+    .merge(city_council_summary, on="matter_id", how="left", validate="one_to_one")
+    .merge(universe_matter_zap, on="matter_id", how="left", validate="one_to_one")
 )
 for column in [
     "council_history_action_count",
@@ -542,7 +539,7 @@ for row in matter_universe_base.sort_values(["query_year_int", "matter_file"]).t
     )
 matter_universe = pd.DataFrame(matter_universe_rows)
 
-panel_base = action_details.merge(matter_zap, on="matter_id", how="left")
+panel_base = action_details.merge(matter_zap, on="matter_id", how="left", validate="one_to_one")
 panel_rows = []
 panel_ai_geo_repair_keys_used = set()
 for row in panel_base.sort_values(["query_year_int", "history_date", "matter_file"]).to_dict("records"):
@@ -832,6 +829,6 @@ if not qc["passed"].all():
     failed_checks = "; ".join(qc.loc[~qc["passed"], "check_name"])
     raise RuntimeError(f"Member-deference vote-panel checks failed: {failed_checks}")
 
-write_csv("../output/member_deference_vote_panel.csv", panel)
-write_csv("../output/member_deference_matter_universe.csv", matter_universe)
-write_csv("../output/member_deference_final_action_vote_queue.csv", final_action_vote_queue)
+panel.to_csv("../output/member_deference_vote_panel.csv", index=False)
+matter_universe.to_csv("../output/member_deference_matter_universe.csv", index=False)
+final_action_vote_queue.to_csv("../output/member_deference_final_action_vote_queue.csv", index=False)
