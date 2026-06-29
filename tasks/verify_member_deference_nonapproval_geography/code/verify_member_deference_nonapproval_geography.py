@@ -265,6 +265,8 @@ if recovery["matter_id"].duplicated().any():
     raise RuntimeError("Geography recovery output must be unique by matter_id.")
 if chatgpt["matter_file"].duplicated().any():
     raise RuntimeError("ChatGPT review responses must be unique by matter_file.")
+if not chatgpt["matter_file"].isin(set(queue["matter_file"])).all():
+    raise RuntimeError("Every ChatGPT review response must link to the current review queue.")
 if matter_universe["matter_id"].duplicated().any():
     raise RuntimeError("Matter universe must be unique by matter_id.")
 
