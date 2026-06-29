@@ -522,10 +522,10 @@ qc = pd.DataFrame(
     ]
 )
 
-action_details.to_csv("../output/member_deference_nonapproval_action_details.csv", index=False)
-local_member_votes.to_csv("../output/member_deference_nonapproval_local_member_votes.csv", index=False)
-local_member_summary.to_csv("../output/member_deference_nonapproval_local_member_vote_status.csv", index=False)
-
 if not qc["passed"].all():
     failed_checks = ", ".join(qc.loc[~qc["passed"], "check_name"].astype(str))
     raise RuntimeError(f"Non-approval action-vote fetch failed: {failed_checks}.")
+
+action_details.to_csv("../output/member_deference_nonapproval_action_details.csv", index=False)
+local_member_votes.to_csv("../output/member_deference_nonapproval_local_member_votes.csv", index=False)
+local_member_summary.to_csv("../output/member_deference_nonapproval_local_member_vote_status.csv", index=False)
