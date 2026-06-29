@@ -125,29 +125,17 @@ for (i in seq_len(nrow(nhgis_raw_files))) {
   extract_df$structure_1unit <- sum_fields(extract_df, c("structure_1unit_detached", "structure_1unit_attached"))
   extract_df$structure_2_4_unit <- sum_fields(extract_df, c("structure_2_unit", "structure_3_4_unit"))
   extract_df$vacancy_status_gap <- extract_df$total_housing_units - extract_df$occupied_units - extract_df$vacant_units_status_sum
-  if (row$year == 1980) {
-    extract_df$vacant_units <- extract_df$total_housing_units - extract_df$occupied_units
-  } else {
-    extract_df$vacant_units <- extract_df$vacant_units_status_sum
-  }
-  extract_df$vacant_units_source <- ifelse(
-    row$year == 1980 & !is.na(extract_df$vacancy_status_gap) & extract_df$vacancy_status_gap != 0,
-    "reconciled_total_minus_occupied",
-    "nhgis_vacancy_status_table"
-  )
+  extract_df$vacant_units <- extract_df$vacant_units_status_sum
+  extract_df$vacant_units_source <- "nhgis_vacancy_status_table"
   extract_df$homeowner_share <- extract_df$owner_occupied_units / extract_df$occupied_units
   extract_df$reconciled_housing_balance_gap <- extract_df$total_housing_units - extract_df$occupied_units - extract_df$vacant_units
   extract_df$zero_population_flag <- !is.na(extract_df$total_population) & extract_df$total_population == 0
   extract_df$zero_housing_flag <- !is.na(extract_df$total_housing_units) & extract_df$total_housing_units == 0
   extract_df$zero_income_flag <- !is.na(extract_df$median_household_income) & extract_df$median_household_income == 0
   extract_df$housing_balance_classification <- ifelse(
-    row$year != 1980 | extract_df$vacancy_status_gap == 0,
+    extract_df$vacancy_status_gap == 0,
     "balanced",
-    ifelse(
-      extract_df$zero_population_flag & extract_df$zero_housing_flag,
-      "nonstandard_tract",
-      ifelse(extract_df$vacancy_status_gap > 0, "table_omission", "concept_mismatch")
-    )
+    "concept_mismatch"
   )
   extract_df$income_classification <- ifelse(
     is.na(extract_df$median_household_income),

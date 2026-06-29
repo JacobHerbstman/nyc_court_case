@@ -1,11 +1,4 @@
 year,gisjoin,override_income_classification,override_reason
-1980,G36000500410,valid_zero_universe,Manual review on 2026-04-14 found a highway corridor / nonresidential tract with effectively no resident household-income universe.
-1980,G36006100001,valid_zero_universe,Manual review on 2026-04-14 found a nonresidential island / institutional tract with effectively no resident household-income universe.
-1980,G3600610019701,valid_zero_universe,Manual review on 2026-04-14 found a park or institutional tract with effectively no resident household-income universe.
-1980,G36008100244,valid_zero_universe,Manual review on 2026-04-14 found a nonresidential tract with effectively no resident household-income universe.
-1980,G36008100299,valid_zero_universe,Manual review on 2026-04-14 found a nonresidential tract with effectively no resident household-income universe.
-1980,G36008100426,valid_zero_universe,Manual review on 2026-04-14 found a cemetery / park / nonresidential tract with effectively no resident household-income universe.
-1980,G36008100918,valid_zero_universe,Manual review on 2026-04-14 found a beach / park / nonresidential tract with effectively no resident household-income universe.
 1990,G36000500001,valid_income_suppressed,Manual review on 2026-04-14 accepted this as a special tract with very few households and zero median income due to household-income suppression; retain group-quarters fields as diagnostics.
 1990,G36000500102,valid_income_suppressed,Manual review on 2026-04-14 accepted this as a tract with very few households and zero median income due to household-income suppression; retain group-quarters fields as diagnostics.
 1990,G36000500163,valid_income_suppressed,Manual review on 2026-04-14 accepted this as a tract with very few households and zero median income due to household-income suppression; retain group-quarters fields as diagnostics.

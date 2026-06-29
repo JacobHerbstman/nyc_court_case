@@ -69,9 +69,9 @@ read_zip_header_codes <- function(zip_path) {
 }
 
 nhgis_specs <- tibble(
-  source_id = c("nhgis_1980_tract_extract", "nhgis_1990_tract_extract"),
-  year = c(1980L, 1990L),
-  spec_json = c("nhgis_1980_extract.json", "nhgis_1990_extract.json")
+  source_id = "nhgis_1990_tract_extract",
+  year = 1990L,
+  spec_json = "nhgis_1990_extract.json"
 )
 
 nhgis_rows <- source_catalog %>%
@@ -80,7 +80,7 @@ nhgis_rows <- source_catalog %>%
   arrange(year)
 
 if (nrow(nhgis_rows) != nrow(nhgis_specs) || !setequal(nhgis_rows$source_id, nhgis_specs$source_id)) {
-  stop("Source catalog must contain the scripted NHGIS 1980 and 1990 tract extract rows.")
+  stop("Source catalog must contain the scripted NHGIS 1990 tract extract row.")
 }
 
 audit_rows <- list()
