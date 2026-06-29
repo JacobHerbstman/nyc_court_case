@@ -173,7 +173,9 @@ def parse_action_detail(html: str) -> tuple[dict[str, object], list[dict[str, ob
     return summary, votes
 
 
-queue = pd.read_csv("../input/member_deference_final_action_vote_queue.csv", dtype=str, keep_default_na=False)
+queue = pd.read_csv(
+    "../input/member_deference_nonapproval_geography_conservative_queue.csv", dtype=str, keep_default_na=False
+)
 target_queue = queue[queue["fetch_vote_detail_first_pass"].str.lower().eq("true")].copy()
 target_queue = target_queue.sort_values(["query_year", "matter_file", "matter_id"]).reset_index(drop=True)
 

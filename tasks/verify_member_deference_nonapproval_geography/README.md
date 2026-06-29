@@ -11,7 +11,7 @@ matches remain backup geography and are flagged separately from direct official
 district statements.
 
 The task also writes a conservative queue for the downstream non-approval
-vote-detail audit. That queue keeps original affected districts first, then
+vote-detail fetch. That queue keeps original affected districts first, then
 uses deterministic geography recovery, then uses first-pass official
 verification. The second-pass ChatGPT-only leads are not incorporated. The
 current conservative queue promotes 194 of 220 first-pass non-approval matters
