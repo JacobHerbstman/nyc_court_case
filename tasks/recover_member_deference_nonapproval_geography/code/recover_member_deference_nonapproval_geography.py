@@ -649,52 +649,13 @@ recovery = recovery[
     ]
 ]
 
-
-qc = pd.DataFrame(
-    [
-        {
-            "check_name": "first_pass_nonapproval_rows",
-            "passed": len(recovery) == len(target_queue),
-            "detail": f"Recovery output keeps all {len(target_queue)} first-pass non-approval matters.",
-        },
-        {
-            "check_name": "recovery_unique_by_matter_id",
-            "passed": not recovery["matter_id"].duplicated().any(),
-            "detail": "Recovery output is unique by matter_id.",
-        },
-        {
-            "check_name": "application_crosswalk_unique_by_application_key",
-            "passed": not zap_application_crosswalk["application_key"].duplicated().any(),
-            "detail": f"Built {len(zap_application_crosswalk)} unique ZAP application-key rows.",
-        },
-        {
-            "check_name": "mappluto_bbl_lookup_unique",
-            "passed": not mappluto_bbl_council["bbl"].duplicated().any(),
-            "detail": f"Built {len(mappluto_bbl_council)} unique current MapPLUTO BBL rows.",
-        },
-        {
-            "check_name": "original_blank_rows_counted",
-            "passed": int(recovery["original_affected_district_missing"].sum()) <= len(recovery),
-            "detail": f"{int(recovery['original_affected_district_missing'].sum())} first-pass rows lacked original affected districts.",
-        },
-        {
-            "check_name": "recovered_blank_rows_counted",
-            "passed": True,
-            "detail": (
-                f"{int((recovery['original_affected_district_missing'] & ~recovery['recovered_affected_district_missing']).sum())} "
-                "originally blank first-pass rows received a backup geography assignment."
-            ),
-        },
-        {
-            "check_name": "unresolved_rows_counted",
-            "passed": True,
-            "detail": f"{int(recovery['recovered_affected_district_missing'].sum())} first-pass rows remain unresolved.",
-        },
-    ]
-)
-
-if not qc["passed"].all():
-    failed_checks = ", ".join(qc.loc[~qc["passed"], "check_name"].astype(str))
-    raise RuntimeError(f"Non-approval geography recovery failed: {failed_checks}.")
+if len(recovery) != len(target_queue):
+    raise RuntimeError("Recovery output must keep every first-pass non-approval matter.")
+if recovery["matter_id"].duplicated().any():
+    raise RuntimeError("Recovery output must be unique by matter_id.")
+if zap_application_crosswalk["application_key"].duplicated().any():
+    raise RuntimeError("ZAP application crosswalk must be unique by application_key.")
+if mappluto_bbl_council["bbl"].duplicated().any():
+    raise RuntimeError("Current MapPLUTO BBL lookup must be unique by bbl.")
 
 write_csv("../output/member_deference_nonapproval_geography_recovery.csv", recovery)

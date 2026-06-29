@@ -757,82 +757,24 @@ verification = verification[
     ]
 ]
 
-qc = pd.DataFrame(
-    [
-        {
-            "check_name": "review_queue_row_count",
-            "passed": len(queue) == int(recovery["recovered_affected_district_missing_bool"].sum()),
-            "detail": f"Verification input contains {len(queue)} review-queue rows.",
-        },
-        {
-            "check_name": "current_queue_chatgpt_response_rows_link",
-            "passed": queue.loc[queue["chatgpt_response_found"], "matter_file"].isin(set(chatgpt["matter_file"])).all(),
-            "detail": (
-                f"{int(queue['chatgpt_response_found'].sum())} of {len(queue)} review-queue rows "
-                f"have first-pass ChatGPT responses; {len(set(chatgpt['matter_file']) - set(queue['matter_file']))} "
-                "superseded response rows are no longer in the current queue."
-            ),
-        },
-        {
-            "check_name": "verification_unique_by_matter_id",
-            "passed": not verification["matter_id"].duplicated().any(),
-            "detail": "Verification ledger is unique by matter_id.",
-        },
-        {
-            "check_name": "exact_legistar_source_per_row",
-            "passed": int(sources["source_role"].eq("exact_matter_legistar").sum()) == len(queue),
-            "detail": f"Fetched {int(sources['source_role'].eq('exact_matter_legistar').sum())} exact Legistar matter pages.",
-        },
-        {
-            "check_name": "exact_legistar_fetch_success",
-            "passed": sources.loc[sources["source_role"].eq("exact_matter_legistar"), "fetch_status"].eq("200").all(),
-            "detail": "Every exact Legistar matter page returned HTTP 200.",
-        },
-        {
-            "check_name": "verified_rows_have_districts",
-            "passed": verification.loc[
-                verification["verification_status"].str.startswith("verified_"), "verified_districts"
-            ]
-            .ne("")
-            .all(),
-            "detail": "Every verified row has at least one verified district.",
-        },
-        {
-            "check_name": "direct_rows_have_relation",
-            "passed": verification.loc[
-                verification["verification_status"].eq("verified_direct_official_district"),
-                "verification_source_relation",
-            ]
-            .isin(["same_matter_id", "application_key_overlap", "lu_number_overlap"])
-            .all(),
-            "detail": "Direct official district rows require an accepted relation to the unresolved matter.",
-        },
-        {
-            "check_name": "conservative_queue_unique_by_matter_id",
-            "passed": not conservative_queue["matter_id"].duplicated().any(),
-            "detail": "Conservative incorporated queue is unique by matter_id.",
-        },
-        {
-            "check_name": "conservative_usable_geography_count",
-            "passed": int((~conservative_queue["affected_districts_conservative_missing"]).sum()) <= len(conservative_queue),
-            "detail": (
-                f"{int((~conservative_queue['affected_districts_conservative_missing']).sum())} "
-                f"of {len(conservative_queue)} non-approval matters have conservative incorporated geography."
-            ),
-        },
-        {
-            "check_name": "manual_review_rows_excluded",
-            "passed": int(conservative_queue["affected_districts_conservative_missing"].sum()) <= len(conservative_queue),
-            "detail": (
-                f"{int(conservative_queue['affected_districts_conservative_missing'].sum())} "
-                "matters remain excluded pending manual geography review."
-            ),
-        },
-    ]
-)
-
-if not qc["passed"].all():
-    failed_checks = ", ".join(qc.loc[~qc["passed"], "check_name"].astype(str))
-    raise RuntimeError(f"Official geography verification failed: {failed_checks}.")
+if len(queue) != int(recovery["recovered_affected_district_missing_bool"].sum()):
+    raise RuntimeError("Verification input must cover every unresolved recovery row.")
+if not queue.loc[queue["chatgpt_response_found"], "matter_file"].isin(set(chatgpt["matter_file"])).all():
+    raise RuntimeError("Every marked ChatGPT review response must link to the current review queue.")
+if verification["matter_id"].duplicated().any():
+    raise RuntimeError("Verification ledger must be unique by matter_id.")
+if int(sources["source_role"].eq("exact_matter_legistar").sum()) != len(queue):
+    raise RuntimeError("Every review-queue row must have an exact Legistar matter source.")
+if not sources.loc[sources["source_role"].eq("exact_matter_legistar"), "fetch_status"].eq("200").all():
+    raise RuntimeError("Every exact Legistar matter page must return HTTP 200.")
+if not verification.loc[verification["verification_status"].str.startswith("verified_"), "verified_districts"].ne("").all():
+    raise RuntimeError("Every verified row must have at least one verified district.")
+if not verification.loc[
+    verification["verification_status"].eq("verified_direct_official_district"),
+    "verification_source_relation",
+].isin(["same_matter_id", "application_key_overlap", "lu_number_overlap"]).all():
+    raise RuntimeError("Direct official district rows require an accepted relation to the unresolved matter.")
+if conservative_queue["matter_id"].duplicated().any():
+    raise RuntimeError("Conservative geography queue must be unique by matter_id.")
 
 write_csv("../output/member_deference_nonapproval_geography_conservative_queue.csv", conservative_queue)
