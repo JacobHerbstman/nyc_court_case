@@ -11,7 +11,7 @@ The workflow is task-based. Each production task lives in `tasks/<task_name>/` w
 - `setup_environment`: records the R package environment.
 - `source_registry`: maintains the source catalog used by fetching tasks.
 - `fetch_mappluto_archive`: downloads MapPLUTO release files.
-- `build_nhgis_extracts`: standardizes 1980 and 1990 NHGIS tract extracts.
+- `build_nhgis_extracts`: standardizes NHGIS tract inputs for the 1990 homeownership measure.
 - `build_zap_datasets`: standardizes ZAP project and project-BBL files.
 - `fetch_council_land_use_records`: fetches and parses NYC Council Legistar land-use matter, action, history, and member-vote records.
 - `fetch_council_member_roster_sources`: fetches source pages for Council member rosters.

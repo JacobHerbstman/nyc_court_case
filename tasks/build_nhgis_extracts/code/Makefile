@@ -1,8 +1,7 @@
 SHELL := bash
 include ../../shell_functions.make
 
-all: ../output/nhgis_files.csv \
-	../output/nhgis_1980_tract_extract.parquet \
+all: ../output/nhgis_raw_files.csv \
 	../output/nhgis_1990_tract_extract.parquet
 
 ../output/nhgis_files.csv: build_nhgis_extracts.R ../output/nhgis_raw_files.csv nhgis_table_map.csv ../output/nhgis_1980_tract_extract_raw.parquet ../output/nhgis_1990_tract_extract_raw.parquet nhgis_income_overrides.csv | ../output

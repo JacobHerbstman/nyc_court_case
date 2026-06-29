@@ -1,5 +1,6 @@
 # Build NHGIS Extracts
 
-Reads NHGIS 1980 and 1990 extract files and standardizes tract-level covariates for baseline controls.
+Reads NHGIS tract extract files and standardizes tract-level covariates for the
+1990 homeownership measure.
 
-Creates `nhgis_files.csv`, `nhgis_1980_tract_extract.parquet`, and `nhgis_1990_tract_extract.parquet`.
+Creates `nhgis_raw_files.csv` and `nhgis_1990_tract_extract.parquet`.
