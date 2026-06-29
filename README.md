@@ -12,9 +12,6 @@ The workflow is task-based. Each production task lives in `tasks/<task_name>/` w
 - `source_registry`: maintains the source catalog used by fetching tasks.
 - `fetch_mappluto_archive`: downloads MapPLUTO release files.
 - `build_dcp_boundaries`: standardizes DCP boundary files.
-- `build_dcp_cd_profiles_1990_2000`: standardizes DCP community district profile files.
-- `build_dcp_housing_database`: standardizes DCP Housing Database records.
-- `build_dob_permit_issuance_harmonized`: builds harmonized DOB permit issuance records.
 - `build_nhgis_extracts`: standardizes 1980 and 1990 NHGIS tract extracts.
 - `build_zap_datasets`: standardizes ZAP project and project-BBL files.
 - `fetch_council_land_use_records`: fetches and parses NYC Council Legistar land-use matter, action, history, and member-vote records.
@@ -22,12 +19,10 @@ The workflow is task-based. Each production task lives in `tasks/<task_name>/` w
 
 ## Cleaning and Intermediate Data
 
-- `build_cd_homeownership_1990_measure` and `build_ccd2010_homeownership_1990_measure`: build 1990 homeownership exposure measures.
-- `build_cd_baseline_1990_controls`: builds baseline community-district controls.
+- `build_ccd2010_homeownership_1990_measure`: builds 1990 homeownership exposure for 2010 Council districts.
 - `build_mappluto_current_lookup`: builds the current parcel lookup used for BBL and address joins.
-- `build_mappluto_construction_proxy` and `build_ccd2010_mappluto_construction_proxy`: build MapPLUTO-based construction proxies.
-- `build_cd_homeownership_long_units_series` and `build_ccd2010_homeownership_long_units_series`: build annual housing production series.
-- `cd_homeownership_dcp_supply_panel` and `cd_homeownership_permit_nb_panel`: build auxiliary community-district housing supply panels.
+- `build_ccd2010_mappluto_construction_proxy`: builds MapPLUTO-based construction proxies.
+- `build_ccd2010_homeownership_long_units_series`: builds annual housing production series.
 - `build_council_member_roster`: builds the Council member roster used to identify local members.
 - `create_council_land_use_ai_geography_repairs`: stores accepted geography repairs for Council land-use matters whose affected districts were not clear from source tables. These rows were reviewed with ChatGPT using matter text, application identifiers, source links, and geography clues, then promoted only through a committed decision ledger.
 - `create_member_deference_nonapproval_geography_review`: stores the review queue and structured ChatGPT responses for non-approval land-use matters with unclear affected districts. Downstream tasks use these responses as review leads, not as final evidence by themselves.

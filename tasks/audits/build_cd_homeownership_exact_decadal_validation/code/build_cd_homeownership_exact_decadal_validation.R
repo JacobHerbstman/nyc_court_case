@@ -33,7 +33,7 @@ if (anyDuplicated(treatment_df$borocd)) {
 dcp_profile_file <- read_csv("../input/dcp_cd_profiles_1990_2000_files.csv", show_col_types = FALSE, na = c("", "NA")) |>
   mutate(pull_date = as.character(pull_date)) |>
   filter(!is.na(parquet_path)) |>
-  mutate(parquet_path = paste0("../../../build_dcp_cd_profiles_1990_2000/output/", basename(parquet_path))) |>
+  mutate(parquet_path = paste0("../../build_dcp_cd_profiles_1990_2000/output/", basename(parquet_path))) |>
   filter(file.exists(parquet_path)) |>
   arrange(desc(pull_date), parquet_path) |>
   slice_head(n = 1)

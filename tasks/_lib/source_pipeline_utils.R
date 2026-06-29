@@ -250,7 +250,7 @@ download_with_status <- function(url, dest_path) {
 }
 
 collect_raw_files <- function(source_id) {
-  raw_dir <- file.path("..", "..", "..", "data_raw", source_id)
+  raw_dir <- raw_source_dir(source_id)
   if (!dir.exists(raw_dir)) {
     return(character())
   }
@@ -259,7 +259,16 @@ collect_raw_files <- function(source_id) {
 }
 
 raw_source_dir <- function(source_id) {
-  file.path("..", "..", "..", "data_raw", source_id)
+  candidate_bases <- c(
+    file.path("..", "..", "..", "data_raw"),
+    file.path("..", "..", "..", "..", "data_raw")
+  )
+  existing_bases <- candidate_bases[dir.exists(file.path(candidate_bases, source_id))]
+  if (length(existing_bases) == 0) {
+    existing_bases <- candidate_bases[dir.exists(candidate_bases)]
+  }
+  raw_base <- if (length(existing_bases) > 0) existing_bases[1] else candidate_bases[1]
+  file.path(raw_base, source_id)
 }
 
 existing_raw_pull_dates <- function(source_id, required_files = character()) {

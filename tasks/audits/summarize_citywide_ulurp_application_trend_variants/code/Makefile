@@ -26,7 +26,7 @@ all: ../output/citywide_ulurp_application_trends_qc.csv \
 ../input/zap_project_data.parquet: ../../../build_zap_datasets/output/zap_project_data.parquet | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/cd_baseline_1990_controls.csv: ../../../build_cd_baseline_1990_controls/output/cd_baseline_1990_controls.csv | ../input
+../input/cd_baseline_1990_controls.csv: ../../build_cd_baseline_1990_controls/output/cd_baseline_1990_controls.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/citywide_ulurp_residential_manual_validation_labels.csv: ../../../summarize_citywide_ulurp_application_trends/input/citywide_ulurp_residential_manual_validation_labels.csv | ../input

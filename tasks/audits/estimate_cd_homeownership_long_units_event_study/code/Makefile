@@ -37,16 +37,16 @@ all: ../output/cd_homeownership_long_units_event_coefficients.csv \
 ../output/cd_homeownership_long_units_event_coefficients_pluto_full_5yr_bins.pdf ../output/cd_homeownership_long_units_event_pluto_full_5yr_qc.csv: ../output/cd_homeownership_long_units_event_coefficients_pluto_full_5yr_bins.csv
 	@test -s "$@"
 
-../input/cd_homeownership_long_units_series.csv: ../../../build_cd_homeownership_long_units_series/output/cd_homeownership_long_units_series.csv | ../input
+../input/cd_homeownership_long_units_series.csv: ../../build_cd_homeownership_long_units_series/output/cd_homeownership_long_units_series.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/cd_baseline_1990_controls.csv: ../../../build_cd_baseline_1990_controls/output/cd_baseline_1990_controls.csv | ../input
+../input/cd_baseline_1990_controls.csv: ../../build_cd_baseline_1990_controls/output/cd_baseline_1990_controls.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/cd_redevelopment_potential_baseline.csv: ../../redevelopment_potential_first_pass/output/cd_redevelopment_potential_baseline.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/mappluto_construction_proxy_cd_year.csv: ../../../build_mappluto_construction_proxy/output/mappluto_construction_proxy_cd_year.csv | ../input
+../input/mappluto_construction_proxy_cd_year.csv: ../../build_mappluto_construction_proxy/output/mappluto_construction_proxy_cd_year.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 link-inputs: ../input/cd_homeownership_long_units_series.csv ../input/cd_baseline_1990_controls.csv ../input/cd_redevelopment_potential_baseline.csv ../input/mappluto_construction_proxy_cd_year.csv

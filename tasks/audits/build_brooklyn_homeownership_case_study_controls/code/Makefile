@@ -8,7 +8,7 @@ all: ../output/brooklyn_homeownership_case_study_controls.csv ../output/brooklyn
 
 ../output/brooklyn_homeownership_case_study_controls_qc.csv: ../output/brooklyn_homeownership_case_study_controls.csv
 
-../input/cd_baseline_1990_controls.csv: ../../../build_cd_baseline_1990_controls/output/cd_baseline_1990_controls.csv | ../input
+../input/cd_baseline_1990_controls.csv: ../../build_cd_baseline_1990_controls/output/cd_baseline_1990_controls.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/nhgis_files.csv: ../../../build_nhgis_extracts/output/nhgis_files.csv | ../input

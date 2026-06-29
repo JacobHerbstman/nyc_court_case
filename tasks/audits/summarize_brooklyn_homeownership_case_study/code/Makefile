@@ -39,13 +39,13 @@ all: ../output/brooklyn_homeownership_case_study_cd_summary.csv ../output/brookl
 ../input/brooklyn_homeownership_case_study_controls.csv: ../../build_brooklyn_homeownership_case_study_controls/output/brooklyn_homeownership_case_study_controls.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/cd_homeownership_long_units_series.csv: ../../../build_cd_homeownership_long_units_series/output/cd_homeownership_long_units_series.csv | ../input
+../input/cd_homeownership_long_units_series.csv: ../../build_cd_homeownership_long_units_series/output/cd_homeownership_long_units_series.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/cd_homeownership_dcp_supply_panel.csv: ../../../cd_homeownership_dcp_supply_panel/output/cd_homeownership_dcp_supply_panel.csv | ../input
+../input/cd_homeownership_dcp_supply_panel.csv: ../../cd_homeownership_dcp_supply_panel/output/cd_homeownership_dcp_supply_panel.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/cd_homeownership_permit_nb_panel.csv: ../../../cd_homeownership_permit_nb_panel/output/cd_homeownership_permit_nb_panel.csv | ../input
+../input/cd_homeownership_permit_nb_panel.csv: ../../cd_homeownership_permit_nb_panel/output/cd_homeownership_permit_nb_panel.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/dcp_boundary_community_districts_20260501.parquet: ../../../build_dcp_boundaries/output/dcp_boundary_community_districts_20260501.parquet | ../input

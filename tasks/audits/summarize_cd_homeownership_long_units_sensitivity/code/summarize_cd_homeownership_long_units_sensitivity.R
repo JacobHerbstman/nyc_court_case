@@ -144,7 +144,7 @@ if (n_distinct(district_lookup$borocd) != 59) {
 }
 
 hdb_file <- read_csv("../input/dcp_housing_database_files.csv", show_col_types = FALSE, na = c("", "NA")) |>
-  mutate(parquet_path = paste0("../../../build_dcp_housing_database/output/", basename(parquet_path))) |>
+  mutate(parquet_path = paste0("../../build_dcp_housing_database/output/", basename(parquet_path))) |>
   filter(source_id == "dcp_housing_database_project_level", !is.na(parquet_path), file.exists(parquet_path)) |>
   mutate(
     vintage = as.character(vintage),
