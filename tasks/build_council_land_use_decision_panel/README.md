@@ -12,6 +12,6 @@ affected local Council member when the matter can be assigned to affected
 districts and a roster member.
 
 This task is deliberately narrow. It does not emit source-fetch logs,
-manual-review queues, prompt batches, official-source ledgers, or QC sidecars.
+manual-review queues, prompt batches, official-source ledgers, or diagnostic files.
 Those remain in upstream provenance tasks or in `tasks/audits/` as construction
 records.
