@@ -2,4 +2,5 @@
 
 Installs and records the R packages used by the task pipeline.
 
-Creates `R_packages.txt`.
+The input is `packages.R`. The output is `R_packages.txt`, a record of the R
+package versions available to the project.

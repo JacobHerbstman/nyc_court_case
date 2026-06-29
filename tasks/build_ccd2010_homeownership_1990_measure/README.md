@@ -1,5 +1,9 @@
 # Build 2010 Council-District Homeownership Measure
 
-Builds the 1990 homeownership exposure measure on 2010 City Council district boundaries by combining NHGIS tract data with archived Council district geography.
+Builds the 1990 homeownership exposure measure on 2010 City Council district
+boundaries.
 
-Creates `ccdist2010_homeownership_1990_measure.csv` and `ccdist2010_homeownership_1990_map.pdf`.
+Inputs are the cleaned 1990 NHGIS tract extract, the NHGIS raw-file index used
+to locate tract shapes, and the archived 2010 Council district boundary file.
+Creates `ccdist2010_homeownership_1990_measure.csv` and
+`ccdist2010_homeownership_1990_map.pdf`.

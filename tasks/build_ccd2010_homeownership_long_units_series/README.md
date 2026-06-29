@@ -1,5 +1,7 @@
 # Build 2010 Council-District Housing Series
 
-Combines the 2010 Council district homeownership measure with the MapPLUTO construction proxy to build annual housing production outcomes.
+Builds annual housing production outcomes by 2010 Council district.
 
-Creates `ccdist2010_homeownership_long_units_series.csv`.
+Inputs are the 1990 Council district homeownership measure and the MapPLUTO
+district-year construction proxy. The output is
+`ccdist2010_homeownership_long_units_series.csv`.

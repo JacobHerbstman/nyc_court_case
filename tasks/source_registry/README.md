@@ -1,5 +1,7 @@
 # Source Registry
 
-Maintains the project source catalog used by data-fetching tasks.
+Stores committed source catalogs used by data-fetching tasks.
 
-Creates validated source-registry files in `code/`.
+The key input files are `source_catalog.csv`, `archive_requests.csv`,
+`manual_manifest.csv`, and `benchmark_catalog.csv` in `code/`. This registry has
+no default generated output.

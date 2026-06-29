@@ -1,5 +1,8 @@
 # Build Current MapPLUTO Lookup
 
-Reads the current MapPLUTO release and standardizes parcel identifiers, addresses, community districts, lot attributes, and geometry-derived fields for downstream joins.
+Standardizes the current MapPLUTO release into a parcel lookup for downstream
+geography and address joins.
 
-Creates `mappluto_current_lot_lookup.parquet`.
+The input is `mappluto_files.csv`. The output is
+`mappluto_current_lot_lookup.parquet`, with standardized BBLs, addresses,
+community districts, lot attributes, and geometry-derived fields.

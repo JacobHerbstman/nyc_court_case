@@ -1,5 +1,8 @@
 # Build ZAP Datasets
 
-Reads ZAP project and BBL source files and standardizes them into keyed project-level and project-BBL tables.
+Downloads and standardizes NYC Planning ZAP project and project-BBL source
+files.
 
-Creates `zap_project_data.parquet` and `zap_project_bbl.parquet`.
+The input is `source_catalog.csv`. The outputs are `zap_project_data.parquet`,
+a keyed project-level table, and `zap_project_bbl.parquet`, the project-BBL
+link table.
