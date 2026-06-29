@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import hashlib
 import html as html_module
 import json
 import re
@@ -15,6 +14,8 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
+sys.path.append("../../_lib")
+from legistar_utils import check_cached_html, normalize_space, safe_stub, save_text, sha256
 
 BASE_URL = "https://legistar.council.nyc.gov/Legislation.aspx"
 if len(sys.argv) != 2 or not re.fullmatch(r"\d{4}", sys.argv[1]):
@@ -56,10 +57,6 @@ APPLICATION_RE = re.compile(
     r"\b(?:[CNM]\s*)?\d{6}\s*(?:\([A-Z0-9]+\)\s*)?[A-Z]{2,4}\b",
     re.IGNORECASE,
 )
-
-
-def normalize_space(value: object) -> str:
-    return re.sub(r"\s+", " ", "" if value is None else str(value)).strip()
 
 
 def parse_form_inputs(html: str) -> dict[str, str]:
@@ -282,39 +279,6 @@ def parse_grid_rows(html: str, query: dict[str, str], page_info: dict[str, int |
     return rows
 
 
-def sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as f:
-        for chunk in iter(lambda: f.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
-def save_text(path: Path, text: str) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text, encoding="utf-8")
-
-
-def bad_cached_html_paths(paths: list[Path]) -> list[Path]:
-    bad_paths = []
-    for path in paths:
-        if not path.exists():
-            continue
-        stat_result = path.stat()
-        if stat_result.st_size == 0 or getattr(stat_result, "st_blocks", 1) == 0:
-            bad_paths.append(path)
-    return bad_paths
-
-
-def check_cached_html(paths: list[Path], label: str) -> None:
-    bad_paths = bad_cached_html_paths(paths)
-    if bad_paths:
-        raise RuntimeError(
-            f"{label} has {len(bad_paths)} cached HTML files that are empty or not materialized locally. "
-            f"Hydrate or delete the cached file before rerunning. Example: {bad_paths[0]}"
-        )
-
-
 def request_with_retries(session: requests.Session, method: str, url: str, **kwargs) -> requests.Response:
     last_error = None
     for attempt in range(1, 4):
@@ -328,11 +292,6 @@ def request_with_retries(session: requests.Session, method: str, url: str, **kwa
                 break
             time.sleep(5 * attempt)
     raise last_error
-
-
-def safe_stub(value: object) -> str:
-    stub = re.sub(r"[^a-z0-9]+", "_", normalize_space(value).lower()).strip("_")
-    return stub or "missing"
 
 
 def fetch_search_pages(session: requests.Session, query: dict[str, str]) -> list[dict[str, object]]:
