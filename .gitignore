@@ -25,12 +25,8 @@ tasks/audits/*/temp/
 tasks/audits/*/slurmlogs/
 
 # Production source ledgers intentionally committed for replication.
-!tasks/stage_member_deference_nonapproval_geography_review/output/
-!tasks/stage_member_deference_nonapproval_geography_review/output/*.csv
-!tasks/stage_zap_source_integrity/output/
-!tasks/stage_zap_source_integrity/output/*.csv
-!tasks/stage_ulurp_modification_zap_documents/output/
-!tasks/stage_ulurp_modification_zap_documents/output/*.csv
+!tasks/create_member_deference_nonapproval_geography_review/output/
+!tasks/create_member_deference_nonapproval_geography_review/output/*.csv
 
 # --- Secrets ---
 .Renviron
@@ -42,11 +38,6 @@ tasks/archive/*/input/
 tasks/archive/*/output/
 tasks/archive/*/temp/
 tasks/audits/archive/
-
-# Exception: track the task flow graph for README if present
-!tasks/symlink_graph/output/
-tasks/symlink_graph/output/graph.txt
-!tasks/symlink_graph/output/task_flow.png
 
 # --- Paper build artifacts ---
 paper/*.aux

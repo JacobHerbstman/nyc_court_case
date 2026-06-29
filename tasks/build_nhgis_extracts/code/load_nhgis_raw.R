@@ -108,20 +108,6 @@ for (i in seq_len(nrow(expected_rows))) {
   ))
 
   if (length(table_candidates) == 0 || length(shapefile_candidates) == 0 || !has_expected_shape) {
-    validation_notes <- c()
-
-    if (length(table_candidates) == 0) {
-      validation_notes <- c(validation_notes, "missing_tabular_payload")
-    }
-
-    if (length(shapefile_candidates) == 0) {
-      validation_notes <- c(validation_notes, "missing_shapefile_payload")
-    }
-
-    if (length(shapefile_candidates) > 0 && !has_expected_shape) {
-      validation_notes <- c(validation_notes, "unexpected_shapefile_asset")
-    }
-
     index_rows[[i]] <- tibble(
       source_id = row$source_id,
       year = row$year,
@@ -211,5 +197,5 @@ for (i in seq_len(nrow(expected_rows))) {
   )
 }
 
-write_csv(bind_rows(index_rows), "../temp/nhgis_raw_files.csv", na = "")
+write_csv_if_changed(bind_rows(index_rows), "../temp/nhgis_raw_files.csv")
 cat("Wrote NHGIS raw outputs to ../temp\n")
