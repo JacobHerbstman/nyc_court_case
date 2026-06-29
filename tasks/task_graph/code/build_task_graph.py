@@ -44,6 +44,68 @@ def is_rule_line(line):
     return True
 
 
+def find_make_expression_end(text, start):
+    depth = 0
+    i = start
+    while i < len(text):
+        if text[i:i + 2] == "$(":
+            depth += 1
+            i += 2
+            continue
+        if text[i] == ")" and depth > 0:
+            depth -= 1
+            if depth == 0:
+                return i
+        i += 1
+    return -1
+
+
+def split_make_function_args(text, expected_count):
+    parts = []
+    depth = 0
+    start = 0
+    i = 0
+
+    while i < len(text):
+        if text[i:i + 2] == "$(":
+            depth += 1
+            i += 2
+            continue
+        if text[i] == ")" and depth > 0:
+            depth -= 1
+        elif text[i] == "," and depth == 0:
+            parts.append(text[start:i].strip())
+            start = i + 1
+        i += 1
+
+    parts.append(text[start:].strip())
+    if len(parts) != expected_count:
+        raise RuntimeError(f"Could not parse Make function arguments: {text}")
+
+    return parts
+
+
+def collapse_foreach_targets(text):
+    collapsed = text
+
+    while "$(" in collapsed:
+        start = collapsed.find("$(")
+        end = find_make_expression_end(collapsed, start)
+        if end == -1:
+            break
+
+        content = collapsed[start + 2:end].strip()
+        if not content.startswith("foreach "):
+            collapsed = collapsed[:start] + collapsed[end + 1:]
+            continue
+
+        iterator, _, template = split_make_function_args(content.removeprefix("foreach "), 3)
+        replacement = template.replace(f"$({iterator})", "%")
+        collapsed = collapsed[:start] + replacement + collapsed[end + 1:]
+
+    return collapsed
+
+
 def parse_makefile(path):
     output_targets = set()
     all_targets = set()
@@ -57,7 +119,7 @@ def parse_makefile(path):
         normal_prereqs = rhs.split("|", 1)[0]
 
         if lhs.strip() == "all":
-            for target in normal_prereqs.split():
+            for target in collapse_foreach_targets(normal_prereqs).split():
                 if target.startswith("../output/"):
                     all_targets.add(target)
 
