@@ -1,5 +1,3 @@
-SHELL := bash
-
 all: ../output/citywide_ulurp_application_year.csv
 
 ../output/citywide_ulurp_application_year.csv: summarize_citywide_ulurp_application_trends.R \

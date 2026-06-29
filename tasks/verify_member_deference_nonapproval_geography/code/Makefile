@@ -1,5 +1,3 @@
-SHELL := bash
-
 all: ../output/member_deference_nonapproval_geography_conservative_queue.csv
 
 ../output/member_deference_nonapproval_geography_conservative_queue.csv: verify_member_deference_nonapproval_geography.py \
