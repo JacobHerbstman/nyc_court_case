@@ -16,5 +16,5 @@ Creates `member_deference_nonapproval_geography_conservative_queue.csv`. The
 current queue covers 491 core non-approval matters: 236 original Legistar/ZAP
 geography assignments, 126 deterministic recovery assignments, 37
 official-verification assignments, and 92 unresolved rows. Recent rebuild
-runtime is about 1.5 minutes when filling the official-page cache and about 10
+runtime is about 1.5 minutes when filling the official-page cache and about 15
 seconds when those pages are cached.

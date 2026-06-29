@@ -831,8 +831,8 @@ qc = pd.DataFrame(
     ]
 )
 
-write_csv("../output/member_deference_nonapproval_geography_conservative_queue.csv", conservative_queue)
-
 if not qc["passed"].all():
     failed_checks = ", ".join(qc.loc[~qc["passed"], "check_name"].astype(str))
     raise RuntimeError(f"Official geography verification failed: {failed_checks}.")
+
+write_csv("../output/member_deference_nonapproval_geography_conservative_queue.csv", conservative_queue)
