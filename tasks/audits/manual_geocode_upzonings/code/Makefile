@@ -25,7 +25,7 @@ all: ../output/manual_geocode_upzoning_queue.csv \
 ../input/zap_project_bbl.parquet: ../../../build_zap_datasets/output/zap_project_bbl.parquet | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/ccdist2010_mappluto_bbl_lookup.parquet: ../../../build_ccd2010_mappluto_construction_proxy/output/ccdist2010_mappluto_bbl_lookup.parquet | ../input
+../input/ccdist2010_mappluto_bbl_lookup.parquet: ../../build_ccd2010_mappluto_bbl_lookup/output/ccdist2010_mappluto_bbl_lookup.parquet | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 link-inputs: ../input/zap_zoning_map_special_permit_project_classification.csv ../input/zap_zoning_map_special_permit_project_ccd2010_fractional.csv ../input/zap_project_data.parquet ../input/zap_project_bbl.parquet ../input/ccdist2010_mappluto_bbl_lookup.parquet

@@ -162,16 +162,6 @@ mappluto_df <- mappluto_attr %>%
   inner_join(mappluto_assignment, by = "row_id", relationship = "one-to-one") %>%
   select(-row_id, -council_row)
 
-bbl_lookup <- mappluto_df %>%
-  filter(!is_joint_interest_area, !is.na(bbl), !is.na(council_district)) %>%
-  count(bbl, district_id, council_district, name = "mappluto_lot_rows") %>%
-  group_by(bbl) %>%
-  arrange(desc(mappluto_lot_rows), district_id) %>%
-  slice_head(n = 1) %>%
-  ungroup()
-
-write_parquet_if_changed(bbl_lookup, "../output/ccdist2010_mappluto_bbl_lookup.parquet")
-
 lot_level <- mappluto_df %>%
   filter(
     !is_joint_interest_area,
@@ -197,8 +187,6 @@ lot_level <- mappluto_df %>%
     resarea, bldgarea, lotarea, builtfar, numbldgs, numfloors, landuse, bldgclass,
     residential_only_flag, mixed_use_flag, size_bin
   )
-
-write_parquet_if_changed(lot_level, "../output/ccdist2010_mappluto_construction_proxy_lot_level.parquet")
 
 panel_base <- lot_level %>%
   group_by(district_id, council_district, borough_code, borough_name, yearbuilt) %>%
