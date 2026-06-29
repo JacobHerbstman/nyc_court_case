@@ -239,7 +239,7 @@ def main():
     summary_csv = Path("../output/task_graph_summary.csv")
     tasks_root = Path("../..").resolve()
     repo_root = tasks_root.parent
-    infrastructure_tasks = {"task_graph"}
+    infrastructure_tasks = {"setup_environment", "source_registry", "task_graph"}
 
     production_makefiles = {
         path.parents[1].name: (path, "production")
