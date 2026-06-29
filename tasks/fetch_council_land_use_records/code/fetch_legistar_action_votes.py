@@ -198,9 +198,6 @@ target_events = history_events[
 ].copy()
 target_events["history_date_parsed"] = pd.to_datetime(target_events["history_date"], errors="coerce")
 target_events["history_sequence_int"] = pd.to_numeric(target_events["history_sequence"], errors="coerce")
-duplicate_approval_event_count = int(target_events["matter_id"].duplicated(keep=False).sum())
-duplicate_approval_matter_count = int(target_events.loc[target_events["matter_id"].duplicated(keep=False), "matter_id"].nunique())
-duplicate_approval_rows_dropped = duplicate_approval_event_count - duplicate_approval_matter_count
 target_events = (
     target_events.sort_values(["matter_id", "history_date_parsed", "history_sequence_int"])
     .drop_duplicates("matter_id", keep="last")
@@ -315,59 +312,25 @@ vote_count_check["parsed_rows_match_legistar_record_count"] = (
     vote_count_check["vote_rows"] == vote_count_check["vote_record_count"]
 )
 zero_vote_pages = vote_count_check[vote_count_check["parsed_vote_rows"] == 0]
-non_unanimous_vote_count = int(
-    (
-        (action_details["negative_count"] > 0)
-        | (action_details["abstain_count"] > 0)
-    ).sum()
-)
 
-qc_rows = [
-    {
-        "check_name": "approval_action_detail_pages_downloaded",
-        "passed": len(action_details) == len(target_events),
-        "detail": f"Downloaded {len(action_details)} final Council approval action-detail pages for {len(target_events)} target events.",
-    },
-    {
-        "check_name": "approval_action_detail_urls_unique",
-        "passed": not action_details["history_detail_url"].duplicated().any(),
-        "detail": "Each downloaded action-detail page maps to one final Council approval event.",
-    },
-    {
-        "check_name": "member_vote_rows_match_action_summaries",
-        "passed": bool(vote_count_check["parsed_rows_match_summary"].all()),
-        "detail": "Long member-vote rows reconcile to parsed_vote_rows on every action-detail page, including zero-row consent-vote pages.",
-    },
-    {
-        "check_name": "member_vote_rows_match_legistar_record_counts",
-        "passed": bool(vote_count_check["parsed_rows_match_legistar_record_count"].all()),
-        "detail": "Long member-vote rows reconcile to Legistar's displayed vote-record count on every action-detail page, including zero-row consent-vote pages.",
-    },
-    {
-        "check_name": "zero_vote_action_pages_are_consent_zero_zero",
-        "passed": bool(
-            zero_vote_pages.empty
-            or (
-                (zero_vote_pages["vote_record_count"] == 0)
-                & zero_vote_pages["vote_tab_label"].fillna("").str.contains("\\(0:0\\)")
-            ).all()
-        ),
-        "detail": f"{len(zero_vote_pages)} final approval action-detail pages show a (0:0) vote tab and no individual member-vote rows.",
-    },
-    {
-        "check_name": "non_unanimous_vote_rows_counted",
-        "passed": True,
-        "detail": f"Found {non_unanimous_vote_count} approved {QUERY_YEAR} land-use matter rows with a negative or abstain member vote.",
-    },
-    {
-        "check_name": "duplicate_approval_events_deduplicated",
-        "passed": not action_details["matter_id"].duplicated().any(),
-        "detail": (
-            f"Dropped {duplicate_approval_rows_dropped} duplicate approval-event rows across "
-            f"{duplicate_approval_matter_count} matter IDs before fetching action details."
-        ),
-    },
-]
+if len(action_details) != len(target_events):
+    raise RuntimeError("Every target approval event must have an action-detail page.")
+if action_details["history_detail_url"].duplicated().any():
+    raise RuntimeError("Action-detail URLs must be unique.")
+if not vote_count_check["parsed_rows_match_summary"].all():
+    raise RuntimeError("Member-vote rows must reconcile to parsed_vote_rows on every action-detail page.")
+if not vote_count_check["parsed_rows_match_legistar_record_count"].all():
+    raise RuntimeError("Member-vote rows must reconcile to Legistar's displayed vote-record counts.")
+if not (
+    zero_vote_pages.empty
+    or (
+        (zero_vote_pages["vote_record_count"] == 0)
+        & zero_vote_pages["vote_tab_label"].fillna("").str.contains("\\(0:0\\)")
+    ).all()
+):
+    raise RuntimeError("Zero-row action-detail pages must be displayed as consent-style (0:0) vote tabs.")
+if action_details["matter_id"].duplicated().any():
+    raise RuntimeError("Action details must be unique by matter_id after duplicate approval-event handling.")
 
 if QUERY_YEAR == "2001":
     laguardia_negative = member_votes[
@@ -375,19 +338,8 @@ if QUERY_YEAR == "2001":
         & (member_votes["person_name"] == "Helen M. Marshall")
         & (member_votes["vote"] == "Negative")
     ]
-    qc_rows.append(
-        {
-            "check_name": "laguardia_hotel_local_member_negative_vote_found",
-            "passed": not laguardia_negative.empty,
-            "detail": "Res 1939-2001 action detail records Helen M. Marshall voting Negative.",
-        }
-    )
-
-qc = pd.DataFrame(qc_rows)
-
-if not qc["passed"].all():
-    failed_checks = ", ".join(qc.loc[~qc["passed"], "check_name"].astype(str))
-    raise RuntimeError(f"Legistar {QUERY_YEAR} action-vote fetch failed: {failed_checks}.")
+    if laguardia_negative.empty:
+        raise RuntimeError("Res 1939-2001 must record Helen M. Marshall voting Negative.")
 
 action_details.to_csv(ACTION_DETAILS_OUTPUT, index=False)
 member_votes.to_csv(MEMBER_VOTES_OUTPUT, index=False)
