@@ -10,10 +10,12 @@ import pandas as pd
 sys.path.append("../../_lib")
 from member_deference_utils import (
     application_keys,
+    borough_code_from_application_suffix,
     collapse_districts,
     collapse_examples,
     collapse_semicolon_values as collapse_values,
     district_from_scalar,
+    lot_numbers_from_text,
     normalize_space,
     split_semicolon,
     write_csv,
@@ -51,37 +53,7 @@ def borough_from_text(title: object, matter_application_keys: object) -> tuple[s
     if "STATEN ISLAND" in title_text:
         return "5", "title_borough_text"
 
-    suffix_codes = []
-    for key in split_semicolon(matter_application_keys):
-        key = key.upper()
-        if key.endswith("M"):
-            suffix_codes.append("1")
-        if key.endswith("X"):
-            suffix_codes.append("2")
-        if key.endswith("K"):
-            suffix_codes.append("3")
-        if key.endswith("Q"):
-            suffix_codes.append("4")
-        if key.endswith("R"):
-            suffix_codes.append("5")
-
-    suffix_codes = list(dict.fromkeys(suffix_codes))
-    if len(suffix_codes) == 1:
-        return suffix_codes[0], "application_suffix"
-    return "", ""
-
-
-def lot_numbers(value: str) -> list[int]:
-    lots = []
-    for start, end in re.findall(r"(\d{1,4})\s*-\s*(\d{1,4})", value):
-        start_int = int(start)
-        end_int = int(end)
-        if start_int <= end_int and end_int - start_int <= 200:
-            lots.extend(range(start_int, end_int + 1))
-
-    without_ranges = re.sub(r"\d{1,4}\s*-\s*\d{1,4}", " ", value)
-    lots.extend(int(match) for match in re.findall(r"\d{1,4}", without_ranges))
-    return list(dict.fromkeys(lots))
+    return borough_code_from_application_suffix(matter_application_keys)
 
 
 def title_bbls(title: object, matter_application_keys: object) -> tuple[list[str], str, str]:
@@ -97,7 +69,7 @@ def title_bbls(title: object, matter_application_keys: object) -> tuple[list[str
         flags=re.IGNORECASE,
     ):
         block = int(match.group(1))
-        for lot in lot_numbers(match.group(2)):
+        for lot in lot_numbers_from_text(match.group(2), max_range=200):
             bbls.append(f"{int(borough_code)}{block:05d}{lot:04d}")
 
     for match in re.findall(r"\b[1-5]\d{9}\b", text):

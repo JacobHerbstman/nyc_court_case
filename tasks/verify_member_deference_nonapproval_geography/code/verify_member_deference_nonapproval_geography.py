@@ -16,9 +16,11 @@ from bs4 import BeautifulSoup
 sys.path.append("../../_lib")
 from member_deference_utils import (
     application_keys,
+    borough_code_from_application_suffix,
     collapse_districts,
     collapse_examples,
     collapse_semicolon_values as collapse_values,
+    lot_numbers_from_text,
     norm_name,
     normalize_space,
     split_semicolon,
@@ -116,36 +118,7 @@ def borough_code_from_text(text: object, keys: object) -> tuple[str, str]:
     if len(borough_hits) == 1:
         return borough_hits[0], "official_text_borough"
 
-    suffix_hits = []
-    for key in split_semicolon(keys):
-        key = key.upper()
-        if key.endswith("M"):
-            suffix_hits.append("1")
-        if key.endswith("X"):
-            suffix_hits.append("2")
-        if key.endswith("K"):
-            suffix_hits.append("3")
-        if key.endswith("Q"):
-            suffix_hits.append("4")
-        if key.endswith("R"):
-            suffix_hits.append("5")
-    suffix_hits = list(dict.fromkeys(suffix_hits))
-    if len(suffix_hits) == 1:
-        return suffix_hits[0], "application_suffix"
-    return "", ""
-
-
-def lot_numbers(value: str) -> list[int]:
-    lots = []
-    for start, end in re.findall(r"(\d{1,4})\s*-\s*(\d{1,4})", value):
-        start_int = int(start)
-        end_int = int(end)
-        if start_int <= end_int and end_int - start_int <= 250:
-            lots.extend(range(start_int, end_int + 1))
-
-    without_ranges = re.sub(r"\d{1,4}\s*-\s*\d{1,4}", " ", value)
-    lots.extend(int(match) for match in re.findall(r"\d{1,4}", without_ranges))
-    return list(dict.fromkeys(lots))
+    return borough_code_from_application_suffix(keys)
 
 
 def bbls_from_text(text: object, keys: object) -> tuple[str, str, str]:
@@ -165,7 +138,7 @@ def bbls_from_text(text: object, keys: object) -> tuple[str, str, str]:
         flags=re.IGNORECASE,
     ):
         block = int(match.group(1))
-        for lot in lot_numbers(match.group(2)):
+        for lot in lot_numbers_from_text(match.group(2), max_range=250):
             bbls.append(f"{int(borough_code)}{block:05d}{lot:04d}")
 
     for match in re.findall(r"\b[1-5]\d{9}\b", clean_text):

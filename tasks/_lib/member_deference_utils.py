@@ -44,6 +44,40 @@ def application_keys(value: object) -> list[str]:
     return keys
 
 
+def borough_code_from_application_suffix(keys: object) -> tuple[str, str]:
+    suffix_codes = []
+    for key in split_semicolon(keys):
+        key = key.upper()
+        if key.endswith("M"):
+            suffix_codes.append("1")
+        if key.endswith("X"):
+            suffix_codes.append("2")
+        if key.endswith("K"):
+            suffix_codes.append("3")
+        if key.endswith("Q"):
+            suffix_codes.append("4")
+        if key.endswith("R"):
+            suffix_codes.append("5")
+
+    suffix_codes = list(dict.fromkeys(suffix_codes))
+    if len(suffix_codes) == 1:
+        return suffix_codes[0], "application_suffix"
+    return "", ""
+
+
+def lot_numbers_from_text(value: str, max_range: int) -> list[int]:
+    lots = []
+    for start, end in re.findall(r"(\d{1,4})\s*-\s*(\d{1,4})", value):
+        start_int = int(start)
+        end_int = int(end)
+        if start_int <= end_int and end_int - start_int <= max_range:
+            lots.extend(range(start_int, end_int + 1))
+
+    without_ranges = re.sub(r"\d{1,4}\s*-\s*\d{1,4}", " ", value)
+    lots.extend(int(match) for match in re.findall(r"\d{1,4}", without_ranges))
+    return list(dict.fromkeys(lots))
+
+
 def collapse_districts(values: object) -> str:
     districts = []
     for value in values:

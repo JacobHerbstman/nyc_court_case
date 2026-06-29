@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import csv
 import hashlib
 import re
 import time
@@ -31,6 +32,18 @@ def sha256(path: Path) -> str:
 def save_text(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8")
+
+
+def write_dict_rows_csv(path: str | Path, rows: list[dict[str, object]], fieldnames: list[str]) -> None:
+    output_path = Path(path)
+    temp_path = output_path.with_suffix(output_path.suffix + ".tmp")
+
+    with temp_path.open("w", newline="", encoding="utf-8") as file:
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
+
+    temp_path.replace(output_path)
 
 
 def bad_cached_html_paths(paths: list[Path]) -> list[Path]:

@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import csv
 import re
 import sys
 import time
@@ -12,7 +11,7 @@ import requests
 from bs4 import BeautifulSoup
 
 sys.path.append("../../_lib")
-from legistar_utils import normalize_space, sha256
+from legistar_utils import normalize_space, sha256, write_dict_rows_csv
 
 PULL_DATE = "20260512"
 LEGISTAR_URL = (
@@ -61,18 +60,6 @@ def parse_form_inputs(html: str) -> dict[str, str]:
         payload[name] = inp.get("value") or ""
 
     return payload
-
-
-def write_csv(path: str, rows: list[dict[str, object]], fieldnames: list[str]) -> None:
-    new_path = Path(path)
-    temp_path = new_path.with_suffix(new_path.suffix + ".tmp")
-
-    with temp_path.open("w", newline="", encoding="utf-8") as file:
-        writer = csv.DictWriter(file, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(rows)
-
-    temp_path.replace(new_path)
 
 
 def source_row(
@@ -363,7 +350,7 @@ if len(wiki_pages) != 51:
 if not all(row["checksum_sha256"] for row in fetch_rows if row["fetch_status"] == "downloaded"):
     raise RuntimeError("Every downloaded roster source file must have a SHA-256 checksum.")
 
-write_csv(
+write_dict_rows_csv(
     "../output/council_member_roster_source_files.csv",
     fetch_rows,
     [

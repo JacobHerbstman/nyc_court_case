@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import csv
 import re
 from datetime import date, datetime, timedelta
 from pathlib import Path
@@ -14,7 +13,7 @@ from bs4 import BeautifulSoup
 import sys
 
 sys.path.append("../../_lib")
-from legistar_utils import normalize_space
+from legistar_utils import normalize_space, write_dict_rows_csv
 
 LEGISTAR_URL = (
     "https://legistar.council.nyc.gov/"
@@ -56,18 +55,6 @@ def parse_wiki_date(value: object) -> str | None:
 def date_value(value: object, fallback: str = "2100-12-31") -> date:
     text = fallback if value is None or pd.isna(value) or value == "" else str(value)
     return datetime.strptime(text[:10], "%Y-%m-%d").date()
-
-
-def write_csv(path: str, rows: list[dict[str, object]], fieldnames: list[str]) -> None:
-    new_path = Path(path)
-    temp_path = new_path.with_suffix(new_path.suffix + ".tmp")
-
-    with temp_path.open("w", newline="", encoding="utf-8") as file:
-        writer = csv.DictWriter(file, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(rows)
-
-    temp_path.replace(new_path)
 
 
 def active_rows(rows: list[dict[str, object]], district: int, check_date: str) -> list[dict[str, object]]:
@@ -568,4 +555,4 @@ if overlap_rows:
 if min(row["term_start_date"] for row in master_rows if row["term_start_date"]) > "1990-01-01":
     raise RuntimeError("Master roster must reach before 1990.")
 
-write_csv("../output/council_member_roster_master.csv", master_rows, fields)
+write_dict_rows_csv("../output/council_member_roster_master.csv", master_rows, fields)
