@@ -15,7 +15,7 @@ all: ../output/zap_linked_hdb_50plus_cd_year.csv ../output/zap_linked_hdb_50plus
 ../input/dcp_housing_database_project_level_25q4.parquet: ../../../build_dcp_housing_database/output/dcp_housing_database_project_level_25q4.parquet | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/zap_housing_hdb_link_candidates.csv: ../../../build_zap_housing_hdb_link/output/zap_housing_hdb_link_candidates.csv | ../input
+../input/zap_housing_hdb_link_candidates.csv: ../../build_zap_housing_hdb_link/output/zap_housing_hdb_link_candidates.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/cd_redevelopment_potential_baseline.csv: ../../redevelopment_potential_first_pass/output/cd_redevelopment_potential_baseline.csv | ../input

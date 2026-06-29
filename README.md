@@ -27,7 +27,6 @@ The workflow is task-based. Each production task lives in `tasks/<task_name>/` w
 - `build_mappluto_current_lookup`: builds the current parcel lookup used for BBL and address joins.
 - `build_mappluto_construction_proxy` and `build_ccd2010_mappluto_construction_proxy`: build MapPLUTO-based construction proxies.
 - `build_cd_homeownership_long_units_series` and `build_ccd2010_homeownership_long_units_series`: build annual housing production series.
-- `build_zap_housing_cohort_base` and `build_zap_housing_hdb_link`: build ZAP housing project cohorts and ZAP-to-housing links.
 - `cd_homeownership_dcp_supply_panel` and `cd_homeownership_permit_nb_panel`: build auxiliary community-district housing supply panels.
 - `build_council_member_roster`: builds the Council member roster used to identify local members.
 - `create_council_land_use_ai_geography_repairs`: stores accepted geography repairs for Council land-use matters whose affected districts were not clear from source tables. These rows were reviewed with ChatGPT using matter text, application identifiers, source links, and geography clues, then promoted only through a committed decision ledger.

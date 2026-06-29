@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_zap_housing_hdb_link/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/build_zap_housing_hdb_link/code")
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -8,7 +8,7 @@ suppressPackageStartupMessages({
   library(tibble)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../../_lib/source_pipeline_utils.R")
 
 assert_unique_keys <- function(df, key_cols, df_name) {
   duplicate_keys <- df %>%

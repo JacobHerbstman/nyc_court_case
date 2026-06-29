@@ -9,7 +9,7 @@ all: ../output/zap_housing_hdb_cohort_panel.csv ../output/zap_housing_hdb_tercil
 ../output/zap_housing_hdb_plots.pdf: ../output/zap_housing_hdb_cohort_panel.csv
 	@test -s "$@"
 
-../input/zap_housing_hdb_project_summary.csv: ../../../build_zap_housing_hdb_link/output/zap_housing_hdb_project_summary.csv | ../input
+../input/zap_housing_hdb_project_summary.csv: ../../build_zap_housing_hdb_link/output/zap_housing_hdb_project_summary.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 link-inputs: ../input/zap_housing_hdb_project_summary.csv
