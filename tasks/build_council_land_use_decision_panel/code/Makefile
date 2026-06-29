@@ -1,19 +1,12 @@
-SHELL := bash
-
-all: ../output/council_land_use_decision_panel.csv \
-	../output/council_land_use_local_member_votes.csv
+all: ../output/council_land_use_decision_panel.csv
 
 ../output/council_land_use_decision_panel.csv: build_council_land_use_decision_panel.py \
 	../input/member_deference_matter_universe.csv \
 	../input/member_deference_vote_panel.csv \
 	../input/member_deference_nonapproval_geography_conservative_queue.csv \
 	../input/member_deference_nonapproval_action_details.csv \
-	../input/member_deference_nonapproval_local_member_vote_status.csv \
-	../input/member_deference_nonapproval_local_member_votes.csv | ../output
+	../input/member_deference_nonapproval_local_member_vote_status.csv | ../output
 	python3 $<
-
-../output/council_land_use_local_member_votes.csv: ../output/council_land_use_decision_panel.csv
-	@test -s "$@"
 
 ../input/member_deference_matter_universe.csv: ../../build_member_deference_vote_panel/output/member_deference_matter_universe.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
@@ -30,14 +23,10 @@ all: ../output/council_land_use_decision_panel.csv \
 ../input/member_deference_nonapproval_local_member_vote_status.csv: ../../fetch_member_deference_nonapproval_action_votes/output/member_deference_nonapproval_local_member_vote_status.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/member_deference_nonapproval_local_member_votes.csv: ../../fetch_member_deference_nonapproval_action_votes/output/member_deference_nonapproval_local_member_votes.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
-
 link-inputs: ../input/member_deference_matter_universe.csv \
 	../input/member_deference_vote_panel.csv \
 	../input/member_deference_nonapproval_geography_conservative_queue.csv \
 	../input/member_deference_nonapproval_action_details.csv \
-	../input/member_deference_nonapproval_local_member_vote_status.csv \
-	../input/member_deference_nonapproval_local_member_votes.csv
+	../input/member_deference_nonapproval_local_member_vote_status.csv
 
 include ../../generic.make

@@ -12,5 +12,5 @@ this task reads reviewed repair decisions or official verification outputs with
 source notes, not raw AI suggestions.
 
 Creates `council_land_use_decision_panel.csv` with one row per Legistar matter
-and `council_land_use_local_member_votes.csv` with one row per affected local
-member when a matter has usable geography and roster matches.
+and the vote/geography fields needed for the Council land-use decision trend
+series.

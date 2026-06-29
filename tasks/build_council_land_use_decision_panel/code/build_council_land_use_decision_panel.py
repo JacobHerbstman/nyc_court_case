@@ -7,12 +7,6 @@ from pathlib import Path
 import pandas as pd
 
 
-def split_semicolon(value: object) -> list[str]:
-    if pd.isna(value) or str(value).strip() == "":
-        return []
-    return [part.strip() for part in str(value).split(";") if part.strip()]
-
-
 def approval_vote_status(value: object) -> str:
     if value == "approved_with_all_local_members_affirmative":
         return "local_member_affirmative_only"
@@ -33,29 +27,6 @@ def approval_vote_status(value: object) -> str:
     return "not_classified"
 
 
-def local_vote_category(value: object) -> str:
-    if pd.isna(value) or str(value).strip() == "":
-        return "missing_from_vote_rows"
-    votes = set(split_semicolon(value))
-    if any(vote in {"Negative", "Abstain"} for vote in votes):
-        return "negative_or_abstain"
-    if votes == {"Affirmative"}:
-        return "affirmative"
-    if votes.issubset({"Excused", "Non-voting", "Absent", "Maternity"}):
-        return "excused_nonvoting_absent"
-    return "mixed_or_other"
-
-
-def parse_name_votes(value: object) -> dict[str, str]:
-    votes = {}
-    for part in split_semicolon(value):
-        if ": " not in part:
-            continue
-        name, vote = part.split(": ", 1)
-        votes[name.strip()] = vote.strip()
-    return votes
-
-
 def write_csv(path: str, df: pd.DataFrame) -> None:
     temp_path = Path(path).with_suffix(Path(path).suffix + ".tmp")
     df.to_csv(temp_path, index=False)
@@ -71,9 +42,6 @@ nonapproval_actions = pd.read_csv("../input/member_deference_nonapproval_action_
 nonapproval_local_vote_status = pd.read_csv(
     "../input/member_deference_nonapproval_local_member_vote_status.csv", dtype=str, keep_default_na=False
 )
-nonapproval_local_votes = pd.read_csv(
-    "../input/member_deference_nonapproval_local_member_votes.csv", dtype=str, keep_default_na=False
-)
 
 for name, df in [
     ("matter_universe", matter_universe),
@@ -84,9 +52,6 @@ for name, df in [
 ]:
     if df["matter_id"].duplicated().any():
         raise RuntimeError(f"{name} must be unique by matter_id.")
-
-if nonapproval_local_votes.duplicated(["matter_id", "local_member_name"]).any():
-    raise RuntimeError("Non-approval local-member vote rows must be unique by matter_id and local_member_name.")
 
 approval_panel["approval_source_row"] = "true"
 approval_panel["approval_vote_status_standardized"] = approval_panel["vote_evidence_status"].map(approval_vote_status)
@@ -397,106 +362,4 @@ if decision_panel["matter_id"].duplicated().any():
 if len(decision_panel) != len(matter_universe):
     raise RuntimeError("Council land-use decision panel must keep every matter-universe row.")
 
-approval_local_rows = []
-approval_source = pd.read_csv("../input/member_deference_vote_panel.csv", dtype=str, keep_default_na=False)
-approval_source = approval_source.merge(
-    matter_universe[["matter_id", "matter_status", "disposition_group"]],
-    on="matter_id",
-    how="left",
-    validate="one_to_one",
-)
-approval_source = approval_source[~approval_source["matter_id"].isin(nonapproval_actions["matter_id"])].copy()
-approval_source["vote_source"] = "approval_action_detail"
-approval_source.loc[
-    ~approval_source["disposition_group"].eq("adopted"),
-    "vote_source",
-] = "approval_action_detail_nonfinal_disposition"
-for row in approval_source.to_dict("records"):
-    for local_member_name in split_semicolon(row["local_members_from_roster"]):
-        name_votes = parse_name_votes(row["local_member_votes"])
-        vote = name_votes.get(local_member_name, "")
-        approval_local_rows.append(
-            {
-                "query_year": row["query_year"],
-                "matter_id": row["matter_id"],
-                "matter_file": row["matter_file"],
-                "matter_status": row["matter_status"],
-                "disposition_group": row["disposition_group"],
-                "vote_source": row["vote_source"],
-                "decision_date": row["vote_date"],
-                "affected_council_districts": row["affected_council_districts"],
-                "local_members_from_roster": row["local_members_from_roster"],
-                "local_member_name": local_member_name,
-                "local_member_final_action_vote": vote,
-                "local_member_vote_found": vote != "",
-                "local_member_final_action_vote_category": local_vote_category(vote),
-            }
-        )
-
-approval_local_votes = pd.DataFrame(
-    approval_local_rows,
-    columns=[
-        "query_year",
-        "matter_id",
-        "matter_file",
-        "matter_status",
-        "disposition_group",
-        "vote_source",
-        "decision_date",
-        "affected_council_districts",
-        "local_members_from_roster",
-        "local_member_name",
-        "local_member_final_action_vote",
-        "local_member_vote_found",
-        "local_member_final_action_vote_category",
-    ],
-)
-
-nonapproval_local_votes = nonapproval_local_votes[
-    [
-        "query_year",
-        "matter_id",
-        "matter_file",
-        "matter_status",
-        "disposition_group",
-        "final_history_date",
-        "affected_council_districts",
-        "local_members_from_roster",
-        "local_member_name",
-        "local_member_final_action_votes",
-        "local_member_vote_found",
-        "local_member_final_action_vote_category",
-    ]
-].rename(
-    columns={
-        "final_history_date": "decision_date",
-        "local_member_final_action_votes": "local_member_final_action_vote",
-    }
-)
-nonapproval_local_votes["vote_source"] = "nonapproval_action_detail"
-nonapproval_local_votes = nonapproval_local_votes[
-    [
-        "query_year",
-        "matter_id",
-        "matter_file",
-        "matter_status",
-        "disposition_group",
-        "vote_source",
-        "decision_date",
-        "affected_council_districts",
-        "local_members_from_roster",
-        "local_member_name",
-        "local_member_final_action_vote",
-        "local_member_vote_found",
-        "local_member_final_action_vote_category",
-    ]
-]
-
-local_member_votes = pd.concat([approval_local_votes, nonapproval_local_votes], ignore_index=True)
-local_member_votes = local_member_votes.sort_values(["query_year", "matter_file", "matter_id", "local_member_name"])
-
-if local_member_votes.duplicated(["matter_id", "local_member_name", "vote_source"]).any():
-    raise RuntimeError("Council land-use local-member votes must be unique by matter, member, and source.")
-
 write_csv("../output/council_land_use_decision_panel.csv", decision_panel)
-write_csv("../output/council_land_use_local_member_votes.csv", local_member_votes)
