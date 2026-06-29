@@ -295,6 +295,12 @@ fetch_failures_df = pd.DataFrame(
     fetch_failures,
     columns=["matter_id", "matter_file", "final_history_detail_url", "fetch_error"],
 )
+if not fetch_failures_df.empty or len(action_details) != len(target_queue):
+    raise RuntimeError(
+        "Expected one parsed action-detail page for every queued non-approval matter; "
+        f"parsed {len(action_details)} pages for {len(target_queue)} queued matters with "
+        f"{len(fetch_failures_df)} fetch failures."
+    )
 
 vote_count_check = action_details[
     ["matter_id", "matter_file", "vote_tab_label", "parsed_vote_rows", "vote_record_count"]
@@ -313,7 +319,18 @@ vote_count_check["parsed_rows_match_legistar_record_count"] = (
     vote_count_check["vote_record_count"].isna()
     | (vote_count_check["vote_rows"] == vote_count_check["vote_record_count"])
 )
-zero_vote_pages = action_details[action_details["parsed_vote_rows"].eq(0)].copy()
+if not vote_count_check["parsed_rows_match_summary"].all():
+    bad_matters = ", ".join(
+        vote_count_check.loc[~vote_count_check["parsed_rows_match_summary"], "matter_file"].head(10).astype(str)
+    )
+    raise RuntimeError(f"Member-vote rows do not reconcile to parsed_vote_rows for: {bad_matters}")
+if not vote_count_check["parsed_rows_match_legistar_record_count"].all():
+    bad_matters = ", ".join(
+        vote_count_check.loc[
+            ~vote_count_check["parsed_rows_match_legistar_record_count"], "matter_file"
+        ].head(10).astype(str)
+    )
+    raise RuntimeError(f"Member-vote rows do not reconcile to Legistar vote-record counts for: {bad_matters}")
 
 member_votes_for_join = member_votes.copy()
 if member_votes_for_join.empty:
@@ -460,71 +477,6 @@ def matter_vote_status(row: pd.Series) -> str:
 
 
 local_member_summary["local_member_final_action_vote_status"] = local_member_summary.apply(matter_vote_status, axis=1)
-
-qc = pd.DataFrame(
-    [
-        {
-            "check_name": "first_pass_queue_rows_present",
-            "passed": len(target_queue) > 0,
-            "detail": f"Found {len(target_queue)} first-pass non-approval final action-detail URLs.",
-        },
-        {
-            "check_name": "first_pass_queue_unique_by_matter_id",
-            "passed": not target_queue["matter_id"].duplicated().any(),
-            "detail": "Each queued matter appears once before fetching.",
-        },
-        {
-            "check_name": "first_pass_queue_unique_by_detail_url",
-            "passed": not target_queue["final_history_detail_url"].duplicated().any(),
-            "detail": "Each queued final action-detail URL appears once before fetching.",
-        },
-        {
-            "check_name": "action_detail_pages_available",
-            "passed": fetch_failures_df.empty and len(action_details) == len(target_queue),
-            "detail": (
-                f"Parsed {len(action_details)} pages for {len(target_queue)} queued matters; "
-                f"{len(fetch_failures_df)} fetch failures."
-            ),
-        },
-        {
-            "check_name": "member_vote_rows_match_action_summaries",
-            "passed": bool(vote_count_check["parsed_rows_match_summary"].all()),
-            "detail": "Long member-vote rows reconcile to parsed_vote_rows on every parsed action-detail page.",
-        },
-        {
-            "check_name": "member_vote_rows_match_legistar_record_counts_when_present",
-            "passed": bool(vote_count_check["parsed_rows_match_legistar_record_count"].all()),
-            "detail": "Long member-vote rows reconcile to Legistar vote-record counts when the count is displayed.",
-        },
-        {
-            "check_name": "zero_vote_pages_counted",
-            "passed": True,
-            "detail": f"{len(zero_vote_pages)} parsed non-approval pages contain no individual member-vote rows.",
-        },
-        {
-            "check_name": "nonapproval_member_vote_rows_counted",
-            "passed": True,
-            "detail": f"Parsed {len(member_votes)} individual member-vote rows from first-pass non-approval pages.",
-        },
-        {
-            "check_name": "local_member_vote_keys_unique",
-            "passed": not member_votes_by_person.duplicated(["matter_id", "local_member_key"]).any(),
-            "detail": "Non-approval member votes are unique by matter_id and normalized person key before local-member matching.",
-        },
-        {
-            "check_name": "local_member_vote_rows_counted",
-            "passed": True,
-            "detail": (
-                f"Found {len(local_member_votes)} local-member rows across "
-                f"{local_member_votes['matter_id'].nunique() if not local_member_votes.empty else 0} first-pass matters."
-            ),
-        },
-    ]
-)
-
-if not qc["passed"].all():
-    failed_checks = ", ".join(qc.loc[~qc["passed"], "check_name"].astype(str))
-    raise RuntimeError(f"Non-approval action-vote fetch failed: {failed_checks}.")
 
 action_details.to_csv("../output/member_deference_nonapproval_action_details.csv", index=False)
 local_member_summary.to_csv("../output/member_deference_nonapproval_local_member_vote_status.csv", index=False)
