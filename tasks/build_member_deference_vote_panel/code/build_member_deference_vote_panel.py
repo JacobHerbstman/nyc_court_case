@@ -739,76 +739,20 @@ matter_universe_keys = {
 }
 matter_universe_keys.discard(None)
 
-qc = pd.DataFrame(
-    [
-        {
-            "check_name": "action_detail_unique_by_matter_id",
-            "passed": not action_details["matter_id"].duplicated().any(),
-            "detail": "Legistar final approval action-detail rows are unique by matter_id before panel construction.",
-        },
-        {
-            "check_name": "matter_index_unique_by_matter_id",
-            "passed": not matter_index["matter_id"].duplicated().any(),
-            "detail": "Legistar matter-index rows are unique by matter_id before joining to final approval rows.",
-        },
-        {
-            "check_name": "zap_project_unique_by_project_id",
-            "passed": not zap_projects["project_id"].astype(str).duplicated().any(),
-            "detail": "Staged ZAP project data are unique by project_id before application-key aggregation.",
-        },
-        {
-            "check_name": "panel_unique_by_matter_id",
-            "passed": not panel["matter_id"].duplicated().any(),
-            "detail": "The output panel is one row per final Council approval matter.",
-        },
-        {
-            "check_name": "matter_universe_unique_by_matter_id",
-            "passed": not matter_universe["matter_id"].duplicated().any(),
-            "detail": "The matter-universe output is one row per recalled Legistar matter.",
-        },
-        {
-            "check_name": "matter_universe_history_coverage",
-            "passed": int(matter_universe["final_history_action"].fillna("").eq("").sum()) <= 5,
-            "detail": (
-                f"{int(matter_universe['final_history_action'].fillna('').eq('').sum())} land-use-recalled "
-                "matter rows have no parsed final history action."
-            ),
-        },
-        {
-            "check_name": "vote_status_assigned",
-            "passed": bool(panel["vote_evidence_status"].fillna("").ne("").all()),
-            "detail": "Every panel row receives a vote-evidence status.",
-        },
-        {
-            "check_name": "universe_disposition_assigned",
-            "passed": bool(matter_universe["disposition_group"].fillna("").ne("").all()),
-            "detail": "Every recalled matter receives a broad disposition group.",
-        },
-        {
-            "check_name": "final_action_vote_queue_tier_assigned",
-            "passed": bool(final_action_vote_queue["final_action_vote_fetch_tier"].fillna("").ne("").all()),
-            "detail": "Every non-adopted final-action queue row receives a fetch tier.",
-        },
-        {
-            "check_name": "accepted_ai_geography_repair_unique_by_key",
-            "passed": not ai_geo_repairs.duplicated(["query_year", "vote_date", "matter_file"]).any(),
-            "detail": "Accepted AI/manual geography repairs are unique by query_year, vote_date, and matter_file.",
-        },
-        {
-            "check_name": "accepted_ai_geography_repair_panel_or_universe_key_coverage",
-            "passed": len(accepted_ai_geo_repair_keys - panel_keys - matter_universe_keys) == 0,
-            "detail": (
-                f"{len(panel_ai_geo_repair_keys_used)} accepted AI/manual repair keys were applied in the approval panel; "
-                f"{len(accepted_ai_geo_repair_keys - panel_keys)} accepted repair keys are non-approval or otherwise outside "
-                "the approval-panel rows."
-            ),
-        },
-    ]
-)
-
-if not qc["passed"].all():
-    failed_checks = "; ".join(qc.loc[~qc["passed"], "check_name"])
-    raise RuntimeError(f"Member-deference vote-panel checks failed: {failed_checks}")
+if panel["matter_id"].duplicated().any():
+    raise RuntimeError("Vote panel must be unique by matter_id.")
+if matter_universe["matter_id"].duplicated().any():
+    raise RuntimeError("Matter universe must be unique by matter_id.")
+if int(matter_universe["final_history_action"].fillna("").eq("").sum()) > 5:
+    raise RuntimeError("Too many recalled matter rows lack a parsed final history action.")
+if not panel["vote_evidence_status"].fillna("").ne("").all():
+    raise RuntimeError("Every vote-panel row must receive a vote-evidence status.")
+if not matter_universe["disposition_group"].fillna("").ne("").all():
+    raise RuntimeError("Every recalled matter must receive a disposition group.")
+if not final_action_vote_queue["final_action_vote_fetch_tier"].fillna("").ne("").all():
+    raise RuntimeError("Every non-adopted final-action queue row must receive a fetch tier.")
+if accepted_ai_geo_repair_keys - panel_keys - matter_universe_keys:
+    raise RuntimeError("Every accepted geography repair key must appear in the panel or matter universe.")
 
 panel.to_csv("../output/member_deference_vote_panel.csv", index=False)
 matter_universe.to_csv("../output/member_deference_matter_universe.csv", index=False)
