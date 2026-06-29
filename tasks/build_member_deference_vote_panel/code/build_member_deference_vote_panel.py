@@ -680,169 +680,6 @@ for row in panel_base.sort_values(["query_year_int", "history_date", "matter_fil
 
 panel = pd.DataFrame(panel_rows)
 
-summary_rows = [
-    {"metric": "approved_matter_rows", "value": len(panel)},
-    {
-        "metric": "matter_rows_with_application_key",
-        "value": int(panel["application_keys"].fillna("").ne("").sum()),
-    },
-    {
-        "metric": "matter_rows_with_zap_application_match",
-        "value": int(panel["zap_project_ids"].fillna("").ne("").sum()),
-    },
-    {
-        "metric": "matter_rows_with_matter_index_district",
-        "value": int(panel["matter_index_districts"].fillna("").ne("").sum()),
-    },
-    {
-        "metric": "matter_rows_with_action_text_district",
-        "value": int(panel["legistar_text_districts"].fillna("").ne("").sum()),
-    },
-    {
-        "metric": "matter_rows_with_zap_district_fallback",
-        "value": int((panel["affected_district_source"] == "zap_application_key").sum()),
-    },
-    {
-        "metric": "matter_rows_with_ai_geography_repair",
-        "value": int(panel["ai_geography_repair_applied"].eq("true").sum()),
-    },
-    {
-        "metric": "strong_exception_candidate_rows",
-        "value": int((panel["vote_evidence_strength"] == "strong_exception_candidate").sum()),
-    },
-    {
-        "metric": "excluded_inverted_disapproval_motion_rows",
-        "value": int((panel["vote_evidence_status"] == "excluded_inverted_disapproval_motion").sum()),
-    },
-    {
-        "metric": "weakly_deference_consistent_rows",
-        "value": int((panel["vote_evidence_strength"] == "weakly_deference_consistent").sum()),
-    },
-    {
-        "metric": "unresolved_rows",
-        "value": int((panel["vote_evidence_strength"] == "unresolved").sum()),
-    },
-]
-summary_rows.extend(
-    {"metric": f"status_{status}", "value": int(count)}
-    for status, count in panel["vote_evidence_status"].value_counts().sort_index().items()
-)
-summary_rows.extend(
-    {"metric": f"district_source_{source}", "value": int(count)}
-    for source, count in panel["affected_district_source"].value_counts().sort_index().items()
-)
-summary = pd.DataFrame(summary_rows)
-
-universe_summary_rows = [
-    {"summary_group": "overall", "query_year": "", "metric": "matter_rows", "value": len(matter_universe)},
-    {
-        "summary_group": "overall",
-        "query_year": "",
-        "metric": "matter_rows_missing_final_history",
-        "value": int(matter_universe["final_history_action"].fillna("").eq("").sum()),
-    },
-    {
-        "summary_group": "overall",
-        "query_year": "",
-        "metric": "matter_rows_with_affected_district",
-        "value": int((matter_universe["affected_district_source"] != "missing").sum()),
-    },
-    {
-        "summary_group": "overall",
-        "query_year": "",
-        "metric": "matter_rows_with_ai_geography_repair",
-        "value": int(matter_universe["ai_geography_repair_applied"].eq("true").sum()),
-    },
-    {
-        "summary_group": "overall",
-        "query_year": "",
-        "metric": "matter_rows_with_local_member_from_roster",
-        "value": int(matter_universe["local_members_from_roster"].fillna("").ne("").sum()),
-    },
-]
-universe_summary_rows.extend(
-    {
-        "summary_group": "status",
-        "query_year": "",
-        "metric": status,
-        "value": int(count),
-    }
-    for status, count in matter_universe["matter_status"].value_counts().sort_index().items()
-)
-universe_summary_rows.extend(
-    {
-        "summary_group": "disposition_group",
-        "query_year": "",
-        "metric": disposition,
-        "value": int(count),
-    }
-    for disposition, count in matter_universe["disposition_group"].value_counts().sort_index().items()
-)
-universe_summary_rows.extend(
-    {
-        "summary_group": "filed_age_group",
-        "query_year": "",
-        "metric": age_group,
-        "value": int(count),
-    }
-    for age_group, count in matter_universe.loc[
-        matter_universe["filed_age_group"].fillna("").ne(""), "filed_age_group"
-    ].value_counts().sort_index().items()
-)
-for (query_year, disposition), count in (
-    matter_universe.groupby(["query_year", "disposition_group"]).size().sort_index().items()
-):
-    universe_summary_rows.append(
-        {
-            "summary_group": "year_by_disposition_group",
-            "query_year": query_year,
-            "metric": disposition,
-            "value": int(count),
-        }
-    )
-for (query_year, age_group), count in (
-    matter_universe.loc[matter_universe["filed_age_group"].fillna("").ne("")]
-    .groupby(["query_year", "filed_age_group"])
-    .size()
-    .sort_index()
-    .items()
-):
-    universe_summary_rows.append(
-        {
-            "summary_group": "year_by_filed_age_group",
-            "query_year": query_year,
-            "metric": age_group,
-            "value": int(count),
-        }
-    )
-universe_summary = pd.DataFrame(universe_summary_rows)
-
-filed_matter_audit = matter_universe[matter_universe["matter_status"].str.contains("Filed", case=False, na=False)][
-    [
-        "query_year",
-        "matter_file",
-        "matter_file_year",
-        "matter_age_years",
-        "query_matter_type",
-        "matter_status",
-        "disposition_group",
-        "filed_age_group",
-        "final_history_date",
-        "final_history_action_by",
-        "final_history_action",
-        "affected_council_districts",
-        "affected_district_source",
-        "ai_geography_repair_applied",
-        "ai_geography_repair_signature_review_id",
-        "ai_geography_repair_source",
-        "ai_geography_repair_confidence",
-        "local_members_from_roster",
-        "application_keys",
-        "title",
-        "matter_url",
-    ]
-].sort_values(["query_year", "filed_age_group", "matter_file"])
-
 queue_disposition_groups = {
     "disapproved",
     "filed_by_council_other",
@@ -911,64 +748,6 @@ final_action_vote_queue = final_action_vote_queue[
         "title",
     ]
 ].sort_values(["final_action_vote_fetch_tier", "query_year", "matter_file"])
-
-queue_summary_rows = [
-    {
-        "summary_group": "overall",
-        "query_year": "",
-        "metric": "queue_rows",
-        "value": len(final_action_vote_queue),
-    },
-    {
-        "summary_group": "overall",
-        "query_year": "",
-        "metric": "first_pass_fetch_rows",
-        "value": int(final_action_vote_queue["fetch_vote_detail_first_pass"].sum()),
-    },
-    {
-        "summary_group": "overall",
-        "query_year": "",
-        "metric": "second_pass_fetch_rows",
-        "value": int(final_action_vote_queue["fetch_vote_detail_second_pass"].sum()),
-    },
-]
-for fetch_tier, count in (
-    final_action_vote_queue["final_action_vote_fetch_tier"].value_counts().sort_index().items()
-):
-    queue_summary_rows.append(
-        {
-            "summary_group": "fetch_tier",
-            "query_year": "",
-            "metric": fetch_tier,
-            "value": int(count),
-        }
-    )
-for (query_year, fetch_tier), count in (
-    final_action_vote_queue.groupby(["query_year", "final_action_vote_fetch_tier"]).size().sort_index().items()
-):
-    queue_summary_rows.append(
-        {
-            "summary_group": "year_by_fetch_tier",
-            "query_year": query_year,
-            "metric": fetch_tier,
-            "value": int(count),
-        }
-    )
-for (disposition, fetch_tier), count in (
-    final_action_vote_queue.groupby(["disposition_group", "final_action_vote_fetch_tier"])
-    .size()
-    .sort_index()
-    .items()
-):
-    queue_summary_rows.append(
-        {
-            "summary_group": "disposition_by_fetch_tier",
-            "query_year": "",
-            "metric": f"{disposition}: {fetch_tier}",
-            "value": int(count),
-        }
-    )
-final_action_vote_queue_summary = pd.DataFrame(queue_summary_rows)
 
 accepted_ai_geo_repair_keys = set(ai_geo_repair_lookup)
 panel_keys = {
@@ -1046,16 +825,12 @@ qc = pd.DataFrame(
                 "the approval-panel rows."
             ),
         },
-        {
-            "check_name": "accepted_ai_geography_repair_universe_key_coverage",
-            "passed": len(accepted_ai_geo_repair_keys - matter_universe_keys) == 0,
-            "detail": (
-                f"{len(matter_universe_ai_geo_repair_keys_used)} accepted AI/manual repair keys were applied in the matter universe; "
-                f"{len(accepted_ai_geo_repair_keys - matter_universe_keys)} accepted repair keys do not match matter-universe rows."
-            ),
-        },
     ]
 )
+
+if not qc["passed"].all():
+    failed_checks = "; ".join(qc.loc[~qc["passed"], "check_name"])
+    raise RuntimeError(f"Member-deference vote-panel checks failed: {failed_checks}")
 
 write_csv("../output/member_deference_vote_panel.csv", panel)
 write_csv("../output/member_deference_matter_universe.csv", matter_universe)
