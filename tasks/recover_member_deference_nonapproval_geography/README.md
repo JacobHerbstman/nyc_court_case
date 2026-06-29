@@ -1,19 +1,16 @@
 # Recover Member-Deference Non-Approval Geography
 
-This production-support task recovers geography for first-pass non-approval City
-Council land-use actions that do not already have affected Council districts in
-the Legistar matter index.
+Recovers affected Council districts for non-approval land-use matters that do
+not already have districts in the Legistar matter index.
 
-The task keeps source flags explicit:
+Inputs are the non-approval final-action queue, ZAP project records, ZAP
+project-BBL links, and the current MapPLUTO lot lookup.
 
-- existing Legistar affected Council district, when present
-- ZAP application-number crosswalk to project Council districts, if available
-- ZAP application-number crosswalk to project BBLs, then current MapPLUTO Council district
-- BBLs parsed from the Legistar title, then current MapPLUTO Council district
-- exact normalized title address and borough match to current MapPLUTO
-- deterministic title-address variants, mainly small numeric address ranges,
-  matched to current MapPLUTO
+Creates `member_deference_nonapproval_geography_recovery.csv`. The recovery
+hierarchy uses existing Legistar geography first, then ZAP application matches,
+ZAP BBL matches, BBLs parsed from matter titles, exact address matches, and
+small deterministic address variants.
 
-Current MapPLUTO matches are locational backups, not direct historical district
-statements. They are carried with source flags and reviewed before entering the
-main member-deference decision panel.
+Current MapPLUTO matches are location-based backups rather than direct
+historical district statements, so the output carries source flags for downstream
+review. Recent rebuild runtime: about 1 minute.

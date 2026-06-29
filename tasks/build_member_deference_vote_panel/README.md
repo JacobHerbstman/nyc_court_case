@@ -1,25 +1,17 @@
 # Build Member-Deference Vote Panel
 
-Builds the approval-side member-deference vote panel from NYC Council Legistar
-land-use records.
+Builds the approval-side local-member vote panel for NYC Council land-use
+matters from 1998-2025.
 
-The panel uses Legistar final Council approval action details and member vote
-rows for 1998-2025. It recovers affected Council districts from Legistar text
-when available and otherwise uses application-number matches to ZAP
-projects as a secondary geography source. If Legistar and ZAP do not identify a
-district, the task can use accepted geography repairs from
-`tasks/create_council_land_use_ai_geography_repairs/`. Those repairs come from
-land-use decisions with no clear affected Council district that were fed into
-ChatGPT with matter text, project identifiers, source links, and geography clues;
-the production input is the committed accepted ledger, not the raw chat.
+Inputs are annual Legistar matter, history, action-detail, and member-vote
+files; the Council member roster; ZAP project records; and the accepted
+geography repair ledger. Some repair-ledger rows started as ChatGPT-assisted
+location reads for matters without clear affected districts, but this task reads
+only the committed ledger with source notes.
 
-The primary downstream outputs are:
+Creates `member_deference_matter_universe.csv`,
+`member_deference_vote_panel.csv`, and
+`member_deference_final_action_vote_queue.csv`.
 
-- `member_deference_matter_universe.csv`, the recalled land-use matter universe
-- `member_deference_vote_panel.csv`, approval-side member votes and local-member
-  vote positions
-- `member_deference_final_action_vote_queue.csv`, non-approval and other final
-  action matters that need separate geography and vote recovery
-
-This does not prove member deference. Final votes miss pre-vote bargaining,
-withdrawals, modifications, committee gatekeeping, and agenda control.
+Final votes do not capture pre-vote bargaining, withdrawals, modifications,
+committee gatekeeping, or agenda control.

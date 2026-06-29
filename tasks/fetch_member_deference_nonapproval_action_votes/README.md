@@ -1,32 +1,17 @@
 # Fetch Non-Approval Final-Action Votes
 
-This task fetches Legistar action-detail pages for the first-pass non-approval
-City Council land-use actions identified by
-`tasks/build_member_deference_vote_panel`, after the conservative
-geography incorporation step in
-`tasks/verify_member_deference_nonapproval_geography`.
+Fetches Legistar action-detail pages for non-approval land-use matters and
+parses the individual member votes shown on those pages.
 
-The upstream approval-vote pull only captured final Council approvals. This task
-checks the adjacent margin: land-use matters that were disapproved, filed by the
-Council, or filed through a withdrawal/motion-to-file path. The goal is to learn
-whether those final action pages contain individual member votes and, when they
-do, make them available for the production decision panel.
+The input is the conservative non-approval geography queue. It contains 491 core
+non-approval matters, including 399 with usable affected-district geography and
+92 left without geography pending review.
 
-The task is intentionally separate from the offline vote-panel builder because it
-downloads web pages.
+Creates action-level vote details, affected-local-member vote rows, and
+`member_deference_nonapproval_local_member_vote_status.csv`, the matter-level
+vote-status file used by the decision panel.
 
-The input queue keeps all 491 core first-pass non-approval matters. It carries
-usable affected-district geography for 399 of them and leaves 92 rows blank
-pending manual review. Local-member vote outputs therefore distinguish matters
-with no geography from matters with known geography but missing roster matches.
-
-The local-member outputs are descriptive. An `Affirmative` vote is an affirmative
-vote on the final Council action shown by Legistar, such as filing or
-disapproval; it is not automatically support for the underlying land-use
-application.
-
-The production-facing decision ledger is
-`member_deference_nonapproval_local_member_vote_status.csv`. It records one row
-per queued matter, the affected local members, whether their final-action votes
-were observed, and the standardized local-member vote status used by
-`tasks/build_council_land_use_decision_panel`.
+An `Affirmative` vote here is a vote on the final Council action shown by
+Legistar, such as filing or disapproval; it is not automatically support for the
+underlying land-use application. Cached rebuilds take under 30 seconds; a first
+run can take longer because it downloads Legistar pages.
