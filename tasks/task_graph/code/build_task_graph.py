@@ -44,7 +44,7 @@ def is_rule_line(line):
     return True
 
 
-def parse_makefile(path, scope):
+def parse_makefile(path):
     output_targets = set()
     all_targets = set()
     upstream_outputs = set()
@@ -66,23 +66,13 @@ def parse_makefile(path, scope):
                 output_targets.add(target)
 
         for prereq in normal_prereqs.split():
-            if scope == "production":
-                audit_match = re.match(r"\.\./\.\./audits/([^/\s]+)/output/([^\s|]+)", prereq)
-                production_match = re.match(r"\.\./\.\./([^/\s]+)/output/([^\s|]+)", prereq)
+            audit_match = re.match(r"\.\./\.\./audits/([^/\s]+)/output/([^\s|]+)", prereq)
+            production_match = re.match(r"\.\./\.\./([^/\s]+)/output/([^\s|]+)", prereq)
 
-                if audit_match:
-                    upstream_outputs.add((f"audits/{audit_match.group(1)}", audit_match.group(2)))
-                elif production_match:
-                    upstream_outputs.add((production_match.group(1), production_match.group(2)))
-
-            if scope == "audit":
-                production_match = re.match(r"\.\./\.\./\.\./([^/\s]+)/output/([^\s|]+)", prereq)
-                audit_match = re.match(r"\.\./\.\./([^/\s]+)/output/([^\s|]+)", prereq)
-
-                if production_match:
-                    upstream_outputs.add((production_match.group(1), production_match.group(2)))
-                elif audit_match:
-                    upstream_outputs.add((f"audits/{audit_match.group(1)}", audit_match.group(2)))
+            if audit_match:
+                upstream_outputs.add((f"audits/{audit_match.group(1)}", audit_match.group(2)))
+            elif production_match:
+                upstream_outputs.add((production_match.group(1), production_match.group(2)))
 
     return output_targets, all_targets, upstream_outputs
 
@@ -126,11 +116,7 @@ def find_cycle(tasks, edges):
 
 
 def wrapped_label(task):
-    prefix = ""
     name = task
-    if task.startswith("audits/"):
-        prefix = "audits/\\n"
-        name = task.removeprefix("audits/")
 
     chunks = []
     line = ""
@@ -145,17 +131,23 @@ def wrapped_label(task):
     if line:
         chunks.append(line)
 
-    return prefix + "\\n".join(chunks)
+    return "\\n".join(chunks)
 
 
 def node_fill(scope):
     if scope == "production":
         return "white"
-    if scope == "audit":
-        return "gray90"
     if scope == "infrastructure":
         return "lightblue"
     return "mistyrose"
+
+
+def task_scope(task, task_scopes):
+    if task in task_scopes:
+        return task_scopes[task]
+    if task.startswith("audits/"):
+        return "audit"
+    return "missing"
 
 
 def write_dot(path, nodes, edges, task_scopes):
@@ -181,13 +173,9 @@ def main():
     edges_csv = Path("../output/task_edges.csv")
     inventory_csv = Path("../output/task_inventory.csv")
     output_inventory_csv = Path("../output/task_output_inventory.csv")
-    boundary_edges_csv = Path("../output/task_boundary_edges.csv")
     dot_file = Path("../output/task_flow.dot")
-    production_dot_file = Path("../output/task_flow_production.dot")
-    full_dot_file = Path("../output/task_flow_full.dot")
     summary_csv = Path("../output/task_graph_summary.csv")
     tasks_root = Path("../..").resolve()
-    audits_root = tasks_root / "audits"
     repo_root = tasks_root.parent
     infrastructure_tasks = {"task_graph"}
 
@@ -197,21 +185,14 @@ def main():
         if path.parents[1].name not in {"archive", "_lib", "audits"}
     }
 
-    audit_makefiles = {}
-    if audits_root.exists():
-        audit_makefiles = {
-            f"audits/{path.parents[1].name}": (path, "audit")
-            for path in sorted(audits_root.glob("*/code/Makefile"))
-        }
-
-    task_makefiles = {**production_makefiles, **audit_makefiles}
+    task_makefiles = production_makefiles
     task_outputs = {}
     task_all_outputs = {}
     upstream_refs = {}
     task_scopes = {}
 
     for task, (makefile, scope) in task_makefiles.items():
-        outputs, all_outputs, refs = parse_makefile(makefile, scope)
+        outputs, all_outputs, refs = parse_makefile(makefile)
         task_outputs[task] = outputs
         task_all_outputs[task] = all_outputs
         upstream_refs[task] = refs
@@ -221,11 +202,6 @@ def main():
         task
         for task, scope in task_scopes.items()
         if scope == "production"
-    ]
-    audit_tasks = [
-        task
-        for task, scope in task_scopes.items()
-        if scope == "audit"
     ]
     infrastructure_task_names = [
         task
@@ -260,7 +236,7 @@ def main():
         upstream_counts[downstream] += 1
         output_downstream_tasks[(upstream, output_rel)].add(downstream)
 
-        if task_scopes.get(upstream) == "audit" and task_scopes.get(downstream) == "production":
+        if task_scope(upstream, task_scopes) == "audit" and task_scope(downstream, task_scopes) == "production":
             production_audit_edges.append((downstream, upstream, output_rel))
 
     paper_makefile = repo_root / "paper" / "Makefile"
@@ -275,25 +251,6 @@ def main():
         for match in re.finditer(r"\.\./tasks/([^/\s]+)/output/([^\\\s{}]+)", tex_file.read_text()):
             paper_facing_tasks.add(match.group(1))
             paper_facing_outputs.add((match.group(1), match.group(2)))
-
-    parents = defaultdict(set)
-    for upstream, downstream, _ in edges:
-        parents[downstream].add(upstream)
-
-    paper_ancestry_tasks = set(paper_facing_tasks)
-    frontier = list(paper_facing_tasks)
-    while frontier:
-        task = frontier.pop()
-        for upstream in parents[task]:
-            if upstream not in paper_ancestry_tasks:
-                paper_ancestry_tasks.add(upstream)
-                frontier.append(upstream)
-
-    paper_ancestry_tasks = {
-        task
-        for task in paper_ancestry_tasks
-        if task in task_makefiles
-    }
 
     production_sinks = [
         task
@@ -316,9 +273,9 @@ def main():
         writer.writerows([
             [
                 upstream,
-                task_scopes.get(upstream, "missing"),
+                task_scope(upstream, task_scopes),
                 downstream,
-                task_scopes.get(downstream, "missing"),
+                task_scope(downstream, task_scopes),
                 output_rel,
             ]
             for upstream, downstream, output_rel in edges
@@ -395,38 +352,10 @@ def main():
                     str(sidecar_named).lower(),
                 ])
 
-    with boundary_edges_csv.open("w", newline="") as f:
-        writer = csv.writer(f)
-        writer.writerow([
-            "boundary_type",
-            "downstream_task",
-            "downstream_scope",
-            "upstream_task",
-            "upstream_scope",
-            "upstream_output",
-        ])
-        for upstream, downstream, output_rel in sorted(edges):
-            upstream_scope = task_scopes.get(upstream, "missing")
-            downstream_scope = task_scopes.get(downstream, "missing")
-            if upstream_scope == downstream_scope:
-                continue
-
-            writer.writerow([
-                f"{upstream_scope}_to_{downstream_scope}",
-                downstream,
-                downstream_scope,
-                upstream,
-                upstream_scope,
-                output_rel,
-            ])
-
-    write_dot(dot_file, paper_ancestry_tasks, edges, task_scopes)
-    write_dot(production_dot_file, production_tasks, edges, task_scopes)
-    write_dot(full_dot_file, task_makefiles.keys(), edges, task_scopes)
+    write_dot(dot_file, production_tasks, edges, task_scopes)
 
     summary_rows = [
         ["production_task_count", str(len(production_tasks))],
-        ["audit_task_count", str(len(audit_tasks))],
         ["infrastructure_task_count", str(len(infrastructure_task_names))],
         ["task_count", str(len(task_makefiles))],
         ["production_output_target_count", str(sum(len(task_outputs[task]) for task in production_tasks))],
@@ -452,11 +381,7 @@ def main():
         ],
         [
             "production_edge_count",
-            str(sum(1 for _, downstream, _ in edges if task_scopes.get(downstream) == "production")),
-        ],
-        [
-            "audit_edge_count",
-            str(sum(1 for _, downstream, _ in edges if task_scopes.get(downstream) == "audit")),
+            str(sum(1 for _, downstream, _ in edges if task_scope(downstream, task_scopes) == "production")),
         ],
         ["edge_count", str(len(edges))],
         ["production_to_audit_dependency_count", str(len(production_audit_edges))],
