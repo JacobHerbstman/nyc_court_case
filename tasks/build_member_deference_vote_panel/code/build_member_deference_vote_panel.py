@@ -450,6 +450,33 @@ roster["term_end_date_parsed"] = pd.to_datetime(roster["term_end_date"], errors=
 roster["member_name_norm"] = roster["member_name"].map(norm_name)
 roster["member_name_edge"] = roster["member_name"].map(edge_name)
 roster = roster[roster["member_name_norm"] != "vacant"].copy()
+roster["district_key"] = roster["district"].map(lambda x: str(int(x)) if normalize_space(x) else "")
+
+roster_by_district = {
+    district: rows.to_dict("records")
+    for district, rows in roster.sort_values(["district_key", "term_start_date_parsed", "member_name"]).groupby("district_key")
+}
+
+
+def local_roster_rows(affected_districts: list[str], target_date: object) -> tuple[list[dict[str, object]], list[str]]:
+    if pd.isna(target_date):
+        return [], []
+
+    local_rows = []
+    missing_roster_districts = []
+    for district in affected_districts:
+        district_key = str(int(district))
+        matches = [
+            row
+            for row in roster_by_district.get(district_key, [])
+            if row["term_start_date_parsed"] <= target_date <= row["term_end_date_parsed"]
+        ]
+        if matches:
+            local_rows.extend(matches)
+        else:
+            missing_roster_districts.append(district_key)
+
+    return local_rows, missing_roster_districts
 
 matter_universe_rows = []
 for row in matter_universe_base.sort_values(["query_year_int", "matter_file"]).to_dict("records"):
@@ -460,19 +487,8 @@ for row in matter_universe_base.sort_values(["query_year_int", "matter_file"]).t
         ai_geo_repair_lookup,
     )
 
-    local_members = []
-    missing_roster_districts = []
-    if not pd.isna(final_date):
-        for district in affected_districts:
-            matches = roster[
-                (roster["district"].astype(str) == str(int(district)))
-                & (roster["term_start_date_parsed"] <= final_date)
-                & (final_date <= roster["term_end_date_parsed"])
-            ]
-            if matches.empty:
-                missing_roster_districts.append(str(district))
-                continue
-            local_members.extend(matches["member_name"].tolist())
+    local_rows, missing_roster_districts = local_roster_rows(affected_districts, final_date)
+    local_members = [local["member_name"] for local in local_rows]
 
     matter_file_year_num = pd.to_numeric(pd.Series([row.get("matter_file_year", "")]), errors="coerce").iloc[0]
     query_year_num = pd.to_numeric(pd.Series([row.get("query_year_int", "")]), errors="coerce").iloc[0]
@@ -544,18 +560,7 @@ for row in panel_base.sort_values(["query_year_int", "history_date", "matter_fil
         panel_ai_geo_repair_keys_used.add(ai_geo_repair_key)
 
     vote_date = row["vote_date"]
-    local_rows = []
-    missing_roster_districts = []
-    for district in affected_districts:
-        matches = roster[
-            (roster["district"].astype(str) == str(int(district)))
-            & (roster["term_start_date_parsed"] <= vote_date)
-            & (vote_date <= roster["term_end_date_parsed"])
-        ]
-        if matches.empty:
-            missing_roster_districts.append(str(district))
-            continue
-        local_rows.extend(matches.to_dict("records"))
+    local_rows, missing_roster_districts = local_roster_rows(affected_districts, vote_date)
 
     local_member_names = []
     local_member_votes = []
