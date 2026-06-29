@@ -31,29 +31,64 @@ has_compact_multi_council <- function(x) {
   !is.na(raw_value) & str_detect(raw_value, "^[0-9]{3,}$")
 }
 
-raw_index <- read_csv("../output/zap_raw_files.csv", show_col_types = FALSE, na = c("", "NA")) |>
-  filter(!is.na(raw_parquet_path), file.exists(raw_parquet_path)) |>
-  mutate(vintage = as.character(vintage), raw_parquet_path = as.character(raw_parquet_path))
+source_catalog <- read_csv("../input/source_catalog.csv", show_col_types = FALSE, na = c("", "NA"))
+source_rows <- source_catalog |>
+  filter(source_id %in% c("dcp_zap_project_data", "dcp_zap_bbl")) |>
+  arrange(source_id)
 
-project_row <- raw_index |>
-  filter(source_id == "dcp_zap_project_data") |>
-  arrange(desc(vintage)) |>
-  slice_head(n = 1)
-
-bbl_row <- raw_index |>
-  filter(source_id == "dcp_zap_bbl") |>
-  arrange(desc(vintage)) |>
-  slice_head(n = 1)
-
-if (nrow(project_row) == 0 || nrow(bbl_row) == 0) {
-  write_parquet_if_changed(tibble(), "../output/zap_project_data.parquet")
-  write_parquet_if_changed(tibble(), "../output/zap_project_bbl.parquet")
-  quit(save = "no")
+if (nrow(source_rows) != 2) {
+  stop("Source catalog must contain exactly dcp_zap_project_data and dcp_zap_bbl.")
 }
 
-raw_project_df <- read_parquet(project_row$raw_parquet_path[[1]]) |>
-  as.data.frame() |>
-  as_tibble()
+pull_date <- resolve_raw_pull_date(setNames(
+  lapply(seq_len(nrow(source_rows)), function(i) source_rows$expected_filename[[i]]),
+  source_rows$source_id
+))
+
+read_zap_source_csv <- function(source_id) {
+  source_row <- source_rows |>
+    filter(.data$source_id == !!source_id)
+
+  if (nrow(source_row) != 1) {
+    stop("Source catalog row is not unique for ", source_id)
+  }
+
+  dataset_id <- str_match(source_row$official_url[[1]], "([a-z0-9]{4}-[a-z0-9]{4})")[, 2]
+  if (is.na(dataset_id)) {
+    stop("Could not parse Socrata dataset id for ", source_id)
+  }
+
+  raw_path <- file.path(raw_source_dir(source_id), pull_date, source_row$expected_filename[[1]])
+  rows_csv_url <- paste0("https://data.cityofnewyork.us/api/views/", dataset_id, "/rows.csv?accessType=DOWNLOAD")
+
+  if (!file.exists(raw_path)) {
+    status <- download_with_status(rows_csv_url, raw_path)
+    if (!file.exists(raw_path)) {
+      stop("Could not download ", source_id, ": ", status)
+    }
+  }
+
+  raw_df <- read_csv(
+    raw_path,
+    col_types = cols(.default = col_character()),
+    show_col_types = FALSE,
+    guess_max = 50000,
+    na = c("", "NA")
+  ) |>
+    as_tibble()
+
+  names(raw_df) <- normalize_names(names(raw_df))
+
+  raw_df |>
+    mutate(
+      source_id = source_id,
+      source_vintage = pull_date,
+      source_raw_path = raw_path
+    ) |>
+    select(source_id, source_vintage, source_raw_path, everything())
+}
+
+raw_project_df <- read_zap_source_csv("dcp_zap_project_data")
 
 missing_raw_project_id_count <- sum(is.na(normalize_text_field(raw_project_df$project_id)))
 
@@ -109,9 +144,7 @@ project_df <- raw_project_df |>
   distinct(project_id, .keep_all = TRUE) |>
   select(-input_row_number)
 
-raw_bbl_df <- read_parquet(bbl_row$raw_parquet_path[[1]]) |>
-  as.data.frame() |>
-  as_tibble()
+raw_bbl_df <- read_zap_source_csv("dcp_zap_bbl")
 
 bbl_df <- raw_bbl_df |>
   mutate(

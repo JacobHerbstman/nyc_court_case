@@ -187,12 +187,25 @@ coverage_fields <- c(
   "mih_flag"
 )
 
-metadata_path <- read_csv("../input/zap_files.csv", show_col_types = FALSE, na = c("", "NA")) |>
-  filter(source_id == "dcp_zap_project_data", file_role == "metadata_json", !is.na(raw_path)) |>
-  arrange(desc(vintage)) |>
-  slice_head(n = 1) |>
-  mutate(raw_path = if_else(file.exists(raw_path), raw_path, file.path("..", raw_path))) |>
-  pull(raw_path)
+source_catalog <- read_csv("../input/source_catalog.csv", show_col_types = FALSE, na = c("", "NA"))
+zap_project_source <- source_catalog |>
+  filter(source_id == "dcp_zap_project_data")
+
+if (nrow(zap_project_source) != 1) {
+  stop("Source catalog must contain exactly one dcp_zap_project_data row.")
+}
+
+zap_project_dataset_id <- str_match(zap_project_source$official_url[[1]], "([a-z0-9]{4}-[a-z0-9]{4})")[, 2]
+if (is.na(zap_project_dataset_id)) {
+  stop("Could not parse Socrata dataset id for dcp_zap_project_data.")
+}
+
+zap_project_metadata_filename <- paste0(zap_project_dataset_id, "_metadata.json")
+zap_project_pull_date <- resolve_raw_pull_date(list(dcp_zap_project_data = c(
+  zap_project_source$expected_filename[[1]],
+  zap_project_metadata_filename
+)))
+metadata_path <- file.path(raw_source_dir("dcp_zap_project_data"), zap_project_pull_date, zap_project_metadata_filename)
 
 metadata_df <- if (length(metadata_path) == 1 && file.exists(metadata_path)) {
   metadata_json <- fromJSON(metadata_path, simplifyVector = FALSE)
@@ -235,7 +248,7 @@ make_field_coverage <- function(df, scope_label) {
     )
 }
 
-source_catalog_note <- read_csv("../input/source_catalog.csv", show_col_types = FALSE, na = c("", "NA")) |>
+source_catalog_note <- source_catalog |>
   filter(source_id == "dcp_zap_project_data") |>
   transmute(source_id, source_url = official_url, source_type = access_mode, coverage_start_date = start_date, source_note = notes)
 
