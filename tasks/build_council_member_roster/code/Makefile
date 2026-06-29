@@ -1,5 +1,3 @@
-SHELL := bash
-
 all: ../output/council_member_roster_master.csv
 
 ../output/council_member_roster_master.csv: build_council_member_roster.py ../input/council_member_roster_source_files.csv | ../output

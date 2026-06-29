@@ -205,8 +205,8 @@ for source in source_files_out:
                 "person_url": person_href,
                 "website_url": website_link.get("href") if website_link else "",
                 "evidence_summary": evidence_summary,
-                "manual_audit_required": False,
-                "audit_reason": "",
+                "source_review_required": False,
+                "source_review_reason": "",
             }
         )
 
@@ -269,9 +269,9 @@ for source in source_files_out:
                     "person_guid": "",
                     "person_url": urljoin(source["url"], link.get("href", "")),
                     "website_url": "",
-                    "evidence_summary": "Secondary district-history page list item; use as broad recall and manual-audit backfill only.",
-                    "manual_audit_required": True,
-                    "audit_reason": "secondary_wikipedia_list_source",
+                    "evidence_summary": "Secondary district-history page list item used as source-documented backfill.",
+                    "source_review_required": True,
+                    "source_review_reason": "secondary_wikipedia_list_source",
                 }
             )
 
@@ -304,8 +304,8 @@ for source in source_files_out:
                 "person_url": "",
                 "website_url": "",
                 "evidence_summary": "District-history page did not contain a parseable Members table.",
-                "manual_audit_required": True,
-                "audit_reason": "wikipedia_members_table_unparsed",
+                "source_review_required": True,
+                "source_review_reason": "wikipedia_members_table_unparsed",
             }
         )
         continue
@@ -345,9 +345,9 @@ for source in source_files_out:
                 "person_guid": "",
                 "person_url": "",
                 "website_url": "",
-                "evidence_summary": "Secondary district-history page; use as broad recall and pre-Legistar backfill only.",
-                "manual_audit_required": True,
-                "audit_reason": "secondary_pre_legistar_source",
+                "evidence_summary": "Secondary district-history page used as pre-Legistar backfill.",
+                "source_review_required": True,
+                "source_review_reason": "secondary_pre_legistar_source",
             }
         )
 
@@ -400,10 +400,10 @@ for official_row in official_with_district:
 
         if official_start <= master_end + timedelta(days=1) and official_end > master_end and official_end >= master_start:
             master_row["term_end_date"] = official_row["term_end_date"]
-            master_row["manual_audit_required"] = True
-            master_row["audit_reason"] = (
-                f"{master_row['audit_reason']}; official_legistar_extended_secondary_term_end"
-                if master_row["audit_reason"]
+            master_row["source_review_required"] = True
+            master_row["source_review_reason"] = (
+                f"{master_row['source_review_reason']}; official_legistar_extended_secondary_term_end"
+                if master_row["source_review_reason"]
                 else "official_legistar_extended_secondary_term_end"
             )
             master_row["evidence_summary"] = (
@@ -452,10 +452,10 @@ for district in range(1, 52):
             if row_start < previous_end and row["member_name_clean"] != previous["member_name_clean"]:
                 new_start = (previous_end + timedelta(days=1)).isoformat()
                 row["term_start_date"] = new_start
-                row["manual_audit_required"] = True
-                row["audit_reason"] = (
-                    f"{row['audit_reason']}; trimmed_start_after_prior_member_interval"
-                    if row["audit_reason"]
+                row["source_review_required"] = True
+                row["source_review_reason"] = (
+                    f"{row['source_review_reason']}; trimmed_start_after_prior_member_interval"
+                    if row["source_review_reason"]
                     else "trimmed_start_after_prior_member_interval"
                 )
                 row["evidence_summary"] = (
@@ -597,12 +597,12 @@ fields = [
     "person_url",
     "website_url",
     "evidence_summary",
-    "manual_audit_required",
-    "audit_reason",
+    "source_review_required",
+    "source_review_reason",
 ]
-
-write_csv("../output/council_member_roster_master.csv", master_rows, fields)
 
 if any(not row["passed"] for row in roster_checks):
     failed_checks = ", ".join(row["check_name"] for row in roster_checks if not row["passed"])
     raise RuntimeError(f"Council member roster build failed: {failed_checks}.")
+
+write_csv("../output/council_member_roster_master.csv", master_rows, fields)

@@ -41,6 +41,18 @@ def compute_sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def cached_file_is_local(path: Path) -> bool:
+    if not path.exists():
+        return False
+    stat_result = path.stat()
+    return stat_result.st_size > 0 and getattr(stat_result, "st_blocks", 1) != 0
+
+
+def remove_bad_cached_file(path: Path) -> None:
+    if path.exists() and not cached_file_is_local(path):
+        path.unlink()
+
+
 def parse_form_inputs(html: str) -> dict[str, str]:
     soup = BeautifulSoup(html, "html.parser")
     payload: dict[str, str] = {}
@@ -131,7 +143,8 @@ def save_response(response: requests.Response, raw_path: Path) -> None:
 
 
 def get_or_fetch(session: requests.Session, url: str, raw_path: Path, data: dict[str, str] | None = None):
-    if raw_path.exists() and raw_path.stat().st_size > 0:
+    remove_bad_cached_file(raw_path)
+    if cached_file_is_local(raw_path):
         return CachedResponse(raw_path)
 
     response = session.post(url, data=data, timeout=60) if data is not None else session.get(url, timeout=60)
@@ -377,6 +390,10 @@ fetch_qc = [
     },
 ]
 
+if any(not row["passed"] for row in fetch_qc):
+    failed_checks = ", ".join(row["check_name"] for row in fetch_qc if not row["passed"])
+    raise RuntimeError(f"Council member roster source fetch failed: {failed_checks}.")
+
 write_csv(
     "../output/council_member_roster_source_files.csv",
     fetch_rows,
@@ -402,7 +419,3 @@ write_csv(
         "notes",
     ],
 )
-
-if any(not row["passed"] for row in fetch_qc):
-    failed_checks = ", ".join(row["check_name"] for row in fetch_qc if not row["passed"])
-    raise RuntimeError(f"Council member roster source fetch failed: {failed_checks}.")
