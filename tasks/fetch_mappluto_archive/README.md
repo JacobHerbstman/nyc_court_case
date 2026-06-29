@@ -1,5 +1,5 @@
-# fetch_mappluto_archive
-- Does: Downloads current and archived DCP MapPLUTO release files and their provenance metadata.
-- Makes: Raw release zips, provenance snapshots, inventories, and checksums.
-- Approximate runtime: 5 to 20 minutes.
+# Fetch MapPLUTO Archive
 
+Reads the source catalog and downloads MapPLUTO release files used by parcel-based construction and geography tasks.
+
+Creates `mappluto_files.csv` and cached release files under this task's output folder.

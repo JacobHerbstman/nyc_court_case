@@ -79,13 +79,13 @@ def application_keys(value: object) -> list[str]:
     return list(dict.fromkeys(keys))
 
 
-split_votes = pd.read_csv(
-    f"../input/legistar_{query_year}_broad_recall_split_vote_signals.csv",
+action_details = pd.read_csv(
+    f"../input/legistar_{query_year}_broad_recall_action_details.csv",
     dtype=str,
     keep_default_na=False,
 )
-action_details = pd.read_csv(
-    f"../input/legistar_{query_year}_broad_recall_action_details.csv",
+matter_index = pd.read_csv(
+    f"../input/legistar_{query_year}_broad_recall_matter_index.csv",
     dtype=str,
     keep_default_na=False,
 )
@@ -94,6 +94,36 @@ roster = pd.read_csv(
     dtype=str,
     keep_default_na=False,
 )
+
+matter_columns = [
+    "matter_id",
+    "matter_file",
+    "matter_type",
+    "status",
+    "committee",
+    "title",
+    "borough",
+    "affected_council_districts",
+    "application_numbers_in_title",
+    "land_use_recall_reason",
+    "laguardia_hotel_seed_flag",
+]
+action_details["negative_count_int"] = pd.to_numeric(
+    action_details["negative_count"], errors="coerce"
+).fillna(0)
+action_details["abstain_count_int"] = pd.to_numeric(
+    action_details["abstain_count"], errors="coerce"
+).fillna(0)
+split_votes = action_details.merge(
+    matter_index[matter_columns],
+    on=["matter_id", "matter_file"],
+    how="left",
+    validate="one_to_one",
+)
+split_votes = split_votes[
+    (split_votes["negative_count_int"] > 0)
+    | (split_votes["abstain_count_int"] > 0)
+].sort_values(["history_date", "matter_file"])
 
 split_ids = set(split_votes["matter_id"])
 action_ids = set(action_details["matter_id"])

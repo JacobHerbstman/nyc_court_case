@@ -1,5 +1,7 @@
-# Accepted Council Land-Use AI Geography Repairs
+# Create Council Land-Use Geography Repairs
 
-This task creates the accepted AI/manual geography repair ledger for Council land-use matters that were missing affected Council districts in the main Legistar/ZAP sources.
+Reads the reviewed geography repair ledger for Council land-use matters whose affected districts were not clear from Legistar, ZAP, or deterministic crosswalks.
 
-The task is intentionally upstream of the member-deference panel. The ledger in `code/accepted_ai_geography_repair_ledger.csv` is a reviewed source file, not an output of the downstream audit workflow that discovered the cases. `code/normalize_accepted_ai_geography_repairs.py` validates uniqueness by `query_year`, `vote_date`, and `matter_file`, checks that district assignments are valid Council District numbers, and writes the normalized output consumed by the panel builder.
+For these rows, available matter text, project identifiers, source URLs, and related geography clues were reviewed with ChatGPT as a first-pass aid to identify the affected Council district or districts. The production input is not the raw AI response; it is the accepted ledger in `code/accepted_ai_geography_repair_ledger.csv`, which records the final district assignment, confidence, evidence type, note, and source URLs for each promoted repair.
+
+Creates `council_land_use_ai_geography_accepted_repairs.csv`.

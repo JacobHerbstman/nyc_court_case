@@ -1,4 +1,5 @@
-# build_dcp_boundaries
-- Does: Standardizes the current DCP boundary layers into clean geometry tables.
-- Makes: Boundary parquets and an index CSV in `output/`.
-- Approximate runtime: under 1 minute.
+# Build DCP Boundaries
+
+Builds standardized DCP boundary files from the boundary source catalog for downstream geography tasks.
+
+Creates `dcp_boundary_index.csv` and `dcp_boundary_community_districts_20260501.parquet`.

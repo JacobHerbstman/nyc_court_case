@@ -21,11 +21,9 @@ if len(sys.argv) != 2 or not re.fullmatch(r"\d{4}", sys.argv[1]):
 
 QUERY_YEAR = sys.argv[1]
 ACTION_DETAILS_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_action_details.csv")
-SPLIT_VOTE_SIGNALS_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_split_vote_signals.csv")
 MEMBER_VOTES_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_member_votes.csv")
 DECLARED_OUTPUTS = [
     ACTION_DETAILS_OUTPUT,
-    SPLIT_VOTE_SIGNALS_OUTPUT,
     MEMBER_VOTES_OUTPUT,
 ]
 
@@ -57,12 +55,11 @@ def existing_outputs_complete() -> bool:
         return False
 
     action_details = pd.read_csv(ACTION_DETAILS_OUTPUT, dtype=str, keep_default_na=False)
-    split_vote_signals = pd.read_csv(SPLIT_VOTE_SIGNALS_OUTPUT, dtype=str, keep_default_na=False)
     member_votes = pd.read_csv(MEMBER_VOTES_OUTPUT, dtype=str, keep_default_na=False)
 
     if action_details.empty or "raw_path" not in action_details.columns:
         return False
-    if "matter_id" not in split_vote_signals.columns or member_votes.empty:
+    if member_votes.empty:
         return False
 
     return all(Path(raw_path).exists() for raw_path in action_details["raw_path"].drop_duplicates() if raw_path)
@@ -192,12 +189,6 @@ history_events = pd.read_csv(
     dtype=str,
     keep_default_na=False,
 )
-matter_index = pd.read_csv(
-    f"../output/legistar_{QUERY_YEAR}_broad_recall_matter_index.csv",
-    dtype=str,
-    keep_default_na=False,
-)
-
 pull_dates = sorted(set(history_events["pull_date"]) - {""})
 if len(pull_dates) != 1:
     raise RuntimeError(f"Expected exactly one pull_date in the {QUERY_YEAR} history-event table.")
@@ -331,29 +322,11 @@ vote_count_check["parsed_rows_match_legistar_record_count"] = (
     vote_count_check["vote_rows"] == vote_count_check["vote_record_count"]
 )
 zero_vote_pages = vote_count_check[vote_count_check["parsed_vote_rows"] == 0]
-
-matter_columns = [
-    "matter_id",
-    "matter_file",
-    "matter_type",
-    "status",
-    "committee",
-    "title",
-    "borough",
-    "affected_council_districts",
-    "application_numbers_in_title",
-    "land_use_recall_reason",
-    "laguardia_hotel_seed_flag",
-]
-split_vote_signals = (
-    action_details.merge(
-        matter_index[matter_columns],
-        on=["matter_id", "matter_file"],
-        how="left",
-        validate="one_to_one",
-    )
-    .query("negative_count > 0 or abstain_count > 0")
-    .sort_values(["history_date", "matter_file"])
+non_unanimous_vote_count = int(
+    (
+        (action_details["negative_count"] > 0)
+        | (action_details["abstain_count"] > 0)
+    ).sum()
 )
 
 qc_rows = [
@@ -389,9 +362,9 @@ qc_rows = [
         "detail": f"{len(zero_vote_pages)} final approval action-detail pages show a (0:0) vote tab and no individual member-vote rows.",
     },
     {
-        "check_name": "split_vote_signal_rows_counted",
+        "check_name": "non_unanimous_vote_rows_counted",
         "passed": True,
-        "detail": f"Found {len(split_vote_signals)} approved {QUERY_YEAR} land-use matter rows with a non-unanimous member vote.",
+        "detail": f"Found {non_unanimous_vote_count} approved {QUERY_YEAR} land-use matter rows with a negative or abstain member vote.",
     },
     {
         "check_name": "duplicate_approval_events_deduplicated",
@@ -421,7 +394,6 @@ qc = pd.DataFrame(qc_rows)
 
 action_details.to_csv(ACTION_DETAILS_OUTPUT, index=False)
 member_votes.to_csv(MEMBER_VOTES_OUTPUT, index=False)
-split_vote_signals.to_csv(SPLIT_VOTE_SIGNALS_OUTPUT, index=False)
 
 if not qc["passed"].all():
     failed_checks = ", ".join(qc.loc[~qc["passed"], "check_name"].astype(str))

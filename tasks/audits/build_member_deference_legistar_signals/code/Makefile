@@ -8,7 +8,7 @@ all: $(foreach year,$(RECALL_YEARS),../output/legistar_$(year)_member_override_m
 
 ../output/legistar_%_member_override_matter_signals.csv: build_member_deference_legistar_signals.py \
 	../input/legistar_%_broad_recall_action_details.csv \
-	../input/legistar_%_broad_recall_split_vote_signals.csv \
+	../input/legistar_%_broad_recall_matter_index.csv \
 	../input/council_member_roster_master.csv | ../output
 	python3 $< $*
 
@@ -21,7 +21,7 @@ all: $(foreach year,$(RECALL_YEARS),../output/legistar_$(year)_member_override_m
 ../input/legistar_%_broad_recall_action_details.csv: ../../../fetch_council_land_use_records/output/legistar_%_broad_recall_action_details.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/legistar_%_broad_recall_split_vote_signals.csv: ../../../fetch_council_land_use_records/output/legistar_%_broad_recall_split_vote_signals.csv | ../input
+../input/legistar_%_broad_recall_matter_index.csv: ../../../fetch_council_land_use_records/output/legistar_%_broad_recall_matter_index.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/council_member_roster_master.csv: ../../../build_council_member_roster/output/council_member_roster_master.csv | ../input
@@ -29,6 +29,6 @@ all: $(foreach year,$(RECALL_YEARS),../output/legistar_$(year)_member_override_m
 
 link-inputs: ../input/council_member_roster_master.csv \
 	$(foreach year,$(RECALL_YEARS),../input/legistar_$(year)_broad_recall_action_details.csv) \
-	$(foreach year,$(RECALL_YEARS),../input/legistar_$(year)_broad_recall_split_vote_signals.csv)
+	$(foreach year,$(RECALL_YEARS),../input/legistar_$(year)_broad_recall_matter_index.csv)
 
 include ../../generic.make
