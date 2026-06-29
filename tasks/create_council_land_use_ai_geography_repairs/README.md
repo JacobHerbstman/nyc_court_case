@@ -13,7 +13,7 @@ per promoted repair: final district assignment, source of the repair, confidence
 promotion decision, evidence type, note, matter identifiers, and source URLs.
 
 This task does not call ChatGPT. It normalizes the committed accepted ledger so
-downstream vote-panel code reads a stable project file rather than an audit
-workflow.
+downstream vote-panel code reads a stable project file rather than a separate
+review workflow.
 
 Creates `council_land_use_ai_geography_accepted_repairs.csv`.
