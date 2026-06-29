@@ -625,98 +625,34 @@ def main() -> None:
     detail_ids = set(detail_files["matter_id"].astype(str))
     recall_ids = set(recall_rows["matter_id"].astype(str))
 
-    qc_rows = [
-        {
-            "check_name": "all_query_counts_reconciled",
-            "passed": bool(count_check["matches_reported_records"].all()),
-            "detail": "; ".join(
-                f"{row.query_matter_type}: parsed {row.parsed_rows} of reported {row.reported_records}"
-                for row in count_check.itertuples()
-            ),
-        },
-        {
-            "check_name": "unique_matter_ids_in_index",
-            "passed": not matter_index["matter_id"].duplicated().any(),
-            "detail": f"Each parsed {QUERY_YEAR} Legistar matter ID appears once in the combined index.",
-        },
-        {
-            "check_name": "land_use_application_query_returns_records",
-            "passed": bool(
-                count_check.loc[
-                    count_check["query_matter_type"] == "Land Use Application",
-                    "parsed_rows",
-                ].gt(0).any()
-            ),
-            "detail": f"The {QUERY_YEAR} Land Use Application query returns at least one record.",
-        },
-        {
-            "check_name": "land_use_call_up_query_returns_records",
-            "passed": bool(
-                count_check.loc[
-                    count_check["query_matter_type"] == "Land Use Call-Up",
-                    "parsed_rows",
-                ].gt(0).any()
-            ),
-            "detail": f"The {QUERY_YEAR} Land Use Call-Up query returns at least one record.",
-        },
-        {
-            "check_name": "resolution_query_returns_records",
-            "passed": bool(
-                count_check.loc[
-                    count_check["query_matter_type"] == "Resolution",
-                    "parsed_rows",
-                ].gt(0).any()
-            ),
-            "detail": f"The {QUERY_YEAR} Resolution query is included so land-use resolutions can be linked to LU matters.",
-        },
-        {
-            "check_name": "detail_pages_downloaded_for_recall_rows",
-            "passed": recall_ids.issubset(detail_ids),
-            "detail": f"Downloaded detail pages for {len(detail_ids)} of {len(recall_ids)} recall rows.",
-        },
-        {
-            "check_name": "resolution_land_use_candidates_present",
-            "passed": bool(
-                (
-                    (matter_index["query_matter_type"] == "Resolution")
-                    & matter_index["land_use_recall_flag"]
-                ).any()
-            ),
-            "detail": f"At least one {QUERY_YEAR} resolution is flagged by committee or title as land-use-relevant.",
-        },
-        {
-            "check_name": "history_events_parsed_for_details",
-            "passed": bool(len(history_events) >= len(detail_files)),
-            "detail": f"Parsed {len(history_events)} history rows from {len(detail_files)} downloaded detail pages.",
-        },
-    ]
+    if not count_check["matches_reported_records"].all():
+        raise RuntimeError("Parsed Legistar search rows must match the reported record count for every query.")
+    if matter_index["matter_id"].duplicated().any():
+        raise RuntimeError("Combined Legistar matter index must be unique by matter_id.")
+    if not count_check.loc[count_check["query_matter_type"] == "Land Use Application", "parsed_rows"].gt(0).any():
+        raise RuntimeError("Land Use Application query must return at least one record.")
+    if not count_check.loc[count_check["query_matter_type"] == "Land Use Call-Up", "parsed_rows"].gt(0).any():
+        raise RuntimeError("Land Use Call-Up query must return at least one record.")
+    if not count_check.loc[count_check["query_matter_type"] == "Resolution", "parsed_rows"].gt(0).any():
+        raise RuntimeError("Resolution query must return at least one record.")
+    if not recall_ids.issubset(detail_ids):
+        raise RuntimeError("Every recalled land-use row must have a downloaded detail page.")
+    if not (
+        (matter_index["query_matter_type"] == "Resolution")
+        & matter_index["land_use_recall_flag"]
+    ).any():
+        raise RuntimeError("At least one resolution must be flagged as land-use-relevant.")
+    if len(history_events) < len(detail_files):
+        raise RuntimeError("Every downloaded detail page must yield at least one history event.")
 
     if QUERY_YEAR == "2001":
-        qc_rows.extend(
-            [
-                {
-                    "check_name": "laguardia_hotel_seed_found",
-                    "passed": bool(matter_index["laguardia_hotel_seed_flag"].any()),
-                    "detail": "Known Charter seed case M 820995 appears in the 2001 Land Use Application recall universe.",
-                },
-                {
-                    "check_name": "laguardia_resolution_history_present",
-                    "passed": bool(
-                        (
-                            (history_events["matter_file"] == "Res 1939-2001")
-                            & (history_events["history_action_by"] == "City Council")
-                        ).any()
-                    ),
-                    "detail": "The known LaGuardia hotel resolution has a City Council history event.",
-                },
-            ]
-        )
-
-    qc = pd.DataFrame(qc_rows)
-
-    if not qc["passed"].all():
-        failed_checks = ", ".join(qc.loc[~qc["passed"], "check_name"].astype(str))
-        raise RuntimeError(f"Legistar {QUERY_YEAR} broad-recall pull failed: {failed_checks}.")
+        if not matter_index["laguardia_hotel_seed_flag"].any():
+            raise RuntimeError("Known Charter seed case M 820995 must appear in the 2001 recall universe.")
+        if not (
+            (history_events["matter_file"] == "Res 1939-2001")
+            & (history_events["history_action_by"] == "City Council")
+        ).any():
+            raise RuntimeError("Known LaGuardia hotel resolution must have a City Council history event.")
 
     matter_index.to_csv(MATTER_INDEX_OUTPUT, index=False)
     history_events.to_csv(HISTORY_EVENTS_OUTPUT, index=False)
