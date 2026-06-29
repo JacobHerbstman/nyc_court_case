@@ -6,20 +6,27 @@ import csv
 import hashlib
 import re
 import time
-from datetime import date
 from pathlib import Path
 
 import requests
 from bs4 import BeautifulSoup
 
 
-PULL_DATE = date.today().strftime("%Y%m%d")
+PULL_DATE = "20260512"
 LEGISTAR_URL = (
     "https://legistar.council.nyc.gov/"
     "DepartmentDetail.aspx?ID=6897&GUID=CDC6E691-8A8C-4F25-97CB-86F31EDAB081&Mode=MainBody"
 )
 SOURCE_FILE_ROOT = Path("../../fetch_council_member_roster_sources/output/source_files")
 OUTPUT_FILE = Path("../output/council_member_roster_source_files.csv")
+
+
+class CachedResponse:
+    def __init__(self, path: Path):
+        self.status_code = 200
+        self.content = path.read_bytes()
+        self.text = self.content.decode("utf-8", errors="replace")
+        self.from_cache = True
 
 
 def normalize_space(value: object) -> str:
@@ -63,29 +70,7 @@ def write_csv(path: str, rows: list[dict[str, object]], fieldnames: list[str]) -
         writer.writeheader()
         writer.writerows(rows)
 
-    if new_path.exists() and new_path.read_bytes() == temp_path.read_bytes():
-        temp_path.unlink()
-    else:
-        temp_path.replace(new_path)
-
-
-def existing_inventory_is_complete(path: Path) -> bool:
-    if not path.exists():
-        return False
-
-    with path.open(newline="", encoding="utf-8") as file:
-        rows = list(csv.DictReader(file))
-
-    if not rows:
-        return False
-
-    return all(
-        row.get("fetch_status") == "downloaded"
-        and row.get("file_exists") == "True"
-        and Path(row["raw_path"]).exists()
-        and Path(row["raw_path"]).stat().st_size > 0
-        for row in rows
-    )
+    temp_path.replace(new_path)
 
 
 def source_row(
@@ -145,6 +130,16 @@ def save_response(response: requests.Response, raw_path: Path) -> None:
         raw_path.write_bytes(response.content)
 
 
+def get_or_fetch(session: requests.Session, url: str, raw_path: Path, data: dict[str, str] | None = None):
+    if raw_path.exists() and raw_path.stat().st_size > 0:
+        return CachedResponse(raw_path)
+
+    response = session.post(url, data=data, timeout=60) if data is not None else session.get(url, timeout=60)
+    response.from_cache = False
+    save_response(response, raw_path)
+    return response
+
+
 def parse_page_info(html: str) -> tuple[int | None, int | None]:
     soup = BeautifulSoup(html, "html.parser")
 
@@ -182,21 +177,17 @@ def ordinal(value: int) -> str:
     return f"{value}{suffix}"
 
 
-if existing_inventory_is_complete(OUTPUT_FILE):
-    raise SystemExit(0)
-
 session = requests.Session()
 session.headers.update({"User-Agent": "nyc-court-case-roster-research/0.1"})
 fetch_rows: list[dict[str, object]] = []
 
-response = session.get(LEGISTAR_URL, timeout=60)
 raw_path = (
     SOURCE_FILE_ROOT
     / "nyc_council_legistar_office_records"
     / PULL_DATE
     / "legistar_city_council_current.html"
 )
-save_response(response, raw_path)
+response = get_or_fetch(session, LEGISTAR_URL, raw_path)
 fetch_rows.append(
     source_row(
         source_id="nyc_council_legistar_office_records",
@@ -212,14 +203,13 @@ fetch_rows.append(
 payload = parse_form_inputs(response.text)
 payload["__EVENTTARGET"] = "ctl00$ContentPlaceHolder1$menuPeople"
 payload["__EVENTARGUMENT"] = "3:2"
-response = session.post(LEGISTAR_URL, data=payload, timeout=60)
 raw_path = (
     SOURCE_FILE_ROOT
     / "nyc_council_legistar_office_records"
     / PULL_DATE
     / "legistar_city_council_office_records_all_page_01.html"
 )
-save_response(response, raw_path)
+response = get_or_fetch(session, LEGISTAR_URL, raw_path, data=payload)
 page_count, record_count = parse_page_info(response.text)
 fetch_rows.append(
     source_row(
@@ -248,14 +238,13 @@ for page_number in range(2, (page_count or 1) + 1):
     payload["__EVENTTARGET"] = page_links.get(page_number, "")
     payload["__EVENTARGUMENT"] = ""
 
-    response = session.post(LEGISTAR_URL, data=payload, timeout=60)
     raw_path = (
         SOURCE_FILE_ROOT
         / "nyc_council_legistar_office_records"
         / PULL_DATE
         / f"legistar_city_council_office_records_all_page_{page_number:02d}.html"
     )
-    save_response(response, raw_path)
+    response = get_or_fetch(session, LEGISTAR_URL, raw_path, data=payload)
     office_record_html_pages.append(response.text)
     fetch_rows.append(
         source_row(
@@ -273,7 +262,8 @@ for page_number in range(2, (page_count or 1) + 1):
             notes="All-term Legistar roster pagination page.",
         )
     )
-    time.sleep(0.25)
+    if not getattr(response, "from_cache", False):
+        time.sleep(0.25)
 
 person_detail_urls: dict[str, str] = {}
 
@@ -295,14 +285,13 @@ for html in office_record_html_pages:
             person_detail_urls[match.group(1)] = person_url
 
 for person_id, person_url in sorted(person_detail_urls.items(), key=lambda item: int(item[0])):
-    response = session.get(person_url, timeout=60)
     raw_path = (
         SOURCE_FILE_ROOT
         / "nyc_council_legistar_person_details"
         / PULL_DATE
         / f"legistar_person_detail_{person_id}.html"
     )
-    save_response(response, raw_path)
+    response = get_or_fetch(session, person_url, raw_path)
     fetch_rows.append(
         source_row(
             source_id="nyc_council_legistar_person_details",
@@ -314,18 +303,18 @@ for person_id, person_url in sorted(person_detail_urls.items(), key=lambda item:
             notes="Fetched for official roster rows where the all-term office-record grid omits district; historical district often appears in the PersonDetail Notes field.",
         )
     )
-    time.sleep(0.1)
+    if not getattr(response, "from_cache", False):
+        time.sleep(0.1)
 
 for district in range(1, 52):
     url = f"https://en.wikipedia.org/wiki/New_York_City%27s_{ordinal(district)}_City_Council_district"
-    response = session.get(url, timeout=60)
     raw_path = (
         SOURCE_FILE_ROOT
         / "wikipedia_nyc_council_district_history"
         / PULL_DATE
         / f"wikipedia_council_district_{district:02d}.html"
     )
-    save_response(response, raw_path)
+    response = get_or_fetch(session, url, raw_path)
     fetch_rows.append(
         source_row(
             source_id="wikipedia_nyc_council_district_history",
@@ -338,7 +327,8 @@ for district in range(1, 52):
             notes="Secondary broad-recall source for pre-Legistar district-member history; audit against official Green Book or archives before treating as final.",
         )
     )
-    time.sleep(0.1)
+    if not getattr(response, "from_cache", False):
+        time.sleep(0.1)
 
 official_pages = [
     row
