@@ -170,7 +170,7 @@ all: ../output/council_land_use_decision_trends_year.csv \
 ../input/council_land_use_local_member_votes.csv: ../../../build_council_land_use_decision_panel/output/council_land_use_local_member_votes.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/council_land_use_decision_universe_validation_summary.csv: ../../../validate_council_land_use_decision_universe/output/council_land_use_decision_universe_validation_summary.csv | ../input
+../input/council_land_use_decision_universe_validation_summary.csv: ../../validate_council_land_use_decision_universe/output/council_land_use_decision_universe_validation_summary.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 link-inputs: ../input/council_land_use_decision_panel.csv \

@@ -26,17 +26,11 @@ SOURCE_ID = "nyc_council_legistar_land_use_broad_recall"
 PULL_DATE = date.today().strftime("%Y%m%d")
 MATTER_INDEX_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_matter_index.csv")
 HISTORY_EVENTS_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_history_events.csv")
-PAGE_FETCHES_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_page_fetches.csv")
 DETAIL_FILES_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_detail_files.csv")
-COUNT_CHECK_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_count_check.csv")
-QC_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_qc.csv")
 DECLARED_OUTPUTS = [
     MATTER_INDEX_OUTPUT,
     HISTORY_EVENTS_OUTPUT,
-    PAGE_FETCHES_OUTPUT,
     DETAIL_FILES_OUTPUT,
-    COUNT_CHECK_OUTPUT,
-    QC_OUTPUT,
 ]
 
 MATTER_TYPE_QUERIES = [
@@ -327,9 +321,7 @@ def existing_outputs_complete() -> bool:
     return (
         output_raw_paths_exist(MATTER_INDEX_OUTPUT, ["detail_raw_path"])
         and output_raw_paths_exist(HISTORY_EVENTS_OUTPUT, ["detail_raw_path"])
-        and output_raw_paths_exist(PAGE_FETCHES_OUTPUT, ["raw_path"])
         and output_raw_paths_exist(DETAIL_FILES_OUTPUT, ["raw_path"])
-        and all(path.exists() and path.stat().st_size > 0 for path in [COUNT_CHECK_OUTPUT, QC_OUTPUT])
     )
 
 
@@ -358,7 +350,7 @@ def safe_stub(value: object) -> str:
     return stub or "missing"
 
 
-def fetch_search_pages(session: requests.Session, query: dict[str, str]) -> tuple[list[dict[str, object]], list[dict[str, object]]]:
+def fetch_search_pages(session: requests.Session, query: dict[str, str]) -> list[dict[str, object]]:
     raw_dir = Path("../output/source_files") / SOURCE_ID / PULL_DATE / f"year_{QUERY_YEAR}" / query["slug"] / "index_pages"
     response = request_with_retries(session, "GET", BASE_URL, timeout=90)
 
@@ -375,7 +367,6 @@ def fetch_search_pages(session: requests.Session, query: dict[str, str]) -> tupl
         timeout=90,
     )
 
-    page_fetch_rows: list[dict[str, object]] = []
     matter_rows: list[dict[str, object]] = []
     current_html = response.text
     page_info = parse_page_info(current_html)
@@ -407,30 +398,13 @@ def fetch_search_pages(session: requests.Session, query: dict[str, str]) -> tupl
         save_text(raw_path, current_html)
         parsed_rows = parse_grid_rows(current_html, query, page_info)
         matter_rows.extend(parsed_rows)
-        page_fetch_rows.append(
-            {
-                "source_id": SOURCE_ID,
-                "pull_date": PULL_DATE,
-                "query_year": QUERY_YEAR,
-                "query_matter_type": query["matter_type"],
-                "query_matter_type_value": query["type_value"],
-                "query_page": page_number,
-                "reported_current_page": page_info["current_page"],
-                "reported_page_count": page_info["page_count"],
-                "reported_record_count": page_info["record_count"],
-                "parsed_rows": len(parsed_rows),
-                "raw_path": str(raw_path),
-                "file_size_bytes": raw_path.stat().st_size,
-                "checksum_sha256": sha256(raw_path),
-            }
-        )
         print(
             f"Fetched {query['matter_type']} page {page_number} of {page_count}: "
             f"{len(parsed_rows)} rows",
             flush=True,
         )
 
-    return matter_rows, page_fetch_rows
+    return matter_rows
 
 
 def parse_detail_summary(html: str, history_events: list[dict[str, object]]) -> dict[str, object]:
@@ -607,15 +581,11 @@ def main() -> None:
     )
 
     all_matter_rows: list[dict[str, object]] = []
-    all_page_fetch_rows: list[dict[str, object]] = []
-
     for query in MATTER_TYPE_QUERIES:
-        matter_rows, page_fetch_rows = fetch_search_pages(session, query)
+        matter_rows = fetch_search_pages(session, query)
         all_matter_rows.extend(matter_rows)
-        all_page_fetch_rows.extend(page_fetch_rows)
 
     matter_index = pd.DataFrame(all_matter_rows)
-    page_fetch = pd.DataFrame(all_page_fetch_rows)
 
     if matter_index.empty:
         raise RuntimeError("No Legistar matter rows were parsed.")
@@ -752,10 +722,7 @@ def main() -> None:
 
     matter_index.to_csv(MATTER_INDEX_OUTPUT, index=False)
     history_events.to_csv(HISTORY_EVENTS_OUTPUT, index=False)
-    page_fetch.to_csv(PAGE_FETCHES_OUTPUT, index=False)
     detail_files.to_csv(DETAIL_FILES_OUTPUT, index=False)
-    count_check.to_csv(COUNT_CHECK_OUTPUT, index=False)
-    qc.to_csv(QC_OUTPUT, index=False)
 
     if not qc["passed"].all():
         failed_checks = ", ".join(qc.loc[~qc["passed"], "check_name"].astype(str))

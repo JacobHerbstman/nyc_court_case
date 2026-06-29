@@ -41,6 +41,7 @@ tasks/archive/
 tasks/archive/*/input/
 tasks/archive/*/output/
 tasks/archive/*/temp/
+tasks/audits/archive/
 
 # Exception: track the task flow graph for README if present
 !tasks/symlink_graph/output/

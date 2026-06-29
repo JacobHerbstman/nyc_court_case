@@ -9,6 +9,73 @@ suppressPackageStartupMessages({
 
 source("../../../_lib/source_pipeline_utils.R")
 
+seed_sources_raw <- read_csv(
+  "council_land_use_seed_sources.csv",
+  show_col_types = FALSE,
+  na = c("", "NA")
+)
+
+raw_root <- file.path("..", "..", "..", "..", "data_raw")
+required_files_by_source <- split(seed_sources_raw$expected_filename, seed_sources_raw$source_id)
+available_dates <- lapply(names(required_files_by_source), function(source_id) {
+  source_dir <- file.path(raw_root, source_id)
+  if (!dir.exists(source_dir)) {
+    return(character())
+  }
+  date_dirs <- basename(list.dirs(source_dir, recursive = FALSE, full.names = TRUE))
+  date_dirs <- date_dirs[str_detect(date_dirs, "^[0-9]{8}$")]
+  date_dirs[vapply(
+    date_dirs,
+    function(date_value) all(file.exists(file.path(source_dir, date_value, required_files_by_source[[source_id]]))),
+    logical(1)
+  )]
+})
+common_dates <- Reduce(intersect, available_dates)
+pull_date <- if (length(common_dates) == 0) format(Sys.Date(), "%Y%m%d") else max(common_dates)
+
+seed_sources <- seed_sources_raw %>%
+  mutate(
+    required_flag = str_to_upper(str_squish(as.character(required_flag))) == "TRUE",
+    pull_date = pull_date,
+    raw_path = file.path(raw_root, source_id, pull_date, expected_filename)
+  )
+
+fetch_rows <- vector("list", nrow(seed_sources))
+
+for (i in seq_len(nrow(seed_sources))) {
+  source_row <- seed_sources[i, ]
+  status <- if (file.exists(source_row$raw_path)) {
+    "downloaded"
+  } else {
+    download_with_status(source_row$url, source_row$raw_path)
+  }
+  file_exists <- file.exists(source_row$raw_path)
+
+  fetch_rows[[i]] <- source_row %>%
+    mutate(
+      fetch_status = status,
+      file_exists = file_exists,
+      file_size_bytes = ifelse(file_exists, file.info(raw_path)$size, NA_real_),
+      checksum_sha256 = ifelse(file_exists, compute_sha256(raw_path), NA_character_)
+    )
+}
+
+source_files <- bind_rows(fetch_rows) %>%
+  select(
+    source_id, source_role, source_label, seed_id, matter_id, matter_guid,
+    matter_file, project_name, lu_numbers, resolution_numbers, ulurp_numbers,
+    vote_date, council_disposition, vote_margin, url, expected_filename,
+    required_flag, pull_date, raw_path, fetch_status, file_exists,
+    file_size_bytes, checksum_sha256, notes
+  )
+
+required_failures <- source_files %>%
+  filter(required_flag, fetch_status != "downloaded" | !file_exists)
+
+if (nrow(required_failures) > 0) {
+  stop("Required council land-use seed sources failed: ", paste(required_failures$source_label, collapse = "; "))
+}
+
 collapse_values <- function(x) {
   values <- unique(str_squish(as.character(x)))
   values <- values[!is.na(values) & values != ""]
@@ -19,11 +86,7 @@ collapse_values <- function(x) {
   paste(values, collapse = "; ")
 }
 
-source_files <- read_csv(
-  "../input/council_land_use_fetch_files.csv",
-  show_col_types = FALSE,
-  na = c("", "NA")
-) %>%
+source_files <- source_files %>%
   mutate(
     matter_id = as.character(matter_id),
     vote_date = as.character(parse_mixed_date(vote_date)),

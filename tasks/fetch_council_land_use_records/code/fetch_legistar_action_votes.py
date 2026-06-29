@@ -23,16 +23,10 @@ QUERY_YEAR = sys.argv[1]
 ACTION_DETAILS_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_action_details.csv")
 SPLIT_VOTE_SIGNALS_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_split_vote_signals.csv")
 MEMBER_VOTES_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_member_votes.csv")
-VOTE_COUNT_CHECK_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_vote_count_check.csv")
-ACTION_VOTE_QC_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_action_vote_qc.csv")
-ZERO_VOTE_PAGES_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_zero_vote_pages.csv")
 DECLARED_OUTPUTS = [
     ACTION_DETAILS_OUTPUT,
     SPLIT_VOTE_SIGNALS_OUTPUT,
     MEMBER_VOTES_OUTPUT,
-    VOTE_COUNT_CHECK_OUTPUT,
-    ACTION_VOTE_QC_OUTPUT,
-    ZERO_VOTE_PAGES_OUTPUT,
 ]
 
 
@@ -427,9 +421,6 @@ qc = pd.DataFrame(qc_rows)
 
 action_details.to_csv(ACTION_DETAILS_OUTPUT, index=False)
 member_votes.to_csv(MEMBER_VOTES_OUTPUT, index=False)
-vote_count_check.to_csv(VOTE_COUNT_CHECK_OUTPUT, index=False)
-qc.to_csv(ACTION_VOTE_QC_OUTPUT, index=False)
-zero_vote_pages.to_csv(ZERO_VOTE_PAGES_OUTPUT, index=False)
 split_vote_signals.to_csv(SPLIT_VOTE_SIGNALS_OUTPUT, index=False)
 
 if not qc["passed"].all():

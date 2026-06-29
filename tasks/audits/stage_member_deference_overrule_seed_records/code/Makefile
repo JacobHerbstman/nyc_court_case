@@ -3,12 +3,9 @@ include ../../../shell_functions.make
 
 all: ../output/council_land_use_matter.csv
 
-../output/council_land_use_matter.csv: stage_member_deference_overrule_seed_records.R ../../../_lib/source_pipeline_utils.R ../input/council_land_use_fetch_files.csv | ../output
+../output/council_land_use_matter.csv: stage_member_deference_overrule_seed_records.R council_land_use_seed_sources.csv ../../../_lib/source_pipeline_utils.R | ../output
 	$(R) $<
 
-../input/council_land_use_fetch_files.csv: ../../../fetch_council_land_use_records/output/council_land_use_fetch_files.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
-
-link-inputs: ../input/council_land_use_fetch_files.csv
+link-inputs:
 
 include ../../generic.make

@@ -31,12 +31,11 @@ The rolling-average member-deference figure is built from this production chain:
 10. `tasks/build_council_land_use_decision_panel/` combines approval and
     non-approval evidence into `council_land_use_decision_panel.csv` and
     `council_land_use_local_member_votes.csv`.
-11. `tasks/validate_council_land_use_decision_universe/` summarizes decision
-    universe coverage.
-12. This task produces
+11. This task produces
     `council_land_use_adoption_over_local_member_rollcall_opposition_rolling5_with_raw_clean.pdf`.
 
 The following remain outside the production chain: prompt-batch construction,
 ChatGPT response workspaces, split-vote investigations, and broader exploratory
-audits. Those tasks document how repair candidates were developed, but the
-production graph consumes only reviewed/conservative outputs.
+audits, including the decision-universe validation summary. Those tasks document
+how repair candidates were developed, but the production graph consumes only
+reviewed/conservative outputs.

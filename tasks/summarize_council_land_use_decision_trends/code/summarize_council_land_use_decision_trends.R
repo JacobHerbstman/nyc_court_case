@@ -34,15 +34,6 @@ decision <- read_csv(
   col_types = cols(.default = col_character()),
   na = character()
 )
-validation <- read_csv(
-  "../input/council_land_use_decision_universe_validation_summary.csv",
-  col_types = cols(.default = col_character()),
-  na = character()
-)
-
-if (any(str_to_lower(validation$passed) != "true")) {
-  stop("Council land-use decision universe validation did not pass.")
-}
 
 if (nrow(decision) != n_distinct(decision$matter_id)) {
   stop("Council land-use decision panel must be unique by matter_id.")
