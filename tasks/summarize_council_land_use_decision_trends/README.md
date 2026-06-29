@@ -17,7 +17,10 @@ The rolling-average member-deference figure is built from this production chain:
 4. `tasks/build_mappluto_current_lookup/` builds the current MapPLUTO BBL lookup
    used for BBL and address-based geography recovery.
 5. `tasks/create_council_land_use_ai_geography_repairs/` creates reviewed and
-   accepted manual/AI geography repairs.
+   accepted manual/AI geography repairs. These are cases where land-use
+   decisions with no clear affected Council district were fed into ChatGPT to
+   infer the affected district from matter text, identifiers, source links, and
+   geography clues; the production input is the accepted repair ledger.
 6. `tasks/build_member_deference_vote_panel/` builds the approval-side matter
    universe, local-member vote panel, and queue of non-approval final actions.
 7. `tasks/recover_member_deference_nonapproval_geography/` recovers geography

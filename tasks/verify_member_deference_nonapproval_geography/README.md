@@ -3,7 +3,9 @@
 This production-support task verifies geography leads for unresolved first-pass
 non-approval land-use matters against official records.
 
-The task treats ChatGPT as a lead source only. A row is verified only when an
+The upstream review queue contains land-use decisions with no clear affected
+Council district that were fed into ChatGPT for a first-pass district inference.
+This task treats those ChatGPT responses as leads only. A row is verified only when an
 official Legistar record directly lists a Council district for the same matter
 or a related LU/application record, or when the exact official matter text gives
 BBLs that can be mapped to current MapPLUTO Council districts. Current MapPLUTO

@@ -6,7 +6,12 @@ land-use records.
 The panel uses Legistar final Council approval action details and member vote
 rows for 1998-2025. It recovers affected Council districts from Legistar text
 when available and otherwise uses application-number matches to ZAP
-projects as a secondary geography source.
+projects as a secondary geography source. If Legistar and ZAP do not identify a
+district, the task can use accepted geography repairs from
+`tasks/create_council_land_use_ai_geography_repairs/`. Those repairs come from
+land-use decisions with no clear affected Council district that were fed into
+ChatGPT with matter text, project identifiers, source links, and geography clues;
+the production input is the committed accepted ledger, not the raw chat.
 
 The primary downstream outputs are:
 
