@@ -99,6 +99,12 @@ plot_rate_5 <- local_member_rollcall_adoption_position_year |>
     adoption_rate_rolling_5 = rolling_rate_5(adopted_rows, matter_rows)
   )
 
+write_csv(
+  plot_rate_5,
+  "../output/council_land_use_adoption_over_local_member_rollcall_opposition_rolling5_with_raw_clean.csv",
+  na = ""
+)
+
 rate_with_raw_plot <- plot_rate_5 |>
   ggplot(aes(x = query_year)) +
   geom_line(aes(y = adoption_rate), color = "grey70", linewidth = 0.55, na.rm = TRUE) +

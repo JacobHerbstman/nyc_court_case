@@ -162,7 +162,7 @@ series_df <- read_csv("../input/ccdist2010_homeownership_long_units_series.csv",
   left_join(outcome_defs, by = c("series_family" = "outcome_id"), relationship = "many-to-one")
 
 if (n_distinct(series_df$district_id) != 51) {
-  stop("Expected 51 Council districts in the PLUTO-only event-study input.")
+  stop("Expected 51 Council districts in the event-study input.")
 }
 
 control_lookup <- series_df %>%
@@ -427,4 +427,4 @@ table_lines <- c(
 
 write_lines_if_changed(table_lines, "../output/ccdist2010_homeownership_long_units_long_difference_raw_units.tex")
 
-cat("Wrote PLUTO-only 2010 Council district event-study outputs to ../output\n")
+cat("Wrote 2010 Council district event-study outputs to ../output\n")
