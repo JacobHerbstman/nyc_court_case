@@ -1,6 +1,8 @@
 # Fetch MapPLUTO Archive
 
-Downloads the MapPLUTO release files listed in the project source catalog.
+Downloads DCP PLUTO and MapPLUTO release files listed in the source catalog.
 
 The input is `source_catalog.csv`. The output is `mappluto_files.csv`, an index
-of cached MapPLUTO release files under this task's output folder.
+of cached raw files in `data_raw/`.
+
+Recent cached rebuild runtime: about 35 seconds.
