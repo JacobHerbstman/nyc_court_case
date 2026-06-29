@@ -29,7 +29,9 @@ Rows not represented here are not silently promoted by the production task. Audi
 
 Treat `deterministic_geography_verification` rows as mechanical or near-mechanical repairs.
 
-Treat `manual_queue_ai_review_researcher_accepted`, `remaining_queue_ai_review_researcher_adjudicated`, and `remaining_split_vote_geography_ai_review_researcher_accepted` rows as researcher-accepted subjective geography decisions. These are appropriate for the main repaired series only because the final accepted decision is recorded here with evidence and caveats.
+Treat `manual_queue_ai_review_researcher_accepted` and `remaining_queue_ai_review_researcher_adjudicated` rows as researcher-accepted subjective geography decisions. These are appropriate for the main repaired series only because the final accepted decision is recorded here with evidence and caveats.
+
+The `remaining_split_vote_geography_ai_review_researcher_accepted` pass is not accepted in this production ledger. A later audit found that 107 of 109 ChatGPT responses from that pass cited Council matter files outside the queued review bundle, indicating a batch-alignment failure. Those rows must be re-reviewed before entering the production series.
 
 Rows with `promote_with_caveat`, medium confidence, or low confidence should be easy to audit from this file. They are included in the repaired production series, but they should remain visible in robustness checks and discussion of measurement uncertainty.
 

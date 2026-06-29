@@ -59,6 +59,18 @@ if missing_columns:
     raise RuntimeError(f"Repair ledger is missing required columns: {', '.join(missing_columns)}")
 repairs = repairs[required_columns].copy()
 
+blocked_sources = {
+    "remaining_split_vote_geography_ai_review_researcher_accepted": (
+        "The remaining split-vote ChatGPT review pass is excluded from production until "
+        "its cited source records are reverified against the queued Council matter rows."
+    )
+}
+blocked_mask = repairs["repair_source"].isin(blocked_sources)
+if blocked_mask.any():
+    blocked_counts = repairs.loc[blocked_mask, "repair_source"].value_counts()
+    blocked_detail = "; ".join(f"{source}: {count}" for source, count in blocked_counts.items())
+    raise RuntimeError(f"Repair ledger contains blocked repair sources: {blocked_detail}")
+
 if repairs.duplicated(["query_year", "vote_date", "matter_file"]).any():
     duplicate_rows = repairs[
         repairs.duplicated(["query_year", "vote_date", "matter_file"], keep=False)
