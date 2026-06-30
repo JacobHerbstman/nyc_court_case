@@ -4,11 +4,9 @@ This repository builds the data and draft paper for a project on New York City h
 
 The workflow is task-based. Each production task lives in `tasks/<task_name>/` with `code/`, `input/`, and `output/` folders. Run a task from its `code/` folder with `make`. Run the paper from `paper/` with `make`.
 
-`tasks/audits/` contains diagnostics, exploratory work, review queues, and validation exercises. The production task graph does not depend on audit tasks.
-
 ## Fresh Run
 
-From a fresh checkout, install the system tools used by the pipeline:
+From a fresh clone, install the system tools used by the pipeline:
 
 - GNU Make
 - R
