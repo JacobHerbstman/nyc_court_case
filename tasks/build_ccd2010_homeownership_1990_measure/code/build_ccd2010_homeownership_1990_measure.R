@@ -261,11 +261,6 @@ map_sf <- council_sf %>%
 
 measure_df <- map_sf %>%
   mutate(
-    geometry_wkb_hex = vapply(
-      st_as_binary(st_geometry(.), EWKB = TRUE),
-      function(x) paste(sprintf("%02X", as.integer(x)), collapse = ""),
-      character(1)
-    ),
     geometry_wkt = as.character(st_as_text(st_geometry(.))),
     source_id = "dcp_nycc_10cav_nhgis_1990_tract_area_overlay",
     council_boundary_source = "DCP archived city council districts 10C nycc_10cav.zip",
@@ -305,7 +300,6 @@ measure_df <- map_sf %>%
     hispanic_population_1990,
     median_household_income_1990,
     tract_overlap_count,
-    geometry_wkb_hex,
     geometry_wkt
   )
 
