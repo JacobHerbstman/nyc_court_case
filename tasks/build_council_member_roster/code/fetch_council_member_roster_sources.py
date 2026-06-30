@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/fetch_council_member_roster_sources/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_council_member_roster/code")
 
 from __future__ import annotations
 
@@ -18,8 +18,7 @@ LEGISTAR_URL = (
     "https://legistar.council.nyc.gov/"
     "DepartmentDetail.aspx?ID=6897&GUID=CDC6E691-8A8C-4F25-97CB-86F31EDAB081&Mode=MainBody"
 )
-SOURCE_FILE_ROOT = Path("../../fetch_council_member_roster_sources/output/source_files")
-OUTPUT_FILE = Path("../output/council_member_roster_source_files.csv")
+SOURCE_FILE_ROOT = Path("../temp/source_files")
 
 
 class CachedResponse:
@@ -331,7 +330,7 @@ if not all(row["checksum_sha256"] for row in fetch_rows if row["fetch_status"] =
     raise RuntimeError("Every downloaded roster source file must have a SHA-256 checksum.")
 
 write_dict_rows_csv(
-    "../output/council_member_roster_source_files.csv",
+    "../temp/council_member_roster_source_files.csv",
     fetch_rows,
     [
         "source_id",

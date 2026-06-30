@@ -107,7 +107,7 @@ def parse_html_tables(html: str) -> list[pd.DataFrame]:
     return out
 
 
-source_files = pd.read_csv("../input/council_member_roster_source_files.csv").fillna("")
+source_files = pd.read_csv("../temp/council_member_roster_source_files.csv").fillna("")
 source_files_out = source_files.to_dict("records")
 official_terms: list[dict[str, object]] = []
 wiki_terms: list[dict[str, object]] = []
