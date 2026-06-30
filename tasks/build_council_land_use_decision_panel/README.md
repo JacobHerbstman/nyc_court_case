@@ -15,5 +15,3 @@ suggestions.
 Creates `council_land_use_decision_panel.csv` with one row per Legistar matter
 and the vote/geography fields needed for the Council land-use decision trend
 series.
-
-Runtime: about 1 second.

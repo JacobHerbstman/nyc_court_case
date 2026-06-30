@@ -17,5 +17,3 @@ This task does not call ChatGPT. It normalizes the committed ledger so
 downstream vote-panel code reads a stable project file.
 
 Creates `council_land_use_ai_geography_accepted_repairs.csv`.
-
-Runtime: under 1 second.

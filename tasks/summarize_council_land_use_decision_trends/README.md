@@ -10,5 +10,3 @@ adoption, with the raw annual series in the background and a trailing 5-year
 rate overlaid. The matching CSV contains the plotted annual counts, annual
 rates, and 5-year rolling rate:
 `council_land_use_adoption_over_local_member_rollcall_opposition_rolling5_with_raw_clean.csv`.
-
-Runtime: about 1 second.

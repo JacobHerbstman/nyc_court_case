@@ -5,5 +5,3 @@ annual housing series.
 
 The input is `ccdist2010_homeownership_long_units_series.csv`. The output is
 `ccdist2010_homeownership_long_units_raw_units_plots.pdf`.
-
-Runtime: about 2 seconds.
