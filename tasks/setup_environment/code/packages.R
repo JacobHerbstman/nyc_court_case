@@ -3,8 +3,8 @@
 options(repos = c(CRAN = "https://cloud.r-project.org"))
 
 cran_pkgs <- c(
-  "arrow", "data.table", "DBI", "duckdb", "dplyr", "fixest",
-  "ggplot2", "ipumsr", "jsonlite", "lubridate", "optparse", "readr", "readxl", "sf", "stringr",
+  "arrow", "dplyr", "fixest", "foreign",
+  "ggplot2", "ipumsr", "jsonlite", "lubridate", "readr", "sf", "stringr",
   "tibble", "tidyr"
 )
 
