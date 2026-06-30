@@ -9,7 +9,7 @@ The workflow is task-based. Each production task lives in `tasks/<task_name>/` w
 ## Data Collection and Extraction
 
 - `setup_environment`: records the R package environment.
-- `source_registry`: maintains the source catalog used by fetching tasks.
+- `source_registry`: publishes the source catalog used by fetching tasks.
 - `fetch_mappluto_archive`: downloads MapPLUTO release files.
 - `build_nhgis_extracts`: standardizes NHGIS tract inputs for the 1990 homeownership measure.
 - `build_zap_datasets`: standardizes ZAP project and project-BBL files.

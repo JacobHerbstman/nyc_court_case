@@ -7,7 +7,8 @@ The input is the conservative non-approval geography queue. It contains 491 core
 non-approval matters, including 399 with usable affected-district geography and
 92 left without geography pending review.
 
-Creates action-level vote details and
+Creates `member_deference_nonapproval_action_details.csv`, the action-level
+vote-detail file, and
 `member_deference_nonapproval_local_member_vote_status.csv`, the matter-level
 local-member vote-status file used by the decision panel.
 
