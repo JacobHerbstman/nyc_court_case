@@ -18,6 +18,7 @@ from member_deference_utils import (
     norm_name,
     normalize_space,
     split_semicolon,
+    write_csv,
 )
 
 RECALL_YEARS = list(range(1998, 2026))
@@ -685,6 +686,6 @@ if not final_action_vote_queue["final_action_vote_fetch_tier"].fillna("").ne("")
 if accepted_ai_geo_repair_keys - panel_keys - matter_universe_keys:
     raise RuntimeError("Every accepted geography repair key must appear in the panel or matter universe.")
 
-panel.to_csv("../output/member_deference_vote_panel.csv", index=False)
-matter_universe.to_csv("../output/member_deference_matter_universe.csv", index=False)
-final_action_vote_queue.to_csv("../output/member_deference_final_action_vote_queue.csv", index=False)
+write_csv("../output/member_deference_vote_panel.csv", panel)
+write_csv("../output/member_deference_matter_universe.csv", matter_universe)
+write_csv("../output/member_deference_final_action_vote_queue.csv", final_action_vote_queue)

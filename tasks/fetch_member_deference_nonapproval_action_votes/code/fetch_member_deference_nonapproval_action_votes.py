@@ -11,7 +11,7 @@ import requests
 
 sys.path.append("../../_lib")
 from legistar_utils import parse_action_detail, request_with_retries, safe_stub, save_text, sha256
-from member_deference_utils import collapse_values, edge_name, split_semicolon
+from member_deference_utils import collapse_values, edge_name, split_semicolon, write_csv
 
 
 queue = pd.read_csv(
@@ -319,5 +319,5 @@ def matter_vote_status(row: pd.Series) -> str:
 
 local_member_summary["local_member_final_action_vote_status"] = local_member_summary.apply(matter_vote_status, axis=1)
 
-action_details.to_csv("../output/member_deference_nonapproval_action_details.csv", index=False)
-local_member_summary.to_csv("../output/member_deference_nonapproval_local_member_vote_status.csv", index=False)
+write_csv("../output/member_deference_nonapproval_action_details.csv", action_details)
+write_csv("../output/member_deference_nonapproval_local_member_vote_status.csv", local_member_summary)
