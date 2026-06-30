@@ -5,14 +5,17 @@ matters from 1998-2025.
 
 Inputs are annual Legistar matter, history, action-detail, and member-vote
 files; the Council member roster; ZAP project records; and the accepted
-geography repair ledger. The repair ledger covers matters whose affected
-districts were missing after the deterministic Legistar/ZAP geography pass. Some
-rows were first reviewed with ChatGPT, but this task reads only the committed
-ledger of accepted district assignments, evidence notes, and source URLs.
+geography-repair ledger. The ledger covers matters whose affected Council
+districts could not be assigned by the automated Legistar/ZAP geography matching
+step. Some district assignments came from AI-assisted review in ChatGPT, but
+this task uses only the version-controlled ledger of accepted district
+assignments, evidence notes, and source URLs.
 
-Creates `member_deference_matter_universe.csv`,
-`member_deference_vote_panel.csv`, and
-`member_deference_final_action_vote_queue.csv`.
+Outputs:
+
+- `member_deference_matter_universe.csv`
+- `member_deference_vote_panel.csv`
+- `member_deference_final_action_vote_queue.csv`
 
 Final votes do not capture pre-vote bargaining, withdrawals, modifications,
 committee gatekeeping, or agenda control.

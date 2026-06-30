@@ -1,11 +1,11 @@
 # Source Registry
 
-Publishes the committed source catalog used by data-fetching tasks.
+Copies the version-controlled source catalog used by data-fetching tasks.
 
-The key input is `code/source_catalog.csv`. The output is
-`source_catalog.csv`, a stable copy in `output/` for downstream Makefile
-dependencies.
+Input: `code/source_catalog.csv`.
 
-The catalog is limited to sources consumed by active production tasks. Broader
-validation sources and archival leads are preserved under
+Output: `source_catalog.csv`, a stable copy in `output/` for downstream tasks.
+
+The catalog includes only sources used by currently active tasks. Broader
+validation sources and exploratory source leads are preserved under
 `tasks/audits/source_registry_exploratory_sources/`.

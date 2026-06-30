@@ -1,19 +1,20 @@
 # Create Council Land-Use Geography Repairs
 
 Creates the accepted geography-repair file for Council land-use matters whose
-affected districts were not clear from Legistar, ZAP, or deterministic
+affected districts could not be assigned from Legistar, ZAP, or rule-based
 crosswalks.
 
 For these rows, matter text, project identifiers, source URLs, and geography
-clues were reviewed with ChatGPT to identify the likely affected Council
-district or districts. The raw chat is not a production input. The production
-source of truth is `code/accepted_ai_geography_repair_ledger.csv`, which records
-the accepted district assignment, evidence, source notes, matter identifiers,
-and source URLs for each promoted repair.
+clues were reviewed in ChatGPT to identify the likely affected Council district
+or districts. Raw review transcripts are not used by the production pipeline.
+The authoritative input for this task is
+`code/accepted_ai_geography_repair_ledger.csv`, which records the accepted
+district assignment, evidence, source notes, matter identifiers, and source URLs
+for each accepted repair.
 Field definitions and review caveats are documented in
 `accepted_ai_geography_repair_ledger.md`.
 
-This task does not call ChatGPT. It normalizes the committed ledger so
-downstream vote-panel code reads a stable project file.
+This task does not perform AI inference or external review. It normalizes the
+accepted ledger into a stable CSV for downstream vote-panel code.
 
-Creates `council_land_use_ai_geography_accepted_repairs.csv`.
+Output: `council_land_use_ai_geography_accepted_repairs.csv`.
