@@ -20,6 +20,10 @@ nhgis_extract_downloads <- read_csv("../temp/nhgis_extract_downloads.csv", show_
 expected_rows <- tibble(year = sort(unique(nhgis_table_map$year))) %>%
   mutate(source_id = paste0("nhgis_", year, "_tract_extract"))
 
+if (nrow(expected_rows) != 1 || expected_rows$source_id[[1]] != "nhgis_1990_tract_extract") {
+  stop("This task should load exactly the 1990 tract extract.")
+}
+
 nyc_counties <- c("005", "047", "061", "081", "085")
 
 index_rows <- list()
@@ -181,8 +185,7 @@ for (i in seq_len(nrow(expected_rows))) {
     select(-statea_std, -countya_std) %>%
     mutate(source_id = row$source_id, source_year = row$year, table_zip_path = table_zip, gis_zip_path = gis_zip)
 
-  out_parquet <- file.path("..", "temp", paste0(row$source_id, "_raw.parquet"))
-  write_parquet_if_changed(nhgis_df, out_parquet)
+  write_parquet_if_changed(nhgis_df, "../temp/nhgis_1990_tract_extract_raw.parquet")
 
   index_rows[[i]] <- tibble(
     source_id = row$source_id,
@@ -192,7 +195,7 @@ for (i in seq_len(nrow(expected_rows))) {
     gis_zip_path = gis_zip,
     table_file_inside_zip = table_candidates[[1]],
     shapefile_inside_zip = shapefile_candidates[[1]],
-    raw_parquet_path = out_parquet,
+    raw_parquet_path = "../temp/nhgis_1990_tract_extract_raw.parquet",
     status = "loaded"
   )
 }
