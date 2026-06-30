@@ -1,4 +1,4 @@
-# Fetch Non-Approval Final-Action Votes
+# Fetch Council Land-Use Nonapproval Votes
 
 Fetches Legistar action-detail pages for non-approval land-use matters and
 parses the individual member votes shown on those pages.

@@ -998,7 +998,7 @@ approval_member_votes <- bind_rows(lapply(
   \(path) read_csv(path, col_types = cols(.default = col_character()), na = character())
 ))
 nonapproval_member_votes <- read_csv(
-  "../input/member_deference_nonapproval_member_votes.csv",
+  "../output/member_deference_nonapproval_member_votes.csv",
   col_types = cols(.default = col_character()),
   na = character()
 )
