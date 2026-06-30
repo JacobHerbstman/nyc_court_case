@@ -8,4 +8,4 @@ homeownership file. The default output is
 `ccdist2010_mappluto_construction_proxy_district_year.csv`, a district-year
 housing production proxy based on current parcel records and year-built values.
 
-Rebuild runtime: about 1 minute.
+Runtime: about 1 minute.

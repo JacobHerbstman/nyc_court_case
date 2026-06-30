@@ -6,4 +6,4 @@ Inputs are the 1990 Council district homeownership measure and the MapPLUTO
 district-year construction proxy. The output is
 `ccdist2010_homeownership_long_units_series.csv`.
 
-Rebuild runtime: about 2 seconds.
+Runtime: about 2 seconds.

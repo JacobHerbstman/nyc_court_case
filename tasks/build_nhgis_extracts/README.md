@@ -12,5 +12,5 @@ If the raw NHGIS zips are already cached in `data_raw/`, the task uses those
 files. If they are missing, the fetch step submits the stored extract request
 through `ipumsr` and requires `IPUMS_API_KEY`.
 
-Cached rebuild runtime with the raw zips present: about 6 seconds. A first run
-that submits an NHGIS extract depends on NHGIS API processing time.
+Runtime: about 6 seconds when the raw NHGIS zips are already cached. A first
+run that submits an NHGIS extract depends on NHGIS API processing time.

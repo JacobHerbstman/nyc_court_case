@@ -1,12 +1,11 @@
 # Create Member-Deference Nonapproval Geography Review
 
 Exposes committed geography-review records for non-approval land-use matters
-used in the member-deference decision series.
+used in the Council decision series.
 
 Land-use decisions with no clear affected Council district were converted into
-plain-text review prompts and fed into ChatGPT to infer the likely affected
-district from matter titles, application numbers, addresses, BBL references, and
-source links.
+plain-text prompts and reviewed with ChatGPT to identify likely locations from
+matter titles, application numbers, addresses, BBL references, and source links.
 
 This task has no upstream inputs. It provides
 `member_deference_nonapproval_geography_review_queue.csv` and
@@ -18,6 +17,6 @@ district, confidence, source to check, reasoning notes, and source links.
 These files are geography leads, not final assignments. Downstream verification
 decides which leads are supported by official records or BBL-to-district checks
 before they enter the production decision panel. This task does not call
-ChatGPT; it preserves the review records needed to reproduce the judgment trail.
+ChatGPT; it preserves the review records used by the verification step.
 
 Runtime: under 1 second.

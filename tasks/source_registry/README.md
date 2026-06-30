@@ -1,10 +1,9 @@
 # Source Registry
 
-Stores committed source catalogs used by data-fetching tasks.
+Publishes the committed source catalog used by data-fetching tasks.
 
-The key input files are `source_catalog.csv`, `archive_requests.csv`,
-`manual_manifest.csv`, and `benchmark_catalog.csv` in `code/`. This registry has
-no default generated output.
+The key input is `code/source_catalog.csv`. The output is
+`source_catalog.csv`, a stable copy in `output/` for downstream Makefile
+dependencies.
 
-Runtime: `make` completes immediately because the task stores committed catalog
-files.
+Runtime: under 1 second.

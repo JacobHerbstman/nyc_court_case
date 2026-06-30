@@ -10,4 +10,4 @@ MapPLUTO shapefile rows from this inventory. The same inventory also records
 archived MapPLUTO releases so historical-release analyses use the same
 raw-source contract.
 
-Cached rebuild runtime: about 45 seconds.
+Runtime: about 45 seconds.

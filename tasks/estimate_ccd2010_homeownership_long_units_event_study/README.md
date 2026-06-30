@@ -7,4 +7,4 @@ The input is `ccdist2010_homeownership_long_units_series.csv`. Outputs include
 the raw-unit event-coefficient CSV/PDF files and the raw-unit long-difference
 table.
 
-Rebuild runtime: about 2 seconds.
+Runtime: about 2 seconds.

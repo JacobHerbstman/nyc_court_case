@@ -7,4 +7,4 @@ The input is `mappluto_files.csv`. The output is
 `mappluto_current_lot_lookup.parquet`, with standardized BBLs, addresses,
 community districts, lot attributes, and geometry-derived fields.
 
-Rebuild runtime: about 20 seconds.
+Runtime: about 20 seconds.

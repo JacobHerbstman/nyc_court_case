@@ -6,4 +6,4 @@ application counts.
 The input is `zap_project_data.parquet`. The output is
 `citywide_ulurp_application_year.csv`.
 
-Rebuild runtime: about 3 seconds.
+Runtime: about 3 seconds.

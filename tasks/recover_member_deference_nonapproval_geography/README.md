@@ -15,4 +15,4 @@ Current MapPLUTO matches are location-based backups rather than direct
 historical district statements, so the output carries source flags for downstream
 review.
 
-Rebuild runtime: about 1 minute.
+Runtime: about 1 minute.

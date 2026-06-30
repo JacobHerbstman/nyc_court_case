@@ -6,7 +6,7 @@ all: ../output/zap_project_data.parquet ../output/zap_project_bbl.parquet
 ../output/zap_project_bbl.parquet: ../output/zap_project_data.parquet
 	@test -s "$@"
 
-../input/source_catalog.csv: ../../source_registry/code/source_catalog.csv | ../input
+../input/source_catalog.csv: ../../source_registry/output/source_catalog.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 link-inputs: ../input/source_catalog.csv

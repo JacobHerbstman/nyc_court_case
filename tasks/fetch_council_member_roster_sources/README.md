@@ -7,5 +7,5 @@ The task downloads or reuses cached Legistar office-record pages, Legistar
 person-detail pages, and district-history pages. The output is
 `council_member_roster_source_files.csv`, an index of the cached source files.
 
-Cached rebuild runtime: about 1-2 seconds. A first run can take longer because
+Runtime: about 1-2 seconds. A first run can take longer because
 it downloads public source pages.

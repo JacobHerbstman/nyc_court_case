@@ -10,4 +10,4 @@ adoption, with the raw annual series in the background and a trailing 5-year
 rate overlaid. The matching CSV contains the plotted annual counts, annual
 rates, and 5-year rolling rate.
 
-Rebuild runtime: about 1 second.
+Runtime: about 1 second.
