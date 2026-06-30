@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import re
 import sys
 import time
 from pathlib import Path
@@ -12,7 +11,7 @@ import requests
 
 sys.path.append("../../_lib")
 from legistar_utils import parse_action_detail, request_with_retries, safe_stub, save_text, sha256
-from member_deference_utils import collapse_values, edge_name, normalize_space, split_semicolon
+from member_deference_utils import collapse_values, edge_name, split_semicolon
 
 
 queue = pd.read_csv(
