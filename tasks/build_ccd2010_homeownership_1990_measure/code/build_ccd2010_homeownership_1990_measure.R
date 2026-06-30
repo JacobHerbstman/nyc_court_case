@@ -226,8 +226,7 @@ district_alloc <- intersection_sf %>%
   mutate(
     h_ccd_1990 = ifelse(occupied_units_1990 > 0, owner_occupied_units_1990 / occupied_units_1990, NA_real_),
     h_ccd_1990_pct = 100 * h_ccd_1990,
-    vacancy_rate_1990 = ifelse(total_housing_units_1990 > 0, vacant_units_1990 / total_housing_units_1990, NA_real_),
-    poverty_share_1990 = NA_real_
+    vacancy_rate_1990 = ifelse(total_housing_units_1990 > 0, vacant_units_1990 / total_housing_units_1990, NA_real_)
   )
 
 borough_df <- nhgis_1990 %>%
