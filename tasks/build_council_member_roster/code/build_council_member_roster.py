@@ -457,16 +457,6 @@ for district in range(1, 52):
 
 master_rows = trimmed_master_rows
 
-term_rows = sorted(
-    official_terms + wiki_terms,
-    key=lambda row: (
-        row["source_precedence"],
-        int(row["district"]) if row["district"] is not None and row["district"] != "" else 999,
-        date_value(row["term_start_date"], "1900-01-01"),
-        row["member_name"],
-    ),
-)
-
 overlap_rows: list[dict[str, object]] = []
 for district in range(1, 52):
     district_rows = [row for row in master_rows if row["district"] == district]
