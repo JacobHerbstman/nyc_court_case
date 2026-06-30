@@ -4,4 +4,5 @@ Aggregates standardized ZAP project records into annual citywide ULURP
 application counts.
 
 The input is `zap_project_data.parquet`. The output is
-`citywide_ulurp_application_year.csv`.
+`citywide_ulurp_application_year.csv`, with annual counts based on ZAP project
+records and parsed ULURP application numbers.
