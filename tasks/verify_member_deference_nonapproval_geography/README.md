@@ -1,16 +1,16 @@
 # Verify Member-Deference Non-Approval Geography
 
-Verifies geography leads for unresolved non-approval land-use matters against
+Verifies geography leads for unresolved nonapproval land-use matters against
 official records and creates the conservative queue used for vote fetching.
 
-Inputs are the non-approval final-action queue, rule-based geography recovery
+Inputs are the nonapproval final-action queue, rule-based geography recovery
 file, ChatGPT review-response ledger, matter universe, current MapPLUTO lot
-lookup, and Council member roster. ChatGPT was used to suggest locations for
-matters without a clear affected district, but those suggestions enter this task
-only as leads. A row is verified only when an official Legistar record lists a
-Council district for the same or related matter, or when official matter text
-gives BBLs that can be mapped to current MapPLUTO districts. Unsupported
-suggestions remain unresolved.
+lookup, and Council member roster.
+
+ChatGPT suggestions enter only as leads. A row is verified when an official
+Legistar record lists a Council district for the same or related matter, or when
+official matter text gives BBLs that map to current MapPLUTO districts.
+Unsupported suggestions remain unresolved.
 
 Output: `member_deference_nonapproval_geography_conservative_queue.csv`. The
 current queue covers 491 core non-approval matters: 236 original Legistar/ZAP
