@@ -59,6 +59,10 @@ nhgis_income_overrides <- read_csv("nhgis_income_overrides.csv", show_col_types 
 nhgis_raw_files <- read_csv("../temp/nhgis_raw_files.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(year = as.integer(year))
 
+if (nrow(nhgis_raw_files) != 1 || nhgis_raw_files$source_id[[1]] != "nhgis_1990_tract_extract") {
+  stop("This task should build exactly the 1990 tract extract.")
+}
+
 gis_zip_rows <- list()
 
 for (i in seq_len(nrow(nhgis_raw_files))) {
@@ -152,7 +156,7 @@ for (i in seq_len(nrow(nhgis_raw_files))) {
 
   extract_df$unresolved_flag <- extract_df$housing_balance_classification == "concept_mismatch" | extract_df$income_classification == "unresolved"
 
-  write_parquet_if_changed(extract_df, file.path("..", "output", paste0(row$source_id, ".parquet")))
+  write_parquet_if_changed(extract_df, "../output/nhgis_1990_tract_extract.parquet")
 
   gis_zip_rows[[i]] <- tibble(
     source_id = row$source_id,
