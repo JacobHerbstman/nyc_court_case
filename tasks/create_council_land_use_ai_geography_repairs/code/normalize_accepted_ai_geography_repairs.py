@@ -1,18 +1,15 @@
 #!/usr/bin/env python3
 
-from pathlib import Path
 import re
+import sys
 
 import pandas as pd
 
+sys.path.append("../../_lib")
+from member_deference_utils import split_semicolon, write_csv
+
 
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/create_council_land_use_ai_geography_repairs/code")
-
-
-def split_semicolon(value):
-    if pd.isna(value) or str(value).strip() == "":
-        return []
-    return [part.strip() for part in str(value).split(";") if part.strip()]
 
 
 def valid_districts(value):
@@ -25,12 +22,6 @@ def valid_districts(value):
             return False
         districts.append(district)
     return len(districts) > 0
-
-
-def write_csv(path, df):
-    temp_path = Path(path).with_suffix(Path(path).suffix + ".tmp")
-    df.to_csv(temp_path, index=False)
-    temp_path.replace(path)
 
 
 repairs = pd.read_csv("accepted_ai_geography_repair_ledger.csv", dtype=str, keep_default_na=False)
