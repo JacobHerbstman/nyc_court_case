@@ -15,7 +15,12 @@ slurmlogs/
 tasks/*/slurmlogs/
 
 # --- Raw & Intermediate Data ---
-data_raw/
+data_raw/*
+!data_raw/dcp_boundary_city_council_districts_archive/
+data_raw/dcp_boundary_city_council_districts_archive/*
+!data_raw/dcp_boundary_city_council_districts_archive/10C/
+data_raw/dcp_boundary_city_council_districts_archive/10C/*
+!data_raw/dcp_boundary_city_council_districts_archive/10C/nycc_10cav.zip
 tasks/*/input/
 tasks/*/output/
 tasks/*/temp/

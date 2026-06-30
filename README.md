@@ -27,8 +27,10 @@ make
 ```
 
 The pipeline downloads public source files as needed into task outputs or
-`data_raw/`. If the NHGIS raw extract files are already present, the IPUMS key
-is not used.
+`data_raw/`. The small archived DCP 2010 City Council boundary ZIP used for the
+paper's 2010 district geography is committed at
+`data_raw/dcp_boundary_city_council_districts_archive/10C/nycc_10cav.zip`. If
+the NHGIS raw extract files are already present, the IPUMS key is not used.
 
 ## Data Collection and Extraction
 
