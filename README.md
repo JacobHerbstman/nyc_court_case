@@ -26,6 +26,10 @@ export IPUMS_API_KEY="your-ipums-key"
 make
 ```
 
+Equivalently, from R you can run
+`ipumsr::set_ipums_api_key("<your key>", save = TRUE)` and then restart R
+before running `make`.
+
 The pipeline downloads public source files as needed into task outputs or
 `data_raw/`. The small archived DCP 2010 City Council boundary ZIP used for the
 paper's 2010 district geography is committed at

@@ -229,7 +229,14 @@ download_with_status <- function(url, dest_path) {
   tryCatch(
     {
       options(timeout = max(3600, getOption("timeout")))
-      download.file(url, destfile = temp_path, mode = "wb", quiet = TRUE, method = "libcurl")
+      download.file(
+        url,
+        destfile = temp_path,
+        mode = "wb",
+        quiet = TRUE,
+        method = "libcurl",
+        headers = c("User-Agent" = "Mozilla/5.0")
+      )
       if (file.exists(dest_path)) {
         unlink(dest_path)
       }
