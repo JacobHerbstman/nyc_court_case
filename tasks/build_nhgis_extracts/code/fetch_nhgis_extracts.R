@@ -178,6 +178,13 @@ for (i in seq_len(nrow(nhgis_rows))) {
     }
   )
 
+  if (str_detect(fetch_result$status[[1]], "^fetch_failed:")) {
+    if (file.exists("../temp/nhgis_extract_downloads.csv")) {
+      unlink("../temp/nhgis_extract_downloads.csv")
+    }
+    stop(str_remove(fetch_result$status[[1]], "^fetch_failed:"))
+  }
+
   download_rows[[i]] <- fetch_result
 }
 

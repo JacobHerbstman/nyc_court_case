@@ -15,6 +15,7 @@ extract_number_from_path <- function(path) {
 
 nhgis_table_map <- read_csv("nhgis_table_map.csv", show_col_types = FALSE, na = c("", "NA"))
 nhgis_extract_downloads <- read_csv("../temp/nhgis_extract_downloads.csv", show_col_types = FALSE, na = c("", "NA")) %>%
+  mutate(raw_path = as.character(raw_path)) %>%
   mutate(extract_number = coalesce(extract_number, extract_number_from_path(raw_path)))
 
 expected_rows <- tibble(year = sort(unique(nhgis_table_map$year))) %>%
