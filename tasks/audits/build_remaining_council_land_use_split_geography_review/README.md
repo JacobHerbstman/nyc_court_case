@@ -8,6 +8,6 @@ The response pass in `output/council_land_use_remaining_split_geography_response
 is not accepted into production. A follow-up check found that 107 of 109
 responses cited Council matter files outside the queued review bundle, which is
 evidence of a batch-alignment failure. The production repair ledger in
-`tasks/create_council_land_use_ai_geography_repairs/` therefore excludes
+`tasks/create_council_land_use_geography_review_ledgers/` therefore excludes
 `remaining_split_vote_geography_ai_review_researcher_accepted` rows until this
 review is rebuilt and reverified.

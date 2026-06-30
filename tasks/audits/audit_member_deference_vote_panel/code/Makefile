@@ -42,7 +42,7 @@ all: ../output/member_deference_vote_panel_summary.csv \
 ../input/member_deference_final_action_vote_queue.csv: ../../../build_member_deference_vote_panel/output/member_deference_final_action_vote_queue.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/council_land_use_ai_geography_accepted_repairs.csv: ../../../create_council_land_use_ai_geography_repairs/output/council_land_use_ai_geography_accepted_repairs.csv | ../input
+../input/council_land_use_ai_geography_accepted_repairs.csv: ../../../create_council_land_use_geography_review_ledgers/output/council_land_use_ai_geography_accepted_repairs.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 link-inputs: ../input/member_deference_vote_panel.csv \

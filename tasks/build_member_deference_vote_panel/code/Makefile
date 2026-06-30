@@ -39,7 +39,7 @@ all: ../output/member_deference_vote_panel.csv \
 ../input/zap_project_data.parquet: ../../build_zap_datasets/output/zap_project_data.parquet | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/council_land_use_ai_geography_accepted_repairs.csv: ../../create_council_land_use_ai_geography_repairs/output/council_land_use_ai_geography_accepted_repairs.csv | ../input
+../input/council_land_use_ai_geography_accepted_repairs.csv: ../../create_council_land_use_geography_review_ledgers/output/council_land_use_ai_geography_accepted_repairs.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 link-inputs: ../input/council_member_roster_master.csv \

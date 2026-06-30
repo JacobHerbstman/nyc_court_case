@@ -7,7 +7,7 @@ decision panel.
 The task is not the production source consumed by the member-deference panel.
 It is a provenance and verification workflow. Accepted rows are copied into the
 reviewed source ledger in
-`tasks/create_council_land_use_ai_geography_repairs/code/accepted_ai_geography_repair_ledger.csv`,
+`tasks/create_council_land_use_geography_review_ledgers/code/accepted_ai_geography_repair_ledger.csv`,
 and that staged task writes the production repair file used downstream.
 
 ## Inputs
