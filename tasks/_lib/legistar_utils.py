@@ -34,6 +34,26 @@ def save_text(path: Path, text: str) -> None:
     path.write_text(text, encoding="utf-8")
 
 
+def parse_form_inputs(html: str) -> dict[str, str]:
+    soup = BeautifulSoup(html, "html.parser")
+    payload: dict[str, str] = {}
+
+    for inp in soup.find_all("input"):
+        name = inp.get("name")
+        if not name:
+            continue
+
+        input_type = (inp.get("type") or "").lower()
+        if input_type in {"submit", "button", "image"}:
+            continue
+        if input_type in {"checkbox", "radio"} and not inp.has_attr("checked"):
+            continue
+
+        payload[name] = inp.get("value") or ""
+
+    return payload
+
+
 def write_dict_rows_csv(path: str | Path, rows: list[dict[str, object]], fieldnames: list[str]) -> None:
     output_path = Path(path)
     temp_path = output_path.with_suffix(output_path.suffix + ".tmp")

@@ -11,7 +11,7 @@ import requests
 from bs4 import BeautifulSoup
 
 sys.path.append("../../_lib")
-from legistar_utils import normalize_space, sha256, write_dict_rows_csv
+from legistar_utils import normalize_space, parse_form_inputs, sha256, write_dict_rows_csv
 
 PULL_DATE = "20260512"
 LEGISTAR_URL = (
@@ -40,26 +40,6 @@ def cached_file_is_local(path: Path) -> bool:
 def remove_bad_cached_file(path: Path) -> None:
     if path.exists() and not cached_file_is_local(path):
         path.unlink()
-
-
-def parse_form_inputs(html: str) -> dict[str, str]:
-    soup = BeautifulSoup(html, "html.parser")
-    payload: dict[str, str] = {}
-
-    for inp in soup.find_all("input"):
-        name = inp.get("name")
-        if not name:
-            continue
-
-        input_type = (inp.get("type") or "").lower()
-        if input_type in {"submit", "button", "image"}:
-            continue
-        if input_type in {"checkbox", "radio"} and not inp.has_attr("checked"):
-            continue
-
-        payload[name] = inp.get("value") or ""
-
-    return payload
 
 
 def source_row(
