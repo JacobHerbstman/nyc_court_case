@@ -6,9 +6,33 @@ The workflow is task-based. Each production task lives in `tasks/<task_name>/` w
 
 `tasks/audits/` contains diagnostics, exploratory work, review queues, and validation exercises. The production task graph does not depend on audit tasks.
 
+## Fresh Run
+
+From a fresh checkout, install the system tools used by the pipeline:
+
+- GNU Make
+- R
+- Python 3 with `pip`
+- LaTeX with `pdflatex` and `bibtex`
+
+The root Makefile installs missing R and Python packages through
+`tasks/setup_environment`. It does not install system libraries needed by R
+packages such as `sf` or `arrow`.
+
+For a full rebuild with no cached NHGIS files, set an IPUMS API key first:
+
+```sh
+export IPUMS_API_KEY="your-ipums-key"
+make
+```
+
+The pipeline downloads public source files as needed into task outputs or
+`data_raw/`. If the NHGIS raw extract files are already present, the IPUMS key
+is not used.
+
 ## Data Collection and Extraction
 
-- `setup_environment`: records the R package environment.
+- `setup_environment`: installs and records the R and Python package environment.
 - `source_registry`: copies the source catalog used by fetching tasks.
 - `fetch_mappluto_archive`: downloads MapPLUTO release files.
 - `build_nhgis_extracts`: standardizes NHGIS tract inputs for the 1990 homeownership measure.
@@ -34,7 +58,7 @@ The workflow is task-based. Each production task lives in `tasks/<task_name>/` w
 - `summarize_citywide_ulurp_application_trends`: creates annual citywide ULURP application counts.
 - `task_graph`: creates the production task graph and task inventories.
 
-The current paper entry point is:
+The paper can also be rebuilt from the paper folder:
 
 ```sh
 cd paper

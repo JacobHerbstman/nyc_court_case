@@ -1,9 +1,10 @@
 # Setup Environment
 
-Installs and records the R packages used by the task pipeline.
+Installs and records the R and Python packages used by the task pipeline.
 
-The input is `packages.R`. The output is `R_packages.txt`, a record of the R
-package versions available to the project.
+Inputs are `packages.R` and `python_packages.py`. Outputs are `R_packages.txt`
+and `python_packages.txt`, records of the package versions available to the
+project.
 
-Runtime: about 2 seconds after packages are installed. A first run can take
-longer if R packages need to be installed.
+Runtime is a few seconds after packages are installed. A first run can take
+longer if packages need to be downloaded from CRAN or PyPI.
