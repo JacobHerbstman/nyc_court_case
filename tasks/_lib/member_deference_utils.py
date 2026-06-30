@@ -11,6 +11,12 @@ APPLICATION_RE = re.compile(
     flags=re.IGNORECASE,
 )
 
+COUNCIL_DISTRICT_RE = re.compile(
+    r"Council District(?:s)?(?:\s*(?:No\.?|Nos\.?|no\.?|nos\.?|number)?)?\s*([0-9,\sand-]+)",
+    flags=re.IGNORECASE,
+)
+COUNCIL_DISTRICT_SHORT_RE = re.compile(r"\bCD'?s?\.?\s*([0-9,\sand-]+)", flags=re.IGNORECASE)
+
 
 def normalize_space(value: object) -> str:
     return re.sub(r"\s+", " ", "" if value is None or pd.isna(value) else str(value)).strip()
@@ -42,6 +48,15 @@ def application_keys(value: object) -> list[str]:
         if key not in keys:
             keys.append(key)
     return keys
+
+
+def council_districts_from_text(value: object) -> list[str]:
+    text = normalize_space(value)
+    districts = []
+    for pattern in [COUNCIL_DISTRICT_RE, COUNCIL_DISTRICT_SHORT_RE]:
+        for match in pattern.finditer(text):
+            districts.extend(re.findall(r"\d{1,2}", match.group(1)))
+    return [district for district in dict.fromkeys(districts) if 1 <= int(district) <= 51]
 
 
 def borough_code_from_application_suffix(keys: object) -> tuple[str, str]:

@@ -20,15 +20,12 @@ from member_deference_utils import (
     collapse_districts,
     collapse_examples,
     collapse_semicolon_values as collapse_values,
+    council_districts_from_text,
     lot_numbers_from_text,
     norm_name,
     normalize_space,
     split_semicolon,
     write_csv,
-)
-district_re = re.compile(
-    r"Council District(?:s)?(?:\s*(?:No\.?|Nos\.?|no\.?|nos\.?|number)?)?\s*([0-9,\sand-]+)",
-    flags=re.IGNORECASE,
 )
 lu_re = re.compile(r"\bL\.?\s*U\.?\s*(?:No\.?)?\s*(\d{1,4})(?:\s*-\s*\d{4})?\b", flags=re.IGNORECASE)
 
@@ -39,13 +36,6 @@ def lu_numbers(value: object) -> list[str]:
         if number not in numbers:
             numbers.append(number)
     return numbers
-
-
-def districts_from_text(value: object) -> str:
-    districts = []
-    for match in district_re.finditer("" if pd.isna(value) else str(value)):
-        districts.extend(re.findall(r"\d{1,2}", match.group(1)))
-    return collapse_districts(districts)
 
 
 def clean_url(value: object) -> str:
@@ -283,7 +273,7 @@ for row in queue.to_dict("records"):
             source_relation = "no_relation_match"
 
         official_bbls, official_borough_code, official_borough_source = bbls_from_text(fetched_text, row["application_keys"])
-        direct_districts = districts_from_text(fetched_text)
+        direct_districts = collapse_districts(council_districts_from_text(fetched_text))
         source_rows.append(
             {
                 "matter_id": row["matter_id"],

@@ -13,6 +13,7 @@ from member_deference_utils import (
     application_keys,
     collapse_districts as collapse_int_strings,
     collapse_values,
+    council_districts_from_text,
     edge_name,
     norm_name,
     normalize_space,
@@ -20,24 +21,6 @@ from member_deference_utils import (
 )
 
 RECALL_YEARS = list(range(1998, 2026))
-
-district_patterns = [
-    re.compile(
-        r"Council District(?:s)?(?:\s*(?:No\.?|Nos\.?|no\.?|nos\.?))?\s*([0-9,\sand-]+)",
-        flags=re.IGNORECASE,
-    ),
-    re.compile(r"\bCD'?s?\.?\s*([0-9,\sand-]+)", flags=re.IGNORECASE),
-]
-
-
-def districts_from_text(value: object) -> list[str]:
-    text = "" if pd.isna(value) else str(value)
-    districts = []
-    for pattern in district_patterns:
-        for match in pattern.finditer(text):
-            districts.extend(re.findall(r"\d{1,2}", match.group(1)))
-    return [district for district in dict.fromkeys(districts) if 1 <= int(district) <= 51]
-
 
 def disposition_group(status: object, final_action: object, title: object) -> str:
     status_text = normalize_space(status).lower()
@@ -243,7 +226,7 @@ action_details["text_for_parse"] = (
     + action_details["minutes_note"].fillna("")
 )
 action_details["legistar_text_districts"] = action_details["text_for_parse"].map(
-    lambda x: collapse_values(districts_from_text(x))
+    lambda x: collapse_values(council_districts_from_text(x))
 )
 action_details["matter_index_districts"] = action_details["matter_index_affected_council_districts"].map(
     lambda x: collapse_int_strings(split_semicolon(x))
@@ -361,7 +344,7 @@ matter_universe_base["matter_index_districts"] = matter_universe_base["affected_
     lambda x: collapse_int_strings(split_semicolon(x))
 )
 matter_universe_base["legistar_text_districts"] = matter_universe_base["matter_text_for_parse"].map(
-    lambda x: collapse_values(districts_from_text(x))
+    lambda x: collapse_values(council_districts_from_text(x))
 )
 matter_universe_base["application_keys"] = matter_universe_base["matter_text_for_parse"].map(
     lambda x: collapse_values(application_keys(x))
