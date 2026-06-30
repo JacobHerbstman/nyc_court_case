@@ -10,6 +10,8 @@ district or districts. The raw chat is not a production input. The production
 source of truth is `code/accepted_ai_geography_repair_ledger.csv`, which records
 the accepted district assignment, evidence, source notes, matter identifiers,
 and source URLs for each promoted repair.
+Field definitions and review caveats are documented in
+`accepted_ai_geography_repair_ledger.md`.
 
 This task does not call ChatGPT. It normalizes the committed ledger so
 downstream vote-panel code reads a stable project file.
