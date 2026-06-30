@@ -6,8 +6,8 @@ suppressPackageStartupMessages({
 })
 
 source_catalog <- read_csv("../../../source_registry/code/source_catalog.csv", show_col_types = FALSE, na = c("", "NA"))
-manual_manifest <- read_csv("../../../source_registry/code/manual_manifest.csv", show_col_types = FALSE, na = c("", "NA"))
-archive_requests <- read_csv("../../../source_registry/code/archive_requests.csv", show_col_types = FALSE, na = c("", "NA"))
+manual_manifest <- read_csv("../../source_registry_context/code/manual_manifest.csv", show_col_types = FALSE, na = c("", "NA"))
+archive_requests <- read_csv("../../source_registry_context/code/archive_requests.csv", show_col_types = FALSE, na = c("", "NA"))
 
 required_source_cols <- c(
   "source_id", "source_name", "access_mode", "official_url", "raw_subdir",

@@ -9,7 +9,7 @@ all: ../output/archival_record_inventory.csv
 ../input/source_catalog.csv: ../../../source_registry/code/source_catalog.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/archive_requests.csv: ../../../source_registry/code/archive_requests.csv | ../input
+../input/archive_requests.csv: ../../source_registry_context/code/archive_requests.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/archival_record_raw_files.csv: ../../load_archival_records_raw/output/archival_record_raw_files.csv | ../input

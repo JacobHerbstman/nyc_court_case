@@ -56,4 +56,4 @@ Notes for our project:
 
 - We only need records, not explanations or narrative responses.
 - The most important use is constructing a historical lot- or address-level panel of new residential construction activity before 2000.
-- If DOB suggests another agency or archive for portions of these records, record that referral in `tasks/source_registry/code/archive_requests.csv`.
+- If DOB suggests another agency or archive for portions of these records, record that referral in `tasks/audits/source_registry_context/code/archive_requests.csv`.
