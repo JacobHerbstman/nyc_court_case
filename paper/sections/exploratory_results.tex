@@ -19,7 +19,7 @@ The 1--4 unit margin, by contrast, does not exhibit the same late decline in the
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[page=1,width=0.86\textwidth]{../tasks/summarize_ccd2010_homeownership_long_units_series/output/ccdist2010_homeownership_long_units_raw_units_plots.pdf}
+    \includegraphics[page=1,width=0.86\textwidth]{input/ccdist2010_homeownership_long_units_raw_units_plots.pdf}
     \caption{Housing Production by Homeownership Tercile}
     \label{fig:tercile_trends}
 \figurenotes{Figure plots centered 3-year moving averages of raw annual housing-production units by tercile of the within-borough standardized 1990 homeownership treatment. The unit is the 2010 City Council district. Construction outcomes cover 1970--2025 and are measured with the 25v4 MapPLUTO yearbuilt proxy, assigning lots to archived 2010 Council districts by lot representative point.}
@@ -33,7 +33,7 @@ This is descriptive, but it makes the empirical margin transparent: the post-202
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[page=2,width=0.86\textwidth]{../tasks/summarize_ccd2010_homeownership_long_units_series/output/ccdist2010_homeownership_long_units_raw_units_plots.pdf}
+    \includegraphics[page=2,width=0.86\textwidth]{input/ccdist2010_homeownership_long_units_raw_units_plots.pdf}
     \caption{Brooklyn Homeownership Gradient by Housing Margin}
     \label{fig:brooklyn_case_study}
 \figurenotes{Figure orders the 16 2010 City Council districts assigned to Brooklyn by within-borough standardized 1990 homeownership and plots later construction margins alongside the treatment. Construction outcomes are raw 2020--2025 unit totals, measured with the 25v4 MapPLUTO yearbuilt proxy.}
@@ -64,7 +64,7 @@ Fixed effects absorb permanent Council-district differences and borough-period h
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[page=1,width=0.86\textwidth]{../tasks/estimate_ccd2010_homeownership_long_units_event_study/output/ccdist2010_homeownership_long_units_event_coefficients_raw_units_5yr_bins.pdf}
+    \includegraphics[page=1,width=0.86\textwidth]{input/ccdist2010_homeownership_long_units_event_coefficients_raw_units_5yr_bins.pdf}
     \caption{Event-Study Gradients by Housing Margin}
     \label{fig:homeownership_event_study_5_plus}
 \figurenotes{Figure plots coefficients on within-borough standardized 1990 homeownership from Equation~\ref{eq:homeownership_event_study}. Outcomes are raw annual units in 1--4 unit and 5+ unit new buildings. The unit is the 2010 City Council district. Construction outcomes are measured with the 25v4 MapPLUTO yearbuilt proxy. The omitted period is 1985--1989. The event-study bins are five-year periods from 1970--1974 through 2015--2019, plus a final 2020--2025 bin. Controls include log 1990 occupied units, 1990 median household income, 1990 vacancy rate, and 1970--1988 raw production on the same outcome scale, interacted with period bins. Standard errors are clustered by Council district.}
@@ -74,7 +74,7 @@ Figure~\ref{fig:homeownership_event_study_5_plus} does not show a clean break ex
 For 5+ unit buildings, the homeowner gradient is negative in several earlier bins but becomes much larger after 2010, especially in the 2015--2019 and 2020--2025 periods.
 The 1--4 unit placebo shows no comparable late decline.
 
-\input{../tasks/estimate_ccd2010_homeownership_long_units_event_study/output/ccdist2010_homeownership_long_units_long_difference_raw_units.tex}
+\input{input/ccdist2010_homeownership_long_units_long_difference_raw_units.tex}
 
 Table~\ref{tab:ccdist2010_homeownership_long_units_long_difference_raw_units} reports the corresponding long-difference estimates.
 The results are consistent with the event study: the pre-1990 placebo comparison and the early post windows are imprecise, while the 2010s and especially the 2020--2025 long differences are negative.
