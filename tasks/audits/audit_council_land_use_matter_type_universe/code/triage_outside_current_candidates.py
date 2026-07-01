@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/audit_council_land_use_matter_type_universe/code")
-
 import csv
 import glob
 import re

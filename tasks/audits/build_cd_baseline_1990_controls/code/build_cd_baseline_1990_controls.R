@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/build_cd_baseline_1990_controls/code")
-
 suppressPackageStartupMessages({
   library(arrow)
   library(dplyr)

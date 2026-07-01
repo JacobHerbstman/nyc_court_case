@@ -6,7 +6,6 @@ import re
 import pandas as pd
 
 
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/verify_council_land_use_ai_geography/code")
 
 
 def split_semicolon(value):

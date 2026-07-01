@@ -1,4 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_lot_crosswalks/code")
 # mappluto_index_csv <- "../input/mappluto_lot_files.csv"
 # dob_index_csv <- "../input/dob_open_data_files.csv"
 # out_crosswalk_csv <- "../output/lot_identifier_crosswalk.csv"

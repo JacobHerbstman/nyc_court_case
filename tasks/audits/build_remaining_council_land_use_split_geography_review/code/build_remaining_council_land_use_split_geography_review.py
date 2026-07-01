@@ -1,4 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/build_remaining_council_land_use_split_geography_review/code")
 # batch_size <- 5
 # max_bundles <- 0
 # prompt_version <- "v1"
@@ -609,7 +608,7 @@ checklist = """# Research Understanding Checklist
 
 ## Stage 3: Cleaning And Construction Logic
 - [x] Included rows: final-action vote-sample matter rows with at least one negative/abstain vote and no affected Council district.
-- [x] Mechanical output: matter-row frame and bundled ChatGPT review queue.
+- [x] Mechanical output: matter-row frame and bundled ChatGPT review list.
 - [x] Substantive output: deterministic triage category for prioritizing review, not final coding.
 - [ ] Mastery status: needs researcher review after first batch.
 

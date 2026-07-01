@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/summarize_zap_housing_pipeline_tercile_trends/code")
-
 suppressPackageStartupMessages({
   library(arrow)
   library(dplyr)

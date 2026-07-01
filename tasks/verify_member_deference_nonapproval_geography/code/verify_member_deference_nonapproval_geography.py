@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/verify_member_deference_nonapproval_geography/code")
-
 from __future__ import annotations
 
 import hashlib
@@ -161,15 +159,15 @@ mappluto = pd.read_parquet("../input/mappluto_current_lot_lookup.parquet", colum
 roster = pd.read_csv("../input/council_member_roster_master.csv", dtype=str, keep_default_na=False)
 
 if queue["matter_id"].duplicated().any():
-    raise RuntimeError("Review queue must be unique by matter_id.")
+    raise RuntimeError("Review list must be unique by matter_id.")
 if full_queue["matter_id"].duplicated().any():
-    raise RuntimeError("Full final-action queue must be unique by matter_id.")
+    raise RuntimeError("Full final-action list must be unique by matter_id.")
 if recovery["matter_id"].duplicated().any():
     raise RuntimeError("Geography recovery output must be unique by matter_id.")
 if chatgpt["matter_file"].duplicated().any():
     raise RuntimeError("ChatGPT review responses must be unique by matter_file.")
 if not chatgpt["matter_file"].isin(set(queue["matter_file"])).all():
-    raise RuntimeError("Every ChatGPT review response must link to the current review queue.")
+    raise RuntimeError("Every ChatGPT review response must link to the current review list.")
 if matter_universe["matter_id"].duplicated().any():
     raise RuntimeError("Matter universe must be unique by matter_id.")
 
@@ -664,11 +662,11 @@ verification = verification[
 if len(queue) != int(recovery["recovered_affected_district_missing_bool"].sum()):
     raise RuntimeError("Verification input must cover every unresolved recovery row.")
 if not queue.loc[queue["chatgpt_response_found"], "matter_file"].isin(set(chatgpt["matter_file"])).all():
-    raise RuntimeError("Every marked ChatGPT review response must link to the current review queue.")
+    raise RuntimeError("Every marked ChatGPT review response must link to the current review list.")
 if verification["matter_id"].duplicated().any():
     raise RuntimeError("Verification ledger must be unique by matter_id.")
 if int(sources["source_role"].eq("exact_matter_legistar").sum()) != len(queue):
-    raise RuntimeError("Every review-queue row must have an exact Legistar matter source.")
+    raise RuntimeError("Every review-list row must have an exact Legistar matter source.")
 if not sources.loc[sources["source_role"].eq("exact_matter_legistar"), "fetch_status"].eq("200").all():
     raise RuntimeError("Every exact Legistar matter page must return HTTP 200.")
 if not verification.loc[verification["verification_status"].str.startswith("verified_"), "verified_districts"].ne("").all():

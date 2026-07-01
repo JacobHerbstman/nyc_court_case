@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/build_mappluto_lots/code")
-
 suppressPackageStartupMessages({
   library(arrow)
   library(dplyr)

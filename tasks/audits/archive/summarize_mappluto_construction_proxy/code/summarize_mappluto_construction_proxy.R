@@ -1,4 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_mappluto_construction_proxy/code")
 # proxy_panel_csv <- "../input/mappluto_construction_proxy_cd_year.csv"
 # treatment_csv <- "../input/cd_homeownership_1990_measure.csv"
 # hdb_parquet <- "../input/dcp_housing_database_project_level_25q4.parquet"

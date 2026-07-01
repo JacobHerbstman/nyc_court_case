@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/build_cd_homeownership_exact_decadal_validation/code")
-
 suppressPackageStartupMessages({
   library(arrow)
   library(dplyr)

@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/summarize_zap_zoning_actions_by_decade/code")
-
 suppressPackageStartupMessages({
   library(dplyr)
   library(ggplot2)

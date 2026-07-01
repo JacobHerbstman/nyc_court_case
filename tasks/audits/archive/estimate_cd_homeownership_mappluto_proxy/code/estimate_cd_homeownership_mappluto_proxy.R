@@ -1,4 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/estimate_cd_homeownership_mappluto_proxy/code")
 # cd_homeownership_mappluto_proxy_panel_csv <- "../input/cd_homeownership_mappluto_proxy_panel.csv"
 # out_results_csv <- "../output/cd_homeownership_mappluto_proxy_era_interactions.csv"
 # out_summary_csv <- "../output/cd_homeownership_mappluto_proxy_model_summary.csv"

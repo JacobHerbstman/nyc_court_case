@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_member_deference_pilot_audit/code")
-
 from __future__ import annotations
 
 import hashlib

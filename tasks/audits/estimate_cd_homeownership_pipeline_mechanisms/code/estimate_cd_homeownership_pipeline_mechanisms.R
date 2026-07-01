@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/estimate_cd_homeownership_pipeline_mechanisms/code")
-
 suppressPackageStartupMessages({
   library(dplyr)
   library(fixest)

@@ -10,7 +10,7 @@ Rows enter this task when that chain fails. They are not assumed to be outside C
 
 ## Workflow
 
-1. Use `output/manual_geocode_upzoning_queue.csv` as the research queue.
+1. Use `output/manual_geocode_upzoning_queue.csv` as the research list.
 2. For each row, use the Google-query columns and browser research to find a proper geocodable address or intersection.
 3. Enter only researched values in `code/manual_geocode_upzonings.csv`.
 4. Re-run `make` from `code/`.

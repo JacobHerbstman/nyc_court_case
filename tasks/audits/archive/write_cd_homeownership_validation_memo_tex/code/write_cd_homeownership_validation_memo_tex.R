@@ -1,4 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/write_cd_homeownership_validation_memo_tex/code")
 # decision_table_csv <- "../input/cd_homeownership_validation_decision_table.csv"
 # exact_comparison_csv <- "../input/cd_homeownership_exact_decadal_validation_comparison.csv"
 # proxy_overlap_metrics_csv <- "../input/cd_homeownership_proxy_overlap_metrics.csv"

@@ -1,4 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/write_council_district_upgrade_feasibility_memo/code")
 # dcp_council_boundary_archive_audit_summary_csv <- "../input/dcp_council_boundary_archive_audit_summary.csv"
 # dcp_council_boundary_archive_canonical_regimes_csv <- "../input/dcp_council_boundary_archive_canonical_regimes.csv"
 # dcp_council_boundary_archive_feasibility_gate_csv <- "../input/dcp_council_boundary_archive_feasibility_gate.csv"

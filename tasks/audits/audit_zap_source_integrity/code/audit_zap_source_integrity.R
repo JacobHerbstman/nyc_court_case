@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/audit_zap_source_integrity/code")
-
 suppressPackageStartupMessages({
   library(arrow)
   library(dplyr)

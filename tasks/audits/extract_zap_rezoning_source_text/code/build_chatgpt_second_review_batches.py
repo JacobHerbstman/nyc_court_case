@@ -5,7 +5,6 @@ import io
 import textwrap
 
 
-# setwd("tasks/audits/extract_zap_rezoning_source_text/code")
 
 MAX_PROJECTS_PER_BATCH = 4
 TARGET_BATCH_CHAR_LIMIT = 90000

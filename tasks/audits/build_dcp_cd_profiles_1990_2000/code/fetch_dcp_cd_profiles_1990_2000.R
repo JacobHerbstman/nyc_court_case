@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/build_dcp_cd_profiles_1990_2000/code")
-
 suppressPackageStartupMessages({
   library(dplyr)
   library(readr)

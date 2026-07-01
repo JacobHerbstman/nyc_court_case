@@ -1,4 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_dcp_cd_profiles_1990_2000/code")
 # dcp_cd_profiles_files_csv <- "../input/dcp_cd_profiles_1990_2000_files.csv"
 # dcp_cd_profiles_qc_csv <- "../input/dcp_cd_profiles_1990_2000_qc.csv"
 # out_summary_csv <- "../output/dcp_cd_profiles_1990_2000_audit_summary.csv"

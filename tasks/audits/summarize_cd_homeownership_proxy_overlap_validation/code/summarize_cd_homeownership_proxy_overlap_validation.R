@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/summarize_cd_homeownership_proxy_overlap_validation/code")
-
 suppressPackageStartupMessages({
   library(arrow)
   library(dplyr)

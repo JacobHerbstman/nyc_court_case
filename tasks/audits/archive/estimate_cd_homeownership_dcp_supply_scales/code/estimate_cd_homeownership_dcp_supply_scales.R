@@ -1,4 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/estimate_cd_homeownership_dcp_supply_scales/code")
 # cd_homeownership_dcp_supply_panel_csv <- "../input/cd_homeownership_dcp_supply_panel.csv"
 # cd_baseline_1990_controls_csv <- "../input/cd_baseline_1990_controls.csv"
 # out_results_csv <- "../output/cd_homeownership_dcp_supply_scale_results.csv"

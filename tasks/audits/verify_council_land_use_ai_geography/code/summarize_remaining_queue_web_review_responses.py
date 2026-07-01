@@ -5,7 +5,6 @@ import json
 import re
 
 
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/verify_council_land_use_ai_geography/code")
 
 
 def parse_response_text(row):

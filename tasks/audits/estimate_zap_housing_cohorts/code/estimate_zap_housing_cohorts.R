@@ -1,4 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/estimate_zap_housing_cohorts/code")
 # reference_era <- "1980-1984"
 
 suppressPackageStartupMessages({

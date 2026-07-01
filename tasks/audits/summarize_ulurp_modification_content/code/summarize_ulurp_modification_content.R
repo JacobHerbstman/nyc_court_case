@@ -1,4 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/summarize_ulurp_modification_content/code")
 # summary_mode <- "first_pass"
 
 suppressPackageStartupMessages({

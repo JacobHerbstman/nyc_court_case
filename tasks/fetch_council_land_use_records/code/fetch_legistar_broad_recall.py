@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/fetch_council_land_use_records/code")
-
 from __future__ import annotations
 
 import html as html_module
@@ -305,7 +303,7 @@ def fetch_search_pages(session: requests.Session, query: dict[str, str]) -> list
             page_info = parse_page_info(current_html)
             parsed_rows = parse_grid_rows(current_html, query, page_info)
             matter_rows.extend(parsed_rows)
-            print(f"Parsed cached {query['matter_type']} {raw_path.name}: {len(parsed_rows)} rows", flush=True)
+            print(f"Parsed saved {query['matter_type']} {raw_path.name}: {len(parsed_rows)} rows", flush=True)
         return matter_rows
 
     response = request_with_retries(session, "GET", BASE_URL, timeout=90)

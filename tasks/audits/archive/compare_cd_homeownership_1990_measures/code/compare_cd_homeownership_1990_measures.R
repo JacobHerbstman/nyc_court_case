@@ -1,4 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/compare_cd_homeownership_1990_measures/code")
 # dcp_cd_homeownership_1990_csv <- "../input/dcp_cd_homeownership_1990.csv"
 # nhgis_cd_homeownership_1990_csv <- "../input/nhgis_cd_homeownership_1990.csv"
 # out_comparison_csv <- "../output/cd_homeownership_1990_measure_comparison.csv"

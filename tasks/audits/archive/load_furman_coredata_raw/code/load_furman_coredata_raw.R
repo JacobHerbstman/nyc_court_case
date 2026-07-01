@@ -1,4 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/load_furman_coredata_raw/code")
 # source_catalog_csv <- "../input/source_catalog.csv"
 # manual_manifest_csv <- "../input/manual_manifest.csv"
 # out_index_csv <- "../output/furman_coredata_raw_files.csv"

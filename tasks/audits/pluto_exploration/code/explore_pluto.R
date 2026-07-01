@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/pluto_exploration/code")
-
 suppressPackageStartupMessages({
   library(dplyr)
   library(janitor)

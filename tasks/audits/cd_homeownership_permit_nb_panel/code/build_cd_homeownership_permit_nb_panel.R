@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/cd_homeownership_permit_nb_panel/code")
-
 suppressPackageStartupMessages({
   library(arrow)
   library(dplyr)

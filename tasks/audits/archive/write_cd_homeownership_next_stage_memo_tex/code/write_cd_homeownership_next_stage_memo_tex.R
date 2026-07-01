@@ -1,4 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/write_cd_homeownership_next_stage_memo_tex/code")
 # anatomy_top_cd_csv <- "../input/cd_homeownership_long_units_anatomy_top_cd.csv"
 # borough_era_csv <- "../input/cd_homeownership_long_units_borough_era_shares.csv"
 # overlap_error_csv <- "../input/cd_homeownership_long_units_borough_overlap_error.csv"

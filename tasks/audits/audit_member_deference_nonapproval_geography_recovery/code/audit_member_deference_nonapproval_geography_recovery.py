@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/audit_member_deference_nonapproval_geography_recovery/code")
-
 from __future__ import annotations
 
 from pathlib import Path
@@ -137,7 +135,7 @@ review_queue = review_queue[
 write_csv("../output/member_deference_nonapproval_geography_review_queue.csv", review_queue)
 
 batch_lines = [
-    "# Member-Deference Non-Approval Geography Review Batches",
+    "# Member-Deference Nonapproval Geography Review Batches",
     "",
     (
         "Use these prompts in small batches. Any answer must be checked against "
@@ -159,7 +157,7 @@ qc = pd.DataFrame(
         {
             "check_name": "first_pass_nonapproval_rows",
             "passed": str(len(recovery) == len(target_queue)),
-            "detail": f"Recovery output keeps all {len(target_queue)} first-pass non-approval matters.",
+            "detail": f"Recovery output keeps all {len(target_queue)} first-pass nonapproval matters.",
         },
         {
             "check_name": "recovery_unique_by_matter_id",

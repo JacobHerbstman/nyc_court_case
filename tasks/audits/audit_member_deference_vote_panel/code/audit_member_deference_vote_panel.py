@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/audit_member_deference_vote_panel/code")
-
 from __future__ import annotations
 
 from pathlib import Path

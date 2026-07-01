@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/write_zap_ulurp_redev_memo/code")
-
 suppressPackageStartupMessages({
   library(dplyr)
   library(readr)

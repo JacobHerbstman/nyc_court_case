@@ -1,4 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_census_bps/code")
 # census_bps_index_csv <- "../input/census_bps_index.csv"
 # census_bps_qc_csv <- "../input/census_bps_qc.csv"
 # census_bps_borough_year_parquet <- "../input/census_bps_borough_year.parquet"

@@ -1,4 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_cd_homeownership_dcp_supply/code")
 # cd_homeownership_dcp_supply_panel_csv <- "../input/cd_homeownership_dcp_supply_panel.csv"
 # out_tercile_year_csv <- "../output/cd_homeownership_dcp_supply_tercile_year.csv"
 # out_tercile_five_year_csv <- "../output/cd_homeownership_dcp_supply_tercile_five_year.csv"

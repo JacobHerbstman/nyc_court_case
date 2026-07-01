@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/validate_source_registry/code")
-
 suppressPackageStartupMessages({
   library(readr)
   library(tibble)

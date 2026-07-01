@@ -1,4 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_dob_open_data/code")
 # dob_open_data_files_csv <- "../input/dob_open_data_files.csv"
 # dob_open_data_qc_csv <- "../input/dob_open_data_qc.csv"
 # dob_field_dictionary_csv <- "../input/dob_field_dictionary.csv"

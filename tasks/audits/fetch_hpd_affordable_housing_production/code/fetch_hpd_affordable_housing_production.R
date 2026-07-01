@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/fetch_hpd_affordable_housing_production/code")
-
 suppressPackageStartupMessages({
   library(readr)
 })

@@ -1,4 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/cd_homeownership_mappluto_proxy_panel/code")
 # cd_homeownership_1990_measure_csv <- "../input/cd_homeownership_1990_measure.csv"
 # cd_baseline_1990_controls_csv <- "../input/cd_baseline_1990_controls.csv"
 # mappluto_construction_proxy_cd_year_csv <- "../input/mappluto_construction_proxy_cd_year.csv"

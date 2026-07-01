@@ -81,8 +81,8 @@ def check_cached_html(paths: list[Path], label: str) -> None:
     bad_paths = bad_cached_html_paths(paths)
     if bad_paths:
         raise RuntimeError(
-            f"{label} has {len(bad_paths)} cached HTML files that are empty or not materialized locally. "
-            f"Hydrate or delete the cached file before rerunning. Example: {bad_paths[0]}"
+            f"{label} has {len(bad_paths)} saved HTML files that are empty or missing locally. "
+            f"Re-download or delete the saved file before rerunning. Example: {bad_paths[0]}"
         )
 
 

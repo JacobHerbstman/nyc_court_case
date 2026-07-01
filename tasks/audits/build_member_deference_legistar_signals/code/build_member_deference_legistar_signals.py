@@ -1,4 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/build_member_deference_legistar_signals/code")
 # query_year = "1998"
 
 from __future__ import annotations

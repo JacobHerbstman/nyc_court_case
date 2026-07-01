@@ -1,5 +1,3 @@
-# Run from /Users/jacobherbstman/Desktop/nyc_court_case/tasks/setup_environment/code
-
 from __future__ import annotations
 
 import importlib

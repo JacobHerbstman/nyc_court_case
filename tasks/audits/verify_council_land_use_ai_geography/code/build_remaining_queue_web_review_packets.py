@@ -13,7 +13,6 @@ from urllib.parse import parse_qs, urlparse
 from urllib.request import Request, urlopen
 
 
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/verify_council_land_use_ai_geography/code")
 
 
 class TextExtractor(HTMLParser):

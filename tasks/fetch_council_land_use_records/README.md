@@ -7,7 +7,7 @@ Land Use Call-Ups, and land-use-related Resolutions. Resolution rows enter when
 the committee or title indicates land-use content, including ULURP, CPC, UDAAP,
 and related 197-c/197-d language.
 
-The task caches raw Legistar HTML under `output/source_files/` and extracts
+The task saves raw Legistar HTML under `output/source_files/` and extracts
 matter records, history events, final Council action details, and member votes.
 It creates annual
 `legistar_*_broad_recall_matter_index.csv`,
@@ -15,5 +15,5 @@ It creates annual
 `legistar_*_broad_recall_action_details.csv`, and
 `legistar_*_broad_recall_member_votes.csv` files.
 
-Runtime: about 25-35 minutes for a full cached rebuild when the cached HTML
-files are materialized locally.
+Runtime: about 25-35 minutes for a full rebuild when the Legistar HTML files
+are already saved locally.

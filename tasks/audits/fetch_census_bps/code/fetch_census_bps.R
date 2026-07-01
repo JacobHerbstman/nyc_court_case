@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/fetch_census_bps/code")
-
 suppressPackageStartupMessages({
   library(dplyr)
   library(readr)

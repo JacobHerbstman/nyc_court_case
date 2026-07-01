@@ -1,4 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/write_cd_homeownership_validation_memo/code")
 # exact_tercile_csv <- "../input/cd_homeownership_exact_decadal_validation_tercile.csv"
 # exact_comparison_csv <- "../input/cd_homeownership_exact_decadal_validation_comparison.csv"
 # proxy_overlap_metrics_csv <- "../input/cd_homeownership_proxy_overlap_metrics.csv"

@@ -12,7 +12,6 @@ import textwrap
 import pandas as pd
 
 
-# setwd("tasks/audits/build_zap_rezoning_llm_review/code")
 # batch_size <- 6
 # max_review_projects <- 0
 # random_audit_per_stratum <- 1

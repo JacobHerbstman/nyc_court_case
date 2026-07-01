@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/build_member_deference_overrule_candidates/code")
-
 suppressPackageStartupMessages({
   library(dplyr)
   library(readr)

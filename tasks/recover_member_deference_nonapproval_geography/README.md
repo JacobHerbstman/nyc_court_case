@@ -1,9 +1,9 @@
-# Recover Member-Deference Non-Approval Geography
+# Recover Member-Deference Nonapproval Geography
 
-Recovers affected Council districts for non-approval land-use matters that do
+Recovers affected Council districts for nonapproval land-use matters that do
 not already have districts in the Legistar matter index.
 
-Inputs are the non-approval final-action queue, ZAP project records, ZAP
+Inputs are the nonapproval final-action list, ZAP project records, ZAP
 project-BBL links, and the current MapPLUTO lot lookup.
 
 Creates `member_deference_nonapproval_geography_recovery.csv`. The matching

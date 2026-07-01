@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/summarize_zap_housing_buildout_after_certification/code")
-
 suppressPackageStartupMessages({
   library(dplyr)
   library(fixest)

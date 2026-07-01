@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/audit_member_deference_nonapproval_geography_verification/code")
-
 from __future__ import annotations
 
 from pathlib import Path
@@ -143,7 +141,7 @@ second_pass_queue = second_pass_queue[
 write_csv("../output/member_deference_nonapproval_geography_second_pass_review_queue.csv", second_pass_queue)
 
 batch_lines = [
-    "# Member-Deference Non-Approval Geography Second-Pass Review Batches",
+    "# Member-Deference Nonapproval Geography Second-Pass Review Batches",
     "",
     (
         "These prompts are for unresolved rows after the first official verification pass. "

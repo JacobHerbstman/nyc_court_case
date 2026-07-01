@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/write_brooklyn_homeownership_case_study_memo/code")
-
 suppressPackageStartupMessages({
   library(dplyr)
   library(readr)

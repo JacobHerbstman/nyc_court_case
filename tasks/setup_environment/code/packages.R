@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/setup_environment/code")
-
 options(repos = c(CRAN = "https://cloud.r-project.org"))
 
 cran_pkgs <- c(

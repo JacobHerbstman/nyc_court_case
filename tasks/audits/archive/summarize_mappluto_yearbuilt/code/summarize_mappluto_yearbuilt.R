@@ -1,4 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_mappluto_yearbuilt/code")
 # mappluto_lot_files_csv <- "../input/mappluto_lot_files.csv"
 # out_city_csv <- "../output/mappluto_yearbuilt_city_summary.csv"
 # out_borough_csv <- "../output/mappluto_yearbuilt_borough_summary.csv"

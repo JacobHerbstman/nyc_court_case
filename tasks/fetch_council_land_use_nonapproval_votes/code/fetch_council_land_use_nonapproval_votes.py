@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/fetch_council_land_use_nonapproval_votes/code")
-
 from __future__ import annotations
 
 import sys
@@ -21,13 +19,13 @@ target_queue = queue[queue["fetch_vote_detail_first_pass"].str.lower().eq("true"
 target_queue = target_queue.sort_values(["query_year", "matter_file", "matter_id"]).reset_index(drop=True)
 
 if target_queue.empty:
-    raise RuntimeError("The first-pass non-approval action-detail queue is empty.")
+    raise RuntimeError("The first-pass nonapproval action-detail list is empty.")
 if target_queue["matter_id"].duplicated().any():
-    raise RuntimeError("The first-pass non-approval queue must be unique by matter_id.")
+    raise RuntimeError("The first-pass nonapproval list must be unique by matter_id.")
 if target_queue["final_history_detail_url"].eq("").any():
-    raise RuntimeError("Every first-pass non-approval queue row must have a final action-detail URL.")
+    raise RuntimeError("Every first-pass nonapproval list row must have a final action-detail URL.")
 if target_queue["final_history_detail_url"].duplicated().any():
-    raise RuntimeError("The first-pass non-approval action-detail URLs must be unique.")
+    raise RuntimeError("The first-pass nonapproval action-detail URLs must be unique.")
 
 session = requests.Session()
 session.headers.update(
@@ -107,10 +105,10 @@ for i, row in enumerate(target_queue.to_dict("records"), start=1):
         )
 
     if i == 1 or i % 50 == 0 or i == len(target_queue):
-        print(f"Processed first-pass non-approval action-detail page {i} of {len(target_queue)}", flush=True)
+        print(f"Processed first-pass nonapproval action-detail page {i} of {len(target_queue)}", flush=True)
 
 if not action_rows:
-    raise RuntimeError("No first-pass non-approval action-detail pages were fetched or parsed.")
+    raise RuntimeError("No first-pass nonapproval action-detail pages were fetched or parsed.")
 
 action_details = pd.DataFrame(action_rows)
 member_votes = pd.DataFrame(
@@ -138,8 +136,8 @@ fetch_failures_df = pd.DataFrame(
 )
 if not fetch_failures_df.empty or len(action_details) != len(target_queue):
     raise RuntimeError(
-        "Expected one parsed action-detail page for every queued non-approval matter; "
-        f"parsed {len(action_details)} pages for {len(target_queue)} queued matters with "
+        "Expected one parsed action-detail page for every listed nonapproval matter; "
+        f"parsed {len(action_details)} pages for {len(target_queue)} listed matters with "
         f"{len(fetch_failures_df)} fetch failures."
     )
 

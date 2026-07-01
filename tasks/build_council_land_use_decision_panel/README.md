@@ -1,10 +1,10 @@
 # Build Council Land-Use Decision Panel
 
 Builds the matter-level Council land-use decision panel from the approval and
-non-approval vote workflows.
+nonapproval vote workflows.
 
 Inputs are the recalled land-use matter universe, approval-side local-member
-votes, the conservative non-approval geography queue, and parsed non-approval
+votes, the conservative nonapproval geography list, and parsed nonapproval
 final-action vote files. Some affected-district assignments come from accepted
 review ledgers or official-record verification when source records did not state
 a clear Council district.

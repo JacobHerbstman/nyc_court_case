@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/extract_zap_rezoning_source_text/code")
-
 suppressPackageStartupMessages({
   library(arrow)
   library(dplyr)

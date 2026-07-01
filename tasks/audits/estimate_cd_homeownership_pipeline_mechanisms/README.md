@@ -1,14 +1,5 @@
-# Invalid exploratory outputs
+# Archived mechanism audit
 
-The outputs in this task are frozen as stale exploratory artifacts. Do not use
-them for analysis or paper-facing results.
+Archived audit task. It is not used by the paper workflow.
 
-The ZAP construction feeding this task failed source-integrity checks: historical
-`actions` are mostly blank, action proxies were previously built from unsupported
-fields, approval timing is not historically usable, and BBL support varies
-strongly by period.
-
-Use the audited reconstruction path instead:
-
-- `tasks/audits/audit_zap_source_integrity/`
-- `tasks/audits/build_zap_housing_pipeline_from_raw/`
+The task is kept only so earlier exploratory code remains traceable.

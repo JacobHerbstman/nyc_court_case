@@ -1,4 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/fetch_census_acs_housing/code")
 # source_catalog_csv <- "../input/source_catalog.csv"
 # out_files_csv <- "../output/census_acs_housing_files.csv"
 # out_checksums_csv <- "../output/census_acs_housing_checksums.csv"

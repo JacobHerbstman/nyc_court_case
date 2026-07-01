@@ -1,4 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/write_cd_homeownership_outcome_mini_report/code")
 # measure_qc_csv <- "../input/cd_homeownership_1990_measure_qc.csv"
 # permit_qc_csv <- "../input/cd_homeownership_permit_nb_panel_qc.csv"
 # dcp_qc_csv <- "../input/cd_homeownership_dcp_units_panel_qc.csv"

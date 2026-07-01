@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/build_dcp_boundaries/code")
-
 suppressPackageStartupMessages({
   library(arrow)
   library(dplyr)

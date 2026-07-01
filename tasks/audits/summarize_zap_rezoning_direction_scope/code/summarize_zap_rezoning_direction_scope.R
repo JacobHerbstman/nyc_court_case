@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/summarize_zap_rezoning_direction_scope/code")
-
 suppressPackageStartupMessages({
   library(arrow)
   library(dplyr)
@@ -2268,7 +2266,7 @@ table_lines <- c(
 
 write_lines_if_changed(table_lines, "../output/zap_rezoning_direction_long_difference.tex")
 
-# Coverage, manual-review queues, and parser diagnostics.
+# Coverage, manual-review lists, and parser diagnostics.
 
 parse_coverage <- project_classification |>
   group_by(event_period, rezoning_direction, parse_status) |>

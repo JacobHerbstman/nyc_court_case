@@ -12,7 +12,6 @@ import pandas as pd
 from shapely import wkt
 
 
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/verify_council_land_use_ai_geography/code")
 
 
 TARGET_CATEGORIES = {

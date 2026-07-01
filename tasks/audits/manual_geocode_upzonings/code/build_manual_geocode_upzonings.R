@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/manual_geocode_upzonings/code")
-
 suppressPackageStartupMessages({
   library(arrow)
   library(dplyr)
@@ -236,8 +234,8 @@ prompt_lines <- c(
   "Use these output columns:",
   "project_id,proper_geocode_address,proper_geocode_city,proper_geocode_state,proper_geocode_zip,address_source_url,address_source_note,geocode_match_quality,manual_review_notes",
   "",
-  "The local queue is in:",
-  "/Users/jacobherbstman/Desktop/nyc_court_case/tasks/manual_geocode_upzonings/output/manual_geocode_upzoning_queue.csv",
+  "The project list is in:",
+  "output/manual_geocode_upzoning_queue.csv",
   "",
   "Recommended batch size: 10-20 projects at a time."
 )

@@ -8,7 +8,6 @@ import sys
 import textwrap
 
 
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/build_council_land_use_missing_geography_chatgpt_review/code")
 # batch_size = 4
 # max_signatures = 0
 # prompt_version = "v1"

@@ -1,4 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/write_cd_homeownership_gpt_pro_packet_tex/code")
 # cd_homeownership_1990_measure_csv <- "../input/cd_homeownership_1990_measure.csv"
 # comparison_summary_csv <- "../input/cd_homeownership_1990_measure_comparison_summary.csv"
 # proxy_validation_summary_csv <- "../input/mappluto_construction_proxy_validation_summary.csv"

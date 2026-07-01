@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/build_ulurp_modification_manual_review_queue/code")
-
 suppressPackageStartupMessages({
   library(dplyr)
   library(readr)
@@ -94,10 +92,10 @@ manual_review_queue <- bind_rows(known_case_queue, source_gap_queue, low_confide
   ungroup() |>
   select(manual_review_id, everything())
 
-assert_unique_keys(manual_review_queue, "manual_review_id", "ULURP modification manual review queue")
+assert_unique_keys(manual_review_queue, "manual_review_id", "ULURP modification manual review list")
 
 if (nrow(manual_review_queue) == 0) {
-  stop("ULURP modification manual review queue is empty.")
+  stop("ULURP modification manual review list is empty.")
 }
 
 write_csv_if_changed(manual_review_queue, "../output/ulurp_modification_manual_review_queue.csv")

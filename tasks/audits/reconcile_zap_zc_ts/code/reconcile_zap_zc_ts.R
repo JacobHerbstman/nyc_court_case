@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/reconcile_zap_zc_ts/code")
-
 suppressPackageStartupMessages({
   library(arrow)
   library(dplyr)

@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/summarize_citywide_ulurp_application_trend_variants/code")
-
 suppressPackageStartupMessages({
   library(arrow)
   library(dplyr)

@@ -1,4 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_cd_homeownership_outcome_panels/code")
 # permit_panel_csv <- "../input/cd_homeownership_permit_nb_panel.csv"
 # dcp_units_panel_csv <- "../input/cd_homeownership_dcp_units_panel.csv"
 # out_membership_csv <- "../output/cd_homeownership_outcome_tercile_membership.csv"

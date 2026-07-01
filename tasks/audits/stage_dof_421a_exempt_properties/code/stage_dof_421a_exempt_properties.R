@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/stage_dof_421a_exempt_properties/code")
-
 suppressPackageStartupMessages({
   library(dplyr)
   library(readr)

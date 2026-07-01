@@ -1,4 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_dob_permit_issuance/code")
 # harmonized_parquet <- "../input/dob_permit_issuance_harmonized.parquet"
 # harmonized_qc_csv <- "../input/dob_permit_issuance_harmonized_qc.csv"
 # comparison_csv <- "../input/current_source_decision_1989_2013.csv"

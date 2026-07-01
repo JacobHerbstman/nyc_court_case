@@ -15,7 +15,6 @@ from pathlib import Path
 import pandas as pd
 
 
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/ai_review_ulurp_modification_content/code")
 # batch_size <- 5
 # max_review_projects <- 0
 # random_audit_per_stratum <- 0
@@ -651,7 +650,7 @@ def format_project_record(
                 packet_data["manual"].get(project_id, []),
                 ["queue_reason", "source_gap_flag", "confidence", "snippet", "source_doc"],
                 8,
-                "No manual-review queue row for this project.",
+                "No manual-review list row for this project.",
             ),
             "",
             "source_document_links:",
@@ -746,7 +745,7 @@ assert_unique(summary, ["project_id"], "Modification project summary")
 assert_unique(modifications, ["modification_id"], "Discrete modifications")
 assert_unique(commitments, ["commitment_id"], "Commitments")
 assert_unique(versions, ["project_version_id"], "Project versions")
-assert_unique(manual, ["manual_review_id"], "Manual review queue")
+assert_unique(manual, ["manual_review_id"], "Manual review list")
 assert_unique(zap_report_text, ["document_page_id"], "ZAP report text")
 assert_unique(zap_report_snippets, ["snippet_id"], "ZAP report snippets")
 assert_unique(council_links, ["document_id"], "Council document links")

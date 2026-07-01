@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/recover_member_deference_nonapproval_geography/code")
-
 from __future__ import annotations
 
 import re
@@ -148,9 +146,9 @@ target_queue = queue[queue["fetch_vote_detail_first_pass"].str.lower().eq("true"
 target_queue = target_queue.sort_values(["query_year", "matter_file", "matter_id"]).reset_index(drop=True)
 
 if target_queue.empty:
-    raise RuntimeError("First-pass non-approval queue is empty.")
+    raise RuntimeError("First-pass nonapproval list is empty.")
 if target_queue["matter_id"].duplicated().any():
-    raise RuntimeError("First-pass non-approval queue must be unique by matter_id.")
+    raise RuntimeError("First-pass nonapproval list must be unique by matter_id.")
 if zap_project_data["project_id"].astype(str).duplicated().any():
     raise RuntimeError("Staged ZAP project data must be unique by project_id.")
 
@@ -539,7 +537,7 @@ recovery = recovery[
 ]
 
 if len(recovery) != len(target_queue):
-    raise RuntimeError("Recovery output must keep every first-pass non-approval matter.")
+    raise RuntimeError("Recovery output must keep every first-pass nonapproval matter.")
 if recovery["matter_id"].duplicated().any():
     raise RuntimeError("Recovery output must be unique by matter_id.")
 if zap_application_crosswalk["application_key"].duplicated().any():

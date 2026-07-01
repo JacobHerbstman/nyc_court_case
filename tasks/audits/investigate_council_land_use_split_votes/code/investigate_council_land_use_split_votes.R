@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/investigate_council_land_use_split_votes/code")
-
 suppressPackageStartupMessages({
   library(dplyr)
   library(ggplot2)

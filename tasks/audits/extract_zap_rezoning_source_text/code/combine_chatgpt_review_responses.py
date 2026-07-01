@@ -6,7 +6,6 @@ import io
 import os
 
 
-# setwd("tasks/audits/extract_zap_rezoning_source_text/code")
 
 EXPECTED_COLUMNS = [
     "project_id",

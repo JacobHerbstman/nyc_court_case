@@ -1,4 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_mappluto_lots/code")
 # mappluto_lot_files_csv <- "../input/mappluto_lot_files.csv"
 # mappluto_lot_qc_csv <- "../input/mappluto_lot_qc.csv"
 # mappluto_checksums_csv <- "../input/mappluto_checksums.csv"

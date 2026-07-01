@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_nhgis_extracts/code")
-
 suppressPackageStartupMessages({
   library(dplyr)
   library(ipumsr)

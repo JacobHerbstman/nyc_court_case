@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/summarize_cd_homeownership_long_units_series/code")
-
 suppressPackageStartupMessages({
   library(dplyr)
   library(ggplot2)

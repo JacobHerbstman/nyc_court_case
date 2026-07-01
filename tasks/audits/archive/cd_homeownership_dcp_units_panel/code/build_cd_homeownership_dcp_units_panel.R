@@ -1,4 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/cd_homeownership_dcp_units_panel/code")
 # cd_homeownership_1990_measure_csv <- "../input/cd_homeownership_1990_measure.csv"
 # dcp_housing_database_project_level_parquet <- "../input/dcp_housing_database_project_level_25q4.parquet"
 # out_panel_csv <- "../output/cd_homeownership_dcp_units_panel.csv"

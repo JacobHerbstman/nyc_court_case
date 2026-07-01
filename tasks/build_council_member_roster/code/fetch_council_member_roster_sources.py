@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_council_member_roster/code")
-
 from __future__ import annotations
 
 import re

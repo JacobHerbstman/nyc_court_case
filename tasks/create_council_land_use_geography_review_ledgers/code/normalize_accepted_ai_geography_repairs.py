@@ -9,7 +9,6 @@ sys.path.append("../../_lib")
 from member_deference_utils import split_semicolon, write_csv
 
 
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/create_council_land_use_geography_review_ledgers/code")
 
 
 def valid_districts(value):

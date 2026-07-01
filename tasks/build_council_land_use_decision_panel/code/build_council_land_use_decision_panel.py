@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_council_land_use_decision_panel/code")
-
 from __future__ import annotations
 
 import sys

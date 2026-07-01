@@ -1,4 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/write_cd_homeownership_main_spec_map/code")
 # dcp_era_results_csv <- "../input/cd_homeownership_dcp_supply_era_interactions.csv"
 # outcome_era_results_csv <- "../input/cd_homeownership_outcome_era_interactions.csv"
 # out_spec_map_csv <- "../output/cd_homeownership_main_spec_map.csv"

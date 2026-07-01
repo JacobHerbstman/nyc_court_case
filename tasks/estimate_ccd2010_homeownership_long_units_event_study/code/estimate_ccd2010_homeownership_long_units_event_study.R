@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/estimate_ccd2010_homeownership_long_units_event_study/code")
-
 suppressPackageStartupMessages({
   library(dplyr)
   library(fixest)

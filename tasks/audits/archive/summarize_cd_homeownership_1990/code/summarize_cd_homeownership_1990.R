@@ -1,4 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_cd_homeownership_1990/code")
 # nhgis_files_csv <- "../input/nhgis_files.csv"
 # nhgis_1990_parquet <- "../input/nhgis_1990_tract_extract.parquet"
 # dcp_boundary_index_csv <- "../input/dcp_boundary_index.csv"

@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/estimate_ccd2010_opportunity_counterfactual/code")
-
 suppressPackageStartupMessages({
   library(dplyr)
   library(fixest)

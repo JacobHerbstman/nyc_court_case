@@ -1,4 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_dcp_boundaries/code")
 # dcp_boundary_index_csv <- "../input/dcp_boundary_index.csv"
 # dcp_boundary_qc_csv <- "../input/dcp_boundary_qc.csv"
 # out_summary_csv <- "../output/dcp_boundary_audit_summary.csv"

@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/summarize_zap_linked_hdb_completion_decomposition/code")
-
 suppressPackageStartupMessages({
   library(arrow)
   library(dplyr)

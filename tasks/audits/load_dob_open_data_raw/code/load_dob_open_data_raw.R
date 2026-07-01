@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/load_dob_open_data_raw/code")
-
 suppressPackageStartupMessages({
   library(dplyr)
   library(readr)

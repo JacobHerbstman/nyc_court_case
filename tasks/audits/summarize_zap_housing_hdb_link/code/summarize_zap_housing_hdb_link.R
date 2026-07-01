@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/summarize_zap_housing_hdb_link/code")
-
 suppressPackageStartupMessages({
   library(dplyr)
   library(ggplot2)

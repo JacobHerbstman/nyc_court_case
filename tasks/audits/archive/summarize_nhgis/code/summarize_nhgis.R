@@ -1,4 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_nhgis/code")
 # nhgis_files_csv <- "../input/nhgis_files.csv"
 # nhgis_qc_csv <- "../input/nhgis_qc.csv"
 # nhgis_1980_parquet <- "../input/nhgis_1980_tract_extract.parquet"

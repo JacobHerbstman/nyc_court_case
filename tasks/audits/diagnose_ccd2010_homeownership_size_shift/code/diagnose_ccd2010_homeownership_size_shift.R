@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/diagnose_ccd2010_homeownership_size_shift/code")
-
 suppressPackageStartupMessages({
   library(dplyr)
   library(ggplot2)

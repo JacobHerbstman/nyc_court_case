@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/build_hdb_public_affordable_421a_split/code")
-
 suppressPackageStartupMessages({
   library(arrow)
   library(dplyr)

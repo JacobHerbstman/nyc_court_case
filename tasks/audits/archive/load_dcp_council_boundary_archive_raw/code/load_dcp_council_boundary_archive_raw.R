@@ -1,4 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/load_dcp_council_boundary_archive_raw/code")
 # dcp_council_boundary_archive_files_csv <- "../input/dcp_council_boundary_archive_files.csv"
 # out_index_csv <- "../output/dcp_council_boundary_archive_raw_files.csv"
 # out_qc_csv <- "../output/dcp_council_boundary_archive_raw_qc.csv"

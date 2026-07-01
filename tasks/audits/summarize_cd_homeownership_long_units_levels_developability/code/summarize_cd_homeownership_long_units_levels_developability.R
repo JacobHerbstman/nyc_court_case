@@ -1,5 +1,3 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/summarize_cd_homeownership_long_units_levels_developability/code")
-
 suppressPackageStartupMessages({
   library(arrow)
   library(dplyr)
