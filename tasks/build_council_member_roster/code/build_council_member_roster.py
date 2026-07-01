@@ -20,6 +20,16 @@ LEGISTAR_URL = (
     "DepartmentDetail.aspx?ID=6897&GUID=CDC6E691-8A8C-4F25-97CB-86F31EDAB081&Mode=MainBody"
 )
 
+LEGISTAR_OFFICE_RECORD_SEED_SPECS = {
+    "33915": {
+        "district": 10,
+        "member_name": "Guillermo Linares",
+        "term_start_date": "1998-01-01",
+        "term_end_date": "2001-12-31",
+        "person_guid": "738EDDFB-FFD0-4BAB-940B-A0FA90868B6E",
+    }
+}
+
 
 def clean_name(value: object) -> str:
     text = re.sub(r"\[[^\]]+\]", "", normalize_space(value))
@@ -196,6 +206,54 @@ for source in source_files_out:
                 "source_review_reason": "",
             }
         )
+
+for person_id, spec in LEGISTAR_OFFICE_RECORD_SEED_SPECS.items():
+    if person_id not in person_detail_district_by_id:
+        raise RuntimeError(f"Seeded Legistar person detail page {person_id} must be downloaded and parsed.")
+    if person_detail_district_by_id[person_id] != spec["district"]:
+        raise RuntimeError(f"Seeded Legistar person detail page {person_id} district does not match the seed spec.")
+
+    already_parsed = any(
+        row["person_id"] == person_id
+        and row["term_start_date"] == spec["term_start_date"]
+        and row["term_end_date"] == spec["term_end_date"]
+        for row in official_terms
+    )
+    if already_parsed:
+        continue
+
+    official_terms.append(
+        {
+            "roster_record_id": f"legistar_seed_{person_id}",
+            "source_id": "nyc_council_legistar_person_details",
+            "source_role": "legistar_person_detail_seed",
+            "source_tier": "official_legistar",
+            "source_precedence": 1,
+            "source_url": person_detail_url_by_id[person_id],
+            "raw_path": person_detail_path_by_id[person_id],
+            "district": spec["district"],
+            "district_text": f"District {spec['district']:02d}",
+            "district_source": "legistar_person_detail_notes",
+            "member_name": spec["member_name"],
+            "member_name_clean": compact_name(spec["member_name"]),
+            "party": "",
+            "borough": "Manhattan",
+            "person_title": "Council Member",
+            "term_start_date": spec["term_start_date"],
+            "term_end_date": spec["term_end_date"],
+            "term_text": "",
+            "person_id": person_id,
+            "person_guid": spec["person_guid"],
+            "person_url": person_detail_url_by_id[person_id],
+            "website_url": "",
+            "evidence_summary": (
+                "Official Legistar PersonDetail page used as a deterministic seed because the live "
+                "all-term office-record grid intermittently omits this historical council-member row."
+            ),
+            "source_review_required": False,
+            "source_review_reason": "",
+        }
+    )
 
 for source in source_files_out:
     if source["source_role"] != "wikipedia_district_history_page" or source["fetch_status"] != "downloaded":

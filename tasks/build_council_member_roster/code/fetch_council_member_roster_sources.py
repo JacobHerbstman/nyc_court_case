@@ -18,6 +18,12 @@ LEGISTAR_URL = (
     "https://legistar.council.nyc.gov/"
     "DepartmentDetail.aspx?ID=6897&GUID=CDC6E691-8A8C-4F25-97CB-86F31EDAB081&Mode=MainBody"
 )
+LEGISTAR_PERSON_DETAIL_SEED_URLS = {
+    "33915": (
+        "https://legistar.council.nyc.gov/"
+        "PersonDetail.aspx?ID=33915&GUID=738EDDFB-FFD0-4BAB-940B-A0FA90868B6E&Search="
+    )
+}
 SOURCE_FILE_ROOT = Path("../temp/source_files")
 
 
@@ -252,6 +258,8 @@ for html in office_record_html_pages:
         match = re.search(r"[?&]ID=(\d+)", person_url)
         if match:
             person_detail_urls[match.group(1)] = person_url
+
+person_detail_urls.update(LEGISTAR_PERSON_DETAIL_SEED_URLS)
 
 for person_id, person_url in sorted(person_detail_urls.items(), key=lambda item: int(item[0])):
     raw_path = (

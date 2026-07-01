@@ -1,5 +1,6 @@
 SHELL := bash
 .DELETE_ON_ERROR:
+.SECONDARY:
 
 ../input ../output ../temp slurmlogs:
 	mkdir -p $@
