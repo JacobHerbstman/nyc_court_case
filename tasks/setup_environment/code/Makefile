@@ -1,9 +1,12 @@
 SHELL := bash
 include ../../shell_functions.make
 
-all: ../output/R_packages.txt ../output/python_packages.txt
+all: ../output/system_requirements.txt ../output/R_packages.txt ../output/python_packages.txt
 
-../output/R_packages.txt: packages.R | ../output
+../output/system_requirements.txt: system_requirements.sh | ../output
+	bash $<
+
+../output/R_packages.txt: packages.R ../output/system_requirements.txt | ../output
 	$(R) $<
 
 ../output/python_packages.txt: python_packages.py | ../output

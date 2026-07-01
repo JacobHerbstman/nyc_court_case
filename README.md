@@ -13,9 +13,10 @@ After downloading the repo, install the system tools used by the pipeline:
 - Python 3 with `pip`
 - LaTeX with `pdflatex` and `bibtex`
 
-The root Makefile installs missing R and Python packages through
-`tasks/setup_environment`. It does not install system libraries needed by R
-packages such as `sf` or `arrow`.
+The root Makefile runs `tasks/setup_environment` before building the paper. That
+task checks command-line tools, installs missing R and Python packages, and
+prints the exact Homebrew or apt command to run if a compiled R package such as
+`sf` needs geospatial system libraries.
 
 For a full rebuild when the NHGIS files are not already saved in `data_raw/`,
 set an IPUMS API key first:
