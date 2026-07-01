@@ -39,7 +39,7 @@ the NHGIS raw extract files are already present, the IPUMS key is not used.
 ## Data Collection and Extraction
 
 - `setup_environment`: installs and records the R and Python package environment.
-- `source_registry`: copies the source catalog used by fetching tasks.
+- `source_registry`: copies the source catalog for paper and member-deference inputs.
 - `fetch_mappluto_archive`: downloads the pinned DCP MapPLUTO 25v4 archive ZIP used by the paper construction proxy.
 - `build_nhgis_extracts`: standardizes NHGIS tract inputs for the 1990 homeownership measure.
 - `build_zap_datasets`: standardizes ZAP project and project-BBL files.

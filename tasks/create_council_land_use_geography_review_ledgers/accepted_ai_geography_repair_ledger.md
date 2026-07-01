@@ -1,6 +1,6 @@
 # Accepted Council Land-Use Geography Repair Ledger
 
-This CSV is the production source of truth for researcher-accepted geography repairs used in the member-deference voting series. Each row is one accepted decision for one Council matter row, identified by `query_year`, `vote_date`, and `matter_file`.
+This CSV is the source of truth for researcher-accepted geography repairs used in the member-deference voting series. Each row is one accepted decision for one Council matter row, identified by `query_year`, `vote_date`, and `matter_file`.
 
 The ledger is not a raw ChatGPT export. ChatGPT and other AI tools were used only as review aids for some rows. The accepted research decision is the row recorded here: the accepted Council district or districts, the confidence, the promotion decision, the evidence type, the explanatory note, and the source URLs.
 
@@ -8,7 +8,7 @@ The ledger is not a raw ChatGPT export. ChatGPT and other AI tools were used onl
 
 Some Council land-use roll-call matters are bundled, missing direct affected-district fields, or only indirectly linked to ZAP/ULURP geography. Those rows cannot enter the local-member deference series unless we can assign affected Council district geography. This ledger records the cases where we accepted a geography repair after deterministic checks, official-source review, AI-assisted review, or researcher adjudication.
 
-Rows not represented here are not silently promoted by the production task. Review tasks may generate candidate rows, prompts, and ChatGPT responses, but a candidate affects the production dataset only after it is entered into this ledger.
+Rows not represented here are not silently promoted by the main workflow. Review tasks may generate candidate rows, prompts, and ChatGPT responses, but a candidate affects the main dataset only after it is entered into this ledger.
 
 ## Key Fields
 
@@ -31,9 +31,9 @@ Treat `deterministic_geography_verification` rows as mechanical or near-mechanic
 
 Treat `manual_queue_ai_review_researcher_accepted` and `remaining_queue_ai_review_researcher_adjudicated` rows as researcher-accepted subjective geography decisions. These are appropriate for the main repaired series only because the final accepted decision is recorded here with evidence and caveats.
 
-The `remaining_split_vote_geography_ai_review_researcher_accepted` pass is not accepted in this production ledger. A later review found that 107 of 109 ChatGPT responses from that pass cited Council matter files outside the queued review bundle, indicating a batch-alignment failure. Those rows must be re-reviewed before entering the production series.
+The `remaining_split_vote_geography_ai_review_researcher_accepted` pass is not accepted in this ledger. A later review found that 107 of 109 ChatGPT responses from that pass cited Council matter files outside the review bundle, indicating a batch-alignment failure. Those rows must be re-reviewed before entering the main series.
 
-Rows with `promote_with_caveat`, medium confidence, or low confidence should be easy to inspect from this file. They are included in the repaired production series, but they should remain visible in robustness checks and discussion of measurement uncertainty.
+Rows with `promote_with_caveat`, medium confidence, or low confidence should be easy to inspect from this file. They are included in the repaired main series, but they should remain visible in robustness checks and discussion of measurement uncertainty.
 
 ## Review Trail
 
@@ -41,4 +41,4 @@ The prompt batches, raw ChatGPT response JSONL, candidate classifications, missi
 
 `tasks/audits/build_remaining_council_land_use_split_geography_review/`
 
-That review task documents how candidate decisions were generated. This production task documents which decisions were accepted.
+That review task documents how candidate decisions were generated. This main task documents which decisions were accepted.
