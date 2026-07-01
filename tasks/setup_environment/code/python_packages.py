@@ -8,6 +8,7 @@ import sys
 
 packages = [
     ("pandas", "pandas"),
+    ("pyarrow", "pyarrow"),
     ("requests", "requests"),
     ("beautifulsoup4", "bs4"),
 ]

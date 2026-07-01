@@ -6,7 +6,7 @@ districts could not be read from the structured records.
 The task prepares batches for ChatGPT, parses the responses, and writes review
 files for source checking. ChatGPT output is not final data. A district enters
 the analysis only after it is recorded in the manual verdict ledger or copied
-into the accepted geography repair ledger used by the production workflow.
+into the accepted geography repair ledger used by the main workflow.
 
 Main inputs:
 

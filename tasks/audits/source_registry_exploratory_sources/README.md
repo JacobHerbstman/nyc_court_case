@@ -1,9 +1,6 @@
 # Source Registry Exploratory Sources
 
-This audit folder preserves broader source leads that are not read by the
-current production task graph.
+Stores source notes used by audit tasks but not by the main paper workflow.
 
-The production `source_registry` task only publishes sources consumed by active
-Makefile dependencies. Dormant validation sources, archival leads, and possible
-future data lanes are kept here so they do not clutter the replication-facing
-pipeline.
+The main `source_registry` task publishes the source catalog used by downstream
+builds. This folder keeps broader source notes separate from that catalog.

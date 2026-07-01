@@ -1,8 +1,7 @@
 # Source Registry Context
 
-Stores non-production source planning and validation catalogs.
+Stores source notes used by audit tasks.
 
 These files document archival requests, manual-source expectations, benchmark
-checks, and raw-data conventions used by audit tasks. The production
-`source_registry` task publishes only the source catalog used by downstream
-builds.
+checks, and raw-data conventions. The main `source_registry` task publishes the
+source catalog used by downstream builds.

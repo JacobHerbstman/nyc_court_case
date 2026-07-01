@@ -129,12 +129,12 @@ def parse_makefile(path):
 
         for prereq in normal_prereqs.split():
             audit_match = re.match(r"\.\./\.\./audits/([^/\s]+)/output/([^\s|]+)", prereq)
-            production_match = re.match(r"\.\./\.\./([^/\s]+)/output/([^\s|]+)", prereq)
+            main_match = re.match(r"\.\./\.\./([^/\s]+)/output/([^\s|]+)", prereq)
 
             if audit_match:
                 upstream_outputs.add((f"audits/{audit_match.group(1)}", audit_match.group(2)))
-            elif production_match:
-                upstream_outputs.add((production_match.group(1), production_match.group(2)))
+            elif main_match:
+                upstream_outputs.add((main_match.group(1), main_match.group(2)))
 
     return output_targets, all_targets, upstream_outputs
 
@@ -197,7 +197,7 @@ def wrapped_label(task):
 
 
 def node_fill(scope):
-    if scope == "production":
+    if scope == "main":
         return "white"
     if scope == "infrastructure":
         return "lightblue"
@@ -233,21 +233,21 @@ def write_dot(path, nodes, edges, task_scopes):
 
 def main():
     edges_csv = Path("../output/task_edges.csv")
-    inventory_csv = Path("../output/task_inventory.csv")
-    output_inventory_csv = Path("../output/task_output_inventory.csv")
+    task_list_csv = Path("../output/task_list.csv")
+    task_outputs_csv = Path("../output/task_outputs.csv")
     dot_file = Path("../output/task_flow.dot")
     summary_csv = Path("../output/task_graph_summary.csv")
     tasks_root = Path("../..").resolve()
     repo_root = tasks_root.parent
     infrastructure_tasks = {"setup_environment", "source_registry", "task_graph"}
 
-    production_makefiles = {
-        path.parents[1].name: (path, "production")
+    main_makefiles = {
+        path.parents[1].name: (path, "main")
         for path in sorted(tasks_root.glob("*/code/Makefile"))
         if path.parents[1].name not in {"archive", "_lib", "audits"}
     }
 
-    task_makefiles = production_makefiles
+    task_makefiles = main_makefiles
     task_outputs = {}
     task_all_outputs = {}
     upstream_refs = {}
@@ -260,10 +260,10 @@ def main():
         upstream_refs[task] = refs
         task_scopes[task] = "infrastructure" if task in infrastructure_tasks else scope
 
-    production_tasks = [
+    main_tasks = [
         task
         for task, scope in task_scopes.items()
-        if scope == "production"
+        if scope == "main"
     ]
     infrastructure_task_names = [
         task
@@ -291,15 +291,15 @@ def main():
     downstream_counts = defaultdict(int)
     upstream_counts = defaultdict(int)
     output_downstream_tasks = defaultdict(set)
-    production_audit_edges = []
+    main_audit_edges = []
 
     for upstream, downstream, output_rel in edges:
         downstream_counts[upstream] += 1
         upstream_counts[downstream] += 1
         output_downstream_tasks[(upstream, output_rel)].add(downstream)
 
-        if task_scope(upstream, task_scopes) == "audit" and task_scope(downstream, task_scopes) == "production":
-            production_audit_edges.append((downstream, upstream, output_rel))
+        if task_scope(upstream, task_scopes) == "audit" and task_scope(downstream, task_scopes) == "main":
+            main_audit_edges.append((downstream, upstream, output_rel))
 
     paper_makefile = repo_root / "paper" / "Makefile"
     paper_facing_tasks = set()
@@ -314,10 +314,10 @@ def main():
             paper_facing_tasks.add(match.group(1))
             paper_facing_outputs.add((match.group(1), match.group(2)))
 
-    production_sinks = [
+    main_sinks = [
         task
         for task, scope in sorted(task_scopes.items())
-        if scope == "production"
+        if scope == "main"
         and task_all_outputs[task]
         and downstream_counts[task] == 0
         and task not in paper_facing_tasks
@@ -344,7 +344,7 @@ def main():
             for upstream, downstream, output_rel in edges
         ])
 
-    with inventory_csv.open("w", newline="") as f:
+    with task_list_csv.open("w", newline="") as f:
         writer = csv.writer(f)
         writer.writerow([
             "task",
@@ -378,10 +378,9 @@ def main():
         "unresolved",
         "diagnostic",
         "check",
-        "inventory",
     ]
 
-    with output_inventory_csv.open("w", newline="") as f:
+    with task_outputs_csv.open("w", newline="") as f:
         writer = csv.writer(f)
         writer.writerow([
             "task",
@@ -415,54 +414,54 @@ def main():
                     str(sidecar_named).lower(),
                 ])
 
-    write_dot(dot_file, production_tasks, edges, task_scopes)
+    write_dot(dot_file, main_tasks, edges, task_scopes)
 
     summary_rows = [
-        ["production_task_count", str(len(production_tasks))],
+        ["main_task_count", str(len(main_tasks))],
         ["infrastructure_task_count", str(len(infrastructure_task_names))],
         ["task_count", str(len(task_makefiles))],
-        ["production_output_target_count", str(sum(len(task_outputs[task]) for task in production_tasks))],
-        ["production_all_output_target_count", str(sum(len(task_all_outputs[task]) for task in production_tasks))],
+        ["main_output_target_count", str(sum(len(task_outputs[task]) for task in main_tasks))],
+        ["main_all_output_target_count", str(sum(len(task_all_outputs[task]) for task in main_tasks))],
         [
-            "production_terminal_all_output_count",
+            "main_terminal_all_output_count",
             str(sum(
                 1
-                for task in production_tasks
+                for task in main_tasks
                 for output_target in task_all_outputs[task]
                 if len(output_downstream_tasks[(task, output_target.removeprefix("../output/"))]) == 0
                 and (task, output_target.removeprefix("../output/")) not in paper_facing_outputs
             )),
         ],
         [
-            "production_sidecar_named_all_output_count",
+            "main_sidecar_named_all_output_count",
             str(sum(
                 1
-                for task in production_tasks
+                for task in main_tasks
                 for output_target in task_all_outputs[task]
                 if any(term in output_target.lower() for term in sidecar_terms)
             )),
         ],
         [
-            "production_edge_count",
-            str(sum(1 for _, downstream, _ in edges if task_scope(downstream, task_scopes) == "production")),
+            "main_edge_count",
+            str(sum(1 for _, downstream, _ in edges if task_scope(downstream, task_scopes) == "main")),
         ],
         ["edge_count", str(len(edges))],
-        ["production_to_audit_dependency_count", str(len(production_audit_edges))],
-        ["production_sink_without_downstream_or_paper_count", str(len(production_sinks))],
+        ["main_to_audit_dependency_count", str(len(main_audit_edges))],
+        ["main_sink_without_downstream_or_paper_count", str(len(main_sinks))],
         ["missing_upstream_task_count", str(len(missing_tasks))],
         ["missing_upstream_target_count", str(len(missing_targets))],
         ["cycle", " -> ".join(cycle) if cycle else ""],
     ]
 
-    for downstream, upstream, output_rel in production_audit_edges:
+    for downstream, upstream, output_rel in main_audit_edges:
         summary_rows.append([
-            "production_to_audit_dependency",
+            "main_to_audit_dependency",
             f"{downstream} reads {upstream}/output/{output_rel}",
         ])
 
-    for task in production_sinks:
+    for task in main_sinks:
         summary_rows.append([
-            "production_sink_without_downstream_or_paper",
+            "main_sink_without_downstream_or_paper",
             task,
         ])
 

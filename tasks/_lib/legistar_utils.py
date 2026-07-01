@@ -66,7 +66,7 @@ def write_dict_rows_csv(path: str | Path, rows: list[dict[str, object]], fieldna
     temp_path.replace(output_path)
 
 
-def bad_cached_html_paths(paths: list[Path]) -> list[Path]:
+def bad_saved_html_paths(paths: list[Path]) -> list[Path]:
     bad_paths = []
     for path in paths:
         if not path.exists():
@@ -77,8 +77,8 @@ def bad_cached_html_paths(paths: list[Path]) -> list[Path]:
     return bad_paths
 
 
-def check_cached_html(paths: list[Path], label: str) -> None:
-    bad_paths = bad_cached_html_paths(paths)
+def check_saved_html(paths: list[Path], label: str) -> None:
+    bad_paths = bad_saved_html_paths(paths)
     if bad_paths:
         raise RuntimeError(
             f"{label} has {len(bad_paths)} saved HTML files that are empty or missing locally. "

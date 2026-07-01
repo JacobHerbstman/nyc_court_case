@@ -3,15 +3,14 @@
 Stores the reviewed geography corrections used by the Council land-use decision
 pipeline.
 
-Inputs are committed review ledgers. Some rows were first reviewed with
-ChatGPT using matter text, project identifiers, source URLs, and geography
-clues. The accepted approval-side corrections are recorded in
+Inputs are committed review ledgers. Some input ledgers contain
+ChatGPT-assisted review notes. Accepted approval-side corrections are recorded in
 `code/accepted_ai_geography_repair_ledger.csv`; field definitions and caveats
 are in `accepted_ai_geography_repair_ledger.md`.
 
 For nonapproval matters, the task stores the review list and ChatGPT response
-ledger as leads. Downstream verification decides which leads are supported by
-official records or BBL-to-district checks.
+ledger as leads. A separate verification task decides which leads are supported
+by official records or BBL-to-district checks.
 
 This task does not run AI review. It standardizes the accepted repair ledger and
 makes the committed review files available to downstream tasks.

@@ -13,7 +13,7 @@ import requests
 from bs4 import BeautifulSoup
 
 sys.path.append("../../_lib")
-from legistar_utils import check_cached_html, normalize_space, safe_stub, save_text, sha256
+from legistar_utils import check_saved_html, normalize_space, safe_stub, save_text, sha256
 
 BASE_URL = "https://legistar.council.nyc.gov/Legislation.aspx"
 if len(sys.argv) != 2 or not re.fullmatch(r"\d{4}", sys.argv[1]):
@@ -294,11 +294,11 @@ def request_with_retries(session: requests.Session, method: str, url: str, **kwa
 
 def fetch_search_pages(session: requests.Session, query: dict[str, str]) -> list[dict[str, object]]:
     raw_dir = Path("../output/source_files") / SOURCE_ID / PULL_DATE / f"year_{QUERY_YEAR}" / query["slug"] / "index_pages"
-    cached_pages = sorted(raw_dir.glob("page_*.html"))
-    if cached_pages:
-        check_cached_html(cached_pages, f"{QUERY_YEAR} {query['matter_type']} index cache")
+    saved_pages = sorted(raw_dir.glob("page_*.html"))
+    if saved_pages:
+        check_saved_html(saved_pages, f"{QUERY_YEAR} {query['matter_type']} index pages")
         matter_rows: list[dict[str, object]] = []
-        for raw_path in cached_pages:
+        for raw_path in saved_pages:
             current_html = raw_path.read_text(encoding="utf-8")
             page_info = parse_page_info(current_html)
             parsed_rows = parse_grid_rows(current_html, query, page_info)
@@ -470,7 +470,7 @@ def fetch_detail_pages(session: requests.Session, matter_index: pd.DataFrame) ->
     sorted_targets = detail_targets.sort_values(["query_matter_type", "matter_file", "matter_id"]).to_dict("records")
     for i, row in enumerate(sorted_targets, start=1):
         raw_path = raw_dir / safe_stub(row["query_matter_type"]) / f"{safe_stub(row['matter_file'])}_{row['matter_id']}.html"
-        check_cached_html([raw_path], f"{QUERY_YEAR} Legistar detail-page cache")
+        check_saved_html([raw_path], f"{QUERY_YEAR} Legistar detail page")
         if raw_path.exists() and raw_path.stat().st_size > 0:
             page_html = raw_path.read_text(encoding="utf-8")
             fetch_status = "cached"

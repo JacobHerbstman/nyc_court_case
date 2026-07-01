@@ -42,11 +42,10 @@ which writes the repair file used downstream.
   - Audit-side accepted repair candidates after deterministic checks, ChatGPT
     review, and researcher adjudication.
 - `../output/council_land_use_ai_geography_accepted_repairs_excluded_by_current_queue.csv`
-  - Accepted review rows that are no longer missing from the upstream panel.
+  - Accepted review rows not used by the current panel.
 
 ## Research Status
 
 This audit records how the missing-geography rows were reviewed. It does not
-silently promote AI labels into the main sample. The production panel should use
-only rows copied into the staged repair ledger, with source notes and explicit
-review status.
+promote AI labels into the main sample. The main panel should use only rows
+copied into the repair ledger, with source notes and explicit review status.

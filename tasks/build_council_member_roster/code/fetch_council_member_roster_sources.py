@@ -25,7 +25,7 @@ LEGISTAR_PERSON_DETAIL_SEED_URLS = {
 SOURCE_FILE_ROOT = Path("../temp/source_files")
 
 
-class CachedResponse:
+class SavedResponse:
     def __init__(self, path: Path):
         self.status_code = 200
         self.content = path.read_bytes()
@@ -33,15 +33,15 @@ class CachedResponse:
         self.from_cache = True
 
 
-def cached_file_is_local(path: Path) -> bool:
+def saved_file_is_local(path: Path) -> bool:
     if not path.exists():
         return False
     stat_result = path.stat()
     return stat_result.st_size > 0 and getattr(stat_result, "st_blocks", 1) != 0
 
 
-def remove_bad_cached_file(path: Path) -> None:
-    if path.exists() and not cached_file_is_local(path):
+def remove_bad_saved_file(path: Path) -> None:
+    if path.exists() and not saved_file_is_local(path):
         path.unlink()
 
 
@@ -103,9 +103,9 @@ def save_response(response: requests.Response, raw_path: Path) -> None:
 
 
 def get_or_fetch(session: requests.Session, url: str, raw_path: Path, data: dict[str, str] | None = None):
-    remove_bad_cached_file(raw_path)
-    if cached_file_is_local(raw_path):
-        return CachedResponse(raw_path)
+    remove_bad_saved_file(raw_path)
+    if saved_file_is_local(raw_path):
+        return SavedResponse(raw_path)
 
     response = session.post(url, data=data, timeout=60) if data is not None else session.get(url, timeout=60)
     response.from_cache = False

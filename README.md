@@ -2,7 +2,7 @@
 
 This repository builds the data and draft paper for a project on New York City housing production, homeownership exposure, and Council land-use decision making.
 
-The workflow is task-based. Each production task lives in `tasks/<task_name>/` with `code/`, `input/`, and `output/` folders. Run a task from its `code/` folder with `make`. Run the paper from `paper/` with `make`.
+The workflow is task-based. Each main task lives in `tasks/<task_name>/` with `code/`, `input/`, and `output/` folders. Run a task from its `code/` folder with `make`. Run the paper from `paper/` with `make`.
 
 ## Running the Project
 
@@ -62,7 +62,7 @@ the NHGIS raw extract files are already present, the IPUMS key is not used.
 - `estimate_ccd2010_homeownership_long_units_event_study`: creates raw-unit event-study and long-difference outputs.
 - `summarize_council_land_use_decision_trends`: creates the member-deference land-use decision trend plot.
 - `summarize_citywide_ulurp_application_trends`: creates annual citywide ULURP application counts.
-- `task_graph`: creates the production task graph and task list.
+- `task_graph`: creates the main task graph and task list.
 
 The paper can also be rebuilt from the paper folder:
 

@@ -10,7 +10,7 @@ import requests
 
 sys.path.append("../../_lib")
 from legistar_utils import (
-    check_cached_html,
+    check_saved_html,
     parse_action_detail,
     request_with_retries,
     safe_stub,
@@ -82,7 +82,7 @@ action_rows = []
 member_vote_rows = []
 for i, row in enumerate(target_events.sort_values(["history_date", "matter_file"]).to_dict("records"), start=1):
     raw_path = raw_dir / f"{safe_stub(row['matter_file'])}_{row['matter_id']}.html"
-    check_cached_html([raw_path], f"{QUERY_YEAR} Legistar action-detail cache")
+    check_saved_html([raw_path], f"{QUERY_YEAR} Legistar action-detail page")
     if raw_path.exists() and raw_path.stat().st_size > 0:
         page_html = raw_path.read_text(encoding="utf-8")
         fetch_status = "cached"

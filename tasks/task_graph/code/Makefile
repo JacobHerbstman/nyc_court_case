@@ -2,8 +2,8 @@
 
 all: ../output/task_flow.dot \
 	../output/task_edges.csv \
-	../output/task_inventory.csv \
-	../output/task_output_inventory.csv \
+	../output/task_list.csv \
+	../output/task_outputs.csv \
 	../output/task_graph_summary.csv \
 	../output/task_flow.png
 
@@ -13,10 +13,10 @@ all: ../output/task_flow.dot \
 ../output/task_edges.csv: ../output/task_flow.dot
 	@test -s "$@"
 
-../output/task_inventory.csv: ../output/task_flow.dot
+../output/task_list.csv: ../output/task_flow.dot
 	@test -s "$@"
 
-../output/task_output_inventory.csv: ../output/task_flow.dot
+../output/task_outputs.csv: ../output/task_flow.dot
 	@test -s "$@"
 
 ../output/task_graph_summary.csv: ../output/task_flow.dot
