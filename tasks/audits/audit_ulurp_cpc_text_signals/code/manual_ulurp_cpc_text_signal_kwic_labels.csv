@@ -1,0 +1,22 @@
+review_id,signal_family,application_number,human_true_positive,human_confidence,human_reason
+RC01,revision_concession,C800459ZMM,1,high,Real post-hearing scope change shrinking rezoning boundaries after review and recommendations.
+RC02,revision_concession,I800151EEUQ,0,high,Map/date revision language only; not a review-stage concession.
+RC03,revision_concession,C820031MMQ,0,medium,No visible controversy or demands; conditional environmental language does not read as a political revision.
+RC04,revision_concession,C840441HDK,0,high,Amended urban renewal plan background rather than a concession in this review.
+RC05,revision_concession,C840171ZSM,unclear,low,Application requests the permit; reviewer unsure whether requested permit/relief language should be excluded.
+RC06,revision_concession,C860689ZSK,0,high,Requested rezoning or special-permit modifications only; no review-stage revision.
+RC07,revision_concession,C860691ZSK,0,high,Similar to RC06; environmental scope language is not a review-stage political revision.
+RC08,revision_concession,C880460PSM,1,high,Controversial application with community-board fights; report describes concessions/amendments after opposition.
+RC09,revision_concession,C900916PQK,1,low,Weak true positive: little opposition but concrete roof-repair condition is present.
+RC10,revision_concession,C920019PSM,1,high,Pier 35/36 had substantial opposition and concessions; revised/amended application language should count.
+RC11,revision_concession,C920539PPK,0,medium,Requested modification by borough president does not count here as actual revision/concession.
+RC12,revision_concession,C950110ZSQ,1,high,Community board imposed conditions.
+RC13,revision_concession,C900438MMM,0,high,Form language only; no substantive condition visible.
+RC14,revision_concession,C970182ZSQ,0,high,Amended-plan background rather than a review-stage concession.
+RC15,revision_concession,C960657PQM,1,high,Application revised after opposition to limit disposition to the hotel.
+U01,opposition_any,C960471ZMQ,0,high,Not enough opposition in the document context; community board was unanimous and the concern language reads more like conversations than opposition.
+U02,opposition_displacement_affordability,C160037HUK,1,high,Strong affordability and permanent-affordability demands; highly opposed project context.
+U03,opposition_displacement_affordability,C160035ZMK,1,high,Clear displacement and soft-site concern in a contested rezoning context.
+U04,opposition_infrastructure,C810543AZSM,0,medium,Document has a real community intervention and amended application but this KWIC row is not really an infrastructure-opposition signal.
+U05,opposition_infrastructure,C910480ZSK,1,high,Large opposition context with environmental and sewer/water-quality concerns; count as real infrastructure/environmental concern.
+U07,revision_concession,C210438AZSM,1,high,Amended application had borough-president conditions and community-board disapproval; count as real revision/concession context.
