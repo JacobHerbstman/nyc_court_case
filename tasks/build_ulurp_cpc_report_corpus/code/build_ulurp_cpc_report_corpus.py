@@ -80,6 +80,13 @@ def safe_filename_part(value: object) -> str:
     return cleaned.strip("_") or "missing"
 
 
+def is_dataless_file(path: str) -> bool:
+    if not os.path.exists(path):
+        return False
+    stat_result = os.stat(path)
+    return getattr(stat_result, "st_blocks", 1) == 0 and stat_result.st_size > 0
+
+
 def write_csv_if_changed(rows: list[dict[str, object]], fieldnames: list[str], path: str) -> None:
     writer_buffer = io.StringIO()
     writer = csv.DictWriter(writer_buffer, fieldnames=fieldnames, extrasaction="ignore")
@@ -101,8 +108,11 @@ def write_csv_if_changed(rows: list[dict[str, object]], fieldnames: list[str], p
 
 def write_text_if_changed(text: str, path: str) -> None:
     try:
-        with open(path, "r", encoding="utf-8") as existing_file:
-            old_text = existing_file.read()
+        if is_dataless_file(path):
+            old_text = None
+        else:
+            with open(path, "r", encoding="utf-8") as existing_file:
+                old_text = existing_file.read()
     except FileNotFoundError:
         old_text = None
 
@@ -271,7 +281,7 @@ def zap_action_cpc_url(project_id: str, raw_application_number: str) -> tuple[st
 
 
 def is_pdf_file(path: str) -> bool:
-    if not os.path.exists(path) or os.path.getsize(path) == 0:
+    if not os.path.exists(path) or os.path.getsize(path) == 0 or is_dataless_file(path):
         return False
     with open(path, "rb") as input_file:
         return input_file.read(4) == b"%PDF"
@@ -356,10 +366,12 @@ def download_pdf(candidate_stems: list[str], pdf_path_for_stem) -> tuple[str, st
 
 
 def extract_pdf_text(pdf_path: str, text_path: str) -> tuple[str, str, int]:
-    if os.path.exists(text_path) and os.path.getsize(text_path) > 0:
+    if os.path.exists(text_path) and os.path.getsize(text_path) > 0 and not is_dataless_file(text_path):
         with open(text_path, "r", encoding="utf-8", errors="ignore") as input_file:
             text = input_file.read()
-        return "text_extracted", "", len(clean_text(text))
+        text_char_count = len(clean_text(text))
+        if text_char_count > 0:
+            return "text_extracted", "", text_char_count
 
     completed = subprocess.run(
         ["pdftotext", "-layout", "-enc", "UTF-8", pdf_path, "-"],
@@ -374,9 +386,13 @@ def extract_pdf_text(pdf_path: str, text_path: str) -> tuple[str, str, int]:
 
     write_text_if_changed(completed.stdout, text_path)
     text_char_count = len(clean_text(completed.stdout))
-    if text_char_count == 0:
-        return "empty_text", "", 0
-    return "text_extracted", "", text_char_count
+    if text_char_count > 0:
+        return "text_extracted", "", text_char_count
+    return "empty_text", "", 0
+
+
+def has_usable_extracted_text(text_status: str) -> bool:
+    return text_status == "text_extracted"
 
 
 def read_csv_rows(path: str) -> list[dict[str, str]]:
@@ -409,7 +425,7 @@ def add_sibling_project_text_fallbacks(manifest_rows: list[dict[str, object]]) -
 
         sibling_rows = [
             sibling_row for sibling_row in rows_by_project.get(str(row["project_id"]), [])
-            if sibling_row["text_status"] == "text_extracted" and sibling_row["local_text_path"]
+            if has_usable_extracted_text(str(sibling_row["text_status"])) and sibling_row["local_text_path"]
         ]
         if not sibling_rows:
             continue
@@ -539,14 +555,14 @@ def process_application_row(row_number: int, project_row: dict[str, str], applic
         "borough_name": project_row.get("borough_name", ""),
         "community_district": project_row.get("community_district", ""),
         "project_page_url": project_row.get("project_page_url", ""),
-        "usable_text_source_type": "direct_cpc_report" if text_status == "text_extracted" else "",
-        "usable_text_status": "text_extracted_direct" if text_status == "text_extracted" else "",
-        "usable_local_text_path": local_text_path if text_status == "text_extracted" else "",
-        "usable_text_char_count": text_char_count if text_status == "text_extracted" else 0,
-        "usable_source_report_application_numbers": application_row["raw_application_number"] if text_status == "text_extracted" else "",
-        "usable_source_report_action_codes": parsed["parsed_action_code"] if text_status == "text_extracted" else "",
-        "usable_source_report_urls": source_doc if text_status == "text_extracted" else "",
-        "usable_source_report_text_paths": local_text_path if text_status == "text_extracted" else "",
+        "usable_text_source_type": "direct_cpc_report" if has_usable_extracted_text(text_status) else "",
+        "usable_text_status": "text_extracted_direct" if has_usable_extracted_text(text_status) else "",
+        "usable_local_text_path": local_text_path if has_usable_extracted_text(text_status) else "",
+        "usable_text_char_count": text_char_count if has_usable_extracted_text(text_status) else 0,
+        "usable_source_report_application_numbers": application_row["raw_application_number"] if has_usable_extracted_text(text_status) else "",
+        "usable_source_report_action_codes": parsed["parsed_action_code"] if has_usable_extracted_text(text_status) else "",
+        "usable_source_report_urls": source_doc if has_usable_extracted_text(text_status) else "",
+        "usable_source_report_text_paths": local_text_path if has_usable_extracted_text(text_status) else "",
         "sibling_text_mentions_missing_application": "",
         "sibling_text_mentions_missing_stem": "",
     }
