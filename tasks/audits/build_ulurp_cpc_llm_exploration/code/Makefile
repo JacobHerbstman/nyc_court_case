@@ -13,7 +13,7 @@ all: ../output/ulurp_cpc_llm_exploration_frame.csv \
 	../output/ulurp_cpc_decade_comparison_prompt.md \
 	../output/ulurp_cpc_decade_comparison_batches.jsonl
 
-../output/ulurp_cpc_llm_exploration_frame.csv: build_ulurp_cpc_llm_exploration.py ../input/ulurp_cpc_report_manifest.csv | ../output
+../output/ulurp_cpc_llm_exploration_frame.csv: build_ulurp_cpc_llm_exploration.py ../input/ulurp_cpc_report_manifest.csv ../input/flushing_commons_cpc_ocr_manifest.csv | ../output
 	python3 $< $(PROMPT_VERSION) $(REVISION_BATCH_SIZE) $(REVISION_MAX_REPORTS) $(DECADE_SAMPLE_PER_DECADE) $(MAX_REVISION_CHARS) $(MAX_DECADE_SNIPPET_CHARS)
 
 ../output/ulurp_cpc_revision_narrative_prompt.md \
@@ -27,6 +27,9 @@ all: ../output/ulurp_cpc_llm_exploration_frame.csv \
 ../input/ulurp_cpc_report_manifest.csv: ../../../build_ulurp_cpc_report_corpus/output/ulurp_cpc_report_manifest.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-link-inputs: ../input/ulurp_cpc_report_manifest.csv
+../input/flushing_commons_cpc_ocr_manifest.csv: ../../ocr_ulurp_flushing_commons_cpc_reports/output/flushing_commons_cpc_ocr_manifest.csv | ../input
+	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+
+link-inputs: ../input/ulurp_cpc_report_manifest.csv ../input/flushing_commons_cpc_ocr_manifest.csv
 
 include ../../generic.make

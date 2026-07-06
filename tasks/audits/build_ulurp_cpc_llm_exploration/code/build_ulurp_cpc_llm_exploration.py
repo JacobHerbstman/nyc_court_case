@@ -210,6 +210,26 @@ def text_file_status(text_path, usable_text_char_count):
     return "readable"
 
 
+def read_ocr_fallbacks(ocr_manifest_path):
+    ocr_manifest_real_path = ocr_manifest_path.resolve()
+    fallback_rows = {}
+    with ocr_manifest_path.open(newline="", encoding="utf-8") as ocr_manifest_file:
+        for row in csv.DictReader(ocr_manifest_file):
+            text_char_count = as_int(row.get("text_char_count", "")) or 0
+            if row.get("ocr_status", "") != "text_extracted_ocr" or text_char_count <= 0:
+                continue
+            text_path = resolve_text_path(row.get("output_text_path", ""), ocr_manifest_real_path)
+            fallback_rows[row["raw_application_number"]] = {
+                "text_path": text_path,
+                "text_char_count": text_char_count,
+                "frame_text_path": (
+                    "../../ocr_ulurp_flushing_commons_cpc_reports/output/"
+                    + Path(row.get("output_text_path", "")).name
+                ),
+            }
+    return fallback_rows
+
+
 def read_report_text(text_path):
     return text_path.read_text(encoding="utf-8", errors="replace")
 
@@ -333,6 +353,7 @@ def main():
     manifest_real_path = manifest_path.resolve()
     with manifest_path.open(newline="", encoding="utf-8") as manifest_file:
         manifest_rows = list(csv.DictReader(manifest_file))
+    ocr_fallbacks = read_ocr_fallbacks(Path("../input/flushing_commons_cpc_ocr_manifest.csv"))
 
     frame_rows = []
     readable_rows = []
@@ -343,6 +364,19 @@ def main():
         usable_text_char_count = as_int(manifest_row.get("usable_text_char_count", "")) or 0
         text_path = resolve_text_path(manifest_row.get("usable_local_text_path", ""), manifest_real_path)
         status = text_file_status(text_path, usable_text_char_count)
+        usable_text_source_type = manifest_row.get("usable_text_source_type", "")
+        usable_text_status = manifest_row.get("usable_text_status", "")
+        usable_local_text_path = manifest_row.get("usable_local_text_path", "")
+
+        ocr_fallback = ocr_fallbacks.get(manifest_row.get("raw_application_number", ""))
+        if status != "readable" and ocr_fallback is not None:
+            text_path = ocr_fallback["text_path"]
+            usable_text_char_count = ocr_fallback["text_char_count"]
+            status = text_file_status(text_path, usable_text_char_count)
+            if status == "readable":
+                usable_text_source_type = "audit_ocr_cpc_report"
+                usable_text_status = "text_extracted_ocr_audit"
+                usable_local_text_path = ocr_fallback["frame_text_path"]
 
         row = {
             "document_id": manifest_row.get("document_id", ""),
@@ -360,10 +394,10 @@ def main():
             "ceqr_number": manifest_row.get("ceqr_number", ""),
             "source_doc": manifest_row.get("source_doc", ""),
             "project_page_url": manifest_row.get("project_page_url", ""),
-            "usable_text_source_type": manifest_row.get("usable_text_source_type", ""),
-            "usable_text_status": manifest_row.get("usable_text_status", ""),
+            "usable_text_source_type": usable_text_source_type,
+            "usable_text_status": usable_text_status,
             "usable_text_char_count": usable_text_char_count,
-            "usable_local_text_path": manifest_row.get("usable_local_text_path", ""),
+            "usable_local_text_path": usable_local_text_path,
             "text_file_status": status,
             "selected_for_revision_narrative": 0,
             "revision_batch_id": "",
