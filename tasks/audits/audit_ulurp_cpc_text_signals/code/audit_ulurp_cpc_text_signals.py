@@ -8,9 +8,12 @@ import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 
+from label_ulurp_cpc_text_signal_kwic import label_row
+
 
 # setwd("tasks/audits/audit_ulurp_cpc_text_signals/code")
 # start_year = 1975
+# end_year = 2025
 # sample_documents_per_decade = 200
 # boilerplate_doc_share = 0.05
 # kwic_hits_per_rule = 50
@@ -609,7 +612,7 @@ def sentence_context(document_sentences, index, context_words):
     return trim_words(normalize_whitespace(context), context_words * 3)
 
 
-def read_documents(start_year):
+def read_documents(start_year, end_year):
     ocr_fallbacks = read_ocr_fallbacks()
     documents = []
     manifest_real_path = Path("../input/ulurp_cpc_report_manifest.csv").resolve()
@@ -617,7 +620,7 @@ def read_documents(start_year):
     with Path("../input/ulurp_cpc_report_manifest.csv").open(newline="", encoding="utf-8") as manifest_file:
         for row in csv.DictReader(manifest_file):
             year = as_int(row.get("corpus_reference_year"))
-            if year is None or year < start_year:
+            if year is None or year < start_year or year > end_year:
                 continue
 
             text_path = resolve_task_path(row.get("usable_local_text_path", ""), manifest_real_path)
@@ -704,7 +707,7 @@ def build_sentence_rows(documents):
     return sentence_rows, sentence_doc_ids, sentence_examples, section_doc_words, document_section_sentences
 
 
-def write_boilerplate_sentences(sentence_doc_ids, sentence_examples, documents, boilerplate_doc_share):
+def prepare_boilerplate_sentence_rows(sentence_doc_ids, sentence_examples, documents, boilerplate_doc_share):
     total_documents = len(documents)
     minimum_documents = max(2, math.ceil(total_documents * boilerplate_doc_share))
     rows = []
@@ -727,6 +730,10 @@ def write_boilerplate_sentences(sentence_doc_ids, sentence_examples, documents, 
         )
 
     rows.sort(key=lambda row: (-row["document_count"], row["normalized_sentence"]))
+    return rows, {row["normalized_sentence"] for row in rows}
+
+
+def write_boilerplate_sentences(rows):
     with Path("../output/ulurp_cpc_text_boilerplate_sentences.csv").open("w", newline="", encoding="utf-8") as output_file:
         writer = csv.DictWriter(
             output_file,
@@ -743,11 +750,10 @@ def write_boilerplate_sentences(sentence_doc_ids, sentence_examples, documents, 
         writer.writeheader()
         writer.writerows(rows)
 
-    return {row["normalized_sentence"] for row in rows}
 
-
-def prepare_signal_rows(sentence_rows, boilerplate_sentences):
-    signal_rows = []
+def prepare_signal_rows(sentence_rows, boilerplate_sentences, document_section_sentences, kwic_context_words):
+    raw_signal_rows = []
+    filtered_signal_rows = []
     for row in sentence_rows:
         is_boilerplate = (
             row["normalized_sentence"] in boilerplate_sentences
@@ -764,15 +770,30 @@ def prepare_signal_rows(sentence_rows, boilerplate_sentences):
             if row["section"] in SIGNAL_SECTION_ALLOWLIST.get(signal_family, SECTION_ORDER)
         ]
         for signal_family in row["signals"]:
-            signal_rows.append({**row, "signal_family": signal_family})
-    return signal_rows
+            context = sentence_context(
+                document_section_sentences[(row["document_id"], row["section"])],
+                row["sentence_position"],
+                kwic_context_words,
+            )
+            signal_row = {**row, "signal_family": signal_family, "context": context}
+            (
+                signal_row["assistant_true_positive"],
+                signal_row["assistant_confidence"],
+                signal_row["assistant_reason"],
+            ) = label_row(signal_row)
+            raw_signal_rows.append(signal_row)
+            if signal_row["assistant_true_positive"] == "1":
+                filtered_signal_rows.append(signal_row)
+    return raw_signal_rows, filtered_signal_rows
 
 
-def aggregate_signal_rows(documents, sentence_rows, signal_rows, sample_document_ids=None):
+def aggregate_signal_rows(documents, sentence_rows, signal_rows, sample_document_ids=None, period_unit=None):
     if sample_document_ids is None:
         included_documents = {document["document_id"] for document in documents}
     else:
         included_documents = set(sample_document_ids)
+    if period_unit is None:
+        period_unit = "year" if sample_document_ids is None else "decade"
 
     words_by_period_section = Counter()
     docs_by_period_section = defaultdict(set)
@@ -783,13 +804,13 @@ def aggregate_signal_rows(documents, sentence_rows, signal_rows, sample_document
     for document in documents:
         if document["document_id"] not in included_documents:
             continue
-        period = document["year"] if sample_document_ids is None else document["decade"]
+        period = document[period_unit]
         readable_docs_by_period[period].add(document["document_id"])
 
     for row in sentence_rows:
         if row["document_id"] not in included_documents or row["is_boilerplate"]:
             continue
-        period = row["year"] if sample_document_ids is None else row["decade"]
+        period = row[period_unit]
         words_by_period_section[(period, row["section"])] += row["word_count"]
         words_by_period_section[(period, "all_sections")] += row["word_count"]
         docs_by_period_section[(period, row["section"])].add(row["document_id"])
@@ -798,7 +819,7 @@ def aggregate_signal_rows(documents, sentence_rows, signal_rows, sample_document
     for row in signal_rows:
         if row["document_id"] not in included_documents:
             continue
-        period = row["year"] if sample_document_ids is None else row["decade"]
+        period = row[period_unit]
         for section in [row["section"], "all_sections"]:
             key = (period, section, row["signal_family"])
             hits_by_period_section_signal[key] += 1
@@ -868,6 +889,64 @@ def write_year_output(rows):
             row = dict(row)
             row["year"] = row.pop("period")
             writer.writerow(row)
+
+
+def write_year_by_application_sample_output(documents, sentence_rows, signal_rows):
+    application_samples = [
+        ("all_reports", "All readable CPC reports", lambda document: True),
+        ("non_pp", "Readable CPC reports excluding PP actions", lambda document: document["parsed_action_code"] != "PP"),
+        (
+            "zm_zr_zs",
+            "Readable CPC reports with ZM/ZR/ZS actions",
+            lambda document: document["parsed_action_code"] in {"ZM", "ZR", "ZS"},
+        ),
+    ]
+
+    output_rows = []
+    for application_sample, application_sample_label, sample_filter in application_samples:
+        sample_document_ids = {
+            document["document_id"]
+            for document in documents
+            if sample_filter(document)
+        }
+        for row in aggregate_signal_rows(
+            documents,
+            sentence_rows,
+            signal_rows,
+            sample_document_ids,
+            period_unit="year",
+        ):
+            row = dict(row)
+            row["year"] = row.pop("period")
+            row["application_sample"] = application_sample
+            row["application_sample_label"] = application_sample_label
+            output_rows.append(row)
+
+    output_rows.sort(key=lambda row: (row["application_sample"], row["year"], row["section"], row["signal_family"]))
+    with Path("../output/ulurp_cpc_text_signal_year_by_application_sample.csv").open(
+        "w",
+        newline="",
+        encoding="utf-8",
+    ) as output_file:
+        writer = csv.DictWriter(
+            output_file,
+            fieldnames=[
+                "application_sample",
+                "application_sample_label",
+                "year",
+                "section",
+                "signal_family",
+                "readable_documents",
+                "section_documents",
+                "nonboilerplate_words",
+                "hit_sentences",
+                "hit_documents",
+                "hit_sentences_per_1000_words",
+                "hit_document_share",
+            ],
+        )
+        writer.writeheader()
+        writer.writerows(output_rows)
 
 
 def select_decade_sample(documents, sample_documents_per_decade):
@@ -984,55 +1063,65 @@ def write_kwic_sample(signal_rows, document_section_sentences, kwic_hits_per_rul
 
 
 def main():
-    if len(sys.argv) != 6:
+    if len(sys.argv) != 7:
         raise SystemExit(
             "Usage: audit_ulurp_cpc_text_signals.py "
-            "START_YEAR SAMPLE_DOCUMENTS_PER_DECADE BOILERPLATE_DOC_SHARE "
+            "START_YEAR END_YEAR SAMPLE_DOCUMENTS_PER_DECADE BOILERPLATE_DOC_SHARE "
             "KWIC_HITS_PER_RULE KWIC_CONTEXT_WORDS"
         )
 
     start_year = as_int(sys.argv[1])
-    sample_documents_per_decade = as_int(sys.argv[2])
-    boilerplate_doc_share = as_float(sys.argv[3])
-    kwic_hits_per_rule = as_int(sys.argv[4])
-    kwic_context_words = as_int(sys.argv[5])
+    end_year = as_int(sys.argv[2])
+    sample_documents_per_decade = as_int(sys.argv[3])
+    boilerplate_doc_share = as_float(sys.argv[4])
+    kwic_hits_per_rule = as_int(sys.argv[5])
+    kwic_context_words = as_int(sys.argv[6])
 
-    if start_year is None or sample_documents_per_decade is None:
-        raise SystemExit("START_YEAR and SAMPLE_DOCUMENTS_PER_DECADE must be integers.")
+    if start_year is None or end_year is None or sample_documents_per_decade is None:
+        raise SystemExit("START_YEAR, END_YEAR, and SAMPLE_DOCUMENTS_PER_DECADE must be integers.")
+    if end_year < start_year:
+        raise SystemExit("END_YEAR must be greater than or equal to START_YEAR.")
     if boilerplate_doc_share is None or not 0 < boilerplate_doc_share < 1:
         raise SystemExit("BOILERPLATE_DOC_SHARE must be between 0 and 1.")
     if kwic_hits_per_rule is None or kwic_context_words is None:
         raise SystemExit("KWIC_HITS_PER_RULE and KWIC_CONTEXT_WORDS must be integers.")
 
-    documents = read_documents(start_year)
+    documents = read_documents(start_year, end_year)
     sentence_rows, sentence_doc_ids, sentence_examples, _section_doc_words, document_section_sentences = (
         build_sentence_rows(documents)
     )
-    boilerplate_sentences = write_boilerplate_sentences(
+    boilerplate_sentence_rows, boilerplate_sentences = prepare_boilerplate_sentence_rows(
         sentence_doc_ids,
         sentence_examples,
         documents,
         boilerplate_doc_share,
     )
-    signal_rows = prepare_signal_rows(sentence_rows, boilerplate_sentences)
+    raw_signal_rows, filtered_signal_rows = prepare_signal_rows(
+        sentence_rows,
+        boilerplate_sentences,
+        document_section_sentences,
+        kwic_context_words,
+    )
 
-    write_year_output(aggregate_signal_rows(documents, sentence_rows, signal_rows))
+    write_year_output(aggregate_signal_rows(documents, sentence_rows, filtered_signal_rows))
+    write_year_by_application_sample_output(documents, sentence_rows, filtered_signal_rows)
 
     sample_ids, sample_counts, available_counts = select_decade_sample(
         documents,
         sample_documents_per_decade,
     )
     write_decade_sample_output(
-        aggregate_signal_rows(documents, sentence_rows, signal_rows, sample_ids),
+        aggregate_signal_rows(documents, sentence_rows, filtered_signal_rows, sample_ids),
         sample_counts,
         available_counts,
     )
     write_kwic_sample(
-        signal_rows,
+        raw_signal_rows,
         document_section_sentences,
         kwic_hits_per_rule,
         kwic_context_words,
     )
+    write_boilerplate_sentences(boilerplate_sentence_rows)
 
 
 if __name__ == "__main__":

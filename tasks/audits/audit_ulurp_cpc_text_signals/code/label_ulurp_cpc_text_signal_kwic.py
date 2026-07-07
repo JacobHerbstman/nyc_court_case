@@ -63,6 +63,57 @@ SPECIAL_PERMIT_OR_DOCUMENT_REVISION = re.compile(
     r"special provisions for bulk modification|"
     r"this modification will allow|"
     r"revised .{0,30}alternative|"
+    r"zoning resolution .{0,80}as subsequently amended.{0,80}further amended by changing|"
+    r"housing new york:.{0,220}as modified in \d{4}|"
+    r"appropriate modification of the city map|"
+    r"declaration may be amended or cancelled|"
+    r"amendment, modification, or cancellation of this declaration|"
+    r"following any modification, amendment or cancellation|"
+    r"amendment, modification and cancellation|"
+    r"amendment modification and cancellation|"
+    r"(?:housing|national housing|zoning|administrative|public housing) act .{0,80}as amended|"
+    r"modification of a sewer easement|"
+    r"approval without modification|"
+    r"no significant effect.{0,80}modified as follows|"
+    r"call for the modification of .{0,120}zoning resolution|"
+    r"call for modification of .{0,80}(?:zr|mih|mandatory inclusionary housing)|"
+    r"corrected, revised and maps furnished|"
+    r"revised mitigation report|"
+    r"budget and revised scope|"
+    r"^revised city planning commission|"
+    r"^revised[\\s\\-]+[ivx0-9]*\\s*city planning commission|"
+    r"date revision|"
+    r"grounds .{0,80}disapprove .{0,80}application for modification|"
+    r"non-ulurp modification|"
+    r"subsequently amended numerous times|"
+    r"as originally proposed or as modified|"
+    r"adopted a modification .{0,80}city master plan|"
+    r"streets would be significantly changed|"
+    r"views .{0,80}changed|"
+    r"proposed interior modification|"
+    r"revised hud guidelines|"
+    r"revised new york city charter|"
+    r"modify .{0,80}lottery community preference standards|"
+    r"modification .{0,120}height and setback|"
+    r"height .{0,80}setback .{0,80}modification|"
+    r"modifications? of height (?:and setback )?regulations|"
+    r"height and setback regulations|"
+    r"use modifications shall have minimal adverse effects|"
+    r"zoning ordinance could be modified|"
+    r"propose modified or new guidelines|"
+    r"exterior modification shall not alter|"
+    r"administratively approve modifications to the declaration|"
+    r"revised environmental assessment statement|"
+    r"revised negative declaration|"
+    r"modification to sign regulations|"
+    r"modification of .{0,80}special permit to|"
+    r"bulk modifications? on waterfront blocks|"
+    r"authorization .{0,80}modification of waterfront visual corridor|"
+    r"proposed use modifications would have minimal adverse effects|"
+    r"dcp needs to modify the zr|"
+    r"revised draft scope of work|"
+    r"girder support system .{0,80}modified|"
+    r"shall notify .{0,80}community board .{0,80}modification|"
     r"rezoning changed most|"
     r"would be changed from|"
     r"have become .{0,80}as .{0,40}changed|"
@@ -95,7 +146,20 @@ FORM_ONLY_CONDITIONS = re.compile(
 
 CONCRETE_REVIEW_CHANGE = re.compile(
     r"\b(proposal was modified|application was modified|modified application|"
-    r"modified special permit application|a-application|changes? to the application include|"
+    r"modified special permit application|amended application|a-application|"
+    r"project,? as amended|design change certification|changes? to the application include|"
+    r"require modification and conditions|requires modification and conditions|"
+    r"development plan was changed|"
+    r"application as amended relative to|"
+    r"zoning map, as revised, is appropriate|"
+    r"zoning is modified to|"
+    r"grant of .{0,80} as (?:modified|revised),? is appropriate|"
+    r"modified two-way plan|modified 2-way plan|"
+    r"apartment distribution has been changed|"
+    r"subsequent modification was submitted|"
+    r"revised site plan was submitted|"
+    r"approvals were modified .{0,80}to accommodate|"
+    r"modifications were approved .{0,80}to facilitate|"
     r"\b[cn]\s*\d{6}\s*\(a\)|"
     r"elimination of .{0,80}from the proposed|remove the .{0,80}from the proposed|"
     r"in response to concerns? raised by|in response to a comment received at the public hearing|"
@@ -144,10 +208,10 @@ PUBLIC_CONCERN_CONTEXT = re.compile(
 )
 
 INTERNAL_CONCERN_CONTEXT = re.compile(
-    r"\b(commissions?|commission|department|dcp staff|planning staff|agency|mta)\b.{0,120}"
+    r"\b(commissions?|commission\b|department|dcp staff|planning staff|agency|mta)\b.{0,120}"
     r"\b(concern|concerns|concerned)\b|"
     r"\b(concern|concerns|concerned)\b.{0,120}"
-    r"\b(commissions?|commission|department|dcp staff|planning staff|agency|mta)\b|"
+    r"\b(commissions?|commission\b|department|dcp staff|planning staff|agency|mta)\b|"
     r"\b(other environmental concerns|primary issues of concern analyzed for consistency)\b",
     re.IGNORECASE,
 )
@@ -285,6 +349,24 @@ def label_opposition(text, signal_family, section):
         re.IGNORECASE,
     ):
         return "1", "medium", "Concern language appears in a Community Board or Borough President section."
+    if signal_family == "opposition_displacement_affordability" and re.search(
+        r"\b(concern|concerns|concerned)\b.{0,220}\b(displacement|displace|"
+        r"affordab(?:le|ility)|rent|tenant|soft sites?|permanent affordability)\b|"
+        r"\b(displacement|displace|affordab(?:le|ility)|rent|tenant|soft sites?|"
+        r"permanent affordability)\b.{0,220}\b(concern|concerns|concerned)\b",
+        text,
+        re.IGNORECASE,
+    ):
+        return "1", "medium", "Concern language is tied to displacement, tenancy, or affordability."
+    if signal_family == "opposition_infrastructure" and re.search(
+        r"\b(concern|concerns|concerned)\b.{0,220}\b(sewer|water|overflow|"
+        r"infrastructure|transit|subway|school|schools|open space|parks?)\b|"
+        r"\b(sewer|water|overflow|infrastructure|transit|subway|school|schools|"
+        r"open space|parks?)\b.{0,220}\b(concern|concerns|concerned)\b",
+        text,
+        re.IGNORECASE,
+    ):
+        return "1", "medium", "Concern language is tied to infrastructure or environmental capacity."
     if CONCERN_CONTEXT.search(text):
         return "1", "medium", "Concern language is tied to a public actor or review body."
     if "concern" in text.lower():
