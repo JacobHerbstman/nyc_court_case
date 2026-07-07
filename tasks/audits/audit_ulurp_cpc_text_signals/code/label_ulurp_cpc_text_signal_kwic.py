@@ -508,7 +508,7 @@ def label_row(row):
 
 def read_human_labels():
     labels = {}
-    with Path("manual_ulurp_cpc_text_signal_kwic_labels.csv").open(newline="", encoding="utf-8") as input_file:
+    with Path("../input/manual_ulurp_cpc_text_signal_kwic_labels.csv").open(newline="", encoding="utf-8") as input_file:
         for row in csv.DictReader(input_file):
             labels[(row["signal_family"], row["application_number"])] = row
     return labels

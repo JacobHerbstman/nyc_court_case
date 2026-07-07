@@ -31,7 +31,7 @@ all: ../output/ulurp_cpc_text_signal_year.csv \
 	@test -s "$@"
 
 ../output/ulurp_cpc_text_signal_kwic_assistant_labels.csv: label_ulurp_cpc_text_signal_kwic.py \
-	manual_ulurp_cpc_text_signal_kwic_labels.csv \
+	../input/manual_ulurp_cpc_text_signal_kwic_labels.csv \
 	../output/ulurp_cpc_text_signal_kwic_sample.csv | ../output
 	python3 $<
 
@@ -54,6 +54,9 @@ all: ../output/ulurp_cpc_text_signal_year.csv \
 ../input/citywide_ulurp_application_year.csv: ../../../summarize_citywide_ulurp_application_trends/output/citywide_ulurp_application_year.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-link-inputs: ../input/ulurp_cpc_report_manifest.csv ../input/flushing_commons_cpc_ocr_manifest.csv ../input/citywide_ulurp_application_year.csv
+../input/manual_ulurp_cpc_text_signal_kwic_labels.csv: ../../record_ulurp_cpc_text_signal_manual_labels/output/manual_ulurp_cpc_text_signal_kwic_labels.csv | ../input
+	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+
+link-inputs: ../input/ulurp_cpc_report_manifest.csv ../input/flushing_commons_cpc_ocr_manifest.csv ../input/citywide_ulurp_application_year.csv ../input/manual_ulurp_cpc_text_signal_kwic_labels.csv
 
 include ../../generic.make
