@@ -1,3 +1,5 @@
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_citywide_ulurp_application_trends/code")
+
 suppressPackageStartupMessages({
   library(arrow)
   library(dplyr)

@@ -1,3 +1,5 @@
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_ccd2010_homeownership_long_units_series/code")
+
 suppressPackageStartupMessages({
   library(dplyr)
   library(readr)

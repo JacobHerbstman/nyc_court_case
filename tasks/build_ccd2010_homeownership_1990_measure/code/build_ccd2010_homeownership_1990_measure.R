@@ -1,3 +1,5 @@
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_ccd2010_homeownership_1990_measure/code")
+
 suppressPackageStartupMessages({
   library(arrow)
   library(dplyr)

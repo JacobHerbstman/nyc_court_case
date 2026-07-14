@@ -30,26 +30,35 @@ tasks/audits/*/temp/
 tasks/audits/*/slurmlogs/
 
 # Production source ledgers intentionally committed for replication.
-!tasks/create_member_deference_nonapproval_geography_review/output/
-!tasks/create_member_deference_nonapproval_geography_review/output/*.csv
+!tasks/create_council_land_use_geography_review_ledgers/output/
+tasks/create_council_land_use_geography_review_ledgers/output/*
+!tasks/create_council_land_use_geography_review_ledgers/output/member_deference_nonapproval_geography_review_queue.csv
+!tasks/create_council_land_use_geography_review_ledgers/output/member_deference_nonapproval_geography_chatgpt_review_responses.csv
 !tasks/record_ulurp_cpc_source_corrections/output/
-!tasks/record_ulurp_cpc_source_corrections/output/*.csv
+tasks/record_ulurp_cpc_source_corrections/output/*
+!tasks/record_ulurp_cpc_source_corrections/output/ulurp_cpc_index_additions.csv
+!tasks/record_ulurp_cpc_source_corrections/output/ulurp_cpc_source_corrections.csv
 
 # Audit coding ledgers intentionally committed for replication.
 !tasks/audits/record_ulurp_cpc_source_validation/output/
-!tasks/audits/record_ulurp_cpc_source_validation/output/*.csv
+tasks/audits/record_ulurp_cpc_source_validation/output/*
+!tasks/audits/record_ulurp_cpc_source_validation/output/official_ulurp_cpc_document_validation_labels.csv
+!tasks/audits/record_ulurp_cpc_source_validation/output/official_ulurp_cpc_external_reference_exclusions.csv
+!tasks/audits/record_ulurp_cpc_source_validation/output/official_ulurp_cpc_narrative_boundary_exceptions.csv
+!tasks/audits/record_ulurp_cpc_source_validation/output/official_ulurp_cpc_short_page_validation.csv
+!tasks/audits/record_ulurp_cpc_source_validation/output/official_ulurp_cpc_source_exception_labels.csv
 !tasks/audits/record_ulurp_cpc_text_analysis_decisions/output/
-!tasks/audits/record_ulurp_cpc_text_analysis_decisions/output/*.csv
+tasks/audits/record_ulurp_cpc_text_analysis_decisions/output/*
+!tasks/audits/record_ulurp_cpc_text_analysis_decisions/output/ulurp_cpc_community_district_corrections.csv
+!tasks/audits/record_ulurp_cpc_text_analysis_decisions/output/ulurp_cpc_event_validation_labels.csv
+!tasks/audits/record_ulurp_cpc_text_analysis_decisions/output/ulurp_cpc_initial_event_labels.csv
+!tasks/audits/record_ulurp_cpc_text_analysis_decisions/output/ulurp_cpc_kwic_calibration_labels.csv
 
 # --- Secrets ---
 .Renviron
 
 # --- Archive / deprecated task areas ---
 tasks/_deprecated/
-tasks/archive/
-tasks/archive/*/input/
-tasks/archive/*/output/
-tasks/archive/*/temp/
 tasks/audits/archive/
 
 # --- Paper build artifacts ---
