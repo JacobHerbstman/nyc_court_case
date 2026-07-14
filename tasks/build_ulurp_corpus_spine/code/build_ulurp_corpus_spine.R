@@ -29,7 +29,7 @@ if (is.na(start_year) || is.na(end_year) || start_year > end_year) {
 normalize_application_key <- function(x) {
   raw_value <- str_to_upper(str_replace_all(str_squish(as.character(x)), "[^A-Z0-9]", ""))
   raw_value[raw_value == ""] <- NA_character_
-  str_replace(raw_value, "^[CNM](?=[0-9])", "")
+  str_replace(raw_value, "^[CNMI](?=[0-9])", "")
 }
 
 extract_year <- function(x) {
@@ -105,11 +105,18 @@ application_rows <- zap_project |>
   unnest(raw_application_number) |>
   mutate(
     raw_application_number = str_squish(str_to_upper(raw_application_number)),
+    compact_application_number = str_replace_all(raw_application_number, "[^A-Z0-9]", ""),
     application_key = normalize_application_key(raw_application_number),
-    application_prefix = str_extract(str_replace_all(raw_application_number, "\\s+", ""), "^[CNM]"),
+    application_prefix = str_extract(compact_application_number, "^[CNMI](?=[0-9])"),
     application_digits = str_extract(raw_application_number, "\\d{6,8}"),
-    action_borough_code = str_extract(str_replace_all(raw_application_number, "\\s+", ""), "[A-Z]{2,4}[A-Z]?$"),
-    a_application_flag = str_detect(raw_application_number, "\\(A\\)")
+    action_borough_code = str_match(
+      compact_application_number,
+      "^(?:[CNMI])?\\d{6}A?([A-Z]{3,5})$"
+    )[, 2],
+    a_application_flag = str_detect(
+      compact_application_number,
+      "^(?:[CNMI])?\\d{6}A[A-Z]{3,5}$"
+    )
   ) |>
   filter(!is.na(application_digits), !is.na(application_key), application_key != "") |>
   distinct(project_id, application_key, raw_application_number, .keep_all = TRUE) |>

@@ -327,10 +327,7 @@ def main():
     ):
         raise RuntimeError("Invalid corpus build scalar arguments.")
 
-    official_index_rows = [
-        row for row in read_csv("../input/official_cpc_report_index.csv")
-        if start_year <= int(row["vote_year"]) <= end_year
-    ]
+    official_index_rows = read_csv("../input/official_cpc_report_index.csv")
     correction_rows = read_csv("../input/ulurp_cpc_source_corrections.csv")
     source_corrections = {
         indexed_application_key(row["raw_application_number"]): row
@@ -362,6 +359,12 @@ def main():
         corrected_row["source_correction"] = correction
         corrected_row["official_index_row_flag"] = "TRUE"
         corrected_index_rows.append(corrected_row)
+    corrected_index_rows = [
+        row for row in corrected_index_rows
+        if start_year
+        <= datetime.strptime(row["canonical_vote_date"], "%m/%d/%Y").year
+        <= end_year
+    ]
 
     certified_rows = [
         row for row in corrected_index_rows
@@ -423,6 +426,13 @@ def main():
         for match in APPLICATION_PATTERN.finditer(clean_text(project.get("ulurp_numbers"))):
             zap_by_key[application_key(match.group(0))].append(project)
 
+    previous_pdf_urls = {}
+    if Path("../output/ulurp_cpc_report_manifest.csv").exists():
+        previous_pdf_urls = {
+            row["application_key"]: row["resolved_pdf_url"]
+            for row in read_csv("../output/ulurp_cpc_report_manifest.csv")
+        }
+
     def process_row(row_number, official_row):
         official_index_application_number = official_row["application_number"]
         correction = official_row["source_correction"]
@@ -451,6 +461,10 @@ def main():
             resolved_pdf_url = f"{resolved_pdf_url}.pdf"
         if source_usable and not resolved_pdf_url:
             raise RuntimeError(f"Usable source has no PDF URL: {corrected_application_number}")
+
+        if previous_pdf_urls.get(key) != resolved_pdf_url:
+            output_pdf_path.unlink(missing_ok=True)
+            output_text_path.unlink(missing_ok=True)
 
         if not source_usable:
             pdf_path = None
