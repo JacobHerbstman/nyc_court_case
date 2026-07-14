@@ -150,9 +150,9 @@ make_count_plot <- function(sample_id) {
     ggplot(aes(x = year, y = readable_documents)) +
     geom_col(fill = "#5b6770", width = 0.85) +
     labs(
-      title = paste0(sample_label, ": readable CPC reports"),
+      title = paste0(sample_label, ": annual analysis narratives"),
       x = NULL,
-      y = "Readable reports"
+      y = "Analysis narratives"
     ) +
     theme_minimal(base_size = 11) +
     theme(panel.grid.minor = element_blank())
@@ -175,7 +175,7 @@ make_signal_plot <- function(sample_id, signal_ids, title_suffix) {
     labs(
       title = paste0(sample_label, ": ", title_suffix),
       x = NULL,
-      y = "Share of readable reports with signal",
+      y = "Share of analysis narratives with signal",
       color = NULL
     ) +
     theme_minimal(base_size = 11) +

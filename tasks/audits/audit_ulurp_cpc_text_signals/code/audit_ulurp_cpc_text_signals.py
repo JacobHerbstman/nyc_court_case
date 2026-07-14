@@ -258,6 +258,13 @@ OPPOSITION_RULES = [
     ),
 ]
 
+SIGNAL_FAMILIES = list(
+    dict.fromkeys(
+        signal_family
+        for signal_family, _pattern in SIGNAL_RULES + OPPOSITION_RULES
+    )
+)
+
 SIGNAL_SECTION_ALLOWLIST = {
     "revision_concession": {
         "background",
@@ -418,21 +425,6 @@ def readable_text_path(text_path):
     if getattr(stat_result, "st_blocks", 1) == 0 and stat_result.st_size > 0:
         return False
     return stat_result.st_size >= 100
-
-
-def read_ocr_fallbacks():
-    fallbacks = {}
-    with Path("../input/flushing_commons_cpc_ocr_manifest.csv").open(newline="", encoding="utf-8") as ocr_file:
-        ocr_manifest_real_path = Path("../input/flushing_commons_cpc_ocr_manifest.csv").resolve()
-        for row in csv.DictReader(ocr_file):
-            if row.get("ocr_status") != "text_extracted_ocr":
-                continue
-            if (as_int(row.get("text_char_count")) or 0) <= 0:
-                continue
-            text_path = resolve_task_path(row.get("output_text_path", ""), ocr_manifest_real_path)
-            if readable_text_path(text_path):
-                fallbacks[row["raw_application_number"]] = text_path
-    return fallbacks
 
 
 def normalize_whitespace(text):
@@ -613,47 +605,43 @@ def sentence_context(document_sentences, index, context_words):
 
 
 def read_documents(start_year, end_year):
-    ocr_fallbacks = read_ocr_fallbacks()
     documents = []
-    manifest_real_path = Path("../input/ulurp_cpc_report_manifest.csv").resolve()
+    manifest_real_path = Path("../input/official_ulurp_cpc_narrative_manifest.csv").resolve()
 
-    with Path("../input/ulurp_cpc_report_manifest.csv").open(newline="", encoding="utf-8") as manifest_file:
+    with Path("../input/official_ulurp_cpc_narrative_manifest.csv").open(newline="", encoding="utf-8") as manifest_file:
         for row in csv.DictReader(manifest_file):
-            year = as_int(row.get("corpus_reference_year"))
+            year = as_int(row.get("official_vote_year"))
             if year is None or year < start_year or year > end_year:
                 continue
-
-            text_path = resolve_task_path(row.get("usable_local_text_path", ""), manifest_real_path)
-            usable_text_status = row.get("usable_text_status", "")
-            text_source = row.get("usable_text_source_type", "")
-
-            if row.get("raw_application_number") in ocr_fallbacks and not readable_text_path(text_path):
-                text_path = ocr_fallbacks[row["raw_application_number"]]
-                usable_text_status = "text_extracted_ocr_audit"
-                text_source = "flushing_commons_ocr_audit"
-
-            if usable_text_status == "" or not usable_text_status.startswith("text_extracted"):
+            if row.get("analysis_narrative_unit_flag") != "TRUE":
                 continue
+
+            text_path = resolve_task_path(row.get("local_text_path", ""), manifest_real_path)
             if not readable_text_path(text_path):
                 continue
 
-            text = text_path.read_text(encoding="utf-8", errors="replace")
+            source_text = text_path.read_text(encoding="utf-8", errors="replace")
+            narrative_start = as_int(row.get("narrative_start_char"))
+            narrative_end = as_int(row.get("narrative_end_char"))
+            if narrative_start is None or narrative_end is None or narrative_end <= narrative_start:
+                continue
+            text = source_text[narrative_start:narrative_end]
             if word_count(text) < 50:
                 continue
 
             documents.append(
                 {
                     "document_id": row.get("document_id", ""),
-                    "project_id": row.get("project_id", ""),
-                    "project_name": row.get("project_name", ""),
-                    "application_number": row.get("raw_application_number", ""),
-                    "parsed_action_code": row.get("parsed_action_code", ""),
-                    "borough_name": row.get("borough_name", ""),
-                    "community_district": row.get("community_district", ""),
+                    "project_id": row.get("lead_group_key", ""),
+                    "project_name": row.get("official_project_name", ""),
+                    "application_number": row.get("application_number", ""),
+                    "parsed_action_code": row.get("action_code", ""),
+                    "borough_name": "",
+                    "community_district": row.get("official_community_district", ""),
                     "year": year,
                     "decade": decade_from_year(year),
-                    "usable_text_status": usable_text_status,
-                    "usable_text_source_type": text_source,
+                    "usable_text_status": "comparable_official_narrative",
+                    "usable_text_source_type": "official_cpc_report",
                     "text": text,
                 }
             )
@@ -891,13 +879,56 @@ def write_year_output(rows):
             writer.writerow(row)
 
 
+def write_document_output(documents, signal_rows):
+    document_signals = defaultdict(set)
+    for row in signal_rows:
+        document_signals[row["document_id"]].add(row["signal_family"])
+
+    fieldnames = [
+        "document_id",
+        "application_number",
+        "action_code",
+        "project_name",
+        "community_district",
+        "year",
+        "decade",
+        *SIGNAL_FAMILIES,
+    ]
+
+    with Path("../output/ulurp_cpc_text_signal_document.csv").open(
+        "w",
+        newline="",
+        encoding="utf-8",
+    ) as output_file:
+        writer = csv.DictWriter(output_file, fieldnames=fieldnames)
+        writer.writeheader()
+        for document in sorted(documents, key=lambda row: (row["year"], row["document_id"])):
+            writer.writerow(
+                {
+                    "document_id": document["document_id"],
+                    "application_number": document["application_number"],
+                    "action_code": document["parsed_action_code"],
+                    "project_name": document["project_name"],
+                    "community_district": document["community_district"],
+                    "year": document["year"],
+                    "decade": document["decade"],
+                    **{
+                        signal_family: int(
+                            signal_family in document_signals[document["document_id"]]
+                        )
+                        for signal_family in SIGNAL_FAMILIES
+                    },
+                }
+            )
+
+
 def write_year_by_application_sample_output(documents, sentence_rows, signal_rows):
     application_samples = [
-        ("all_reports", "All readable CPC reports", lambda document: True),
-        ("non_pp", "Readable CPC reports excluding PP actions", lambda document: document["parsed_action_code"] != "PP"),
+        ("all_reports", "All comparable official CPC narratives", lambda document: True),
+        ("non_pp", "Comparable official CPC narratives excluding PP actions", lambda document: document["parsed_action_code"] != "PP"),
         (
             "zm_zr_zs",
-            "Readable CPC reports with ZM/ZR/ZS actions",
+            "Comparable official CPC narratives with ZM/ZR/ZS actions",
             lambda document: document["parsed_action_code"] in {"ZM", "ZR", "ZS"},
         ),
     ]
@@ -1104,6 +1135,7 @@ def main():
     )
 
     write_year_output(aggregate_signal_rows(documents, sentence_rows, filtered_signal_rows))
+    write_document_output(documents, filtered_signal_rows)
     write_year_by_application_sample_output(documents, sentence_rows, filtered_signal_rows)
 
     sample_ids, sample_counts, available_counts = select_decade_sample(
