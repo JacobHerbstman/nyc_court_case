@@ -232,11 +232,6 @@ def write_dot(path, nodes, edges, task_scopes):
 
 
 def main():
-    edges_csv = Path("../output/task_edges.csv")
-    task_list_csv = Path("../output/task_list.csv")
-    task_outputs_csv = Path("../output/task_outputs.csv")
-    dot_file = Path("../output/task_flow.dot")
-    summary_csv = Path("../output/task_graph_summary.csv")
     tasks_root = Path("../..").resolve()
     repo_root = tasks_root.parent
     infrastructure_tasks = {"setup_environment", "source_registry", "task_graph"}
@@ -324,7 +319,7 @@ def main():
         and task != "setup_environment"
     ]
 
-    with edges_csv.open("w", newline="") as f:
+    with Path("../output/task_edges.csv").open("w", newline="") as f:
         writer = csv.writer(f)
         writer.writerow([
             "upstream_task",
@@ -344,7 +339,7 @@ def main():
             for upstream, downstream, output_rel in edges
         ])
 
-    with task_list_csv.open("w", newline="") as f:
+    with Path("../output/task_list.csv").open("w", newline="") as f:
         writer = csv.writer(f)
         writer.writerow([
             "task",
@@ -380,7 +375,7 @@ def main():
         "check",
     ]
 
-    with task_outputs_csv.open("w", newline="") as f:
+    with Path("../output/task_outputs.csv").open("w", newline="") as f:
         writer = csv.writer(f)
         writer.writerow([
             "task",
@@ -414,7 +409,7 @@ def main():
                     str(sidecar_named).lower(),
                 ])
 
-    write_dot(dot_file, main_tasks, edges, task_scopes)
+    write_dot(Path("../output/task_flow.dot"), main_tasks, edges, task_scopes)
 
     summary_rows = [
         ["main_task_count", str(len(main_tasks))],
@@ -477,7 +472,7 @@ def main():
             f"{downstream} reads {upstream}/{upstream_target}",
         ])
 
-    with summary_csv.open("w", newline="") as f:
+    with Path("../output/task_graph_summary.csv").open("w", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(["metric", "value"])
         writer.writerows(summary_rows)

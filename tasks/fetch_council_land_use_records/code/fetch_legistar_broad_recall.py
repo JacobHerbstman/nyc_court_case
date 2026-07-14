@@ -13,7 +13,7 @@ import requests
 from bs4 import BeautifulSoup
 
 sys.path.append("../../_lib")
-from legistar_utils import check_saved_html, normalize_space, safe_stub, save_text, sha256
+from legistar_utils import check_saved_html, normalize_space, parse_form_inputs, safe_stub, save_text, sha256
 
 BASE_URL = "https://legistar.council.nyc.gov/Legislation.aspx"
 if len(sys.argv) != 2 or not re.fullmatch(r"\d{4}", sys.argv[1]):
@@ -25,9 +25,6 @@ if int(QUERY_YEAR) <= 2010:
     PULL_DATE = "20260513"
 else:
     PULL_DATE = "20260603"
-MATTER_INDEX_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_matter_index.csv")
-HISTORY_EVENTS_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_history_events.csv")
-
 MATTER_TYPE_QUERIES = [
     {"matter_type": "Land Use Application", "type_value": "10", "slug": "land_use_application"},
     {"matter_type": "Land Use Call-Up", "type_value": "13", "slug": "land_use_call_up"},
@@ -55,27 +52,6 @@ APPLICATION_RE = re.compile(
     r"\b(?:[CNM]\s*)?\d{6}\s*(?:\([A-Z0-9]+\)\s*)?[A-Z]{2,4}\b",
     re.IGNORECASE,
 )
-
-
-def parse_form_inputs(html: str) -> dict[str, str]:
-    soup = BeautifulSoup(html, "html.parser")
-    payload: dict[str, str] = {}
-
-    for inp in soup.find_all("input"):
-        name = inp.get("name")
-        if not name:
-            continue
-
-        input_type = (inp.get("type") or "").lower()
-        if input_type in {"submit", "button", "image"}:
-            continue
-        if input_type in {"checkbox", "radio"} and not inp.has_attr("checked"):
-            continue
-
-        payload[name] = inp.get("value") or ""
-
-    return payload
-
 
 def combo_client_state(value: str, text: str) -> str:
     return json.dumps(
@@ -517,7 +493,7 @@ def fetch_detail_pages(session: requests.Session, matter_index: pd.DataFrame) ->
         if fetch_status == "downloaded":
             time.sleep(0.03)
         if i == 1 or i % 100 == 0 or i == len(sorted_targets):
-            print(f"Fetched detail page {i} of {len(sorted_targets)}", flush=True)
+            print(f"Processed detail page {i} of {len(sorted_targets)}", flush=True)
 
     return detail_rows, history_rows
 
@@ -545,7 +521,7 @@ def main() -> None:
     detail_files = pd.DataFrame(detail_rows)
     history_events = pd.DataFrame(history_rows)
     if detail_files.empty:
-        raise RuntimeError("No Legistar detail pages were downloaded.")
+        raise RuntimeError("No Legistar detail pages were processed.")
     if history_events.empty:
         raise RuntimeError("No Legistar history events were parsed from detail pages.")
 
@@ -611,8 +587,8 @@ def main() -> None:
         ).any():
             raise RuntimeError("Known LaGuardia hotel resolution must have a City Council history event.")
 
-    matter_index.to_csv(MATTER_INDEX_OUTPUT, index=False)
-    history_events.to_csv(HISTORY_EVENTS_OUTPUT, index=False)
+    matter_index.to_csv(f"../output/legistar_{QUERY_YEAR}_broad_recall_matter_index.csv", index=False)
+    history_events.to_csv(f"../output/legistar_{QUERY_YEAR}_broad_recall_history_events.csv", index=False)
 
 
 if __name__ == "__main__":

@@ -182,8 +182,6 @@ compute_sha256 <- function(path) {
 }
 
 copy_if_changed <- function(temp_path, out_path) {
-  dir.create(dirname(out_path), recursive = TRUE, showWarnings = FALSE)
-
   if (file.exists(out_path)) {
     old_hash <- unname(tools::md5sum(out_path))
     new_hash <- unname(tools::md5sum(temp_path))

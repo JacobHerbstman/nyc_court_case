@@ -23,10 +23,6 @@ if len(sys.argv) != 2 or not re.fullmatch(r"\d{4}", sys.argv[1]):
     raise RuntimeError("Usage: python3 fetch_legistar_action_votes.py <year>")
 
 QUERY_YEAR = sys.argv[1]
-ACTION_DETAILS_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_action_details.csv")
-MEMBER_VOTES_OUTPUT = Path(f"../output/legistar_{QUERY_YEAR}_broad_recall_member_votes.csv")
-
-
 history_events = pd.read_csv(
     f"../output/legistar_{QUERY_YEAR}_broad_recall_history_events.csv",
     dtype=str,
@@ -138,12 +134,12 @@ for i, row in enumerate(target_events.sort_values(["history_date", "matter_file"
     if fetch_status == "downloaded":
         time.sleep(0.03)
     if i == 1 or i % 100 == 0 or i == len(target_events):
-        print(f"Fetched action-detail page {i} of {len(target_events)}", flush=True)
+        print(f"Processed action-detail page {i} of {len(target_events)}", flush=True)
 
 action_details = pd.DataFrame(action_rows)
 member_votes = pd.DataFrame(member_vote_rows)
 if action_details.empty:
-    raise RuntimeError("No action detail pages were downloaded.")
+    raise RuntimeError("No action detail pages were processed.")
 if member_votes.empty:
     raise RuntimeError("No member votes were parsed from action detail pages.")
 
@@ -192,5 +188,5 @@ if QUERY_YEAR == "2001":
     if laguardia_negative.empty:
         raise RuntimeError("Res 1939-2001 must record Helen M. Marshall voting Negative.")
 
-action_details.to_csv(ACTION_DETAILS_OUTPUT, index=False)
-member_votes.to_csv(MEMBER_VOTES_OUTPUT, index=False)
+action_details.to_csv(f"../output/legistar_{QUERY_YEAR}_broad_recall_action_details.csv", index=False)
+member_votes.to_csv(f"../output/legistar_{QUERY_YEAR}_broad_recall_member_votes.csv", index=False)
