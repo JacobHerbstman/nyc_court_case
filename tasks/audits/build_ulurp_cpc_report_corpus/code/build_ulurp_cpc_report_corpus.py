@@ -508,9 +508,6 @@ def main() -> None:
     if len(sys.argv) != 5:
         raise RuntimeError("Usage: python3 build_ulurp_cpc_report_corpus.py <start_year> <end_year> <report_limit> <worker_count>")
 
-    os.makedirs("../output/cpc_report_pdfs", exist_ok=True)
-    os.makedirs("../output/cpc_report_text", exist_ok=True)
-
     start_year = int(sys.argv[1])
     end_year = int(sys.argv[2])
     report_limit = int(sys.argv[3])

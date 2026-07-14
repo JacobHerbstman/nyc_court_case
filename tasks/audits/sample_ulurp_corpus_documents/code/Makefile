@@ -8,7 +8,7 @@ all: ../output/ulurp_corpus_sample_document_index.csv \
 	../output/ulurp_corpus_sample_document_fetch_failures.csv \
 	../output/ulurp_corpus_sample_document_qc.csv
 
-../output/ulurp_corpus_sample_document_index.csv: sample_ulurp_corpus_documents.py ../input/ulurp_corpus_project_spine.csv | ../output
+../output/ulurp_corpus_sample_document_index.csv: sample_ulurp_corpus_documents.py ../input/ulurp_corpus_project_spine.csv | ../output ../output/sample_documents/
 	python3 $< $(SAMPLE_SEED) $(DOCUMENTS_PER_COHORT)
 
 ../output/ulurp_corpus_sample_document_text.csv: ../output/ulurp_corpus_sample_document_index.csv

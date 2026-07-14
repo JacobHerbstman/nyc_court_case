@@ -32,6 +32,14 @@ tasks/audits/*/slurmlogs/
 # Production source ledgers intentionally committed for replication.
 !tasks/create_member_deference_nonapproval_geography_review/output/
 !tasks/create_member_deference_nonapproval_geography_review/output/*.csv
+!tasks/record_ulurp_cpc_source_corrections/output/
+!tasks/record_ulurp_cpc_source_corrections/output/*.csv
+
+# Audit coding ledgers intentionally committed for replication.
+!tasks/audits/record_ulurp_cpc_source_validation/output/
+!tasks/audits/record_ulurp_cpc_source_validation/output/*.csv
+!tasks/audits/record_ulurp_cpc_text_analysis_decisions/output/
+!tasks/audits/record_ulurp_cpc_text_analysis_decisions/output/*.csv
 
 # --- Secrets ---
 .Renviron

@@ -8,7 +8,7 @@ all: ../output/ulurp_zoning_cpc_report_sample_index.csv \
 	../output/ulurp_zoning_cpc_report_sample_fetch_failures.csv \
 	../output/ulurp_zoning_cpc_report_sample_qc.csv
 
-../output/ulurp_zoning_cpc_report_sample_index.csv: sample_ulurp_zoning_cpc_reports.py ../input/ulurp_corpus_project_spine.csv | ../output
+../output/ulurp_zoning_cpc_report_sample_index.csv: sample_ulurp_zoning_cpc_reports.py ../input/ulurp_corpus_project_spine.csv | ../output ../output/sample_documents/
 	python3 $< $(SAMPLE_SEED) $(DOCUMENTS_PER_COHORT)
 
 ../output/ulurp_zoning_cpc_report_sample_text.csv: ../output/ulurp_zoning_cpc_report_sample_index.csv

@@ -10,7 +10,7 @@ all: ../output/ulurp_cpc_report_manifest.csv \
 	../output/ulurp_cpc_report_fetch_failures.csv \
 	../output/ulurp_cpc_report_corpus_qc.csv
 
-../output/ulurp_cpc_report_manifest.csv: build_ulurp_cpc_report_corpus.py ../input/ulurp_corpus_project_spine.csv ../input/ulurp_corpus_application_spine.csv | ../output
+../output/ulurp_cpc_report_manifest.csv: build_ulurp_cpc_report_corpus.py ../input/ulurp_corpus_project_spine.csv ../input/ulurp_corpus_application_spine.csv | ../output ../output/cpc_report_pdfs/ ../output/cpc_report_text/
 	python3 $< $(START_YEAR) $(END_YEAR) $(REPORT_LIMIT) $(WORKERS)
 	touch $@
 

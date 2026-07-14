@@ -1,40 +1,33 @@
 SHELL := bash
 .DELETE_ON_ERROR:
+.SECONDARY:
 
 include ../../../shell_functions.make
 
 ../input ../output ../temp slurmlogs:
 	mkdir -p $@
 
+../input/%/ ../output/%/ ../temp/%/:
+	mkdir -p $@
+
 run.sbatch: ../../../setup_environment/code/run.sbatch | slurmlogs
 	@test "$$(readlink "$@")" = "$<" || ln -sf $< $@
-
-.PHONY: sanitize-numbered-duplicates
-sanitize-numbered-duplicates: ../input
-	@for dir in ../input ../output; do \
-		[ -d "$$dir" ] || continue; \
-		find "$$dir" -maxdepth 1 \( -type f -o -type l \) | while IFS= read -r path; do \
-			canonical=$$(printf '%s\n' "$$path" | sed -E 's/ [0-9]+(\.[^./]+)$$/\1/'); \
-			if [ "$$canonical" != "$$path" ] && { [ -e "$$canonical" ] || [ -L "$$canonical" ]; }; then \
-				rm -f "$$path"; \
-			fi; \
-		done; \
-	done
-
-link-inputs: sanitize-numbered-duplicates
 
 UPSTREAM_TASKS := $(notdir $(patsubst %/code,%,$(wildcard ../../../*/code)))
 AUDIT_TASKS := $(notdir $(patsubst %/code,%,$(wildcard ../../*/code)))
 
 .PRECIOUS: ../../../% ../../%
 
+.PHONY: FORCE_UPSTREAM_CHECK
+FORCE_UPSTREAM_CHECK:
+
 define UPSTREAM_OUTPUT_RULE
-../../../$(1)/output/%:
+../../../$(1)/output/%: FORCE_UPSTREAM_CHECK
 	$$(MAKE) -C ../../../$(1)/code ../output/$$*
 endef
 
 define AUDIT_OUTPUT_RULE
-../../$(1)/output/%:
+../../$(1)/output/%: FORCE_UPSTREAM_CHECK
 	$$(MAKE) -C ../../$(1)/code ../output/$$*
 endef
 

@@ -4,7 +4,7 @@ all: ../output/ulurp_cpc_report_failure_recheck.csv \
 	../output/ulurp_cpc_report_failure_recheck_by_year.csv \
 	../output/ulurp_cpc_report_failure_recheck_qc.csv
 
-../output/ulurp_cpc_report_failure_recheck.csv: verify_ulurp_cpc_report_failures.py ../input/ulurp_cpc_report_fetch_failures.csv ../input/ulurp_cpc_report_manifest.csv ../input/ulurp_corpus_project_spine.csv | ../output
+../output/ulurp_cpc_report_failure_recheck.csv: verify_ulurp_cpc_report_failures.py ../input/ulurp_cpc_report_fetch_failures.csv ../input/ulurp_cpc_report_manifest.csv ../input/ulurp_corpus_project_spine.csv | ../output ../output/recovered_cpc_report_pdfs/
 	python3 $<
 	touch $@
 

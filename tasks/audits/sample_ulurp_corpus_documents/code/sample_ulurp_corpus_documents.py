@@ -435,7 +435,6 @@ if len(sys.argv) != 3:
 
 sample_seed = int(sys.argv[1])
 documents_per_cohort = int(sys.argv[2])
-os.makedirs("../output/sample_documents", exist_ok=True)
 if documents_per_cohort <= 0:
     raise RuntimeError("documents_per_cohort must be positive.")
 

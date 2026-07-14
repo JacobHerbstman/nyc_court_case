@@ -2,666 +2,676 @@
 
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_ulurp_cpc_report_corpus/code")
 # start_year = 1975
-# end_year = 2026
-# report_limit = 0
+# end_year = 2025
 # worker_count = 6
+# ocr_dpi = 200
+# ocr_page_timeout_seconds = 90
+# minimum_embedded_page_words = 50
 
 from __future__ import annotations
 
-from concurrent.futures import ThreadPoolExecutor, as_completed
 import csv
 import hashlib
-import io
-import json
 import os
 import re
 import subprocess
 import sys
+import tempfile
 import time
-import urllib.parse
+from collections import defaultdict
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import datetime
+from pathlib import Path
+
+import pandas as pd
 
 
-CPC_REPORT_BASE_URL = "https://www.nyc.gov/assets/planning/download/pdf/about/cpc"
-ZAP_API_HOST = "https://zap-api-production.herokuapp.com"
-ZAP_PROJECT_INCLUDE = "actions"
-CURL_CONNECT_TIMEOUT_SECONDS = 10
-CURL_MAX_TIME_SECONDS = 120
 DOWNLOAD_ATTEMPTS = 3
-DOWNLOAD_RETRY_SLEEP_SECONDS = 2
-API_FETCH_ATTEMPTS = 3
-API_RETRY_SLEEP_SECONDS = 3
-CURL_HTTP_STATUS_MARKER = "\n__HTTP_STATUS__:"
-PROJECT_API_CACHE: dict[str, tuple[str, str, dict[str, object]]] = {}
-KNOWN_TWO_LETTER_ACTION_CODES = {
-    "BD",
-    "CM",
-    "EC",
-    "HA",
-    "HD",
-    "HG",
-    "HI",
-    "HK",
-    "HO",
-    "HU",
-    "LD",
-    "MM",
-    "PC",
-    "PI",
-    "PP",
-    "PQ",
-    "PX",
-    "RC",
-    "SC",
-    "TC",
-    "TL",
-    "UC",
-    "UD",
-    "ZA",
-    "ZC",
-    "ZM",
-    "ZR",
-    "ZS",
-}
+DOWNLOAD_TIMEOUT_SECONDS = 120
+APPLICATION_PATTERN = re.compile(
+    r"(?<![A-Z0-9])(?:[A-Z]\s*)?\d{6}(?:\s*\([A-Z]\)|[A-Z])?\s*[A-Z]{2,4}[A-Z](?![A-Z0-9])",
+    re.IGNORECASE,
+)
+CPC_RESOLUTION_PATTERN = re.compile(
+    r"(?im)^[ \t]*RESOLVED[,.]?[ \t]+BY[ \t]+THE[ \t]+CITY[ \t]+PLANNING[ \t]+COMMISSION\b"
+)
 
 
-def clean_text(value: object) -> str:
-    if value is None:
+def clean_text(value):
+    if value is None or (isinstance(value, float) and pd.isna(value)):
         return ""
     return re.sub(r"\s+", " ", str(value)).strip()
 
 
-def stable_id(*parts: object) -> str:
-    text = "||".join(clean_text(part) for part in parts)
-    return hashlib.sha1(text.encode("utf-8")).hexdigest()[:20]
-
-
-def safe_filename_part(value: object) -> str:
-    cleaned = re.sub(r"[^A-Za-z0-9_.-]+", "_", clean_text(value))[:80]
-    return cleaned.strip("_") or "missing"
-
-
-def is_dataless_file(path: str) -> bool:
-    if not os.path.exists(path):
-        return False
-    stat_result = os.stat(path)
-    return getattr(stat_result, "st_blocks", 1) == 0 and stat_result.st_size > 0
-
-
-def write_csv_if_changed(rows: list[dict[str, object]], fieldnames: list[str], path: str) -> None:
-    writer_buffer = io.StringIO()
-    writer = csv.DictWriter(writer_buffer, fieldnames=fieldnames, extrasaction="ignore")
-    writer.writeheader()
-    for row in rows:
-        writer.writerow(row)
-    new_text = writer_buffer.getvalue()
-
-    try:
-        with open(path, "r", encoding="utf-8", newline="") as existing_file:
-            old_text = existing_file.read()
-    except FileNotFoundError:
-        old_text = None
-
-    if old_text != new_text:
-        with open(path, "w", encoding="utf-8", newline="") as output_file:
-            output_file.write(new_text)
-
-
-def write_text_if_changed(text: str, path: str) -> None:
-    try:
-        if is_dataless_file(path):
-            old_text = None
-        else:
-            with open(path, "r", encoding="utf-8") as existing_file:
-                old_text = existing_file.read()
-    except FileNotFoundError:
-        old_text = None
-
-    if old_text != text:
-        with open(path, "w", encoding="utf-8") as output_file:
-            output_file.write(text)
-
-
-def assert_unique_keys(rows: list[dict[str, str]], key_cols: list[str], name: str) -> None:
-    seen: set[tuple[str, ...]] = set()
-    duplicates: list[tuple[str, ...]] = []
-    for row in rows:
-        key = tuple(row.get(col, "") for col in key_cols)
-        if key in seen:
-            duplicates.append(key)
-        seen.add(key)
-    if duplicates:
-        raise RuntimeError(f"{name} is not unique by {', '.join(key_cols)}.")
-
-
-def parse_application_number(raw_application_number: str) -> dict[str, str]:
-    raw_value = clean_text(raw_application_number).upper()
-    compact = re.sub(r"\s+", "", raw_value)
-    compact = re.sub(r"[^A-Z0-9()]", "", compact)
-    digits_match = re.search(r"\d{6}", compact)
-    if not digits_match:
-        return {
-            "base_report_stem": "",
-            "candidate_report_stems": "",
-            "parsed_action_code": "",
-            "parsed_borough_code": "",
-            "parsed_amendment_letter": "",
-        }
-
-    base_stem = digits_match.group(0)
-    before_digits = compact[: digits_match.start()]
-    after_digits = compact[digits_match.end():]
-    after_digits = re.sub(r"^\(([A-Z])\)", r"\1", after_digits)
-
-    parsed_action_code = ""
-    parsed_borough_code = ""
-    parsed_amendment_letter = ""
-
-    tail_match = re.match(r"^([A-Z]*)([A-Z])$", after_digits)
-    if tail_match:
-        action_tail = tail_match.group(1)
-        parsed_borough_code = tail_match.group(2)
-        if len(action_tail) >= 2:
-            parsed_action_code = action_tail[-2:]
-            possible_amendment = action_tail[:-2]
-            if len(possible_amendment) == 1 and parsed_action_code in KNOWN_TWO_LETTER_ACTION_CODES:
-                parsed_amendment_letter = possible_amendment.lower()
-            elif len(action_tail) == 3 and action_tail not in {"AHU", "AHA"} and parsed_action_code in KNOWN_TWO_LETTER_ACTION_CODES:
-                parsed_amendment_letter = action_tail[0].lower()
-
-    parenthetical_amendment = re.search(r"\(([A-Z])\)", compact)
-    if parenthetical_amendment:
-        parsed_amendment_letter = parenthetical_amendment.group(1).lower()
-
-    candidate_stems = [base_stem]
-    if parsed_amendment_letter:
-        candidate_stems.append(f"{base_stem}{parsed_amendment_letter}")
-
-    # A few migrated records omit the leading C/N/M prefix. The prefix does not
-    # affect CPC report URLs, but retaining this flag helps audit parser oddities.
-    return {
-        "base_report_stem": base_stem,
-        "candidate_report_stems": "; ".join(dict.fromkeys(candidate_stems)),
-        "parsed_action_code": parsed_action_code,
-        "parsed_borough_code": parsed_borough_code,
-        "parsed_amendment_letter": parsed_amendment_letter,
-        "parsed_application_prefix": before_digits if before_digits in {"C", "N", "M"} else "",
-    }
-
-
-def report_url(report_stem: str) -> str:
-    return f"{CPC_REPORT_BASE_URL}/{report_stem}.pdf"
-
-
-def sharepoint_server_relative_url(absolute_url: str) -> str:
-    if not absolute_url:
-        return ""
-    parsed = urllib.parse.urlparse(absolute_url)
-    return urllib.parse.unquote(parsed.path)
-
-
-def comparable_ulurp_number(value: str) -> str:
-    compact = re.sub(r"[^A-Za-z0-9]", "", value or "").upper()
-    if re.match(r"^[CNMI]\d{6}", compact):
-        return compact[1:]
+def application_key(value):
+    compact = re.sub(r"[^A-Z0-9]", "", clean_text(value).upper())
+    if re.match(r"^[A-Z]\d{6}", compact):
+        compact = compact[1:]
     return compact
 
 
-def fetch_project(project_id: str) -> tuple[str, str, dict[str, object]]:
-    if project_id in PROJECT_API_CACHE:
-        return PROJECT_API_CACHE[project_id]
-
-    encoded_id = urllib.parse.quote(project_id)
-    url = f"{ZAP_API_HOST}/projects/{encoded_id}?include={urllib.parse.quote(ZAP_PROJECT_INCLUDE, safe=',')}"
-    result = ("not_attempted", "", {})
-    for attempt in range(1, API_FETCH_ATTEMPTS + 1):
-        completed = subprocess.run(
-            [
-                "curl",
-                "--silent",
-                "--show-error",
-                "--location",
-                "--connect-timeout",
-                str(CURL_CONNECT_TIMEOUT_SECONDS),
-                "--max-time",
-                str(CURL_MAX_TIME_SECONDS),
-                "--user-agent",
-                "nyc-ulurp-corpus-research/0.1",
-                "--write-out",
-                f"{CURL_HTTP_STATUS_MARKER}%{{http_code}}",
-                url,
-            ],
-            capture_output=True,
-            text=True,
-            timeout=CURL_MAX_TIME_SECONDS + 10,
-            check=False,
-        )
-        if CURL_HTTP_STATUS_MARKER not in completed.stdout:
-            result = ("curl_error", clean_text(completed.stderr) or f"curl exited {completed.returncode}", {})
-        else:
-            response_text, http_status_text = completed.stdout.rsplit(CURL_HTTP_STATUS_MARKER, 1)
-            http_status = clean_text(http_status_text)[:3]
-            if completed.returncode != 0:
-                result = (f"curl_error_{http_status}", clean_text(completed.stderr) or f"curl exited {completed.returncode}", {})
-            elif http_status != "200":
-                result = (f"http_{http_status}", clean_text(response_text)[:500], {})
-            else:
-                try:
-                    result = ("success", "", json.loads(response_text))
-                except json.JSONDecodeError as error:
-                    result = ("json_error", clean_text(error), {})
-
-        if result[0] == "success" or attempt == API_FETCH_ATTEMPTS or result[0] not in {"curl_error", "curl_error_000", "http_503", "http_502", "http_504", "http_500", "http_429"}:
-            break
-        time.sleep(API_RETRY_SLEEP_SECONDS)
-
-    PROJECT_API_CACHE[project_id] = result
-    return result
+def indexed_application_key(value):
+    return re.sub(r"[^A-Z0-9]", "", clean_text(value).upper())
 
 
-def zap_action_cpc_url(project_id: str, raw_application_number: str) -> tuple[str, str, str]:
-    fetch_status, fetch_error, data = fetch_project(project_id)
-    if fetch_status != "success":
-        return "", fetch_status, fetch_error
-
-    target_number = comparable_ulurp_number(raw_application_number)
-    for row in data.get("included", []):
-        if row.get("type") != "actions":
-            continue
-        attrs = row.get("attributes", {})
-        ulurp_number = clean_text(attrs.get("dcp-ulurpnumber"))
-        if comparable_ulurp_number(ulurp_number) != target_number:
-            continue
-        relative = sharepoint_server_relative_url(clean_text(attrs.get("dcp-spabsoluteurl")))
-        parsed = parse_application_number(ulurp_number or raw_application_number)
-        stem = parsed["base_report_stem"]
-        if relative and stem:
-            return f"{ZAP_API_HOST}/document/projectaction{urllib.parse.quote(relative)}/{stem}.pdf", fetch_status, ""
-
-    return "", fetch_status, "matching ZAP action did not expose dcp-spabsoluteurl"
-
-
-def is_pdf_file(path: str) -> bool:
-    if not os.path.exists(path) or os.path.getsize(path) == 0 or is_dataless_file(path):
-        return False
-    with open(path, "rb") as input_file:
-        return input_file.read(4) == b"%PDF"
-
-def download_pdf_url(candidate_url: str, pdf_path: str) -> tuple[str, str]:
-    failure_notes = []
-    if is_pdf_file(pdf_path):
-        return "downloaded", ""
-    if os.path.exists(pdf_path):
-        os.remove(pdf_path)
-
-    temp_pdf_path = f"{pdf_path}.tmp"
-    for attempt in range(1, DOWNLOAD_ATTEMPTS + 1):
-        if os.path.exists(temp_pdf_path):
-            os.remove(temp_pdf_path)
-
-        completed = subprocess.run(
-            [
-                "curl",
-                "--silent",
-                "--show-error",
-                "--location",
-                "--user-agent",
-                "Mozilla/5.0",
-                "--connect-timeout",
-                str(CURL_CONNECT_TIMEOUT_SECONDS),
-                "--max-time",
-                str(CURL_MAX_TIME_SECONDS),
-                "--output",
-                temp_pdf_path,
-                "--write-out",
-                "%{http_code}",
-                candidate_url,
-            ],
-            capture_output=True,
-            text=True,
-            timeout=CURL_MAX_TIME_SECONDS + 10,
-            check=False,
-        )
-
-        http_status = clean_text(completed.stdout)[-3:]
-        stderr = clean_text(completed.stderr)
-        if completed.returncode == 0 and http_status == "200" and is_pdf_file(temp_pdf_path):
-            os.replace(temp_pdf_path, pdf_path)
-            return "downloaded", ""
-
-        if os.path.exists(temp_pdf_path):
-            os.remove(temp_pdf_path)
-
-        failure_note = (
-            f"{candidate_url} attempt {attempt}/{DOWNLOAD_ATTEMPTS} "
-            f"curl_exit={completed.returncode} http_status={http_status or 'missing'}"
-        )
-        if stderr:
-            failure_note = f"{failure_note} stderr={stderr}"
-        if completed.returncode == 0 and http_status == "200":
-            failure_note = f"{failure_note} non_pdf_or_empty_response"
-        failure_notes.append(failure_note)
-
-        should_retry = completed.returncode != 0 or http_status in {"000", "403", "408", "425", "429", "500", "502", "503", "504"}
-        if attempt < DOWNLOAD_ATTEMPTS and should_retry:
-            time.sleep(DOWNLOAD_RETRY_SLEEP_SECONDS)
-        else:
-            break
-
-    return "download_failed", " | ".join(failure_notes)
-
-
-def download_pdf(candidate_stems: list[str], pdf_path_for_stem) -> tuple[str, str, str, str, str]:
-    failure_notes = []
-    for report_stem in candidate_stems:
-        if not report_stem:
-            continue
-        candidate_url = report_url(report_stem)
-        pdf_path = pdf_path_for_stem(report_stem)
-        download_status, download_error = download_pdf_url(candidate_url, pdf_path)
-        if download_status == "downloaded":
-            return "downloaded", "", report_stem, candidate_url, "nycgov_cpc_report"
-        failure_notes.append(download_error)
-
-    return "download_failed", " | ".join(failure_notes) or "all candidate CPC report URLs failed", "", "", ""
-
-
-def extract_pdf_text(pdf_path: str, text_path: str) -> tuple[str, str, int]:
-    if os.path.exists(text_path) and os.path.getsize(text_path) > 0 and not is_dataless_file(text_path):
-        with open(text_path, "r", encoding="utf-8", errors="ignore") as input_file:
-            text = input_file.read()
-        text_char_count = len(clean_text(text))
-        if text_char_count > 0:
-            return "text_extracted", "", text_char_count
-
-    completed = subprocess.run(
-        ["pdftotext", "-layout", "-enc", "UTF-8", pdf_path, "-"],
-        capture_output=True,
-        text=True,
-        timeout=120,
-        check=False,
-    )
-    if completed.returncode != 0:
-        write_text_if_changed("", text_path)
-        return "text_extract_failed", clean_text(completed.stderr) or f"pdftotext exited {completed.returncode}", 0
-
-    write_text_if_changed(completed.stdout, text_path)
-    text_char_count = len(clean_text(completed.stdout))
-    if text_char_count > 0:
-        return "text_extracted", "", text_char_count
-    return "empty_text", "", 0
-
-
-def has_usable_extracted_text(text_status: str) -> bool:
-    return text_status == "text_extracted"
-
-
-def read_csv_rows(path: str) -> list[dict[str, str]]:
-    with open(path, "r", encoding="utf-8", newline="") as input_file:
-        return list(csv.DictReader(input_file))
-
-
-def read_text_file(path: str) -> str:
-    with open(path, "r", encoding="utf-8", errors="ignore") as input_file:
-        return input_file.read()
-
-
-def raw_application_prefix(raw_application_number: str) -> str:
-    match = re.match(r"^([A-Z])", clean_text(raw_application_number).upper())
+def action_code(value):
+    key = application_key(value)
+    match = re.match(r"^\d{6}[A-Z]?([A-Z]{2,4})([A-Z])$", key)
     return match.group(1) if match else ""
 
 
-def add_sibling_project_text_fallbacks(manifest_rows: list[dict[str, object]]) -> None:
-    rows_by_project: dict[str, list[dict[str, object]]] = {}
-    for row in manifest_rows:
-        rows_by_project.setdefault(str(row["project_id"]), []).append(row)
+def project_key(value):
+    return re.sub(r"[^a-z0-9]+", " ", clean_text(value).lower()).strip()
 
-    for row in manifest_rows:
-        if row["usable_text_source_type"]:
-            continue
-        if raw_application_prefix(str(row["raw_application_number"])) != "C":
-            continue
-        if not row["base_report_stem"]:
-            continue
 
-        sibling_rows = [
-            sibling_row for sibling_row in rows_by_project.get(str(row["project_id"]), [])
-            if has_usable_extracted_text(str(sibling_row["text_status"])) and sibling_row["local_text_path"]
-        ]
-        if not sibling_rows:
-            continue
+def certified_identifier(value):
+    return bool(re.match(r"^C\d{6}", indexed_application_key(value)))
 
-        sibling_text_parts = []
-        for sibling_row in sibling_rows:
-            sibling_text_parts.append(read_text_file(str(sibling_row["local_text_path"])))
 
-        combined_sibling_text = "\n\n".join(sibling_text_parts)
-        combined_sibling_text_upper = combined_sibling_text.upper()
-        missing_stem = str(row["base_report_stem"])
-        missing_application = str(row["raw_application_number"]).upper()
-        sibling_mentions_stem = missing_stem in combined_sibling_text_upper
-        if not sibling_mentions_stem:
-            continue
+def noticed_identifier(value):
+    return bool(re.match(r"^N\d{6}", indexed_application_key(value)))
 
-        sibling_report_applications = "; ".join(str(sibling_row["raw_application_number"]) for sibling_row in sibling_rows)
-        sibling_report_action_codes = "; ".join(str(sibling_row["parsed_action_code"]) for sibling_row in sibling_rows)
-        sibling_report_urls = "; ".join(str(sibling_row["source_doc"]) for sibling_row in sibling_rows)
-        sibling_report_text_paths = "; ".join(str(sibling_row["local_text_path"]) for sibling_row in sibling_rows)
-        fallback_text = (
-            f"Sibling CPC report fallback for missing application {row['raw_application_number']} "
-            f"in project {row['project_id']}.\n"
-            f"Sibling report application(s): {sibling_report_applications}\n"
-            f"Sibling report URL(s): {sibling_report_urls}\n\n"
-            f"{combined_sibling_text}"
+
+def safe_filename_part(value):
+    return re.sub(r"[^A-Za-z0-9_.-]+", "_", clean_text(value)).strip("_")[:100] or "missing"
+
+
+def readable_file(path, pdf=False, minimum_size=1):
+    if path is None or not path.exists():
+        return False
+    stat_result = path.stat()
+    if getattr(stat_result, "st_blocks", 1) == 0 and stat_result.st_size > 0:
+        return False
+    if stat_result.st_size < minimum_size:
+        return False
+    if pdf:
+        with path.open("rb") as input_file:
+            return input_file.read(4) == b"%PDF"
+    return True
+
+
+def text_word_count(text):
+    return len(re.findall(r"[A-Za-z0-9$]+(?:[-'][A-Za-z0-9]+)?", text))
+
+
+def extracted_text_is_usable(text):
+    if text_word_count(text) < 50:
+        return False
+    ascii_character_share = sum(
+        character in "\n\r\t\f" or 32 <= ord(character) <= 126
+        for character in text
+    ) / max(len(text), 1)
+    return ascii_character_share >= 0.75
+
+
+def read_csv(path):
+    with Path(path).open(newline="", encoding="utf-8") as input_file:
+        return list(csv.DictReader(input_file))
+
+
+def download_pdf(url, output_path):
+    if readable_file(output_path, pdf=True):
+        return "downloaded_official_index", ""
+
+    temp_path = Path(f"{output_path}.tmp")
+    failures = []
+    for attempt in range(1, DOWNLOAD_ATTEMPTS + 1):
+        temp_path.unlink(missing_ok=True)
+        completed = subprocess.run(
+            [
+                "curl", "--silent", "--show-error", "--location",
+                "--user-agent", "Mozilla/5.0",
+                "--connect-timeout", "15", "--max-time", str(DOWNLOAD_TIMEOUT_SECONDS),
+                "--output", str(temp_path), "--write-out", "%{http_code}", url,
+            ],
+            capture_output=True,
+            text=True,
+            timeout=DOWNLOAD_TIMEOUT_SECONDS + 10,
+            check=False,
         )
-        fallback_text_path = "../output/cpc_report_text/" + "_".join([
-            safe_filename_part(row["project_id"]),
-            safe_filename_part(row["raw_application_number"]),
-            "sibling_project_cpc_report",
-        ]) + ".txt"
-        write_text_if_changed(fallback_text, fallback_text_path)
-
-        row["usable_text_source_type"] = "sibling_project_cpc_report"
-        row["usable_text_status"] = "text_extracted_sibling_project_fallback"
-        row["usable_local_text_path"] = fallback_text_path
-        row["usable_text_char_count"] = len(clean_text(fallback_text))
-        row["usable_source_report_application_numbers"] = sibling_report_applications
-        row["usable_source_report_action_codes"] = sibling_report_action_codes
-        row["usable_source_report_urls"] = sibling_report_urls
-        row["usable_source_report_text_paths"] = sibling_report_text_paths
-        row["sibling_text_mentions_missing_application"] = str(missing_application in combined_sibling_text_upper).upper()
-        row["sibling_text_mentions_missing_stem"] = str(sibling_mentions_stem).upper()
+        http_status = clean_text(completed.stdout)[-3:]
+        if completed.returncode == 0 and http_status == "200" and readable_file(temp_path, pdf=True):
+            os.replace(temp_path, output_path)
+            return "downloaded_official_index", ""
+        failures.append(
+            f"attempt={attempt} curl_exit={completed.returncode} http_status={http_status or 'missing'} "
+            f"stderr={clean_text(completed.stderr)}"
+        )
+        temp_path.unlink(missing_ok=True)
+        if attempt < DOWNLOAD_ATTEMPTS:
+            time.sleep(2 * attempt)
+    return "download_failed", " | ".join(failures)
 
 
-def process_application_row(row_number: int, project_row: dict[str, str], application_row: dict[str, str]) -> dict[str, object]:
-    parsed = parse_application_number(application_row["raw_application_number"])
-    candidate_stems = [stem.strip() for stem in parsed["candidate_report_stems"].split(";") if stem.strip()]
-    document_id = stable_id(project_row["project_id"], application_row["raw_application_number"], parsed["candidate_report_stems"])
-
-    def pdf_path_for_stem(report_stem: str) -> str:
-        return "../output/cpc_report_pdfs/" + "_".join([
-            safe_filename_part(report_stem),
-            safe_filename_part(project_row["project_id"]),
-            safe_filename_part(application_row["raw_application_number"]),
-            document_id[:8],
-        ]) + ".pdf"
-
-    download_status, download_error, downloaded_report_stem, source_doc, report_source_type = download_pdf(candidate_stems, pdf_path_for_stem)
-    zap_url = ""
-    zap_action_lookup_status = ""
-    zap_action_lookup_error = ""
-    if download_status != "downloaded":
-        zap_url, zap_action_lookup_status, zap_action_lookup_error = zap_action_cpc_url(project_row["project_id"], application_row["raw_application_number"])
-        if zap_url:
-            zap_report_stem = parsed["base_report_stem"] or safe_filename_part(application_row["raw_application_number"])
-            zap_pdf_path = pdf_path_for_stem(f"{zap_report_stem}_zap")
-            zap_download_status, zap_download_error = download_pdf_url(zap_url, zap_pdf_path)
-            if zap_download_status == "downloaded":
-                download_status = "downloaded"
-                download_error = ""
-                downloaded_report_stem = zap_report_stem
-                source_doc = zap_url
-                report_source_type = "zap_action_cpc_report"
-            else:
-                download_error = " | ".join(part for part in [download_error, zap_download_error] if part)
-    local_file_stem = downloaded_report_stem
-    if report_source_type == "zap_action_cpc_report" and downloaded_report_stem:
-        local_file_stem = f"{downloaded_report_stem}_zap"
-    local_pdf_path = pdf_path_for_stem(local_file_stem) if local_file_stem else ""
-    local_text_path = ""
-    text_status = ""
-    text_error = ""
-    text_char_count = 0
-
-    if download_status == "downloaded":
-        local_text_path = "../output/cpc_report_text/" + "_".join([
-            safe_filename_part(local_file_stem),
-            safe_filename_part(project_row["project_id"]),
-            safe_filename_part(application_row["raw_application_number"]),
-            document_id[:8],
-        ]) + ".txt"
-        text_status, text_error, text_char_count = extract_pdf_text(local_pdf_path, local_text_path)
-
-    manifest_row = {
-        "document_id": document_id,
-        "project_id": project_row["project_id"],
-        "project_name": project_row.get("project_name", ""),
-        "corpus_reference_year": project_row["corpus_reference_year"],
-        "corpus_reference_date": project_row["corpus_reference_date"],
-        "raw_application_number": application_row["raw_application_number"],
-        "application_key": application_row.get("application_key", ""),
-        "application_prefix": application_row.get("application_prefix", ""),
-        "application_digits": application_row.get("application_digits", ""),
-        "parsed_action_code": parsed["parsed_action_code"],
-        "parsed_borough_code": parsed["parsed_borough_code"],
-        "parsed_amendment_letter": parsed["parsed_amendment_letter"],
-        "base_report_stem": parsed["base_report_stem"],
-        "candidate_report_stems": parsed["candidate_report_stems"],
-        "downloaded_report_stem": downloaded_report_stem,
-        "report_source_type": report_source_type,
-        "source_doc": source_doc,
-        "local_pdf_path": local_pdf_path,
-        "local_text_path": local_text_path,
-        "download_status": download_status,
-        "download_error": download_error,
-        "zap_action_lookup_status": zap_action_lookup_status,
-        "zap_action_lookup_error": zap_action_lookup_error,
-        "text_status": text_status,
-        "text_error": text_error,
-        "text_char_count": text_char_count,
-        "ceqr_number": project_row.get("ceqr_number", ""),
-        "actions": project_row.get("actions", ""),
-        "applicant_type": project_row.get("applicant_type", ""),
-        "primary_applicant": project_row.get("primary_applicant", ""),
-        "borough_name": project_row.get("borough_name", ""),
-        "community_district": project_row.get("community_district", ""),
-        "project_page_url": project_row.get("project_page_url", ""),
-        "usable_text_source_type": "direct_cpc_report" if has_usable_extracted_text(text_status) else "",
-        "usable_text_status": "text_extracted_direct" if has_usable_extracted_text(text_status) else "",
-        "usable_local_text_path": local_text_path if has_usable_extracted_text(text_status) else "",
-        "usable_text_char_count": text_char_count if has_usable_extracted_text(text_status) else 0,
-        "usable_source_report_application_numbers": application_row["raw_application_number"] if has_usable_extracted_text(text_status) else "",
-        "usable_source_report_action_codes": parsed["parsed_action_code"] if has_usable_extracted_text(text_status) else "",
-        "usable_source_report_urls": source_doc if has_usable_extracted_text(text_status) else "",
-        "usable_source_report_text_paths": local_text_path if has_usable_extracted_text(text_status) else "",
-        "sibling_text_mentions_missing_application": "",
-        "sibling_text_mentions_missing_stem": "",
-    }
-
-    return {
-        "row_number": row_number,
-        "manifest_row": manifest_row,
-    }
+def extract_pdf_text(pdf_path):
+    completed = subprocess.run(
+        ["pdftotext", "-layout", "-enc", "UTF-8", str(pdf_path), "-"],
+        capture_output=True,
+        text=True,
+        timeout=180,
+        check=False,
+    )
+    if completed.returncode != 0:
+        return "", clean_text(completed.stderr) or f"pdftotext exited {completed.returncode}"
+    return completed.stdout, ""
 
 
-def main() -> None:
-    if len(sys.argv) != 5:
-        raise RuntimeError("Usage: python3 build_ulurp_cpc_report_corpus.py <start_year> <end_year> <report_limit> <worker_count>")
+def pdf_page_count(pdf_path):
+    completed = subprocess.run(
+        ["pdfinfo", str(pdf_path)],
+        capture_output=True,
+        text=True,
+        timeout=60,
+        check=False,
+    )
+    if completed.returncode != 0:
+        raise RuntimeError(clean_text(completed.stderr) or f"pdfinfo failed for {pdf_path}")
+    match = re.search(r"^Pages:\s+([0-9]+)", completed.stdout, re.MULTILINE)
+    if not match:
+        raise RuntimeError(f"Could not read page count for {pdf_path}")
+    return int(match.group(1))
+
+
+def ocr_pdf_page(pdf_path, page_number, ocr_dpi, page_timeout_seconds, temp_dir):
+    image_prefix = Path(temp_dir) / f"page_{page_number}"
+    try:
+        rendered = subprocess.run(
+            [
+                "pdftoppm", "-f", str(page_number), "-l", str(page_number),
+                "-r", str(ocr_dpi), "-png", str(pdf_path), str(image_prefix),
+            ],
+            capture_output=True,
+            text=True,
+            timeout=page_timeout_seconds,
+            check=False,
+        )
+    except subprocess.TimeoutExpired:
+        return None
+    if rendered.returncode != 0:
+        raise RuntimeError(clean_text(rendered.stderr) or f"pdftoppm failed on page {page_number}")
+
+    image_paths = sorted(Path(temp_dir).glob(f"page_{page_number}-*.png"))
+    if not image_paths:
+        return None
+    try:
+        recognized = subprocess.run(
+            [
+                "tesseract", str(image_paths[0]), "stdout", "--psm", "6",
+                "--dpi", str(ocr_dpi),
+            ],
+            capture_output=True,
+            text=True,
+            timeout=page_timeout_seconds,
+            check=False,
+        )
+    except subprocess.TimeoutExpired:
+        return None
+    if recognized.returncode != 0:
+        raise RuntimeError(clean_text(recognized.stderr) or f"tesseract failed on page {page_number}")
+    return recognized.stdout.strip()
+
+
+def add_missing_report_page_ocr(
+    pdf_path,
+    extracted_text,
+    ocr_dpi,
+    page_timeout_seconds,
+    minimum_embedded_page_words,
+):
+    page_count = pdf_page_count(pdf_path)
+    pages = extracted_text.split("\f")[:page_count]
+    pages.extend([""] * (page_count - len(pages)))
+    main_report_resolution_page = next(
+        (
+            page_index + 1
+            for page_index, page_text in enumerate(pages)
+            if CPC_RESOLUTION_PATTERN.search(page_text)
+        ),
+        None,
+    )
+    candidate_page_indexes = [
+        page_index
+        for page_index, page_text in enumerate(pages)
+        if text_word_count(page_text) < minimum_embedded_page_words
+        and (
+            main_report_resolution_page is None
+            or page_index + 1 <= main_report_resolution_page
+        )
+    ]
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        repaired_page_numbers = []
+        skipped_page_numbers = []
+        for page_index in candidate_page_indexes:
+            if (
+                main_report_resolution_page is not None
+                and page_index + 1 > main_report_resolution_page
+            ):
+                break
+            page_text = ocr_pdf_page(
+                pdf_path,
+                page_index + 1,
+                ocr_dpi,
+                page_timeout_seconds,
+                temp_dir,
+            )
+            if page_text is None:
+                skipped_page_numbers.append(page_index + 1)
+            elif text_word_count(page_text) > text_word_count(pages[page_index]):
+                pages[page_index] = f"[PAGE {page_index + 1} OCR]\n{page_text}\n"
+                repaired_page_numbers.append(page_index + 1)
+            if CPC_RESOLUTION_PATTERN.search(page_text or ""):
+                main_report_resolution_page = page_index + 1
+
+    short_page_numbers = [
+        page_index + 1
+        for page_index, page_text in enumerate(pages)
+        if text_word_count(page_text) < minimum_embedded_page_words
+        and (
+            main_report_resolution_page is None
+            or page_index + 1 <= main_report_resolution_page
+        )
+    ]
+    return (
+        "\f".join(pages),
+        repaired_page_numbers,
+        skipped_page_numbers,
+        short_page_numbers,
+        main_report_resolution_page,
+    )
+
+
+def ocr_pdf(pdf_path, ocr_dpi, page_timeout_seconds):
+    page_count = pdf_page_count(pdf_path)
+    page_texts = []
+    skipped_pages = []
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        for page_number in range(1, page_count + 1):
+            page_text = ocr_pdf_page(
+                pdf_path,
+                page_number,
+                ocr_dpi,
+                page_timeout_seconds,
+                temp_dir,
+            )
+            if page_text is None:
+                skipped_pages.append(page_number)
+                page_texts.append("")
+                continue
+            page_texts.append(f"[PAGE {page_number}]\n{page_text}")
+
+    return "\f".join(page_texts), page_count, skipped_pages
+
+
+def main():
+    if len(sys.argv) != 7:
+        raise RuntimeError(
+            "Usage: python3 build_ulurp_cpc_report_corpus.py "
+            "<start_year> <end_year> <worker_count> <ocr_dpi> "
+            "<ocr_page_timeout_seconds> <minimum_embedded_page_words>"
+        )
 
     start_year = int(sys.argv[1])
     end_year = int(sys.argv[2])
-    report_limit = int(sys.argv[3])
-    worker_count = int(sys.argv[4])
-    if start_year > end_year:
-        raise RuntimeError("start_year cannot exceed end_year.")
-    if worker_count < 1:
-        raise RuntimeError("worker_count must be positive.")
+    worker_count = int(sys.argv[3])
+    ocr_dpi = int(sys.argv[4])
+    ocr_page_timeout_seconds = int(sys.argv[5])
+    minimum_embedded_page_words = int(sys.argv[6])
+    if (
+        start_year > end_year
+        or worker_count < 1
+        or ocr_dpi < 72
+        or ocr_page_timeout_seconds < 1
+        or minimum_embedded_page_words < 1
+    ):
+        raise RuntimeError("Invalid corpus build scalar arguments.")
 
-    application_rows = read_csv_rows("../input/ulurp_corpus_application_spine.csv")
-    assert_unique_keys(application_rows, ["project_id", "raw_application_number"], "ULURP application spine")
+    official_index_rows = [
+        row for row in read_csv("../input/official_cpc_report_index.csv")
+        if start_year <= int(row["vote_year"]) <= end_year
+    ]
+    correction_rows = read_csv("../input/ulurp_cpc_source_corrections.csv")
+    source_corrections = {
+        indexed_application_key(row["raw_application_number"]): row
+        for row in correction_rows
+    }
+    if len(source_corrections) != len(correction_rows):
+        raise RuntimeError("Source-correction application numbers must be unique.")
+    index_additions = read_csv("../input/ulurp_cpc_index_additions.csv")
 
-    selected_rows = []
-    for application_row in application_rows:
-        corpus_reference_year = int(application_row["corpus_reference_year"])
-        if start_year <= corpus_reference_year <= end_year:
-            selected_rows.append((application_row, application_row))
+    indexed_keys = {
+        indexed_application_key(row["application_number"])
+        for row in official_index_rows
+    }
+    missing_correction_keys = sorted(set(source_corrections) - indexed_keys)
+    if missing_correction_keys:
+        raise RuntimeError(
+            "Source corrections do not match the fetched CPC index: "
+            + "; ".join(missing_correction_keys)
+        )
 
-    selected_rows.sort(key=lambda pair: (int(pair[0]["corpus_reference_year"]), pair[0]["project_id"], pair[1]["raw_application_number"]))
-    if report_limit > 0:
-        selected_rows = selected_rows[:report_limit]
+    corrected_index_rows = []
+    for row in official_index_rows:
+        correction = source_corrections.get(indexed_application_key(row["application_number"]), {})
+        corrected_row = dict(row)
+        corrected_row["canonical_application_number"] = (
+            correction.get("canonical_application_number") or row["application_number"]
+        )
+        corrected_row["canonical_vote_date"] = correction.get("canonical_vote_date") or row["vote_date"]
+        corrected_row["source_correction"] = correction
+        corrected_row["official_index_row_flag"] = "TRUE"
+        corrected_index_rows.append(corrected_row)
 
-    result_rows = []
+    certified_rows = [
+        row for row in corrected_index_rows
+        if certified_identifier(row["canonical_application_number"])
+        and row["source_correction"].get("include_in_corpus", "1") == "1"
+    ]
+    certified_project_votes = {
+        (project_key(row["project_name"]), row["canonical_vote_date"])
+        for row in certified_rows
+        if project_key(row["project_name"])
+    }
+
+    official_rows = []
+    for row in corrected_index_rows:
+        correction = row["source_correction"]
+        if correction.get("include_in_corpus") == "0":
+            continue
+        if certified_identifier(row["canonical_application_number"]):
+            row["corpus_role"] = correction.get("corpus_role") or "certified_ulurp_report"
+            official_rows.append(row)
+            continue
+        related_by_exact_project_vote = (
+            noticed_identifier(row["canonical_application_number"])
+            and row["lead_report_flag"] == "TRUE"
+            and (project_key(row["project_name"]), row["canonical_vote_date"]) in certified_project_votes
+        )
+        if correction.get("corpus_role") == "related_project_narrative_lead" or related_by_exact_project_vote:
+            row["corpus_role"] = "related_project_narrative_lead"
+            official_rows.append(row)
+
+    for addition in index_additions:
+        if not start_year <= int(addition["vote_year"]) <= end_year:
+            continue
+        official_rows.append(
+            {
+                **addition,
+                "canonical_application_number": addition["application_number"],
+                "canonical_vote_date": addition["vote_date"],
+                "source_correction": {},
+                "official_index_row_flag": "FALSE",
+            }
+        )
+
+    official_rows.sort(
+        key=lambda row: (
+            datetime.strptime(row["canonical_vote_date"], "%m/%d/%Y"),
+            indexed_application_key(row["canonical_application_number"]),
+        )
+    )
+    canonical_identifiers = [
+        indexed_application_key(row["canonical_application_number"])
+        for row in official_rows
+    ]
+    if len(canonical_identifiers) != len(set(canonical_identifiers)):
+        raise RuntimeError("Corrected CPC corpus application numbers must be unique.")
+
+    zap_by_key = defaultdict(list)
+    for project in pd.read_parquet("../input/zap_project_data.parquet").to_dict(orient="records"):
+        for match in APPLICATION_PATTERN.finditer(clean_text(project.get("ulurp_numbers"))):
+            zap_by_key[application_key(match.group(0))].append(project)
+
+    def process_row(row_number, official_row):
+        official_index_application_number = official_row["application_number"]
+        correction = official_row["source_correction"]
+        corrected_application_number = official_row["canonical_application_number"]
+        key = application_key(corrected_application_number)
+        source_keys = list(dict.fromkeys([
+            key,
+            application_key(official_index_application_number),
+        ]))
+        output_pdf_path = Path("../output/cpc_report_pdfs") / (
+            f"{safe_filename_part(official_row['report_stem'])}_{safe_filename_part(key)}.pdf"
+        )
+        output_text_path = Path("../output/cpc_report_text") / (
+            f"{safe_filename_part(official_row['report_stem'])}_{safe_filename_part(key)}.txt"
+        )
+        source_usable = (
+            official_row.get("source_usable")
+            or correction.get("source_usable", "1")
+        ) == "1"
+        resolved_pdf_url = (
+            correction.get("resolved_pdf_url") or official_row["pdf_url"]
+            if source_usable
+            else correction.get("resolved_pdf_url", "")
+        )
+        if resolved_pdf_url and not resolved_pdf_url.lower().endswith(".pdf"):
+            resolved_pdf_url = f"{resolved_pdf_url}.pdf"
+        if source_usable and not resolved_pdf_url:
+            raise RuntimeError(f"Usable source has no PDF URL: {corrected_application_number}")
+
+        if not source_usable:
+            pdf_path = None
+            pdf_source = ""
+            download_status = "known_source_unavailable"
+            download_error = (
+                official_row.get("source_unavailable_reason")
+                or correction.get("correction_reason", "")
+            )
+        else:
+            download_status, download_error = download_pdf(resolved_pdf_url, output_pdf_path)
+            pdf_path = output_pdf_path if readable_file(output_pdf_path, pdf=True) else None
+            if pdf_path:
+                pdf_source = (
+                    "official_cpc_index_download"
+                    if official_row["official_index_row_flag"] == "TRUE"
+                    else "verified_index_omission_download"
+                )
+            else:
+                pdf_source = ""
+
+        text = ""
+        text_path = None
+        text_method = ""
+        text_error = ""
+        page_count = ""
+        skipped_ocr_pages = ""
+        partial_ocr_pages = ""
+        short_text_pages_after_ocr = ""
+        main_report_resolution_page = ""
+
+        if pdf_path is not None:
+            page_count = pdf_page_count(pdf_path)
+            fresh_text, fresh_text_error = extract_pdf_text(pdf_path)
+            repaired_page_numbers = []
+            skipped_page_numbers = []
+            short_page_numbers = []
+            if not fresh_text_error:
+                (
+                    fresh_text,
+                    repaired_page_numbers,
+                    skipped_page_numbers,
+                    short_page_numbers,
+                    main_report_resolution_page,
+                ) = add_missing_report_page_ocr(
+                    pdf_path,
+                    fresh_text,
+                    ocr_dpi,
+                    ocr_page_timeout_seconds,
+                    minimum_embedded_page_words,
+                )
+            if skipped_page_numbers:
+                raise RuntimeError(
+                    f"OCR did not complete for {corrected_application_number} pages "
+                    + "; ".join(str(page) for page in skipped_page_numbers)
+                )
+            partial_ocr_pages = "; ".join(str(page) for page in repaired_page_numbers)
+            skipped_ocr_pages = "; ".join(str(page) for page in skipped_page_numbers)
+            short_text_pages_after_ocr = "; ".join(str(page) for page in short_page_numbers)
+
+            if extracted_text_is_usable(fresh_text):
+                text = fresh_text
+                output_text_path.write_text(text, encoding="utf-8")
+                text_path = output_text_path
+                if repaired_page_numbers:
+                    text_method = "partial_page_ocr"
+                else:
+                    text_method = "pdftotext"
+            else:
+                text_error = fresh_text_error
+
+        if not text and pdf_path is not None:
+            try:
+                ocr_text, page_count, skipped_pages = ocr_pdf(
+                    pdf_path,
+                    ocr_dpi,
+                    ocr_page_timeout_seconds,
+                )
+                if skipped_pages:
+                    raise RuntimeError(
+                        f"OCR did not complete for {corrected_application_number} pages "
+                        + "; ".join(str(page) for page in skipped_pages)
+                    )
+                skipped_ocr_pages = "; ".join(str(page) for page in skipped_pages)
+                short_text_pages_after_ocr = ""
+                main_report_resolution_page = ""
+                if text_word_count(ocr_text) >= 50:
+                    text = ocr_text
+                    output_text_path.write_text(text, encoding="utf-8")
+                    text_path = output_text_path
+                    text_method = "full_document_ocr"
+                    text_error = ""
+                else:
+                    text_error = "OCR produced fewer than 50 words."
+            except (RuntimeError, subprocess.TimeoutExpired) as error:
+                text_error = clean_text(error)
+
+        app_matches = [row for source_key in source_keys for row in zap_by_key.get(source_key, [])]
+        project_ids = sorted({
+            clean_text(row.get("project_id"))
+            for row in app_matches
+            if clean_text(row.get("project_id"))
+        })
+        project_names = sorted({
+            clean_text(row.get("project_name"))
+            for row in app_matches
+            if clean_text(row.get("project_name"))
+        })
+        ulurp_groups = sorted({
+            clean_text(row.get("ulurp_group"))
+            for row in app_matches
+            if clean_text(row.get("ulurp_group"))
+        })
+
+        return {
+            "row_number": row_number,
+            "application_number": corrected_application_number,
+            "official_index_application_number": (
+                official_index_application_number
+                if official_row["official_index_row_flag"] == "TRUE"
+                else ""
+            ),
+            "application_key": key,
+            "action_code": action_code(corrected_application_number),
+            "corpus_role": official_row["corpus_role"],
+            "source_usable": str(source_usable).upper(),
+            "official_index_row_flag": official_row["official_index_row_flag"],
+            "official_project_name": official_row["project_name"],
+            "official_community_district": official_row["community_district"],
+            "official_index_vote_date": (
+                official_row["vote_date"]
+                if official_row["official_index_row_flag"] == "TRUE"
+                else ""
+            ),
+            "official_vote_date": official_row["canonical_vote_date"],
+            "official_vote_year": datetime.strptime(
+                official_row["canonical_vote_date"], "%m/%d/%Y"
+            ).year,
+            "official_lead_report_flag": official_row["lead_report_flag"],
+            "official_pdf_url": official_row["pdf_url"],
+            "resolved_pdf_url": resolved_pdf_url,
+            "source_correction_type": (
+                correction.get("correction_type", "")
+                if official_row["official_index_row_flag"] == "TRUE"
+                else (
+                    "index_omission_addition"
+                    if source_usable
+                    else "index_omission_source_unavailable"
+                )
+            ),
+            "source_correction_reason": (
+                correction.get("correction_reason", "")
+                if official_row["official_index_row_flag"] == "TRUE"
+                else official_row["index_omission_evidence"]
+            ),
+            "official_report_stem": official_row["report_stem"],
+            "zap_project_ids": "; ".join(project_ids),
+            "zap_project_names": "; ".join(project_names),
+            "zap_ulurp_groups": "; ".join(ulurp_groups),
+            "pdf_source": pdf_source,
+            "download_status": download_status,
+            "download_error": download_error,
+            "local_pdf_path": str(pdf_path) if pdf_path else "",
+            "text_method": text_method,
+            "text_status": "text_extracted" if text_word_count(text) >= 50 else "text_unavailable",
+            "text_error": text_error,
+            "text_word_count": text_word_count(text),
+            "text_char_count": len(text.strip()),
+            "local_text_path": str(text_path) if text_path else "",
+            "pdf_page_count": page_count,
+            "partial_ocr_pages": partial_ocr_pages,
+            "skipped_ocr_pages": skipped_ocr_pages,
+            "short_text_pages_after_ocr": short_text_pages_after_ocr,
+            "main_report_resolution_page": main_report_resolution_page or "",
+            "document_id": hashlib.sha1(
+                f"{corrected_application_number}|{official_row['canonical_vote_date']}|{resolved_pdf_url or official_row['pdf_url']}".encode("utf-8")
+            ).hexdigest()[:20],
+        }
+
+    results = []
     with ThreadPoolExecutor(max_workers=worker_count) as executor:
         futures = [
-            executor.submit(process_application_row, row_number, project_row, application_row)
-            for row_number, (project_row, application_row) in enumerate(selected_rows, start=1)
+            executor.submit(process_row, row_number, row)
+            for row_number, row in enumerate(official_rows, start=1)
         ]
         for completed_count, future in enumerate(as_completed(futures), start=1):
-            result_rows.append(future.result())
-            if completed_count == 1 or completed_count % 100 == 0 or completed_count == len(selected_rows):
-                print(f"Processed {completed_count}/{len(selected_rows)} CPC report application rows", flush=True)
+            results.append(future.result())
+            if completed_count == 1 or completed_count % 250 == 0 or completed_count == len(official_rows):
+                print(f"Processed {completed_count}/{len(official_rows)} official ULURP CPC reports", flush=True)
 
-    result_rows.sort(key=lambda row: int(row["row_number"]))
-    manifest_rows = [row["manifest_row"] for row in result_rows]
-    add_sibling_project_text_fallbacks(manifest_rows)
-
-    manifest_fieldnames = [
-        "document_id",
-        "project_id",
-        "project_name",
-        "corpus_reference_year",
-        "corpus_reference_date",
-        "raw_application_number",
-        "application_key",
-        "application_prefix",
-        "application_digits",
-        "parsed_action_code",
-        "parsed_borough_code",
-        "parsed_amendment_letter",
-        "base_report_stem",
-        "candidate_report_stems",
-        "downloaded_report_stem",
-        "report_source_type",
-        "source_doc",
-        "local_pdf_path",
-        "local_text_path",
-        "download_status",
-        "download_error",
-        "zap_action_lookup_status",
-        "zap_action_lookup_error",
-        "text_status",
-        "text_error",
-        "text_char_count",
-        "ceqr_number",
-        "actions",
-        "applicant_type",
-        "primary_applicant",
-        "borough_name",
-        "community_district",
-        "project_page_url",
-        "usable_text_source_type",
-        "usable_text_status",
-        "usable_local_text_path",
-        "usable_text_char_count",
-        "usable_source_report_application_numbers",
-        "usable_source_report_action_codes",
-        "usable_source_report_urls",
-        "usable_source_report_text_paths",
-        "sibling_text_mentions_missing_application",
-        "sibling_text_mentions_missing_stem",
+    results.sort(key=lambda row: row.pop("row_number"))
+    failed_sources = [
+        row["application_number"]
+        for row in results
+        if row["source_usable"] == "TRUE" and row["text_status"] != "text_extracted"
     ]
+    if failed_sources:
+        raise RuntimeError(
+            f"{len(failed_sources)} usable CPC sources lack extracted text: "
+            + "; ".join(failed_sources[:20])
+        )
 
-    write_csv_if_changed(manifest_rows, manifest_fieldnames, "../output/ulurp_cpc_report_manifest.csv")
-    print("Wrote ULURP CPC report manifest to ../output/ulurp_cpc_report_manifest.csv")
+    document_ids = [row["document_id"] for row in results]
+    if len(document_ids) != len(set(document_ids)):
+        raise RuntimeError("CPC corpus document identifiers must be unique.")
+
+    fieldnames = list(results[0].keys())
+    with Path("../output/ulurp_cpc_report_manifest.csv").open("w", newline="", encoding="utf-8") as output_file:
+        writer = csv.DictWriter(output_file, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(results)
+
+    certified_count = sum(row["corpus_role"] == "certified_ulurp_report" for row in results)
+    narrative_lead_count = sum(row["corpus_role"] == "related_project_narrative_lead" for row in results)
+    unavailable_count = sum(row["text_status"] != "text_extracted" for row in results)
+    print(
+        f"Wrote {len(results)} CPC source rows: {certified_count} certified ULURP reports and "
+        f"{narrative_lead_count} related project narrative leads; "
+        f"{unavailable_count} lack usable text",
+        flush=True,
+    )
 
 
 if __name__ == "__main__":

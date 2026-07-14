@@ -255,8 +255,6 @@ def zap_action_cpc_url(data: dict[str, object], raw_application_number: str) -> 
 
 
 def main() -> None:
-    os.makedirs("../output/recovered_cpc_report_pdfs", exist_ok=True)
-
     failure_rows = read_csv_rows("../input/ulurp_cpc_report_fetch_failures.csv")
     manifest_rows = read_csv_rows("../input/ulurp_cpc_report_manifest.csv")
     project_rows = read_csv_rows("../input/ulurp_corpus_project_spine.csv")

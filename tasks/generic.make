@@ -5,6 +5,9 @@ SHELL := bash
 ../input ../output ../temp slurmlogs:
 	mkdir -p $@
 
+../input/%/ ../output/%/ ../temp/%/:
+	mkdir -p $@
+
 run.sbatch: ../../setup_environment/code/run.sbatch | slurmlogs
 	@test "$$(readlink "$@")" = "$<" || ln -sf $< $@
 
@@ -12,14 +15,17 @@ UPSTREAM_TASKS := $(notdir $(patsubst %/code,%,$(wildcard ../../*/code)))
 AUDIT_TASKS := $(notdir $(patsubst %/code,%,$(wildcard ../../audits/*/code)))
 
 .PRECIOUS: ../../% ../../audits/%
+.PHONY: FORCE_UPSTREAM_CHECK
+
+FORCE_UPSTREAM_CHECK:
 
 define UPSTREAM_OUTPUT_RULE
-../../$(1)/output/%:
+../../$(1)/output/%: FORCE_UPSTREAM_CHECK
 	$$(MAKE) -C ../../$(1)/code ../output/$$*
 endef
 
 define AUDIT_OUTPUT_RULE
-../../audits/$(1)/output/%:
+../../audits/$(1)/output/%: FORCE_UPSTREAM_CHECK
 	$$(MAKE) -C ../../audits/$(1)/code ../output/$$*
 endef
 

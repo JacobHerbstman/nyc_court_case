@@ -1,4 +1,6 @@
 # setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_ulurp_corpus_spine/code")
+# start_year <- 1975L
+# end_year <- 2025L
 
 suppressPackageStartupMessages({
   library(arrow)
@@ -10,6 +12,19 @@ suppressPackageStartupMessages({
 })
 
 source("../../_lib/source_pipeline_utils.R")
+
+cli_args <- commandArgs(trailingOnly = TRUE)
+if (interactive()) {
+  cli_args <- c(start_year, end_year)
+}
+if (length(cli_args) != 2) {
+  stop("Usage: Rscript build_ulurp_corpus_spine.R <start_year> <end_year>")
+}
+start_year <- as.integer(cli_args[[1]])
+end_year <- as.integer(cli_args[[2]])
+if (is.na(start_year) || is.na(end_year) || start_year > end_year) {
+  stop("Invalid corpus year range.")
+}
 
 normalize_application_key <- function(x) {
   raw_value <- str_to_upper(str_replace_all(str_squish(as.character(x)), "[^A-Z0-9]", ""))
@@ -50,7 +65,11 @@ zap_project <- read_parquet("../input/zap_project_data.parquet") |>
     certified_referred_year = extract_year(certified_referred_date),
     completed_year = extract_year(completed_date)
   ) |>
-  filter(ulurp_group == "ULURP", !is.na(corpus_reference_year), corpus_reference_year >= 1975L) |>
+  filter(
+    ulurp_group == "ULURP",
+    !is.na(corpus_reference_year),
+    between(corpus_reference_year, start_year, end_year)
+  ) |>
   arrange(corpus_reference_year, borough_name_standardized, project_id)
 
 application_rows <- zap_project |>
@@ -77,7 +96,12 @@ application_rows <- zap_project |>
     project_page_url = paste0("https://zap.planning.nyc.gov/projects/", project_id),
     api_url = paste0("https://zap-api-production.herokuapp.com/projects/", project_id)
   ) |>
-  mutate(raw_application_number = str_split(coalesce(ulurp_numbers, ""), "\\s*;\\s*")) |>
+  mutate(
+    raw_application_number = str_extract_all(
+      coalesce(ulurp_numbers, ""),
+      regex("(?:[CNMI]\\s*)?\\d{6}(?:\\s*\\([A-Z]\\)|[A-Z])?\\s*[A-Z]{2,4}[A-Z](?:\\s*\\([A-Z]\\))?", ignore_case = TRUE)
+    )
+  ) |>
   unnest(raw_application_number) |>
   mutate(
     raw_application_number = str_squish(str_to_upper(raw_application_number)),

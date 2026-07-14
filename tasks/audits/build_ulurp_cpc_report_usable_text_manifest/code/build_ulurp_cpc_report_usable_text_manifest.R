@@ -9,8 +9,6 @@ suppressPackageStartupMessages({
 
 source("../../../_lib/source_pipeline_utils.R")
 
-dir.create("../output/usable_cpc_report_text", recursive = TRUE, showWarnings = FALSE)
-
 count_duplicates <- function(x) {
   sum(duplicated(x) | duplicated(x, fromLast = TRUE), na.rm = TRUE)
 }
