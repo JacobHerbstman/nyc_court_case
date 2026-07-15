@@ -29,6 +29,11 @@ tasks/audits/*/output/
 tasks/audits/*/temp/
 tasks/audits/*/slurmlogs/
 
+# Main task graph displayed in the root README.
+!tasks/task_graph/output/
+tasks/task_graph/output/*
+!tasks/task_graph/output/task_flow.png
+
 # Production source ledgers intentionally committed for replication.
 !tasks/create_council_land_use_geography_review_ledgers/output/
 tasks/create_council_land_use_geography_review_ledgers/output/*

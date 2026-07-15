@@ -4,6 +4,13 @@ This repository builds the data and draft paper for a project on New York City h
 
 The workflow is task-based. Each main task lives in `tasks/<task_name>/` with `code/`, `input/`, and `output/` folders. Run a task from its `code/` folder with `make`. Run the paper from `paper/` with `make`.
 
+## Task Graph
+
+The graph below is generated from the concrete dependencies declared in the
+main task Makefiles. Run `make task-graph` from the repository root to update it.
+
+![Main task dependency graph](tasks/task_graph/output/task_flow.png)
+
 ## Running the Project
 
 After downloading the repo, install the system tools used by the pipeline:
