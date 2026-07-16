@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import csv
+import hashlib
 import math
 import re
 import sys
@@ -18,12 +19,36 @@ from ulurp_cpc_text_label_rules import (
 )
 
 
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/build_ulurp_cpc_text_analysis/code")
-# start_year = 1975
-# end_year = 2025
-# boilerplate_doc_share = 0.05
-# rule_context_words = 135
-
+RESOLUTION_HEADING = re.compile(
+    r"(?im)^[ \t\f]*RESOLVED(?:[ \t]*,|[ \t]+BY\b|[ \t]+THAT\b).*$"
+)
+FILING_PARAGRAPH = re.compile(
+    r"(?is)(?:the[ \t\r\n]+(?:above|foregoing)[ \t\r\n]+resol\w*|"
+    r"the[ \t\r\n]+resol\w*[ \t\r\n]*\([^)]{1,80}\))"
+    r".{0,1600}?(?:is[ \t\r\n]+)?(?:hereby[ \t\r\n]+|herewith[ \t\r\n]+)?"
+    r"(?:filed|fuled|tiled|ffled)"
+)
+ANCHOR_HEADING = re.compile(
+    r"(?im)^[ \t\f]*(?:CONSIDERATION|FINDINGS(?:[ \t]+AND[ \t]+(?:APPROVAL|RECOMMENDATIONS?))?|"
+    r"UNIFORM[ \t]+LAND[ \t]+USE[ \t]+REVIEW(?:[ \t]+PROCEDURE)?)[ \t]*:?\s*$"
+)
+PAGE_HEADER = re.compile(
+    r"(?i)^\s*(?:page\s+)?\d+\s+(?:C\s*)?\d{6}(?:\s*\([A-Z]\))?\s*[A-Z]{2,4}\s*$"
+)
+COMMISSION_SIGNATURE = re.compile(
+    r"(?im)^[ \t\f]*[A-Z][A-Za-z.'-]+(?:[ \t]+[A-Z][A-Za-z.'-]+){1,5},?[ \t]+"
+    r"(?:Chair|Chairman|Chairperson|Vice[- ]?Chairman|Vice[- ]?Chairperson)\b.*$",
+    re.IGNORECASE | re.MULTILINE,
+)
+ADOPTED_RESOLUTION = re.compile(
+    r"(?is)(?:city[ \t\r\n]+planning[ \t\r\n]+commission|the[ \t\r\n]+commission)"
+    r".{0,260}?(?:adopts?|adopted).{0,80}?(?:following[ \t\r\n]+)?resol\w*"
+)
+MANUAL_EXCLUSION_METHODS = {
+    "exclude_incomplete_source",
+    "exclude_supplemental_statement_without_main_report",
+    "exclude_related_action_covered_by_companion",
+}
 
 SECTION_ORDER = [
     "background",
@@ -98,6 +123,55 @@ MONTH_PATTERN = (
     r"january|february|march|april|may|june|july|august|september|"
     r"october|november|december"
 )
+
+
+def clean_text(value):
+    return re.sub(r"\s+", " ", str(value or "")).strip()
+
+
+def resolve_task_path(raw_path, manifest_real_path):
+    if not clean_text(raw_path):
+        return None
+    path = Path(clean_text(raw_path))
+    if path.is_absolute():
+        return path
+    return manifest_real_path.parent.parent / "code" / path
+
+
+def narrative_boundary(text):
+    anchor_matches = list(ANCHOR_HEADING.finditer(text))
+    anchor = (
+        anchor_matches[0].start()
+        if anchor_matches and anchor_matches[0].start() < 0.75 * len(text)
+        else min(500, len(text))
+    )
+    for pattern, method in (
+        (RESOLUTION_HEADING, "resolution_heading"),
+        (FILING_PARAGRAPH, "filing_paragraph"),
+        (ADOPTED_RESOLUTION, "adopted_resolution_paragraph"),
+        (COMMISSION_SIGNATURE, "commission_signature"),
+    ):
+        matches = [match for match in pattern.finditer(text) if match.start() > anchor]
+        if matches:
+            return matches[0].start(), method
+    return len(text), "full_text_no_boundary_found"
+
+
+def normalize_narrative(text):
+    kept_lines = []
+    for line in text.replace("\f", "\n").splitlines():
+        stripped = line.strip()
+        if not stripped or re.fullmatch(r"[_\-]{10,}", stripped):
+            continue
+        if PAGE_HEADER.fullmatch(stripped):
+            continue
+        kept_lines.append(stripped)
+    return re.sub(r"\s+", " ", " ".join(kept_lines)).strip().lower()
+
+
+def normalized_project_name(value):
+    normalized = re.sub(r"[^a-z0-9]+", " ", clean_text(value).lower()).strip()
+    return re.sub(r"\bsize\s+\d+(?:\s+\d+)?\s+mb\b", "", normalized).strip()
 
 def as_int(value):
     if value in ("", None):
@@ -308,79 +382,180 @@ if boilerplate_doc_share is None or not 0 < boilerplate_doc_share < 1:
 if rule_context_words is None or rule_context_words < 1:
     raise SystemExit("RULE_CONTEXT_WORDS must be a positive integer.")
 
-documents = []
-manifest_real_path = Path("../temp/ulurp_cpc_narrative_manifest.csv").resolve()
-with Path("../temp/ulurp_cpc_narrative_manifest.csv").open(
-    newline="",
-    encoding="utf-8",
-) as manifest_file:
-    for row in csv.DictReader(manifest_file):
-        year = as_int(row.get("official_vote_year"))
-        if year is None or year < start_year or year > end_year:
-            continue
+corpus_manifest_real_path = Path("../input/ulurp_cpc_report_manifest.csv").resolve()
+with Path("../input/ulurp_cpc_report_manifest.csv").open(
+    newline="", encoding="utf-8"
+) as input_file:
+    source_rows = [
+        row
+        for row in csv.DictReader(input_file)
+        if start_year <= int(row["official_vote_year"]) <= end_year
+    ]
 
-        raw_text_path = row.get("local_text_path", "")
-        text_path = Path(raw_text_path) if raw_text_path else None
-        if text_path is not None and not text_path.is_absolute():
-            text_path = manifest_real_path.parent.parent / "code" / text_path
-        if text_path is None or not text_path.exists():
-            raise RuntimeError(
-                f"Unreadable text for analysis narrative {row.get('application_number', '')}."
-            )
+with Path("../input/ulurp_cpc_narrative_boundary_exceptions.csv").open(
+    newline="", encoding="utf-8"
+) as input_file:
+    boundary_exception_rows = list(csv.DictReader(input_file))
+boundary_exceptions = {
+    row["application_number"]: row for row in boundary_exception_rows
+}
+if len(boundary_exceptions) != len(boundary_exception_rows):
+    raise RuntimeError("Narrative-boundary exceptions are not unique by application number.")
+if len(source_rows) != len({row["document_id"] for row in source_rows}):
+    raise RuntimeError("Official corpus manifest is not unique by document_id.")
+
+candidate_rows = []
+applied_boundary_exceptions = set()
+for source_row in source_rows:
+    text_path = resolve_task_path(
+        source_row["local_text_path"], corpus_manifest_real_path
+    )
+    source_usable = source_row["source_usable"] == "TRUE"
+    if source_usable and (
+        source_row["text_status"] != "text_extracted"
+        or text_path is None
+        or not text_path.is_file()
+    ):
+        raise RuntimeError(f"Missing readable text for {source_row['application_number']}.")
+
+    if source_usable:
         text_stat = text_path.stat()
-        if (
-            text_stat.st_size < 100
-            or (
-                getattr(text_stat, "st_blocks", 1) == 0
-                and text_stat.st_size > 0
-            )
+        if text_stat.st_size < 100 or (
+            getattr(text_stat, "st_blocks", 1) == 0 and text_stat.st_size > 0
         ):
             raise RuntimeError(
-                f"Unreadable text for analysis narrative {row.get('application_number', '')}."
+                f"Unreadable text for analysis narrative {source_row['application_number']}."
             )
-
-        source_text = text_path.read_text(encoding="utf-8", errors="replace")
-        narrative_start = as_int(row.get("narrative_start_char"))
-        narrative_end = as_int(row.get("narrative_end_char"))
-        if (
-            narrative_start is None
-            or narrative_end is None
-            or narrative_end <= narrative_start
-        ):
-            raise RuntimeError(
-                f"Invalid narrative boundary for {row.get('application_number', '')}."
-            )
-        text = source_text[narrative_start:narrative_end]
-        if word_count(text) < 50:
-            raise RuntimeError(
-                f"Short analysis narrative for {row.get('application_number', '')}."
-            )
-
-        documents.append(
-            {
-                "document_id": row.get("document_id", ""),
-                "project_name": row.get("official_project_name", ""),
-                "application_number": row.get("application_number", ""),
-                "action_code": row.get("action_code", ""),
-                "community_district": row.get("official_community_district", ""),
-                "year": year,
-                "decade": f"{year // 10 * 10}s",
-                "source_text_sha256": row.get("source_text_sha256", ""),
-                "narrative_sha256": row.get("narrative_sha256", ""),
-                "narrative_word_count": row.get("narrative_word_count", ""),
-                "narrative_boundary_method": row.get(
-                    "narrative_boundary_method",
-                    "",
-                ),
-                "zap_project_ids": row.get("zap_project_ids", ""),
-                "analysis_non_pp_flag": row.get("analysis_non_pp_flag", ""),
-                "analysis_zm_zr_zs_flag": row.get(
-                    "analysis_zm_zr_zs_flag",
-                    "",
-                ),
-                "text": text,
-            }
+        full_text = text_path.read_text(encoding="utf-8", errors="replace")
+        source_text_hash = hashlib.sha256(full_text.encode("utf-8")).hexdigest()
+        boundary_exception = boundary_exceptions.get(
+            source_row["application_number"], {}
         )
+        if boundary_exception:
+            if boundary_exception["source_text_sha256"] != source_text_hash:
+                raise RuntimeError(
+                    f"Stale narrative-boundary decision for {source_row['application_number']}."
+                )
+            applied_boundary_exceptions.add(source_row["application_number"])
+            boundary_method = boundary_exception["boundary_decision"]
+            if boundary_method in MANUAL_EXCLUSION_METHODS:
+                narrative_end = 0
+            else:
+                narrative_end = int(boundary_exception["narrative_end_char"])
+                if not 0 < narrative_end <= len(full_text):
+                    raise RuntimeError(
+                        f"Invalid manual narrative boundary for {source_row['application_number']}."
+                    )
+            narrative_text = full_text[:narrative_end]
+        else:
+            narrative_end, boundary_method = narrative_boundary(full_text)
+            narrative_text = full_text[:narrative_end]
+        normalized_text = normalize_narrative(narrative_text)
+        narrative_word_count = len(re.findall(r"\b[\w'-]+\b", normalized_text))
+        narrative_hash = hashlib.sha256(normalized_text.encode("utf-8")).hexdigest()
+    else:
+        boundary_exception = {}
+        source_text_hash = ""
+        boundary_method = "documented_source_unavailable"
+        narrative_word_count = 0
+        narrative_hash = ""
+        narrative_text = ""
+
+    project_name_key = normalized_project_name(source_row["official_project_name"])
+    lead_group_key = (
+        f"{source_row['official_vote_date']}|{project_name_key}"
+        if source_usable and project_name_key
+        else ""
+    )
+    candidate_rows.append(
+        {
+            "document_id": source_row["document_id"],
+            "application_number": source_row["application_number"],
+            "action_code": source_row["action_code"],
+            "corpus_role": source_row["corpus_role"],
+            "project_name": source_row["official_project_name"],
+            "community_district": source_row["official_community_district"],
+            "year": int(source_row["official_vote_year"]),
+            "zap_project_ids": source_row["zap_project_ids"],
+            "official_vote_date": source_row["official_vote_date"],
+            "official_lead_report_flag": source_row["official_lead_report_flag"],
+            "source_text_sha256": source_text_hash,
+            "narrative_boundary_method": boundary_method,
+            "narrative_word_count": narrative_word_count,
+            "narrative_sha256": narrative_hash,
+            "lead_group_key": lead_group_key,
+            "analysis_non_pp_flag": str(source_row["action_code"] != "PP").upper(),
+            "analysis_zm_zr_zs_flag": str(
+                source_row["action_code"] in {"ZM", "ZR", "ZS"}
+            ).upper(),
+            "manual_companion_application": boundary_exception.get(
+                "analysis_narrative_representative_application", ""
+            ),
+            "text": narrative_text,
+        }
+    )
+
+unapplied_boundary_exceptions = set(boundary_exceptions) - applied_boundary_exceptions
+if unapplied_boundary_exceptions:
+    raise RuntimeError(
+        "Unapplied narrative-boundary exceptions: "
+        + "; ".join(sorted(unapplied_boundary_exceptions))
+    )
+
+lead_groups = defaultdict(list)
+for row in candidate_rows:
+    if row["lead_group_key"]:
+        lead_groups[row["lead_group_key"]].append(row)
+
+related_to_lead = set()
+for group_rows in lead_groups.values():
+    lead_rows = [row for row in group_rows if row["official_lead_report_flag"] == "TRUE"]
+    if len(group_rows) > 1 and lead_rows:
+        certified_group_rows = [
+            row for row in group_rows if row["corpus_role"] == "certified_ulurp_report"
+        ]
+        group_non_pp_flag = any(row["action_code"] != "PP" for row in certified_group_rows)
+        group_zm_zr_zs_flag = any(
+            row["action_code"] in {"ZM", "ZR", "ZS"}
+            for row in certified_group_rows
+        )
+        for row in group_rows:
+            row["analysis_non_pp_flag"] = str(group_non_pp_flag).upper()
+            row["analysis_zm_zr_zs_flag"] = str(group_zm_zr_zs_flag).upper()
+            if row["official_lead_report_flag"] != "TRUE":
+                related_to_lead.add(row["document_id"])
+
+for row in candidate_rows:
+    if row["manual_companion_application"]:
+        related_to_lead.add(row["document_id"])
+
+eligible_rows = [
+    row
+    for row in candidate_rows
+    if row["document_id"] not in related_to_lead
+    and row["narrative_boundary_method"] != "full_text_no_boundary_found"
+    and row["narrative_boundary_method"] not in MANUAL_EXCLUSION_METHODS
+    and row["narrative_word_count"] >= 100
+]
+exact_groups = defaultdict(list)
+for row in eligible_rows:
+    exact_groups[row["narrative_sha256"]].append(row)
+
+documents = []
+for group_rows in exact_groups.values():
+    group_rows.sort(
+        key=lambda row: (
+            row["official_lead_report_flag"] != "TRUE",
+            row["application_number"],
+        )
+    )
+    document = group_rows[0]
+    document["decade"] = f"{document['year'] // 10 * 10}s"
+    documents.append(document)
+
+print(
+    f"Built {len(documents)} analysis narratives from {len(candidate_rows)} report rows."
+)
 
 if len(documents) != len({row["document_id"] for row in documents}):
     raise RuntimeError("Analysis narratives are not unique by document_id.")
@@ -468,7 +643,7 @@ fieldnames = [
     "analysis_zm_zr_zs_flag",
     *SIGNAL_FAMILIES,
 ]
-with Path("../output/ulurp_cpc_text_labels.csv").open(
+with Path("../temp/ulurp_cpc_text_labels.csv").open(
     "w",
     newline="",
     encoding="utf-8",

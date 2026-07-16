@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/build_ulurp_cpc_text_analysis/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_text_cpc_trends/code")
 # start_year <- 1975
 # end_year <- 2025
 # moving_window_years <- 3
@@ -9,6 +9,7 @@ suppressPackageStartupMessages({
   library(dplyr)
   library(ggplot2)
   library(readr)
+  library(sf)
   library(stringr)
   library(tibble)
   library(tidyr)
@@ -89,7 +90,7 @@ if (
 }
 
 text_labels <- read_csv(
-  "../output/ulurp_cpc_text_labels.csv",
+  "../temp/ulurp_cpc_text_labels.csv",
   col_types = cols(.default = col_character()),
   show_col_types = FALSE,
   na = c("", "NA")
@@ -158,15 +159,143 @@ if (nrow(project_bbl) != nrow(distinct(project_bbl, project_id, bbl_standardized
   stop("Project-BBL input is not unique by project_id and BBL.")
 }
 
-bbl_district_lookup <- read_parquet("../input/ccdist2010_mappluto_bbl_lookup.parquet") |>
+council_measure <- read_csv(
+  "../input/ccdist2010_homeownership_1990_measure.csv",
+  col_types = cols(.default = col_character()),
+  show_col_types = FALSE,
+  na = c("", "NA")
+)
+
+council_sf <- council_measure |>
+  transmute(
+    district_id = sprintf("%02d", suppressWarnings(as.integer(district_id))),
+    council_district = suppressWarnings(as.integer(council_district)),
+    geometry = st_as_sfc(geometry_wkt, crs = 2263)
+  ) |>
+  st_as_sf() |>
+  arrange(council_district)
+
+if (nrow(council_sf) != 51 || anyDuplicated(council_sf$district_id)) {
+  stop("Figure 2 Council district geometries must contain 51 unique districts.")
+}
+
+mappluto_lots <- read_parquet(
+  "../input/mappluto_current_lot_lookup.parquet",
+  col_select = c("bbl", "cd", "unitsres", "is_joint_interest_area")
+) |>
   as.data.frame() |>
   as_tibble() |>
   transmute(
-    bbl_standardized = as.character(bbl),
-    district_id = sprintf("%02d", suppressWarnings(as.integer(district_id))),
-    council_district = suppressWarnings(as.integer(council_district))
+    bbl_standardized = str_squish(as.character(bbl)),
+    borocd = suppressWarnings(as.integer(cd)),
+    residential_units = pmax(suppressWarnings(as.numeric(unitsres)), 0, na.rm = TRUE),
+    is_joint_interest_area = coalesce(as.logical(is_joint_interest_area), FALSE)
   ) |>
-  filter(bbl_standardized != "", !is.na(district_id), !is.na(council_district))
+  filter(!is.na(borocd), bbl_standardized != "")
+
+if (nrow(mappluto_lots) != n_distinct(mappluto_lots$bbl_standardized)) {
+  stop("Current MapPLUTO input is not unique by BBL.")
+}
+
+mappluto_row <- read_csv(
+  "../input/mappluto_files.csv",
+  show_col_types = FALSE,
+  na = c("", "NA")
+) |>
+  filter(
+    source_id == "dcp_mappluto_current",
+    vintage == "25v4",
+    file_role == "mappluto_shapefile_zip",
+    status %in% c("downloaded", "already_present", "redownloaded_after_validation_failure"),
+    !is.na(raw_path)
+  ) |>
+  arrange(raw_path)
+
+if (nrow(mappluto_row) != 1 || !file.exists(mappluto_row$raw_path[[1]])) {
+  stop("Current 25v4 MapPLUTO shapefile ZIP is not uniquely available.")
+}
+
+mappluto_temp_dir <- tempfile(pattern = "mappluto_sf_")
+dir.create(mappluto_temp_dir)
+on.exit(unlink(mappluto_temp_dir, recursive = TRUE), add = TRUE)
+suppressWarnings(unzip(mappluto_row$raw_path[[1]], exdir = mappluto_temp_dir))
+mappluto_shapefile <- list.files(
+  mappluto_temp_dir,
+  pattern = "[.]shp$",
+  recursive = TRUE,
+  full.names = TRUE
+)
+mappluto_shapefile <- mappluto_shapefile[
+  str_to_lower(basename(mappluto_shapefile)) == "mappluto_unclipped.shp"
+]
+if (length(mappluto_shapefile) != 1) {
+  stop("Current MapPLUTO archive must contain one MapPLUTO_UNCLIPPED.shp lot layer.")
+}
+
+mappluto_sf <- st_read(
+  mappluto_shapefile,
+  quiet = TRUE,
+  stringsAsFactors = FALSE
+)
+names(mappluto_sf) <- str_to_lower(names(mappluto_sf))
+if (!all(c("bbl", "cd") %in% names(mappluto_sf))) {
+  stop("Current MapPLUTO shapefile must contain BBL and CD fields.")
+}
+
+jia_codes <- c(164L, 226L, 227L, 228L, 355L, 356L, 480L, 481L, 482L, 483L, 484L, 595L)
+
+mappluto_bbl <- mappluto_sf |>
+  st_drop_geometry() |>
+  transmute(
+    row_id = row_number(),
+    bbl_numeric = suppressWarnings(as.numeric(bbl)),
+    is_joint_interest_area = suppressWarnings(as.integer(cd)) %in% jia_codes
+  ) |>
+  mutate(
+    bbl_standardized = if_else(
+      is.na(bbl_numeric),
+      NA_character_,
+      sprintf("%.0f", bbl_numeric)
+    )
+  ) |>
+  select(-bbl_numeric)
+
+mappluto_points <- st_sf(
+  row_id = seq_len(nrow(mappluto_sf)),
+  geometry = suppressWarnings(st_point_on_surface(st_geometry(mappluto_sf))),
+  crs = st_crs(mappluto_sf)
+)
+if (is.na(st_crs(mappluto_points))) {
+  st_crs(mappluto_points) <- st_crs(council_sf)
+}
+mappluto_points <- st_transform(mappluto_points, st_crs(council_sf))
+
+district_hits <- st_intersects(mappluto_points, council_sf)
+assigned_flag <- lengths(district_hits) > 0
+assigned_row <- vapply(district_hits[assigned_flag], function(x) x[[1]], integer(1))
+mappluto_assignment <- tibble(
+  row_id = which(assigned_flag),
+  council_row = assigned_row
+) |>
+  bind_cols(
+    council_sf |>
+      st_drop_geometry() |>
+      slice(assigned_row) |>
+      select(district_id, council_district)
+  )
+
+bbl_district_lookup <- mappluto_bbl |>
+  inner_join(mappluto_assignment, by = "row_id", relationship = "one-to-one") |>
+  filter(
+    !coalesce(is_joint_interest_area, FALSE),
+    !is.na(bbl_standardized),
+    !is.na(council_district)
+  ) |>
+  count(bbl_standardized, district_id, council_district, name = "mappluto_lot_rows") |>
+  group_by(bbl_standardized) |>
+  arrange(desc(mappluto_lot_rows), district_id) |>
+  slice_head(n = 1) |>
+  ungroup()
 
 if (nrow(bbl_district_lookup) != n_distinct(bbl_district_lookup$bbl_standardized)) {
   stop("2010 Council district BBL lookup is not unique by BBL.")
@@ -204,26 +333,8 @@ bbl_assignment <- document_bbl |>
   ungroup() |>
   select(document_id, district_id, council_district, assignment_weight)
 
-mappluto_lots <- read_parquet(
-  "../input/dcp_mappluto_current_25v4.parquet",
-  col_select = c("bbl", "cd", "unitsres", "is_joint_interest_area")
-) |>
-  as.data.frame() |>
-  as_tibble() |>
-  transmute(
-    bbl_standardized = as.character(bbl),
-    borocd = suppressWarnings(as.integer(cd)),
-    residential_units = pmax(suppressWarnings(as.numeric(unitsres)), 0, na.rm = TRUE),
-    is_joint_interest_area = coalesce(as.logical(is_joint_interest_area), FALSE)
-  ) |>
-  filter(!is_joint_interest_area, !is.na(borocd), bbl_standardized != "")
-
-if (nrow(mappluto_lots) != n_distinct(mappluto_lots$bbl_standardized)) {
-  stop("Current MapPLUTO input is not unique by BBL after excluding joint-interest areas.")
-}
-
 community_district_crosswalk <- mappluto_lots |>
-  filter(residential_units > 0) |>
+  filter(!is_joint_interest_area, residential_units > 0) |>
   inner_join(bbl_district_lookup, by = "bbl_standardized", relationship = "many-to-one") |>
   group_by(borocd, district_id, council_district) |>
   summarize(residential_units = sum(residential_units), .groups = "drop") |>
@@ -296,12 +407,7 @@ fallback_assignment <- bind_rows(lapply(seq_len(nrow(fallback_documents)), funct
     .groups = "drop"
   )
 
-district_treatment <- read_csv(
-  "../input/ccdist2010_homeownership_1990_measure.csv",
-  col_types = cols(.default = col_character()),
-  show_col_types = FALSE,
-  na = c("", "NA")
-) |>
+district_treatment <- council_measure |>
   transmute(
     district_id = sprintf("%02d", suppressWarnings(as.integer(district_id))),
     council_district = suppressWarnings(as.integer(council_district)),

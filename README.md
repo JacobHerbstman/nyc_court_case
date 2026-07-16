@@ -69,6 +69,7 @@ the NHGIS raw extract files are already present, the IPUMS key is not used.
 - `estimate_ccd2010_homeownership_long_units_event_study`: creates raw-unit event-study and long-difference outputs.
 - `summarize_council_land_use_decision_trends`: creates the member-deference land-use decision trend plot.
 - `summarize_citywide_ulurp_application_trends`: creates annual citywide ULURP application counts.
+- `summarize_text_cpc_trends`: creates initial rule-based CPC text-signal trends citywide and by Figure 2 homeowner tercile.
 - `task_graph`: creates the main task graph and task list.
 
 The paper can also be rebuilt from the paper folder:

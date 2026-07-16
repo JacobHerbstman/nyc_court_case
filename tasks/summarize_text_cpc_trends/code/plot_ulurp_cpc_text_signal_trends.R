@@ -1,4 +1,4 @@
-# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/build_ulurp_cpc_text_analysis/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/summarize_text_cpc_trends/code")
 # start_year <- 1975
 # end_year <- 2025
 # moving_window_years <- 3
@@ -73,7 +73,7 @@ signal_labels <- c(
 )
 
 text_labels <- read_csv(
-  "../output/ulurp_cpc_text_labels.csv",
+  "../temp/ulurp_cpc_text_labels.csv",
   col_types = cols(.default = col_character()),
   show_col_types = FALSE,
   na = c("", "NA")
