@@ -34,12 +34,29 @@ if (
   throw new Error("Invalid CPC training-sample arguments.");
 }
 
+const projectLabels = [
+  {
+    name: "specific_project",
+    one: "The application concerns a concrete, identified development, building, facility, or site-specific proposal.",
+    zero: "The application is an area-wide or neighborhood-wide change without an identified imminent project.",
+    note: "Code the proposal under review, not possible future projects.",
+  },
+  {
+    name: "dev_direction",
+    upzone: "The application increases permitted density or development capacity.",
+    downzone: "The application reduces permitted density or development capacity.",
+    mixed: "The application combines directions or changes land use without a clear capacity effect.",
+    none: "The application has no meaningful development-capacity direction, such as a minor use approval.",
+    note: "Code the application, not whether local actors support or oppose it.",
+  },
+];
+
 const processLabels = [
   {
-    name: "local_opposition",
-    one: "The report documents substantive local opposition to the application or project.",
-    zero: "No substantive local opposition is documented.",
-    note: "Count CB, BP, councilmember, civic-group, resident, or tenant opposition.",
+    name: "substantial_local_opposition",
+    one: "The report documents meaningful local opposition to the application or project, such as a recommendation of disapproval, organized opposition, or material objections to its core scope, use, density, or design.",
+    zero: "No substantial local opposition is documented.",
+    note: "Do not count approval with minor conditions, routine mitigation requests, isolated technical comments, or dissenting votes when the institution recommends approval.",
   },
   {
     name: "local_request_condition",
@@ -48,28 +65,16 @@ const processLabels = [
     note: "Do not count procedural referral or generic consultation language.",
   },
   {
-    name: "precert_local_change",
-    one: "The report says local input initiated or changed the plan before ULURP certification.",
-    zero: "No pre-certification local initiation or change is documented.",
-    note: "Timing alone is insufficient; the report must connect local input to the plan.",
+    name: "revision_or_concession",
+    one: "The project or application changed, or the applicant or agency made a substantive concession, commitment, or mitigation.",
+    zero: "No substantive revision, concession, commitment, or mitigation is documented.",
+    note: "Exclude boilerplate modifications, document dates, studies, outreach, and monitoring alone.",
   },
   {
-    name: "project_revised",
-    one: "The application, project scope, design, use, density, or mapped area changed during review.",
-    zero: "The proposal did not change, or the text only describes the relief originally requested.",
-    note: "Do not count boilerplate special-permit modifications or document revision dates.",
-  },
-  {
-    name: "commitment_mitigation",
-    one: "The applicant or agency made a substantive commitment, agreement, or mitigation measure.",
-    zero: "No substantive commitment or mitigation is documented.",
-    note: "This can be positive even when the formal application did not change.",
-  },
-  {
-    name: "process_study_response",
+    name: "procedural_response",
     one: "The response is a study, task force, monitoring, reporting, outreach, or future consultation.",
     zero: "No such procedural response is documented.",
-    note: "Code the response offered, not a study that merely predates review.",
+    note: "This may coexist with a revision or concession; exclude a study that merely predates review.",
   },
   {
     name: "explicit_local_response",
@@ -81,110 +86,106 @@ const processLabels = [
     name: "approved_unresolved_objection",
     one: "CPC approved while rejecting, deferring, or leaving a specific local objection unresolved.",
     zero: "The report does not identify a specific unresolved local objection at approval.",
-    note: "General opposition alone is insufficient without an identifiable unresolved demand.",
+    note: "Code 0 when there is no objection, the objection was resolved, or CPC did not approve. General opposition alone is insufficient.",
   },
 ];
 
-const actorLabels = [
+const actorBinaryLabels = [
   {
-    name: "cb_substantive",
-    one: "A community board states a substantive position, request, condition, or recommendation.",
-    zero: "The CB is absent or appears only in procedural referral/hearing language.",
-    note: "Support counts as substantive; opposition is coded separately.",
+    name: "cb_request_or_opposition",
+    one: "A community board opposes or requests a substantive change, condition, commitment, or alternative.",
+    zero: "The CB is absent, appears only procedurally, or supports without a substantive request.",
+    note: "Conditioned approval counts even when the CB does not recommend disapproval.",
   },
   {
-    name: "cb_opposition",
-    one: "A community board opposes or recommends disapproval of all or part of the proposal.",
-    zero: "No CB opposition is documented.",
-    note: "Conditioned approval is not opposition unless the report also states opposition.",
+    name: "bp_request_or_opposition",
+    one: "A borough president opposes or requests a substantive change, condition, commitment, or alternative.",
+    zero: "The BP is absent, appears only procedurally, or supports without a substantive request.",
+    note: "Conditioned approval counts even when the BP does not recommend disapproval.",
+  },
+];
+
+const actorPositionLabels = [
+  {
+    name: "councilmember_position",
+    support: "An individual councilmember supports the proposal or makes a substantive request, condition, or recommendation without opposing it.",
+    opposition: "An individual councilmember opposes all or part of the proposal.",
+    none: "No substantive individual councilmember role is documented.",
+    note: "Exclude Council procedure. If members differ, use opposition when any member opposes and note the mixed positions.",
   },
   {
-    name: "bp_substantive",
-    one: "A borough president states a substantive position, request, condition, or recommendation.",
-    zero: "The BP is absent or appears only in procedural review language.",
-    note: "Support counts as substantive; opposition is coded separately.",
+    name: "civic_group_position",
+    support: "A named civic, neighborhood, tenant, business, or community organization supports the proposal or makes a substantive request without opposing it.",
+    opposition: "A named organization opposes all or part of the proposal.",
+    none: "No named organization takes a substantive position.",
+    note: "Exclude residents speaking only as individuals. If groups differ, use opposition when any group opposes and note the mixed positions.",
+  },
+];
+
+const countLabels = [
+  {
+    name: "cpc_support_speakers",
+    rule: "Number of reported speaker appearances in support across all CPC public-hearing dates.",
+    note: "Use 0 only when the report establishes that nobody spoke in support. Leave blank when no exact count is reported. The same person may be counted again at a continued hearing.",
   },
   {
-    name: "bp_opposition",
-    one: "A borough president opposes or recommends disapproval of all or part of the proposal.",
-    zero: "No BP opposition is documented.",
-    note: "Do not infer opposition from conditions alone.",
+    name: "cpc_opposition_speakers",
+    rule: "Number of reported speaker appearances in opposition across all CPC public-hearing dates.",
+    note: "Exclude letters, written testimony, petitions, and organizations that did not appear as speakers. The same person may be counted again at a continued hearing.",
   },
   {
-    name: "councilmember_substantive",
-    one: "An individual councilmember states a substantive position, request, condition, or recommendation.",
-    zero: "No substantive individual councilmember role is documented.",
-    note: "Exclude filing with or referral to the City Council.",
+    name: "cb_support_votes",
+    rule: "Number of community board votes reported in support of approving the application.",
+    note: "Leave blank when the report gives the recommendation but not the vote count.",
   },
   {
-    name: "councilmember_opposition",
-    one: "An individual councilmember opposes all or part of the proposal.",
-    zero: "No individual councilmember opposition is documented.",
-    note: "Do not treat Council procedure as member opposition.",
-  },
-  {
-    name: "civic_group_substantive",
-    one: "A named civic, neighborhood, tenant, business, or community organization takes a substantive position.",
-    zero: "No substantive organization role is documented.",
-    note: "Residents speaking only as individuals do not satisfy this label.",
-  },
-  {
-    name: "civic_group_opposition",
-    one: "A civic, neighborhood, tenant, business, or community organization opposes the proposal.",
-    zero: "No organization opposition is documented.",
-    note: "The group need not oppose every component.",
-  },
-  {
-    name: "council_institutional_action",
-    one: "The City Council formally acts, modifies, votes, or adopts a substantive position described in the report.",
-    zero: "The Council appears only procedurally, or only an individual member acts.",
-    note: "Exclude Charter 197-d filing and referral boilerplate.",
+    name: "cb_opposition_votes",
+    rule: "Number of community board votes reported in support of disapproving the application.",
+    note: "Leave blank when the report gives the recommendation but not the vote count.",
   },
 ];
 
 const issueLabels = [
   {
     name: "affordability_displacement",
-    one: "Affordability, displacement, tenant protection, harassment, or housing access is a substantive local issue.",
+    one: "Affordability, displacement, tenant protection, harassment, or housing access is substantively discussed in review, testimony, requested conditions, or CPC consideration.",
     zero: "Those topics are absent or appear only in the project description.",
     note: "Affordable units alone do not make this positive.",
   },
   {
     name: "traffic_parking",
-    one: "Traffic, parking, loading, trucks, congestion, or curb use is a substantive local issue.",
-    zero: "No such local issue is documented.",
-    note: "Code the review issue, not a neutral transportation description.",
+    one: "Traffic, parking, loading, trucks, congestion, or curb use is substantively discussed in review, testimony, requested conditions, or CPC consideration.",
+    zero: "No such substantive review issue is documented.",
+    note: "Exclude neutral transportation descriptions.",
   },
   {
-    name: "scale_height_character",
-    one: "Scale, height, density, bulk, design, shadows, or neighborhood character is a substantive local issue.",
-    zero: "No such local issue is documented.",
-    note: "A neutral zoning or dimensional description is insufficient.",
+    name: "scale_character_preservation",
+    one: "Scale, height, density, bulk, design, shadows, neighborhood character, landmarks, or preservation is substantively discussed in review, testimony, requested conditions, or CPC consideration.",
+    zero: "No such substantive review issue is documented.",
+    note: "Exclude neutral dimensional descriptions and landmark names alone.",
   },
   {
     name: "infrastructure_services",
-    one: "Schools, sewer, transit, sanitation, utilities, public facilities, or service capacity is a substantive local issue.",
-    zero: "No such local issue is documented.",
-    note: "Code facility siting or capacity disputes, not background service descriptions.",
+    one: "Schools, sewer, transit, sanitation, utilities, public facilities, or service capacity is substantively discussed in review, testimony, requested conditions, or CPC consideration.",
+    zero: "No such substantive review issue is documented.",
+    note: "Exclude background service descriptions.",
   },
   {
     name: "environment_open_space",
-    one: "Environmental effects, remediation, water quality, parks, waterfront access, or open space is a substantive local issue.",
-    zero: "No such local issue is documented.",
+    one: "Environmental effects, remediation, water quality, parks, waterfront access, or open space is substantively discussed in review, testimony, requested conditions, or CPC consideration.",
+    zero: "No such substantive review issue is documented.",
     note: "Routine CEQR language alone is insufficient.",
-  },
-  {
-    name: "historic_preservation",
-    one: "Historic resources, landmarks, preservation, or historic character is a substantive local issue.",
-    zero: "No such local issue is documented.",
-    note: "A landmark name alone is insufficient.",
   },
 ];
 
-const binaryLabels = [
-  ...processLabels.map((label) => ({ ...label, section: "Process" })),
-  ...actorLabels.map((label) => ({ ...label, section: "Actors" })),
-  ...issueLabels.map((label) => ({ ...label, section: "Issues" })),
+const codingLabels = [
+  { ...projectLabels[0], section: "Project", type: "binary" },
+  { ...projectLabels[1], section: "Project", type: "direction" },
+  ...processLabels.map((label) => ({ ...label, section: "Process", type: "binary" })),
+  ...actorBinaryLabels.map((label) => ({ ...label, section: "Actors", type: "binary" })),
+  ...actorPositionLabels.map((label) => ({ ...label, section: "Actors", type: "position" })),
+  ...countLabels.map((label) => ({ ...label, section: "Actors", type: "count" })),
+  ...issueLabels.map((label) => ({ ...label, section: "Issues", type: "binary" })),
 ];
 
 function stableHash(value) {
@@ -210,6 +211,14 @@ function columnLetter(columnNumber) {
     number = Math.floor(number / 26);
   }
   return letters;
+}
+
+function xmlAttribute(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
 }
 
 async function readCsvRecords(path, sheetName) {
@@ -340,6 +349,14 @@ const commonIds = new Map(
     )
     .map((row, index) => [row.document_id, `C${String(index + 1).padStart(3, "0")}`]),
 );
+const calibrationOrder = new Map(
+  ["C093", "C094", "C041", "C009", "C014", "C089", "C006", "C020", "C007", "C056"]
+    .map((sharedId, index) => [sharedId, index]),
+);
+const commonIdValues = new Set(commonIds.values());
+if ([...calibrationOrder.keys()].some((sharedId) => !commonIdValues.has(sharedId))) {
+  throw new Error("A calibration report is missing from the common sample.");
+}
 
 async function writeCoderWorkbook(coder) {
   const reviewPrefix = coder === "jacob" ? "J" : "T";
@@ -347,16 +364,25 @@ async function writeCoderWorkbook(coder) {
     ...assignments.common.map((row) => ({ ...row, sample_group: "common" })),
     ...assignments[coder].map((row) => ({ ...row, sample_group: `${coder}_only` })),
   ]
-    .sort((left, right) =>
-      stableHash(`${left.document_id}|${sampleSeed}|${coder}|workbook-order`).localeCompare(
+    .map((row) => ({
+      ...row,
+      shared_id: commonIds.get(row.document_id) ?? "",
+      project_name: row.official_project_name || `CPC report ${row.application_number}`,
+    }))
+    .sort((left, right) => {
+      const leftCalibrationOrder = calibrationOrder.get(left.shared_id);
+      const rightCalibrationOrder = calibrationOrder.get(right.shared_id);
+      if (leftCalibrationOrder !== undefined || rightCalibrationOrder !== undefined) {
+        return (leftCalibrationOrder ?? calibrationOrder.size) -
+          (rightCalibrationOrder ?? calibrationOrder.size);
+      }
+      return stableHash(`${left.document_id}|${sampleSeed}|${coder}|workbook-order`).localeCompare(
         stableHash(`${right.document_id}|${sampleSeed}|${coder}|workbook-order`),
-      ),
-    )
+      );
+    })
     .map((row, index) => ({
       ...row,
       review_id: `${reviewPrefix}${String(index + 1).padStart(3, "0")}`,
-      shared_id: commonIds.get(row.document_id) ?? "",
-      project_name: row.official_project_name || `CPC report ${row.application_number}`,
     }));
 
   const workbook = Workbook.create();
@@ -369,18 +395,17 @@ async function writeCoderWorkbook(coder) {
     "vote_year",
     "application_number",
     "open_report",
-    "sample_group",
-    "shared_id",
-    "document_id",
-    "action_code",
-    "community_district",
-    ...binaryLabels.map((label) => label.name),
-    "other_issue_codes",
+    ...codingLabels.map((label) => label.name),
     "evidence_pages",
     "evidence_summary",
     "coding_confidence",
     "coding_complete",
     "coder_notes",
+    "sample_group",
+    "shared_id",
+    "document_id",
+    "action_code",
+    "community_district",
   ];
 
   const values = [
@@ -390,29 +415,23 @@ async function writeCoderWorkbook(coder) {
       row.project_name,
       Number(row.official_vote_year),
       row.application_number,
+      "Open PDF",
+      ...codingLabels.map(() => null),
+      null,
+      null,
+      null,
+      null,
       null,
       row.sample_group,
       row.shared_id,
       row.document_id,
       row.action_code,
       row.official_community_district,
-      ...binaryLabels.map(() => null),
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
     ]),
   ];
 
   const finalColumn = columnLetter(columns.length);
   codingSheet.getRange(`A1:${finalColumn}${values.length}`).values = values;
-  const reportLinkColumn = columnLetter(columns.indexOf("open_report") + 1);
-  codingSheet.getRange(`${reportLinkColumn}2:${reportLinkColumn}${values.length}`).formulas =
-    coderRows.map((row) => [
-      `=HYPERLINK("${String(row.official_pdf_url).replaceAll('"', '""')}","Open PDF")`,
-    ]);
 
   const codingTable = codingSheet.tables.add(
     `A1:${finalColumn}${values.length}`,
@@ -426,15 +445,21 @@ async function writeCoderWorkbook(coder) {
     verticalAlignment: "center",
     wrapText: true,
   };
-  codingSheet.getRange(`A1:${columnLetter(10)}1`).format.fill = "#40484F";
+  codingSheet.getRange("A1:E1").format.fill = "#40484F";
 
-  const processStart = 11;
+  const projectStart = 6;
+  const projectEnd = projectStart + projectLabels.length - 1;
+  const processStart = projectEnd + 1;
   const processEnd = processStart + processLabels.length - 1;
   const actorStart = processEnd + 1;
-  const actorEnd = actorStart + actorLabels.length - 1;
+  const positionStart = actorStart + actorBinaryLabels.length;
+  const positionEnd = positionStart + actorPositionLabels.length - 1;
+  const countStart = positionEnd + 1;
+  const actorEnd = countStart + countLabels.length - 1;
   const issueStart = actorEnd + 1;
-  const issueEnd = issueStart + issueLabels.length;
+  const issueEnd = issueStart + issueLabels.length - 1;
   const reviewStart = issueEnd + 1;
+  codingSheet.getRange(`${columnLetter(projectStart)}1:${columnLetter(projectEnd)}1`).format.fill = "#6B5B73";
   codingSheet.getRange(`${columnLetter(processStart)}1:${columnLetter(processEnd)}1`).format.fill = "#256B57";
   codingSheet.getRange(`${columnLetter(actorStart)}1:${columnLetter(actorEnd)}1`).format.fill = "#386A8A";
   codingSheet.getRange(`${columnLetter(issueStart)}1:${columnLetter(issueEnd)}1`).format.fill = "#8A6A24";
@@ -445,13 +470,55 @@ async function writeCoderWorkbook(coder) {
     verticalAlignment: "center",
   };
 
-  const labelRange = codingSheet.getRange(
-    `${columnLetter(processStart)}2:${columnLetter(actorEnd + issueLabels.length)}${values.length}`,
-  );
-  labelRange.dataValidation = {
+  codingSheet.getRange(
+    `${columnLetter(projectStart)}2:${columnLetter(projectStart)}${values.length}`,
+  ).dataValidation = {
     rule: { type: "list", values: ["0", "1", "unclear"] },
   };
-  labelRange.format = { horizontalAlignment: "center" };
+  codingSheet.getRange(
+    `${columnLetter(projectStart)}2:${columnLetter(projectStart)}${values.length}`,
+  ).format = { horizontalAlignment: "center" };
+
+  codingSheet.getRange(
+    `${columnLetter(projectEnd)}2:${columnLetter(projectEnd)}${values.length}`,
+  ).dataValidation = {
+    rule: { type: "list", values: ["upzone", "downzone", "mixed", "none"] },
+  };
+  codingSheet.getRange(
+    `${columnLetter(projectEnd)}2:${columnLetter(projectEnd)}${values.length}`,
+  ).format = { horizontalAlignment: "center" };
+
+  for (const [start, end] of [[processStart, positionStart - 1], [issueStart, issueEnd]]) {
+    const binaryRange = codingSheet.getRange(
+      `${columnLetter(start)}2:${columnLetter(end)}${values.length}`,
+    );
+    binaryRange.dataValidation = {
+      rule: { type: "list", values: ["0", "1", "unclear"] },
+    };
+    binaryRange.format = { horizontalAlignment: "center" };
+  }
+
+  const positionRange = codingSheet.getRange(
+    `${columnLetter(positionStart)}2:${columnLetter(positionEnd)}${values.length}`,
+  );
+  positionRange.dataValidation = {
+    rule: {
+      type: "list",
+      values: ["none_or_procedural", "support_or_request", "opposition", "unclear"],
+    },
+  };
+  positionRange.format = { horizontalAlignment: "center" };
+
+  const countRange = codingSheet.getRange(
+    `${columnLetter(countStart)}2:${columnLetter(actorEnd)}${values.length}`,
+  );
+  countRange.dataValidation = {
+    rule: { type: "whole", operator: "between", formula1: 0, formula2: 999 },
+  };
+  countRange.format = {
+    horizontalAlignment: "center",
+    numberFormat: "0",
+  };
 
   const confidenceColumn = columnLetter(columns.indexOf("coding_confidence") + 1);
   codingSheet.getRange(`${confidenceColumn}2:${confidenceColumn}${values.length}`).dataValidation = {
@@ -468,12 +535,19 @@ async function writeCoderWorkbook(coder) {
     vote_year: 9,
     application_number: 17,
     open_report: 12,
+    specific_project: 15,
+    dev_direction: 16,
     sample_group: 14,
     shared_id: 10,
     document_id: 22,
     action_code: 10,
     community_district: 16,
-    other_issue_codes: 28,
+    councilmember_position: 23,
+    civic_group_position: 23,
+    cpc_support_speakers: 19,
+    cpc_opposition_speakers: 21,
+    cb_support_votes: 17,
+    cb_opposition_votes: 19,
     evidence_pages: 14,
     evidence_summary: 42,
     coding_confidence: 14,
@@ -495,22 +569,46 @@ async function writeCoderWorkbook(coder) {
       "Use 0 when the report does not support the definition.",
       "Use unclear sparingly. A blank cell means not yet coded.",
     ],
-    ...binaryLabels.map((label) => [
-      label.section,
-      label.name,
-      "0, 1, unclear",
-      label.one,
-      label.zero,
-      label.note,
-    ]),
-    [
-      "Review",
-      "other_issue_codes",
-      "free text",
-      "",
-      "",
-      "Optional semicolon-separated issues not captured by the six issue labels.",
-    ],
+    ...codingLabels.map((label) => {
+      if (label.type === "binary") {
+        return [
+          label.section,
+          label.name,
+          "0, 1, unclear",
+          label.one,
+          label.zero,
+          label.note,
+        ];
+      }
+      if (label.type === "direction") {
+        return [
+          label.section,
+          label.name,
+          "upzone, downzone, mixed, none",
+          `upzone: ${label.upzone}; downzone: ${label.downzone}`,
+          `mixed: ${label.mixed}; none: ${label.none}`,
+          label.note,
+        ];
+      }
+      if (label.type === "count") {
+        return [
+          label.section,
+          label.name,
+          "nonnegative integer or blank",
+          label.rule,
+          "Leave blank when the report does not provide an exact count.",
+          label.note,
+        ];
+      }
+      return [
+          label.section,
+          label.name,
+          "none_or_procedural, support_or_request, opposition, unclear",
+          `support_or_request: ${label.support}; opposition: ${label.opposition}`,
+          `none_or_procedural: ${label.none}`,
+          label.note,
+        ];
+    }),
     [
       "Review",
       "evidence_pages",
@@ -541,7 +639,7 @@ async function writeCoderWorkbook(coder) {
       "0, 1",
       "",
       "",
-      "Enter 1 only after every binary label and the evidence fields are complete.",
+      "Enter 1 only after every coding field and the evidence fields are complete.",
     ],
     [
       "Review",
@@ -553,7 +651,7 @@ async function writeCoderWorkbook(coder) {
     ],
   ];
   const codebookValues = [
-    ["section", "variable", "allowed_values", "enter_1_when", "enter_0_when", "notes"],
+    ["section", "variable", "allowed_values", "coding_rule", "absence_rule", "notes"],
     ...codebookRows,
   ];
   codebookSheet.getRange(`A1:F${codebookValues.length}`).values = codebookValues;
@@ -586,24 +684,23 @@ async function writeCoderWorkbook(coder) {
   const outputPath = `../output/cpc_llm_training_labels_${coder}.xlsx`;
   await output.save(temporaryPath);
   await fs.rm(`${temporaryPath}.inspect.ndjson`, { force: true });
+  await fs.rm(extractedPath, { recursive: true, force: true });
   execFileSync("unzip", ["-o", "-q", temporaryPath, "-d", extractedPath]);
 
   const worksheetPath = `${extractedPath}/xl/worksheets/sheet1.xml`;
-  const hyperlinkCache = new RegExp(
-    '(<x:c r="E\\d+"[^>]*?) t="e">' +
-      '(<x:f>HYPERLINK\\([^<]+\\)<\\/x:f>)' +
-      '<x:v>HYPERLINK is not implemented\\.[^<]*friendlyName=Open PDF' +
-      '<\\/x:v><\\/x:c>',
-    "g",
-  );
   let worksheetXml = await fs.readFile(worksheetPath, "utf8");
-  const hyperlinkCount = [...worksheetXml.matchAll(hyperlinkCache)].length;
-  if (hyperlinkCount !== coderRows.length) {
-    throw new Error(`Expected ${coderRows.length} hyperlink cells, found ${hyperlinkCount}.`);
+  if (
+    worksheetXml.includes("<x:hyperlinks") ||
+    !worksheetXml.includes("</x:dataValidations>")
+  ) {
+    throw new Error("Could not identify the Coding sheet hyperlink position.");
   }
+  const hyperlinks = coderRows.map((row, index) =>
+    `<x:hyperlink ref="E${index + 2}" r:id="rIdPdf${index + 2}"/>`,
+  ).join("");
   worksheetXml = worksheetXml.replace(
-    hyperlinkCache,
-    '$1 t="str">$2<x:v>Open PDF</x:v></x:c>',
+    "</x:dataValidations>",
+    `</x:dataValidations><x:hyperlinks xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">${hyperlinks}</x:hyperlinks>`,
   );
 
   const sheetView =
@@ -622,6 +719,27 @@ async function writeCoderWorkbook(coder) {
   }
   worksheetXml = worksheetXml.replace(sheetView, codingSheetView);
   await fs.writeFile(worksheetPath, worksheetXml, "utf8");
+
+  const worksheetRelationshipsPath =
+    `${extractedPath}/xl/worksheets/_rels/sheet1.xml.rels`;
+  let worksheetRelationshipsXml = await fs.readFile(worksheetRelationshipsPath, "utf8");
+  if (!worksheetRelationshipsXml.includes("</Relationships>")) {
+    throw new Error("Could not identify the Coding sheet relationships.");
+  }
+  const hyperlinkRelationships = coderRows.map((row, index) =>
+    '<Relationship Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink" ' +
+    `Target="${xmlAttribute(row.official_pdf_url)}" ` +
+    `TargetMode="External" Id="rIdPdf${index + 2}" />`,
+  ).join("");
+  worksheetRelationshipsXml = worksheetRelationshipsXml.replace(
+    "</Relationships>",
+    `${hyperlinkRelationships}</Relationships>`,
+  );
+  await fs.writeFile(
+    worksheetRelationshipsPath,
+    worksheetRelationshipsXml,
+    "utf8",
+  );
 
   const codebookPath = `${extractedPath}/xl/worksheets/sheet2.xml`;
   let codebookXml = await fs.readFile(codebookPath, "utf8");
@@ -647,41 +765,82 @@ async function writeCoderWorkbook(coder) {
 }
 
 function writeGuide() {
-  const guide = `# CPC manual-label example: Piers 35 and 36
+  const guide = String.raw`\documentclass[10pt]{article}
+\usepackage[margin=0.65in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{ragged2e}
+\usepackage[table]{xcolor}
+\usepackage[colorlinks=true,urlcolor=blue]{hyperref}
 
-Use [C 920019 PSM (1992)](https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/920019.pdf) as the shared reference. The useful review narrative is on printed pages 16-24. This is a strong example because the report records CB, BP, councilmember, business, and resident opposition, followed by a materially revised application.
+\newcolumntype{L}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+\renewcommand{\arraystretch}{1.16}
+\setlength{\LTpre}{0pt}
+\setlength{\LTpost}{0pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
 
-Enter \`1\` only when the report supports the label, \`0\` when it does not, and \`unclear\` only when the report cannot resolve the question. Do not infer a causal response from timing alone.
+\begin{document}
 
-| Section | Label | Code | Where the decision comes from |
-|---|---|---:|---|
-| Process | \`local_opposition\` | 1 | CB3 unanimously recommended disapproval (p. 16); 15 speakers opposed at CPC, including elected officials, businesses, and residents (pp. 17-19). |
-| Process | \`local_request_condition\` | 1 | Local actors sought rejection, alternatives, reduced vehicle concentration, and waterfront access (pp. 16-19). |
-| Process | \`precert_local_change\` | 0 | The report does not say local input changed the proposal before certification. |
-| Process | \`project_revised\` | 1 | The August 7 amendment removed multi-agency fueling, reduced uses and vehicles, added an esplanade, and imposed a seven-year limit (pp. 1, 5-6, 23-24). |
-| Process | \`commitment_mitigation\` | 1 | DGS committed to use and vehicle limits and a continuous public esplanade (pp. 23-24). |
-| Process | \`process_study_response\` | 0 | The adopted response was a project change, not merely a study, task force, monitoring, or future consultation. |
-| Process | \`explicit_local_response\` | 1 | The report names BP, legislators, Council members, and the local community, then says DGS changed the proposal “in response to these concerns” (pp. 23-24). |
-| Process | \`approved_unresolved_objection\` | 0 | CPC describes a revised proposal; it does not expressly reject or defer a specific remaining local demand in its decision. |
-| Actors | \`cb_substantive\` | 1 | CB3 adopted a detailed resolution (p. 16). |
-| Actors | \`cb_opposition\` | 1 | CB3 recommended disapproval 35-0 (p. 16). |
-| Actors | \`bp_substantive\` | 1 | The Manhattan BP issued a substantive recommendation (p. 17). |
-| Actors | \`bp_opposition\` | 1 | The BP recommended disapproval and testified in opposition (p. 17). |
-| Actors | \`councilmember_substantive\` | 1 | Council members from the 1st and 2nd Districts appeared in the opposition record (pp. 17, 19). |
-| Actors | \`councilmember_opposition\` | 1 | The report explicitly lists those council members among opposition speakers (pp. 17, 19). |
-| Actors | \`civic_group_substantive\` | 1 | Local business and community representatives presented substantive positions (pp. 17-19). |
-| Actors | \`civic_group_opposition\` | 1 | Those organizations and businesses appear in the opposition testimony (pp. 17-19). |
-| Actors | \`council_institutional_action\` | 0 | Individual members and a Council President representative appear, but the report does not describe a formal Council vote or modification. |
-| Issues | \`affordability_displacement\` | 0 | References to a low-income neighborhood do not by themselves make affordability or displacement a review issue. |
-| Issues | \`traffic_parking\` | 1 | Opponents focused on vehicle concentration, parking, fueling, and traffic effects (pp. 17-19, 23-24). |
-| Issues | \`scale_height_character\` | 1 | The size and compatibility of the facility with the surrounding residential community were substantive objections (pp. 17-19). |
-| Issues | \`infrastructure_services\` | 1 | The dispute concerned the siting and scale of sanitation, health, and municipal vehicle facilities (pp. 16-24). |
-| Issues | \`environment_open_space\` | 1 | Waterfront use, environmental effects, and public esplanade access were central issues (pp. 17-24). |
-| Issues | \`historic_preservation\` | 0 | No substantive historic-preservation issue appears. |
+\section*{CPC manual-label example: Piers 35 and 36}
 
-For \`other_issue_codes\`, a concise entry would be \`fueling;waterfront_use;municipal_facility_siting\`. For \`evidence_summary\`, one sentence is enough: “CB3, the BP, councilmembers, businesses, and residents opposed the facility; after review, DGS removed multi-agency fueling, reduced the program, added an esplanade, and limited new uses to seven years.”
-`;
-  return fs.writeFile("../output/cpc_llm_training_label_guide.md", `${guide.trim()}\n`, "utf8");
+Use \href{https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/920019.pdf}{C 920019 PSM (1992)} as the shared reference. The useful review narrative is on printed pages 16--24. This report records CB, BP, councilmember, business, and resident opposition followed by a materially revised application.
+
+Binary fields use \texttt{1}, \texttt{0}, or \texttt{unclear}.
+
+The development-direction field uses \texttt{upzone}, \texttt{downzone}, \texttt{mixed}, or \texttt{none} and describes the application, not the local position.
+
+Actor-position fields use \nolinkurl{none_or_procedural}, \nolinkurl{support_or_request}, \texttt{opposition}, or \texttt{unclear}. Code only what the report documents; do not infer a causal response from timing alone.
+
+Count fields record reported speaker appearances across all CPC hearing dates and formal Community Board vote totals. Use zero only when the report establishes zero; leave the cell blank when the count is not reported. Written testimony does not count as a speaker. A person who speaks at two hearing dates may be counted twice because the report does not identify every speaker.
+
+\footnotesize
+\begin{longtable}{@{}L{0.08\textwidth}L{0.22\textwidth}L{0.12\textwidth}L{0.50\textwidth}@{}}
+\toprule
+\rowcolor{gray!15}
+\textbf{Section} & \textbf{Label} & \textbf{Code} & \textbf{Evidence} \\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{gray!15}
+\textbf{Section} & \textbf{Label} & \textbf{Code} & \textbf{Evidence} \\
+\midrule
+\endhead
+Project & \nolinkurl{specific_project} & \texttt{1} & The application concerns a concrete municipal-facility proposal at Piers 35 and 36. \\
+Project & \nolinkurl{dev_direction} & \texttt{mixed} & The proposal substantially changes facility uses but does not clearly increase or reduce permitted development capacity. \\
+Process & \nolinkurl{substantial_local_opposition} & \texttt{1} & CB3 unanimously recommended disapproval (p.~16); 15 speakers opposed at CPC, including elected officials, businesses, and residents (pp.~17--19). \\
+Process & \nolinkurl{local_request_condition} & \texttt{1} & Local actors sought rejection, alternatives, reduced vehicle concentration, and waterfront access (pp.~17--19). \\
+Process & \nolinkurl{revision_or_concession} & \texttt{1} & The amendment removed multi-agency fueling, reduced uses and vehicles, added an esplanade, and imposed a seven-year limit (pp.~1, 5--6, 23--24). \\
+Process & \nolinkurl{procedural_response} & \texttt{0} & The response did not include a study, task force, monitoring, reporting, outreach, or future consultation. \\
+Process & \nolinkurl{explicit_local_response} & \texttt{1} & The report names BP, legislators, Council members, and the local community, then says DGS changed the proposal "in response to these concerns" (pp.~23--24). \\
+Process & \nolinkurl{approved_unresolved_objection} & \texttt{0} & CPC describes a revised proposal; it does not expressly reject or defer a specific remaining local demand in its decision. \\
+Actors & \nolinkurl{cb_request_or_opposition} & \texttt{1} & CB3 recommended disapproval 35--0 and sought alternatives and changes (p.~16). \\
+Actors & \nolinkurl{bp_request_or_opposition} & \texttt{1} & The BP recommended disapproval and testified in opposition (p.~17). \\
+Actors & \nolinkurl{councilmember_position} & \texttt{opposition} & The report explicitly lists council members from the 1st and 2nd Districts among opposition speakers (pp.~17, 19). \\
+Actors & \nolinkurl{civic_group_position} & \texttt{opposition} & Named business and community organizations appear in the opposition testimony (pp.~17--19). \\
+Actors & \nolinkurl{cpc_support_speakers} & \texttt{14} & The two CPC hearing dates report eight and six speakers in favor (pp.~17--18). \\
+Actors & \nolinkurl{cpc_opposition_speakers} & \texttt{30} & The two CPC hearing dates each report fifteen speakers in opposition (pp.~17--18). \\
+Actors & \nolinkurl{cb_support_votes} & \texttt{0} & CB3 recommended disapproval by a vote of 35--0 (p.~16). \\
+Actors & \nolinkurl{cb_opposition_votes} & \texttt{35} & CB3 recommended disapproval by a vote of 35--0 (p.~16). \\
+Issues & \nolinkurl{affordability_displacement} & \texttt{0} & References to a low-income neighborhood do not by themselves make affordability or displacement a review issue. \\
+Issues & \nolinkurl{traffic_parking} & \texttt{1} & Opponents focused on vehicle concentration, parking, fueling, and traffic effects (pp.~17--19, 23--24). \\
+Issues & \nolinkurl{scale_character_preservation} & \texttt{1} & The facility's size and compatibility with the surrounding residential community were substantive objections (pp.~17--19). \\
+Issues & \nolinkurl{infrastructure_services} & \texttt{1} & The dispute concerned the siting and scale of sanitation, health, and municipal vehicle facilities (pp.~16--24). \\
+Issues & \nolinkurl{environment_open_space} & \texttt{1} & Waterfront use, environmental effects, and public esplanade access were central issues (pp.~17--24). \\
+\bottomrule
+\end{longtable}
+
+\normalsize
+\textbf{Evidence summary example.} "CB3, the BP, councilmembers, businesses, and residents opposed the facility; after review, DGS removed multi-agency fueling, reduced the program, added an esplanade, and limited new uses to seven years."
+
+\end{document}`;
+  return fs.writeFile(
+    "../output/cpc_llm_training_label_guide.tex",
+    `${guide.trim()}\n`,
+    "utf8",
+  );
 }
 
 if (outputKind === "guide") {
