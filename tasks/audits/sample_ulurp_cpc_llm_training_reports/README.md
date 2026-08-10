@@ -1,13 +1,22 @@
 # Sample ULURP CPC LLM Training Reports
 
 This audit draws two independent manual-coding samples from the comparable CPC
-narrative universe through 2025. Each workbook contains 300 reports: 100 shared
-reports for inter-coder agreement and 200 reports unique to that coder.
+narrative universe through 2025. Each workbook contains 200 reports: 100 shared
+reports for inter-coder agreement and 100 reports unique to that coder.
 
-The sample is balanced across vote years, with stable random selection within
-year. Previously coded full reports are excluded so the existing validation
-labels remain available for model evaluation. The workbooks contain no
-rule-based or model-generated suggestions.
+The shared reports and unique candidate pools preserve the original sample.
+Within each coder's unique pool, selection remains balanced across vote years
+and prioritizes ZM/ZR/ZS reports, then other non-disposition reports, then PP
+reports. Longer narratives receive priority within those groups. This retains
+substantive review histories while avoiding a training sample dominated by
+routine dispositions. Previously coded full reports are excluded so the
+existing validation labels remain available for model evaluation. The
+workbooks contain no rule-based or model-generated coding suggestions.
+
+Jacob's first 50 reports and the ten shared calibration reports remain at the
+top in their existing order. All other shared reports follow before the
+remaining coder-specific reports. Jacob's committed labels are restored by
+document ID when the workbook is rebuilt.
 
 Each report has 21 required coding fields covering the proposal, local demands,
 revisions or concessions, unresolved objections, key actors, and five defined

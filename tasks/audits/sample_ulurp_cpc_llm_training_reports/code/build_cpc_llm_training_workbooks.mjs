@@ -6,29 +6,37 @@ import fs from "node:fs/promises";
 import { SpreadsheetFile, Workbook } from "@oai/artifact-tool";
 
 const cliArgs = process.argv.slice(2);
-if (cliArgs.length !== 6) {
+if (cliArgs.length !== 8) {
   throw new Error(
     "Usage: node build_cpc_llm_training_workbooks.mjs " +
     "<start_year> <end_year> <common_reports> " +
-    "<unique_reports_per_coder> <sample_seed> <jacob|tyler|guide>",
+    "<unique_candidates_per_coder> <unique_reports_per_coder> " +
+    "<preserved_jacob_reports> <sample_seed> <jacob|tyler|guide>",
   );
 }
 
 const startYear = Number(cliArgs[0]);
 const endYear = Number(cliArgs[1]);
 const commonReports = Number(cliArgs[2]);
-const uniqueReportsPerCoder = Number(cliArgs[3]);
-const sampleSeed = cliArgs[4];
-const outputKind = cliArgs[5];
+const uniqueCandidatesPerCoder = Number(cliArgs[3]);
+const uniqueReportsPerCoder = Number(cliArgs[4]);
+const preservedJacobReports = Number(cliArgs[5]);
+const sampleSeed = cliArgs[6];
+const outputKind = cliArgs[7];
 
 if (
   !Number.isInteger(startYear) ||
   !Number.isInteger(endYear) ||
   !Number.isInteger(commonReports) ||
+  !Number.isInteger(uniqueCandidatesPerCoder) ||
   !Number.isInteger(uniqueReportsPerCoder) ||
+  !Number.isInteger(preservedJacobReports) ||
   startYear > endYear ||
   commonReports < 1 ||
+  uniqueCandidatesPerCoder < uniqueReportsPerCoder ||
   uniqueReportsPerCoder < 1 ||
+  preservedJacobReports < 0 ||
+  preservedJacobReports > commonReports + uniqueReportsPerCoder ||
   !["jacob", "tyler", "guide"].includes(outputKind)
 ) {
   throw new Error("Invalid CPC training-sample arguments.");
@@ -269,7 +277,7 @@ if (new Set(sampleFrame.map((row) => row.document_id)).size !== sampleFrame.leng
   throw new Error("The CPC sample frame contains duplicate document_id values.");
 }
 
-const totalReports = commonReports + 2 * uniqueReportsPerCoder;
+const totalReports = commonReports + 2 * uniqueCandidatesPerCoder;
 const yearCount = endYear - startYear + 1;
 if (totalReports % yearCount !== 0) {
   throw new Error("The requested sample cannot be distributed evenly across years.");
@@ -295,7 +303,7 @@ for (let year = startYear; year <= endYear; year += 1) {
     selectedYearReports * commonReports / totalReports,
   );
   const jacobYearReports = Math.round(
-    selectedYearReports * uniqueReportsPerCoder / totalReports,
+    selectedYearReports * uniqueCandidatesPerCoder / totalReports,
   );
   const tylerYearReports = selectedYearReports - commonYearReports - jacobYearReports;
 
@@ -334,8 +342,8 @@ if (carriedShortfall !== 0) {
 }
 if (
   assignments.common.length !== commonReports ||
-  assignments.jacob.length !== uniqueReportsPerCoder ||
-  assignments.tyler.length !== uniqueReportsPerCoder
+  assignments.jacob.length !== uniqueCandidatesPerCoder ||
+  assignments.tyler.length !== uniqueCandidatesPerCoder
 ) {
   throw new Error("The annual sample allocation did not produce the requested coder totals.");
 }
@@ -360,7 +368,7 @@ if ([...calibrationOrder.keys()].some((sharedId) => !commonIdValues.has(sharedId
 
 async function writeCoderWorkbook(coder) {
   const reviewPrefix = coder === "jacob" ? "J" : "T";
-  const coderRows = [
+  const originalRows = [
     ...assignments.common.map((row) => ({ ...row, sample_group: "common" })),
     ...assignments[coder].map((row) => ({ ...row, sample_group: `${coder}_only` })),
   ]
@@ -379,11 +387,70 @@ async function writeCoderWorkbook(coder) {
       return stableHash(`${left.document_id}|${sampleSeed}|${coder}|workbook-order`).localeCompare(
         stableHash(`${right.document_id}|${sampleSeed}|${coder}|workbook-order`),
       );
-    })
-    .map((row, index) => ({
-      ...row,
-      review_id: `${reviewPrefix}${String(index + 1).padStart(3, "0")}`,
-    }));
+    });
+
+  const preservedReports = coder === "jacob" ? preservedJacobReports : calibrationOrder.size;
+  const preservedRows = originalRows.slice(0, preservedReports);
+  const preservedIds = new Set(preservedRows.map((row) => row.document_id));
+  const remainingCommonRows = originalRows.filter(
+    (row) => row.sample_group === "common" && !preservedIds.has(row.document_id),
+  );
+  const selectedUniqueRows = preservedRows.filter((row) => row.sample_group !== "common");
+  const selectedUniqueIds = new Set(selectedUniqueRows.map((row) => row.document_id));
+  const uniqueYearCounts = new Map();
+  for (const row of selectedUniqueRows) {
+    const year = Number(row.official_vote_year);
+    uniqueYearCounts.set(year, (uniqueYearCounts.get(year) ?? 0) + 1);
+  }
+
+  const remainingUniqueRows = originalRows.filter(
+    (row) => row.sample_group !== "common" && !selectedUniqueIds.has(row.document_id),
+  );
+  while (selectedUniqueRows.length < uniqueReportsPerCoder) {
+    remainingUniqueRows.sort((left, right) => {
+      const leftYear = Number(left.official_vote_year);
+      const rightYear = Number(right.official_vote_year);
+      const yearCountDifference =
+        (uniqueYearCounts.get(leftYear) ?? 0) - (uniqueYearCounts.get(rightYear) ?? 0);
+      if (yearCountDifference !== 0) return yearCountDifference;
+      const groupOrder = { zoning: 0, other: 1, property_disposition: 2 };
+      const groupDifference =
+        groupOrder[applicationGroup(left.action_code)] -
+        groupOrder[applicationGroup(right.action_code)];
+      if (groupDifference !== 0) return groupDifference;
+      const wordDifference = Number(right.narrative_word_count) - Number(left.narrative_word_count);
+      if (wordDifference !== 0) return wordDifference;
+      return stableHash(`${left.document_id}|${sampleSeed}|priority`).localeCompare(
+        stableHash(`${right.document_id}|${sampleSeed}|priority`),
+      );
+    });
+    const selectedRow = remainingUniqueRows.shift();
+    if (!selectedRow) throw new Error(`The ${coder} unique candidate pool is too small.`);
+    selectedUniqueRows.push(selectedRow);
+    const year = Number(selectedRow.official_vote_year);
+    uniqueYearCounts.set(year, (uniqueYearCounts.get(year) ?? 0) + 1);
+  }
+
+  const coderRows = [
+    ...preservedRows,
+    ...remainingCommonRows,
+    ...selectedUniqueRows.filter((row) => !preservedIds.has(row.document_id)),
+  ].map((row, index) => ({
+    ...row,
+    review_id: `${reviewPrefix}${String(index + 1).padStart(3, "0")}`,
+  }));
+
+  if (
+    coderRows.length !== commonReports + uniqueReportsPerCoder ||
+    new Set(coderRows.map((row) => row.document_id)).size !== coderRows.length
+  ) {
+    throw new Error(`The ${coder} workbook does not contain the requested unique reports.`);
+  }
+
+  const savedRows = coder === "jacob"
+    ? await readCsvRecords("../input/ulurp_cpc_training_labels_jacob.csv", "JacobLabels")
+    : [];
+  const savedByDocumentId = new Map(savedRows.map((row) => [row.document_id, row]));
 
   const workbook = Workbook.create();
   const codingSheet = workbook.worksheets.add("Coding");
@@ -410,24 +477,27 @@ async function writeCoderWorkbook(coder) {
 
   const values = [
     columns,
-    ...coderRows.map((row) => [
+    ...coderRows.map((row) => {
+      const saved = savedByDocumentId.get(row.document_id);
+      return [
       row.review_id,
       row.project_name,
       Number(row.official_vote_year),
       row.application_number,
       "Open PDF",
-      ...codingLabels.map(() => null),
-      null,
-      null,
-      null,
-      null,
-      null,
+      ...codingLabels.map((label) => saved?.[label.name] ?? null),
+      saved?.evidence_pages ?? null,
+      saved?.evidence_summary ?? null,
+      saved?.coding_confidence ?? null,
+      saved?.coding_complete ?? null,
+      saved?.coder_notes ?? null,
       row.sample_group,
       row.shared_id,
       row.document_id,
       row.action_code,
       row.official_community_district,
-    ]),
+      ];
+    }),
   ];
 
   const finalColumn = columnLetter(columns.length);
