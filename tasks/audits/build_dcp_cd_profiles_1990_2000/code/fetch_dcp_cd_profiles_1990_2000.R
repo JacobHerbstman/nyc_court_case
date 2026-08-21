@@ -6,13 +6,6 @@ suppressPackageStartupMessages({
 
 source("../../../_lib/source_pipeline_utils.R")
 
-source_catalog <- read_csv("../input/source_catalog.csv", show_col_types = FALSE, na = c("", "NA"))
-source_row <- source_catalog %>% filter(source_id == "dcp_cd_profiles_1990_2000")
-
-if (nrow(source_row) != 1) {
-  stop("Source catalog must contain exactly one dcp_cd_profiles_1990_2000 row.")
-}
-
 profile_urls <- tibble(
   borough_code = c("bk", "bx", "mn", "qn", "si"),
   borough_name = c("Brooklyn", "Bronx", "Manhattan", "Queens", "Staten Island"),

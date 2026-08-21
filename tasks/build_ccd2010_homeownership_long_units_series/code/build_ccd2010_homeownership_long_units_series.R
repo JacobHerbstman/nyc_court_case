@@ -41,7 +41,7 @@ proxy_values <- read_csv("../input/ccdist2010_mappluto_construction_proxy_distri
     borough_code = as.character(borough_code),
     year = suppressWarnings(as.integer(yearbuilt))
   ) %>%
-  filter(year >= 1970, year <= 2025) %>%
+  filter(year >= 1910, year <= 2025) %>%
   select(district_id, council_district, borough_code, borough_name, year, all_of(proxy_map$value_column)) %>%
   pivot_longer(
     cols = all_of(proxy_map$value_column),
@@ -79,7 +79,7 @@ measure_attrs <- measure_df %>%
     majority_borough_occupied_share
   )
 
-series_df <- expand_grid(district_skeleton, year = 1970:2025, proxy_map) %>%
+series_df <- expand_grid(district_skeleton, year = 1910:2025, proxy_map) %>%
   left_join(
     proxy_values,
     by = c("district_id", "council_district", "borough_code", "borough_name", "year", "value_column"),

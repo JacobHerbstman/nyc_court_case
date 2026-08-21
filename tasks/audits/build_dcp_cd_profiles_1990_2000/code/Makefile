@@ -9,12 +9,9 @@ all: ../output/dcp_cd_profiles_1990_2000_files.csv
 ../output/dcp_cd_profiles_1990_2000_raw_files.csv: load_dcp_cd_profiles_1990_2000_raw.py ../output/dcp_cd_profiles_1990_2000_source_files.csv | ../output
 	python3 $<
 
-../output/dcp_cd_profiles_1990_2000_source_files.csv: fetch_dcp_cd_profiles_1990_2000.R ../input/source_catalog.csv | ../output
+../output/dcp_cd_profiles_1990_2000_source_files.csv: fetch_dcp_cd_profiles_1990_2000.R | ../output
 	$(R) $<
 
-../input/source_catalog.csv: ../../../source_registry/code/source_catalog.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
-
-link-inputs: ../input/source_catalog.csv
+link-inputs:
 
 include ../../generic.make

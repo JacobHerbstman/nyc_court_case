@@ -139,7 +139,9 @@ if (nrow(required_tercile_series_gaps) > 0) {
   stop("Required long-units tercile series do not have exactly three terciles in every year.")
 }
 
-tercile_year_ma3_df <- make_centered_moving_average(tercile_year_df, 3)
+tercile_year_ma3_df <- tercile_year_df %>%
+  filter(year >= 1970, year <= 2025) %>%
+  make_centered_moving_average(3)
 
 brooklyn_rank_base_df <- preferred_df %>%
   filter(
@@ -168,7 +170,11 @@ if (nrow(brooklyn_rank_units_df) != 16) {
 }
 
 tercile_units_plot_ma3_df <- tercile_year_ma3_df %>%
-  filter(series_family %in% c("units_built_total", "units_built_50_plus")) %>%
+  filter(
+    series_family %in% c("units_built_total", "units_built_50_plus"),
+    year >= 1970,
+    year <= 2025
+  ) %>%
   mutate(
     treat_tercile_label = factor(treat_tercile_label, levels = c("Low", "Middle", "High")),
     series_label = factor(series_label, levels = c("Units built: total", "Units built: 50+"))
@@ -205,7 +211,7 @@ pdf("../output/ccdist2010_homeownership_long_units_raw_units_plots.pdf", width =
 print(
   ggplot(tercile_units_plot_ma3_df, aes(x = year, y = outcome_value_ma, color = treat_tercile_label, group = treat_tercile_label)) +
     geom_line(linewidth = 0.9) +
-    geom_vline(xintercept = 2010, linetype = "dashed", color = "#666666") +
+    geom_vline(xintercept = 1990, linetype = "dashed", color = "#666666") +
     facet_wrap(~series_label, scales = "free_y", ncol = 1) +
     scale_color_manual(values = c("Low" = "#3366CC", "Middle" = "#999999", "High" = "#CC3311")) +
     scale_y_continuous(labels = comma_label) +

@@ -7,13 +7,17 @@ suppressPackageStartupMessages({
 
 source("../../../_lib/source_pipeline_utils.R")
 
-standard_cd <- read_csv("../input/cd_homeownership_1990_measure.csv", show_col_types = FALSE, na = c("", "NA")) |>
-  transmute(
-    borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
-    borough_code = suppressWarnings(as.integer(borough_code)),
-    borough_name = borough_name
-  ) |>
-  distinct()
+standard_cd <- tibble(
+  borocd = c(
+    sprintf("1%02d", 1:12),
+    sprintf("2%02d", 1:12),
+    sprintf("3%02d", 1:18),
+    sprintf("4%02d", 1:14),
+    sprintf("5%02d", 1:3)
+  ),
+  borough_code = rep(1:5, c(12, 12, 18, 14, 3)),
+  borough_name = rep(c("Manhattan", "Bronx", "Brooklyn", "Queens", "Staten Island"), c(12, 12, 18, 14, 3))
+)
 
 if (anyDuplicated(standard_cd$borocd)) {
   stop("Treatment input is not unique by borocd.")
@@ -50,7 +54,7 @@ lot_level <- current_df |>
   filter(
     !is_joint_interest_area,
     !is.na(borocd),
-    yearbuilt >= 1980,
+    yearbuilt >= 1910,
     yearbuilt <= 2025,
     unitsres > 0
   ) |>
@@ -106,7 +110,7 @@ panel_base <- lot_level |>
 
 panel <- expand_grid(
   standard_cd |> select(borocd, borough_code, borough_name),
-  yearbuilt = 1980:2025
+  yearbuilt = 1910:2025
 ) |>
   left_join(panel_base, by = c("borocd", "borough_code", "borough_name", "yearbuilt"), relationship = "one-to-one") |>
   mutate(

@@ -15,7 +15,8 @@ all: \
 	../output/cd_homeownership_long_units_projects_50_plus_counts_ma5.pdf \
 	../output/cd_homeownership_long_units_total_unit_counts.pdf \
 	../output/cd_homeownership_long_units_total_unit_counts_ma3.pdf \
-	../output/cd_homeownership_long_units_total_unit_counts_ma5.pdf
+	../output/cd_homeownership_long_units_total_unit_counts_ma5.pdf \
+	../output/cd_homeownership_historical_decade_units_plot.pdf
 
 ../output/cd_homeownership_long_units_city_year.csv: summarize_cd_homeownership_long_units_series.R ../input/cd_homeownership_long_units_series.csv ../input/mappluto_construction_proxy_cd_year.csv | ../output
 	Rscript --vanilla $<
@@ -38,12 +39,18 @@ all: \
 ../output/cd_homeownership_long_units_total_unit_counts_ma5.pdf: ../output/cd_homeownership_long_units_city_year.csv
 	@test -s "$@"
 
+../output/cd_homeownership_historical_decade_units_plot.pdf: plot_cd_homeownership_historical_decades.R ../input/cd_homeownership_1990_measure.csv ../input/mappluto_construction_proxy_cd_year.csv | ../output
+	Rscript --vanilla $<
+
 ../input/cd_homeownership_long_units_series.csv: ../../build_cd_homeownership_long_units_series/output/cd_homeownership_long_units_series.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/mappluto_construction_proxy_cd_year.csv: ../../build_mappluto_construction_proxy/output/mappluto_construction_proxy_cd_year.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-link-inputs: ../input/cd_homeownership_long_units_series.csv ../input/mappluto_construction_proxy_cd_year.csv
+../input/cd_homeownership_1990_measure.csv: ../../build_cd_homeownership_1990_measure/output/cd_homeownership_1990_measure.csv | ../input
+	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+
+link-inputs: ../input/cd_homeownership_long_units_series.csv ../input/mappluto_construction_proxy_cd_year.csv ../input/cd_homeownership_1990_measure.csv
 
 include ../../generic.make
