@@ -46,33 +46,61 @@ if (moving_window_years < 1 || moving_window_years %% 2 == 0) {
 }
 
 signal_families <- c(
-  "revision_concession",
-  "opposition_any",
-  "conditions_commitments",
+  "substantial_local_opposition",
+  "local_request_condition",
+  "revision_or_concession",
+  "procedural_response",
+  "explicit_local_response",
+  "approved_unresolved_objection",
+  "cb_request_or_opposition",
+  "bp_request_or_opposition",
+  "councilmember_support_or_request",
+  "councilmember_opposition",
+  "civic_group_support_or_request",
+  "civic_group_opposition",
+  "affordability_displacement",
+  "traffic_parking",
+  "scale_character_preservation",
+  "infrastructure_services",
+  "environment_open_space",
   "restrictive_declaration",
-  "substantive_council_member",
-  "attribution_council_member",
-  "community_board_disapproval",
-  "community_board_conditioned_approval",
-  "opposition_traffic_parking",
-  "opposition_scale_character",
-  "opposition_displacement_affordability",
-  "opposition_infrastructure"
+  "points_of_agreement"
 )
 
 signal_labels <- c(
-  revision_concession = "Revision/concession",
-  opposition_any = "Any opposition",
-  conditions_commitments = "Conditions/commitments",
+  substantial_local_opposition = "Substantial local opposition",
+  local_request_condition = "Substantive local request",
+  revision_or_concession = "Revision/concession",
+  procedural_response = "Procedural response",
+  explicit_local_response = "Explicit response to local actor",
+  approved_unresolved_objection = "Approved with objection unresolved",
+  cb_request_or_opposition = "CB request/opposition",
+  bp_request_or_opposition = "BP request/opposition",
+  councilmember_support_or_request = "Councilmember support/request",
+  councilmember_opposition = "Councilmember opposition",
+  civic_group_support_or_request = "Civic-group support/request",
+  civic_group_opposition = "Civic-group opposition",
+  affordability_displacement = "Affordability/displacement",
+  traffic_parking = "Traffic/parking",
+  scale_character_preservation = "Scale/character/preservation",
+  infrastructure_services = "Infrastructure/services",
+  environment_open_space = "Environment/open space",
   restrictive_declaration = "Restrictive declaration",
-  substantive_council_member = "Substantive Council mention",
-  attribution_council_member = "Council attribution",
-  community_board_disapproval = "Community Board disapproval",
-  community_board_conditioned_approval = "Community Board conditioned approval",
-  opposition_traffic_parking = "Traffic/parking opposition",
-  opposition_scale_character = "Scale/character opposition",
-  opposition_displacement_affordability = "Displacement/affordability opposition",
-  opposition_infrastructure = "Infrastructure opposition"
+  points_of_agreement = "Points of agreement"
+)
+
+count_fields <- c(
+  "cpc_support_speakers",
+  "cpc_opposition_speakers",
+  "cb_support_votes",
+  "cb_opposition_votes"
+)
+
+count_labels <- c(
+  cpc_support_speakers = "CPC speakers in support",
+  cpc_opposition_speakers = "CPC speakers in opposition",
+  cb_support_votes = "CB votes supporting approval",
+  cb_opposition_votes = "CB votes supporting disapproval"
 )
 
 community_district_corrections <- read_csv(
@@ -90,13 +118,19 @@ if (
 }
 
 text_labels <- read_csv(
-  "../temp/ulurp_cpc_text_labels.csv",
+  "../output/ulurp_cpc_text_labels.csv",
   col_types = cols(.default = col_character()),
   show_col_types = FALSE,
   na = c("", "NA")
 ) |>
   mutate(
     year = suppressWarnings(as.integer(year)),
+    narrative_word_count = suppressWarnings(as.integer(narrative_word_count)),
+    across(all_of(count_fields), ~ suppressWarnings(as.integer(.x))),
+    councilmember_support_or_request = as.integer(councilmember_position == "support_or_request"),
+    councilmember_opposition = as.integer(councilmember_position == "opposition"),
+    civic_group_support_or_request = as.integer(civic_group_position == "support_or_request"),
+    civic_group_opposition = as.integer(civic_group_position == "opposition"),
     across(all_of(signal_families), ~ suppressWarnings(as.integer(.x)))
   ) |>
   filter(
@@ -497,6 +531,21 @@ signal_assignment <- assignment |>
     values_to = "signal_hit"
   )
 
+count_assignment <- assignment |>
+  select(
+    document_id,
+    official_vote_year,
+    homeowner_tercile,
+    homeowner_tercile_label,
+    assignment_weight
+  ) |>
+  left_join(
+    documents |>
+      select(document_id, narrative_word_count, all_of(count_fields)),
+    by = "document_id",
+    relationship = "many-to-one"
+  )
+
 observed_tercile_year <- signal_assignment |>
   group_by(official_vote_year, homeowner_tercile, homeowner_tercile_label, signal_family) |>
   summarize(
@@ -566,6 +615,101 @@ tercile_year <- expand_grid(
   ungroup() |>
   arrange(match(signal_family, signal_families), official_vote_year, homeowner_tercile)
 
+observed_count_year <- count_assignment |>
+  pivot_longer(
+    cols = all_of(count_fields),
+    names_to = "count_field",
+    values_to = "count_value"
+  ) |>
+  group_by(official_vote_year, homeowner_tercile, homeowner_tercile_label, count_field) |>
+  summarize(
+    weighted_document_count = sum(assignment_weight),
+    weighted_reported_document_count = sum(assignment_weight * !is.na(count_value)),
+    weighted_reported_total = sum(assignment_weight * coalesce(count_value, 0)),
+    .groups = "drop"
+  )
+
+count_year <- expand_grid(
+  official_vote_year = start_year:end_year,
+  homeowner_tercile = 1:3,
+  count_field = count_fields
+) |>
+  left_join(
+    tercile_district_counts |>
+      select(-council_district_count),
+    by = "homeowner_tercile",
+    relationship = "many-to-one"
+  ) |>
+  left_join(
+    observed_count_year,
+    by = c("official_vote_year", "homeowner_tercile", "homeowner_tercile_label", "count_field"),
+    relationship = "one-to-one"
+  ) |>
+  mutate(
+    weighted_document_count = coalesce(weighted_document_count, 0),
+    weighted_reported_document_count = coalesce(weighted_reported_document_count, 0),
+    weighted_reported_total = coalesce(weighted_reported_total, 0),
+    count_label = unname(count_labels[count_field])
+  ) |>
+  group_by(count_field, count_label, homeowner_tercile, homeowner_tercile_label) |>
+  arrange(official_vote_year, .by_group = TRUE) |>
+  mutate(
+    moving_window_weighted_document_count = centered_sum(
+      official_vote_year,
+      weighted_document_count,
+      moving_window_years
+    ),
+    moving_window_weighted_reported_document_count = centered_sum(
+      official_vote_year,
+      weighted_reported_document_count,
+      moving_window_years
+    ),
+    moving_window_weighted_reported_total = centered_sum(
+      official_vote_year,
+      weighted_reported_total,
+      moving_window_years
+    ),
+    reported_document_share_moving_window = if_else(
+      moving_window_weighted_document_count >= minimum_documents_per_moving_window,
+      moving_window_weighted_reported_document_count / moving_window_weighted_document_count,
+      NA_real_
+    ),
+    mean_count_when_reported_moving_window = if_else(
+      moving_window_weighted_reported_document_count > 0,
+      moving_window_weighted_reported_total / moving_window_weighted_reported_document_count,
+      NA_real_
+    )
+  ) |>
+  ungroup()
+
+length_year <- count_assignment |>
+  group_by(official_vote_year, homeowner_tercile, homeowner_tercile_label) |>
+  summarize(
+    weighted_document_count = sum(assignment_weight),
+    weighted_total_words = sum(assignment_weight * narrative_word_count),
+    .groups = "drop"
+  ) |>
+  group_by(homeowner_tercile, homeowner_tercile_label) |>
+  arrange(official_vote_year, .by_group = TRUE) |>
+  mutate(
+    moving_window_weighted_document_count = centered_sum(
+      official_vote_year,
+      weighted_document_count,
+      moving_window_years
+    ),
+    moving_window_weighted_total_words = centered_sum(
+      official_vote_year,
+      weighted_total_words,
+      moving_window_years
+    ),
+    mean_words_moving_window = if_else(
+      moving_window_weighted_document_count >= minimum_documents_per_moving_window,
+      moving_window_weighted_total_words / moving_window_weighted_document_count,
+      NA_real_
+    )
+  ) |>
+  ungroup()
+
 homeowner_colors <- c(
   "Low homeowner" = "#3366CC",
   "Middle homeowner" = "#999999",
@@ -633,6 +777,98 @@ for (signal_id in signal_families) {
       )
   )
 }
+
+print(
+  count_year |>
+    mutate(
+      homeowner_tercile_label = factor(
+        homeowner_tercile_label,
+        levels = c("Low homeowner", "Middle homeowner", "High homeowner")
+      )
+    ) |>
+    ggplot(
+      aes(
+        x = official_vote_year,
+        y = reported_document_share_moving_window,
+        color = homeowner_tercile_label,
+        group = homeowner_tercile_label
+      )
+    ) +
+    geom_line(linewidth = 0.8, na.rm = TRUE) +
+    facet_wrap(~count_label, ncol = 2) +
+    scale_color_manual(values = homeowner_colors) +
+    scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+    labs(
+      title = "Exact-count reporting coverage",
+      subtitle = plot_subtitle,
+      x = NULL,
+      y = paste0("Share with exact count (pooled ", moving_window_years, "-year window)"),
+      color = NULL,
+      caption = "Blank counts remain missing; zeros require an explicit zero."
+    ) +
+    theme_minimal(base_size = 11) +
+    theme(legend.position = "bottom", panel.grid.minor = element_blank())
+)
+
+print(
+  count_year |>
+    mutate(
+      homeowner_tercile_label = factor(
+        homeowner_tercile_label,
+        levels = c("Low homeowner", "Middle homeowner", "High homeowner")
+      )
+    ) |>
+    ggplot(
+      aes(
+        x = official_vote_year,
+        y = mean_count_when_reported_moving_window,
+        color = homeowner_tercile_label,
+        group = homeowner_tercile_label
+      )
+    ) +
+    geom_line(linewidth = 0.8, na.rm = TRUE) +
+    facet_wrap(~count_label, scales = "free_y", ncol = 2) +
+    scale_color_manual(values = homeowner_colors) +
+    labs(
+      title = "Reported participation counts",
+      subtitle = plot_subtitle,
+      x = NULL,
+      y = paste0("Mean exact count (pooled ", moving_window_years, "-year window)"),
+      color = NULL,
+      caption = "Means are conditional on an exact count being reported."
+    ) +
+    theme_minimal(base_size = 11) +
+    theme(legend.position = "bottom", panel.grid.minor = element_blank())
+)
+
+print(
+  length_year |>
+    mutate(
+      homeowner_tercile_label = factor(
+        homeowner_tercile_label,
+        levels = c("Low homeowner", "Middle homeowner", "High homeowner")
+      )
+    ) |>
+    ggplot(
+      aes(
+        x = official_vote_year,
+        y = mean_words_moving_window,
+        color = homeowner_tercile_label,
+        group = homeowner_tercile_label
+      )
+    ) +
+    geom_line(linewidth = 0.9, na.rm = TRUE) +
+    scale_color_manual(values = homeowner_colors) +
+    labs(
+      title = "CPC narrative length",
+      subtitle = plot_subtitle,
+      x = NULL,
+      y = paste0("Mean words (pooled ", moving_window_years, "-year window)"),
+      color = NULL
+    ) +
+    theme_minimal(base_size = 11) +
+    theme(legend.position = "bottom", panel.grid.minor = element_blank())
+)
 dev.off()
 
 cat(

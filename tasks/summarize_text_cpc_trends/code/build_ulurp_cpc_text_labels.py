@@ -8,17 +8,6 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
-from ulurp_cpc_text_label_rules import (
-    NO_OPPOSITION_PATTERN,
-    OPPOSITION_CONTEXT_PATTERN,
-    OPPOSITION_RULES,
-    SIGNAL_FAMILIES,
-    SIGNAL_RULES,
-    SIGNAL_SECTION_ALLOWLIST,
-    signal_is_positive,
-)
-
-
 RESOLUTION_HEADING = re.compile(
     r"(?im)^[ \t\f]*RESOLVED(?:[ \t]*,|[ \t]+BY\b|[ \t]+THAT\b).*$"
 )
@@ -75,8 +64,10 @@ SECTION_LABELS = {
     "community_board": "community_board",
     "community_board_public_hearing": "community_board",
     "community_board_recommendation": "community_board",
+    "community_board_review": "community_board",
     "borough_president": "borough_president",
     "borough_president_recommendation": "borough_president",
+    "borough_president_review": "borough_president",
     "borough_president_public_hearing": "borough_president",
     "city_planning_commission_public_hearing": "cpc_hearing",
     "cpc_public_hearing": "cpc_hearing",
@@ -101,8 +92,10 @@ HEADING_PATTERNS = [
     ("ulurp", r"ULURP"),
     ("community_board_public_hearing", r"COMMUNITY BOARD PUBLIC HEARING"),
     ("community_board_recommendation", r"COMMUNITY BOARD RECOMMENDATION"),
+    ("community_board_review", r"COMMUNITY BOARD REVIEW"),
     ("community_board", r"COMMUNITY BOARD"),
     ("borough_president_recommendation", r"BOROUGH PRESIDENT(?:'S)? RECOMMENDATION"),
+    ("borough_president_review", r"BOROUGH PRESIDENT(?:'S)? REVIEW"),
     ("borough_president_public_hearing", r"BOROUGH PRESIDENT(?:'S)? PUBLIC HEARING"),
     ("borough_president", r"BOROUGH PRESIDENT"),
     ("city_planning_commission_public_hearing", r"CITY PLANNING COMMISSION PUBLIC HEARING"),
@@ -123,6 +116,202 @@ MONTH_PATTERN = (
     r"january|february|march|april|may|june|july|august|september|"
     r"october|november|december"
 )
+
+NUMBER_WORDS = {
+    "no": 0,
+    "none": 0,
+    "zero": 0,
+    "one": 1,
+    "two": 2,
+    "three": 3,
+    "four": 4,
+    "five": 5,
+    "six": 6,
+    "seven": 7,
+    "eight": 8,
+    "nine": 9,
+    "ten": 10,
+    "eleven": 11,
+    "twelve": 12,
+    "thirteen": 13,
+    "fourteen": 14,
+    "fifteen": 15,
+    "sixteen": 16,
+    "seventeen": 17,
+    "eighteen": 18,
+    "nineteen": 19,
+    "twenty": 20,
+    "thirty": 30,
+    "forty": 40,
+    "fifty": 50,
+    "sixty": 60,
+}
+NUMBER_TOKEN = (
+    r"(?:\d{1,3}|no|none|zero|one|two|three|four|five|six|seven|eight|nine|ten|"
+    r"eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|"
+    r"twenty(?:[- ](?:one|two|three|four|five|six|seven|eight|nine))?|"
+    r"thirty(?:[- ](?:one|two|three|four|five|six|seven|eight|nine))?|"
+    r"forty(?:[- ](?:one|two|three|four|five|six|seven|eight|nine))?|"
+    r"fifty(?:[- ](?:one|two|three|four|five|six|seven|eight|nine))?|sixty)"
+)
+
+NO_APPEARANCES = re.compile(
+    r"\b(?:there (?:was|were) )?no appearances?\b|"
+    r"\bthere were no speakers (?:on (?:this|the) application|and the hearing was closed)\b",
+    re.IGNORECASE,
+)
+NO_OTHER_SPEAKERS = re.compile(
+    r"\bthere were no other speakers\b|\bno other speakers appeared\b",
+    re.IGNORECASE,
+)
+SUPPORT_TERM = r"(?:in favor|in support|spoke in favor|testified in favor|supporting the (?:application|proposal|project))"
+OPPOSITION_TERM = r"(?:in opposition|spoke against|testified against|against the (?:application|proposal|project|proposed [a-z -]+)|opposing the (?:application|proposal|project))"
+
+REVIEW_ACTION = re.compile(
+    r"\b(?:oppos\w*|object\w*|disapprov\w*|concern\w*|request\w*|condition\w*|"
+    r"recommend\w*|support\w*|urge\w*|ask\w*|testif\w*|spoke|speaker\w*|"
+    r"impact\w*|effect\w*|mitigat\w*|address\w*|respond\w*|appropriate|adequate|"
+    r"should|must|would|could)\b",
+    re.IGNORECASE,
+)
+OPPOSITION = re.compile(
+    r"\b(?:oppos\w*|object\w*|disapprov\w*|unfavorable|against the (?:application|"
+    r"proposal|project)|speaker\w* in opposition|testif\w* against)\b",
+    re.IGNORECASE,
+)
+NO_OPPOSITION = re.compile(
+    r"\b(?:no|none|zero) (?:speakers? )?(?:in opposition|opposed|against)\b|"
+    r"\bwithout opposition\b|\bno objections?\b",
+    re.IGNORECASE,
+)
+SUBSTANTIVE_REQUEST = re.compile(
+    r"\b(?:request\w*|condition\w*|provided that|subject to|with the following "
+    r"(?:conditions?|modifications?)|urge\w*|ask\w*|call\w* for|should|must|"
+    r"recommend\w* disapproval|disapprov\w*)\b",
+    re.IGNORECASE,
+)
+MINOR_OR_PROCEDURAL_REQUEST = re.compile(
+    r"\b(?:referred to|for information and review|waived? (?:its )?public hearing|"
+    r"recommendation to follow|attach additional sheets?|administrative correction)\b",
+    re.IGNORECASE,
+)
+REVISION_OR_CONCESSION = re.compile(
+    r"\b(?:in response to (?:the )?(?:concerns?|comments?|requests?|objections?)|"
+    r"at the request of|as requested by|after (?:the )?(?:public hearing|meeting)|"
+    r"subsequent to (?:the )?(?:public hearing|community board review)|"
+    r"applicant\w* .{0,100}(?:agreed|committed|revised|modified|changed|reduced|"
+    r"eliminated|withdrew|scaled back)|(?:proposal|application|plans?|design) (?:was|were|has been) "
+    r"(?:revised|modified|changed|reduced|amended)|agreed to (?:provide|fund|construct|"
+    r"maintain|limit|reduce|remove|retain)|committed to (?:provide|fund|construct|"
+    r"maintain|limit|reduce|remove|retain))\b",
+    re.IGNORECASE,
+)
+MECHANICAL_REVISION = re.compile(
+    r"\b(?:modifications specifically granted|except for (?:the )?modifications|"
+    r"modification of (?:use|bulk|height and setback) regulations|last date revised|"
+    r"zoning resolution,? as amended|amended urban renewal plan|revised negative declaration|"
+    r"revised environmental assessment statement|application (?:requests?|seeks?) (?:a )?modification)\b",
+    re.IGNORECASE,
+)
+PROCEDURAL_RESPONSE = re.compile(
+    r"\b(?:study|task force|working group|monitor\w*|report\w*|outreach|consult\w*|"
+    r"future meeting\w*|continued coordination|advisory committee)\b",
+    re.IGNORECASE,
+)
+EXPLICIT_RESPONSE_LINK = re.compile(
+    r"\b(?:in response to (?:the )?(?:concerns?|comments?|requests?|objections?)|"
+    r"at the request of|as requested by|to address (?:the )?(?:concerns?|requests?|objections?)|"
+    r"following (?:concerns?|requests?|objections?) (?:raised|expressed) by)\b",
+    re.IGNORECASE,
+)
+RESPONSE_ACTION = re.compile(
+    r"\b(?:revis\w*|modif\w*|chang\w*|reduc\w*|remov\w*|eliminat\w*|agree\w*|"
+    r"commit\w*|condition\w*|study|monitor\w*|report\w*|outreach|consult\w*|"
+    r"task force|working group|advisory committee)\b",
+    re.IGNORECASE,
+)
+UNRESOLVED_RESPONSE = re.compile(
+    r"\b(?:the commission (?:does|did) not (?:agree|believe|find|support)|"
+    r"the commission (?:disagrees|declines|rejects)|not warranted|not appropriate|"
+    r"not persuaded|cannot support|would not be appropriate|nevertheless|nonetheless|"
+    r"despite (?:the )?(?:opposition|objection|disapproval|concerns?))\b",
+    re.IGNORECASE,
+)
+
+COUNCIL_ACTOR = re.compile(r"\b(?:council ?member|councilmember)\b", re.IGNORECASE)
+COUNCIL_PROCEDURE = re.compile(
+    r"\b(?:filed with|referred to|transmitted to).{0,100}\b(?:city council|office of the speaker)\b|"
+    r"\bpursuant to section 197-d\b",
+    re.IGNORECASE,
+)
+CIVIC_ACTOR = re.compile(
+    r"\b(?:civic association|tenant association|neighbou?rhood association|"
+    r"community organization|community group|block association|business improvement district|"
+    r"chamber of commerce|coalition|conservancy|preservation league|society)\b",
+    re.IGNORECASE,
+)
+SUPPORT_POSITION = re.compile(
+    r"\b(?:support\w*|in favor|recommend\w* approval|urge\w* approval)\b",
+    re.IGNORECASE,
+)
+REQUEST_POSITION = re.compile(
+    r"\b(?:request\w*|condition\w*|recommend\w*|urge\w*|ask\w*|should|must)\b",
+    re.IGNORECASE,
+)
+
+ISSUE_PATTERNS = {
+    "affordability_displacement": re.compile(
+        r"\b(?:affordab\w*|displac\w*|gentrif\w*|tenant protection|harassment|"
+        r"housing access|rent burden|permanent affordability)\b",
+        re.IGNORECASE,
+    ),
+    "traffic_parking": re.compile(
+        r"\b(?:traffic|parking|loading|trucks?|congestion|curb use|vehicular)\b",
+        re.IGNORECASE,
+    ),
+    "scale_character_preservation": re.compile(
+        r"\b(?:scale|height|density|bulk|design|shadows?|neighbou?rhood character|"
+        r"out of character|contextual|landmarks?|preserv\w*|historic)\b",
+        re.IGNORECASE,
+    ),
+    "infrastructure_services": re.compile(
+        r"\b(?:schools?|sewers?|transit|subways?|sanitation|utilities|public facilities|"
+        r"service capacity|water supply|drainage|emergency services)\b",
+        re.IGNORECASE,
+    ),
+    "environment_open_space": re.compile(
+        r"\b(?:environmental (?:effects?|impacts?|concerns?)|remediation|contaminat\w*|"
+        r"water quality|parks?|waterfront access|open space|flood\w*|resilien\w*|"
+        r"air quality|noise impacts?)\b",
+        re.IGNORECASE,
+    ),
+}
+
+BINARY_SIGNAL_FIELDS = [
+    "substantial_local_opposition",
+    "local_request_condition",
+    "revision_or_concession",
+    "procedural_response",
+    "explicit_local_response",
+    "approved_unresolved_objection",
+    "cb_request_or_opposition",
+    "bp_request_or_opposition",
+    "affordability_displacement",
+    "traffic_parking",
+    "scale_character_preservation",
+    "infrastructure_services",
+    "environment_open_space",
+    "restrictive_declaration",
+    "points_of_agreement",
+]
+
+POSITION_FIELDS = ["councilmember_position", "civic_group_position"]
+COUNT_FIELDS = [
+    "cpc_support_speakers",
+    "cpc_opposition_speakers",
+    "cb_support_votes",
+    "cb_opposition_votes",
+]
 
 
 def clean_text(value):
@@ -226,7 +415,9 @@ def detect_heading(line):
         if heading_key in {
             "community_board_public_hearing",
             "community_board_recommendation",
+            "community_board_review",
             "borough_president_recommendation",
+            "borough_president_review",
             "borough_president_public_hearing",
             "city_planning_commission_public_hearing",
             "cpc_public_hearing",
@@ -321,37 +512,6 @@ def is_special_permit_modification_boilerplate(sentence):
     )
 
 
-def opposition_context(sentence):
-    if NO_OPPOSITION_PATTERN.search(sentence):
-        return False
-    return OPPOSITION_CONTEXT_PATTERN.search(sentence) is not None
-
-
-def sentence_signals(sentence):
-    suppressed_council = is_council_filing_boilerplate(sentence)
-    suppressed_revision = is_special_permit_modification_boilerplate(sentence)
-
-    signals = []
-    for signal_family, pattern in SIGNAL_RULES:
-        if signal_family == "revision_concession" and suppressed_revision:
-            continue
-        if (
-            signal_family
-            in {"substantive_council_member", "attribution_council_member"}
-            and suppressed_council
-        ):
-            continue
-        if pattern.search(sentence):
-            signals.append(signal_family)
-
-    if opposition_context(sentence):
-        for signal_family, pattern in OPPOSITION_RULES:
-            if pattern.search(sentence):
-                signals.append(signal_family)
-
-    return sorted(set(signals))
-
-
 def sentence_rule_text(document_sentences, index, context_words):
     start = max(0, index - 1)
     end = min(len(document_sentences), index + 2)
@@ -359,7 +519,262 @@ def sentence_rule_text(document_sentences, index, context_words):
         sentence["sentence"] for sentence in document_sentences[start:end]
     )
     context = " ".join(context.split()[:context_words])
-    return normalize_whitespace(document_sentences[index]["sentence"] + " " + context)
+    return normalize_whitespace(context)
+
+
+def parse_number(value):
+    value = clean_text(value).lower().replace("-", " ")
+    if value.isdigit():
+        return int(value)
+    if value in NUMBER_WORDS:
+        return NUMBER_WORDS[value]
+    parts = value.split()
+    if len(parts) == 2 and parts[0] in NUMBER_WORDS and parts[1] in NUMBER_WORDS:
+        return NUMBER_WORDS[parts[0]] + NUMBER_WORDS[parts[1]]
+    return None
+
+
+def extract_cpc_speaker_counts(text):
+    text = normalize_whitespace(text)
+    if not text:
+        return None, None
+
+    hearing_blocks = re.split(
+        r"(?=\b(?:the )?(?:continued )?hearing was duly held\b)",
+        text,
+        flags=re.IGNORECASE,
+    )
+    if len(hearing_blocks) > 1:
+        hearing_blocks = hearing_blocks[1:]
+    else:
+        hearing_blocks = [text]
+
+    support_total = 0
+    opposition_total = 0
+    support_found = False
+    opposition_found = False
+    pair_patterns = [
+        re.compile(
+            rf"\b(?:there (?:was|were) )?{NUMBER_TOKEN} speakers?\s*[:,]?\s*"
+            rf"(?P<support>{NUMBER_TOKEN})(?: speakers?)? {SUPPORT_TERM}.{{0,120}}?"
+            rf"(?P<opposition>{NUMBER_TOKEN})(?: speakers?)? {OPPOSITION_TERM}",
+            re.IGNORECASE,
+        ),
+        re.compile(
+            rf"\b(?P<support>{NUMBER_TOKEN}) (?:speakers?|appearances?).{{0,220}}?{SUPPORT_TERM}"
+            rf".{{0,220}}?\b(?P<opposition>{NUMBER_TOKEN})(?: (?:speakers?|appearances?))?.{{0,80}}?{OPPOSITION_TERM}",
+            re.IGNORECASE,
+        ),
+        re.compile(
+            rf"\b(?P<opposition>{NUMBER_TOKEN}) (?:speakers?|appearances?).{{0,220}}?{OPPOSITION_TERM}"
+            rf".{{0,220}}?\b(?P<support>{NUMBER_TOKEN})(?: (?:speakers?|appearances?))?.{{0,80}}?{SUPPORT_TERM}",
+            re.IGNORECASE,
+        ),
+    ]
+    single_patterns = {
+        "support": re.compile(
+            rf"\b(?:there (?:was|were) )?(?P<count>{NUMBER_TOKEN}) (?:speakers?|appearances?)"
+            rf".{{0,220}}?{SUPPORT_TERM}",
+            re.IGNORECASE,
+        ),
+        "opposition": re.compile(
+            rf"\b(?:there (?:was|were) )?(?P<count>{NUMBER_TOKEN}) (?:speakers?|appearances?)"
+            rf".{{0,220}}?{OPPOSITION_TERM}",
+            re.IGNORECASE,
+        ),
+    }
+
+    for block in hearing_blocks:
+        if NO_APPEARANCES.search(block):
+            support_found = True
+            opposition_found = True
+            continue
+
+        pair_matches = [match for pattern in pair_patterns for match in pattern.finditer(block)]
+        pair_match = min(pair_matches, key=lambda match: match.start()) if pair_matches else None
+        block_support = None
+        block_opposition = None
+        if pair_match:
+            block_support = parse_number(pair_match.group("support"))
+            block_opposition = parse_number(pair_match.group("opposition"))
+        else:
+            support_match = single_patterns["support"].search(block)
+            opposition_match = single_patterns["opposition"].search(block)
+            if support_match:
+                block_support = parse_number(support_match.group("count"))
+            if opposition_match:
+                block_opposition = parse_number(opposition_match.group("count"))
+            if block_support is None and re.search(
+                rf"\b(?:a|an) (?:representative|speaker).{{0,220}}?{SUPPORT_TERM}",
+                block,
+                re.IGNORECASE,
+            ):
+                block_support = 1
+            if block_opposition is None and re.search(
+                rf"\b(?:a|an) (?:representative|speaker).{{0,220}}?{OPPOSITION_TERM}",
+                block,
+                re.IGNORECASE,
+            ):
+                block_opposition = 1
+
+        if block_support is None and re.search(
+            r"\b(?:no|none|zero) (?:speakers? )?(?:in favor|in support)\b",
+            block,
+            re.IGNORECASE,
+        ):
+            block_support = 0
+        if block_opposition is None and re.search(
+            r"\b(?:no|none|zero) (?:speakers? )?(?:in opposition|opposed)\b",
+            block,
+            re.IGNORECASE,
+        ):
+            block_opposition = 0
+        if NO_OTHER_SPEAKERS.search(block):
+            if block_support is not None and block_opposition is None:
+                block_opposition = 0
+            if block_opposition is not None and block_support is None:
+                block_support = 0
+        if re.search(r"\bthe hearing was closed\b", block, re.IGNORECASE):
+            if block_support is not None and block_opposition is None:
+                block_opposition = 0
+            if block_opposition is not None and block_support is None:
+                block_support = 0
+
+        if block_support is not None:
+            support_total += block_support
+            support_found = True
+        if block_opposition is not None:
+            opposition_total += block_opposition
+            opposition_found = True
+
+    return support_total if support_found else None, opposition_total if opposition_found else None
+
+
+def extract_cb_vote_counts(text):
+    text = normalize_whitespace(text)
+    if not text:
+        return None, None
+
+    explicit_patterns = [
+        re.compile(
+            rf"\b(?:by a vote of |the vote was |voted )?(?P<support>{NUMBER_TOKEN})"
+            rf"(?: members?)?(?: voting)? (?:in favor|for|supporting).{{0,80}}?"
+            rf"(?P<opposition>{NUMBER_TOKEN})(?: members?)?(?: voting)? "
+            rf"(?:against|opposed|in opposition)",
+            re.IGNORECASE,
+        ),
+        re.compile(
+            rf"\b(?P<opposition>{NUMBER_TOKEN})(?: members?)? (?:voting )?"
+            rf"(?:against|opposed|in opposition).{{0,80}}?(?P<support>{NUMBER_TOKEN})"
+            rf"(?: members?)? (?:voting )?(?:in favor|for|supporting)",
+            re.IGNORECASE,
+        ),
+        re.compile(
+            rf"#?\s*in favor\s*:?\s*(?P<support>{NUMBER_TOKEN}).{{0,80}}?"
+            rf"#?\s*(?:against|opposed)\s*:?\s*(?P<opposition>{NUMBER_TOKEN})",
+            re.IGNORECASE,
+        ),
+    ]
+    explicit_matches = [match for pattern in explicit_patterns for match in pattern.finditer(text)]
+    explicit_match = min(explicit_matches, key=lambda match: match.start()) if explicit_matches else None
+    if explicit_match:
+        support = parse_number(explicit_match.group("support"))
+        opposition = parse_number(explicit_match.group("opposition"))
+        context_start = max(0, explicit_match.start() - 180)
+        context_end = min(len(text), explicit_match.end() + 320)
+        context = text[context_start:context_end]
+        stance_matches = list(
+            re.finditer(
+                r"\b(?:recommend\w* |resolution )?(?P<stance>disapprov\w*|unfavorable|approv\w*|favorable)\b",
+                context,
+                re.IGNORECASE,
+            )
+        )
+        if stance_matches:
+            match_center = explicit_match.start() - context_start
+            nearest_stance = min(
+                stance_matches,
+                key=lambda match: abs(match.start() - match_center),
+            ).group("stance").lower()
+            if (nearest_stance.startswith("disapprov") or nearest_stance == "unfavorable") and support >= opposition:
+                support, opposition = opposition, support
+        return support, opposition
+
+    unlabeled_pattern = re.compile(
+        rf"\b(?:by a vote of|vote(?:d| was)?|voting)\s+"
+        rf"(?P<first>{NUMBER_TOKEN})\s*(?:to|-|/)\s*(?P<second>{NUMBER_TOKEN})\b",
+        re.IGNORECASE,
+    )
+    for match in unlabeled_pattern.finditer(text):
+        context = text[max(0, match.start() - 180) : min(len(text), match.end() + 240)]
+        first = parse_number(match.group("first"))
+        second = parse_number(match.group("second"))
+        stance_matches = list(
+            re.finditer(
+                r"\b(?:recommend\w* |resolution )?(?P<stance>disapprov\w*|unfavorable|approv\w*|favorable)\b",
+                context,
+                re.IGNORECASE,
+            )
+        )
+        if stance_matches:
+            match_center = match.start() - max(0, match.start() - 180)
+            nearest_stance = min(
+                stance_matches,
+                key=lambda stance_match: abs(stance_match.start() - match_center),
+            ).group("stance").lower()
+            if nearest_stance.startswith("disapprov") or nearest_stance == "unfavorable":
+                return second, first
+            return first, second
+
+    support_only = re.search(
+        rf"\b(?P<support>{NUMBER_TOKEN})(?: board members?)? voting in favor\b",
+        text,
+        re.IGNORECASE,
+    )
+    if support_only and re.search(r"\bunanimous\w*\b", text, re.IGNORECASE):
+        return parse_number(support_only.group("support")), 0
+
+    labeled_fields = re.search(
+        rf"\b(?:voting |#\s*)?in favor\s*:?\s*(?P<support>{NUMBER_TOKEN}).{{0,100}}?"
+        rf"\b(?:voting |#\s*)?against\s*:?\s*(?P<opposition>{NUMBER_TOKEN})",
+        text,
+        re.IGNORECASE,
+    )
+    if labeled_fields:
+        return (
+            parse_number(labeled_fields.group("support")),
+            parse_number(labeled_fields.group("opposition")),
+        )
+
+    if re.search(r"\bunanimously (?:approved|recommended approval)\b", text, re.IGNORECASE):
+        return None, 0
+    if re.search(r"\bunanimously (?:disapproved|recommended disapproval)\b", text, re.IGNORECASE):
+        return 0, None
+    return None, None
+
+
+def actor_position(contexts, actor_pattern):
+    actor_contexts = [context for context in contexts if actor_pattern.search(context)]
+    if actor_pattern is COUNCIL_ACTOR:
+        actor_contexts = [context for context in actor_contexts if not COUNCIL_PROCEDURE.search(context)]
+    if any(OPPOSITION.search(context) and not NO_OPPOSITION.search(context) for context in actor_contexts):
+        return "opposition"
+    if any(SUPPORT_POSITION.search(context) or REQUEST_POSITION.search(context) for context in actor_contexts):
+        return "support_or_request"
+    return "none_or_procedural"
+
+
+def issue_is_positive(issue_pattern, context_rows):
+    for row in context_rows:
+        if not issue_pattern.search(row["sentence"]):
+            continue
+        context = row["context"]
+        if row["section"] in {"community_board", "borough_president", "cpc_hearing"}:
+            if REVIEW_ACTION.search(context):
+                return True
+        elif row["section"] == "consideration_findings" and REVIEW_ACTION.search(context):
+            return True
+    return False
 
 
 if len(sys.argv) != 5:
@@ -598,33 +1013,200 @@ boilerplate_sentences = {
     if len(document_ids) >= minimum_boilerplate_documents
 }
 
-document_signals = defaultdict(set)
-for row in sentence_rows:
-    if (
-        row["normalized_sentence"] in boilerplate_sentences
-        or is_council_filing_boilerplate(row["sentence"])
-        or is_special_permit_modification_boilerplate(row["sentence"])
-    ):
-        continue
+document_measurements = {}
+for document in documents:
+    document_id = document["document_id"]
+    context_rows = []
+    section_contexts = defaultdict(list)
 
-    signals = [
-        signal_family
-        for signal_family in sentence_signals(row["sentence"])
-        if row["section"]
-        in SIGNAL_SECTION_ALLOWLIST.get(signal_family, SECTION_ORDER)
-    ]
-    for signal_family in signals:
-        rule_text = sentence_rule_text(
-            document_section_sentences[(row["document_id"], row["section"])],
-            row["sentence_position"],
-            rule_context_words,
+    for section in SECTION_ORDER:
+        section_rows = document_section_sentences[(document_id, section)]
+        for row in section_rows:
+            if (
+                row["normalized_sentence"] in boilerplate_sentences
+                or is_council_filing_boilerplate(row["sentence"])
+                or is_special_permit_modification_boilerplate(row["sentence"])
+            ):
+                continue
+            context = sentence_rule_text(
+                section_rows,
+                row["sentence_position"],
+                rule_context_words,
+            )
+            context_row = {
+                "section": section,
+                "sentence": row["sentence"],
+                "context": context,
+            }
+            context_rows.append(context_row)
+            section_contexts[section].append(context)
+
+    community_board_text = " ".join(
+        row["sentence"]
+        for row in document_section_sentences[(document_id, "community_board")]
+    )
+    cpc_hearing_text = " ".join(
+        row["sentence"]
+        for row in document_section_sentences[(document_id, "cpc_hearing")]
+    )
+    cpc_support_speakers, cpc_opposition_speakers = extract_cpc_speaker_counts(
+        cpc_hearing_text
+    )
+    if cpc_support_speakers is None and cpc_opposition_speakers is None:
+        fallback_match = re.search(
+            r"(?is)\b(?:city planning commission|the commission)\b.{0,120}"
+            r"scheduled.{0,120}(?:public )?hearing(?P<hearing_text>.*)$",
+            document["text"],
         )
-        if signal_is_positive(
-            rule_text,
-            row["section"],
-            signal_family,
-        ):
-            document_signals[row["document_id"]].add(signal_family)
+        if fallback_match:
+            cpc_support_speakers, cpc_opposition_speakers = extract_cpc_speaker_counts(
+                fallback_match.group("hearing_text")
+            )
+    cb_support_votes, cb_opposition_votes = extract_cb_vote_counts(
+        community_board_text
+    )
+    if cb_support_votes is None and cb_opposition_votes is None:
+        cpc_match = re.search(
+            r"(?is)\b(?:city planning commission|the commission)\b.{0,120}"
+            r"scheduled.{0,120}(?:public )?hearing",
+            document["text"],
+        )
+        before_cpc = document["text"][: cpc_match.start()] if cpc_match else document["text"]
+        board_matches = list(
+            re.finditer(
+                r"(?is)\bcommunity board\b.{0,160}\b(?:held|voted|adopted|recommended|approved|disapproved)\b",
+                before_cpc,
+            )
+        )
+        if board_matches:
+            board_start = board_matches[0].start()
+            cb_support_votes, cb_opposition_votes = extract_cb_vote_counts(
+                before_cpc[board_start:]
+            )
+
+    local_contexts = (
+        section_contexts["community_board"]
+        + section_contexts["borough_president"]
+        + section_contexts["cpc_hearing"]
+    )
+    review_contexts = local_contexts + section_contexts["consideration_findings"]
+    cb_request = any(
+        SUBSTANTIVE_REQUEST.search(context)
+        and not MINOR_OR_PROCEDURAL_REQUEST.search(context)
+        for context in section_contexts["community_board"]
+    )
+    bp_request = any(
+        SUBSTANTIVE_REQUEST.search(context)
+        and not MINOR_OR_PROCEDURAL_REQUEST.search(context)
+        for context in section_contexts["borough_president"]
+    )
+    council_position = actor_position(review_contexts, COUNCIL_ACTOR)
+    civic_position = actor_position(review_contexts, CIVIC_ACTOR)
+
+    revision_or_concession = any(
+        REVISION_OR_CONCESSION.search(context)
+        and not MECHANICAL_REVISION.search(context)
+        for context in review_contexts
+    )
+    explicit_local_response = any(
+        EXPLICIT_RESPONSE_LINK.search(context) and RESPONSE_ACTION.search(context)
+        for context in review_contexts
+    )
+    procedural_response = any(
+        PROCEDURAL_RESPONSE.search(context)
+        and (
+            EXPLICIT_RESPONSE_LINK.search(context)
+            or re.search(
+                r"\b(?:applicant|agency|commission)\b.{0,100}\b(?:agreed|committed|will|shall)\b",
+                context,
+                re.IGNORECASE,
+            )
+        )
+        for context in review_contexts
+    )
+
+    cb_opposition = (
+        cb_support_votes is not None
+        and cb_opposition_votes is not None
+        and cb_opposition_votes > cb_support_votes
+    ) or any(
+        re.search(
+            r"\b(?:recommend\w* disapproval|disapprov\w* (?:the )?(?:application|proposal|project)|"
+            r"unfavorable recommendation|opposed (?:the )?(?:application|proposal|project))\b",
+            context,
+            re.IGNORECASE,
+        )
+        for context in section_contexts["community_board"]
+    )
+    bp_opposition = any(
+        re.search(
+            r"\b(?:recommend\w* disapproval|disapprov\w* (?:the )?(?:application|proposal|project)|"
+            r"unfavorable recommendation|opposed (?:the )?(?:application|proposal|project))\b",
+            context,
+            re.IGNORECASE,
+        )
+        for context in section_contexts["borough_president"]
+    )
+    substantial_local_opposition = (
+        cb_opposition
+        or bp_opposition
+        or council_position == "opposition"
+        or civic_position == "opposition"
+        or (
+            cpc_opposition_speakers is not None
+            and cpc_opposition_speakers >= 10
+        )
+    )
+    local_request_condition = (
+        cb_request
+        or bp_request
+        or any(
+            SUBSTANTIVE_REQUEST.search(context)
+            and re.search(
+                r"\b(?:community board|borough president|council ?member|councilmember|"
+                r"civic association|tenant association|neighbou?rhood association|"
+                r"community organization|community group|residents?|speakers?)\b",
+                context,
+                re.IGNORECASE,
+            )
+            and not MINOR_OR_PROCEDURAL_REQUEST.search(context)
+            for context in local_contexts
+        )
+    )
+    approved_unresolved_objection = (
+        substantial_local_opposition
+        and any(
+            UNRESOLVED_RESPONSE.search(context)
+            for context in section_contexts["consideration_findings"]
+        )
+    )
+
+    measurements = {
+        "substantial_local_opposition": int(substantial_local_opposition),
+        "local_request_condition": int(local_request_condition),
+        "revision_or_concession": int(revision_or_concession),
+        "procedural_response": int(procedural_response),
+        "explicit_local_response": int(explicit_local_response),
+        "approved_unresolved_objection": int(approved_unresolved_objection),
+        "cb_request_or_opposition": int(cb_request or cb_opposition),
+        "bp_request_or_opposition": int(bp_request or bp_opposition),
+        "councilmember_position": council_position,
+        "civic_group_position": civic_position,
+        "cpc_support_speakers": cpc_support_speakers,
+        "cpc_opposition_speakers": cpc_opposition_speakers,
+        "cb_support_votes": cb_support_votes,
+        "cb_opposition_votes": cb_opposition_votes,
+        "restrictive_declaration": int(
+            any(re.search(r"\brestrictive declaration\b", context, re.IGNORECASE) for context in review_contexts)
+        ),
+        "points_of_agreement": int(
+            any(re.search(r"\bpoints of agreement\b", context, re.IGNORECASE) for context in review_contexts)
+        ),
+    }
+    for field, issue_pattern in ISSUE_PATTERNS.items():
+        measurements[field] = int(issue_is_positive(issue_pattern, context_rows))
+
+    document_measurements[document_id] = measurements
 
 fieldnames = [
     "document_id",
@@ -641,14 +1223,20 @@ fieldnames = [
     "zap_project_ids",
     "analysis_non_pp_flag",
     "analysis_zm_zr_zs_flag",
-    *SIGNAL_FAMILIES,
+    *BINARY_SIGNAL_FIELDS,
+    *POSITION_FIELDS,
+    *COUNT_FIELDS,
 ]
-with Path("../temp/ulurp_cpc_text_labels.csv").open(
+with Path("../output/ulurp_cpc_text_labels.csv").open(
     "w",
     newline="",
     encoding="utf-8",
 ) as output_file:
-    writer = csv.DictWriter(output_file, fieldnames=fieldnames)
+    writer = csv.DictWriter(
+        output_file,
+        fieldnames=fieldnames,
+        lineterminator="\n",
+    )
     writer.writeheader()
     for document in sorted(
         documents,
@@ -674,13 +1262,7 @@ with Path("../temp/ulurp_cpc_text_labels.csv").open(
                 "analysis_zm_zr_zs_flag": document[
                     "analysis_zm_zr_zs_flag"
                 ],
-                **{
-                    signal_family: int(
-                        signal_family
-                        in document_signals[document["document_id"]]
-                    )
-                    for signal_family in SIGNAL_FAMILIES
-                },
+                **document_measurements[document["document_id"]],
             }
         )
 
