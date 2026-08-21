@@ -60,6 +60,7 @@ tasks/audits/record_ulurp_cpc_text_analysis_decisions/output/*
 !tasks/audits/record_ulurp_cpc_text_analysis_decisions/output/ulurp_cpc_kwic_calibration_labels.csv
 
 # --- Secrets ---
+.env
 .Renviron
 
 # --- Archive / deprecated task areas ---

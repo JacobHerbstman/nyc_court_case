@@ -1,0 +1,114 @@
+{
+  "type": "object",
+  "properties": {
+    "document_id": {"type": "string"},
+    "labels": {
+      "type": "object",
+      "properties": {
+        "specific_project": {"type": "string", "enum": ["0", "1", "unclear"]},
+        "zone_change": {"type": "string", "enum": ["upzone", "downzone", "mixed", "none", "unclear"]},
+        "dev_direction": {"type": "string", "enum": ["more", "lower", "mixed", "none", "unclear"]},
+        "substantial_local_opposition": {"type": "string", "enum": ["0", "1", "unclear"]},
+        "local_request_condition": {"type": "string", "enum": ["0", "1", "unclear"]},
+        "revision_or_concession": {"type": "string", "enum": ["0", "1", "unclear"]},
+        "procedural_response": {"type": "string", "enum": ["0", "1", "unclear"]},
+        "explicit_local_response": {"type": "string", "enum": ["0", "1", "unclear"]},
+        "approved_unresolved_objection": {"type": "string", "enum": ["0", "1", "unclear"]},
+        "cb_request_or_opposition": {"type": "string", "enum": ["0", "1", "unclear"]},
+        "bp_request_or_opposition": {"type": "string", "enum": ["0", "1", "unclear"]},
+        "councilmember_position": {"type": "string", "enum": ["none_or_procedural", "support_or_request", "opposition", "unclear"]},
+        "civic_group_position": {"type": "string", "enum": ["none_or_procedural", "support_or_request", "opposition", "unclear"]},
+        "cpc_support_speakers": {"anyOf": [{"type": "integer", "minimum": 0}, {"type": "null"}]},
+        "cpc_opposition_speakers": {"anyOf": [{"type": "integer", "minimum": 0}, {"type": "null"}]},
+        "cb_support_votes": {"anyOf": [{"type": "integer", "minimum": 0}, {"type": "null"}]},
+        "cb_opposition_votes": {"anyOf": [{"type": "integer", "minimum": 0}, {"type": "null"}]},
+        "affordability_displacement": {"type": "string", "enum": ["0", "1", "unclear"]},
+        "traffic_parking": {"type": "string", "enum": ["0", "1", "unclear"]},
+        "scale_character_preservation": {"type": "string", "enum": ["0", "1", "unclear"]},
+        "infrastructure_services": {"type": "string", "enum": ["0", "1", "unclear"]},
+        "environment_open_space": {"type": "string", "enum": ["0", "1", "unclear"]}
+      },
+      "required": [
+        "specific_project", "zone_change", "dev_direction", "substantial_local_opposition",
+        "local_request_condition", "revision_or_concession", "procedural_response",
+        "explicit_local_response", "approved_unresolved_objection",
+        "cb_request_or_opposition", "bp_request_or_opposition",
+        "councilmember_position", "civic_group_position", "cpc_support_speakers",
+        "cpc_opposition_speakers", "cb_support_votes", "cb_opposition_votes",
+        "affordability_displacement", "traffic_parking",
+        "scale_character_preservation", "infrastructure_services",
+        "environment_open_space"
+      ],
+      "additionalProperties": false
+    },
+    "confidence": {
+      "type": "object",
+      "properties": {
+        "specific_project": {"type": "string", "enum": ["high", "medium", "low"]},
+        "zone_change": {"type": "string", "enum": ["high", "medium", "low"]},
+        "dev_direction": {"type": "string", "enum": ["high", "medium", "low"]},
+        "substantial_local_opposition": {"type": "string", "enum": ["high", "medium", "low"]},
+        "local_request_condition": {"type": "string", "enum": ["high", "medium", "low"]},
+        "revision_or_concession": {"type": "string", "enum": ["high", "medium", "low"]},
+        "procedural_response": {"type": "string", "enum": ["high", "medium", "low"]},
+        "explicit_local_response": {"type": "string", "enum": ["high", "medium", "low"]},
+        "approved_unresolved_objection": {"type": "string", "enum": ["high", "medium", "low"]},
+        "cb_request_or_opposition": {"type": "string", "enum": ["high", "medium", "low"]},
+        "bp_request_or_opposition": {"type": "string", "enum": ["high", "medium", "low"]},
+        "councilmember_position": {"type": "string", "enum": ["high", "medium", "low"]},
+        "civic_group_position": {"type": "string", "enum": ["high", "medium", "low"]},
+        "cpc_support_speakers": {"type": "string", "enum": ["high", "medium", "low"]},
+        "cpc_opposition_speakers": {"type": "string", "enum": ["high", "medium", "low"]},
+        "cb_support_votes": {"type": "string", "enum": ["high", "medium", "low"]},
+        "cb_opposition_votes": {"type": "string", "enum": ["high", "medium", "low"]},
+        "affordability_displacement": {"type": "string", "enum": ["high", "medium", "low"]},
+        "traffic_parking": {"type": "string", "enum": ["high", "medium", "low"]},
+        "scale_character_preservation": {"type": "string", "enum": ["high", "medium", "low"]},
+        "infrastructure_services": {"type": "string", "enum": ["high", "medium", "low"]},
+        "environment_open_space": {"type": "string", "enum": ["high", "medium", "low"]}
+      },
+      "required": [
+        "specific_project", "zone_change", "dev_direction", "substantial_local_opposition",
+        "local_request_condition", "revision_or_concession", "procedural_response",
+        "explicit_local_response", "approved_unresolved_objection",
+        "cb_request_or_opposition", "bp_request_or_opposition",
+        "councilmember_position", "civic_group_position", "cpc_support_speakers",
+        "cpc_opposition_speakers", "cb_support_votes", "cb_opposition_votes",
+        "affordability_displacement", "traffic_parking",
+        "scale_character_preservation", "infrastructure_services",
+        "environment_open_space"
+      ],
+      "additionalProperties": false
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "specific_project", "zone_change", "dev_direction", "substantial_local_opposition",
+              "local_request_condition", "revision_or_concession", "procedural_response",
+              "explicit_local_response", "approved_unresolved_objection",
+              "cb_request_or_opposition", "bp_request_or_opposition",
+              "councilmember_position", "civic_group_position", "cpc_support_speakers",
+              "cpc_opposition_speakers", "cb_support_votes", "cb_opposition_votes",
+              "affordability_displacement", "traffic_parking",
+              "scale_character_preservation", "infrastructure_services",
+              "environment_open_space"
+            ]
+          },
+          "pdf_page": {"type": "integer", "minimum": 1},
+          "quote": {"type": "string"},
+          "explanation": {"type": "string"}
+        },
+        "required": ["field", "pdf_page", "quote", "explanation"],
+        "additionalProperties": false
+      }
+    },
+    "summary": {"type": "string"}
+  },
+  "required": ["document_id", "labels", "confidence", "evidence", "summary"],
+  "additionalProperties": false
+}

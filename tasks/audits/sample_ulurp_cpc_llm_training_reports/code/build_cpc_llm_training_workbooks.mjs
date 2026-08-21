@@ -50,12 +50,20 @@ const projectLabels = [
     note: "Code the proposal under review, not possible future projects.",
   },
   {
+    name: "zone_change",
+    upzone: "The literal zoning map or text change increases permitted density or development capacity.",
+    downzone: "The literal zoning map or text change reduces permitted density or development capacity.",
+    mixed: "The literal zoning action contains both increases and reductions.",
+    none: "The application does not make a zoning map or text change.",
+    note: "Code the formal zoning action; special permits and other development-enabling approvals alone are none.",
+  },
+  {
     name: "dev_direction",
-    upzone: "The application increases permitted density or development capacity.",
-    downzone: "The application reduces permitted density or development capacity.",
-    mixed: "The application combines directions or changes land use without a clear capacity effect.",
-    none: "The application has no meaningful development-capacity direction, such as a minor use approval.",
-    note: "Code the application, not whether local actors support or oppose it.",
+    more: "The dominant overall effect materially increases units, floor area, building bulk, developable land, or enables a substantial redevelopment.",
+    lower: "The dominant overall effect materially reduces development capacity or prevents or scales back a substantial redevelopment.",
+    mixed: "Material components point both ways and neither direction clearly dominates.",
+    none: "The application has no meaningful overall development direction.",
+    note: "Code practical development effects, including non-zoning approvals, but require materiality. Legal approval alone is insufficient. Routine renewals, sidewalk cafes, parking adjustments, operating permissions, and public infrastructure are none unless integral to a substantial development. A minor offsetting change does not make a proposal mixed.",
   },
 ];
 
@@ -188,7 +196,8 @@ const issueLabels = [
 
 const codingLabels = [
   { ...projectLabels[0], section: "Project", type: "binary" },
-  { ...projectLabels[1], section: "Project", type: "direction" },
+  { ...projectLabels[1], section: "Project", type: "zone_change" },
+  { ...projectLabels[2], section: "Project", type: "development_direction" },
   ...processLabels.map((label) => ({ ...label, section: "Process", type: "binary" })),
   ...actorBinaryLabels.map((label) => ({ ...label, section: "Actors", type: "binary" })),
   ...actorPositionLabels.map((label) => ({ ...label, section: "Actors", type: "position" })),
@@ -550,9 +559,18 @@ async function writeCoderWorkbook(coder) {
   ).format = { horizontalAlignment: "center" };
 
   codingSheet.getRange(
+    `${columnLetter(projectStart + 1)}2:${columnLetter(projectStart + 1)}${values.length}`,
+  ).dataValidation = {
+    rule: { type: "list", values: ["upzone", "downzone", "mixed", "none", "unclear"] },
+  };
+  codingSheet.getRange(
+    `${columnLetter(projectStart + 1)}2:${columnLetter(projectStart + 1)}${values.length}`,
+  ).format = { horizontalAlignment: "center" };
+
+  codingSheet.getRange(
     `${columnLetter(projectEnd)}2:${columnLetter(projectEnd)}${values.length}`,
   ).dataValidation = {
-    rule: { type: "list", values: ["upzone", "downzone", "mixed", "none"] },
+    rule: { type: "list", values: ["more", "lower", "mixed", "none", "unclear"] },
   };
   codingSheet.getRange(
     `${columnLetter(projectEnd)}2:${columnLetter(projectEnd)}${values.length}`,
@@ -606,6 +624,7 @@ async function writeCoderWorkbook(coder) {
     application_number: 17,
     open_report: 12,
     specific_project: 15,
+    zone_change: 15,
     dev_direction: 16,
     sample_group: 14,
     shared_id: 10,
@@ -650,12 +669,22 @@ async function writeCoderWorkbook(coder) {
           label.note,
         ];
       }
-      if (label.type === "direction") {
+      if (label.type === "zone_change") {
         return [
           label.section,
           label.name,
-          "upzone, downzone, mixed, none",
+          "upzone, downzone, mixed, none, unclear",
           `upzone: ${label.upzone}; downzone: ${label.downzone}`,
+          `mixed: ${label.mixed}; none: ${label.none}`,
+          label.note,
+        ];
+      }
+      if (label.type === "development_direction") {
+        return [
+          label.section,
+          label.name,
+          "more, lower, mixed, none, unclear",
+          `more: ${label.more}; lower: ${label.lower}`,
           `mixed: ${label.mixed}; none: ${label.none}`,
           label.note,
         ];
@@ -846,11 +875,11 @@ function writeGuide() {
 \usepackage[colorlinks=true,urlcolor=blue]{hyperref}
 
 \newcolumntype{L}[1]{>{\RaggedRight\arraybackslash}p{#1}}
-\renewcommand{\arraystretch}{1.16}
+\renewcommand{\arraystretch}{1.00}
 \setlength{\LTpre}{0pt}
 \setlength{\LTpost}{0pt}
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{5pt}
+\setlength{\parskip}{3pt}
 
 \begin{document}
 
@@ -860,7 +889,7 @@ Use \href{https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/920019.pdf
 
 Binary fields use \texttt{1}, \texttt{0}, or \texttt{unclear}.
 
-The development-direction field uses \texttt{upzone}, \texttt{downzone}, \texttt{mixed}, or \texttt{none} and describes the application, not the local position.
+The zoning-change field uses \texttt{upzone}, \texttt{downzone}, \texttt{mixed}, or \texttt{none} and records the literal zoning map or text action. The development-direction field uses \texttt{more}, \texttt{lower}, \texttt{mixed}, or \texttt{none} and records the dominant practical development effect. A non-zoning approval can be \texttt{more} when it materially increases units, floor area, building bulk, developable land, or enables a substantial redevelopment. Legal approval alone is insufficient: routine renewals, sidewalk cafes, parking adjustments, operating permissions, and public infrastructure are \texttt{none} unless integral to a substantial development. A minor offsetting change does not by itself make development direction mixed.
 
 Actor-position fields use \nolinkurl{none_or_procedural}, \nolinkurl{support_or_request}, \texttt{opposition}, or \texttt{unclear}. Code only what the report documents; do not infer a causal response from timing alone.
 
@@ -879,6 +908,7 @@ Count fields record reported speaker appearances across all CPC hearing dates an
 \midrule
 \endhead
 Project & \nolinkurl{specific_project} & \texttt{1} & The application concerns a concrete municipal-facility proposal at Piers 35 and 36. \\
+Project & \nolinkurl{zone_change} & \texttt{none} & The application does not amend the zoning map or text. \\
 Project & \nolinkurl{dev_direction} & \texttt{mixed} & The proposal substantially changes facility uses but does not clearly increase or reduce permitted development capacity. \\
 Process & \nolinkurl{substantial_local_opposition} & \texttt{1} & CB3 unanimously recommended disapproval (p.~16); 15 speakers opposed at CPC, including elected officials, businesses, and residents (pp.~17--19). \\
 Process & \nolinkurl{local_request_condition} & \texttt{1} & Local actors sought rejection, alternatives, reduced vehicle concentration, and waterfront access (pp.~17--19). \\

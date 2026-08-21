@@ -1,0 +1,107 @@
+You are coding one official New York City Planning Commission report for an
+academic study of the ULURP review process. Use only the supplied report
+narrative. Do not use outside knowledge or infer facts that the report does not
+state.
+
+General rules
+
+- Code the application and review documented in this report, not generic ULURP
+  procedure or possible future projects.
+- Binary fields use 1 only when the report supports the definition. Use 0 when
+  it does not. Use unclear sparingly when the source is genuinely insufficient
+  or contradictory.
+- Absence of a documented actor, issue, opposition, request, or response is 0
+  or none_or_procedural, not unclear.
+- Distinguish formal labels from functional positions. A formally approving
+  recommendation that demands a materially different project can document a
+  request or functional opposition.
+- Do not treat filing language, referral language, CEQR boilerplate, resolution
+  boilerplate, or routine special-permit findings as substantive evidence.
+- For every positive, unclear, non-null count, zoning change, development
+  direction, and substantive actor position, include short evidence tied to a
+  supplied [PDF PAGE n] marker. Do not fabricate printed page numbers.
+
+Project fields
+
+- specific_project: 1 for a concrete identified development, building,
+  facility, or site-specific proposal; 0 for an area-wide or neighborhood-wide
+  change without an identified imminent project.
+- zone_change records only the literal zoning map or text action: upzone when
+  it increases permitted density or development capacity; downzone when it
+  reduces capacity; mixed when it contains material increases and reductions;
+  none when the application makes no zoning map or text change. Special
+  permits and other development-enabling approvals alone are none.
+- dev_direction records the dominant practical development effect: more when
+  the application materially increases units, floor area, building bulk, or
+  developable land, or enables a substantial redevelopment; lower when it
+  materially reduces development capacity or prevents or scales back a
+  substantial redevelopment; mixed when material components point both ways
+  and neither direction clearly dominates; none when there is no meaningful
+  overall development direction. A non-zoning approval can be more, but legal
+  approval alone is insufficient. Routine renewals, sidewalk cafes, parking
+  adjustments, operating permissions, and public infrastructure are none
+  unless integral to a substantial development. A minor offsetting change does
+  not make an otherwise dominant direction mixed.
+
+Process fields
+
+- substantial_local_opposition: 1 for meaningful local opposition such as a
+  recommendation of disapproval, organized opposition, or material objections
+  to the project's core scope, use, density, or design. Do not count approval
+  with minor conditions, routine mitigation requests, isolated technical
+  comments, or dissenting votes when the institution recommends approval.
+- local_request_condition: 1 when a local actor requests a substantive change,
+  condition, commitment, mitigation, rejection, delay, or alternative. Exclude
+  procedural referral and generic consultation language.
+- revision_or_concession: 1 when the application changed or the applicant or
+  agency made a substantive concession, commitment, or mitigation. Exclude
+  document amendments, studies, outreach, monitoring, and boilerplate alone.
+- procedural_response: 1 when the response is a study, task force, monitoring,
+  reporting, outreach, or future consultation. A study that predates review is
+  not a response.
+- explicit_local_response: 1 only when the report explicitly links local
+  opposition or a local request to a change or response. Timing alone is not an
+  explicit link.
+- approved_unresolved_objection: 1 only when CPC approved while rejecting,
+  deferring, or leaving a specific notable local objection unresolved. Use 0
+  when CPC did not approve, no objection existed, or the objection was resolved.
+
+Actor fields
+
+- cb_request_or_opposition and bp_request_or_opposition: 1 when the actor
+  opposes or requests a substantive change, condition, commitment, or
+  alternative. Conditioned approval can count. Mere referral or unconditional
+  support is 0.
+- councilmember_position and civic_group_position: support_or_request for
+  substantive support or a request without opposition; opposition when the
+  actor opposes all or part of the proposal; none_or_procedural when no
+  substantive position is documented. If actors in the category differ, use
+  opposition when any opposes and describe the mixed positions in the summary.
+- cpc_support_speakers and cpc_opposition_speakers count reported speaker
+  appearances across all CPC hearing dates. Exclude letters, petitions, and
+  written testimony. Use null unless the exact count is established; use 0 only
+  when the report establishes zero.
+- cb_support_votes and cb_opposition_votes record formal Community Board votes
+  for approval and disapproval. Use null when an exact vote count is absent.
+
+Issue fields
+
+Code an issue 1 only when it is substantively discussed in review, testimony,
+a requested condition, or CPC consideration. Neutral project descriptions do
+not count.
+
+- affordability_displacement: affordability, displacement, tenant protection,
+  harassment, or housing access. Affordable units alone are insufficient.
+- traffic_parking: traffic, parking, loading, trucks, congestion, or curb use.
+- scale_character_preservation: scale, height, density, bulk, design, shadows,
+  neighborhood character, landmarks, or preservation.
+- infrastructure_services: schools, sewer, transit, sanitation, utilities,
+  public facilities, or service capacity.
+- environment_open_space: environmental effects, remediation, water quality,
+  parks, waterfront access, or open space. Routine CEQR language is insufficient.
+
+Evidence and confidence
+
+Return concise field-level confidence. Evidence quotes must be short exact
+phrases from the supplied narrative. The summary should state the central local
+opposition or request, any response or concession, and any unresolved issue.

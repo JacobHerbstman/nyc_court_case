@@ -18,11 +18,22 @@ top in their existing order. All other shared reports follow before the
 remaining coder-specific reports. Jacob's committed labels are restored by
 document ID when the workbook is rebuilt.
 
-Each report has 21 required coding fields covering the proposal, local demands,
+Each report has 22 required coding fields covering the proposal, local demands,
 revisions or concessions, unresolved objections, key actors, and five defined
-issue groups. Fourteen are binary, one records development direction, two
-record councilmember and civic-group positions, and four record reported CPC
-speaker and community-board vote counts.
+issue groups. Fourteen are binary, one records the literal zoning change, one
+records the dominant development direction, two record councilmember and
+civic-group positions, and four record reported CPC speaker and
+community-board vote counts.
+
+The August 2026 schema split preserves the prior `dev_direction` codes as
+`zone_change`. Existing `dev_direction` values are seeded mechanically as
+upzone to more, downzone to lower, mixed to mixed, and none to none. Future
+coding applies the separate definitions directly. `dev_direction` can capture
+a non-zoning approval only when it materially changes development capacity or
+enables a substantial redevelopment; routine or merely legal approvals remain
+`none`. Four legacy mixed cases were set to lower because their existing coder
+notes explicitly described an overwhelming or near-total downzoning; no report
+was retrospectively reread.
 
 Outputs:
 
