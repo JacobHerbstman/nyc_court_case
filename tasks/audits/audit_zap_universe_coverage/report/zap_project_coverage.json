@@ -1,0 +1,629 @@
+{
+  "dataset": "zap_project_coverage.csv",
+  "rows": 32964,
+  "key": [
+    "project_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "35f89db810b378b2cb2c754a52daf71b1e2ecba68849f377be21f38e1544f5b4",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "project_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 32964,
+      "most_common": [
+        [
+          "2018K0350",
+          1
+        ],
+        [
+          "2018K03531",
+          1
+        ],
+        [
+          "2018K0354",
+          1
+        ],
+        [
+          "2018K0356",
+          1
+        ],
+        [
+          "2018K0358",
+          1
+        ]
+      ]
+    },
+    "project_name": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 2434,
+      "distinct_nonmissing": 24614,
+      "most_common": [
+        [
+          "C-O-P",
+          1130
+        ],
+        [
+          "DISPOSITION OF CITY-OWNED PROPERTY",
+          370
+        ],
+        [
+          "SALE OF CITY-OWNED PROPERTY",
+          197
+        ],
+        [
+          "HRA BOARDING HOME",
+          33
+        ],
+        [
+          "LDA",
+          33
+        ]
+      ]
+    },
+    "project_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "Complete",
+          28361
+        ],
+        [
+          "Withdrawn-Other",
+          2518
+        ],
+        [
+          "Terminated",
+          1678
+        ],
+        [
+          "Active",
+          267
+        ],
+        [
+          "On-Hold",
+          76
+        ]
+      ]
+    },
+    "ulurp_non": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 2373,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "Non-ULURP",
+          18314
+        ],
+        [
+          "ULURP",
+          12273
+        ],
+        [
+          "ELURP",
+          4
+        ]
+      ]
+    },
+    "ulurp_scope": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "other_reported_process",
+          18318
+        ],
+        [
+          "explicit_ulurp",
+          12273
+        ],
+        [
+          "unclassified",
+          2373
+        ]
+      ]
+    },
+    "api_ulurp_non": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 30654,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "ULURP",
+          1517
+        ],
+        [
+          "Non-ULURP",
+          793
+        ]
+      ]
+    },
+    "withdrawn_or_terminated": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "False",
+          28708
+        ],
+        [
+          "True",
+          4256
+        ]
+      ]
+    },
+    "in_previous_raw_snapshot": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "True",
+          32892
+        ],
+        [
+          "False",
+          72
+        ]
+      ]
+    },
+    "in_existing_application_spine": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "False",
+          22435
+        ],
+        [
+          "True",
+          10529
+        ]
+      ]
+    },
+    "existing_cpc_project_link_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 14,
+      "most_common": [
+        [
+          "0",
+          23453
+        ],
+        [
+          "1",
+          8730
+        ],
+        [
+          "2",
+          518
+        ],
+        [
+          "3",
+          162
+        ],
+        [
+          "4",
+          55
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 16
+    },
+    "bulk_ulurp_number_present": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "True",
+          27998
+        ],
+        [
+          "False",
+          4966
+        ]
+      ]
+    },
+    "bulk_actions_present": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "False",
+          31455
+        ],
+        [
+          "True",
+          1509
+        ]
+      ]
+    },
+    "project_brief_present": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "True",
+          32250
+        ],
+        [
+          "False",
+          714
+        ]
+      ]
+    },
+    "app_filed_date_present": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "False",
+          31525
+        ],
+        [
+          "True",
+          1439
+        ]
+      ]
+    },
+    "certified_referred_present": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "True",
+          32051
+        ],
+        [
+          "False",
+          913
+        ]
+      ]
+    },
+    "completed_date_present": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "True",
+          29893
+        ],
+        [
+          "False",
+          3071
+        ]
+      ]
+    },
+    "approval_date_present": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "False",
+          32011
+        ],
+        [
+          "True",
+          953
+        ]
+      ]
+    },
+    "historical_date_cluster_flag": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "False",
+          30814
+        ],
+        [
+          "True",
+          2150
+        ]
+      ]
+    },
+    "has_bbl": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "True",
+          24575
+        ],
+        [
+          "False",
+          8389
+        ]
+      ]
+    },
+    "api_fetch_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "not_targeted",
+          28280
+        ],
+        [
+          "success",
+          4683
+        ],
+        [
+          "http_404",
+          1
+        ]
+      ]
+    },
+    "api_action_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 28281,
+      "distinct_nonmissing": 9,
+      "most_common": [
+        [
+          "1",
+          2311
+        ],
+        [
+          "0",
+          2169
+        ],
+        [
+          "2",
+          157
+        ],
+        [
+          "3",
+          22
+        ],
+        [
+          "4",
+          13
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 25
+    },
+    "api_application_number_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 28281,
+      "distinct_nonmissing": 9,
+      "most_common": [
+        [
+          "1",
+          2310
+        ],
+        [
+          "0",
+          2170
+        ],
+        [
+          "2",
+          157
+        ],
+        [
+          "3",
+          22
+        ],
+        [
+          "4",
+          14
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 25
+    },
+    "api_linked_cpc_report_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 28281,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "0",
+          4320
+        ],
+        [
+          "1",
+          347
+        ],
+        [
+          "2",
+          10
+        ],
+        [
+          "3",
+          4
+        ],
+        [
+          "4",
+          1
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 5
+    },
+    "api_milestone_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 28281,
+      "distinct_nonmissing": 30,
+      "most_common": [
+        [
+          "2",
+          1612
+        ],
+        [
+          "3",
+          1002
+        ],
+        [
+          "1",
+          771
+        ],
+        [
+          "4",
+          262
+        ],
+        [
+          "5",
+          189
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 35
+    },
+    "api_package_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 28281,
+      "distinct_nonmissing": 8,
+      "most_common": [
+        [
+          "0",
+          4631
+        ],
+        [
+          "1",
+          25
+        ],
+        [
+          "2",
+          12
+        ],
+        [
+          "4",
+          5
+        ],
+        [
+          "7",
+          4
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 8
+    },
+    "api_artifact_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 28281,
+      "distinct_nonmissing": 14,
+      "most_common": [
+        [
+          "0",
+          4590
+        ],
+        [
+          "1",
+          20
+        ],
+        [
+          "3",
+          20
+        ],
+        [
+          "2",
+          19
+        ],
+        [
+          "5",
+          8
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 21
+    },
+    "project_page_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 32964,
+      "most_common": [
+        [
+          "https://zap.planning.nyc.gov/projects/2018K0350",
+          1
+        ],
+        [
+          "https://zap.planning.nyc.gov/projects/2018K03531",
+          1
+        ],
+        [
+          "https://zap.planning.nyc.gov/projects/2018K0354",
+          1
+        ],
+        [
+          "https://zap.planning.nyc.gov/projects/2018K0356",
+          1
+        ],
+        [
+          "https://zap.planning.nyc.gov/projects/2018K0358",
+          1
+        ]
+      ]
+    }
+  }
+}

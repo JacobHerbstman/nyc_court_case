@@ -1,0 +1,1136 @@
+{
+  "dataset": "zap_project_universe.csv",
+  "rows": 32964,
+  "key": [
+    "project_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "fe3c342339150ce8119368fc11cbefdda115ca7f651f3394bd40a5281a5f7fac",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "project_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 32964,
+      "most_common": [
+        [
+          "2018K0350",
+          1
+        ],
+        [
+          "2018K03531",
+          1
+        ],
+        [
+          "2018K0354",
+          1
+        ],
+        [
+          "2018K0356",
+          1
+        ],
+        [
+          "2018K0358",
+          1
+        ]
+      ]
+    },
+    "project_name": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 2434,
+      "distinct_nonmissing": 24614,
+      "most_common": [
+        [
+          "C-O-P",
+          1130
+        ],
+        [
+          "DISPOSITION OF CITY-OWNED PROPERTY",
+          370
+        ],
+        [
+          "SALE OF CITY-OWNED PROPERTY",
+          197
+        ],
+        [
+          "HRA BOARDING HOME",
+          33
+        ],
+        [
+          "LDA",
+          33
+        ]
+      ]
+    },
+    "project_brief": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 714,
+      "distinct_nonmissing": 23993,
+      "most_common": [
+        [
+          "DISPOSITION OF CITY-OWNED PROPERTY, 1 PARCEL",
+          326
+        ],
+        [
+          "LDA",
+          203
+        ],
+        [
+          "UNRESTRICTED DISPOSITION OF CITY-OWNED PROPERTY, 1 PARCEL",
+          173
+        ],
+        [
+          "RENEWAL-ENCLOSED SIDEWALK CAFE",
+          165
+        ],
+        [
+          "DISPOSITION OF CITY-OWNED PROPERTY, 2 PARCELS",
+          143
+        ]
+      ]
+    },
+    "project_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "Complete",
+          28361
+        ],
+        [
+          "Withdrawn-Other",
+          2518
+        ],
+        [
+          "Terminated",
+          1678
+        ],
+        [
+          "Active",
+          267
+        ],
+        [
+          "On-Hold",
+          76
+        ]
+      ]
+    },
+    "public_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 1,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "Completed",
+          32728
+        ],
+        [
+          "Filed",
+          128
+        ],
+        [
+          "In Public Review",
+          65
+        ],
+        [
+          "Noticed",
+          42
+        ]
+      ]
+    },
+    "ulurp_non": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 2373,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "Non-ULURP",
+          18314
+        ],
+        [
+          "ULURP",
+          12273
+        ],
+        [
+          "ELURP",
+          4
+        ]
+      ]
+    },
+    "actions": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 31455,
+      "distinct_nonmissing": 227,
+      "most_common": [
+        [
+          "ZM; ZR",
+          168
+        ],
+        [
+          "ZC",
+          145
+        ],
+        [
+          "RC",
+          132
+        ],
+        [
+          "PX",
+          98
+        ],
+        [
+          "ZC; LD",
+          83
+        ]
+      ]
+    },
+    "ulurp_numbers": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 4966,
+      "distinct_nonmissing": 27997,
+      "most_common": [
+        [
+          "C870526HAK",
+          2
+        ],
+        [
+          "140316ZSR; N140317RAR; N140318RAR; N140319ZAR; N140321ZCR; 190188MMR",
+          1
+        ],
+        [
+          "150355MMX",
+          1
+        ],
+        [
+          "160208ZCM; N160209ZCM; N160210ZCM; N160211ZCM; N160320ZCM",
+          1
+        ],
+        [
+          "160241ZCM; N160242ZCM",
+          1
+        ]
+      ]
+    },
+    "ceqr_type": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 29517,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "Type II",
+          2112
+        ],
+        [
+          "Unlisted",
+          799
+        ],
+        [
+          "Type I",
+          453
+        ],
+        [
+          "Not Applicable",
+          83
+        ]
+      ]
+    },
+    "ceqr_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 22925,
+      "distinct_nonmissing": 8886,
+      "most_common": [
+        [
+          "81-040R",
+          29
+        ],
+        [
+          "82-248K",
+          13
+        ],
+        [
+          "03DCP031M",
+          11
+        ],
+        [
+          "97DOT007Y",
+          11
+        ],
+        [
+          "85-253M",
+          10
+        ]
+      ]
+    },
+    "eas_eis": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 31949,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "EAS",
+          832
+        ],
+        [
+          "EIS",
+          159
+        ],
+        [
+          "Tech Memo",
+          24
+        ]
+      ]
+    },
+    "ceqr_leadagency": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 28136,
+      "distinct_nonmissing": 45,
+      "most_common": [
+        [
+          "DCP",
+          4271
+        ],
+        [
+          "HPD",
+          142
+        ],
+        [
+          "DME",
+          54
+        ],
+        [
+          "LPC",
+          54
+        ],
+        [
+          "DCAS - Department of Citywide Administrative Services (NYC)",
+          41
+        ]
+      ]
+    },
+    "primary_applicant": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 16424,
+      "most_common": [
+        [
+          "DRP",
+          2824
+        ],
+        [
+          "HPD",
+          2096
+        ],
+        [
+          "LPC",
+          905
+        ],
+        [
+          "Unknown",
+          698
+        ],
+        [
+          "DCP",
+          592
+        ]
+      ]
+    },
+    "applicant_type": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 2118,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "Private",
+          19115
+        ],
+        [
+          "Other Public Agency",
+          10878
+        ],
+        [
+          "DCP",
+          853
+        ]
+      ]
+    },
+    "borough": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "Manhattan",
+          11614
+        ],
+        [
+          "Staten Island",
+          8395
+        ],
+        [
+          "Brooklyn",
+          5053
+        ],
+        [
+          "Queens",
+          3686
+        ],
+        [
+          "Bronx",
+          3219
+        ]
+      ]
+    },
+    "community_district": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 2132,
+      "distinct_nonmissing": 400,
+      "most_common": [
+        [
+          "R03",
+          6099
+        ],
+        [
+          "M02",
+          1905
+        ],
+        [
+          "M08",
+          1512
+        ],
+        [
+          "M05",
+          1417
+        ],
+        [
+          "M07",
+          1372
+        ]
+      ]
+    },
+    "cc_district": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 31265,
+      "distinct_nonmissing": 99,
+      "most_common": [
+        [
+          "51",
+          321
+        ],
+        [
+          "3",
+          118
+        ],
+        [
+          "50",
+          109
+        ],
+        [
+          "4",
+          93
+        ],
+        [
+          "33",
+          87
+        ]
+      ]
+    },
+    "flood_zone_a": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 28664,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "false",
+          4059
+        ],
+        [
+          "true",
+          241
+        ]
+      ]
+    },
+    "flood_zone_shadedx": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 28665,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "false",
+          4225
+        ],
+        [
+          "true",
+          74
+        ]
+      ]
+    },
+    "current_milestone": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 30854,
+      "distinct_nonmissing": 143,
+      "most_common": [
+        [
+          "EAS - Project Completed",
+          349
+        ],
+        [
+          "RC - Project Completed",
+          328
+        ],
+        [
+          "ZC - Project Completed",
+          272
+        ],
+        [
+          "ZA - Project Completed",
+          152
+        ],
+        [
+          "HI - Project Completed",
+          72
+        ]
+      ]
+    },
+    "current_milestone_date": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 30863,
+      "distinct_nonmissing": 998,
+      "most_common": [
+        [
+          "10/11/2022",
+          44
+        ],
+        [
+          "06/05/2019",
+          22
+        ],
+        [
+          "09/30/2019",
+          17
+        ],
+        [
+          "11/28/2025",
+          16
+        ],
+        [
+          "12/21/2021",
+          15
+        ]
+      ]
+    },
+    "current_envmilestone": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 32476,
+      "distinct_nonmissing": 28,
+      "most_common": [
+        [
+          "EAS - Review Filed EAS",
+          281
+        ],
+        [
+          "EAS - Prepare Filed EAS",
+          43
+        ],
+        [
+          "EIS - Prepare and Review FEIS",
+          39
+        ],
+        [
+          "EAS - Review Draft EAS",
+          19
+        ],
+        [
+          "Ad-hoc - Review Filed EAS",
+          16
+        ]
+      ]
+    },
+    "current_envmilestone_date": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 32476,
+      "distinct_nonmissing": 389,
+      "most_common": [
+        [
+          "04/30/2026",
+          6
+        ],
+        [
+          "05/28/2026",
+          5
+        ],
+        [
+          "06/20/2024",
+          4
+        ],
+        [
+          "08/16/2021",
+          4
+        ],
+        [
+          "10/27/2023",
+          4
+        ]
+      ]
+    },
+    "app_filed_date": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 31525,
+      "distinct_nonmissing": 904,
+      "most_common": [
+        [
+          "05/04/2018",
+          8
+        ],
+        [
+          "05/15/2018",
+          7
+        ],
+        [
+          "06/04/2018",
+          7
+        ],
+        [
+          "04/24/2018",
+          6
+        ],
+        [
+          "06/04/2025",
+          6
+        ]
+      ]
+    },
+    "noticed_date": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 32490,
+      "distinct_nonmissing": 145,
+      "most_common": [
+        [
+          "08/14/2020",
+          14
+        ],
+        [
+          "10/02/2020",
+          14
+        ],
+        [
+          "06/26/2026",
+          9
+        ],
+        [
+          "09/04/2020",
+          9
+        ],
+        [
+          "03/19/2021",
+          8
+        ]
+      ]
+    },
+    "certified_referred": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 913,
+      "distinct_nonmissing": 5872,
+      "most_common": [
+        [
+          "01/31/2011",
+          2150
+        ],
+        [
+          "05/18/1982",
+          122
+        ],
+        [
+          "11/13/1991",
+          101
+        ],
+        [
+          "08/22/1977",
+          76
+        ],
+        [
+          "11/07/1984",
+          67
+        ]
+      ]
+    },
+    "approval_date": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 32011,
+      "distinct_nonmissing": 478,
+      "most_common": [
+        [
+          "08/15/2024",
+          14
+        ],
+        [
+          "02/24/2026",
+          13
+        ],
+        [
+          "11/23/2021",
+          12
+        ],
+        [
+          "12/15/2021",
+          12
+        ],
+        [
+          "11/25/2025",
+          11
+        ]
+      ]
+    },
+    "completed_date": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 3071,
+      "distinct_nonmissing": 7956,
+      "most_common": [
+        [
+          "05/18/1982",
+          134
+        ],
+        [
+          "11/13/1991",
+          97
+        ],
+        [
+          "04/28/1983",
+          75
+        ],
+        [
+          "05/27/1982",
+          73
+        ],
+        [
+          "01/29/1981",
+          70
+        ]
+      ]
+    },
+    "mih_flag": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 31376,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "false",
+          1275
+        ],
+        [
+          "true",
+          313
+        ]
+      ]
+    },
+    "mih_option1": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 31405,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "false",
+          1303
+        ],
+        [
+          "true",
+          256
+        ]
+      ]
+    },
+    "mih_option2": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 31411,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "False",
+          1391
+        ],
+        [
+          "True",
+          162
+        ]
+      ]
+    },
+    "mih_workforce": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 31467,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "false",
+          1486
+        ],
+        [
+          "true",
+          11
+        ]
+      ]
+    },
+    "mih_deepaffordability": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 31379,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "false",
+          1482
+        ],
+        [
+          "true",
+          103
+        ]
+      ]
+    },
+    "mih_mapped_no_res": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 32872,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "false",
+          64
+        ],
+        [
+          "true",
+          28
+        ]
+      ]
+    },
+    "dcp_visibility": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "General Public",
+          32964
+        ]
+      ]
+    },
+    "source_dataset_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "hgx4-8ukb",
+          32964
+        ]
+      ]
+    },
+    "source_snapshot_date": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "2026-09-14",
+          32964
+        ]
+      ]
+    },
+    "source_release": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "20260706",
+          32964
+        ]
+      ]
+    },
+    "project_page_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 32964,
+      "most_common": [
+        [
+          "https://zap.planning.nyc.gov/projects/2018K0350",
+          1
+        ],
+        [
+          "https://zap.planning.nyc.gov/projects/2018K03531",
+          1
+        ],
+        [
+          "https://zap.planning.nyc.gov/projects/2018K0354",
+          1
+        ],
+        [
+          "https://zap.planning.nyc.gov/projects/2018K0356",
+          1
+        ],
+        [
+          "https://zap.planning.nyc.gov/projects/2018K0358",
+          1
+        ]
+      ]
+    },
+    "withdrawn_or_terminated": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "False",
+          28708
+        ],
+        [
+          "True",
+          4256
+        ]
+      ]
+    },
+    "ulurp_scope": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "other_reported_process",
+          18318
+        ],
+        [
+          "explicit_ulurp",
+          12273
+        ],
+        [
+          "unclassified",
+          2373
+        ]
+      ]
+    },
+    "ulurp_number_present": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "True",
+          27998
+        ],
+        [
+          "False",
+          4966
+        ]
+      ]
+    },
+    "actions_present": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "False",
+          31455
+        ],
+        [
+          "True",
+          1509
+        ]
+      ]
+    },
+    "project_brief_present": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "True",
+          32250
+        ],
+        [
+          "False",
+          714
+        ]
+      ]
+    },
+    "certified_referred_date_present": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "True",
+          32051
+        ],
+        [
+          "False",
+          913
+        ]
+      ]
+    },
+    "historical_date_cluster_flag": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "False",
+          30814
+        ],
+        [
+          "True",
+          2150
+        ]
+      ]
+    },
+    "bbl_source_row_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 107,
+      "most_common": [
+        [
+          "1",
+          15553
+        ],
+        [
+          "0",
+          8386
+        ],
+        [
+          "2",
+          4287
+        ],
+        [
+          "3",
+          1572
+        ],
+        [
+          "4",
+          957
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 39682
+    },
+    "distinct_nonblank_bbl_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 109,
+      "most_common": [
+        [
+          "1",
+          17007
+        ],
+        [
+          "0",
+          8389
+        ],
+        [
+          "2",
+          3284
+        ],
+        [
+          "3",
+          1349
+        ],
+        [
+          "4",
+          901
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 39682
+    }
+  }
+}

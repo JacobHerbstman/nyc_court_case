@@ -1,0 +1,18 @@
+{
+  "dataset": "zap_missing_project_details.jsonl",
+  "rows": 4684,
+  "key": [
+    "project_id"
+  ],
+  "unique_nonmissing_key": true,
+  "fetch_status_counts": {
+    "http_404": 1,
+    "success": 4683
+  },
+  "selection": "Every withdrawn/terminated/record-closed project, plus every project with missing ulurp_non, in the full export.",
+  "snapshot_note": "Live API retrieved separately from the bulk export; disagreement is retained, not overwritten.",
+  "source_snapshot_date": "2026-09-14",
+  "sha256_jsonl_bytes": "321bbb808d32d5cd46577aad915bc1169014baff915032c217f610a817daf9a6",
+  "missing_response": 1,
+  "nested_schema": "response.data contains project attributes/relationships; response.included contains linked typed entities with source IDs."
+}

@@ -1,0 +1,79 @@
+{
+  "snapshot_date": "2026-09-14",
+  "project_release": "20260706",
+  "project_rows": 32964,
+  "independent_project_count": 32964,
+  "bbl_rows": 132090,
+  "bbl_projects": 24578,
+  "bbl_duplicate_project_bbl_pairs": 5982,
+  "project_status_counts": {
+    "Active": 267,
+    "Complete": 28361,
+    "On-Hold": 76,
+    "Record Closed": 4,
+    "Terminated": 1678,
+    "Terminated-Applicant Unresponsive": 60,
+    "Withdrawn-Other": 2518
+  },
+  "source_sha256": {
+    "zap_project_data.csv": "05dae56150cf241145e7fc14ae1bf1614e5ade4c69e08403bf86edec11dba007",
+    "zap_project_metadata.json": "beee3cc8a9a67cb164ff88ecc4c5b2999765bd6d07e8adf2c7c808b79e8cb3ca",
+    "zap_project_count.json": "d31b6a911873757b7debac27d42fa9fa98868574f0e31d986d728cd69888d124",
+    "zap_bbl.csv": "332262f20a45ebe42fc4e7b35c8fb2e0628a86aba33af53f8b7807212b52375f",
+    "zap_bbl_metadata.json": "96249235cfdbd834590b06d98cc5bb2fc7440de4429a487f37cb78bcdb92cd90",
+    "zap_bbl_count.json": "039266c3d1cb41ad40064816fab4b8c7e0102882d313e15093f97e19e32bed00",
+    "zapprojects_datadictionary.xlsx": "b10ae7eb0a3e1c42d7cb4e4c1b15792466c9eeab62888f12c4f7772c3c8610f5"
+  },
+  "bbl_columns": {
+    "project_id": {
+      "source_type": "string",
+      "missing": 0,
+      "distinct_nonmissing": 24578
+    },
+    "bbl": {
+      "source_type": "string",
+      "missing": 1149,
+      "distinct_nonmissing": 101147
+    },
+    "validated_borough": {
+      "source_type": "string",
+      "missing": 286,
+      "distinct_nonmissing": 5
+    },
+    "validated_block": {
+      "source_type": "string",
+      "missing": 286,
+      "distinct_nonmissing": 7329
+    },
+    "validated_lot": {
+      "source_type": "string",
+      "missing": 286,
+      "distinct_nonmissing": 2071
+    },
+    "validated": {
+      "source_type": "string",
+      "missing": 49068,
+      "distinct_nonmissing": 2
+    },
+    "validated_date": {
+      "source_type": "string",
+      "missing": 863,
+      "distinct_nonmissing": 1173
+    },
+    "unverified_borough": {
+      "source_type": "string",
+      "missing": 142,
+      "distinct_nonmissing": 5
+    },
+    "unverified_block": {
+      "source_type": "string",
+      "missing": 2128,
+      "distinct_nonmissing": 7338
+    },
+    "unverified_lot": {
+      "source_type": "string",
+      "missing": 4729,
+      "distinct_nonmissing": 2079
+    }
+  }
+}

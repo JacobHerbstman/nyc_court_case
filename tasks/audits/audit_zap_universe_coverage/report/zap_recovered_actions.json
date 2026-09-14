@@ -1,0 +1,379 @@
+{
+  "dataset": "zap_recovered_actions.csv",
+  "rows": 2826,
+  "key": [
+    "project_id",
+    "action_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "9027c97a7cd83fb176b9d9aa161be93f92ba675f2e79ca6e98d0c34565d73aa4",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "project_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2514,
+      "most_common": [
+        [
+          "P1994R0428",
+          25
+        ],
+        [
+          "P2018M0215",
+          10
+        ],
+        [
+          "P1999R0219",
+          6
+        ],
+        [
+          "P2014X0377",
+          6
+        ],
+        [
+          "P2017R0349",
+          6
+        ]
+      ]
+    },
+    "action_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2826,
+      "most_common": [
+        [
+          "001bbdfe-2433-e811-8126-1458d04dc8c8",
+          1
+        ],
+        [
+          "0056542c-2533-e811-8129-1458d04d2538",
+          1
+        ],
+        [
+          "006af7fe-2433-e811-812a-1458d04d06c8",
+          1
+        ],
+        [
+          "007206f3-2433-e811-812a-1458d04d06c8",
+          1
+        ],
+        [
+          "0076b010-2533-e811-8126-1458d04dc8c8",
+          1
+        ]
+      ]
+    },
+    "bulk_project_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "Withdrawn-Other",
+          2310
+        ],
+        [
+          "Terminated",
+          284
+        ],
+        [
+          "Complete",
+          141
+        ],
+        [
+          "Terminated-Applicant Unresponsive",
+          91
+        ]
+      ]
+    },
+    "bulk_ulurp_non": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 232,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "ULURP",
+          1717
+        ],
+        [
+          "Non-ULURP",
+          877
+        ]
+      ]
+    },
+    "action_name": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 16,
+      "distinct_nonmissing": 55,
+      "most_common": [
+        [
+          "Disposition of Non",
+          433
+        ],
+        [
+          "Zoning Map Amendment",
+          300
+        ],
+        [
+          "Zoning Special Permit",
+          295
+        ],
+        [
+          "Change in City Map",
+          239
+        ],
+        [
+          "Zoning Certification",
+          161
+        ]
+      ]
+    },
+    "action_code": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 55,
+      "most_common": [
+        [
+          "PP",
+          433
+        ],
+        [
+          "ZM",
+          301
+        ],
+        [
+          "ZS",
+          296
+        ],
+        [
+          "MM",
+          239
+        ],
+        [
+          "ZC",
+          164
+        ]
+      ]
+    },
+    "raw_application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 2,
+      "distinct_nonmissing": 2824,
+      "most_common": [
+        [
+          "180352ZRM",
+          1
+        ],
+        [
+          "180392ECK",
+          1
+        ],
+        [
+          "180414ECM",
+          1
+        ],
+        [
+          "180429ECM",
+          1
+        ],
+        [
+          "180432ECM",
+          1
+        ]
+      ]
+    },
+    "application_key": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 2,
+      "distinct_nonmissing": 2824,
+      "most_common": [
+        [
+          "000022RCR",
+          1
+        ],
+        [
+          "000048MMX",
+          1
+        ],
+        [
+          "000050ZRQ",
+          1
+        ],
+        [
+          "000051ZSQ",
+          1
+        ],
+        [
+          "000052ZSM",
+          1
+        ]
+      ]
+    },
+    "action_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "Withdrawn",
+          2299
+        ],
+        [
+          "Terminated",
+          396
+        ],
+        [
+          "Approved",
+          128
+        ],
+        [
+          "Disapproved",
+          2
+        ],
+        [
+          "Active",
+          1
+        ]
+      ]
+    },
+    "action_state": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "Inactive",
+          2697
+        ],
+        [
+          "Active",
+          129
+        ]
+      ]
+    },
+    "cpc_report_url_raw": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 2807,
+      "distinct_nonmissing": 19,
+      "most_common": [
+        [
+          "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/PS -Site Selection (City Facility)_CB748DEC2433E81181261458D04DC8C8",
+          1
+        ],
+        [
+          "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/PX - Office Space _1F56E84B5516EC11B6E6001DD804C295",
+          1
+        ],
+        [
+          "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZC-Zoning Certification_E39D37282533E811812E1458D04D95C0",
+          1
+        ],
+        [
+          "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZM - Zoning Map Amendment _937BCF26F0EAEB11BACB001DD804A7C1",
+          1
+        ],
+        [
+          "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZM - Zoning Map Amendment _95189BE20CBDE81181461458D04DC8C8",
+          1
+        ]
+      ]
+    },
+    "matches_existing_cpc_report": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "False",
+          2438
+        ],
+        [
+          "True",
+          388
+        ]
+      ]
+    },
+    "source_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2514,
+      "most_common": [
+        [
+          "https://zap-api-production.herokuapp.com/projects/P1994R0428?include=actions,milestones,dispositions,packages,artifacts",
+          25
+        ],
+        [
+          "https://zap-api-production.herokuapp.com/projects/P2018M0215?include=actions,milestones,dispositions,packages,artifacts",
+          10
+        ],
+        [
+          "https://zap-api-production.herokuapp.com/projects/P1999R0219?include=actions,milestones,dispositions,packages,artifacts",
+          6
+        ],
+        [
+          "https://zap-api-production.herokuapp.com/projects/P2014X0377?include=actions,milestones,dispositions,packages,artifacts",
+          6
+        ],
+        [
+          "https://zap-api-production.herokuapp.com/projects/P2017R0349?include=actions,milestones,dispositions,packages,artifacts",
+          6
+        ]
+      ]
+    },
+    "source_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2514,
+      "most_common": [
+        [
+          "8ed0cf9b9fa85c44a1c7fc9eb42ec408559843ad8dff66e774eaeaf67cd7f35b",
+          25
+        ],
+        [
+          "51c563ff673122acc94a1fb81c4f2bc3e35deb7842fb09a1ef787c7a888eca71",
+          10
+        ],
+        [
+          "136d620a2536ca3c60725cbbb2947cd44cf3b7a52547c3526100ade8193d14b7",
+          6
+        ],
+        [
+          "1638bb7d17a52e59ff6ab5a1babe83f287eb9b5697aaa90c4b9cbe1c2ceef1e9",
+          6
+        ],
+        [
+          "d38d088a7c25b025e1a75ef360eedc25dd198d96da7c2ccc6834799527d2e7cc",
+          6
+        ]
+      ]
+    }
+  }
+}

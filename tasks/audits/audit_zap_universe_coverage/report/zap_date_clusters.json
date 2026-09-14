@@ -1,0 +1,146 @@
+{
+  "dataset": "zap_date_clusters.csv",
+  "rows": 1010,
+  "key": [
+    "ulurp_scope",
+    "project_status",
+    "date_field",
+    "date"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "c2a68d28352204da0282bd7d109572f4852e784ebe1afdc6d06a08fc8708bdba",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "ulurp_scope": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "other_reported_process",
+          583
+        ],
+        [
+          "explicit_ulurp",
+          424
+        ],
+        [
+          "unclassified",
+          3
+        ]
+      ]
+    },
+    "project_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "Complete",
+          1000
+        ],
+        [
+          "Withdrawn-Other",
+          7
+        ],
+        [
+          "Terminated",
+          2
+        ],
+        [
+          "Active",
+          1
+        ]
+      ]
+    },
+    "date_field": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "certified_referred",
+          552
+        ],
+        [
+          "completed_date",
+          454
+        ],
+        [
+          "approval_date",
+          2
+        ],
+        [
+          "noticed_date",
+          2
+        ]
+      ]
+    },
+    "date": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 839,
+      "most_common": [
+        [
+          "01/05/1981",
+          3
+        ],
+        [
+          "01/31/2011",
+          3
+        ],
+        [
+          "02/28/1994",
+          3
+        ],
+        [
+          "03/15/1984",
+          3
+        ],
+        [
+          "04/28/1980",
+          3
+        ]
+      ]
+    },
+    "projects": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 64,
+      "most_common": [
+        [
+          "10",
+          195
+        ],
+        [
+          "11",
+          128
+        ],
+        [
+          "12",
+          106
+        ],
+        [
+          "13",
+          74
+        ],
+        [
+          "14",
+          68
+        ]
+      ],
+      "minimum": 10,
+      "maximum": 1402
+    }
+  }
+}

@@ -1,0 +1,154 @@
+{
+  "dataset": "zap_dates_by_year.csv",
+  "rows": 814,
+  "key": [
+    "ulurp_scope",
+    "project_status",
+    "date_field",
+    "year"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "829fbe16f89aabcda2a212c2d492ed0bea0dcfa2770a11408ceb8aee4b0dc46e",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "ulurp_scope": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "explicit_ulurp",
+          391
+        ],
+        [
+          "other_reported_process",
+          364
+        ],
+        [
+          "unclassified",
+          59
+        ]
+      ]
+    },
+    "project_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "Complete",
+          279
+        ],
+        [
+          "Withdrawn-Other",
+          235
+        ],
+        [
+          "Terminated",
+          124
+        ],
+        [
+          "Active",
+          70
+        ],
+        [
+          "On-Hold",
+          56
+        ]
+      ]
+    },
+    "date_field": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "certified_referred",
+          321
+        ],
+        [
+          "completed_date",
+          302
+        ],
+        [
+          "app_filed_date",
+          89
+        ],
+        [
+          "approval_date",
+          52
+        ],
+        [
+          "noticed_date",
+          50
+        ]
+      ]
+    },
+    "year": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 54,
+      "most_common": [
+        [
+          "missing",
+          89
+        ],
+        [
+          "2021",
+          36
+        ],
+        [
+          "2022",
+          31
+        ],
+        [
+          "2023",
+          29
+        ],
+        [
+          "2025",
+          29
+        ]
+      ]
+    },
+    "projects": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 245,
+      "most_common": [
+        [
+          "1",
+          128
+        ],
+        [
+          "2",
+          67
+        ],
+        [
+          "3",
+          42
+        ],
+        [
+          "4",
+          32
+        ],
+        [
+          "5",
+          29
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 17402
+    }
+  }
+}

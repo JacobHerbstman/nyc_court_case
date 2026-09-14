@@ -1,0 +1,137 @@
+{
+  "dataset": "zap_snapshot_changes.csv",
+  "rows": 273,
+  "key": [
+    "project_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "d7891b936a9a4a39c7085dcaa4f9626be9a91d5269421a6feb6115249639669a",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "project_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 273,
+      "most_common": [
+        [
+          "2019K0147",
+          1
+        ],
+        [
+          "2019K0190",
+          1
+        ],
+        [
+          "2019K0217",
+          1
+        ],
+        [
+          "2019K0301",
+          1
+        ],
+        [
+          "2019K0383",
+          1
+        ]
+      ]
+    },
+    "change_type": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "changed",
+          201
+        ],
+        [
+          "added",
+          72
+        ]
+      ]
+    },
+    "changed_fields": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 72,
+      "distinct_nonmissing": 130,
+      "most_common": [
+        [
+          "project_status;public_status;current_milestone;current_milestone_date;approval_date",
+          16
+        ],
+        [
+          "project_status",
+          10
+        ],
+        [
+          "project_status;public_status;current_milestone;current_milestone_date;approval_date;completed_date",
+          10
+        ],
+        [
+          "current_milestone;current_milestone_date",
+          8
+        ],
+        [
+          "public_status;current_milestone;current_milestone_date;approval_date",
+          8
+        ]
+      ]
+    },
+    "previous_project_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 72,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "Active",
+          179
+        ],
+        [
+          "On-Hold",
+          18
+        ],
+        [
+          "Complete",
+          4
+        ]
+      ]
+    },
+    "current_project_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "Active",
+          186
+        ],
+        [
+          "Complete",
+          58
+        ],
+        [
+          "On-Hold",
+          24
+        ],
+        [
+          "Withdrawn-Other",
+          2
+        ],
+        [
+          "Record Closed",
+          1
+        ]
+      ]
+    }
+  }
+}

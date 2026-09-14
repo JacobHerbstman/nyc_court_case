@@ -1,0 +1,33 @@
+{
+  "all_projects": 32964,
+  "explicit_ulurp": 12273,
+  "ulurp_withdrawn_terminated": 1515,
+  "ulurp_withdrawn_terminated_share": 0.12344170129552677,
+  "unclassified_projects": 2373,
+  "all_withdrawn_terminated": 4256,
+  "old_spine_rows": 12899,
+  "old_spine_projects": 10529,
+  "ulurp_terminal_in_old_spine": 1,
+  "ulurp_terminal_api_recovered_number": 1513,
+  "ulurp_terminal_api_linked_existing_report": 361,
+  "api_status_counts": {
+    "success": 4683,
+    "http_404": 1
+  },
+  "api_entity_counts": {
+    "actions": 2826,
+    "artifacts": 383,
+    "dispositions": 215,
+    "milestones": 16733,
+    "packages": 127
+  },
+  "all_requested_relationship_references_returned": true,
+  "snapshot_changes": {
+    "changed": 201,
+    "added": 72
+  },
+  "unclassified_date_cluster": 2150,
+  "unclassified_api_still_missing_scope": 2373,
+  "corpus_report_rows": 11294,
+  "corpus_reports_without_bulk_project_link": 521
+}
