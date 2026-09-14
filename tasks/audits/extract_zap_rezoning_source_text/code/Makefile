@@ -67,7 +67,7 @@ all: ../output/zap_rezoning_source_document_index.csv \
 ../input/dcp_mappluto_current_25v4.parquet: ../../build_mappluto_lots/output/dcp_mappluto_current_25v4.parquet | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/ccdist2010_homeownership_1990_measure.csv: ../../../build_ccd2010_homeownership_1990_measure/output/ccdist2010_homeownership_1990_measure.csv | ../input
+../input/ccdist2010_homeownership_1990_measure.csv: ../../build_ccd2010_homeownership_1990_measure/output/ccdist2010_homeownership_1990_measure.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../output/chatgpt_batches ../output/chatgpt_second_review_batches ../temp/source_pdfs ../temp/source_text:

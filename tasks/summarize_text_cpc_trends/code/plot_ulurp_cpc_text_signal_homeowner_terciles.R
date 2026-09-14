@@ -9,7 +9,6 @@ suppressPackageStartupMessages({
   library(dplyr)
   library(ggplot2)
   library(readr)
-  library(sf)
   library(stringr)
   library(tibble)
   library(tidyr)
@@ -193,146 +192,53 @@ if (nrow(project_bbl) != nrow(distinct(project_bbl, project_id, bbl_standardized
   stop("Project-BBL input is not unique by project_id and BBL.")
 }
 
-council_measure <- read_csv(
-  "../input/ccdist2010_homeownership_1990_measure.csv",
+district_treatment <- read_csv(
+  "../input/cd_homeownership_1990_measure.csv",
   col_types = cols(.default = col_character()),
   show_col_types = FALSE,
   na = c("", "NA")
-)
-
-council_sf <- council_measure |>
+) |>
   transmute(
-    district_id = sprintf("%02d", suppressWarnings(as.integer(district_id))),
-    council_district = suppressWarnings(as.integer(council_district)),
-    geometry = st_as_sfc(geometry_wkt, crs = 2263)
+    borocd = suppressWarnings(as.integer(borocd)),
+    borough_code = suppressWarnings(as.integer(borough_code)),
+    treat_pp = suppressWarnings(as.numeric(treat_pp))
   ) |>
-  st_as_sf() |>
-  arrange(council_district)
+  arrange(borough_code, treat_pp, borocd) |>
+  group_by(borough_code) |>
+  mutate(
+    homeowner_tercile = ntile(treat_pp, 3),
+    homeowner_tercile_label = case_when(
+      homeowner_tercile == 1L ~ "Low homeowner",
+      homeowner_tercile == 2L ~ "Middle homeowner",
+      homeowner_tercile == 3L ~ "High homeowner"
+    )
+  ) |>
+  ungroup()
 
-if (nrow(council_sf) != 51 || anyDuplicated(council_sf$district_id)) {
-  stop("Figure 2 Council district geometries must contain 51 unique districts.")
+if (nrow(district_treatment) != 59 || anyDuplicated(district_treatment$borocd)) {
+  stop("Homeowner treatment must contain 59 unique community districts.")
 }
 
 mappluto_lots <- read_parquet(
   "../input/mappluto_current_lot_lookup.parquet",
-  col_select = c("bbl", "cd", "unitsres", "is_joint_interest_area")
+  col_select = c("bbl", "cd", "is_joint_interest_area")
 ) |>
   as.data.frame() |>
   as_tibble() |>
   transmute(
     bbl_standardized = str_squish(as.character(bbl)),
     borocd = suppressWarnings(as.integer(cd)),
-    residential_units = pmax(suppressWarnings(as.numeric(unitsres)), 0, na.rm = TRUE),
     is_joint_interest_area = coalesce(as.logical(is_joint_interest_area), FALSE)
   ) |>
-  filter(!is.na(borocd), bbl_standardized != "")
+  filter(
+    !is_joint_interest_area,
+    borocd %in% district_treatment$borocd,
+    bbl_standardized != ""
+  ) |>
+  select(bbl_standardized, borocd)
 
 if (nrow(mappluto_lots) != n_distinct(mappluto_lots$bbl_standardized)) {
   stop("Current MapPLUTO input is not unique by BBL.")
-}
-
-mappluto_row <- read_csv(
-  "../input/mappluto_files.csv",
-  show_col_types = FALSE,
-  na = c("", "NA")
-) |>
-  filter(
-    source_id == "dcp_mappluto_current",
-    vintage == "25v4",
-    file_role == "mappluto_shapefile_zip",
-    status %in% c("downloaded", "already_present", "redownloaded_after_validation_failure"),
-    !is.na(raw_path)
-  ) |>
-  arrange(raw_path)
-
-if (nrow(mappluto_row) != 1 || !file.exists(mappluto_row$raw_path[[1]])) {
-  stop("Current 25v4 MapPLUTO shapefile ZIP is not uniquely available.")
-}
-
-mappluto_temp_dir <- tempfile(pattern = "mappluto_sf_")
-dir.create(mappluto_temp_dir)
-on.exit(unlink(mappluto_temp_dir, recursive = TRUE), add = TRUE)
-suppressWarnings(unzip(mappluto_row$raw_path[[1]], exdir = mappluto_temp_dir))
-mappluto_shapefile <- list.files(
-  mappluto_temp_dir,
-  pattern = "[.]shp$",
-  recursive = TRUE,
-  full.names = TRUE
-)
-mappluto_shapefile <- mappluto_shapefile[
-  str_to_lower(basename(mappluto_shapefile)) == "mappluto_unclipped.shp"
-]
-if (length(mappluto_shapefile) != 1) {
-  stop("Current MapPLUTO archive must contain one MapPLUTO_UNCLIPPED.shp lot layer.")
-}
-
-mappluto_sf <- st_read(
-  mappluto_shapefile,
-  quiet = TRUE,
-  stringsAsFactors = FALSE
-)
-names(mappluto_sf) <- str_to_lower(names(mappluto_sf))
-if (!all(c("bbl", "cd") %in% names(mappluto_sf))) {
-  stop("Current MapPLUTO shapefile must contain BBL and CD fields.")
-}
-
-jia_codes <- c(164L, 226L, 227L, 228L, 355L, 356L, 480L, 481L, 482L, 483L, 484L, 595L)
-
-mappluto_bbl <- mappluto_sf |>
-  st_drop_geometry() |>
-  transmute(
-    row_id = row_number(),
-    bbl_numeric = suppressWarnings(as.numeric(bbl)),
-    is_joint_interest_area = suppressWarnings(as.integer(cd)) %in% jia_codes
-  ) |>
-  mutate(
-    bbl_standardized = if_else(
-      is.na(bbl_numeric),
-      NA_character_,
-      sprintf("%.0f", bbl_numeric)
-    )
-  ) |>
-  select(-bbl_numeric)
-
-mappluto_points <- st_sf(
-  row_id = seq_len(nrow(mappluto_sf)),
-  geometry = suppressWarnings(st_point_on_surface(st_geometry(mappluto_sf))),
-  crs = st_crs(mappluto_sf)
-)
-if (is.na(st_crs(mappluto_points))) {
-  st_crs(mappluto_points) <- st_crs(council_sf)
-}
-mappluto_points <- st_transform(mappluto_points, st_crs(council_sf))
-
-district_hits <- st_intersects(mappluto_points, council_sf)
-assigned_flag <- lengths(district_hits) > 0
-assigned_row <- vapply(district_hits[assigned_flag], function(x) x[[1]], integer(1))
-mappluto_assignment <- tibble(
-  row_id = which(assigned_flag),
-  council_row = assigned_row
-) |>
-  bind_cols(
-    council_sf |>
-      st_drop_geometry() |>
-      slice(assigned_row) |>
-      select(district_id, council_district)
-  )
-
-bbl_district_lookup <- mappluto_bbl |>
-  inner_join(mappluto_assignment, by = "row_id", relationship = "one-to-one") |>
-  filter(
-    !coalesce(is_joint_interest_area, FALSE),
-    !is.na(bbl_standardized),
-    !is.na(council_district)
-  ) |>
-  count(bbl_standardized, district_id, council_district, name = "mappluto_lot_rows") |>
-  group_by(bbl_standardized) |>
-  arrange(desc(mappluto_lot_rows), district_id) |>
-  slice_head(n = 1) |>
-  ungroup()
-
-if (nrow(bbl_district_lookup) != n_distinct(bbl_district_lookup$bbl_standardized)) {
-  stop("2010 Council district BBL lookup is not unique by BBL.")
 }
 
 report_projects <- documents |>
@@ -357,28 +263,15 @@ document_bbl <- bind_rows(lapply(seq_len(nrow(report_projects)), function(i) {
   distinct(document_id, bbl_standardized)
 
 bbl_assignment <- document_bbl |>
-  inner_join(bbl_district_lookup, by = "bbl_standardized", relationship = "many-to-one") |>
-  distinct(document_id, bbl_standardized, district_id, council_district) |>
-  count(document_id, district_id, council_district, name = "assigned_bbl_count") |>
+  inner_join(mappluto_lots, by = "bbl_standardized", relationship = "many-to-one") |>
+  distinct(document_id, bbl_standardized, borocd) |>
+  count(document_id, borocd, name = "assigned_bbl_count") |>
   group_by(document_id) |>
   mutate(
     assignment_weight = assigned_bbl_count / sum(assigned_bbl_count)
   ) |>
   ungroup() |>
-  select(document_id, district_id, council_district, assignment_weight)
-
-community_district_crosswalk <- mappluto_lots |>
-  filter(!is_joint_interest_area, residential_units > 0) |>
-  inner_join(bbl_district_lookup, by = "bbl_standardized", relationship = "many-to-one") |>
-  group_by(borocd, district_id, council_district) |>
-  summarize(residential_units = sum(residential_units), .groups = "drop") |>
-  group_by(borocd) |>
-  mutate(community_district_weight = residential_units / sum(residential_units)) |>
-  ungroup()
-
-if (n_distinct(community_district_crosswalk$borocd) != 59) {
-  stop("Expected residential fallback weights for 59 standard community districts.")
-}
+  select(document_id, borocd, assignment_weight)
 
 bbl_document_ids <- bbl_assignment |>
   distinct(document_id)
@@ -409,73 +302,25 @@ fallback_documents <- documents |>
     ))),
     borocd = borough_code * 100L + community_district_number
   ) |>
-  filter(!is.na(borocd)) |>
+  filter(borocd %in% district_treatment$borocd) |>
   distinct(document_id, borocd) |>
   group_by(document_id) |>
-  mutate(fallback_community_district_count = n()) |>
+  mutate(
+    assignment_weight = 1 / n()
+  ) |>
   ungroup()
 
-community_district_crosswalk_index <- split(
-  community_district_crosswalk,
-  community_district_crosswalk$borocd
-)
-fallback_assignment <- bind_rows(lapply(seq_len(nrow(fallback_documents)), function(i) {
-  matched_districts <- community_district_crosswalk_index[[
-    as.character(fallback_documents$borocd[[i]])
-  ]]
-  if (is.null(matched_districts)) {
-    return(NULL)
-  }
-  matched_districts |>
-    transmute(
-      document_id = fallback_documents$document_id[[i]],
-      district_id,
-      council_district,
-      assignment_weight = community_district_weight /
-        fallback_documents$fallback_community_district_count[[i]]
-    )
-})) |>
-  group_by(document_id, district_id, council_district) |>
-  summarize(
-    assignment_weight = sum(assignment_weight),
-    .groups = "drop"
-  )
-
-district_treatment <- council_measure |>
-  transmute(
-    district_id = sprintf("%02d", suppressWarnings(as.integer(district_id))),
-    council_district = suppressWarnings(as.integer(council_district)),
-    borough_code = suppressWarnings(as.integer(borough_code)),
-    treat_pp = suppressWarnings(as.numeric(treat_pp))
-  ) |>
-  arrange(borough_code, treat_pp, council_district) |>
-  group_by(borough_code) |>
-  mutate(
-    homeowner_tercile = ntile(treat_pp, 3),
-    homeowner_tercile_label = case_when(
-      homeowner_tercile == 1L ~ "Low homeowner",
-      homeowner_tercile == 2L ~ "Middle homeowner",
-      homeowner_tercile == 3L ~ "High homeowner"
-    )
-  ) |>
-  ungroup() |>
-  select(
-    district_id,
-    council_district,
-    homeowner_tercile,
-    homeowner_tercile_label
-  )
+fallback_assignment <- fallback_documents |>
+  select(document_id, borocd, assignment_weight)
 
 tercile_district_counts <- district_treatment |>
-  count(homeowner_tercile, homeowner_tercile_label, name = "council_district_count") |>
+  count(homeowner_tercile, homeowner_tercile_label, name = "community_district_count") |>
   arrange(homeowner_tercile)
 
 if (
-  nrow(district_treatment) != 51 ||
-  nrow(district_treatment) != n_distinct(district_treatment$district_id) ||
-  !identical(as.integer(tercile_district_counts$council_district_count), c(19L, 17L, 15L))
+  !identical(as.integer(tercile_district_counts$community_district_count), c(20L, 20L, 19L))
 ) {
-  stop("Figure 2 treatment must contain 51 districts split 19/17/15 within-borough terciles.")
+  stop("The 59 community districts must split 20/20/19 across within-borough terciles.")
 }
 
 assignment <- bind_rows(bbl_assignment, fallback_assignment) |>
@@ -487,13 +332,13 @@ assignment <- bind_rows(bbl_assignment, fallback_assignment) |>
   ) |>
   left_join(
     district_treatment,
-    by = c("district_id", "council_district"),
+    by = "borocd",
     relationship = "many-to-one"
   ) |>
-  arrange(official_vote_year, document_id, district_id)
+  arrange(official_vote_year, document_id, borocd)
 
 if (any(is.na(assignment$homeowner_tercile))) {
-  stop("At least one assigned Council district is missing the Figure 2 treatment.")
+  stop("At least one assigned community district is missing the homeowner treatment.")
 }
 
 assignment_weight_failures <- assignment |>
@@ -502,13 +347,13 @@ assignment_weight_failures <- assignment |>
   filter(abs(assignment_weight_sum - 1) > 1e-8)
 
 if (nrow(assignment_weight_failures) > 0) {
-  stop("Council district assignment weights do not sum to one within every assigned narrative.")
+  stop("Community-district assignment weights do not sum to one within every assigned narrative.")
 }
 
 assigned_document_count <- n_distinct(assignment$document_id)
 assignment_coverage <- assigned_document_count / nrow(documents)
 if (assignment_coverage < 0.99) {
-  stop("Council district assignment coverage is below 99 percent.")
+  stop("Community-district assignment coverage is below 99 percent.")
 }
 
 signal_assignment <- assignment |>
@@ -572,7 +417,7 @@ tercile_year <- expand_grid(
 ) |>
   left_join(
     tercile_district_counts |>
-      select(-council_district_count),
+      select(-community_district_count),
     by = "homeowner_tercile",
     relationship = "many-to-one"
   ) |>
@@ -636,7 +481,7 @@ count_year <- expand_grid(
 ) |>
   left_join(
     tercile_district_counts |>
-      select(-council_district_count),
+      select(-community_district_count),
     by = "homeowner_tercile",
     relationship = "many-to-one"
   ) |>
@@ -719,7 +564,7 @@ homeowner_colors <- c(
 bbl_document_count <- n_distinct(bbl_assignment$document_id)
 fallback_document_count <- n_distinct(fallback_assignment$document_id)
 plot_subtitle <- paste0(
-  "Archived 2010 Council districts; ",
+  "59 community districts; ",
   scales::comma(bbl_document_count),
   " narratives assigned by project BBL and ",
   scales::comma(fallback_document_count),
@@ -764,7 +609,7 @@ for (signal_id in signal_families) {
         ),
         color = NULL,
         caption = paste0(
-          "Terciles reproduce Figure 2 using the 1990 homeownership measure within borough. Each point pools the centered window; at least ",
+          "Terciles use the 1990 community-district homeownership measure within borough. Each point pools the centered window; at least ",
           minimum_documents_per_moving_window,
           " weighted narratives are required per window."
         )

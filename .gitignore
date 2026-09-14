@@ -58,6 +58,10 @@ tasks/audits/record_ulurp_cpc_text_analysis_decisions/output/*
 !tasks/audits/record_ulurp_cpc_text_analysis_decisions/output/ulurp_cpc_event_validation_labels.csv
 !tasks/audits/record_ulurp_cpc_text_analysis_decisions/output/ulurp_cpc_initial_event_labels.csv
 !tasks/audits/record_ulurp_cpc_text_analysis_decisions/output/ulurp_cpc_kwic_calibration_labels.csv
+!tasks/audits/record_ulurp_cpc_regex_validation_labels/output/
+tasks/audits/record_ulurp_cpc_regex_validation_labels/output/*
+!tasks/audits/record_ulurp_cpc_regex_validation_labels/output/ulurp_cpc_regex_validation_labels_codex.csv
+!tasks/audits/record_ulurp_cpc_regex_validation_labels/output/ulurp_cpc_regex_holdout_labels_codex.csv
 
 # --- Secrets ---
 .env

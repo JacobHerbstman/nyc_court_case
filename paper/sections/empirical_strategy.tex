@@ -23,29 +23,29 @@ During the 1990s, Speaker control could still override local members; by the 200
 \subsection{Empirical Comparison}
 
 The treatment captures baseline homeowner concentration relative to the borough.
-Let $H_{db,1990}$ be the 1990 owner-occupied share of occupied housing units in Council district $d$, assigned to majority borough $b$.
+Let $H_{db,1990}$ be the 1990 owner-occupied share of occupied housing units in community district $d$ in borough $b$.
 I define the treatment as a within-borough standardized homeownership score:
 
 \begin{equation}
     T_{db}
     =
     \frac{
-        H_{db,1990} - \overline{H}_{b,1990}^{\mathrm{Council}}
+        H_{db,1990} - \overline{H}_{b,1990}^{\mathrm{CD}}
     }{
         s_b(H_{db,1990})
     },
 \end{equation}
 
-where $\overline{H}_{b,1990}^{\mathrm{Council}}$ and $s_b(H_{db,1990})$ are the mean and
-standard deviation of 1990 homeownership across 2010 Council districts in
+where $\overline{H}_{b,1990}^{\mathrm{CD}}$ and $s_b(H_{db,1990})$ are the mean and
+standard deviation of 1990 homeownership across community districts in
 borough $b$.
 
-This score compares each Council district to others assigned to the same borough.
+This score compares each community district to others in the same borough.
 A value of zero indicates average homeownership for the borough; positive values indicate a more homeowner-heavy district; negative values indicate a more renter-heavy one.
 
 This within-borough standardization matters because boroughs differ substantially in housing stock, density, transit access, baseline ownership rates, and long-run development pressure.
 A citywide measure would partly conflate Staten Island with Manhattan or outer Queens with the Bronx.
-The within-borough score instead asks whether homeowner-heavy Council districts within the same borough experienced different post-reform construction trajectories than their lower-homeownership neighbors.
+The within-borough score instead asks whether homeowner-heavy community districts experienced different post-reform construction trajectories than their lower-homeownership neighbors in the same borough.
 
 The identifying logic is straightforward.
 If member deference gives local councilmembers effective control over discretionary land use, then places with stronger homeowner constituencies should have greater political capacity to resist large buildings.
@@ -54,8 +54,8 @@ Figure~\ref{fig:treatment_map} illustrates the variation in the treatment measur
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[page=1,width=0.82\textwidth]{input/ccdist2010_homeownership_1990_map.pdf}
-    \caption{2010 Council-District Homeownership Exposure}
+    \includegraphics[page=1,width=0.82\textwidth]{input/cd_homeownership_1990_map.pdf}
+    \caption{Community-District Homeownership Exposure}
     \label{fig:treatment_map}
-\figurenotes{Figure maps the first-pass treatment measure by 2010 City Council district. The measure is the 1990 homeownership share, built by area-weighting 1990 NHGIS tract tenure counts into the 2010 Council boundaries and standardizing within assigned majority borough. Redder districts had higher homeownership than other Council districts in the same borough; bluer districts had lower homeownership.}
+\figurenotes{Figure maps the 1990 community-district homeownership share standardized within borough. The measure uses the Department of City Planning's 1990 community-district profiles. Redder districts had higher homeownership than other community districts in the same borough; bluer districts had lower homeownership.}
 \end{figure}

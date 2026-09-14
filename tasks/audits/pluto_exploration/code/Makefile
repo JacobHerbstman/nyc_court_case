@@ -37,7 +37,7 @@ all: ../output/pluto_exploration_report.md \
 ../output/pluto_exploration_outlier_lots.csv: ../output/pluto_exploration_report.md
 	@test -s "$@"
 
-../input/ccdist2010_homeownership_1990_measure.csv: ../../../build_ccd2010_homeownership_1990_measure/output/ccdist2010_homeownership_1990_measure.csv | ../input
+../input/ccdist2010_homeownership_1990_measure.csv: ../../build_ccd2010_homeownership_1990_measure/output/ccdist2010_homeownership_1990_measure.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/nyc_mappluto_25v4_shp.zip: ../../../../data_raw/dcp_mappluto_current/25v4/nyc_mappluto_25v4_shp.zip | ../input

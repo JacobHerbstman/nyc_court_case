@@ -625,9 +625,33 @@ concentration_df <- bind_rows(
 ) |>
   arrange(period, scenario_type, rank_within_period, scenario_name)
 
-cd_raw_df <- read_csv("../input/cd_homeownership_long_units_tercile_year.csv", show_col_types = FALSE, na = c("", "NA")) |>
-  filter(series_family %in% c("units_built_total", "units_built_1_4", "units_built_5_plus", "units_built_50_plus")) |>
-  select(series_family, year, treat_tercile, treat_tercile_label, outcome_value, borough_outcome_total)
+cd_series_df <- read_csv("../input/cd_homeownership_long_units_series.csv", show_col_types = FALSE, na = c("", "NA")) |>
+  filter(series_family %in% c("units_built_total", "units_built_1_4", "units_built_5_plus", "units_built_50_plus"))
+
+cd_tercile_df <- cd_series_df |>
+  distinct(borocd, borough_code, treat_pp) |>
+  group_by(borough_code) |>
+  mutate(treat_tercile = ntile(treat_pp, 3L)) |>
+  ungroup() |>
+  mutate(
+    treat_tercile_label = factor(
+      treat_tercile,
+      levels = 1:3,
+      labels = c("Low", "Middle", "High")
+    )
+  )
+
+cd_borough_total_df <- cd_series_df |>
+  distinct(series_family, year, borough_code, borough_outcome_total) |>
+  group_by(series_family, year) |>
+  summarize(borough_outcome_total = sum(borough_outcome_total, na.rm = TRUE), .groups = "drop")
+
+cd_raw_df <- cd_series_df |>
+  select(borocd, series_family, year, outcome_value) |>
+  left_join(cd_tercile_df, by = "borocd", relationship = "many-to-one") |>
+  group_by(series_family, year, treat_tercile, treat_tercile_label) |>
+  summarize(outcome_value = sum(outcome_value, na.rm = TRUE), .groups = "drop") |>
+  left_join(cd_borough_total_df, by = c("series_family", "year"), relationship = "many-to-one")
 
 cd_wide_df <- cd_raw_df |>
   pivot_wider(

@@ -17,9 +17,8 @@ all: ../output/ulurp_cpc_text_labels.csv \
 	../output/ulurp_cpc_text_labels.csv \
 	../input/ulurp_cpc_community_district_corrections.csv \
 	../input/zap_project_bbl.parquet \
-	../input/mappluto_files.csv \
 	../input/mappluto_current_lot_lookup.parquet \
-	../input/ccdist2010_homeownership_1990_measure.csv | ../output
+	../input/cd_homeownership_1990_measure.csv | ../output
 	Rscript --vanilla $< $(START_YEAR) $(END_YEAR) $(MOVING_WINDOW_YEARS) $(MINIMUM_DOCUMENTS_PER_MOVING_WINDOW)
 
 ../output/ulurp_cpc_text_labels.csv: build_ulurp_cpc_text_labels.py \
@@ -39,21 +38,17 @@ all: ../output/ulurp_cpc_text_labels.csv \
 ../input/zap_project_bbl.parquet: ../../build_zap_datasets/output/zap_project_bbl.parquet | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/mappluto_files.csv: ../../fetch_mappluto_archive/output/mappluto_files.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
-
 ../input/mappluto_current_lot_lookup.parquet: ../../build_mappluto_current_lookup/output/mappluto_current_lot_lookup.parquet | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/ccdist2010_homeownership_1990_measure.csv: ../../build_ccd2010_homeownership_1990_measure/output/ccdist2010_homeownership_1990_measure.csv | ../input
+../input/cd_homeownership_1990_measure.csv: ../../build_cd_homeownership_1990_measure/output/cd_homeownership_1990_measure.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 link-inputs: ../input/ulurp_cpc_report_manifest.csv \
 	../input/ulurp_cpc_narrative_boundary_exceptions.csv \
 	../input/ulurp_cpc_community_district_corrections.csv \
 	../input/zap_project_bbl.parquet \
-	../input/mappluto_files.csv \
 	../input/mappluto_current_lot_lookup.parquet \
-	../input/ccdist2010_homeownership_1990_measure.csv
+	../input/cd_homeownership_1990_measure.csv
 
 include ../../generic.make

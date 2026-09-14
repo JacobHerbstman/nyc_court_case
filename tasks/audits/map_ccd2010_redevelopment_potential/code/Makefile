@@ -19,7 +19,7 @@ all: ../output/ccdist2010_redev_2002_map_qc.csv \
 ../output/ccdist2010_redev_2002_hex_grid.gpkg: ../output/ccdist2010_redev_2002_map_qc.csv
 	@test -s "$@"
 
-../input/ccdist2010_homeownership_1990_measure.csv: ../../../build_ccd2010_homeownership_1990_measure/output/ccdist2010_homeownership_1990_measure.csv | ../input
+../input/ccdist2010_homeownership_1990_measure.csv: ../../build_ccd2010_homeownership_1990_measure/output/ccdist2010_homeownership_1990_measure.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 ../input/ccdist2010_redevelopment_potential.csv: ../../build_ccd2010_redevelopment_potential/output/ccdist2010_redevelopment_potential.csv | ../input

@@ -3,7 +3,7 @@ include ../../shell_functions.make
 
 all: ../output/cd_homeownership_outcome_mini_report.md
 
-../input/cd_homeownership_1990_measure_qc.csv: ../../build_cd_homeownership_1990_measure/output/cd_homeownership_1990_measure_qc.csv | ../input
+../input/cd_homeownership_1990_measure_qc.csv: ../../../build_cd_homeownership_1990_measure/output/cd_homeownership_1990_measure_qc.csv | ../input
 	ln -sf "$<" "$@"
 
 ../input/cd_homeownership_permit_nb_panel_qc.csv: ../../cd_homeownership_permit_nb_panel/output/cd_homeownership_permit_nb_panel_qc.csv | ../input

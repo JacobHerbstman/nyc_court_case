@@ -22,7 +22,7 @@ all: ../output/ccdist2010_opportunity_counterfactual_panel.csv \
 ../input/ccdist2010_redevelopment_potential.csv: ../../build_ccd2010_redevelopment_potential/output/ccdist2010_redevelopment_potential.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
-../input/ccdist2010_homeownership_long_units_series.csv: ../../../build_ccd2010_homeownership_long_units_series/output/ccdist2010_homeownership_long_units_series.csv | ../input
+../input/ccdist2010_homeownership_long_units_series.csv: ../../build_ccd2010_homeownership_long_units_series/output/ccdist2010_homeownership_long_units_series.csv | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
 
 link-inputs: ../input/ccdist2010_redevelopment_potential.csv ../input/ccdist2010_homeownership_long_units_series.csv

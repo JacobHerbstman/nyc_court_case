@@ -660,11 +660,11 @@ manhattan_units_df <- long_df |>
 manhattan_units_df <- manhattan_units_df |>
   rename_with(~str_replace_all(., "-", "_"))
 
-manhattan_top_lots_df <- read_parquet("../input/mappluto_construction_proxy_lot_level.parquet") |>
+manhattan_top_lots_df <- read_parquet("../input/mappluto_current_lot_lookup.parquet") |>
   transmute(
     bbl = as.character(bbl),
     address = address,
-    borocd = sprintf("%03d", suppressWarnings(as.integer(borocd))),
+    borocd = sprintf("%03d", suppressWarnings(as.integer(cd))),
     yearbuilt = suppressWarnings(as.integer(yearbuilt)),
     unitsres = suppressWarnings(as.numeric(unitsres))
   ) |>
