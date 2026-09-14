@@ -7,7 +7,7 @@ all: ../output/dob_open_data_files.csv
 	$(R) $<
 
 ../input/dob_open_data_raw_files.csv: ../../load_dob_open_data_raw/output/dob_open_data_raw_files.csv | ../input
-	@test "$$(readlink "$@")" = "../../load_dob_open_data_raw/output/dob_open_data_raw_files.csv" || ln -sf "../../load_dob_open_data_raw/output/dob_open_data_raw_files.csv" "$@"
+	ln -sf "../../load_dob_open_data_raw/output/dob_open_data_raw_files.csv" "$@"
 
 link-inputs: ../input/dob_open_data_raw_files.csv
 

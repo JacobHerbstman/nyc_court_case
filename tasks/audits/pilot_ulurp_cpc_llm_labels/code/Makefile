@@ -21,10 +21,10 @@ all: ../output/ulurp_cpc_llm_pilot_requests_sol_medium_v2.jsonl
 	@test -s "$@"
 
 ../input/official_ulurp_cpc_narrative_manifest.csv: ../../audit_official_ulurp_cpc_text_measurement/output/official_ulurp_cpc_narrative_manifest.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/ulurp_cpc_training_labels_jacob.csv: ../../../record_ulurp_cpc_training_labels/output/ulurp_cpc_training_labels_jacob.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/official_ulurp_cpc_narrative_manifest.csv \
 	../input/ulurp_cpc_training_labels_jacob.csv

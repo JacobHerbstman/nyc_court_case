@@ -1,0 +1,448 @@
+{
+  "dataset": "ulurp_cpc_regex_coverage.csv",
+  "rows": 28,
+  "key": [
+    "period",
+    "field"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "2140c8fb182476641151cb4b1443d9d8f97309d801dd96dbff3ee9dd834cfd9a",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "period": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "1970s",
+          4
+        ],
+        [
+          "1980s",
+          4
+        ],
+        [
+          "1990s",
+          4
+        ],
+        [
+          "2000s",
+          4
+        ],
+        [
+          "2010s",
+          4
+        ]
+      ]
+    },
+    "field": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "cb_opposition_votes",
+          7
+        ],
+        [
+          "cb_support_votes",
+          7
+        ],
+        [
+          "cpc_opposition_speakers",
+          7
+        ],
+        [
+          "cpc_support_speakers",
+          7
+        ]
+      ]
+    },
+    "label": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "Board votes against",
+          7
+        ],
+        [
+          "Board votes for",
+          7
+        ],
+        [
+          "CPC speakers against",
+          7
+        ],
+        [
+          "CPC speakers for",
+          7
+        ]
+      ]
+    },
+    "narratives": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "1254",
+          4
+        ],
+        [
+          "1910",
+          4
+        ],
+        [
+          "3864",
+          4
+        ],
+        [
+          "387",
+          4
+        ],
+        [
+          "684",
+          4
+        ]
+      ],
+      "minimum": 387,
+      "maximum": 8905
+    },
+    "nonmissing": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 27,
+      "most_common": [
+        [
+          "301",
+          2
+        ],
+        [
+          "104",
+          1
+        ],
+        [
+          "1042",
+          1
+        ],
+        [
+          "1043",
+          1
+        ],
+        [
+          "1064",
+          1
+        ]
+      ],
+      "minimum": 104,
+      "maximum": 6455
+    },
+    "resolved": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 14,
+      "most_common": [
+        [
+          "1042",
+          2
+        ],
+        [
+          "1057",
+          2
+        ],
+        [
+          "1103",
+          2
+        ],
+        [
+          "1434",
+          2
+        ],
+        [
+          "1490",
+          2
+        ]
+      ],
+      "minimum": 96,
+      "maximum": 6032
+    },
+    "resolved_share": {
+      "python_types": [
+        "float"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 14,
+      "most_common": [
+        [
+          "0.11910669975186104",
+          2
+        ],
+        [
+          "0.28545548654244307",
+          2
+        ],
+        [
+          "0.3560794044665012",
+          2
+        ],
+        [
+          "0.5081414935429533",
+          2
+        ],
+        [
+          "0.619824016563147",
+          2
+        ]
+      ],
+      "minimum": 0.11910669975186104,
+      "maximum": 0.8429027113237639
+    },
+    "reference_nonmissing": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 14,
+      "most_common": [
+        [
+          "40",
+          8
+        ],
+        [
+          "23",
+          3
+        ],
+        [
+          "172",
+          2
+        ],
+        [
+          "28",
+          2
+        ],
+        [
+          "35",
+          2
+        ]
+      ],
+      "minimum": 7,
+      "maximum": 194
+    },
+    "resolved_with_reference": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 12,
+      "most_common": [
+        [
+          "33",
+          4
+        ],
+        [
+          "34",
+          4
+        ],
+        [
+          "16",
+          3
+        ],
+        [
+          "17",
+          3
+        ],
+        [
+          "1",
+          2
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 139
+    },
+    "exact": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 12,
+      "most_common": [
+        [
+          "33",
+          4
+        ],
+        [
+          "34",
+          4
+        ],
+        [
+          "16",
+          3
+        ],
+        [
+          "17",
+          3
+        ],
+        [
+          "1",
+          2
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 139
+    },
+    "exact_share": {
+      "python_types": [
+        "float"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "1.0",
+          28
+        ]
+      ],
+      "minimum": 1.0,
+      "maximum": 1.0
+    },
+    "codex_development_resolved": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 11,
+      "most_common": [
+        [
+          "16",
+          6
+        ],
+        [
+          "7",
+          4
+        ],
+        [
+          "0",
+          2
+        ],
+        [
+          "1",
+          2
+        ],
+        [
+          "12",
+          2
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 74
+    },
+    "codex_development_exact": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 11,
+      "most_common": [
+        [
+          "16",
+          6
+        ],
+        [
+          "7",
+          4
+        ],
+        [
+          "0",
+          2
+        ],
+        [
+          "1",
+          2
+        ],
+        [
+          "12",
+          2
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 74
+    },
+    "codex_benchmark_resolved": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 14,
+      "most_common": [
+        [
+          "0",
+          2
+        ],
+        [
+          "1",
+          2
+        ],
+        [
+          "11",
+          2
+        ],
+        [
+          "12",
+          2
+        ],
+        [
+          "13",
+          2
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 72
+    },
+    "codex_benchmark_exact": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 15,
+      "most_common": [
+        [
+          "11",
+          4
+        ],
+        [
+          "0",
+          2
+        ],
+        [
+          "1",
+          2
+        ],
+        [
+          "14",
+          2
+        ],
+        [
+          "15",
+          2
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 72
+    }
+  }
+}

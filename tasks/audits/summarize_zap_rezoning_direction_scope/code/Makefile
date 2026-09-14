@@ -78,22 +78,22 @@ all: ../output/zap_rezoning_direction_project_classification.csv \
 	@test -s "$@"
 
 ../input/zap_zoning_map_special_permit_project_classification.csv: ../../summarize_zap_zoning_actions_by_decade/output/zap_zoning_map_special_permit_project_classification.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/zap_project_bbl.parquet: ../../../build_zap_datasets/output/zap_project_bbl.parquet | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/ccdist2010_mappluto_bbl_lookup.parquet: ../../build_ccd2010_mappluto_bbl_lookup/output/ccdist2010_mappluto_bbl_lookup.parquet | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/dcp_mappluto_current_25v4.parquet: ../../build_mappluto_lots/output/dcp_mappluto_current_25v4.parquet | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/ccdist2010_homeownership_1990_measure.csv: ../../build_ccd2010_homeownership_1990_measure/output/ccdist2010_homeownership_1990_measure.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/ccdist2010_redevelopment_potential.csv: ../../build_ccd2010_redevelopment_potential/output/ccdist2010_redevelopment_potential.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/zap_zoning_map_special_permit_project_classification.csv ../input/zap_project_bbl.parquet ../input/ccdist2010_mappluto_bbl_lookup.parquet ../input/dcp_mappluto_current_25v4.parquet ../input/ccdist2010_homeownership_1990_measure.csv ../input/ccdist2010_redevelopment_potential.csv
 

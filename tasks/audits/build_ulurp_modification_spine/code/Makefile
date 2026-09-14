@@ -15,13 +15,13 @@ all: ../output/ulurp_modification_project_spine.csv \
 	@test -s "$@"
 
 ../input/zap_ulurp_project_base.csv: ../../build_zap_ulurp_project_base/output/zap_ulurp_project_base.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/council_land_use_decision_panel.csv: ../../../build_council_land_use_decision_panel/output/council_land_use_decision_panel.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/member_deference_matter_universe.csv: ../../../build_member_deference_vote_panel/output/member_deference_matter_universe.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/zap_ulurp_project_base.csv ../input/council_land_use_decision_panel.csv ../input/member_deference_matter_universe.csv
 

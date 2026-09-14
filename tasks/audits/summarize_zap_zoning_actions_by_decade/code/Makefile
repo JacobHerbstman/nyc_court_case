@@ -64,16 +64,16 @@ all: ../output/zap_zoning_map_special_permit_project_classification.csv \
 	@test -s "$@"
 
 ../input/zap_housing_project_base_audited.csv: ../../build_zap_housing_pipeline_from_raw/output/zap_housing_project_base_audited.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/zap_project_bbl.parquet: ../../../build_zap_datasets/output/zap_project_bbl.parquet | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/ccdist2010_mappluto_bbl_lookup.parquet: ../../build_ccd2010_mappluto_bbl_lookup/output/ccdist2010_mappluto_bbl_lookup.parquet | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/ccdist2010_homeownership_1990_measure.csv: ../../build_ccd2010_homeownership_1990_measure/output/ccdist2010_homeownership_1990_measure.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/zap_housing_project_base_audited.csv ../input/zap_project_bbl.parquet ../input/ccdist2010_mappluto_bbl_lookup.parquet ../input/ccdist2010_homeownership_1990_measure.csv
 

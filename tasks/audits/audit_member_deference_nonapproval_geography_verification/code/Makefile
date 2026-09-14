@@ -36,10 +36,10 @@ all: ../output/member_deference_nonapproval_geography_official_sources.csv \
 	cp $< $@
 
 ../input/member_deference_nonapproval_geography_official_verification.csv: ../../../verify_member_deference_nonapproval_geography/output/member_deference_nonapproval_geography_official_verification.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/member_deference_nonapproval_geography_conservative_queue.csv: ../../../verify_member_deference_nonapproval_geography/output/member_deference_nonapproval_geography_conservative_queue.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/member_deference_nonapproval_geography_official_verification.csv \
 	../input/member_deference_nonapproval_geography_conservative_queue.csv

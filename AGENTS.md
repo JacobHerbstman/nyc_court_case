@@ -59,7 +59,7 @@
 - Recursive upstream checks should preserve Make incrementality: they may invoke the upstream task Makefile, but upstream outputs should only rebuild when missing or stale relative to their own prerequisites.
 - `link-inputs` should only create symlinks and should not orchestrate upstream task execution.
 - Each symlink input should depend on the specific upstream output file path, not on broad/coarse gate files when avoidable.
-- Symlink recipes should be idempotent: check the existing `readlink "$@"` target before running `ln -sf`, so recursive upstream checks do not refresh input mtimes when the link is already correct.
+- Use plain `ln -sf $< $@` input recipes. The shared recursive Make rule checks upstream freshness; unchanged outputs must not trigger relinking.
 - Prefer narrow dependency edges over single-report anchors that can trigger unnecessary relinking and downstream invalidation.
 - Stamp-file workflows can obscure real dependency edges; use them sparingly and only when there is no clearer file-target alternative.
 - Before expensive runs, prefer `make -n` to inspect what will rebuild.
@@ -73,7 +73,7 @@
 - Keep output and input names explicit and traceable.
 - Order active task Makefiles in a standard top-down cascade: `all`, output-producing target rules, input symlink target rules, `link-inputs`, then shared includes.
 - Output files should appear as Make targets before the input symlink targets they depend on, so the reader starts from what the task produces and then traces prerequisites downward.
-- This repo uses GNU Make 3.81, so do not use ordinary multiple-target producer rules for scripts that write several outputs; they can rerun the same script once per target. Instead, use one canonical output as the producer target and make the other outputs depend on that canonical output.
+- This repo uses GNU Make 3.81. For a script with several actual outputs, use a multiple-target pattern rule with a shared directory stem, as in the aldermanic_privilege reference. Verify that a missing output regenerates the set once; do not substitute `test -s` secondary recipes.
 - Favor readability over clever Make metaprogramming unless scale requires it.
 
 ## Makefile Path Style

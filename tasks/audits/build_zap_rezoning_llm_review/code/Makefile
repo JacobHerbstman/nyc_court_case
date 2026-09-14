@@ -27,16 +27,16 @@ all: ../output/zap_rezoning_llm_review_frame.csv \
 	@test -s "$@"
 
 ../input/zap_rezoning_direction_review_ledger.csv: ../../summarize_zap_rezoning_direction_scope/output/zap_rezoning_direction_review_ledger.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/zap_rezoning_direction_project_classification.csv: ../../summarize_zap_rezoning_direction_scope/output/zap_rezoning_direction_project_classification.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/zap_rezoning_source_text_snippets.csv: ../../extract_zap_rezoning_source_text/output/zap_rezoning_source_text_snippets.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/zap_rezoning_source_document_index.csv: ../../extract_zap_rezoning_source_text/output/zap_rezoning_source_document_index.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../output/batches:
 	mkdir -p $@

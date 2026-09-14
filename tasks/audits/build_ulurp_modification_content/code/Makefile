@@ -27,19 +27,19 @@ all: ../output/ulurp_modification_project_versions.csv \
 	@test -s "$@"
 
 ../input/ulurp_modification_project_spine.csv: ../../build_ulurp_modification_spine/output/ulurp_modification_project_spine.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/ulurp_modification_zap_document_links.csv: ../../stage_ulurp_modification_zap_documents/output/ulurp_modification_zap_document_links.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/ulurp_modification_zap_docket_text.csv: ../../stage_ulurp_modification_zap_documents/output/ulurp_modification_zap_docket_text.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/ulurp_modification_council_document_links.csv: ../../fetch_council_modification_documents/output/ulurp_modification_council_document_links.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/ulurp_modification_council_document_snippets.csv: ../../fetch_council_modification_documents/output/ulurp_modification_council_document_snippets.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/ulurp_modification_project_spine.csv \
 	../input/ulurp_modification_zap_document_links.csv \

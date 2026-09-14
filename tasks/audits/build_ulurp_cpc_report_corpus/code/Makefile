@@ -27,10 +27,10 @@ all: ../output/ulurp_cpc_report_manifest.csv \
 	touch $@
 
 ../input/ulurp_corpus_project_spine.csv: ../../build_ulurp_corpus_spine/output/ulurp_corpus_project_spine.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/ulurp_corpus_application_spine.csv: ../../build_ulurp_corpus_spine/output/ulurp_corpus_application_spine.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/ulurp_corpus_project_spine.csv ../input/ulurp_corpus_application_spine.csv
 

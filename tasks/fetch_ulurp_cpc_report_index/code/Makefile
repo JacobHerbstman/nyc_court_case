@@ -7,7 +7,7 @@ all: ../output/official_cpc_report_index.csv
 	python3 $< $(START_YEAR) $(END_YEAR)
 
 ../input/source_catalog.csv: ../../source_registry/output/source_catalog.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/source_catalog.csv
 

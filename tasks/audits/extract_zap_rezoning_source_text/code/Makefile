@@ -47,28 +47,28 @@ all: ../output/zap_rezoning_source_document_index.csv \
 	@test -s "$@"
 
 ../input/zap_project_source_document_links.csv: ../../discover_zap_project_source_documents/output/zap_project_source_document_links.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/zap_project_source_docket_text.csv: ../../discover_zap_project_source_documents/output/zap_project_source_docket_text.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/zap_rezoning_direction_text_candidate_queue.csv: ../../summarize_zap_rezoning_direction_scope/output/zap_rezoning_direction_text_candidate_queue.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/zap_rezoning_direction_project_classification.csv: ../../summarize_zap_rezoning_direction_scope/output/zap_rezoning_direction_project_classification.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/zap_project_bbl.parquet: ../../../build_zap_datasets/output/zap_project_bbl.parquet | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/ccdist2010_mappluto_bbl_lookup.parquet: ../../build_ccd2010_mappluto_bbl_lookup/output/ccdist2010_mappluto_bbl_lookup.parquet | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/dcp_mappluto_current_25v4.parquet: ../../build_mappluto_lots/output/dcp_mappluto_current_25v4.parquet | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/ccdist2010_homeownership_1990_measure.csv: ../../build_ccd2010_homeownership_1990_measure/output/ccdist2010_homeownership_1990_measure.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../output/chatgpt_batches ../output/chatgpt_second_review_batches ../temp/source_pdfs ../temp/source_text:
 	mkdir -p $@

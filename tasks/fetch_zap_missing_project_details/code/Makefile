@@ -6,7 +6,7 @@ all: ../output/zap_missing_project_details.jsonl
 	python3 $< $(WORKERS) > fetch_zap_missing_project_details.log 2>&1
 
 ../input/zap_project_universe.csv: ../../build_zap_project_universe/output/zap_project_universe.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/zap_project_universe.csv
 

@@ -223,35 +223,20 @@ looks_downloadable <- function(url) {
 download_with_status <- function(url, dest_path) {
   dir.create(dirname(dest_path), recursive = TRUE, showWarnings = FALSE)
   temp_path <- tempfile(tmpdir = dirname(dest_path), fileext = paste0(".", tools::file_ext(dest_path)))
-
-  tryCatch(
-    {
-      options(timeout = max(3600, getOption("timeout")))
-      download.file(
-        url,
-        destfile = temp_path,
-        mode = "wb",
-        quiet = TRUE,
-        method = "libcurl",
-        headers = c("User-Agent" = "Mozilla/5.0")
-      )
-      if (file.exists(dest_path)) {
-        unlink(dest_path)
-      }
-      file.rename(temp_path, dest_path)
-      "downloaded"
-    },
-    error = function(e) {
-      if (file.exists(temp_path)) {
-        unlink(temp_path)
-      }
-      if (file.exists(dest_path)) {
-        unlink(dest_path)
-      }
-      message(e$message)
-      "download_failed"
+  on.exit(unlink(temp_path), add = TRUE)
+  options(timeout = max(3600, getOption("timeout")))
+  status <- download.file(url, destfile = temp_path, mode = "wb", quiet = TRUE,
+    method = "libcurl", headers = c("User-Agent" = "Mozilla/5.0"))
+  if (status != 0L) stop("Source download failed: ", url)
+  if (file.exists(dest_path)) {
+    if (!identical(unname(tools::md5sum(temp_path)), unname(tools::md5sum(dest_path)))) {
+      stop("Downloaded bytes differ from the saved source snapshot: ", dest_path,
+        ". Preserve a new vintage explicitly before rebuilding.")
     }
-  )
+  } else if (!file.rename(temp_path, dest_path)) {
+    stop("Could not publish downloaded source: ", dest_path)
+  }
+  "downloaded"
 }
 
 collect_raw_files <- function(source_id) {

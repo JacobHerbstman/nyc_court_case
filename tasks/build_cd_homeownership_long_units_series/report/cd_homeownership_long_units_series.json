@@ -1,0 +1,176 @@
+{
+  "dataset": "cd_homeownership_long_units_series.csv",
+  "rows": 41064,
+  "key": ["source_family", "series_family", "district_id", "year"],
+  "unique_nonmissing_key": true,
+  "md5_csv_bytes": "1498bfc51372c1bfa4ed56c8df17fc41",
+  "fingerprint_scope": "Saved CSV bytes, including row order; not proof of source correctness.",
+  "columns": {
+    "source_family": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 1
+    },
+    "source_label": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 1
+    },
+    "series_kind": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 1
+    },
+    "series_family": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 6
+    },
+    "series_label": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 6
+    },
+    "district_id": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 59
+    },
+    "borocd": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 101,
+      "maximum": 503
+    },
+    "borough_code": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 5
+    },
+    "borough_name": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 5
+    },
+    "year": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 116,
+      "minimum": 1910,
+      "maximum": 2025
+    },
+    "outcome_value": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 2456,
+      "minimum": 0,
+      "maximum": 15746
+    },
+    "owner_occupied_units_1990": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 651,
+      "maximum": 40742
+    },
+    "occupied_units_1990": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 11576,
+      "maximum": 121715
+    },
+    "total_housing_units_1990": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 12688,
+      "maximum": 136583
+    },
+    "h_cd_1990": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 0.0264,
+      "maximum": 0.7608
+    },
+    "h_cd_1990_pct": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 2.6415,
+      "maximum": 76.0762
+    },
+    "h_b_1990": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "minimum": 0.1779,
+      "maximum": 0.6373
+    },
+    "h_b_1990_pct": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "minimum": 17.7922,
+      "maximum": 63.7309
+    },
+    "cd_minus_borough_1990": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": -0.224,
+      "maximum": 0.3058
+    },
+    "treat_pp": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": -22.3985,
+      "maximum": 30.5809
+    },
+    "treat_z_boro": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": -1.3529,
+      "maximum": 2.8055
+    },
+    "vacancy_rate_1990": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 0.025,
+      "maximum": 0.2186
+    },
+    "median_household_income_1990": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 12688,
+      "maximum": 69146
+    },
+    "vacant_housing_units_1990": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 591,
+      "maximum": 14868
+    },
+    "borough_outcome_total": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 1858,
+      "minimum": 0,
+      "maximum": 82836
+    },
+    "borough_outcome_share": {
+      "type": "numeric",
+      "missing": 1307,
+      "distinct_nonmissing": 17997,
+      "minimum": 0,
+      "maximum": 1
+    }
+  }
+}

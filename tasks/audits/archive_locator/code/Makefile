@@ -4,7 +4,7 @@ all: ../output/archive_locator_queue.csv
 	Rscript --vanilla $<
 
 ../input/archive_requests.csv: ../../source_registry_context/code/archive_requests.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/archive_requests.csv
 

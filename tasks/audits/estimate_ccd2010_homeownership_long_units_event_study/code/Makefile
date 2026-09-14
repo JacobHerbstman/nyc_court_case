@@ -16,7 +16,7 @@ all: ../output/ccdist2010_homeownership_long_units_event_coefficients_raw_units_
 	@test -s "$@"
 
 ../input/ccdist2010_homeownership_long_units_series.csv: ../../build_ccd2010_homeownership_long_units_series/output/ccdist2010_homeownership_long_units_series.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/ccdist2010_homeownership_long_units_series.csv
 

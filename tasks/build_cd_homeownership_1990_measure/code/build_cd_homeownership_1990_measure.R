@@ -10,24 +10,9 @@ suppressPackageStartupMessages({
   library(tidyr)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../_lib/data_reports.R")
 
-profile_files <- read_csv(
-  "../input/dcp_cd_profiles_1990_2000_files.csv",
-  show_col_types = FALSE,
-  na = c("", "NA")
-) |>
-  filter(!is.na(parquet_path), file.exists(parquet_path)) |>
-  arrange(desc(pull_date), parquet_path)
-
-if (nrow(profile_files) == 0) {
-  stop("No parsed DCP community-district profile file is available.")
-}
-
-profile_file <- profile_files |>
-  slice_head(n = 1)
-
-profile_metrics <- read_parquet(profile_file$parquet_path[[1]]) |>
+profile_metrics <- read_parquet("../input/dcp_cd_profiles_1990_2000_20260501.parquet") |>
   as.data.frame() |>
   as_tibble() |>
   mutate(
@@ -76,8 +61,8 @@ measure_df <- profile_metrics |>
   ) |>
   ungroup() |>
   transmute(
-    source_id = profile_file$source_id[[1]],
-    pull_date = profile_file$pull_date[[1]],
+    source_id = "dcp_cd_profiles_1990_2000",
+    pull_date = 20260501,
     district_id,
     borocd,
     borough_code,
@@ -108,7 +93,7 @@ if (
   stop("Community-district treatment must cover 59 unique districts without missing values.")
 }
 
-write_csv_if_changed(measure_df, "../output/cd_homeownership_1990_measure.csv")
+save_csv(measure_df, "../output/cd_homeownership_1990_measure.csv", c("district_id"))
 
 map_df <- read_parquet("../input/dcp_boundary_community_districts_20260501.parquet") |>
   transmute(

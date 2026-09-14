@@ -4,6 +4,12 @@ This repository builds the data and draft paper for a project on New York City h
 
 The workflow is task-based. Each main task lives in `tasks/<task_name>/` with `code/`, `input/`, and `output/` folders. Run a task from its `code/` folder with `make`. Run the paper from `paper/` with `make`.
 
+Task Makefiles declare literal inputs and outputs. `tasks/generic.make` owns
+recursive upstream checks; input recipes are plain symlinks. Coupled outputs
+use shared pattern rules supported by GNU Make 3.81. Missing actual outputs
+rebuild their producer. Dataset reports in `report/` are save-time side effects,
+not build targets. Committed human coding tables have no automated producer.
+
 ## Task Graph
 
 The graph below is generated from the concrete dependencies declared in the
@@ -79,3 +85,16 @@ The paper can also be rebuilt from the paper folder:
 cd paper
 make
 ```
+
+## ULURP universe and text extraction
+
+`build_zap_project_universe` retains projects regardless of whether they reached
+a CPC report, including withdrawals and terminations. The CPC corpus and its
+selected narratives are a linked document sample, not the universe of projects.
+
+The counting codebook is in
+[`summarize_text_cpc_trends`](tasks/summarize_text_cpc_trends/README.md).
+The [regex audit](tasks/audits/audit_ulurp_cpc_regex_labels/README.md) produces
+coverage by field and decade, evidence for unresolved cases, and a fresh human
+review sheet. Count extraction status is separate from validated accuracy.
+Current research decisions and build limitations are recorded in `logbook/`.

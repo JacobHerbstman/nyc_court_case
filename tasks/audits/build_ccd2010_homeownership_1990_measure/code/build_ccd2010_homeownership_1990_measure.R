@@ -80,16 +80,6 @@ county_lookup <- tribble(
   "085", "5", "Staten Island"
 )
 
-nhgis_gis_zip <- read_csv("../input/nhgis_1990_tract_gis_zip.csv", show_col_types = FALSE, na = c("", "NA")) %>%
-  filter(year == 1990, !is.na(gis_zip_path), file.exists(gis_zip_path)) %>%
-  arrange(desc(extract_number), gis_zip_path) %>%
-  slice_head(n = 1) %>%
-  pull(gis_zip_path)
-
-if (length(nhgis_gis_zip) == 0) {
-  stop("Could not find a 1990 NHGIS GIS zip path in ../input/nhgis_1990_tract_gis_zip.csv")
-}
-
 nhgis_1990 <- read_parquet("../input/nhgis_1990_tract_extract.parquet") %>%
   as.data.frame() %>%
   as_tibble() %>%
@@ -115,7 +105,7 @@ nhgis_1990 <- read_parquet("../input/nhgis_1990_tract_extract.parquet") %>%
     median_household_income
   )
 
-tract_sf <- read_nested_shape(nhgis_gis_zip[[1]]) %>%
+tract_sf <- read_nested_shape("../input/nhgis0005_shape.zip") %>%
   transmute(gisjoin = as.character(gisjoin), geometry) %>%
   inner_join(nhgis_1990, by = "gisjoin", relationship = "one-to-one") %>%
   left_join(county_lookup, by = "countya", relationship = "many-to-one") %>%

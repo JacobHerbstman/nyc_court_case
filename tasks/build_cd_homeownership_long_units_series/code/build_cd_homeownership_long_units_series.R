@@ -7,7 +7,7 @@ suppressPackageStartupMessages({
   library(tidyr)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../_lib/data_reports.R")
 
 measure_df <- read_csv("../input/cd_homeownership_1990_measure.csv", show_col_types = FALSE, na = c("", "NA")) %>%
   mutate(
@@ -103,6 +103,6 @@ series_df <- expand_grid(district_skeleton, year = 1910:2025, proxy_map) %>%
   ungroup() %>%
   arrange(series_kind, series_family, borocd, year)
 
-write_csv_if_changed(series_df, "../output/cd_homeownership_long_units_series.csv")
+save_csv(series_df, "../output/cd_homeownership_long_units_series.csv", c("source_family", "series_family", "district_id", "year"))
 
 cat("Wrote community district housing series to ../output\n")

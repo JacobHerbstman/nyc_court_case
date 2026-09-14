@@ -14,10 +14,10 @@ all: ../output/ulurp_cpc_report_usable_text_manifest.csv \
 	touch $@
 
 ../input/ulurp_cpc_report_manifest.csv: ../../build_ulurp_cpc_report_corpus/output/ulurp_cpc_report_manifest.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/ulurp_cpc_report_c_prefix_missing_sibling_reports.csv: ../../audit_ulurp_cpc_report_c_prefix_missing/output/ulurp_cpc_report_c_prefix_missing_sibling_reports.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/ulurp_cpc_report_manifest.csv \
 	../input/ulurp_cpc_report_c_prefix_missing_sibling_reports.csv

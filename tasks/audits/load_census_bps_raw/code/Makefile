@@ -7,7 +7,7 @@ all: ../output/census_bps_raw_files.csv
 	$(R) $<
 
 ../input/census_bps_files.csv: ../../fetch_census_bps/output/census_bps_files.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/census_bps_files.csv
 

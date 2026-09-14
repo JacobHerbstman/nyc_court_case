@@ -203,19 +203,19 @@ all: ../output/council_land_use_split_vote_annual_decomposition.csv \
 	@test -s "$@"
 
 ../input/council_land_use_decision_panel.csv: ../../../build_council_land_use_decision_panel/output/council_land_use_decision_panel.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/council_land_use_decision_universe_validation_summary.csv: ../../validate_council_land_use_decision_universe/output/council_land_use_decision_universe_validation_summary.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/member_deference_nonapproval_action_details.csv: ../../../fetch_council_land_use_nonapproval_votes/output/member_deference_nonapproval_action_details.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/charter_overrule_seed_cases.csv: ../../build_member_deference_overrule_candidates/code/charter_overrule_seed_cases.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/legistar_%_broad_recall_member_votes.csv: ../../../fetch_council_land_use_records/output/legistar_%_broad_recall_member_votes.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/council_land_use_decision_panel.csv \
 	../input/council_land_use_decision_universe_validation_summary.csv \

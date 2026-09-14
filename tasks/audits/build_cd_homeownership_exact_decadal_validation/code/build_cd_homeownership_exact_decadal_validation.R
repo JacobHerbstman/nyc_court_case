@@ -28,19 +28,7 @@ if (anyDuplicated(treatment_df$borocd)) {
   stop("Homeownership treatment file is not unique by borocd.")
 }
 
-dcp_profile_file <- read_csv("../input/dcp_cd_profiles_1990_2000_files.csv", show_col_types = FALSE, na = c("", "NA")) |>
-  mutate(pull_date = as.character(pull_date)) |>
-  filter(!is.na(parquet_path)) |>
-  mutate(parquet_path = paste0("../../build_dcp_cd_profiles_1990_2000/output/", basename(parquet_path))) |>
-  filter(file.exists(parquet_path)) |>
-  arrange(desc(pull_date), parquet_path) |>
-  slice_head(n = 1)
-
-if (nrow(dcp_profile_file) == 0) {
-  stop("Could not find a staged DCP CD profiles parquet in ../input/dcp_cd_profiles_1990_2000_files.csv")
-}
-
-exact_raw <- read_parquet(dcp_profile_file$parquet_path[[1]]) |>
+exact_raw <- read_parquet("../input/dcp_cd_profiles_1990_2000_20260501.parquet") |>
   filter(
     profile_page_type == "housing",
     section_name == "year_structure_built",

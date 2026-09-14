@@ -1,0 +1,409 @@
+{
+  "dataset": "ulurp_cpc_regex_training_agreement.csv",
+  "rows": 19,
+  "key": [
+    "sample_slice",
+    "field"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "12708ec53b0ee4897fc9ffa2ad2bdaf0424d65bc0498a3cd221f1f2ebc25999b",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "sample_slice": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "all",
+          19
+        ]
+      ]
+    },
+    "field": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 19,
+      "most_common": [
+        [
+          "affordability_displacement",
+          1
+        ],
+        [
+          "approved_unresolved_objection",
+          1
+        ],
+        [
+          "bp_request_or_opposition",
+          1
+        ],
+        [
+          "cb_opposition_votes",
+          1
+        ],
+        [
+          "cb_request_or_opposition",
+          1
+        ]
+      ]
+    },
+    "field_type": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "binary",
+          13
+        ],
+        [
+          "count",
+          4
+        ],
+        [
+          "position",
+          2
+        ]
+      ]
+    },
+    "human_nonmissing": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "200",
+          15
+        ],
+        [
+          "172",
+          2
+        ],
+        [
+          "185",
+          1
+        ],
+        [
+          "194",
+          1
+        ]
+      ],
+      "minimum": 172,
+      "maximum": 200
+    },
+    "regex_nonmissing": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "200",
+          15
+        ],
+        [
+          "139",
+          2
+        ],
+        [
+          "143",
+          1
+        ],
+        [
+          "145",
+          1
+        ]
+      ],
+      "minimum": 139,
+      "maximum": 200
+    },
+    "exact_agreement": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 18,
+      "most_common": [
+        [
+          "139",
+          2
+        ],
+        [
+          "121",
+          1
+        ],
+        [
+          "130",
+          1
+        ],
+        [
+          "134",
+          1
+        ],
+        [
+          "136",
+          1
+        ]
+      ],
+      "minimum": 121,
+      "maximum": 183
+    },
+    "agreement_share": {
+      "python_types": [
+        "float"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 18,
+      "most_common": [
+        [
+          "0.8081395348837209",
+          2
+        ],
+        [
+          "0.605",
+          1
+        ],
+        [
+          "0.65",
+          1
+        ],
+        [
+          "0.67",
+          1
+        ],
+        [
+          "0.68",
+          1
+        ]
+      ],
+      "minimum": 0.605,
+      "maximum": 0.915
+    },
+    "true_positive": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 6,
+      "distinct_nonmissing": 12,
+      "most_common": [
+        [
+          "34",
+          2
+        ],
+        [
+          "115",
+          1
+        ],
+        [
+          "28",
+          1
+        ],
+        [
+          "40",
+          1
+        ],
+        [
+          "47",
+          1
+        ]
+      ],
+      "minimum": 28,
+      "maximum": 115
+    },
+    "false_positive": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 6,
+      "distinct_nonmissing": 11,
+      "most_common": [
+        [
+          "10",
+          2
+        ],
+        [
+          "16",
+          2
+        ],
+        [
+          "1",
+          1
+        ],
+        [
+          "14",
+          1
+        ],
+        [
+          "18",
+          1
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 37
+    },
+    "false_negative": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 6,
+      "distinct_nonmissing": 11,
+      "most_common": [
+        [
+          "7",
+          3
+        ],
+        [
+          "17",
+          1
+        ],
+        [
+          "18",
+          1
+        ],
+        [
+          "23",
+          1
+        ],
+        [
+          "35",
+          1
+        ]
+      ],
+      "minimum": 7,
+      "maximum": 74
+    },
+    "true_negative": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 6,
+      "distinct_nonmissing": 12,
+      "most_common": [
+        [
+          "58",
+          2
+        ],
+        [
+          "108",
+          1
+        ],
+        [
+          "121",
+          1
+        ],
+        [
+          "129",
+          1
+        ],
+        [
+          "135",
+          1
+        ]
+      ],
+      "minimum": 44,
+      "maximum": 135
+    },
+    "precision": {
+      "python_types": [
+        "float"
+      ],
+      "missing": 6,
+      "distinct_nonmissing": 13,
+      "most_common": [
+        [
+          "0.6666666666666666",
+          1
+        ],
+        [
+          "0.6896551724137931",
+          1
+        ],
+        [
+          "0.725925925925926",
+          1
+        ],
+        [
+          "0.7718120805369127",
+          1
+        ],
+        [
+          "0.7757009345794392",
+          1
+        ]
+      ],
+      "minimum": 0.6666666666666666,
+      "maximum": 0.9811320754716981
+    },
+    "recall": {
+      "python_types": [
+        "float"
+      ],
+      "missing": 6,
+      "distinct_nonmissing": 13,
+      "most_common": [
+        [
+          "0.3469387755102041",
+          1
+        ],
+        [
+          "0.358974358974359",
+          1
+        ],
+        [
+          "0.3884297520661157",
+          1
+        ],
+        [
+          "0.45454545454545453",
+          1
+        ],
+        [
+          "0.5964912280701754",
+          1
+        ]
+      ],
+      "minimum": 0.3469387755102041,
+      "maximum": 0.9426229508196722
+    },
+    "exact_when_regex_nonmissing": {
+      "python_types": [
+        "float"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 18,
+      "most_common": [
+        [
+          "1.0",
+          2
+        ],
+        [
+          "0.605",
+          1
+        ],
+        [
+          "0.65",
+          1
+        ],
+        [
+          "0.67",
+          1
+        ],
+        [
+          "0.68",
+          1
+        ]
+      ],
+      "minimum": 0.605,
+      "maximum": 1.0
+    }
+  }
+}

@@ -8,7 +8,7 @@ all: ../output/cd_homeownership_long_units_raw_units_plots.pdf \
 	Rscript --vanilla $<
 
 ../input/cd_homeownership_long_units_series.csv: ../../build_cd_homeownership_long_units_series/output/cd_homeownership_long_units_series.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/cd_homeownership_long_units_series.csv
 

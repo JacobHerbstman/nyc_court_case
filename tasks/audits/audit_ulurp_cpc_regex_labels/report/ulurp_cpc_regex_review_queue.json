@@ -1,0 +1,447 @@
+{
+  "dataset": "ulurp_cpc_regex_review_queue.csv",
+  "rows": 5460,
+  "key": [
+    "document_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "e17c94a6bbfa92bace69adeeae640fec397fe3a3897a12aca44219c781869591",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5460,
+      "most_common": [
+        [
+          "00119c3b0ee800f4d8ba",
+          1
+        ],
+        [
+          "00126d30463744ba647c",
+          1
+        ],
+        [
+          "001f885d7d891a8711f7",
+          1
+        ],
+        [
+          "00231b56ec914bf6ccd9",
+          1
+        ],
+        [
+          "002cc14a8a568bd7b314",
+          1
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5460,
+      "most_common": [
+        [
+          "C 000012 ZSR",
+          1
+        ],
+        [
+          "C 000013 ZSR",
+          1
+        ],
+        [
+          "C 000014 ZSR",
+          1
+        ],
+        [
+          "C 000016A ZSR",
+          1
+        ],
+        [
+          "C 000017 ZMR",
+          1
+        ]
+      ]
+    },
+    "project_name": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 800,
+      "distinct_nonmissing": 3925,
+      "most_common": [
+        [
+          "C-O-P",
+          357
+        ],
+        [
+          "Lda",
+          18
+        ],
+        [
+          "Metrotech",
+          11
+        ],
+        [
+          "Hra Boarding Home",
+          10
+        ],
+        [
+          "Sweat Equity Project",
+          8
+        ]
+      ]
+    },
+    "year": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 50,
+      "most_common": [
+        [
+          "1982",
+          500
+        ],
+        [
+          "1981",
+          464
+        ],
+        [
+          "1980",
+          349
+        ],
+        [
+          "1983",
+          323
+        ],
+        [
+          "1979",
+          306
+        ]
+      ]
+    },
+    "action_code": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 35,
+      "most_common": [
+        [
+          "PP",
+          1139
+        ],
+        [
+          "HD",
+          703
+        ],
+        [
+          "ZM",
+          650
+        ],
+        [
+          "ZS",
+          607
+        ],
+        [
+          "MM",
+          393
+        ]
+      ]
+    },
+    "source_text_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5460,
+      "most_common": [
+        [
+          "00135a3546a6f0fe84f5525e642cc85c9e329d230530a2b6223f4c0a42fcc148",
+          1
+        ],
+        [
+          "0015a116500de90a3d204da28a47052bcdc39a654f67dac27fe6fa9ac4b9a0bc",
+          1
+        ],
+        [
+          "0015fb76e90deb367bcc380912e2a07a47622fab3fb291b2b397b3fe4e350771",
+          1
+        ],
+        [
+          "0020577e5442284862969c8144a0982bb8026ebc313c50352bb76e7f8c88c07d",
+          1
+        ],
+        [
+          "002db7dfc3cde137393b2cd464b3bca1e3372e09729104151ecfa2b65d373383",
+          1
+        ]
+      ]
+    },
+    "companion_application_numbers": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 3839,
+      "distinct_nonmissing": 1621,
+      "most_common": [
+        [
+          "C 000012 ZSR; C 000013 ZSR; C 000014 ZSR; C 000016A ZSR; C 000017 ZMR; C 000018 PCR",
+          1
+        ],
+        [
+          "C 000012 ZSR; C 000013 ZSR; C 000014 ZSR; C 000016A ZSR; C 000017 ZMR; C 000019 PPR",
+          1
+        ],
+        [
+          "C 000012 ZSR; C 000013 ZSR; C 000014 ZSR; C 000016A ZSR; C 000018 PCR; C 000019 PPR",
+          1
+        ],
+        [
+          "C 000012 ZSR; C 000013 ZSR; C 000014 ZSR; C 000017 ZMR; C 000018 PCR; C 000019 PPR",
+          1
+        ],
+        [
+          "C 000012 ZSR; C 000013 ZSR; C 000016A ZSR; C 000017 ZMR; C 000018 PCR; C 000019 PPR",
+          1
+        ]
+      ]
+    },
+    "cb_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 11,
+      "most_common": [
+        [
+          "no_tally_match",
+          1865
+        ],
+        [
+          "resolved",
+          1080
+        ],
+        [
+          "unknown_motion",
+          858
+        ],
+        [
+          "no_section",
+          586
+        ],
+        [
+          "multiple_tallies",
+          307
+        ]
+      ]
+    },
+    "cb_position": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "not_reported",
+          2692
+        ],
+        [
+          "support",
+          1367
+        ],
+        [
+          "no_recommendation",
+          540
+        ],
+        [
+          "oppose",
+          460
+        ],
+        [
+          "support_with_conditions",
+          304
+        ]
+      ]
+    },
+    "cb_evidence": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 1795,
+      "distinct_nonmissing": 3597,
+      "most_common": [
+        [
+          "community board No. 3 held a public hearing on this matter on July 10, 1978. The board recommends approval of this proposal. The City Planning Commission received the report from community board No. 3 on July 31, 1978 and is attached.",
+          6
+        ],
+        [
+          "Procedure (ULURP) rules. community board 2 held a public hearing on this application on April 17, 1989, and adopted a resolution on May 10, 1989 recommending approval by a vote of 27 in favor and none in opposition with no abstentions. A summary of the vote of community board 2 appears in the report on the related action for the special permits (C 890650-652 ZSK).",
+          5
+        ],
+        [
+          "& recommendation community board No. 3 held a public hearing on this matter on January 24, 1978. The board recommends approval of this proposal. The City Planning Commission received the report from community board No. 3 on February 18, 1978, and is attached.",
+          3
+        ],
+        [
+          "Manhattan community board No.1 held a public hearing on January 8, 1985 and on that date voted to approve the application by a vote of 29 in favor, 0 against and 3 abstaining, in accordance with Article 4 of",
+          3
+        ],
+        [
+          "On February 3, 1983 the community board held a public hearing on this matter and at their board meeting on February 8, 1983 voted to reject this application. The vote was 30 to 0, with one abstention. On March 9, 1983 (Calendar No. 10) the City Planning Commission scheduled a PUBLIC HEARING on this matter and the above-noted related applications. The hearing was duly held on March 23, 1983 (Calendar No. 13) and closed. At th",
+          3
+        ]
+      ]
+    },
+    "cb_source_application": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5428,
+      "most_common": [
+        [
+          "C 890654 GFK",
+          4
+        ],
+        [
+          "C 760160 HUK",
+          3
+        ],
+        [
+          "C 760229 HOM",
+          3
+        ],
+        [
+          "C 800998 ZMR",
+          3
+        ],
+        [
+          "C 820380 MMR",
+          3
+        ]
+      ]
+    },
+    "cpc_speakers_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 10,
+      "most_common": [
+        [
+          "resolved",
+          2587
+        ],
+        [
+          "no_count_match",
+          766
+        ],
+        [
+          "no_section",
+          707
+        ],
+        [
+          "partial",
+          644
+        ],
+        [
+          "conflicting_counts",
+          265
+        ]
+      ]
+    },
+    "cpc_speakers_evidence": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 1651,
+      "distinct_nonmissing": 3199,
+      "most_common": [
+        [
+          "the Hearing was duly held. There were no speakers and the Hearing was closed. CITY PLANNING COMMISSION FINDINGS AND recommendation",
+          129
+        ],
+        [
+          "hearing was duly held. There were no appearances, and the hearing was closed.",
+          87
+        ],
+        [
+          "hearing was duly held. There were no appearances and the hearing was closed.",
+          58
+        ],
+        [
+          "the hearing was duly held. There were no speakers and the hearing was closed.",
+          40
+        ],
+        [
+          "the hearing was duly held. There were no appearances and the hearing was closed.",
+          36
+        ]
+      ]
+    },
+    "cpc_speakers_source_application": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5344,
+      "most_common": [
+        [
+          "C 960205 HUK",
+          6
+        ],
+        [
+          "C 890005 PSK",
+          5
+        ],
+        [
+          "C 900173 PPR",
+          5
+        ],
+        [
+          "C 800251 HUM",
+          4
+        ],
+        [
+          "C 831248 HOX",
+          4
+        ]
+      ]
+    },
+    "official_pdf_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5459,
+      "most_common": [
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/080533.pdf",
+          2
+        ],
+        [
+          "https://www.nyc.gov/assets/planning/download/pdf/about/cpc/210031.pdf",
+          1
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/000012.pdf",
+          1
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/000013.pdf",
+          1
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/000014.pdf",
+          1
+        ]
+      ]
+    }
+  }
+}

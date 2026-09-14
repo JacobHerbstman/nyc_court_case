@@ -14,7 +14,7 @@ all: ../output/zap_project_source_document_links.csv \
 	@test -s "$@"
 
 ../input/zap_rezoning_direction_text_candidate_queue.csv: ../../summarize_zap_rezoning_direction_scope/output/zap_rezoning_direction_text_candidate_queue.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/zap_rezoning_direction_text_candidate_queue.csv
 

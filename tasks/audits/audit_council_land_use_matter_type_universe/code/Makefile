@@ -63,7 +63,7 @@ all: ../output/council_land_use_outside_current_type_candidates.csv \
 	@test -s "$@"
 
 ../input/legistar_%_broad_recall_matter_index.csv: ../../../fetch_council_land_use_records/output/legistar_%_broad_recall_matter_index.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: $(foreach year,$(RECALL_YEARS),../input/legistar_$(year)_broad_recall_matter_index.csv)
 

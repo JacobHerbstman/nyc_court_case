@@ -1,0 +1,157 @@
+{
+  "dataset": "cd_homeownership_long_units_long_difference_raw_units_estimates.csv",
+  "rows": 8,
+  "key": ["source_family", "series_family", "comparison_id", "term"],
+  "unique_nonmissing_key": true,
+  "md5_csv_bytes": "f512dd1127f3beaa2d43c89d3a1ede9b",
+  "fingerprint_scope": "Saved CSV bytes, including row order; not proof of source correctness.",
+  "columns": {
+    "source_family": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 1
+    },
+    "comparison_id": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 8
+    },
+    "row_order": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 8,
+      "minimum": 1,
+      "maximum": 8
+    },
+    "column_label": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 8
+    },
+    "pre_window": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 1
+    },
+    "post_window": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 8
+    },
+    "series_family": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 1
+    },
+    "outcome_label": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 1
+    },
+    "outcome_scale": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 1
+    },
+    "term": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 1
+    },
+    "estimate": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 8,
+      "minimum": -357.8997,
+      "maximum": 16.7401
+    },
+    "std_error": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 8,
+      "minimum": 29.8377,
+      "maximum": 156.2262
+    },
+    "statistic": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 8,
+      "minimum": -2.2909,
+      "maximum": 0.4992
+    },
+    "p_value": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 8,
+      "minimum": 0.0263,
+      "maximum": 0.8488
+    },
+    "conf_low": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 8,
+      "minimum": -671.8481,
+      "maximum": -50.6542
+    },
+    "conf_high": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 8,
+      "minimum": -43.9514,
+      "maximum": 84.1343
+    },
+    "n_districts": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "minimum": 59,
+      "maximum": 59
+    },
+    "initial_outcome_mean": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "minimum": 186.7661,
+      "maximum": 186.7661
+    },
+    "pre_year_count_min": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "minimum": 5,
+      "maximum": 5
+    },
+    "post_year_count_min": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "minimum": 5,
+      "maximum": 6
+    },
+    "model": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 1
+    },
+    "estimate_label": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 8
+    },
+    "std_error_label": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 8
+    },
+    "initial_outcome_mean_label": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 1
+    },
+    "p_value_label": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 8
+    }
+  }
+}

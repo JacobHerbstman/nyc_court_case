@@ -1,36 +1,49 @@
 # Audit ULURP CPC Regex Labels
 
-This audit compares the production deterministic CPC text measures with three
-manually coded samples. Jacob's 200 reports provide in-sample calibration. A
-first 100-report Codex sample was used to revise the regex rules and is a
-development sample. A second 100-report Codex sample was read only after those
-rules were frozen and is the holdout test.
+This audit measures extraction coverage and agreement with existing coding.
+Jacob's 200 reports provide human development comparisons. Two 100-report
+Codex-coded samples are model-coded regression benchmarks. The second sample
+was originally held out; it has now been inspected during rule development and
+must not be described as a fresh test. Existing filenames retain `holdout` for
+continuity. No manual labels are changed by the extraction program.
 
-Both Codex samples draw randomly within decade, in proportion to the available
-corpus, from reports whose own action code is `ZM`, `ZR`, or `ZS`. The holdout
-also excludes the development sample. Fixed seeds and source-hash checks make
-sample membership reproducible. The audit checks the extracted source hash
-rather than a parser-derived narrative hash, so revised section or boundary
-rules can be tested against the same hand coding. The disagreement outputs
-preserve the manual evidence needed to diagnose missed context rather than
-reporting agreement alone.
-`unclear` manual values are excluded. Count agreement treats an unparsed regex
-count as a miss and also reports agreement among counts that were parsed. The
-project and development-direction fields are not compared because the
-production regex task does not produce them.
+The Codex samples contain reports whose own action code is ZM, ZR, or ZS.
+`unclear` reference values are excluded. Agreement outputs distinguish an
+unparsed count from an incorrect parsed count and check reference source hashes.
+Binary contextual measures are also compared, but count improvements do not
+establish that regex understands revisions, conditions, or concessions.
 
-Outputs:
+Run `make` from `code/` to produce:
 
-- `ulurp_cpc_regex_training_agreement.csv`
-- `ulurp_cpc_regex_validation_agreement.csv`
-- `ulurp_cpc_regex_validation_disagreements.csv`
-- `ulurp_cpc_regex_holdout_agreement.csv`
-- `ulurp_cpc_regex_holdout_disagreements.csv`
-- `ulurp_cpc_tyler_comparison_checks.md`
+- The five existing training/validation/holdout agreement and disagreement CSVs.
+- `ulurp_cpc_regex_coverage.csv` and `.md`: coverage by field and decade, reasons
+  for review, and agreement with existing human development labels.
+- `ulurp_cpc_regex_review_queue.csv`: narrative identifiers, status, source
+  evidence, and document links for subsequent human or AI reading.
+- `ulurp_cpc_regex_human_review_sample.csv`: 150 previously uncoded narratives,
+  stratified by decade, action family, and extraction route. The sheet omits
+  predictions and includes stratum population/sample sizes and sampling weights.
 
-The Tyler comparison checks describe our current sample, reproduce two actual
-report examples from his August 28, 2026 PDF, summarize the existing Codex
-holdout, and run five controlled snippets through our actual counting functions.
-They execute only our parser. Tyler's implementation and row-level extraction
-output were not available, so these checks do not measure cross-parser agreement.
-The substantive comparison is in `logbook/2026-09-14-regex-comparison.md`.
+The new review sheet excludes every report in the three earlier samples and
+those inspected during rule development, recorded in `code/rule_development_reports.csv`.
+Related report bundles are excluded as well to prevent reusing the same hearing
+through a different application number. Treat
+it as an unfilled hand-coding source: copy completed judgments into the existing
+manual-ledger task before rebuilding or altering sampling choices. Review the
+whole focal report and related reports when needed; record evidence pages,
+formal recommendation, literal motion votes, proposal-aligned votes, abstentions,
+the abstention rule, hearing counts, and reasons a quantity cannot be determined.
+Leave unavailable counts blank. Zero requires evidence. Use the weights for
+population summaries, with separate results for extraction route and decade.
+A weighted accuracy estimate and uncertainty interval require actual independent
+human coding; this task does not invent those results.
+
+`python3 test_cpc_counts.py` checks source-derived edge cases and controlled
+ambiguity examples against the shared extraction functions. These tests catch
+regressions; they are not an accuracy sample.
+
+The prior comparison with Tyler is frozen in
+`logbook/2026-09-14-regex-comparison.md` and its checks appendix, at the rules
+from commit `94bd806`. Tyler's implementation and row-level output were not
+available. The current parser adopts described features independently; it does
+not claim a measured comparison against his actual code.

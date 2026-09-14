@@ -1,0 +1,415 @@
+{
+  "dataset": "ulurp_cpc_regex_validation_disagreements.csv",
+  "rows": 336,
+  "key": [
+    "document_id",
+    "field"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "b12ab7ea27af6bb923d7524f3e377c98615e27a7b4c8049e59eb07154be30e0c",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "validation_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 90,
+      "most_common": [
+        [
+          "V018",
+          9
+        ],
+        [
+          "V024",
+          9
+        ],
+        [
+          "V029",
+          9
+        ],
+        [
+          "V007",
+          7
+        ],
+        [
+          "V019",
+          7
+        ]
+      ]
+    },
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 90,
+      "most_common": [
+        [
+          "3315a40b216f5ed4a981",
+          9
+        ],
+        [
+          "f091cb2ba50724b00653",
+          9
+        ],
+        [
+          "f0d414c46c15e411436c",
+          9
+        ],
+        [
+          "19d45457b4a0369f0746",
+          7
+        ],
+        [
+          "22d169008927fd8fb3a3",
+          7
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 90,
+      "most_common": [
+        [
+          "C 831430 ZMM",
+          9
+        ],
+        [
+          "C 850595 ZSM",
+          9
+        ],
+        [
+          "C 880818 ZSK",
+          9
+        ],
+        [
+          "C 020084 ZSM",
+          7
+        ],
+        [
+          "C 150422 ZMR",
+          7
+        ]
+      ]
+    },
+    "year": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 37,
+      "most_common": [
+        [
+          "2021",
+          25
+        ],
+        [
+          "2005",
+          21
+        ],
+        [
+          "1984",
+          20
+        ],
+        [
+          "1980",
+          19
+        ],
+        [
+          "1988",
+          19
+        ]
+      ]
+    },
+    "decade": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "1980s",
+          100
+        ],
+        [
+          "2000s",
+          72
+        ],
+        [
+          "2010s",
+          54
+        ],
+        [
+          "1990s",
+          49
+        ],
+        [
+          "2020s",
+          45
+        ]
+      ]
+    },
+    "project_name": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 4,
+      "distinct_nonmissing": 87,
+      "most_common": [
+        [
+          "330 Jay St",
+          10
+        ],
+        [
+          "115 W68Th St",
+          9
+        ],
+        [
+          "Eichner City Center Bldg/Cityspire",
+          9
+        ],
+        [
+          "Spring Creek",
+          9
+        ],
+        [
+          "141 Du'S,Jersey St",
+          7
+        ]
+      ]
+    },
+    "field": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 21,
+      "most_common": [
+        [
+          "explicit_local_response",
+          30
+        ],
+        [
+          "procedural_response",
+          29
+        ],
+        [
+          "approved_unresolved_objection",
+          24
+        ],
+        [
+          "cpc_opposition_speakers",
+          24
+        ],
+        [
+          "environment_open_space",
+          22
+        ]
+      ]
+    },
+    "manual_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 29,
+      "most_common": [
+        [
+          "1",
+          169
+        ],
+        [
+          "0",
+          100
+        ],
+        [
+          "support_or_request",
+          16
+        ],
+        [
+          "opposition",
+          11
+        ],
+        [
+          "3",
+          6
+        ]
+      ]
+    },
+    "regex_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 69,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "0",
+          162
+        ],
+        [
+          "1",
+          78
+        ],
+        [
+          "none_or_procedural",
+          24
+        ],
+        [
+          "opposition",
+          2
+        ],
+        [
+          "support_or_request",
+          1
+        ]
+      ]
+    },
+    "error_type": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "false_negative",
+          162
+        ],
+        [
+          "false_positive",
+          78
+        ],
+        [
+          "regex_missing",
+          69
+        ],
+        [
+          "mismatch",
+          27
+        ]
+      ]
+    },
+    "evidence_pages": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 48,
+      "most_common": [
+        [
+          "1-9",
+          24
+        ],
+        [
+          "1-6",
+          23
+        ],
+        [
+          "1-10",
+          22
+        ],
+        [
+          "1-7",
+          22
+        ],
+        [
+          "1-8",
+          22
+        ]
+      ]
+    },
+    "evidence_summary": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 90,
+      "most_common": [
+        [
+          "Bonus enables a roughly 70-story Cityspire tower in exchange for City Center rehabilitation; CB narrowly approved 17-16 while demanding reduced waivers; three preservation-group speakers opposed scale, density, light and air; CPC-requested redesign reduced the western wing but CPC approved despite remaining concerns.",
+          9
+        ],
+        [
+          "CB recommended against and 31 CPC speakers opposed, chiefly over amenity funds and tenant displacement; after the hearings CPC narrowed the commercial overlay to the supermarket site, protected residential buildings, and applicant revised loading plans and funded subway and neighborhood improvements.",
+          9
+        ],
+        [
+          "Related R4-to-R6 rezoning and special permits enabled 765 low-income units; CB approved unanimously but requested a greater economic mix and cooperative ownership, concerns echoed by two councilmembers; the report records extensive recreation, noise and contamination commitments but no response to those local tenure and mix requests.",
+          9
+        ],
+        [
+          "CB2 recommended disapproval 31-6 over the penthouse strategy, misleading marketing, excessive asking rents, and disruption to prospective industrial tenants; CPC expressly rejected those objections and approved four artist live-work units plus retail.",
+          7
+        ],
+        [
+          "Special permit gives a 20 percent floor-area bonus essential to a 47-story office building in exchange for a recorded subway connection and strict completion deadlines; FEIS discusses traffic, transit congestion, air quality, and pedestrian open space; CB approved 27-0 and its representative was the sole speaker.",
+          7
+        ]
+      ]
+    },
+    "coder_notes": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 90,
+      "most_common": [
+        [
+          "Related report: https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/831432.pdf. The 25-2 vote adopted an unfavorable recommendation, coded as 25 opposition and 2 support.",
+          9
+        ],
+        [
+          "Related report: https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/850643.pdf. Revision is expressly linked to CPC, not a local actor, so explicit local response is 0; the civic scale objection remained notable at approval.",
+          9
+        ],
+        [
+          "Two project representatives are counted as CPC support; the other four reported speakers raised concerns or requests but are not described as opponents. CPC approved without resolving the specific economic-mix and co-op requests. The special permit itself is not a literal zoning change.",
+          9
+        ],
+        [
+          "Four converted loft units are below the material-development threshold. Vote sides follow the recommendation: 31 votes for disapproval are opposition votes.",
+          7
+        ],
+        [
+          "Recorded transit agreement is a substantive applicant commitment, but the report does not call it a restrictive declaration.",
+          7
+        ]
+      ]
+    },
+    "official_pdf_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 90,
+      "most_common": [
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/831430.pdf",
+          9
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/850595.pdf",
+          9
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/880818.pdf",
+          9
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/020084.pdf",
+          7
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/150422.pdf",
+          7
+        ]
+      ]
+    }
+  }
+}

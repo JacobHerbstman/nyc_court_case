@@ -7,7 +7,7 @@ all: ../output/dof_421a_exempt_bbl_year.csv
 	$(R) $<
 
 ../input/dof_421a_raw_files.csv: ../../fetch_dof_421a_exempt_properties/output/dof_421a_raw_files.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/dof_421a_raw_files.csv
 

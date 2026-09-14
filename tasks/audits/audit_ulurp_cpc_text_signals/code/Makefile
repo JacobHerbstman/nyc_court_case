@@ -47,13 +47,13 @@ all: ../output/ulurp_cpc_text_signal_year.csv \
 	@test -s "$@"
 
 ../input/official_ulurp_cpc_narrative_manifest.csv: ../../audit_official_ulurp_cpc_text_measurement/output/official_ulurp_cpc_narrative_manifest.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/citywide_ulurp_application_year.csv: ../../../summarize_citywide_ulurp_application_trends/output/citywide_ulurp_application_year.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/manual_ulurp_cpc_text_signal_kwic_labels.csv: ../../record_ulurp_cpc_text_analysis_decisions/output/ulurp_cpc_kwic_calibration_labels.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/official_ulurp_cpc_narrative_manifest.csv ../input/citywide_ulurp_application_year.csv ../input/manual_ulurp_cpc_text_signal_kwic_labels.csv
 

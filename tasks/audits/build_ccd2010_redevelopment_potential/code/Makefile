@@ -7,13 +7,13 @@ all: ../output/ccdist2010_redevelopment_potential.csv
 	$(R) $<
 
 ../input/ccdist2010_homeownership_1990_measure.csv: ../../build_ccd2010_homeownership_1990_measure/output/ccdist2010_homeownership_1990_measure.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/mappluto_files.csv: ../../../fetch_mappluto_archive/output/mappluto_files.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/mappluto_02b.zip: ../../../../data_raw/dcp_mappluto_archive/02b/mappluto_02b.zip | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/ccdist2010_homeownership_1990_measure.csv ../input/mappluto_files.csv ../input/mappluto_02b.zip
 

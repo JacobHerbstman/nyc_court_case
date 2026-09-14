@@ -16,7 +16,7 @@ all: ../output/dcp_housing_database_files.csv ../output/dcp_housing_database_pro
 	$(R) $<
 
 ../input/source_catalog.csv: ../../../source_registry/code/source_catalog.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/source_catalog.csv
 

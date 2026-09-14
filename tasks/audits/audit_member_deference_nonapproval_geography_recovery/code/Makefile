@@ -40,10 +40,10 @@ all: ../output/member_deference_nonapproval_geography_recovery_summary.csv \
 	cp $< $@
 
 ../input/member_deference_nonapproval_geography_recovery.csv: ../../../recover_member_deference_nonapproval_geography/output/member_deference_nonapproval_geography_recovery.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/member_deference_final_action_vote_queue.csv: ../../../build_member_deference_vote_panel/output/member_deference_final_action_vote_queue.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/member_deference_nonapproval_geography_recovery.csv \
 	../input/member_deference_final_action_vote_queue.csv

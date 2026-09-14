@@ -24,13 +24,13 @@ all: ../output/citywide_ulurp_application_trends_qc.csv \
 	@test -s "$@"
 
 ../input/zap_project_data.parquet: ../../../build_zap_datasets/output/zap_project_data.parquet | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/cd_baseline_1990_controls.csv: ../../build_cd_baseline_1990_controls/output/cd_baseline_1990_controls.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/citywide_ulurp_residential_manual_validation_labels.csv: ../../../summarize_citywide_ulurp_application_trends/input/citywide_ulurp_residential_manual_validation_labels.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/zap_project_data.parquet ../input/cd_baseline_1990_controls.csv ../input/citywide_ulurp_residential_manual_validation_labels.csv
 

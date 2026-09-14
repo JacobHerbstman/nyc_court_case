@@ -4,7 +4,7 @@ all: ../output/mappluto_files.csv
 	Rscript --vanilla $<
 
 ../input/source_catalog.csv: ../../source_registry/output/source_catalog.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/source_catalog.csv
 

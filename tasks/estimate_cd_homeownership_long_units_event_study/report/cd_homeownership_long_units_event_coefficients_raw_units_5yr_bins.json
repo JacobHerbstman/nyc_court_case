@@ -1,0 +1,128 @@
+{
+  "dataset": "cd_homeownership_long_units_event_coefficients_raw_units_5yr_bins.csv",
+  "rows": 22,
+  "key": ["source_family", "series_family", "event_period"],
+  "unique_nonmissing_key": true,
+  "md5_csv_bytes": "1a2136e0c3e44bb5ef4aec6ee15592e8",
+  "fingerprint_scope": "Saved CSV bytes, including row order; not proof of source correctness.",
+  "columns": {
+    "term": {
+      "type": "character",
+      "missing": 2,
+      "distinct_nonmissing": 10
+    },
+    "event_period": {
+      "type": "factor",
+      "missing": 0,
+      "distinct_nonmissing": 11
+    },
+    "is_reference": {
+      "type": "logical",
+      "missing": 0,
+      "distinct_nonmissing": 2
+    },
+    "estimate": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 21,
+      "minimum": -357.8997,
+      "maximum": 103.1795
+    },
+    "std_error": {
+      "type": "numeric",
+      "missing": 2,
+      "distinct_nonmissing": 20,
+      "minimum": 13.3231,
+      "maximum": 145.91
+    },
+    "statistic": {
+      "type": "numeric",
+      "missing": 2,
+      "distinct_nonmissing": 20,
+      "minimum": -2.4529,
+      "maximum": 4.8752
+    },
+    "p_value": {
+      "type": "numeric",
+      "missing": 2,
+      "distinct_nonmissing": 20,
+      "minimum": 8.8104e-06,
+      "maximum": 0.8442
+    },
+    "conf_low": {
+      "type": "numeric",
+      "missing": 2,
+      "distinct_nonmissing": 20,
+      "minimum": -649.9704,
+      "maximum": 56.2041
+    },
+    "conf_high": {
+      "type": "numeric",
+      "missing": 2,
+      "distinct_nonmissing": 20,
+      "minimum": -65.8291,
+      "maximum": 153.0998
+    },
+    "event_period_index": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 11,
+      "minimum": 1,
+      "maximum": 11
+    },
+    "source_family": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 1
+    },
+    "source_label": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 1
+    },
+    "series_family": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 2
+    },
+    "outcome_label": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 2
+    },
+    "outcome_scale": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 1
+    },
+    "reference_period": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 1
+    },
+    "model": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 1
+    },
+    "control_label": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 1
+    },
+    "n_obs": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "minimum": 3304,
+      "maximum": 3304
+    },
+    "within_r2": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "minimum": 0.0476,
+      "maximum": 0.1152
+    }
+  }
+}

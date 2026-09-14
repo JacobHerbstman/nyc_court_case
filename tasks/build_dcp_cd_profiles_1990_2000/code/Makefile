@@ -1,6 +1,6 @@
-all: ../output/dcp_cd_profiles_1990_2000_files.csv
+all: ../output/dcp_cd_profiles_1990_2000_files.csv ../output/dcp_cd_profiles_1990_2000_20260501.parquet
 
-../output/dcp_cd_profiles_1990_2000_files.csv: build_dcp_cd_profiles_1990_2000.R ../output/dcp_cd_profiles_1990_2000_raw_files.csv | ../output
+../%/dcp_cd_profiles_1990_2000_files.csv ../%/dcp_cd_profiles_1990_2000_20260501.parquet: build_dcp_cd_profiles_1990_2000.R ../output/dcp_cd_profiles_1990_2000_raw_files.csv | ../output
 	Rscript --vanilla $<
 
 ../output/dcp_cd_profiles_1990_2000_raw_files.csv: load_dcp_cd_profiles_1990_2000_raw.py ../output/dcp_cd_profiles_1990_2000_source_files.csv | ../output

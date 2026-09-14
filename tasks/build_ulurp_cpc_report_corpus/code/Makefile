@@ -15,16 +15,16 @@ all: ../output/ulurp_cpc_report_manifest.csv
 	python3 $< $(START_YEAR) $(END_YEAR) $(WORKERS) $(OCR_DPI) $(OCR_PAGE_TIMEOUT_SECONDS) $(MINIMUM_EMBEDDED_PAGE_WORDS)
 
 ../input/official_cpc_report_index.csv: ../../fetch_ulurp_cpc_report_index/output/official_cpc_report_index.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/zap_project_data.parquet: ../../build_zap_datasets/output/zap_project_data.parquet | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/ulurp_cpc_source_corrections.csv: ../../record_ulurp_cpc_source_corrections/output/ulurp_cpc_source_corrections.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/ulurp_cpc_index_additions.csv: ../../record_ulurp_cpc_source_corrections/output/ulurp_cpc_index_additions.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/official_cpc_report_index.csv \
 	../input/zap_project_data.parquet \

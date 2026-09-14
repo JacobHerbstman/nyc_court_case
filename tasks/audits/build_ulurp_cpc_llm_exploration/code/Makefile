@@ -25,10 +25,10 @@ all: ../output/ulurp_cpc_llm_exploration_frame.csv \
 	@test -s "$@"
 
 ../input/ulurp_cpc_report_manifest.csv: ../../../build_ulurp_cpc_report_corpus/output/ulurp_cpc_report_manifest.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/flushing_commons_cpc_ocr_manifest.csv: ../../ocr_ulurp_flushing_commons_cpc_reports/output/flushing_commons_cpc_ocr_manifest.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/ulurp_cpc_report_manifest.csv ../input/flushing_commons_cpc_ocr_manifest.csv
 

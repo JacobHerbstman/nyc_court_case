@@ -12,22 +12,22 @@ all: ../output/hdb_public_affordable_421a_job_classified.csv ../output/hdb_publi
 ../output/hdb_public_affordable_421a_qc.csv: ../output/hdb_public_affordable_421a_job_classified.csv
 
 ../input/dcp_housing_database_project_level_25q4.parquet: ../../build_dcp_housing_database/output/dcp_housing_database_project_level_25q4.parquet | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/zap_housing_hdb_link_candidates.csv: ../../build_zap_housing_hdb_link/output/zap_housing_hdb_link_candidates.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/zap_housing_project_base_audited.csv: ../../build_zap_housing_pipeline_from_raw/output/zap_housing_project_base_audited.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/hpd_affordable_housing_bbl_year.csv: ../../stage_hpd_affordable_housing_production/output/hpd_affordable_housing_bbl_year.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/dof_421a_exempt_bbl_year.csv: ../../stage_dof_421a_exempt_properties/output/dof_421a_exempt_bbl_year.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/cd_redevelopment_potential_baseline.csv: ../../redevelopment_potential_first_pass/output/cd_redevelopment_potential_baseline.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/dcp_housing_database_project_level_25q4.parquet ../input/zap_housing_hdb_link_candidates.csv ../input/zap_housing_project_base_audited.csv ../input/hpd_affordable_housing_bbl_year.csv ../input/dof_421a_exempt_bbl_year.csv ../input/cd_redevelopment_potential_baseline.csv
 

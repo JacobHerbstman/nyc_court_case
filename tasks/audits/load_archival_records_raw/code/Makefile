@@ -7,10 +7,10 @@ all: ../output/archival_record_raw_files.csv
 	$(R) $<
 
 ../input/source_catalog.csv: ../../../source_registry/code/source_catalog.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/archive_requests.csv: ../../source_registry_context/code/archive_requests.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/source_catalog.csv ../input/archive_requests.csv
 

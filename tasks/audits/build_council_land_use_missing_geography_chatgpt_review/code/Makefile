@@ -85,7 +85,7 @@ all: ../output/council_land_use_missing_geography_chatgpt_review_frame.csv \
 	@test -s "$@"
 
 ../input/council_land_use_missing_geography_roll_call_repair_queue.csv: ../../investigate_council_land_use_split_votes/output/council_land_use_missing_geography_roll_call_repair_queue.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 chatgpt_geography_adjudication_responses.jsonl:
 	touch "$@"

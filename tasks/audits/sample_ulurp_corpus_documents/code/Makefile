@@ -21,7 +21,7 @@ all: ../output/ulurp_corpus_sample_document_index.csv \
 	@test -s "$@"
 
 ../input/ulurp_corpus_project_spine.csv: ../../build_ulurp_corpus_spine/output/ulurp_corpus_project_spine.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/ulurp_corpus_project_spine.csv
 

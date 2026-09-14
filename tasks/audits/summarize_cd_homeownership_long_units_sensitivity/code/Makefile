@@ -7,13 +7,13 @@ all: ../output/cd_homeownership_long_units_sensitivity_pooled.csv ../output/cd_h
 	@test -s "$@"
 
 ../input/cd_homeownership_long_units_series.csv: ../../../build_cd_homeownership_long_units_series/output/cd_homeownership_long_units_series.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/mappluto_construction_proxy_cd_year.csv: ../../../build_mappluto_construction_proxy/output/mappluto_construction_proxy_cd_year.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/dcp_housing_database_files.csv: ../../build_dcp_housing_database/output/dcp_housing_database_files.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/cd_homeownership_long_units_series.csv ../input/mappluto_construction_proxy_cd_year.csv ../input/dcp_housing_database_files.csv
 

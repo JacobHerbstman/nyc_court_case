@@ -1,33 +1,24 @@
 SHELL := bash
+SHARED_CODE := $(dir $(lastword $(MAKEFILE_LIST)))
+include $(SHARED_CODE)shell_functions.make
+
+.NOTPARALLEL:
 .DELETE_ON_ERROR:
 .SECONDARY:
 
-../input ../output ../temp slurmlogs:
+../input ../output ../report ../temp slurmlogs:
 	mkdir -p $@
 
-../input/%/ ../output/%/ ../temp/%/:
-	mkdir -p $@
+run.sbatch: $(SHARED_CODE)setup_environment/code/run.sbatch | slurmlogs
+	ln -sf $< $@
 
-run.sbatch: ../../setup_environment/code/run.sbatch | slurmlogs
-	@test "$$(readlink "$@")" = "$<" || ln -sf $< $@
+.PHONY: FORCE_UPSTREAM
+FORCE_UPSTREAM:
 
-UPSTREAM_TASKS := $(notdir $(patsubst %/code,%,$(wildcard ../../*/code)))
-AUDIT_TASKS := $(notdir $(patsubst %/code,%,$(wildcard ../../audits/*/code)))
-
-.PRECIOUS: ../../% ../../audits/%
-.PHONY: FORCE_UPSTREAM_CHECK
-
-FORCE_UPSTREAM_CHECK:
-
-define UPSTREAM_OUTPUT_RULE
-../../$(1)/output/%: FORCE_UPSTREAM_CHECK
-	$$(MAKE) -C ../../$(1)/code ../output/$$*
-endef
-
-define AUDIT_OUTPUT_RULE
-../../audits/$(1)/output/%: FORCE_UPSTREAM_CHECK
-	$$(MAKE) -C ../../audits/$(1)/code ../output/$$*
-endef
-
-$(foreach task,$(UPSTREAM_TASKS),$(eval $(call UPSTREAM_OUTPUT_RULE,$(task))))
-$(foreach task,$(AUDIT_TASKS),$(eval $(call AUDIT_OUTPUT_RULE,$(task))))
+.SECONDEXPANSION:
+../tasks/% ../../% ../../../% ../../../../%: $$(if $$(findstring /output/,$$@),FORCE_UPSTREAM)
+	@case "$@" in \
+		*/output/*) target="$@"; task="$${target%/output/*}"; output="../output/$${target##*/output/}" ;; \
+		*) echo "Missing prerequisite: $@" >&2; exit 1 ;; \
+	esac; \
+	$(MAKE) -C "$$task/code" "$$output"

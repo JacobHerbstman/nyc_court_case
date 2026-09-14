@@ -13,7 +13,7 @@ all: ../output/mappluto_lot_files.csv
 	@test -s "$@"
 
 ../input/mappluto_raw_files.csv: ../../load_mappluto_raw/output/mappluto_raw_files.csv | ../input
-	@test "$$(readlink "$@")" = "../../load_mappluto_raw/output/mappluto_raw_files.csv" || ln -sf "../../load_mappluto_raw/output/mappluto_raw_files.csv" "$@"
+	ln -sf "../../load_mappluto_raw/output/mappluto_raw_files.csv" "$@"
 
 link-inputs: ../input/mappluto_raw_files.csv
 

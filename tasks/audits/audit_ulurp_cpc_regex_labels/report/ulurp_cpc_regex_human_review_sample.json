@@ -1,0 +1,401 @@
+{
+  "dataset": "ulurp_cpc_regex_human_review_sample.csv",
+  "rows": 150,
+  "key": [
+    "document_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "205dbd6ae1a85fd6faaaf0df229d422442edda9c2387d92740e38eefca105350",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 150,
+      "most_common": [
+        [
+          "01e9e39f59329091d784",
+          1
+        ],
+        [
+          "02aed777e548db5cf3dd",
+          1
+        ],
+        [
+          "0347d74b3182c04dca50",
+          1
+        ],
+        [
+          "067c9ef3c97fd3686486",
+          1
+        ],
+        [
+          "080a3926aa6bc8d3b271",
+          1
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 150,
+      "most_common": [
+        [
+          "C 000294 PPM",
+          1
+        ],
+        [
+          "C 000496 MMK",
+          1
+        ],
+        [
+          "C 000535 ZSX",
+          1
+        ],
+        [
+          "C 010049 MMK",
+          1
+        ],
+        [
+          "C 010070 PPK",
+          1
+        ]
+      ]
+    },
+    "year": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 43,
+      "most_common": [
+        [
+          "1978",
+          13
+        ],
+        [
+          "1989",
+          9
+        ],
+        [
+          "2024",
+          8
+        ],
+        [
+          "1977",
+          5
+        ],
+        [
+          "1979",
+          5
+        ]
+      ]
+    },
+    "action_code": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 19,
+      "most_common": [
+        [
+          "ZM",
+          45
+        ],
+        [
+          "ZS",
+          26
+        ],
+        [
+          "PP",
+          14
+        ],
+        [
+          "MM",
+          13
+        ],
+        [
+          "HA",
+          11
+        ]
+      ]
+    },
+    "project_name": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 10,
+      "distinct_nonmissing": 133,
+      "most_common": [
+        [
+          "C-O-P",
+          7
+        ],
+        [
+          "Hra Boarding Home",
+          2
+        ],
+        [
+          "1019-1029 Fulton Street",
+          1
+        ],
+        [
+          "106 Mott Street Garage (special permit)",
+          1
+        ],
+        [
+          "125 Edgewater Street Development",
+          1
+        ]
+      ]
+    },
+    "stratum_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 35,
+      "most_common": [
+        [
+          "S01",
+          5
+        ],
+        [
+          "S03",
+          5
+        ],
+        [
+          "S04",
+          5
+        ],
+        [
+          "S05",
+          5
+        ],
+        [
+          "S06",
+          5
+        ]
+      ]
+    },
+    "stratum_population": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 35,
+      "most_common": [
+        [
+          "107",
+          5
+        ],
+        [
+          "109",
+          5
+        ],
+        [
+          "2515",
+          5
+        ],
+        [
+          "39",
+          5
+        ],
+        [
+          "41",
+          5
+        ]
+      ],
+      "minimum": 3,
+      "maximum": 2515
+    },
+    "stratum_sample": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "4",
+          92
+        ],
+        [
+          "5",
+          55
+        ],
+        [
+          "3",
+          3
+        ]
+      ],
+      "minimum": 3,
+      "maximum": 5
+    },
+    "sampling_weight": {
+      "python_types": [
+        "float"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 34,
+      "most_common": [
+        [
+          "1.0",
+          8
+        ],
+        [
+          "106.8",
+          5
+        ],
+        [
+          "121.8",
+          5
+        ],
+        [
+          "13.2",
+          5
+        ],
+        [
+          "139.0",
+          5
+        ]
+      ],
+      "minimum": 1.0,
+      "maximum": 503.0
+    },
+    "source_text_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 150,
+      "most_common": [
+        [
+          "02cdc1f2049061559d5db39bc166cb575a6edcd60c193a566cf9b2beee86df6e",
+          1
+        ],
+        [
+          "049d39e9174bf169d66b5b80249f838f0b32dc41bd7b0f145ef1db77a49fc3ff",
+          1
+        ],
+        [
+          "06083ac120202c7d35ba386698d675b952695c6440daa138f288667bb74f4f1b",
+          1
+        ],
+        [
+          "070d2ecc64885ea148aeea968a089f6c7952bf8e0410e343e14accf079180c40",
+          1
+        ],
+        [
+          "072f6a58f57152c30f6f1dabfff6a3497a2ea971abe90bd02ad7cab0aa0c34a7",
+          1
+        ]
+      ]
+    },
+    "official_pdf_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 150,
+      "most_common": [
+        [
+          "https://www.nyc.gov/assets/planning/download/pdf/about/cpc/190305.pdf",
+          1
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/000294.pdf",
+          1
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/000496.pdf",
+          1
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/000535.pdf",
+          1
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/010049.pdf",
+          1
+        ]
+      ]
+    },
+    "cb_position": {
+      "python_types": [],
+      "missing": 150,
+      "distinct_nonmissing": 0,
+      "most_common": []
+    },
+    "cb_reported_for": {
+      "python_types": [],
+      "missing": 150,
+      "distinct_nonmissing": 0,
+      "most_common": []
+    },
+    "cb_reported_against": {
+      "python_types": [],
+      "missing": 150,
+      "distinct_nonmissing": 0,
+      "most_common": []
+    },
+    "cb_support_votes": {
+      "python_types": [],
+      "missing": 150,
+      "distinct_nonmissing": 0,
+      "most_common": []
+    },
+    "cb_opposition_votes": {
+      "python_types": [],
+      "missing": 150,
+      "distinct_nonmissing": 0,
+      "most_common": []
+    },
+    "cb_abstentions": {
+      "python_types": [],
+      "missing": 150,
+      "distinct_nonmissing": 0,
+      "most_common": []
+    },
+    "cb_abstention_rule": {
+      "python_types": [],
+      "missing": 150,
+      "distinct_nonmissing": 0,
+      "most_common": []
+    },
+    "cpc_support_speakers": {
+      "python_types": [],
+      "missing": 150,
+      "distinct_nonmissing": 0,
+      "most_common": []
+    },
+    "cpc_opposition_speakers": {
+      "python_types": [],
+      "missing": 150,
+      "distinct_nonmissing": 0,
+      "most_common": []
+    },
+    "evidence_pages": {
+      "python_types": [],
+      "missing": 150,
+      "distinct_nonmissing": 0,
+      "most_common": []
+    },
+    "coder_notes": {
+      "python_types": [],
+      "missing": 150,
+      "distinct_nonmissing": 0,
+      "most_common": []
+    },
+    "coding_complete": {
+      "python_types": [],
+      "missing": 150,
+      "distinct_nonmissing": 0,
+      "most_common": []
+    }
+  }
+}

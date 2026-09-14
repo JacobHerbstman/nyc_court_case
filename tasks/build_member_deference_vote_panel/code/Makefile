@@ -4,7 +4,7 @@ all: ../output/member_deference_vote_panel.csv \
 	../output/member_deference_matter_universe.csv \
 	../output/member_deference_final_action_vote_queue.csv
 
-../output/member_deference_vote_panel.csv: build_member_deference_vote_panel.py \
+../%/member_deference_vote_panel.csv ../%/member_deference_matter_universe.csv ../%/member_deference_final_action_vote_queue.csv: build_member_deference_vote_panel.py \
 	../../_lib/member_deference_utils.py \
 	$(foreach year,$(RECALL_YEARS),../input/legistar_$(year)_broad_recall_action_details.csv) \
 	$(foreach year,$(RECALL_YEARS),../input/legistar_$(year)_broad_recall_member_votes.csv) \
@@ -15,32 +15,26 @@ all: ../output/member_deference_vote_panel.csv \
 	../input/council_land_use_ai_geography_accepted_repairs.csv | ../output
 	python3 $<
 
-../output/member_deference_matter_universe.csv: ../output/member_deference_vote_panel.csv
-	@test -s "$@"
-
-../output/member_deference_final_action_vote_queue.csv: ../output/member_deference_vote_panel.csv
-	@test -s "$@"
-
 ../input/legistar_%_broad_recall_action_details.csv: ../../fetch_council_land_use_records/output/legistar_%_broad_recall_action_details.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/legistar_%_broad_recall_member_votes.csv: ../../fetch_council_land_use_records/output/legistar_%_broad_recall_member_votes.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/legistar_%_broad_recall_matter_index.csv: ../../fetch_council_land_use_records/output/legistar_%_broad_recall_matter_index.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/legistar_%_broad_recall_history_events.csv: ../../fetch_council_land_use_records/output/legistar_%_broad_recall_history_events.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/council_member_roster_master.csv: ../../build_council_member_roster/output/council_member_roster_master.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/zap_project_data.parquet: ../../build_zap_datasets/output/zap_project_data.parquet | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/council_land_use_ai_geography_accepted_repairs.csv: ../../create_council_land_use_geography_review_ledgers/output/council_land_use_ai_geography_accepted_repairs.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/council_member_roster_master.csv \
 	../input/zap_project_data.parquet \

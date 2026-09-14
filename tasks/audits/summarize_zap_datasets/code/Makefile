@@ -7,10 +7,10 @@ all: ../output/zap_project_counts_by_decade_status.csv ../output/zap_bbl_link_co
 	@test -s "$@"
 
 ../input/zap_project_data.parquet: ../../../build_zap_datasets/output/zap_project_data.parquet | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/zap_project_bbl.parquet: ../../../build_zap_datasets/output/zap_project_bbl.parquet | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/zap_project_data.parquet ../input/zap_project_bbl.parquet
 

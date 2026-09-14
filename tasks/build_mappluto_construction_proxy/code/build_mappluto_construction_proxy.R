@@ -1,3 +1,5 @@
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_mappluto_construction_proxy/code")
+
 suppressPackageStartupMessages({
   library(arrow)
   library(dplyr)
@@ -5,7 +7,7 @@ suppressPackageStartupMessages({
   library(tidyr)
 })
 
-source("../../_lib/source_pipeline_utils.R")
+source("../../_lib/data_reports.R")
 
 standard_cd <- tibble(
   borocd = c(
@@ -102,6 +104,6 @@ panel <- expand_grid(
   ) |>
   arrange(borocd, yearbuilt)
 
-write_csv_if_changed(panel, "../output/mappluto_construction_proxy_cd_year.csv")
+save_csv(panel, "../output/mappluto_construction_proxy_cd_year.csv", c("borocd", "yearbuilt"))
 
 cat("Wrote MapPLUTO construction proxy outputs to ../output\n")

@@ -3,27 +3,27 @@ include ../../../shell_functions.make
 
 all: ../output/cd_baseline_1990_controls.csv
 
-../output/cd_baseline_1990_controls.csv: build_cd_baseline_1990_controls.R ../../../_lib/source_pipeline_utils.R ../input/cd_homeownership_1990_measure.csv ../input/dcp_cd_profiles_1990_2000_files.csv ../input/nhgis_files.csv ../input/nhgis_1980_tract_extract.parquet ../input/nhgis_1990_tract_extract.parquet ../input/dcp_boundary_index.csv | ../output
+../output/cd_baseline_1990_controls.csv: build_cd_baseline_1990_controls.R ../../../_lib/source_pipeline_utils.R ../input/cd_homeownership_1990_measure.csv ../input/dcp_cd_profiles_1990_2000_20260501.parquet ../input/nhgis_files.csv ../input/nhgis_1980_tract_extract.parquet ../input/nhgis_1990_tract_extract.parquet ../input/dcp_boundary_community_districts_20260501.parquet | ../output
 	$(R) $<
 
 ../input/cd_homeownership_1990_measure.csv: ../../../build_cd_homeownership_1990_measure/output/cd_homeownership_1990_measure.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
-../input/dcp_cd_profiles_1990_2000_files.csv: ../../../build_dcp_cd_profiles_1990_2000/output/dcp_cd_profiles_1990_2000_files.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+../input/dcp_cd_profiles_1990_2000_20260501.parquet: ../../../build_dcp_cd_profiles_1990_2000/output/dcp_cd_profiles_1990_2000_20260501.parquet | ../input
+	ln -sf "$<" "$@"
 
 ../input/nhgis_files.csv: ../../../build_nhgis_extracts/output/nhgis_files.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/nhgis_1980_tract_extract.parquet: ../../../build_nhgis_extracts/output/nhgis_1980_tract_extract.parquet | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/nhgis_1990_tract_extract.parquet: ../../../build_nhgis_extracts/output/nhgis_1990_tract_extract.parquet | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
-../input/dcp_boundary_index.csv: ../../../build_dcp_boundaries/output/dcp_boundary_index.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+../input/dcp_boundary_community_districts_20260501.parquet: ../../../build_dcp_boundaries/output/dcp_boundary_community_districts_20260501.parquet | ../input
+	ln -sf "$<" "$@"
 
-link-inputs: ../input/cd_homeownership_1990_measure.csv ../input/dcp_cd_profiles_1990_2000_files.csv ../input/nhgis_files.csv ../input/nhgis_1980_tract_extract.parquet ../input/nhgis_1990_tract_extract.parquet ../input/dcp_boundary_index.csv
+link-inputs: ../input/cd_homeownership_1990_measure.csv ../input/dcp_cd_profiles_1990_2000_20260501.parquet ../input/nhgis_files.csv ../input/nhgis_1980_tract_extract.parquet ../input/nhgis_1990_tract_extract.parquet ../input/dcp_boundary_community_districts_20260501.parquet
 
 include ../../generic.make

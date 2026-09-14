@@ -7,7 +7,7 @@ all: ../output/census_bps_city_year.parquet
 	$(R) $<
 
 ../input/census_bps_raw_files.csv: ../../load_census_bps_raw/output/census_bps_raw_files.csv | ../input
-	@test "$$(readlink "$@")" = "../../load_census_bps_raw/output/census_bps_raw_files.csv" || ln -sf "../../load_census_bps_raw/output/census_bps_raw_files.csv" "$@"
+	ln -sf "../../load_census_bps_raw/output/census_bps_raw_files.csv" "$@"
 
 link-inputs: ../input/census_bps_raw_files.csv
 

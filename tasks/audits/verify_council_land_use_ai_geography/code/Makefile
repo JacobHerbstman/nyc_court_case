@@ -114,16 +114,16 @@ all: ../output/council_land_use_ai_geography_deterministic_verification.csv \
 	@test -s "$@"
 
 ../input/council_land_use_missing_geography_adjudication_ai_repair_candidates.csv: ../../build_council_land_use_missing_geography_chatgpt_review/output/council_land_use_missing_geography_adjudication_ai_repair_candidates.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/zap_bbl.csv: ../../../../data_raw/dcp_zap_bbl/20260501/zap_bbl.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/nyc_mappluto_25v4_shp.zip: ../../../../data_raw/dcp_mappluto_current/25v4/nyc_mappluto_25v4_shp.zip | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/dcp_council_boundary_archive_index.csv: ../../archive/stage_dcp_council_boundary_archive/output/dcp_council_boundary_archive_index.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/dcp_council_boundary_archive_output: ../../archive/stage_dcp_council_boundary_archive/output | ../input
 	@test "$$(readlink "$@")" = "$<" || ln -sfn "$<" "$@"

@@ -51,31 +51,31 @@ all: ../output/official_ulurp_cpc_corpus_summary.csv \
 	python3 $<
 
 ../input/official_ulurp_cpc_report_manifest.csv: ../../../build_ulurp_cpc_report_corpus/output/ulurp_cpc_report_manifest.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/official_cpc_report_index.csv: ../../../fetch_ulurp_cpc_report_index/output/official_cpc_report_index.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/official_ulurp_cpc_source_corrections.csv: ../../../record_ulurp_cpc_source_corrections/output/ulurp_cpc_source_corrections.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/official_ulurp_cpc_index_additions.csv: ../../../record_ulurp_cpc_source_corrections/output/ulurp_cpc_index_additions.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/official_ulurp_cpc_external_reference_exclusions.csv: ../../record_ulurp_cpc_source_validation/output/official_ulurp_cpc_external_reference_exclusions.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/official_ulurp_cpc_source_exception_labels.csv: ../../record_ulurp_cpc_source_validation/output/official_ulurp_cpc_source_exception_labels.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/official_ulurp_cpc_short_page_validation.csv: ../../record_ulurp_cpc_source_validation/output/official_ulurp_cpc_short_page_validation.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/ulurp_corpus_application_spine.csv: ../../../build_ulurp_corpus_spine/output/ulurp_corpus_application_spine.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/council_land_use_decision_panel.csv: ../../../build_council_land_use_decision_panel/output/council_land_use_decision_panel.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/official_ulurp_cpc_report_manifest.csv \
 	../input/official_cpc_report_index.csv \

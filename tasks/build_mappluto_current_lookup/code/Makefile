@@ -7,7 +7,7 @@ all: ../output/mappluto_current_lot_lookup.parquet
 	Rscript --vanilla $<
 
 ../input/mappluto_files.csv: ../../fetch_mappluto_archive/output/mappluto_files.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/mappluto_files.csv
 

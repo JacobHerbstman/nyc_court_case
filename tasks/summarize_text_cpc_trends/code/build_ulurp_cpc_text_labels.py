@@ -8,6 +8,10 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
+sys.path.insert(0, "../../_lib")
+from cpc_counts import board_review, hearing_speakers, prose_review_section
+from data_reports import save_csv
+
 RESOLUTION_SECTION_HEADING = re.compile(
     r"(?im)^[ \t\f]*RESOLUTION[ \t]*:?[ \t]*$"
 )
@@ -137,56 +141,6 @@ APPLICATION_REFERENCE = re.compile(
 ANY_RESOLVED_HEADING = re.compile(
     r"(?im)^[ \t\f]*RESOLVED(?:[ \t]*,|[ \t]+BY\b|[ \t]+THAT\b).*$"
 )
-
-NUMBER_WORDS = {
-    "no": 0,
-    "none": 0,
-    "zero": 0,
-    "one": 1,
-    "two": 2,
-    "three": 3,
-    "four": 4,
-    "five": 5,
-    "six": 6,
-    "seven": 7,
-    "eight": 8,
-    "nine": 9,
-    "ten": 10,
-    "eleven": 11,
-    "twelve": 12,
-    "thirteen": 13,
-    "fourteen": 14,
-    "fifteen": 15,
-    "sixteen": 16,
-    "seventeen": 17,
-    "eighteen": 18,
-    "nineteen": 19,
-    "twenty": 20,
-    "thirty": 30,
-    "forty": 40,
-    "fifty": 50,
-    "sixty": 60,
-}
-NUMBER_TOKEN = (
-    r"(?:\d{1,3}|no|none|zero|one|two|three|four|five|six|seven|eight|nine|ten|"
-    r"eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|"
-    r"twenty(?:[- ](?:one|two|three|four|five|six|seven|eight|nine))?|"
-    r"thirty(?:[- ](?:one|two|three|four|five|six|seven|eight|nine))?|"
-    r"forty(?:[- ](?:one|two|three|four|five|six|seven|eight|nine))?|"
-    r"fifty(?:[- ](?:one|two|three|four|five|six|seven|eight|nine))?|sixty)"
-)
-
-NO_APPEARANCES = re.compile(
-    r"\b(?:there (?:was|were) )?no appearances?\b|"
-    r"\bthere were no speakers (?:on (?:this|the) application|and the hearing was closed)\b",
-    re.IGNORECASE,
-)
-NO_OTHER_SPEAKERS = re.compile(
-    r"\bthere were no other speakers\b|\bno other speakers appeared\b",
-    re.IGNORECASE,
-)
-SUPPORT_TERM = r"(?:in favor|in support|spoke in favor|testified in favor|supporting the (?:application|proposal|project))"
-OPPOSITION_TERM = r"(?:in opposition|spoke against|testified against|against the (?:application|proposal|project|proposed [a-z -]+)|opposing the (?:application|proposal|project))"
 
 REVIEW_ACTION = re.compile(
     r"\b(?:oppos\w*|object\w*|disapprov\w*|concern\w*|request\w*|condition\w*|"
@@ -730,18 +684,6 @@ def sentence_rule_text(document_sentences, index, context_words):
     return normalize_whitespace(context)
 
 
-def parse_number(value):
-    value = clean_text(value).lower().replace("-", " ")
-    if value.isdigit():
-        return int(value)
-    if value in NUMBER_WORDS:
-        return NUMBER_WORDS[value]
-    parts = value.split()
-    if len(parts) == 2 and parts[0] in NUMBER_WORDS and parts[1] in NUMBER_WORDS:
-        return NUMBER_WORDS[parts[0]] + NUMBER_WORDS[parts[1]]
-    return None
-
-
 def revision_is_positive(text, section):
     if MECHANICAL_REVISION.search(text):
         return False
@@ -765,233 +707,6 @@ def revision_is_positive(text, section):
         and TRIAL_OR_REAPPLICATION.search(text)
         and CHANGE_SUBJECT.search(text)
     )
-
-
-def extract_cpc_speaker_counts(text):
-    text = normalize_whitespace(text)
-    if not text:
-        return None, None
-
-    hearing_blocks = re.split(
-        r"(?=\b(?:the )?(?:continued )?hearing was duly held\b)",
-        text,
-        flags=re.IGNORECASE,
-    )
-    if len(hearing_blocks) > 1:
-        hearing_blocks = hearing_blocks[1:]
-    else:
-        hearing_blocks = [text]
-
-    support_total = 0
-    opposition_total = 0
-    support_found = False
-    opposition_found = False
-    pair_patterns = [
-        re.compile(
-            rf"\b(?:there (?:was|were) )?{NUMBER_TOKEN} (?:speakers?|appearances?)\s*[:,;]?\s*"
-            rf"(?P<support>{NUMBER_TOKEN})(?: speakers?|appearances?)?\s+(?:were )?{SUPPORT_TERM}"
-            rf".{{0,120}}?(?P<opposition>{NUMBER_TOKEN})(?: (?:speakers?|appearances?))?\s+"
-            rf"(?:were )?{OPPOSITION_TERM}",
-            re.IGNORECASE,
-        ),
-        re.compile(
-            rf"\b(?P<support>{NUMBER_TOKEN})(?: speakers?|appearances?)?\s+(?:were )?{SUPPORT_TERM}"
-            rf".{{0,180}}?\b(?P<opposition>{NUMBER_TOKEN})(?: (?:speakers?|appearances?))?\s+"
-            rf"(?:were )?{OPPOSITION_TERM}",
-            re.IGNORECASE,
-        ),
-        re.compile(
-            rf"\b(?P<opposition>{NUMBER_TOKEN})(?: speakers?|appearances?)?\s+(?:were )?{OPPOSITION_TERM}"
-            rf".{{0,180}}?\b(?P<support>{NUMBER_TOKEN})(?: (?:speakers?|appearances?))?\s+"
-            rf"(?:were )?{SUPPORT_TERM}",
-            re.IGNORECASE,
-        ),
-    ]
-    single_patterns = {
-        "support": re.compile(
-            rf"\b(?:there (?:was|were) )?(?P<count>{NUMBER_TOKEN})(?: speakers?|appearances?)?\s+"
-            rf"(?:were )?{SUPPORT_TERM}",
-            re.IGNORECASE,
-        ),
-        "opposition": re.compile(
-            rf"\b(?:there (?:was|were) )?(?P<count>{NUMBER_TOKEN})(?: speakers?|appearances?)?\s+"
-            rf"(?:were )?{OPPOSITION_TERM}",
-            re.IGNORECASE,
-        ),
-    }
-
-    for block in hearing_blocks:
-        if NO_APPEARANCES.search(block):
-            support_found = True
-            opposition_found = True
-            continue
-
-        pair_matches = [match for pattern in pair_patterns for match in pattern.finditer(block)]
-        pair_match = min(pair_matches, key=lambda match: match.start()) if pair_matches else None
-        block_support = None
-        block_opposition = None
-        if pair_match:
-            block_support = parse_number(pair_match.group("support"))
-            block_opposition = parse_number(pair_match.group("opposition"))
-        else:
-            support_match = single_patterns["support"].search(block)
-            opposition_match = single_patterns["opposition"].search(block)
-            if support_match:
-                block_support = parse_number(support_match.group("count"))
-            if opposition_match:
-                block_opposition = parse_number(opposition_match.group("count"))
-            if block_support is None and re.search(
-                rf"\b(?:the |a |an )?(?:applicant|owner|attorney|representative|speaker)"
-                rf"(?: for the applicant)?.{{0,100}}?{SUPPORT_TERM}",
-                block,
-                re.IGNORECASE,
-            ):
-                block_support = 1
-            if block_opposition is None and re.search(
-                rf"\b(?:the |a |an )?(?:applicant|owner|attorney|representative|speaker)"
-                rf".{{0,100}}?{OPPOSITION_TERM}",
-                block,
-                re.IGNORECASE,
-            ):
-                block_opposition = 1
-
-        if block_support is None and re.search(
-            rf"\b(?:sole|only) (?:appearance|speaker).{{0,100}}?{SUPPORT_TERM}|"
-            rf"\b(?:applicant|owner|attorney).{{0,80}}?appeared.{{0,40}}?{SUPPORT_TERM}",
-            block,
-            re.IGNORECASE,
-        ):
-            block_support = 1
-
-        if block_support is None and re.search(
-            r"\b(?:no|none|zero) (?:speakers? )?(?:in favor|in support)\b",
-            block,
-            re.IGNORECASE,
-        ):
-            block_support = 0
-        if block_opposition is None and re.search(
-            r"\b(?:no|none|zero) (?:speakers? )?(?:in opposition|opposed)\b",
-            block,
-            re.IGNORECASE,
-        ):
-            block_opposition = 0
-        if NO_OTHER_SPEAKERS.search(block):
-            if block_support is not None and block_opposition is None:
-                block_opposition = 0
-            if block_opposition is not None and block_support is None:
-                block_support = 0
-        if re.search(r"\bthe hearing was closed\b", block, re.IGNORECASE):
-            if block_support is not None and block_opposition is None:
-                block_opposition = 0
-            if block_opposition is not None and block_support is None:
-                block_support = 0
-
-        if block_support is not None:
-            support_total += block_support
-            support_found = True
-        if block_opposition is not None:
-            opposition_total += block_opposition
-            opposition_found = True
-
-    return support_total if support_found else None, opposition_total if opposition_found else None
-
-
-def extract_cb_vote_counts(text):
-    text = normalize_whitespace(text)
-    if not text:
-        return None, None
-
-    vote_patterns = [
-        re.compile(
-            rf"\b(?:by a vote of |the vote was |voted )?(?P<support>{NUMBER_TOKEN})"
-            rf"(?: members?)?(?: voting)? (?:in favor|for|supporting).{{0,80}}?"
-            rf"(?P<opposition>{NUMBER_TOKEN})(?: members?)?(?: voting)? "
-            rf"(?:against|opposed|in opposition)",
-            re.IGNORECASE,
-        ),
-        re.compile(
-            rf"\b(?P<opposition>{NUMBER_TOKEN})(?: members?)? (?:voting )?"
-            rf"(?:against|opposed|in opposition).{{0,80}}?(?P<support>{NUMBER_TOKEN})"
-            rf"(?: members?)? (?:voting )?(?:in favor|for|supporting)",
-            re.IGNORECASE,
-        ),
-        re.compile(
-            rf"#?\s*in favor\s*:?\s*(?P<support>{NUMBER_TOKEN}).{{0,80}}?"
-            rf"#?\s*(?:against|opposed)\s*:?\s*(?P<opposition>{NUMBER_TOKEN})",
-            re.IGNORECASE,
-        ),
-        re.compile(
-            rf"\b(?:by (?:a )?(?:vote of )?|vote(?:d| was)?|voting)\s*"
-            rf"(?P<first>{NUMBER_TOKEN})\s*(?:to|-|/)\s*(?P<second>{NUMBER_TOKEN})\b",
-            re.IGNORECASE,
-        ),
-    ]
-    stance_pattern = re.compile(
-        r"\b(?:recommend\w* |resolution (?:recommending )?|motion to )?"
-        r"(?P<stance>disapprov\w*|unfavorable|denial|reject\w*|approv\w*|favorable)\b",
-        re.IGNORECASE,
-    )
-
-    vote_matches = sorted(
-        (match for pattern in vote_patterns for match in pattern.finditer(text)),
-        key=lambda match: (match.start(), -(match.end() - match.start())),
-    )
-    accepted_matches = []
-    for match in vote_matches:
-        if any(
-            match.start() < prior.end() and prior.start() < match.end()
-            for prior in accepted_matches
-        ):
-            continue
-        accepted_matches.append(match)
-
-    support_total = 0
-    opposition_total = 0
-    found = False
-    for match in accepted_matches:
-        groups = match.groupdict()
-        if "support" in groups:
-            support = parse_number(groups["support"])
-            opposition = parse_number(groups["opposition"])
-        else:
-            support = parse_number(groups["first"])
-            opposition = parse_number(groups["second"])
-
-        context_start = max(0, match.start() - 220)
-        context_end = min(len(text), match.end() + 260)
-        context = text[context_start:context_end]
-        stances = list(stance_pattern.finditer(context))
-        if stances:
-            match_center = match.start() - context_start
-            stance = min(
-                stances,
-                key=lambda stance_match: abs(stance_match.start() - match_center),
-            ).group("stance").lower()
-            if stance.startswith(("disapprov", "reject")) or stance in {"unfavorable", "denial"}:
-                support, opposition = opposition, support
-
-        support_total += support
-        opposition_total += opposition
-        found = True
-
-    if found:
-        return support_total, opposition_total
-
-    support_only = list(
-        re.finditer(
-            rf"\b(?P<support>{NUMBER_TOKEN})(?: board members?)? voting in favor\b",
-            text,
-            re.IGNORECASE,
-        )
-    )
-    if support_only and re.search(r"\bunanimous\w*\b", text, re.IGNORECASE):
-        return sum(parse_number(match.group("support")) for match in support_only), 0
-
-    if re.search(r"\bunanimously (?:approved|recommended approval)\b", text, re.IGNORECASE):
-        return None, 0
-    if re.search(r"\bunanimously (?:disapproved|recommended disapproval)\b", text, re.IGNORECASE):
-        return 0, None
-    return None, None
 
 
 def actor_position(contexts, actor_pattern):
@@ -1500,76 +1215,51 @@ for document in documents:
                 }
             )
 
-    bundled_community_board_text = " ".join(
-        row["sentence"]
-        for row in document_section_sentences[(document_id, "community_board")]
-    )
-    bundled_cpc_hearing_text = " ".join(
-        row["sentence"]
-        for row in document_section_sentences[(document_id, "cpc_hearing")]
-    )
+    # Prefer the focal report. Use a companion only for absent evidence, and
+    # only when all resolved companion results agree on the complete record.
     primary_sections = parse_sections(document["text"])
-    cpc_support_speakers, cpc_opposition_speakers = extract_cpc_speaker_counts(
-        primary_sections["cpc_hearing"]
-    )
-    bundled_support_speakers, bundled_opposition_speakers = extract_cpc_speaker_counts(
-        bundled_cpc_hearing_text
-    )
-    if cpc_support_speakers is None:
-        cpc_support_speakers = bundled_support_speakers
-    if cpc_opposition_speakers is None:
-        cpc_opposition_speakers = bundled_opposition_speakers
-    if cpc_support_speakers is None and cpc_opposition_speakers is None:
-        fallback_match = re.search(
-            r"(?is)\b(?:city planning commission|the commission)\b.{0,120}"
-            r"scheduled.{0,120}(?:public )?hearing(?P<hearing_text>.*)$",
-            document["text"],
+    cb_review = board_review(primary_sections["community_board"] or
+                             prose_review_section(document["text"], "community_board"))
+    speaker_review = hearing_speakers(primary_sections["cpc_hearing"] or
+                                      prose_review_section(document["text"], "cpc_hearing"))
+    for review, extractor, section in [
+        (cb_review, board_review, "community_board"),
+        (speaker_review, hearing_speakers, "cpc_hearing"),
+    ]:
+        review["source_application"] = document["application_number"]
+        review["source_text_sha256"] = document["source_text_sha256"]
+        review["source_kind"] = "focal_report" if primary_sections[section] else "focal_report_bounded_prose"
+        if review["status"] not in {"no_section", "no_tally_match", "no_count_match"}:
+            continue
+        companions = []
+        for application in document["companion_application_numbers"].split("; "):
+            if not application:
+                continue
+            companion = rows_by_application[application_key(application)]
+            companion_section = parse_sections(companion["text"])[section]
+            candidate = extractor(companion_section or prose_review_section(companion["text"], section))
+            if candidate["status"] == "resolved":
+                candidate["source_application"] = application
+                candidate["source_text_sha256"] = companion["source_text_sha256"]
+                candidate["source_kind"] = "companion_report" if companion_section else "companion_report_bounded_prose"
+                companions.append(candidate)
+        identities = {
+            (row["votes_for"], row["votes_against"], row.get("position"),
+             row.get("abstentions"), row.get("abstention_rule"), row.get("effective_against"))
+            for row in companions
+        }
+        position_conflict = section == "community_board" and review["position"] != "not_reported" and any(
+            row["position"] != review["position"] for row in companions
         )
-        if fallback_match:
-            cpc_support_speakers, cpc_opposition_speakers = extract_cpc_speaker_counts(
-                fallback_match.group("hearing_text")
-            )
-    cb_support_votes, cb_opposition_votes = extract_cb_vote_counts(
-        primary_sections["community_board"]
-    )
-    bundled_cb_support_votes, bundled_cb_opposition_votes = extract_cb_vote_counts(
-        bundled_community_board_text
-    )
-    if cb_support_votes is None:
-        cb_support_votes = bundled_cb_support_votes
-    if cb_opposition_votes is None:
-        cb_opposition_votes = bundled_cb_opposition_votes
-    if cb_support_votes is None and cb_opposition_votes is None:
-        cpc_match = re.search(
-            r"(?is)\b(?:city planning commission|the commission)\b.{0,120}"
-            r"scheduled.{0,120}(?:public )?hearing",
-            document["text"],
-        )
-        before_cpc = document["text"][: cpc_match.start()] if cpc_match else document["text"]
-        board_matches = list(
-            re.finditer(
-                r"(?is)\bcommunity board\b.{0,160}\b(?:held|voted|adopted|recommended|approved|disapproved)\b",
-                before_cpc,
-            )
-        )
-        if board_matches:
-            board_start = board_matches[0].start()
-            cb_support_votes, cb_opposition_votes = extract_cb_vote_counts(
-                before_cpc[board_start:]
-            )
-    if (
-        cb_support_votes is None
-        and cb_opposition_votes is None
-        and document["cb_attachment_flag"]
-    ):
-        source_cb_support_votes, source_cb_opposition_votes = extract_cb_vote_counts(
-            Path(document["source_text_path"]).read_text(
-                encoding="utf-8",
-                errors="replace",
-            )
-        )
-        cb_support_votes = source_cb_support_votes
-        cb_opposition_votes = source_cb_opposition_votes
+        if len(identities) > 1 or position_conflict:
+            review.update(status="conflicting_companions", source_kind="review_required")
+        elif len(identities) == 1:
+            review.update(companions[0])
+
+    cpc_support_speakers = speaker_review["votes_for"]
+    cpc_opposition_speakers = speaker_review["votes_against"]
+    cb_support_votes = cb_review["votes_for"]
+    cb_opposition_votes = cb_review["votes_against"]
 
     local_actor_names = {
         "community_board",
@@ -1635,18 +1325,8 @@ for document in documents:
     )
     procedural_response = any(event["procedural"] for event in events)
 
-    if cb_support_votes is not None and cb_opposition_votes is not None:
-        cb_opposition = cb_opposition_votes > cb_support_votes
-    else:
-        cb_opposition = any(
-            re.search(
-                r"\b(?:recommend\w* disapproval|disapprov\w* (?:the )?(?:application|proposal|project)|"
-                r"unfavorable recommendation|opposed (?:the )?(?:application|proposal|project))\b",
-                context,
-                re.IGNORECASE,
-            )
-            for context in section_contexts["community_board"]
-        )
+    # A formal recommendation can differ from a majority excluding abstentions.
+    cb_opposition = cb_review["position"].startswith("oppose")
     bp_opposition = any(
         re.search(
             r"\b(?:recommend\w* disapproval|disapprov\w* (?:the )?(?:application|proposal|project)|"
@@ -1695,6 +1375,15 @@ for document in documents:
         "restrictive_declaration": int(
             any(re.search(r"\brestrictive declaration\b", context, re.IGNORECASE) for context in review_contexts)
         ),
+        **{f"cb_{key}": cb_review[key] for key in (
+            "position", "position_rule", "reported_for", "reported_against", "abstentions",
+            "abstention_rule", "effective_against", "status", "vote_rule", "evidence",
+            "candidate_count", "source_application", "source_text_sha256", "source_kind",
+        )},
+        **{f"cpc_speakers_{key}": speaker_review[key] for key in (
+            "status", "rule", "evidence", "hearing_count", "source_application",
+            "source_text_sha256", "source_kind",
+        )},
         "points_of_agreement": int(
             any(re.search(r"\bpoints of agreement\b", context, re.IGNORECASE) for context in review_contexts)
         ),
@@ -1726,50 +1415,19 @@ fieldnames = [
     *BINARY_SIGNAL_FIELDS,
     *POSITION_FIELDS,
     *COUNT_FIELDS,
+    *[f"cb_{key}" for key in (
+        "position", "position_rule", "reported_for", "reported_against", "abstentions",
+        "abstention_rule", "effective_against", "status", "vote_rule", "evidence",
+        "candidate_count", "source_application", "source_text_sha256", "source_kind",
+    )],
+    *[f"cpc_speakers_{key}" for key in (
+        "status", "rule", "evidence", "hearing_count", "source_application",
+        "source_text_sha256", "source_kind",
+    )],
 ]
-with Path("../output/ulurp_cpc_text_labels.csv").open(
-    "w",
-    newline="",
-    encoding="utf-8",
-) as output_file:
-    writer = csv.DictWriter(
-        output_file,
-        fieldnames=fieldnames,
-        lineterminator="\n",
-    )
-    writer.writeheader()
-    for document in sorted(
-        documents,
-        key=lambda row: (row["year"], row["document_id"]),
-    ):
-        writer.writerow(
-            {
-                "document_id": document["document_id"],
-                "application_number": document["application_number"],
-                "action_code": document["action_code"],
-                "project_name": document["project_name"],
-                "community_district": document["community_district"],
-                "year": document["year"],
-                "decade": document["decade"],
-                "source_text_sha256": document["source_text_sha256"],
-                "narrative_sha256": document["narrative_sha256"],
-                "narrative_word_count": document["narrative_word_count"],
-                "analysis_text_sha256": document["analysis_text_sha256"],
-                "analysis_word_count": document["analysis_word_count"],
-                "companion_application_numbers": document[
-                    "companion_application_numbers"
-                ],
-                "narrative_boundary_method": document[
-                    "narrative_boundary_method"
-                ],
-                "zap_project_ids": document["zap_project_ids"],
-                "analysis_non_pp_flag": document["analysis_non_pp_flag"],
-                "analysis_zm_zr_zs_flag": document[
-                    "analysis_zm_zr_zs_flag"
-                ],
-                "cpc_disposition": document["cpc_disposition"],
-                **document_measurements[document["document_id"]],
-            }
-        )
-
-print(f"Wrote deterministic text labels for {len(documents)} CPC narratives.")
+output_rows = []
+for document in sorted(documents, key=lambda row: (row["year"], row["document_id"])):
+    row = {field: document[field] for field in fieldnames if field in document}
+    row.update(document_measurements[document["document_id"]])
+    output_rows.append(row)
+save_csv(output_rows, fieldnames, "../output/ulurp_cpc_text_labels.csv", ["document_id"])

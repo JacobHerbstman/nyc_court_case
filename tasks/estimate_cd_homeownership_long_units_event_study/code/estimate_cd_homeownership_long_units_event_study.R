@@ -9,13 +9,7 @@ suppressPackageStartupMessages({
   library(tibble)
 })
 
-source("../../_lib/source_pipeline_utils.R")
-
-write_lines_if_changed <- function(lines, out_path) {
-  temp_path <- tempfile(fileext = ".tex")
-  writeLines(lines, temp_path, useBytes = TRUE)
-  copy_if_changed(temp_path, out_path)
-}
+source("../../_lib/data_reports.R")
 
 sanitize_period <- function(x) {
   str_replace_all(x, "-", "_")
@@ -261,7 +255,7 @@ for (outcome_id in outcome_defs$outcome_id) {
 raw_event_df <- bind_rows(raw_event_rows) %>%
   arrange(series_family, event_period)
 
-write_csv_if_changed(raw_event_df, "../output/cd_homeownership_long_units_event_coefficients_raw_units_5yr_bins.csv")
+save_csv(raw_event_df, "../output/cd_homeownership_long_units_event_coefficients_raw_units_5yr_bins.csv", c("source_family", "series_family", "event_period"))
 
 raw_plot_df <- raw_event_df %>%
   mutate(outcome_label = factor(outcome_label, levels = c("1-4 unit buildings", "5+ unit buildings")))
@@ -390,7 +384,7 @@ if (nrow(raw_long_diff_df) != nrow(window_defs) || any(is.na(raw_long_diff_df$ro
   stop("Raw-unit long-difference table row count did not match the declared windows.")
 }
 
-write_csv_if_changed(raw_long_diff_df, "../output/cd_homeownership_long_units_long_difference_raw_units_estimates.csv")
+save_csv(raw_long_diff_df, "../output/cd_homeownership_long_units_long_difference_raw_units_estimates.csv", c("source_family", "series_family", "comparison_id", "term"))
 
 raw_checkmark_values <- rep("\\checkmark", nrow(raw_long_diff_df))
 raw_table_col_spec <- paste0("l", strrep("c", nrow(raw_long_diff_df)))
@@ -425,6 +419,6 @@ table_lines <- c(
   "\\end{table}"
 )
 
-write_lines_if_changed(table_lines, "../output/cd_homeownership_long_units_long_difference_raw_units.tex")
+writeLines(table_lines, "../output/cd_homeownership_long_units_long_difference_raw_units.tex")
 
 cat("Wrote community district event-study outputs to ../output\n")

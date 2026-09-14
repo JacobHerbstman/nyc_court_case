@@ -35,16 +35,16 @@ all: ../output/cpc_llm_training_labels_jacob.xlsx \
 	node $< $(START_YEAR) $(END_YEAR) $(COMMON_REPORTS) $(UNIQUE_CANDIDATES_PER_CODER) $(UNIQUE_REPORTS_PER_CODER) $(PRESERVED_JACOB_REPORTS) $(SAMPLE_SEED) guide
 
 ../input/official_ulurp_cpc_narrative_manifest.csv: ../../audit_official_ulurp_cpc_text_measurement/output/official_ulurp_cpc_narrative_manifest.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/ulurp_cpc_initial_event_labels.csv: ../../record_ulurp_cpc_text_analysis_decisions/output/ulurp_cpc_initial_event_labels.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/ulurp_cpc_event_validation_labels.csv: ../../record_ulurp_cpc_text_analysis_decisions/output/ulurp_cpc_event_validation_labels.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/ulurp_cpc_training_labels_jacob.csv: ../../../record_ulurp_cpc_training_labels/output/ulurp_cpc_training_labels_jacob.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/official_ulurp_cpc_narrative_manifest.csv \
 	../input/ulurp_cpc_initial_event_labels.csv \

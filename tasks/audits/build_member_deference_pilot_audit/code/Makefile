@@ -39,19 +39,19 @@ all: ../output/member_deference_pilot_1998_2010_bundle_candidates.csv \
 	@test -s "$@"
 
 ../input/legistar_%_broad_recall_matter_index.csv: ../../../fetch_council_land_use_records/output/legistar_%_broad_recall_matter_index.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/legistar_%_broad_recall_history_events.csv: ../../../fetch_council_land_use_records/output/legistar_%_broad_recall_history_events.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/legistar_%_broad_recall_action_details.csv: ../../../fetch_council_land_use_records/output/legistar_%_broad_recall_action_details.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/legistar_%_member_override_matter_signals.csv: ../../build_member_deference_legistar_signals/output/legistar_%_member_override_matter_signals.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/council_member_roster_master.csv: ../../../build_council_member_roster/output/council_member_roster_master.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: $(foreach year,$(PILOT_YEARS),../input/legistar_$(year)_broad_recall_matter_index.csv) \
 	$(foreach year,$(PILOT_YEARS),../input/legistar_$(year)_broad_recall_history_events.csv) \

@@ -7,7 +7,7 @@ all: ../output/mappluto_raw_files.csv
 	$(R) $<
 
 ../input/mappluto_files.csv: ../../../fetch_mappluto_archive/output/mappluto_files.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/mappluto_files.csv
 

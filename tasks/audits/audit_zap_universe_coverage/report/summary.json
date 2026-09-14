@@ -12,7 +12,7 @@
   "ulurp_terminal_api_linked_existing_report": 361,
   "api_status_counts": {
     "success": 4683,
-    "http_404": 1
+    "http_000": 1
   },
   "api_entity_counts": {
     "actions": 2826,

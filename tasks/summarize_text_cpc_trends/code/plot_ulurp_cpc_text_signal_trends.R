@@ -15,16 +15,18 @@ suppressPackageStartupMessages({
 options(warn = 1)
 
 cli_args <- commandArgs(trailingOnly = TRUE)
-if (length(cli_args) != 4) {
-  stop(
-    "Expected START_YEAR, END_YEAR, MOVING_WINDOW_YEARS, and MINIMUM_DOCUMENTS_PER_MOVING_WINDOW."
-  )
-}
+if (!interactive()) {
+  if (length(cli_args) != 4) {
+    stop(
+      "Expected START_YEAR, END_YEAR, MOVING_WINDOW_YEARS, and MINIMUM_DOCUMENTS_PER_MOVING_WINDOW."
+    )
+  }
 
-start_year <- suppressWarnings(as.integer(cli_args[[1]]))
-end_year <- suppressWarnings(as.integer(cli_args[[2]]))
-moving_window_years <- suppressWarnings(as.integer(cli_args[[3]]))
-minimum_documents_per_moving_window <- suppressWarnings(as.integer(cli_args[[4]]))
+  start_year <- suppressWarnings(as.integer(cli_args[[1]]))
+  end_year <- suppressWarnings(as.integer(cli_args[[2]]))
+  moving_window_years <- suppressWarnings(as.integer(cli_args[[3]]))
+  minimum_documents_per_moving_window <- suppressWarnings(as.integer(cli_args[[4]]))
+}
 
 if (
   any(is.na(c(
@@ -110,6 +112,10 @@ text_labels <- read_csv(
     year = suppressWarnings(as.integer(year)),
     narrative_word_count = suppressWarnings(as.integer(narrative_word_count)),
     across(all_of(count_fields), ~ suppressWarnings(as.integer(.x))),
+    cb_support_votes = if_else(cb_status == "resolved", cb_support_votes, NA_integer_),
+    cb_opposition_votes = if_else(cb_status == "resolved", cb_opposition_votes, NA_integer_),
+    cpc_support_speakers = if_else(cpc_speakers_status == "resolved", cpc_support_speakers, NA_integer_),
+    cpc_opposition_speakers = if_else(cpc_speakers_status == "resolved", cpc_opposition_speakers, NA_integer_),
     councilmember_support_or_request = as.integer(councilmember_position == "support_or_request"),
     councilmember_opposition = as.integer(councilmember_position == "opposition"),
     civic_group_support_or_request = as.integer(civic_group_position == "support_or_request"),
@@ -428,10 +434,10 @@ for (sample_id in sample_labels$application_sample) {
       geom_line(linewidth = 0.8, na.rm = TRUE) +
       scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
       labs(
-        title = paste0(sample_label, ": exact-count reporting coverage"),
+        title = paste0(sample_label, ": resolved-count coverage"),
         subtitle = "Blank counts remain missing; zeros require an explicit zero",
         x = NULL,
-        y = paste0("Share with exact count (pooled ", moving_window_years, "-year window)"),
+        y = paste0("Share with resolved count (pooled ", moving_window_years, "-year window)"),
         color = NULL
       ) +
       theme_minimal(base_size = 11) +
@@ -445,9 +451,9 @@ for (sample_id in sample_labels$application_sample) {
       geom_line(linewidth = 0.8, na.rm = TRUE) +
       labs(
         title = paste0(sample_label, ": reported participation counts"),
-        subtitle = "Means are conditional on an exact count being reported",
+        subtitle = "Means use only records with resolved count orientation and totals",
         x = NULL,
-        y = paste0("Mean exact count (pooled ", moving_window_years, "-year window)"),
+        y = paste0("Mean resolved count (pooled ", moving_window_years, "-year window)"),
         color = NULL
       ) +
       theme_minimal(base_size = 11) +

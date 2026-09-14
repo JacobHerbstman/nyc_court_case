@@ -1,0 +1,415 @@
+{
+  "dataset": "ulurp_cpc_regex_holdout_disagreements.csv",
+  "rows": 397,
+  "key": [
+    "document_id",
+    "field"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "2d1c3efad7c9e707756a9cead1d52d788dabf78bccf913df7f6d62d30813cafb",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "validation_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 95,
+      "most_common": [
+        [
+          "H019",
+          11
+        ],
+        [
+          "H007",
+          10
+        ],
+        [
+          "H023",
+          10
+        ],
+        [
+          "H004",
+          9
+        ],
+        [
+          "H063",
+          9
+        ]
+      ]
+    },
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 95,
+      "most_common": [
+        [
+          "f3d0f826ddc83125b581",
+          11
+        ],
+        [
+          "61e7dc0e513cadc8fadc",
+          10
+        ],
+        [
+          "fb85b586bfc90f521567",
+          10
+        ],
+        [
+          "5e56b52901b52bb0701f",
+          9
+        ],
+        [
+          "79239a416f09b8f7e052",
+          9
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 95,
+      "most_common": [
+        [
+          "C 870549 ZMM",
+          11
+        ],
+        [
+          "C 790721 ZSM",
+          10
+        ],
+        [
+          "C 880691 ZMQ",
+          10
+        ],
+        [
+          "C 050149 ZMQ",
+          9
+        ],
+        [
+          "C 090225 ZMK",
+          9
+        ]
+      ]
+    },
+    "year": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 45,
+      "most_common": [
+        [
+          "1987",
+          28
+        ],
+        [
+          "2005",
+          21
+        ],
+        [
+          "1978",
+          20
+        ],
+        [
+          "1980",
+          20
+        ],
+        [
+          "1988",
+          20
+        ]
+      ]
+    },
+    "decade": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "1980s",
+          117
+        ],
+        [
+          "2000s",
+          78
+        ],
+        [
+          "1990s",
+          69
+        ],
+        [
+          "2010s",
+          56
+        ],
+        [
+          "2020s",
+          52
+        ]
+      ]
+    },
+    "project_name": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 23,
+      "distinct_nonmissing": 90,
+      "most_common": [
+        [
+          "W52Nd St Family Residence Center",
+          11
+        ],
+        [
+          "Hollis Center",
+          10
+        ],
+        [
+          "Norfolk St Bet Grand & Broome St",
+          10
+        ],
+        [
+          "Bayside Rezoning/R2A Text",
+          9
+        ],
+        [
+          "Carroll Street Rezoning",
+          9
+        ]
+      ]
+    },
+    "field": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 21,
+      "most_common": [
+        [
+          "procedural_response",
+          35
+        ],
+        [
+          "revision_or_concession",
+          35
+        ],
+        [
+          "approved_unresolved_objection",
+          31
+        ],
+        [
+          "environment_open_space",
+          25
+        ],
+        [
+          "civic_group_position",
+          24
+        ]
+      ]
+    },
+    "manual_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 32,
+      "most_common": [
+        [
+          "1",
+          209
+        ],
+        [
+          "0",
+          106
+        ],
+        [
+          "support_or_request",
+          15
+        ],
+        [
+          "opposition",
+          13
+        ],
+        [
+          "2",
+          9
+        ]
+      ]
+    },
+    "regex_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 76,
+      "distinct_nonmissing": 8,
+      "most_common": [
+        [
+          "0",
+          200
+        ],
+        [
+          "1",
+          84
+        ],
+        [
+          "none_or_procedural",
+          22
+        ],
+        [
+          "support_or_request",
+          10
+        ],
+        [
+          "opposition",
+          2
+        ]
+      ]
+    },
+    "error_type": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "false_negative",
+          200
+        ],
+        [
+          "false_positive",
+          82
+        ],
+        [
+          "regex_missing",
+          76
+        ],
+        [
+          "mismatch",
+          39
+        ]
+      ]
+    },
+    "evidence_pages": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 58,
+      "most_common": [
+        [
+          "1-5",
+          29
+        ],
+        [
+          "1-4",
+          27
+        ],
+        [
+          "1-7",
+          21
+        ],
+        [
+          "1-3",
+          20
+        ],
+        [
+          "1-6",
+          17
+        ]
+      ]
+    },
+    "evidence_summary": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 95,
+      "most_common": [
+        [
+          "CB4 rejected the proposed homeless-family residence site 0-41 and proposed a nearby no-displacement alternative. The BP, a councilmember, organizations, businesses, and residents opposed; no speaker supported the proposed site and 29 opposed it. CPC approved, rejected the alternative as unfiled, asked HRA to reconsider the building configuration, and called for a community advisory group.",
+          11
+        ],
+        [
+          "The commercial-overlay expansion enabled a 16,030-square-foot neighborhood shopping center. CB12 approved 24-0 but requested a declaration barring commercial conversion of two homes. All 22 CPC speakers supported. CPC approved while explaining that the applicant could not bind parcels it did not own and accepted the residual risk to residential character.",
+          10
+        ],
+        [
+          "The permit and disposition enabled 156 subsidized elderly and handicapped units. The CB approved 15-8; one organization opposed the site while another and many seniors supported it. HUD-driven changes eliminated stores and community space and increased parking at the expense of open space.",
+          10
+        ],
+        [
+          "Special permits enabled a 43-story 19.5-FAR tower and galleria. CB5 approved 20-5 with park, access, restroom, subway, and task-force conditions; a councilman requested design changes, CB6 objected, and the Municipal Art Society urged denial. The developer expressly accepted CB restroom and subway commitments, while CPC approved over remaining bonus, density, and design objections.",
+          9
+        ],
+        [
+          "The Carroll Street M1-1-to-R6B rezoning enabled residential construction. CB6 approved 29-0 and three CPC speakers supported. The BP pressed for affordability; the applicant pointed to affordable projects elsewhere rather than committing affordability on this site. A hazardous-materials restrictive declaration was recorded.",
+          9
+        ]
+      ]
+    },
+    "coder_notes": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 95,
+      "most_common": [
+        [
+          "Thirteen speakers supported HRA's citywide program, but the report explicitly says none supported this site; application-level support is therefore zero.",
+          11
+        ],
+        [
+          "Support appearances were not reported exactly. Eight dissenting votes do not make the approving CB a substantial opponent.",
+          10
+        ],
+        [
+          "The proposed homeowner declaration was not executed across both affected homes, so restrictive-declaration is zero and the CB request remained unresolved.",
+          10
+        ],
+        [
+          "Literal district changes run in both directions; practical direction is lower. Conditional supporters are included in the nine CPC support speakers.",
+          9
+        ],
+        [
+          "The direct reply is an explicit response but leaves the site-specific affordability objection unresolved.",
+          9
+        ]
+      ]
+    },
+    "official_pdf_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 95,
+      "most_common": [
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/870549.pdf",
+          11
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/790721.pdf",
+          10
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/880691.pdf",
+          10
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/050149.pdf",
+          9
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/090225.pdf",
+          9
+        ]
+      ]
+    }
+  }
+}

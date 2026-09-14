@@ -1,0 +1,146 @@
+{
+  "dataset": "mappluto_construction_proxy_cd_year.csv",
+  "rows": 6844,
+  "key": ["borocd", "yearbuilt"],
+  "unique_nonmissing_key": true,
+  "md5_csv_bytes": "389c79236d39c4256ff639df3094d158",
+  "fingerprint_scope": "Saved CSV bytes, including row order; not proof of source correctness.",
+  "columns": {
+    "borocd": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 59
+    },
+    "borough_code": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "minimum": 1,
+      "maximum": 5
+    },
+    "borough_name": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 5
+    },
+    "yearbuilt": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 116,
+      "minimum": 1910,
+      "maximum": 2025
+    },
+    "residential_lot_count_proxy": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 638,
+      "minimum": 0,
+      "maximum": 7825
+    },
+    "residential_units_proxy": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 1641,
+      "minimum": 0,
+      "maximum": 15746
+    },
+    "lots_1_2_proxy": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 568,
+      "minimum": 0,
+      "maximum": 7786
+    },
+    "lots_3_4_proxy": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 228,
+      "minimum": 0,
+      "maximum": 932
+    },
+    "lots_5_9_proxy": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 117,
+      "minimum": 0,
+      "maximum": 1726
+    },
+    "lots_10_49_proxy": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 97,
+      "minimum": 0,
+      "maximum": 670
+    },
+    "lots_50_plus_proxy": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 42,
+      "minimum": 0,
+      "maximum": 72
+    },
+    "units_1_2_proxy": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 662,
+      "minimum": 0,
+      "maximum": 11259
+    },
+    "units_3_4_proxy": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 414,
+      "minimum": 0,
+      "maximum": 3448
+    },
+    "units_5_9_proxy": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 295,
+      "minimum": 0,
+      "maximum": 10561
+    },
+    "units_10_49_proxy": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 581,
+      "minimum": 0,
+      "maximum": 12683
+    },
+    "units_50_plus_proxy": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 1121,
+      "minimum": 0,
+      "maximum": 15372
+    },
+    "lots_1_4_proxy": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 612,
+      "minimum": 0,
+      "maximum": 7813
+    },
+    "lots_5_plus_proxy": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 168,
+      "minimum": 0,
+      "maximum": 1828
+    },
+    "units_1_4_proxy": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 762,
+      "minimum": 0,
+      "maximum": 12650
+    },
+    "units_5_plus_proxy": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 1385,
+      "minimum": 0,
+      "maximum": 15424
+    }
+  }
+}

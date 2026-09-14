@@ -6,6 +6,9 @@ import sys
 from collections import Counter
 from pathlib import Path
 
+sys.path.insert(0, "../../../_lib")
+from data_reports import save_csv
+
 
 TRAINING_BINARY_FIELDS = [
     "substantial_local_opposition",
@@ -381,36 +384,16 @@ for decade in sorted(
         )
     )
 
-for path, rows in (
-    (Path("../output/ulurp_cpc_regex_training_agreement.csv"), training_summary),
-    (Path("../output/ulurp_cpc_regex_validation_agreement.csv"), validation_summary),
-    (Path("../output/ulurp_cpc_regex_holdout_agreement.csv"), holdout_summary),
-):
-    with path.open("w", newline="", encoding="utf-8") as output_file:
-        writer = csv.DictWriter(
-            output_file, fieldnames=rows[0].keys(), lineterminator="\n"
-        )
-        writer.writeheader()
-        writer.writerows(rows)
-
-for path, rows in (
-    (
-        Path("../output/ulurp_cpc_regex_validation_disagreements.csv"),
-        find_disagreements(validation_rows, regex_rows),
-    ),
-    (
-        Path("../output/ulurp_cpc_regex_holdout_disagreements.csv"),
-        find_disagreements(holdout_rows, regex_rows),
-    ),
-):
-    with path.open("w", newline="", encoding="utf-8") as output_file:
-        writer = csv.DictWriter(
-            output_file,
-            fieldnames=DISAGREEMENT_FIELDS,
-            lineterminator="\n",
-        )
-        writer.writeheader()
-        writer.writerows(rows)
+save_csv(training_summary, list(training_summary[0]),
+         "../output/ulurp_cpc_regex_training_agreement.csv", ["sample_slice", "field"])
+save_csv(validation_summary, list(validation_summary[0]),
+         "../output/ulurp_cpc_regex_validation_agreement.csv", ["sample_slice", "field"])
+save_csv(holdout_summary, list(holdout_summary[0]),
+         "../output/ulurp_cpc_regex_holdout_agreement.csv", ["sample_slice", "field"])
+save_csv(find_disagreements(validation_rows, regex_rows), DISAGREEMENT_FIELDS,
+         "../output/ulurp_cpc_regex_validation_disagreements.csv", ["document_id", "field"])
+save_csv(find_disagreements(holdout_rows, regex_rows), DISAGREEMENT_FIELDS,
+         "../output/ulurp_cpc_regex_holdout_disagreements.csv", ["document_id", "field"])
 
 print(
     f"Compared regex labels with {len(training_rows)} training reports and "

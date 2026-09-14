@@ -41,10 +41,10 @@ all: ../output/council_land_use_remaining_split_geography_matter_rows.csv \
 	@test -s "$@"
 
 ../input/council_land_use_decision_panel.csv: ../../../build_council_land_use_decision_panel/output/council_land_use_decision_panel.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/council_land_use_split_vote_nonaffirmative_member_rows.csv: ../../investigate_council_land_use_split_votes/output/council_land_use_split_vote_nonaffirmative_member_rows.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 chatgpt_remaining_split_geography_responses.jsonl:
 	touch "$@"

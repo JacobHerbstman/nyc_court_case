@@ -16,7 +16,7 @@ all: ../output/dob_permit_issuance_harmonized.parquet
 	$(R) $<
 
 ../input/source_catalog.csv: ../../../source_registry/code/source_catalog.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/source_catalog.csv
 

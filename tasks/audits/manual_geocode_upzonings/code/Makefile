@@ -14,19 +14,19 @@ all: ../output/manual_geocode_upzoning_queue.csv \
 	@test -s "$@"
 
 ../input/zap_zoning_map_special_permit_project_classification.csv: ../../summarize_zap_zoning_actions_by_decade/output/zap_zoning_map_special_permit_project_classification.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/zap_zoning_map_special_permit_project_ccd2010_fractional.csv: ../../summarize_zap_zoning_actions_by_decade/output/zap_zoning_map_special_permit_project_ccd2010_fractional.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/zap_project_data.parquet: ../../../build_zap_datasets/output/zap_project_data.parquet | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/zap_project_bbl.parquet: ../../../build_zap_datasets/output/zap_project_bbl.parquet | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/ccdist2010_mappluto_bbl_lookup.parquet: ../../build_ccd2010_mappluto_bbl_lookup/output/ccdist2010_mappluto_bbl_lookup.parquet | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/zap_zoning_map_special_permit_project_classification.csv ../input/zap_zoning_map_special_permit_project_ccd2010_fractional.csv ../input/zap_project_data.parquet ../input/zap_project_bbl.parquet ../input/ccdist2010_mappluto_bbl_lookup.parquet
 

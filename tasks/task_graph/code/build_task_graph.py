@@ -124,7 +124,9 @@ def parse_makefile(path):
                     all_targets.add(target)
 
         for target in lhs.split():
-            if target.startswith("../output/"):
+            if target.startswith("../%/"):
+                output_targets.add(target.replace("../%/", "../output/", 1))
+            elif target.startswith("../output/"):
                 output_targets.add(target)
 
         for prereq in normal_prereqs.split():
@@ -136,6 +138,8 @@ def parse_makefile(path):
             elif main_match:
                 upstream_outputs.add((main_match.group(1), main_match.group(2)))
 
+    # The all target also declares committed manual source tables with no producer.
+    output_targets.update(all_targets)
     return output_targets, all_targets, upstream_outputs
 
 

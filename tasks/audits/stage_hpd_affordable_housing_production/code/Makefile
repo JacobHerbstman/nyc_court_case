@@ -7,7 +7,7 @@ all: ../output/hpd_affordable_housing_bbl_year.csv
 	$(R) $<
 
 ../input/hpd_affordable_housing_production_by_building.csv: ../../fetch_hpd_affordable_housing_production/output/hpd_affordable_housing_production_by_building.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/hpd_affordable_housing_production_by_building.csv
 

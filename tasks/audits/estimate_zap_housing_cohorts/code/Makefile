@@ -13,10 +13,10 @@ all: ../output/zap_housing_era_interactions.csv ../output/zap_housing_model_summ
 	@test -s "$@"
 
 ../input/zap_housing_initial_panel.csv: ../../summarize_zap_housing_cohorts/output/zap_housing_initial_panel.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 ../input/zap_housing_mature_cohort_panel.csv: ../../summarize_zap_housing_cohorts/output/zap_housing_mature_cohort_panel.csv | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/zap_housing_initial_panel.csv ../input/zap_housing_mature_cohort_panel.csv
 

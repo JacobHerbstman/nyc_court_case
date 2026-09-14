@@ -7,7 +7,7 @@ all: ../output/ulurp_corpus_application_spine.csv
 	Rscript --vanilla $< $(START_YEAR) $(END_YEAR)
 
 ../input/zap_project_data.parquet: ../../build_zap_datasets/output/zap_project_data.parquet | ../input
-	@test "$$(readlink "$@")" = "$<" || ln -sf "$<" "$@"
+	ln -sf "$<" "$@"
 
 link-inputs: ../input/zap_project_data.parquet
 

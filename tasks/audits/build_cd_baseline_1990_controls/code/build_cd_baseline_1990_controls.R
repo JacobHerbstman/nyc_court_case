@@ -307,17 +307,7 @@ if (anyDuplicated(measure_df$district_id)) {
   stop("Homeownership measure is not unique by district_id.")
 }
 
-dcp_profile_file <- read_csv("../input/dcp_cd_profiles_1990_2000_files.csv", show_col_types = FALSE, na = c("", "NA")) %>%
-  mutate(pull_date = as.character(pull_date)) %>%
-  filter(!is.na(parquet_path), file.exists(parquet_path)) %>%
-  arrange(desc(pull_date), parquet_path) %>%
-  slice_head(n = 1)
-
-if (nrow(dcp_profile_file) == 0) {
-  stop("Could not find a parsed DCP CD profiles parquet in ../input/dcp_cd_profiles_1990_2000_files.csv")
-}
-
-profiles_df <- read_parquet(dcp_profile_file$parquet_path[[1]]) %>%
+profiles_df <- read_parquet("../input/dcp_cd_profiles_1990_2000_20260501.parquet") %>%
   as.data.frame() %>%
   as_tibble() %>%
   mutate(district_id = str_pad(as.character(district_id), width = 3, side = "left", pad = "0")) %>%
@@ -452,22 +442,7 @@ if (length(nhgis_1980_gis_zip) == 0 || length(nhgis_1990_gis_zip) == 0) {
   stop("Could not find both 1980 and 1990 NHGIS GIS zip paths in ../input/nhgis_files.csv")
 }
 
-dcp_boundary_index <- read_csv("../input/dcp_boundary_index.csv", show_col_types = FALSE, na = c("", "NA")) %>%
-  mutate(
-    pull_date = as.Date(as.character(pull_date), format = "%Y%m%d")
-  )
-
-community_district_parquet <- dcp_boundary_index %>%
-  filter(source_id == "dcp_boundary_community_districts", !is.na(parquet_path), file.exists(parquet_path)) %>%
-  arrange(desc(pull_date), parquet_path) %>%
-  slice_head(n = 1) %>%
-  pull(parquet_path)
-
-if (length(community_district_parquet) == 0) {
-  stop("Could not find a community district boundary parquet path in ../input/dcp_boundary_index.csv")
-}
-
-boundary_df <- read_parquet(community_district_parquet[[1]]) %>%
+boundary_df <- read_parquet("../input/dcp_boundary_community_districts_20260501.parquet") %>%
   as.data.frame() %>%
   as_tibble() %>%
   mutate(district_id = str_pad(as.character(district_id), width = 3, side = "left", pad = "0")) %>%
