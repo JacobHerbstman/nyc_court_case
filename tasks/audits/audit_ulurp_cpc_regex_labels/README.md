@@ -26,3 +26,11 @@ Outputs:
 - `ulurp_cpc_regex_validation_disagreements.csv`
 - `ulurp_cpc_regex_holdout_agreement.csv`
 - `ulurp_cpc_regex_holdout_disagreements.csv`
+- `ulurp_cpc_tyler_comparison_checks.md`
+
+The Tyler comparison checks describe our current sample, reproduce two actual
+report examples from his August 28, 2026 PDF, summarize the existing Codex
+holdout, and run five controlled snippets through our actual counting functions.
+They execute only our parser. Tyler's implementation and row-level extraction
+output were not available, so these checks do not measure cross-parser agreement.
+The substantive comparison is in `logbook/2026-09-14-regex-comparison.md`.

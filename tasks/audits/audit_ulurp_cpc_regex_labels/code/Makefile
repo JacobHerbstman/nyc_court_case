@@ -7,7 +7,14 @@ all: ../output/ulurp_cpc_regex_training_agreement.csv \
 	../output/ulurp_cpc_regex_validation_agreement.csv \
 	../output/ulurp_cpc_regex_validation_disagreements.csv \
 	../output/ulurp_cpc_regex_holdout_agreement.csv \
-	../output/ulurp_cpc_regex_holdout_disagreements.csv
+	../output/ulurp_cpc_regex_holdout_disagreements.csv \
+	../output/ulurp_cpc_tyler_comparison_checks.md
+
+../output/ulurp_cpc_tyler_comparison_checks.md: describe_tyler_regex_comparison.py \
+	../../../summarize_text_cpc_trends/code/build_ulurp_cpc_text_labels.py \
+	../input/ulurp_cpc_text_labels.csv \
+	../output/ulurp_cpc_regex_holdout_agreement.csv | ../output
+	python3 $<
 
 ../output/ulurp_cpc_regex_training_agreement.csv: compare_ulurp_cpc_regex_labels.py \
 	../input/ulurp_cpc_text_labels.csv \
