@@ -1,0 +1,268 @@
+{
+  "dataset": "cpc_jev_pages_v8.csv",
+  "rows": 181,
+  "key": [
+    "document_id",
+    "page_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "e5e9be585fefe0aa767cf21d1f71ced8b4882bf734cf0f44313ab62f128a94c7",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 10,
+      "most_common": [
+        [
+          "c43a315af42ed9426495",
+          32
+        ],
+        [
+          "769cdf5492002cd3fc79",
+          31
+        ],
+        [
+          "0dc9707e6f13fd73ad07",
+          29
+        ],
+        [
+          "8def3026542302b23206",
+          27
+        ],
+        [
+          "08e625f9ec68952c92c7",
+          18
+        ]
+      ]
+    },
+    "page_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 181,
+      "most_common": [
+        [
+          "08e625f9ec68952c92c7:p1",
+          1
+        ],
+        [
+          "08e625f9ec68952c92c7:p10",
+          1
+        ],
+        [
+          "08e625f9ec68952c92c7:p11",
+          1
+        ],
+        [
+          "08e625f9ec68952c92c7:p12",
+          1
+        ],
+        [
+          "08e625f9ec68952c92c7:p13",
+          1
+        ]
+      ]
+    },
+    "source_document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 13,
+      "most_common": [
+        [
+          "769cdf5492002cd3fc79",
+          31
+        ],
+        [
+          "8def3026542302b23206",
+          27
+        ],
+        [
+          "c43a315af42ed9426495",
+          26
+        ],
+        [
+          "08e625f9ec68952c92c7",
+          18
+        ],
+        [
+          "edfa9980d095c6ad09f9",
+          17
+        ]
+      ]
+    },
+    "source_application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 13,
+      "most_common": [
+        [
+          "C 090387 ZMK",
+          31
+        ],
+        [
+          "C 240244 ZSM",
+          27
+        ],
+        [
+          "C 080340 ZSK",
+          26
+        ],
+        [
+          "C 990588 ZSM",
+          18
+        ],
+        [
+          "C 970325 ZSM",
+          17
+        ]
+      ]
+    },
+    "source_role": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "focal_report",
+          147
+        ],
+        [
+          "context_companion",
+          28
+        ],
+        [
+          "represented_related_action",
+          6
+        ]
+      ]
+    },
+    "pdf_page": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 31,
+      "most_common": [
+        [
+          "1",
+          13
+        ],
+        [
+          "2",
+          13
+        ],
+        [
+          "3",
+          12
+        ],
+        [
+          "4",
+          12
+        ],
+        [
+          "5",
+          11
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 31
+    },
+    "source_text_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 13,
+      "most_common": [
+        [
+          "395b30fb1226b15e96dbb8249dca85b16845a0a5dad2eaaf728cb2cea37b0d30",
+          31
+        ],
+        [
+          "78f863073d04dbd0bc859de6fb06290b90a7ee68048b79af3d1d49e3ef1aee6f",
+          27
+        ],
+        [
+          "eefbfdbae1d4ef382b2c5a9d06ac10e66943aef3bcebe689b921194f9a1cd0ad",
+          26
+        ],
+        [
+          "28c307575ee3c9f9ebc9591aaa770b6bc8433e32408cc89ae066b46fc46da659",
+          18
+        ],
+        [
+          "5a9319fd5a630a58b99d865c04501f87b6877ee196da48600367e8d57a2ef578",
+          17
+        ]
+      ]
+    },
+    "public_pdf_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 13,
+      "most_common": [
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/090387.pdf",
+          31
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/240244.pdf",
+          27
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/080340.pdf",
+          26
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/990588.pdf",
+          18
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/970325.pdf",
+          17
+        ]
+      ]
+    },
+    "text": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 181,
+      "most_common": [
+        [
+          "'COMMUNITY PLANNING BOARD 12 Borough of Manhattan - '-- N11IJ,0,-i:m.::1.SSrLli the City /Ili.> of 711 West 168 Street, New York, New York 10032 97MAY 33 PM 3:f9 New DEPT. OF CITY PL A York NNING AEC PIED 28 May 1997 JUN 4 1997 MANHATTAN OFFICE The following resolution was passed by Community Board 112, Manhattan at its General Meeting on May 27, 1997. IN THE MATTER OF an applications IC970324 PPM submitted by the Department of Citywide Administrative Services, and #C970325 ZSM submitted by the Economic Development Corporation and The Seavey Organization pursuant to Sections 197-c and 201 of the New York City Charter for the grant of a special permit pursuant to Section 74-512 of the Zoning Resolution to allow an attended public parking garage with rocf parking and with a maximum capacity of 375 spaces. Whereas: The Economic Development Committee of Community Board #12, Manhattan, held a Public Hearing for a ULURP for the property located at 4324 Broadway (Block 2167, Lot 1) Wednesday, May 7, 1997, 7130 p.m., at the Board office, and - Whereas: Community Board 012, Manhattan has given that parking facility at the aforementioned location the highest budget priority since 1986, and Whereas: Concerns were expressed regarding several aspects of the scope of this project including the provisions contained in the City's request-for-proposals, design of the building and environmental and quality of life issues such as its effect on the heavy traffic congestion around the proposed site, and Whereas: The New York City Development Corporation advised that such concerns will be addressed when the developer and the plan selected for the site is formally considered by Community Board 112 in Manhattan pursuant to the property disposition process required under Section 384 (B) 4 of the New York City Charter, and Be It Resolved: That Community Board 112, Manhattan recommends the approval of a special permit at 4324 Broadway (Block 2167, Lot 1) as an attended public parking garage with roof parking and with a maximum capacity of 375 spaces, and",
+          1
+        ],
+        [
+          "(B, The proposed garage will draw minimal traffic to and through local streets in residential areas. There is adequate reservoir space planned for the proposed facility'. The access streets are adequate to handle traffic generated by the facility. The planned roof parking will not negatkely impact surrounding uses. The floor space exempted from the definition of floor area is necessary to present excesske on-street parking demand. The site was originally under the jurisdiction of the Board of Education and was approN,ed for disposition by the Board once DCAS agreed to include below-market rate parking spaces for teachers employed at a school located across the street. SUMMARY OF COMMUNITY BOARD ACTION: O Ma'. 7. 19Q7.. Board 12 held a public hearing on the -324 Broadka% application efore 1:s Economi,: Committee. On Ma:. T. :991. full Board oted to approe this application. Thz Board's resolution inc-:,:ted the foilov.:nc.,, concerns: That the qualit . of life of surrounding residents not be negatively impacted k the increased conEestion generated-by this facilit. in this already heaily congested area. That the development of this facility provide employment opportunities for community residents and that local retailers be given access to the ground floor retail that is being developed as part of the project. BOROUGH PRESIDENT ACTION: The Manhattan Borough President recommends approval. The Manhattan Borough President recommends disapproval The Manhattan Borough President recommends approval, subject to the condition detailed below. The Manhattan Borough President recommends disapproval, unless the condition detailed below is addressed as described. COMMENTS: The Borough President applauds the efforts of EDC and DCAS to bring about increased parking in an area that has insufficient parking facilities and where economic development projects are 2",
+          1
+        ],
+        [
+          "(a) that such use will not be incompatible with, or adversely affect the growth and development of, uses comprising vital and essential functions in the general area within which such use is to be located; (b) that such use will not create or contribute to serious traffic congestion and will not unduly inhibit surface traffic and pedestrian flow; (c) that such use is so located as to draw a minimum of vehicular traffic to and through local streets in nearby residential areas; (d) that such use has adequate reservoir space at the vehicular entrances to accommodate automobiles equivalent in number to 20 percent of the total number of spaces up to 50 and five percent of any spaces in excess of 200, but in no event shall such reservoir space be required for more than 50 automobiles; (e) that the streets providing access to such use will be adequate to handle the traffic generated thereby; (f) that, where roof parking is permitted, such roof parking is so located as not to impair the essential character or future use or development of adjacent areas; and; (g) that, where any floor space is exempted from the definition of floor area, such additional floor space is needed in order to prevent excessive on-street parking demand and relieve traffic congestion. RESOLUTION RESOLVED, that the City Planning Commission finds that the action described herein will have no significant impact on the environment; and be it further RESOLVED, by the City Planning Commission, pursuant to Sections 197-c and 200 of the New York Charter, that based on the environmental determination, and the consideration and findings described in this report, the application submitted by the Central Parking Systems pursuant to Sections 197-c and 201 of the New York City Charter for the grant of a special permit pursuant to Section 13-562 and Section 74-52 of 6 C 090367 ZSM",
+          1
+        ],
+        [
+          "(if any) is necessary after review of the sampling data. Guidelines and criteria for selecting sampling locations and collecting samples are provided by OER upon request. Task 2: Remediation Determination and Protocol A written report with findings and a summary of the data must be submitted to OER after completion of the testing phase and laboratory analysis for review and approval. After receiving such results, a determination is made by OER if the results indicate that remediation is necessary. If OER determines that no remediation is necessary, written notice shall be given by OER. If remediation is indicated for the test results, a proposed remedial action plan (RAP) must be submitted by OER for review and approval. The applicant must complete such remediation as determined necessary by OER. The applicant should then provide proper documentation that the work has been satisfactorily completed. An OER‐approved construction‐related health and safety plan (CHASP) would be implemented during excavation and construction activities to protect workers and the community from potentially significant adverse impacts associated with contaminated soil and/or groundwater. This plan would be submitted to OER for review and approval prior to implementation. If remediation is indicated for the test results, a proposed remedial action plan must be submitted to OER for review and approval. The applicant must complete such remediation as determined necessary by OER. The applicant should then provide proper documentation that the work has been satisfactorily completed. An OER-approved CHASP would be implemented during excavation and construction activities to protect workers and the community from potentially significant adverse impacts associated with contaminated soil and/or groundwater. This plan would be submitted to OER for review and approval prior to 6 C 180085 ZMQ",
+          1
+        ],
+        [
+          ") The above resolution, duly adopted by the City Planning Commission on July 13, 1987 (Calendar No.5) is herewith filed with the Secretary of the Board of Estimate in accordance with the requirements of Section 197-c of the Charter. SYLVIA DEUTSCH, Chairperson SALVATORE C. GAGLIARDO, WILLIAM G. McNEIL, DANIEL T. SCANNELL, DENISE M. SCHEINBERG, Commissioners 11 C 870605 PSQ",
+          1
+        ]
+      ]
+    }
+  }
+}

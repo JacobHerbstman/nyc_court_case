@@ -1,0 +1,129 @@
+{
+  "dataset": "cpc_jev_quality_diagnostics_v1.csv",
+  "rows": 37,
+  "key": [
+    "kind",
+    "field"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "1f0fed3609654794ae769f9b59e7554845c48a0fe34c7f79b718a85e35523854",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "kind": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "no_with_page",
+          16
+        ],
+        [
+          "yes_without_page",
+          16
+        ],
+        [
+          "completion_by_parts",
+          3
+        ],
+        [
+          "report_flag",
+          2
+        ]
+      ]
+    },
+    "field": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 21,
+      "most_common": [
+        [
+          "affordability__concern_request",
+          2
+        ],
+        [
+          "civic__opposition",
+          2
+        ],
+        [
+          "civic__request",
+          2
+        ],
+        [
+          "civic__support",
+          2
+        ],
+        [
+          "council__motivating_concern",
+          2
+        ]
+      ]
+    },
+    "denominator": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 36,
+      "most_common": [
+        [
+          "2620",
+          2
+        ],
+        [
+          "1072",
+          1
+        ],
+        [
+          "1620",
+          1
+        ],
+        [
+          "252",
+          1
+        ],
+        [
+          "2632",
+          1
+        ]
+      ],
+      "minimum": 6,
+      "maximum": 6675
+    },
+    "count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 34,
+      "most_common": [
+        [
+          "0",
+          2
+        ],
+        [
+          "31",
+          2
+        ],
+        [
+          "4",
+          2
+        ],
+        [
+          "1",
+          1
+        ],
+        [
+          "100",
+          1
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 2072
+    }
+  }
+}

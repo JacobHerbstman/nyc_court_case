@@ -1,0 +1,410 @@
+{
+  "dataset": "cpc_jev_verification_v15.csv",
+  "rows": 28,
+  "key": [
+    "verification_request_id",
+    "field"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "41e7b40d2fdc5aeabfb5f8d1994b15328e4520052fc64a10db1e2016ec8b02af",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "verification_request_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9,
+      "most_common": [
+        [
+          "verify__e70fca539711f235a7ab__4b80f774bc",
+          7
+        ],
+        [
+          "verify__18bfb1ad1fab83a2555e__49e0347081",
+          5
+        ],
+        [
+          "verify__a89b9ba39beede21a028__1d79d255b0",
+          4
+        ],
+        [
+          "verify__18bfb1ad1fab83a2555e__3b7b3f26b3",
+          3
+        ],
+        [
+          "verify__98201e64b0247197290c__cfdd304887",
+          2
+        ]
+      ]
+    },
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "18bfb1ad1fab83a2555e",
+          8
+        ],
+        [
+          "e70fca539711f235a7ab",
+          7
+        ],
+        [
+          "a89b9ba39beede21a028",
+          6
+        ],
+        [
+          "a7b89b5b22c825f035e7",
+          4
+        ],
+        [
+          "98201e64b0247197290c",
+          2
+        ]
+      ]
+    },
+    "field": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 13,
+      "most_common": [
+        [
+          "civic__request",
+          3
+        ],
+        [
+          "civic__support",
+          3
+        ],
+        [
+          "neighborhood_character__concern_request",
+          3
+        ],
+        [
+          "neighborhood_character__specific_obligation",
+          3
+        ],
+        [
+          "scale_density_design__concern_request",
+          3
+        ]
+      ]
+    },
+    "segment_ids": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "s0004;s0005;s0006",
+          7
+        ],
+        [
+          "s0015;s0016;s0017",
+          7
+        ],
+        [
+          "s0003;s0004;s0005",
+          5
+        ],
+        [
+          "s0028;s0029;s0030",
+          4
+        ],
+        [
+          "s0002;s0003;s0004",
+          2
+        ]
+      ]
+    },
+    "source_document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "18bfb1ad1fab83a2555e",
+          8
+        ],
+        [
+          "e0806633011cade21f13",
+          7
+        ],
+        [
+          "04e35ee68278581991cc",
+          6
+        ],
+        [
+          "a7b89b5b22c825f035e7",
+          4
+        ],
+        [
+          "98201e64b0247197290c",
+          2
+        ]
+      ]
+    },
+    "page_first": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "4",
+          14
+        ],
+        [
+          "3",
+          5
+        ],
+        [
+          "19",
+          4
+        ],
+        [
+          "18",
+          2
+        ],
+        [
+          "2",
+          2
+        ]
+      ]
+    },
+    "page_last": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "6",
+          14
+        ],
+        [
+          "5",
+          5
+        ],
+        [
+          "21",
+          4
+        ],
+        [
+          "20",
+          2
+        ],
+        [
+          "4",
+          2
+        ]
+      ]
+    },
+    "status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "successful",
+          28
+        ]
+      ]
+    },
+    "answer": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "established",
+          14
+        ],
+        [
+          "not_established",
+          14
+        ]
+      ]
+    },
+    "basis": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 17,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "neither",
+          6
+        ],
+        [
+          "both",
+          3
+        ],
+        [
+          "applicant_undertaking",
+          1
+        ],
+        [
+          "imposed_condition",
+          1
+        ]
+      ]
+    },
+    "value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 4,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          14
+        ],
+        [
+          "1",
+          10
+        ]
+      ]
+    },
+    "http_status": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "200",
+          28
+        ]
+      ],
+      "minimum": 200,
+      "maximum": 200
+    },
+    "attempt": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "1",
+          28
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 1
+    },
+    "evidence_reference": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 8,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "established",
+          12
+        ],
+        [
+          "not_established",
+          8
+        ]
+      ]
+    },
+    "evidence_reference_basis": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 21,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "applicant_undertaking",
+          5
+        ],
+        [
+          "imposed_condition",
+          2
+        ]
+      ]
+    },
+    "evidence_reference_quote": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 15,
+      "distinct_nonmissing": 11,
+      "most_common": [
+        [
+          "the applicant has stated that trees will be planted along the western portion of their lot",
+          2
+        ],
+        [
+          "we have insured that a new construction structure fronts onto the building line",
+          2
+        ],
+        [
+          "Proposed Building shall not exceed a height of 36 stories",
+          1
+        ],
+        [
+          "The applicant will also provide street trees along the Gleason Avenue and Commerce Avenue frontages",
+          1
+        ],
+        [
+          "be incompatible with local retail and eating and drinking establishments",
+          1
+        ]
+      ]
+    },
+    "evidence_reference_reason": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 8,
+      "distinct_nonmissing": 20,
+      "most_common": [
+        [
+          "A Community Board requested a different site and individual residents proposed a youth-center use, but no independent civic organization is attributed a substantive request.",
+          1
+        ],
+        [
+          "Opposing residents expressly raised incompatibility with surrounding uses.",
+          1
+        ],
+        [
+          "Opposition is attributed only to Community Board 7, which the question excludes from independent civic organizations.",
+          1
+        ],
+        [
+          "Support is attributed to a Community Board-created task force and the Community Board, not an independent civic organization.",
+          1
+        ],
+        [
+          "The Commission states that it ensured a specific frontage alignment to preserve the continuous Fourth Avenue building line.",
+          1
+        ]
+      ]
+    }
+  }
+}

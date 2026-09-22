@@ -1,7 +1,8 @@
 all: ../output/official_ulurp_cpc_document_validation_labels.csv \
 	../output/official_ulurp_cpc_source_exception_labels.csv \
 	../output/official_ulurp_cpc_short_page_validation.csv \
-	../output/official_ulurp_cpc_external_reference_exclusions.csv
+	../output/official_ulurp_cpc_external_reference_exclusions.csv \
+	../output/cpc_selection_reviews.csv
 
 ../output/official_ulurp_cpc_document_validation_labels.csv:
 	@test -s "$@"

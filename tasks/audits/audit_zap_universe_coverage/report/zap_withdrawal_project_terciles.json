@@ -1,0 +1,74 @@
+{
+  "dataset": "zap_withdrawal_project_terciles.csv",
+  "rows": 12273,
+  "key": "project_id",
+  "unique_nonmissing_key": true,
+  "md5_csv_bytes": "bb92bea27d62d8438df49177d40ff633",
+  "fingerprint_scope": "Saved CSV bytes, including row order; not proof of source correctness.",
+  "columns": {
+    "project_id": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 12273
+    },
+    "project_status": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 7
+    },
+    "community_district": {
+      "type": "character",
+      "missing": 5,
+      "distinct_nonmissing": 290
+    },
+    "certified_referred": {
+      "type": "character",
+      "missing": 253,
+      "distinct_nonmissing": 2839
+    },
+    "source_dataset_id": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 1
+    },
+    "source_snapshot_date": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 1
+    },
+    "year": {
+      "type": "integer",
+      "missing": 253,
+      "distinct_nonmissing": 52,
+      "minimum": 1975,
+      "maximum": 2026
+    },
+    "withdrawn": {
+      "type": "logical",
+      "missing": 0,
+      "distinct_nonmissing": 2
+    },
+    "terminated": {
+      "type": "logical",
+      "missing": 0,
+      "distinct_nonmissing": 2
+    },
+    "homeowner_tercile": {
+      "type": "integer",
+      "missing": 341,
+      "distinct_nonmissing": 3,
+      "minimum": 1,
+      "maximum": 3
+    },
+    "assignment": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 5
+    },
+    "tercile": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 4
+    }
+  }
+}

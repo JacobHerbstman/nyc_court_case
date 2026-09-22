@@ -1,0 +1,194 @@
+[
+  [
+    "section",
+    "variable",
+    "allowed_values",
+    "coding_rule",
+    "absence_rule",
+    "notes"
+  ],
+  [
+    "General",
+    "all binary labels",
+    "0, 1, unclear",
+    "Use 1 only when the CPC report supports the definition.",
+    "Use 0 when the report does not support the definition.",
+    "Use unclear sparingly. A blank cell means not yet coded."
+  ],
+  [
+    "Project",
+    "specific_project",
+    "0, 1, unclear",
+    "The proposal is a specific development project.",
+    "Proposal is a neighborhood change, no iminent project ",
+    null
+  ],
+  [
+    "Project",
+    "dev_direction",
+    "upzone, downzone, mixed, none",
+    "Upzoning (added density), Downzoning (less density), mixed/ambiguous change (non-housing related zoning change), none (minor changes like sidewalk café or dialysis center)",
+    null,
+    null
+  ],
+  [
+    "Process",
+    "local_opposition",
+    "0, 1, unclear",
+    "The report documents substantive local opposition to the application or project.",
+    "No substantive local opposition is documented.",
+    "Count CB, BP, councilmember, civic-group, resident, or tenant opposition."
+  ],
+  [
+    "Process",
+    "local_request_condition",
+    "0, 1, unclear",
+    "A local actor requests a change, condition, commitment, mitigation, or alternative.",
+    "No substantive local request or condition is documented.",
+    "Do not count procedural referral or generic consultation language."
+  ],
+  [
+    "Process",
+    "revision_or_concession",
+    "0, 1, unclear",
+    "The project or application changed, or the applicant or agency made a substantive concession, commitment, or mitigation.",
+    "No substantive revision, concession, commitment, or mitigation is documented.",
+    "Exclude boilerplate modifications, document dates, studies, outreach, and monitoring alone."
+  ],
+  [
+    "Process",
+    "procedural_response",
+    "0, 1, unclear",
+    "The response is a study, task force, monitoring, reporting, outreach, or future consultation.",
+    "No such procedural response is documented.",
+    "This may coexist with a revision or concession; exclude a study that merely predates review."
+  ],
+  [
+    "Process",
+    "explicit_local_response",
+    "0, 1, unclear",
+    "The report explicitly links local opposition or a local request to a change or response.",
+    "No explicit local-to-response link is stated.",
+    "Do not infer causation only because a change followed a hearing."
+  ],
+  [
+    "Process",
+    "approved_unresolved_objection",
+    "0, 1, unclear",
+    "CPC approved while rejecting, deferring, or leaving a specific local objection unresolved.",
+    "The report does not identify a specific unresolved local objection at approval.",
+    "General opposition alone is insufficient without an identifiable unresolved demand."
+  ],
+  [
+    "Actors",
+    "cb_request_or_opposition",
+    "0, 1, unclear",
+    "A community board opposes or requests a substantive change, condition, commitment, or alternative.",
+    "The CB is absent, appears only procedurally, or supports without a substantive request.",
+    "Conditioned approval counts even when the CB does not recommend disapproval."
+  ],
+  [
+    "Actors",
+    "bp_request_or_opposition",
+    "0, 1, unclear",
+    "A borough president opposes or requests a substantive change, condition, commitment, or alternative.",
+    "The BP is absent, appears only procedurally, or supports without a substantive request.",
+    "Conditioned approval counts even when the BP does not recommend disapproval."
+  ],
+  [
+    "Actors",
+    "councilmember_position",
+    "none_or_procedural, support_or_request, opposition, unclear",
+    "support_or_request: An individual councilmember supports the proposal or makes a substantive request, condition, or recommendation without opposing it.; opposition: An individual councilmember opposes all or part of the proposal.",
+    "none_or_procedural: No substantive individual councilmember role is documented.",
+    "Exclude Council procedure. If members differ, use opposition when any member opposes and note the mixed positions."
+  ],
+  [
+    "Actors",
+    "civic_group_position",
+    "none_or_procedural, support_or_request, opposition, unclear",
+    "support_or_request: A named civic, neighborhood, tenant, business, or community organization supports the proposal or makes a substantive request without opposing it.; opposition: A named organization opposes all or part of the proposal.",
+    "none_or_procedural: No named organization takes a substantive position.",
+    "Exclude residents speaking only as individuals. If groups differ, use opposition when any group opposes and note the mixed positions."
+  ],
+  [
+    "Issues",
+    "affordability_displacement",
+    "0, 1, unclear",
+    "Affordability, displacement, tenant protection, harassment, or housing access is a substantive local issue.",
+    "Those topics are absent or appear only in the project description.",
+    "Affordable units alone do not make this positive."
+  ],
+  [
+    "Issues",
+    "traffic_parking",
+    "0, 1, unclear",
+    "Traffic, parking, loading, trucks, congestion, or curb use is a substantive local issue.",
+    "No such local issue is documented.",
+    "Exclude neutral transportation descriptions."
+  ],
+  [
+    "Issues",
+    "scale_character_preservation",
+    "0, 1, unclear",
+    "Scale, height, density, bulk, design, shadows, neighborhood character, landmarks, or preservation is a substantive local issue.",
+    "No such local issue is documented.",
+    "Exclude neutral dimensional descriptions and landmark names alone."
+  ],
+  [
+    "Issues",
+    "infrastructure_services",
+    "0, 1, unclear",
+    "Schools, sewer, transit, sanitation, utilities, public facilities, or service capacity is a substantive local issue.",
+    "No such local issue is documented.",
+    "Exclude background service descriptions."
+  ],
+  [
+    "Issues",
+    "environment_open_space",
+    "0, 1, unclear",
+    "Environmental effects, remediation, water quality, parks, waterfront access, or open space is a substantive local issue.",
+    "No such local issue is documented.",
+    "Routine CEQR language alone is insufficient."
+  ],
+  [
+    "Review",
+    "evidence_pages",
+    "free text",
+    null,
+    null,
+    "Printed CPC-report page numbers supporting the coding, such as 16; 23-24."
+  ],
+  [
+    "Review",
+    "evidence_summary",
+    "one sentence",
+    null,
+    null,
+    "Briefly state the opposition/request, response, and unresolved issue if present."
+  ],
+  [
+    "Review",
+    "coding_confidence",
+    "high, medium, low",
+    null,
+    null,
+    "Confidence in the full row after reading the report."
+  ],
+  [
+    "Review",
+    "coding_complete",
+    "0, 1",
+    null,
+    null,
+    "Enter 1 only after every coding field and the evidence fields are complete."
+  ],
+  [
+    "Review",
+    "coder_notes",
+    "free text",
+    null,
+    null,
+    "Optional ambiguity or adjudication note."
+  ]
+]

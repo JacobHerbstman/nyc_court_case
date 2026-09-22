@@ -1,0 +1,334 @@
+{
+  "dataset": "cpc_jev_passages_v4.csv",
+  "rows": 720,
+  "key": [
+    "document_id",
+    "passage_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "477be3efe13803c08ddaa1304da7fac08f71ef484d8f4e6e54a77ddf0edb008b",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 30,
+      "most_common": [
+        [
+          "be57154ccfdcbdc208c8",
+          58
+        ],
+        [
+          "717d4d21cc6a432a8c40",
+          55
+        ],
+        [
+          "5ff15b38926793e89ae6",
+          54
+        ],
+        [
+          "1a4a52796d298f4a766f",
+          52
+        ],
+        [
+          "d2902dde63337bff2964",
+          47
+        ]
+      ]
+    },
+    "passage_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 720,
+      "most_common": [
+        [
+          "00326891p1b1",
+          1
+        ],
+        [
+          "00326891p1b2",
+          1
+        ],
+        [
+          "00326891p2b1",
+          1
+        ],
+        [
+          "00326891p3b1",
+          1
+        ],
+        [
+          "00326891p4b1",
+          1
+        ]
+      ]
+    },
+    "source_document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 52,
+      "most_common": [
+        [
+          "717d4d21cc6a432a8c40",
+          55
+        ],
+        [
+          "5ff15b38926793e89ae6",
+          54
+        ],
+        [
+          "1a4a52796d298f4a766f",
+          52
+        ],
+        [
+          "be57154ccfdcbdc208c8",
+          47
+        ],
+        [
+          "067c9ef3c97fd3686486",
+          33
+        ]
+      ]
+    },
+    "source_application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 52,
+      "most_common": [
+        [
+          "C 870568 ZMQ",
+          55
+        ],
+        [
+          "C 850328 ZMQ",
+          54
+        ],
+        [
+          "C 190453 HAK",
+          52
+        ],
+        [
+          "C 140409 ZSM",
+          47
+        ],
+        [
+          "C 960576 ZMM",
+          33
+        ]
+      ]
+    },
+    "source_role": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "focal_report",
+          543
+        ],
+        [
+          "context_companion",
+          124
+        ],
+        [
+          "represented_related_action",
+          39
+        ],
+        [
+          "verified_n_companion",
+          14
+        ]
+      ]
+    },
+    "pdf_page": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 51,
+      "most_common": [
+        [
+          "1",
+          98
+        ],
+        [
+          "2",
+          82
+        ],
+        [
+          "3",
+          63
+        ],
+        [
+          "4",
+          60
+        ],
+        [
+          "5",
+          52
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 51
+    },
+    "page_start": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 23,
+      "most_common": [
+        [
+          "0",
+          464
+        ],
+        [
+          "1798",
+          55
+        ],
+        [
+          "1799",
+          33
+        ],
+        [
+          "1796",
+          31
+        ],
+        [
+          "1797",
+          30
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 3598
+    },
+    "page_end": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 439,
+      "most_common": [
+        [
+          "1798",
+          55
+        ],
+        [
+          "1799",
+          33
+        ],
+        [
+          "1796",
+          31
+        ],
+        [
+          "1797",
+          30
+        ],
+        [
+          "1794",
+          27
+        ]
+      ],
+      "minimum": 48,
+      "maximum": 5124
+    },
+    "source_text_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 52,
+      "most_common": [
+        [
+          "9cfb58d25b8f302ff2c9cdc618a9777ee28ddcdeb4befc2bf6a977f80154edea",
+          55
+        ],
+        [
+          "ab6229653cd2a1f21596f1f1fc9d3c2a5686f74ab31cec71e4edd40bb081ae29",
+          54
+        ],
+        [
+          "8bbafcbb973aa5428a86f1e1ff8596f5bac4662ffd7ba1d70ee37d9319c9c3d8",
+          52
+        ],
+        [
+          "045779fbc048b4c992fa2aad6228dc8697f9a4106cedcb5ddf6b31507f806725",
+          47
+        ],
+        [
+          "d5d8944d8d463fad4a18b91c1dea4bdc93291bc4c7913e19b049e0ae387489b0",
+          33
+        ]
+      ]
+    },
+    "passage_text": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 720,
+      "most_common": [
+        [
+          " \"gut\" rehabilitation under the Demonstra- tion Rehabilitation program of the United States Department of Housing and Urban Development (HUD). Under this program, the rehabilitation will be handled by SEBCO III Associates, a limited profit partnership formed under Article V of the Pri- vate-Hbtaiing Finance Law (PHFL) of New York State, and whose general partner is Pro- perty Resources Corporation, the developer. The project will be financed with a Federal Housing Administration Section 221 (d)(4) insured mortgage coupled with Section 8 rent subsidies for all dwelling units. In addition, a forty year",
+          1
+        ],
+        [
+          " (Block 4422, Lot 1 and Block 4423, Lot 1). Building \"A\" is four-stories. Building \"B\" is - five-stories. Both buildings are located on Block 4423, Lot 1. Building \"C\", located on Block 4422, Lot 1 is four stories. Block 4423, Lot 1 is bounded by Waring Avenue to the north, Gun Hill Road to the east, Stillwell Avenue to the south and Ely Avenue to the west. Block 4422, Lot 1 is bounded by Waring Avenue to the north, Ely Avenue to the east, Stillwell Avenue to the south and",
+          1
+        ],
+        [
+          " .60 Northbound/Southbound .323 Total Clearance .077 Page 1 of 3 JOSEPH MeGOUGH, Commsvoner, Depvtment of Enviiunmen tat Proie:t cm, HERBERT STURZ, Chaffrnan, City Planning COMMISSION gib",
+          1
+        ],
+        [
+          " 080380 ZSR",
+          1
+        ],
+        [
+          " 13737, Lot .1i: App:oved is not ,old for heavy Approved on condition that this parcel lock No. 1209, Lot 1A: trucks. sir freight related waret.ousing sad 10 ANOTHER BOARD AND WE RECEIVED THEM LATE. TALSE PARCELS WEr. HMEHT VOTiNg AGA:E57 1, ABSTATNTNO i) : : . IN FAVOA .\"? TO AoARD 117 TOTAL kaNass2 APPD!%7SN C0100.114127/130ROU011B DCWICNE TLS FA-1. L/132)74-",
+          1
+        ]
+      ]
+    },
+    "passage_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 720,
+      "most_common": [
+        [
+          "00234d2e8897fc378c689c62b91304d777b8d8134f646daec7e23db63a9267a9",
+          1
+        ],
+        [
+          "004f6e042d291c2b7dda2861edd5777c49b6a762229a0a07164b762ef5e1972d",
+          1
+        ],
+        [
+          "009c3b8eae8b9b1ee668c9fe65460b2693525313688b8763123e1547e8eee03d",
+          1
+        ],
+        [
+          "013f55a98f0e4cad3331f71e148eb392911b3a54eac564ddae3ed51798f3b9c9",
+          1
+        ],
+        [
+          "0170a5129391b4ec92dd106c23d2f1bc2894fa2f8d7f64c23b21ecbfe9e781b6",
+          1
+        ]
+      ]
+    }
+  }
+}

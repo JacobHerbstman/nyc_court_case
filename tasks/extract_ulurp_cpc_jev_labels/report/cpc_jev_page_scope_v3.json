@@ -1,0 +1,325 @@
+{
+  "dataset": "cpc_jev_page_scope_v3.csv",
+  "rows": 175464,
+  "key": [
+    "document_id",
+    "source_document_id",
+    "pdf_page"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "348dee8cd4bd879fc8ec5bba7dbd18360b451fa4d2319fe27727f223aedff3dc",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9063,
+      "most_common": [
+        [
+          "0b946b35415497776bf9",
+          584
+        ],
+        [
+          "5facd79440eead459640",
+          433
+        ],
+        [
+          "f50d1c130991350112af",
+          433
+        ],
+        [
+          "17c8293e404d5c32e56c",
+          405
+        ],
+        [
+          "43038a2d2c3699ec65ea",
+          405
+        ]
+      ]
+    },
+    "source_document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9655,
+      "most_common": [
+        [
+          "43038a2d2c3699ec65ea",
+          2961
+        ],
+        [
+          "805bb038c3f7601dd073",
+          2448
+        ],
+        [
+          "51d404cdade16988575a",
+          1480
+        ],
+        [
+          "d69c2b7e86b4bf2a3206",
+          1232
+        ],
+        [
+          "5ee0701ba502805b33c6",
+          1026
+        ]
+      ]
+    },
+    "source_application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9655,
+      "most_common": [
+        [
+          "C 100296A ZSM",
+          2961
+        ],
+        [
+          "N 040500A ZRM",
+          2448
+        ],
+        [
+          "C 090433 ZMM",
+          1480
+        ],
+        [
+          "C 040171 ZMK",
+          1232
+        ],
+        [
+          "C 900163A ZSQ",
+          1026
+        ]
+      ]
+    },
+    "pdf_page": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 417,
+      "most_common": [
+        [
+          "1",
+          14412
+        ],
+        [
+          "2",
+          14113
+        ],
+        [
+          "3",
+          12176
+        ],
+        [
+          "4",
+          10649
+        ],
+        [
+          "5",
+          9594
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 417
+    },
+    "scope": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "in_scope",
+          131542
+        ],
+        [
+          "unresolved",
+          34900
+        ],
+        [
+          "blank",
+          8997
+        ],
+        [
+          "out_of_scope",
+          25
+        ]
+      ]
+    },
+    "scope_reason": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 27,
+      "most_common": [
+        [
+          "Inside the parsed main CPC report.",
+          114029
+        ],
+        [
+          "Continuation inherits the preceding document block.",
+          30074
+        ],
+        [
+          "No usable OCR text; block identity not inferred.",
+          8997
+        ],
+        [
+          "New document header has no clear allowed or contrary identity.",
+          7182
+        ],
+        [
+          "Page identifies an allowed application.",
+          4803
+        ]
+      ]
+    },
+    "block_start_page": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 417,
+      "most_common": [
+        [
+          "1",
+          117120
+        ],
+        [
+          "9",
+          2846
+        ],
+        [
+          "8",
+          2795
+        ],
+        [
+          "10",
+          2601
+        ],
+        [
+          "13",
+          2252
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 417
+    },
+    "source_text_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9655,
+      "most_common": [
+        [
+          "784c80528b70d050b375f6c819b2cc535c25ff0b4927be3204f1d2474de12076",
+          2961
+        ],
+        [
+          "c52b9ae8d9d0b731689bacefdfb3b001a2a042941f8da0da1a32a880c417d340",
+          2448
+        ],
+        [
+          "3aeb7a7f6d477a82458018e527148f9c4c82055479351b7bebb936b5e40d5f17",
+          1480
+        ],
+        [
+          "844a625fe56495e5b8311f1424497c75d77bd1356191f90071be551bd80b926e",
+          1232
+        ],
+        [
+          "f74f56b1d90718a0a3d175a1c2c0c93a6e00b04f4bb363c250039970295517ad",
+          1026
+        ]
+      ]
+    },
+    "public_pdf_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9655,
+      "most_common": [
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/100296a.pdf",
+          2961
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/040500a.pdf",
+          2448
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/090433.pdf",
+          1480
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/040171.pdf",
+          1232
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/900163a.pdf",
+          1026
+        ]
+      ]
+    },
+    "text_characters": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7499,
+      "most_common": [
+        [
+          "0",
+          8982
+        ],
+        [
+          "1727",
+          166
+        ],
+        [
+          "1752",
+          140
+        ],
+        [
+          "1922",
+          138
+        ],
+        [
+          "2096",
+          134
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 4512132
+    },
+    "low_text": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          165316
+        ],
+        [
+          "1",
+          10148
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    }
+  }
+}

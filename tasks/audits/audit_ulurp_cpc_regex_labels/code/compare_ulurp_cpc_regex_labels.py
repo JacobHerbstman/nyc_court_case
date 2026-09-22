@@ -294,6 +294,25 @@ with Path("../input/ulurp_cpc_training_labels_jacob.csv").open(
 ) as input_file:
     training_rows = list(csv.DictReader(input_file))
 
+with open("../input/ulurp_cpc_training_labels_tyler.csv", newline="") as source:
+    tyler_source_rows = list(csv.DictReader(source))
+assert len(tyler_source_rows) == len({row["document_id"] for row in tyler_source_rows})
+tyler_rows = []
+for row in tyler_source_rows:
+    normalized = dict(row)
+    normalized["substantial_local_opposition"] = row["local_opposition"]
+    normalized["cpc_support_speakers"] = row["speakers_for"]
+    normalized["cpc_opposition_speakers"] = row["speakers_against"]
+    normalized["cb_support_votes"] = normalized["cb_opposition_votes"] = ""
+    if not any(normalized.get(field, "") for field in TRAINING_BINARY_FIELDS + POSITION_FIELDS + COUNT_FIELDS):
+        continue
+    for field in POSITION_FIELDS:
+        if normalized[field] not in {"", "none_or_procedural", "support_or_request", "opposition"}:
+            normalized[field] = "unclear"
+    assert row["document_id"] in regex_rows
+    assert row["application_number"] == regex_rows[row["document_id"]]["application_number"]
+    tyler_rows.append(normalized)
+
 with Path("../input/ulurp_cpc_regex_validation_labels_codex.csv").open(
     newline="", encoding="utf-8-sig"
 ) as input_file:
@@ -349,6 +368,9 @@ validate_sample(holdout_rows, expected_holdout_sample, "H", regex_rows, report_r
 training_summary = summarize(
     training_rows, regex_rows, TRAINING_BINARY_FIELDS, "all"
 )
+tyler_summary = summarize(tyler_rows, regex_rows, TRAINING_BINARY_FIELDS, "all_recorded")
+tyler_summary.extend(summarize([row for row in tyler_rows if row["coding_complete"] == "1"],
+    regex_rows, TRAINING_BINARY_FIELDS, "marked_complete"))
 validation_summary = summarize(
     validation_rows, regex_rows, VALIDATION_BINARY_FIELDS, "all"
 )
@@ -386,6 +408,8 @@ for decade in sorted(
 
 save_csv(training_summary, list(training_summary[0]),
          "../output/ulurp_cpc_regex_training_agreement.csv", ["sample_slice", "field"])
+save_csv(tyler_summary, list(tyler_summary[0]),
+         "../output/ulurp_cpc_regex_tyler_agreement.csv", ["sample_slice", "field"])
 save_csv(validation_summary, list(validation_summary[0]),
          "../output/ulurp_cpc_regex_validation_agreement.csv", ["sample_slice", "field"])
 save_csv(holdout_summary, list(holdout_summary[0]),

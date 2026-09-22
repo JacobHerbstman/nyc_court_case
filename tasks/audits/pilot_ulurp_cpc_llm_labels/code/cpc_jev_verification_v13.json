@@ -1,0 +1,17 @@
+{
+  "instructions": "Assess only whether the supplied evidence window establishes the exact substantive predicate below. This is a source-entailment check, not a vote on another model's answer. Read the operative statement, actor, topic and acceptance/status together. Related keywords or a generic approval are insufficient. Do not infer report-wide absence from this limited window. If a referenced fact, actor or acceptance clause is outside the window and needed, select context_missing.",
+  "criteria": {
+    "established": "The supplied window establishes the exact predicate with the required actor, topic and status.",
+    "not_established": "The supplied window determinately does not establish that predicate; this is not a conclusion about the rest of the report.",
+    "ambiguous": "The wording, actor, topic or status remains substantively ambiguous.",
+    "context_missing": "Necessary referenced or surrounding information is not supplied or is unreadable."
+  },
+  "basis_instructions": "For the specific topic obligation described below, what operative basis is actually established in the supplied window? A proposed feature, ordinary approval, planning goal or generic plan-conformity clause is insufficient. Acceptance and imposition must apply to this topic-specific undertaking. Record a conditional undertaking as such evidence without assuming it was performed.",
+  "basis_criteria": {
+    "applicant_undertaking": "A specific undertaking accepted or made by the applicant is established.",
+    "imposed_condition": "A deciding body's individualized substantive condition is established.",
+    "both": "Both applicant undertaking and deciding-body imposition are established for the topic.",
+    "neither": "Neither basis is established by this window.",
+    "unclear": "Its basis is ambiguous or requires context outside the supplied window."
+  }
+}

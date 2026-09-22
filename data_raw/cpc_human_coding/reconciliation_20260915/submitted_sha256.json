@@ -1,0 +1,8 @@
+{
+  "assignments.json": "c0b0a20b57c4667bdbdae47367bf27fa4593540089d719997369511832538ff4",
+  "instructions.txt": "ad6ecf121cb645d868a00c6a279eb003f138bf8e553f27ad8476eac7efc3dc75",
+  "original_codebook.json": "303c87beba868dff43f22720bcabe0f72503d4f4bc26a677460e189d10cdf24f",
+  "decisions_a.jsonl": "5cbbac1e7c65de2b9e0c8f5366bd5ecaffd430b0e0b42b7c190d8461740450c2",
+  "decisions_c.jsonl": "d921468e736a4cc60ae17eaf3d3b4c1bad0b176367e706955ab014ad24d50972",
+  "decisions_b.jsonl": "186af0f84cd0a830c960679ec8b74bb9b1cc32b55e74c0ade0eb5851088ab5c8"
+}

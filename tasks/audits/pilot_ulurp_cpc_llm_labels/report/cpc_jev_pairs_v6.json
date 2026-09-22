@@ -1,0 +1,316 @@
+{
+  "dataset": "cpc_jev_pairs_v6.csv",
+  "rows": 50,
+  "key": [
+    "case_id",
+    "proposition",
+    "primitive"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "4368af6e60a0dfe3226808c32c335c515fa831f6b7b45b8193ac7dccb1d126b9",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "case_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9,
+      "most_common": [
+        [
+          "board_conditions",
+          8
+        ],
+        [
+          "affordability",
+          6
+        ],
+        [
+          "infrastructure",
+          6
+        ],
+        [
+          "landscape_buffer",
+          6
+        ],
+        [
+          "meeting_space",
+          6
+        ]
+      ]
+    },
+    "proposition": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 25,
+      "most_common": [
+        [
+          "applicant_accepted_cap",
+          2
+        ],
+        [
+          "applicant_committed",
+          2
+        ],
+        [
+          "board_displacement",
+          2
+        ],
+        [
+          "board_infrastructure",
+          2
+        ],
+        [
+          "bp_requested",
+          2
+        ]
+      ]
+    },
+    "primitive": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "choice",
+          25
+        ],
+        [
+          "noul",
+          25
+        ]
+      ]
+    },
+    "question": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 25,
+      "most_common": [
+        [
+          "Does `report.text` describe a proposal for one hundred percent income-restricted housing?",
+          2
+        ],
+        [
+          "Does `report.text` describe a requirement to relocate bus stops to Sheffield Avenue?",
+          2
+        ],
+        [
+          "Does `report.text` explicitly mention infrastructure?",
+          2
+        ],
+        [
+          "Does `report.text` record a commissioner asking whether DPR was at full capacity at the proposed location?",
+          2
+        ],
+        [
+          "Does `report.text` say CPC requested a planted buffer near residential districts?",
+          2
+        ]
+      ]
+    },
+    "expected_excerpt": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          30
+        ],
+        [
+          "0",
+          20
+        ]
+      ]
+    },
+    "expected_full": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          34
+        ],
+        [
+          "0",
+          16
+        ]
+      ]
+    },
+    "excerpt_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          32
+        ],
+        [
+          "0",
+          18
+        ]
+      ]
+    },
+    "full_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          30
+        ],
+        [
+          "0",
+          14
+        ]
+      ]
+    },
+    "excerpt_probability": {
+      "python_types": [
+        "float",
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 13,
+      "most_common": [
+        [
+          "1",
+          15
+        ],
+        [
+          "0",
+          9
+        ],
+        [
+          "0.98",
+          6
+        ],
+        [
+          "0.99",
+          6
+        ],
+        [
+          "0.04",
+          3
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "full_probability": {
+      "python_types": [
+        "float",
+        "int"
+      ],
+      "missing": 6,
+      "distinct_nonmissing": 11,
+      "most_common": [
+        [
+          "1",
+          14
+        ],
+        [
+          "0",
+          7
+        ],
+        [
+          "0.99",
+          7
+        ],
+        [
+          "0.97",
+          4
+        ],
+        [
+          "0.98",
+          4
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "guided_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 44,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          4
+        ],
+        [
+          "1",
+          2
+        ]
+      ]
+    },
+    "expected_changes_with_context": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          46
+        ],
+        [
+          "1",
+          4
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "same_expected_lost_in_full": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "0",
+          50
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 0
+    },
+    "same_expected_recovered_in_full": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "0",
+          50
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 0
+    }
+  }
+}

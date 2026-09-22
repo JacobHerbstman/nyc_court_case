@@ -1,0 +1,290 @@
+{
+  "dataset": "cpc_sol_validation_labels_v2.csv",
+  "rows": 216,
+  "key": [
+    "document_id",
+    "field"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "a32ad9633f70870e92300d74e721673c2fd86f9599b5a1ea29041f1496be2ae9",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "4087b07d8c35fa97eb0a",
+          36
+        ],
+        [
+          "4233c506d2afb89202b5",
+          36
+        ],
+        [
+          "7b71c3ec545c37f94412",
+          36
+        ],
+        [
+          "8454cf00b6f05f5dd077",
+          36
+        ],
+        [
+          "aef69c74074ac9bb3128",
+          36
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "C 040515 ZMX",
+          36
+        ],
+        [
+          "C 060337 ZMQ",
+          36
+        ],
+        [
+          "C 150447 ZSR",
+          36
+        ],
+        [
+          "C 190267 ZMQ",
+          36
+        ],
+        [
+          "C 840871 HAK",
+          36
+        ]
+      ]
+    },
+    "reader": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "a",
+          72
+        ],
+        [
+          "b",
+          72
+        ],
+        [
+          "c",
+          72
+        ]
+      ]
+    },
+    "field": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 36,
+      "most_common": [
+        [
+          "affordability__concern_request",
+          6
+        ],
+        [
+          "affordability__discussed",
+          6
+        ],
+        [
+          "affordability__specific_obligation",
+          6
+        ],
+        [
+          "civic__opposition",
+          6
+        ],
+        [
+          "civic__request",
+          6
+        ]
+      ]
+    },
+    "value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "0",
+          138
+        ],
+        [
+          "1",
+          77
+        ],
+        [
+          "unresolved",
+          1
+        ]
+      ]
+    },
+    "segments": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 138,
+      "distinct_nonmissing": 23,
+      "most_common": [
+        [
+          "s0002",
+          11
+        ],
+        [
+          "s0009",
+          10
+        ],
+        [
+          "s0004",
+          6
+        ],
+        [
+          "s0007",
+          6
+        ],
+        [
+          "s0014",
+          4
+        ]
+      ]
+    },
+    "quote": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 138,
+      "distinct_nonmissing": 72,
+      "most_common": [
+        [
+          "The existing 820 commuter parking spaces will be maintained on-site during all phases of construction.",
+          2
+        ],
+        [
+          "better reflect the surrounding R4 context and character",
+          2
+        ],
+        [
+          "loss of the visual appeal of the site",
+          2
+        ],
+        [
+          "opposed housing on the Mermaid Avenue frontage",
+          2
+        ],
+        [
+          "overcrowd local schools, and overburden nearby transit routes",
+          2
+        ]
+      ]
+    },
+    "reason": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 90,
+      "most_common": [
+        [
+          "No qualifying passage in the supplied report.",
+          86
+        ],
+        [
+          "No qualifying evidence in the full supplied report.",
+          42
+        ],
+        [
+          "Applicant undertakes a specific transit service during and after construction.",
+          1
+        ],
+        [
+          "Applicant undertakes specific esplanade restoration.",
+          1
+        ],
+        [
+          "Association requests a parking change.",
+          1
+        ]
+      ]
+    },
+    "quote_found": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          138
+        ],
+        [
+          "1",
+          78
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "source_scope": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "concern",
+          144
+        ],
+        [
+          "clear",
+          72
+        ]
+      ]
+    },
+    "scope_reason": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "Report contains an attributed concern about the focal proposal.",
+          72
+        ],
+        [
+          "The supplied segments contain the complete focal CPC report through its resolution and signatures.",
+          72
+        ],
+        [
+          "The Community Board and Borough President opposed unrestricted disposition and requested modifications; CPC imposed several use restrictions.",
+          36
+        ],
+        [
+          "The public review records Community Board conditions, Borough President comments, and opposing homeowners’ concerns.",
+          36
+        ]
+      ]
+    }
+  }
+}

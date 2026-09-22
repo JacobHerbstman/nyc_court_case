@@ -1,0 +1,474 @@
+{
+  "dataset": "cpc_jev_comparison_v15.csv",
+  "rows": 401,
+  "key": [
+    "document_id",
+    "field"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "a3cc6e658196c7d8ae0b5495bd0f34b6e11e476ca26484140cf85ad43445932e",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 20,
+      "most_common": [
+        [
+          "03222ef01b16353505f6",
+          36
+        ],
+        [
+          "18bfb1ad1fab83a2555e",
+          36
+        ],
+        [
+          "30055e9ac87c9778dcff",
+          36
+        ],
+        [
+          "383cedc260e14fc55ec9",
+          36
+        ],
+        [
+          "5f3beb16071ae5ecf19a",
+          36
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 20,
+      "most_common": [
+        [
+          "C 030510 ZMQ",
+          36
+        ],
+        [
+          "C 070079 ZMQ",
+          36
+        ],
+        [
+          "C 090272 ZMK",
+          36
+        ],
+        [
+          "C 190426 PCX",
+          36
+        ],
+        [
+          "C 800483 HUM",
+          36
+        ]
+      ]
+    },
+    "test_group": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "fresh",
+          360
+        ],
+        [
+          "control",
+          41
+        ]
+      ]
+    },
+    "stratum": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "short",
+          215
+        ],
+        [
+          "long",
+          186
+        ]
+      ]
+    },
+    "field": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 36,
+      "most_common": [
+        [
+          "civic__support",
+          14
+        ],
+        [
+          "scale_density_design__specific_obligation",
+          14
+        ],
+        [
+          "environment_open_space__specific_obligation",
+          13
+        ],
+        [
+          "neighborhood_character__specific_obligation",
+          13
+        ],
+        [
+          "affordability__specific_obligation",
+          12
+        ]
+      ]
+    },
+    "baseline_field": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 33,
+      "distinct_nonmissing": 33,
+      "most_common": [
+        [
+          "civic__support",
+          14
+        ],
+        [
+          "scale_density_design__adopted",
+          14
+        ],
+        [
+          "environment_open_space__adopted",
+          13
+        ],
+        [
+          "neighborhood_character__adopted",
+          13
+        ],
+        [
+          "affordability__adopted",
+          12
+        ]
+      ]
+    },
+    "baseline": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 274,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          89
+        ],
+        [
+          "1",
+          38
+        ]
+      ]
+    },
+    "revised_screen": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 325,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          63
+        ],
+        [
+          "1",
+          13
+        ]
+      ]
+    },
+    "revised_verified": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 327,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          62
+        ],
+        [
+          "1",
+          12
+        ]
+      ]
+    },
+    "baseline_complete": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          262
+        ],
+        [
+          "1",
+          139
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "revised_complete": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          325
+        ],
+        [
+          "1",
+          76
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "verification_complete": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "1",
+          401
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 1
+    },
+    "target": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          287
+        ],
+        [
+          "0",
+          114
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "definition_comparison": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "clarified_definition",
+          157
+        ],
+        [
+          "unchanged",
+          114
+        ],
+        [
+          "changed_construct",
+          97
+        ],
+        [
+          "new_goal",
+          33
+        ]
+      ]
+    },
+    "reference": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "0",
+          218
+        ],
+        [
+          "1",
+          177
+        ],
+        [
+          "unresolved",
+          6
+        ]
+      ]
+    },
+    "reference_segments": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 206,
+      "distinct_nonmissing": 103,
+      "most_common": [
+        [
+          "s0001",
+          8
+        ],
+        [
+          "s0005",
+          8
+        ],
+        [
+          "s0017",
+          8
+        ],
+        [
+          "s0009",
+          7
+        ],
+        [
+          "s0012",
+          6
+        ]
+      ]
+    },
+    "reference_reason": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 360,
+      "most_common": [
+        [
+          "b: No historic-preservation concern or request is reported.",
+          4
+        ],
+        [
+          "b: No qualifying historic-preservation obligation is established.",
+          4
+        ],
+        [
+          "Actual applicant redesign and explicitly operative facade, yards, landscaping and furniture conditions; generic plan conformity alone is not the basis.",
+          3
+        ],
+        [
+          "CPC imposes specific enclosure, buffer, curb-cut, lighting and planting requirements; owner signs declaration.",
+          3
+        ],
+        [
+          "Economic effects, nuisance and protection of residential amenity do not establish loss of occupancy or ability to remain; full retained text read.",
+          3
+        ]
+      ]
+    },
+    "reference_origin": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "blinded_sol_medium_single",
+          288
+        ],
+        [
+          "blinded_sol_medium_consensus",
+          72
+        ],
+        [
+          "manager_source_review_v13",
+          41
+        ]
+      ]
+    },
+    "paired_eligible": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          361
+        ],
+        [
+          "1",
+          40
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "paired_change": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "unchanged",
+          274
+        ],
+        [
+          "became_unresolved",
+          90
+        ],
+        [
+          "corrected",
+          35
+        ],
+        [
+          "other_change",
+          2
+        ]
+      ]
+    },
+    "reader_disagreement": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          397
+        ],
+        [
+          "1",
+          4
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    }
+  }
+}

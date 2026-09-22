@@ -1,0 +1,241 @@
+{
+  "dataset": "cpc_sol_validation_selection_v2.csv",
+  "rows": 340,
+  "key": [
+    "document_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "72cfc0383aceb8fc4b29a83094c14841b5792afe08b4c119950354725ce8c34c",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 340,
+      "most_common": [
+        [
+          "00326891d3391480524d",
+          1
+        ],
+        [
+          "027b0c0b2938ee5f5961",
+          1
+        ],
+        [
+          "0290f3b8b3e9437b9ac9",
+          1
+        ],
+        [
+          "02c18c0a3b85fce07355",
+          1
+        ],
+        [
+          "0385e4de7488ec4762c5",
+          1
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 340,
+      "most_common": [
+        [
+          "C 000029 ZSM",
+          1
+        ],
+        [
+          "C 000040 PPM",
+          1
+        ],
+        [
+          "C 000092 PPM",
+          1
+        ],
+        [
+          "C 000151 ZMR",
+          1
+        ],
+        [
+          "C 000478 PPQ",
+          1
+        ]
+      ]
+    },
+    "reason": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "source_not_ready",
+          198
+        ],
+        [
+          "eligible",
+          75
+        ],
+        [
+          "prior_pilot_source",
+          60
+        ],
+        [
+          "no_completed_human",
+          7
+        ]
+      ]
+    },
+    "council": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 21,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "none_or_procedural",
+          284
+        ],
+        [
+          "support_or_request",
+          22
+        ],
+        [
+          "opposition",
+          13
+        ]
+      ]
+    },
+    "civic": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 32,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "none_or_procedural",
+          251
+        ],
+        [
+          "opposition",
+          42
+        ],
+        [
+          "support_or_request",
+          15
+        ]
+      ]
+    },
+    "issue_positive": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          197
+        ],
+        [
+          "0",
+          143
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "source_parts": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "0",
+          198
+        ],
+        [
+          "1",
+          127
+        ],
+        [
+          "2",
+          10
+        ],
+        [
+          "3",
+          5
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 3
+    },
+    "rank": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 340,
+      "most_common": [
+        [
+          "000b59e9e292abba74c828442449da7eb9689198a9161453aea00195e5f90136",
+          1
+        ],
+        [
+          "004c07ba873e5a1aedbe0589b2a742ef37efdb142c8057081abe0b20dba9c701",
+          1
+        ],
+        [
+          "01136228ec6568c777c7af0ad8be1bac6710b2f720dd50daaaa776a8a1e7ef3b",
+          1
+        ],
+        [
+          "0138fe70c4d509eb91d57ca75f91c61bc07f0ef29548770e8e97d616b3043399",
+          1
+        ],
+        [
+          "01f907b3278cd066790b9df4ba5b87cffc3794e3298622459c22f098cdb2f75e",
+          1
+        ]
+      ]
+    },
+    "selected_group": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 334,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "council_support",
+          2
+        ],
+        [
+          "actor_negative",
+          1
+        ],
+        [
+          "civic_opposition",
+          1
+        ],
+        [
+          "civic_support",
+          1
+        ],
+        [
+          "long_issue",
+          1
+        ]
+      ]
+    }
+  }
+}

@@ -1,0 +1,475 @@
+{
+  "dataset": "cpc_attachment_reports.csv",
+  "rows": 11314,
+  "key": [
+    "document_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "70d1d807159e0701f02c3bd61825925c8f8d7e25252d871f694000effd99a975",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 11314,
+      "most_common": [
+        [
+          "00119c3b0ee800f4d8ba",
+          1
+        ],
+        [
+          "00126d30463744ba647c",
+          1
+        ],
+        [
+          "00167643a19f5c30bf57",
+          1
+        ],
+        [
+          "001f885d7d891a8711f7",
+          1
+        ],
+        [
+          "00231b56ec914bf6ccd9",
+          1
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 11314,
+      "most_common": [
+        [
+          "C 000002 ZSM",
+          1
+        ],
+        [
+          "C 000012 ZSR",
+          1
+        ],
+        [
+          "C 000013 ZSR",
+          1
+        ],
+        [
+          "C 000014 ZSR",
+          1
+        ],
+        [
+          "C 000016A ZSR",
+          1
+        ]
+      ]
+    },
+    "project_name": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 1952,
+      "distinct_nonmissing": 6903,
+      "most_common": [
+        [
+          "C-O-P",
+          906
+        ],
+        [
+          "Lda",
+          30
+        ],
+        [
+          "Hra Boarding Home",
+          21
+        ],
+        [
+          "Culver El",
+          16
+        ],
+        [
+          "Metrotech",
+          13
+        ]
+      ]
+    },
+    "year": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 50,
+      "most_common": [
+        [
+          "1981",
+          722
+        ],
+        [
+          "1982",
+          714
+        ],
+        [
+          "1980",
+          579
+        ],
+        [
+          "1983",
+          575
+        ],
+        [
+          "1984",
+          497
+        ]
+      ]
+    },
+    "corpus_role": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "certified_ulurp_report",
+          11258
+        ],
+        [
+          "related_project_narrative_lead",
+          36
+        ],
+        [
+          "related_project_narrative_companion",
+          20
+        ]
+      ]
+    },
+    "source_usable": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "TRUE",
+          11208
+        ],
+        [
+          "FALSE",
+          106
+        ]
+      ]
+    },
+    "pdf_pages": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 106,
+      "distinct_nonmissing": 149,
+      "most_common": [
+        [
+          "2",
+          1677
+        ],
+        [
+          "3",
+          1212
+        ],
+        [
+          "4",
+          781
+        ],
+        [
+          "6",
+          699
+        ],
+        [
+          "5",
+          621
+        ]
+      ]
+    },
+    "candidate_pages": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 61,
+      "most_common": [
+        [
+          "0",
+          8995
+        ],
+        [
+          "1",
+          1009
+        ],
+        [
+          "2",
+          303
+        ],
+        [
+          "3",
+          223
+        ],
+        [
+          "4",
+          145
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 345
+    },
+    "blank_candidate_pages": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 53,
+      "most_common": [
+        [
+          "0",
+          10386
+        ],
+        [
+          "1",
+          218
+        ],
+        [
+          "2",
+          99
+        ],
+        [
+          "3",
+          95
+        ],
+        [
+          "6",
+          73
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 345
+    },
+    "changed_candidate_pages": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 54,
+      "most_common": [
+        [
+          "0",
+          9498
+        ],
+        [
+          "1",
+          632
+        ],
+        [
+          "2",
+          261
+        ],
+        [
+          "3",
+          207
+        ],
+        [
+          "4",
+          149
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 345
+    },
+    "recovered_50_word_pages": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 56,
+      "most_common": [
+        [
+          "0",
+          9730
+        ],
+        [
+          "1",
+          448
+        ],
+        [
+          "2",
+          260
+        ],
+        [
+          "3",
+          189
+        ],
+        [
+          "4",
+          143
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 338
+    },
+    "recommendation_marker_pages": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 30,
+      "most_common": [
+        [
+          "0",
+          10564
+        ],
+        [
+          "1",
+          136
+        ],
+        [
+          "2",
+          131
+        ],
+        [
+          "4",
+          99
+        ],
+        [
+          "3",
+          94
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 56
+    },
+    "candidate_words_added": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 891,
+      "most_common": [
+        [
+          "0",
+          9498
+        ],
+        [
+          "4",
+          103
+        ],
+        [
+          "5",
+          59
+        ],
+        [
+          "6",
+          36
+        ],
+        [
+          "348",
+          34
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 115864
+    },
+    "remaining_short_candidate_pages": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 25,
+      "most_common": [
+        [
+          "0",
+          10206
+        ],
+        [
+          "1",
+          833
+        ],
+        [
+          "2",
+          106
+        ],
+        [
+          "3",
+          54
+        ],
+        [
+          "4",
+          35
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 151
+    },
+    "changed_other_pages": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "0",
+          11314
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 0
+    },
+    "pilot_focal": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          11294
+        ],
+        [
+          "1",
+          20
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "public_pdf_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 106,
+      "distinct_nonmissing": 11193,
+      "most_common": [
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/821188.pdf",
+          12
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/140132.pdf",
+          4
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/770266.pdf",
+          2
+        ],
+        [
+          "https://www.nyc.gov/assets/planning/download/pdf/about/cpc/010653.pdf",
+          1
+        ],
+        [
+          "https://www.nyc.gov/assets/planning/download/pdf/about/cpc/060066.pdf",
+          1
+        ]
+      ]
+    }
+  }
+}

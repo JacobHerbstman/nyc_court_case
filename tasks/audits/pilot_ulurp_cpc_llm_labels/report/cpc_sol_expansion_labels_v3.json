@@ -1,0 +1,346 @@
+{
+  "dataset": "cpc_sol_expansion_labels_v3.csv",
+  "rows": 540,
+  "key": [
+    "document_id",
+    "field"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "edeb8696497c3a826ef0e9ebbb64e9b2884646df57c02c71df3c1d2c48212257",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 20,
+      "most_common": [
+        [
+          "02c18c0a3b85fce07355",
+          27
+        ],
+        [
+          "06c90a5bde6a4a3cadd7",
+          27
+        ],
+        [
+          "180f2f3d15c99c5ab311",
+          27
+        ],
+        [
+          "1818edbd692337c3eeeb",
+          27
+        ],
+        [
+          "42bb40d7172d1fb33d15",
+          27
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 20,
+      "most_common": [
+        [
+          "C 040270 ZMM",
+          27
+        ],
+        [
+          "C 050145 ZMR",
+          27
+        ],
+        [
+          "C 060272 ZMK",
+          27
+        ],
+        [
+          "C 060335 ZMX",
+          27
+        ],
+        [
+          "C 070065 ZMQ",
+          27
+        ]
+      ]
+    },
+    "reader": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 10,
+      "most_common": [
+        [
+          "01",
+          54
+        ],
+        [
+          "02",
+          54
+        ],
+        [
+          "03",
+          54
+        ],
+        [
+          "04",
+          54
+        ],
+        [
+          "05",
+          54
+        ]
+      ]
+    },
+    "field": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 27,
+      "most_common": [
+        [
+          "affordability__concern_request",
+          20
+        ],
+        [
+          "affordability__discussed",
+          20
+        ],
+        [
+          "affordability__specific_obligation",
+          20
+        ],
+        [
+          "displacement__concern_request",
+          20
+        ],
+        [
+          "displacement__discussed",
+          20
+        ]
+      ]
+    },
+    "value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "0",
+          307
+        ],
+        [
+          "1",
+          231
+        ],
+        [
+          "unresolved",
+          2
+        ]
+      ]
+    },
+    "segments": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 306,
+      "distinct_nonmissing": 44,
+      "most_common": [
+        [
+          "s0003",
+          20
+        ],
+        [
+          "s0005",
+          19
+        ],
+        [
+          "s0004",
+          18
+        ],
+        [
+          "s0009",
+          17
+        ],
+        [
+          "s0002",
+          15
+        ]
+      ]
+    },
+    "quote": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 306,
+      "distinct_nonmissing": 219,
+      "most_common": [
+        [
+          "#Front yards# shall be planted, except at entrances to and exits from the #building# and except for access driveways to #accessory# parking and loading areas.",
+          2
+        ],
+        [
+          "DOT has agreed to address the concerns of the Community Board by restoring that portion of 9th Avenue to a safe condition",
+          2
+        ],
+        [
+          "Limit the permitted use for the former Flushing Airport site to park and soft recreation use",
+          2
+        ],
+        [
+          "Protect and enhance the natural resources and neighborhood character of the districts",
+          2
+        ],
+        [
+          "The highways, which are the prime means of access to the region's three major airports (Kennedy, La Guardia and Newark) are often badly congested.",
+          2
+        ]
+      ]
+    },
+    "reason": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 259,
+      "most_common": [
+        [
+          "No qualifying evidence in the full supplied report.",
+          119
+        ],
+        [
+          "No qualifying evidence in the complete supplied report.",
+          41
+        ],
+        [
+          "Not found after reading the full supplied report.",
+          30
+        ],
+        [
+          "No qualifying statement in the supplied report.",
+          28
+        ],
+        [
+          "No qualifying discussion, concern, or specific obligation appears in the complete supplied report.",
+          27
+        ]
+      ]
+    },
+    "quote_found": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          306
+        ],
+        [
+          "1",
+          234
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "source_scope": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "clear",
+          540
+        ]
+      ]
+    },
+    "scope_reason": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 18,
+      "most_common": [
+        [
+          "All supplied segments identify the focal application.",
+          54
+        ],
+        [
+          "The title, application and resolution consistently identify the focal rezoning.",
+          54
+        ],
+        [
+          "All four supplied segments belong to the focal 9th Avenue Bridge city-map report.",
+          27
+        ],
+        [
+          "All seven segments concern C 160064 ZMX. One background sentence says 3676 Jerome Avenue; the heading, application description and repeated site address say 3276, so this is an internal address ambiguity.",
+          27
+        ],
+        [
+          "All six supplied segments are the focal Commerce Bank report. The separate Dyker Heights rezoning is discussed only as context for the Community Board request; it is not treated as a focal-project obligation.",
+          27
+        ]
+      ]
+    },
+    "raw_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "0",
+          296
+        ],
+        [
+          "1",
+          226
+        ],
+        [
+          "no",
+          11
+        ],
+        [
+          "yes",
+          5
+        ],
+        [
+          "unresolved",
+          2
+        ]
+      ]
+    },
+    "value_normalized": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          524
+        ],
+        [
+          "1",
+          16
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    }
+  }
+}

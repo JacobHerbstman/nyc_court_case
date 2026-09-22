@@ -5,7 +5,7 @@
     "project_id"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "7e484c7432c0d37faea2c5203ae51767536ac1ade699d4146430693fdb48b48d",
+  "sha256_csv_bytes": "2a488b3ff6da8cba62f4a81e47a0838c8aae297d44d467fb2d705fd153ed365e",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "project_id": {
@@ -214,19 +214,19 @@
       "most_common": [
         [
           "0",
-          23453
+          23443
         ],
         [
           "1",
-          8730
+          8731
         ],
         [
           "2",
-          518
+          526
         ],
         [
           "3",
-          162
+          163
         ],
         [
           "4",
@@ -235,6 +235,456 @@
       ],
       "minimum": 0,
       "maximum": 16
+    },
+    "linked_cpc_application_keys": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 23082,
+      "distinct_nonmissing": 9881,
+      "most_common": [
+        [
+          "870526HAK",
+          2
+        ],
+        [
+          "000002ZSM",
+          1
+        ],
+        [
+          "000012ZSR; 000013ZSR; 000014ZSR; 000017ZMR; 000018PCR; 000019PPR",
+          1
+        ],
+        [
+          "000016AZSR",
+          1
+        ],
+        [
+          "000020PQQ; 000021PPQ",
+          1
+        ]
+      ]
+    },
+    "linked_cpc_document_ids": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 23082,
+      "distinct_nonmissing": 9881,
+      "most_common": [
+        [
+          "c6f3d52527c674b1ab95",
+          2
+        ],
+        [
+          "00119c3b0ee800f4d8ba",
+          1
+        ],
+        [
+          "00126d30463744ba647c",
+          1
+        ],
+        [
+          "00167643a19f5c30bf57",
+          1
+        ],
+        [
+          "001f885d7d891a8711f7",
+          1
+        ]
+      ]
+    },
+    "linked_cpc_report_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 14,
+      "most_common": [
+        [
+          "0",
+          23082
+        ],
+        [
+          "1",
+          9076
+        ],
+        [
+          "2",
+          536
+        ],
+        [
+          "3",
+          167
+        ],
+        [
+          "4",
+          56
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 16
+    },
+    "recorded_action_codes": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 2413,
+      "distinct_nonmissing": 427,
+      "most_common": [
+        [
+          "RC",
+          4997
+        ],
+        [
+          "PP",
+          3470
+        ],
+        [
+          "UC",
+          1998
+        ],
+        [
+          "ZC",
+          1648
+        ],
+        [
+          "EC",
+          1624
+        ]
+      ]
+    },
+    "action_code_sources": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 2413,
+      "distinct_nonmissing": 8,
+      "most_common": [
+        [
+          "bulk_numbers",
+          26537
+        ],
+        [
+          "api_actions; api_numbers",
+          2394
+        ],
+        [
+          "bulk_actions; bulk_numbers",
+          1349
+        ],
+        [
+          "bulk_actions",
+          151
+        ],
+        [
+          "bulk_numbers; api_actions; api_numbers",
+          110
+        ]
+      ]
+    },
+    "bulk_action_codes": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 31455,
+      "distinct_nonmissing": 121,
+      "most_common": [
+        [
+          "ZM; ZR",
+          178
+        ],
+        [
+          "RC",
+          166
+        ],
+        [
+          "ZC",
+          157
+        ],
+        [
+          "LD; ZC",
+          112
+        ],
+        [
+          "PX",
+          98
+        ]
+      ]
+    },
+    "bulk_number_action_codes": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 4967,
+      "distinct_nonmissing": 396,
+      "most_common": [
+        [
+          "RC",
+          4924
+        ],
+        [
+          "PP",
+          3049
+        ],
+        [
+          "UC",
+          1992
+        ],
+        [
+          "EC",
+          1549
+        ],
+        [
+          "ZC",
+          1534
+        ]
+      ]
+    },
+    "api_action_codes": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 30450,
+      "distinct_nonmissing": 119,
+      "most_common": [
+        [
+          "PP",
+          420
+        ],
+        [
+          "ZM",
+          222
+        ],
+        [
+          "ZS",
+          221
+        ],
+        [
+          "MM",
+          214
+        ],
+        [
+          "ZC",
+          125
+        ]
+      ]
+    },
+    "api_number_action_codes": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 30451,
+      "distinct_nonmissing": 119,
+      "most_common": [
+        [
+          "PP",
+          420
+        ],
+        [
+          "ZM",
+          222
+        ],
+        [
+          "ZS",
+          221
+        ],
+        [
+          "MM",
+          214
+        ],
+        [
+          "ZC",
+          124
+        ]
+      ]
+    },
+    "unparsed_bulk_numbers": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 32960,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "N 1303211 RAR",
+          1
+        ],
+        [
+          "N000244B1ZRY",
+          1
+        ],
+        [
+          "N20014 ZRM",
+          1
+        ],
+        [
+          "N22043LDM",
+          1
+        ]
+      ]
+    },
+    "unparsed_api_numbers": {
+      "python_types": [],
+      "missing": 32964,
+      "distinct_nonmissing": 0,
+      "most_common": []
+    },
+    "unparsed_action_tokens": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 32962,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "EAS",
+          2
+        ]
+      ]
+    },
+    "action_code_sets_disagree": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "False",
+          32912
+        ],
+        [
+          "True",
+          52
+        ]
+      ]
+    },
+    "action_evidence_present": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "True",
+          30551
+        ],
+        [
+          "False",
+          2413
+        ]
+      ]
+    },
+    "has_zoning_action": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "False",
+          28503
+        ],
+        [
+          "True",
+          4461
+        ]
+      ]
+    },
+    "has_zoning_map_action": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "False",
+          30961
+        ],
+        [
+          "True",
+          2003
+        ]
+      ]
+    },
+    "pp_only": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "False",
+          29494
+        ],
+        [
+          "True",
+          3470
+        ]
+      ]
+    },
+    "action_group": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "other_recorded_actions",
+          22620
+        ],
+        [
+          "pp_only",
+          3470
+        ],
+        [
+          "other_zoning",
+          2458
+        ],
+        [
+          "no_action_evidence",
+          2413
+        ],
+        [
+          "zoning_map",
+          2003
+        ]
+      ]
+    },
+    "certified_referred": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 913,
+      "distinct_nonmissing": 5872,
+      "most_common": [
+        [
+          "01/31/2011",
+          2150
+        ],
+        [
+          "05/18/1982",
+          122
+        ],
+        [
+          "11/13/1991",
+          101
+        ],
+        [
+          "08/22/1977",
+          76
+        ],
+        [
+          "11/07/1984",
+          67
+        ]
+      ]
     },
     "bulk_ulurp_number_present": {
       "python_types": [

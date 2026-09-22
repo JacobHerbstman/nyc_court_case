@@ -1,0 +1,557 @@
+{
+  "dataset": "cpc_jev_answers_v2.csv",
+  "rows": 453952,
+  "key": [
+    "request_id",
+    "field"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "dd511a654497398e1c770aff852bc272c9df26eec24d1a3b6b6f3b34806b469a",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 8905,
+      "most_common": [
+        [
+          "dbc1cbf77a7250b62621",
+          864
+        ],
+        [
+          "0b946b35415497776bf9",
+          832
+        ],
+        [
+          "43038a2d2c3699ec65ea",
+          800
+        ],
+        [
+          "805bb038c3f7601dd073",
+          704
+        ],
+        [
+          "c51d335dec30264d5660",
+          672
+        ]
+      ]
+    },
+    "request_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 14186,
+      "most_common": [
+        [
+          "00119c3b0ee800f4d8ba_part001",
+          32
+        ],
+        [
+          "00126d30463744ba647c_part001",
+          32
+        ],
+        [
+          "00126d30463744ba647c_part002",
+          32
+        ],
+        [
+          "00126d30463744ba647c_part003",
+          32
+        ],
+        [
+          "00167643a19f5c30bf57_part001",
+          32
+        ]
+      ]
+    },
+    "part": {
+      "python_types": [
+        "int",
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 27,
+      "most_common": [
+        [
+          "1",
+          284960
+        ],
+        [
+          "2",
+          71360
+        ],
+        [
+          "3",
+          36672
+        ],
+        [
+          "4",
+          19520
+        ],
+        [
+          "5",
+          11808
+        ]
+      ]
+    },
+    "field": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 32,
+      "most_common": [
+        [
+          "affordability__adopted",
+          14186
+        ],
+        [
+          "affordability__concern_request",
+          14186
+        ],
+        [
+          "affordability__discussed",
+          14186
+        ],
+        [
+          "civic__opposition",
+          14186
+        ],
+        [
+          "civic__request",
+          14186
+        ]
+      ]
+    },
+    "value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 314595,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          109796
+        ],
+        [
+          "1",
+          29561
+        ]
+      ]
+    },
+    "probability_yes": {
+      "python_types": [
+        "float",
+        "int"
+      ],
+      "missing": 349216,
+      "distinct_nonmissing": 99,
+      "most_common": [
+        [
+          "0.04",
+          17074
+        ],
+        [
+          "0.05",
+          11982
+        ],
+        [
+          "0.03",
+          9935
+        ],
+        [
+          "0.06",
+          6651
+        ],
+        [
+          "0.07",
+          4299
+        ]
+      ],
+      "minimum": 0.02,
+      "maximum": 1
+    },
+    "answer_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "not_attempted",
+          288544
+        ],
+        [
+          "answered",
+          139357
+        ],
+        [
+          "failed",
+          25728
+        ],
+        [
+          "threshold_tie",
+          291
+        ],
+        [
+          "outcome_unknown",
+          32
+        ]
+      ]
+    },
+    "vintage": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "v2",
+          453856
+        ],
+        [
+          "v1",
+          96
+        ]
+      ]
+    },
+    "request_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 14186,
+      "most_common": [
+        [
+          "00065e4423b3ac5062a5672499f5bbf24bbea424efcc78780a9a02f23ff11cd0",
+          32
+        ],
+        [
+          "00088b442edac6b71d98e6406b03c15a1542dbf7fe3f589f60abb896c800364c",
+          32
+        ],
+        [
+          "000bdac01f0c17516134671b3e58d74c6f80ca758d2e2b20b56f7ece3e0bbb9c",
+          32
+        ],
+        [
+          "000e1e1e5c8cb84d0d4cb39db850358df369e884efc2ce474d53ac45ba96ce81",
+          32
+        ],
+        [
+          "000e4d2983c5eb02a3a3207fe1c3e9b4a0f48acdd9430384244c13be557e16e1",
+          32
+        ]
+      ]
+    },
+    "attempt": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 288544,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "1",
+          118432
+        ],
+        [
+          "2",
+          39712
+        ],
+        [
+          "3",
+          7264
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 3
+    },
+    "selected_segment_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 349216,
+      "distinct_nonmissing": 314,
+      "most_common": [
+        [
+          "none",
+          85499
+        ],
+        [
+          "s0002",
+          1386
+        ],
+        [
+          "s0001",
+          1073
+        ],
+        [
+          "s0003",
+          1041
+        ],
+        [
+          "s0004",
+          930
+        ]
+      ]
+    },
+    "source_document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 434715,
+      "distinct_nonmissing": 2762,
+      "most_common": [
+        [
+          "d69c2b7e86b4bf2a3206",
+          241
+        ],
+        [
+          "5ee0701ba502805b33c6",
+          189
+        ],
+        [
+          "cc3da5427517f97307da",
+          135
+        ],
+        [
+          "f2e99a296a4948e1d194",
+          118
+        ],
+        [
+          "dbc1cbf77a7250b62621",
+          98
+        ]
+      ]
+    },
+    "source_application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 434715,
+      "distinct_nonmissing": 2762,
+      "most_common": [
+        [
+          "C 040171 ZMK",
+          241
+        ],
+        [
+          "C 900163A ZSQ",
+          189
+        ],
+        [
+          "C 860206 ZSK",
+          135
+        ],
+        [
+          "N 130247A ZRM",
+          118
+        ],
+        [
+          "C 160035 ZMK",
+          98
+        ]
+      ]
+    },
+    "pdf_page": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 434715,
+      "distinct_nonmissing": 215,
+      "most_common": [
+        [
+          "2",
+          1641
+        ],
+        [
+          "3",
+          1305
+        ],
+        [
+          "4",
+          1200
+        ],
+        [
+          "1",
+          1147
+        ],
+        [
+          "5",
+          1124
+        ]
+      ]
+    },
+    "page_start": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 434715,
+      "distinct_nonmissing": 8,
+      "most_common": [
+        [
+          "0",
+          19219
+        ],
+        [
+          "11994",
+          5
+        ],
+        [
+          "11996",
+          4
+        ],
+        [
+          "11998",
+          3
+        ],
+        [
+          "11990",
+          2
+        ]
+      ]
+    },
+    "page_end": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 434715,
+      "distinct_nonmissing": 2618,
+      "most_common": [
+        [
+          "2034",
+          42
+        ],
+        [
+          "2189",
+          42
+        ],
+        [
+          "2214",
+          41
+        ],
+        [
+          "3125",
+          41
+        ],
+        [
+          "2466",
+          39
+        ]
+      ]
+    },
+    "public_pdf_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 434715,
+      "distinct_nonmissing": 2762,
+      "most_common": [
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/040171.pdf",
+          241
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/900163a.pdf",
+          189
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/860206.pdf",
+          135
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/130247a.pdf",
+          118
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/160035.pdf",
+          98
+        ]
+      ]
+    },
+    "evidence_text": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 434715,
+      "distinct_nonmissing": 8185,
+      "most_common": [
+        [
+          "\"Whereas, as specified in the combined Lease making the South Street Seaport Museum the main Leaseholder, the said lease calls for certain structures to be built on public land which Community Board #1 deems to be inappropriate 6- cur- rently projected; Community Board #1 rejects this application. Specifically, Community Board #1 determines that the size, bulk, and density projections for the proposed river platform and accompanying structure would: (1) obstruct major river views including a substantial portion of the Landmark Brooklyn Bridge, (2) distort the historical district by creating an overbearing structure on the eastern side, (3) contravene the City's Master Plan which says no structures may be built within 150 feet of the pier head line, (4) severely restrict public access to the waterfront, (5) unnecessarily hamper and complicate the traffic pattern and working of the Fulton Fish Market, (6) put the City of New York in the position of unlimited financial liability for con- struction of a massive fire-proof platform which has the potential for exceeding cost estimates. In addition, Community Board #1 objects to the proposed Pilot House on the grounds of its visual and physical obstruction to the waterfront and to Schermerhorn Row from the piers. Community Board #1 recommends that: (1) the pier platform not extend beyond the eastern boundary of Pier 16, (2) that the pier pavilion conform to the original Master Plan that prohibits structures within 150 feet of the pier head line, (3) that public access of 30 feet on the south and north sides of the pier pavilion, and the remaining portion on the east between the Pier 16 boundary and the set back pavilion, be guaranteed, and (4) that no blocks or lots for which plans have not been submitted to the Community Board (specifically the parcels on the 97 East and West blocks) be included in the combined Lease. IN FAVOR: 20 AGAINST: 10 ABSTAINING: 0 On August 13, 1980, Cal. No. the City Planning Commission scheduled September 3, 1980, as a date for a public hearing. On that date a hearing was duly held. Subsequent to the public hearing the Office of Development submitted the following information at the request of the Commission: At the September 15, 1980 Executive Session, the Commission requested that we guarantee to include certain minimum open space parameters for the new Pier 17 in our lease with the Seaport Museum. This is to confirm that the lease will require the following minimum amounts of open space on the new pier platform: 40 to 48 feet on the east end 30 feet on the southern side 25 feet on the northern side A summary of the Commission's public hearing and consideration can be found in the related report (C 800251 HUM) dated September 15, 1980. Findings and Approval The City Planning Commission hereby finds that the proposed lease application hereinbefore described is consistent with the objectives and provisions of the Brooklyn Bridge Southeast Urban Renewal Plan as approved by the City Planning Commission on September 15, 1980, and now pending before the Board of Estimate (C 800251 HUM). 4 C 800372 HLM",
+          37
+        ],
+        [
+          "affected property owners and tenants affected by the proposed urban renewal actions. A representative of an urban renewal assistance organization hired by the city described the range of benefits his group would be providing to all affected by urban renewal. Many of the speakers in favor stated that the proposed Plan, through its provision of construction and retail employment opportunities, would aid in the long-term growth and stability of Downtown Brooklyn and its surrounding communities. They cited the city’s commitment to increase employment opportunities for women and minority-owned businesses and to assisting small businesses affected by the proposed urban renewal actions. Speakers also testified about the various transportation improvement initiatives underway in Downtown Brooklyn as a result of this Plan. Several speakers emphasized that the proposed Plan would benefit the entire city by generating new tax revenues. Some noted the need for additional commitment to this area and its surroundings through the provision of affordable housing and improvements to local parks. Several representatives touted the benefits of the proposed Plan’s actions for the future expansion plans of their institutions. Several speakers in favor also voiced concerns about the proposed extension of the duration of the urban renewal plans. The representative of Brooklyn Law School stated her support of the Plan but asked that the urban renewal plan controls for the newly-designated sites that include one of the school’s properties be revised to reserve space for a post-graduate institution at that location. Speakers in opposition included area residents, community advocates, representatives of local community organizations and property owners affected by the proposed condemnations. Many of the speakers in opposition were in favor of expanding the Downtown Brooklyn central business district but expressed concern regarding the size of the proposed Plan and the proposed urban renewal actions, such as the use of eminent domain and the proposed extension of the duration of the urban renewal plans. Three homeowners affected by the proposed urban renewal actions stated that they believed their properties had a role in the Underground Railroad. Representatives of a local business school, the Institute of Design and Construction, expressed opposition to the proposed urban renewal taking of the school and its rezoning. The owner of a 58 C 040171 ZMK",
+          33
+        ],
+        [
+          "Community Board Public Hearing Community Board 2 held a complying hearing on May 7, 1986 and on June 18, 1986 adopted a resolution recommending approval of the application in accordance with Article 4 of ULURP. The vote was 26 in favor, 7 opposed, with 2 abstentions. City Planning Commission Public Hearing On June 18, 1986 (Calendar No. 16) the City Planning Commission scheduled July 9, 1986 as the date of the Public Hearing on the proposed special permits (C 860206 ZSK). On July 9, 1986 (Calendar No. 31) the hearing was duly held in conjunction with the public hearing on the related applications C 860201 HUK - Calendar No.. 26, C 860202 HDK - Calendar No. 27, C860203 HDK - Calendar o. 28, C 860204 MMK - Calendar No. 29 and C 860205 ZMK - Calendar No 30 (N 860207 ZAK is not subject to \"ULURP\"). There were 12 speakers at the public hearing. Eight speakers supported the development proposal and four speakers opposed specific aspects of the project. The speakers in support of the development proposal represented a number of local and borough-wide civic organizations. It was emphasized by the speakers that the proposal is a well balanced mixed-use development of offices, retail space and housing. The existing transportation services are ideally suited for this project. The project strengthens downtown Brooklyn and the borough's overall economy. The housing component is affordable and harmonious with the nearby neighborhood. The new retail space provides more services for the nearby neighborhoods. Speakers opposing the development proposal were most concerned with traffic. It was recommended by four speakers that traffic on South Portland Avenue be one-way, southbound. It was urged that the traffic changes be initiated before the project is completed. The lack of parking for the 643 new residential units was another concern. Many written comments were also submitted on specific project components or related impacts. Concern was expressed about the need for an increased number of affordable housing units and for rental units in addition to condominiums. The new supermarket and large retail space is a major concern to merchants who 15 C 860206 ZSK",
+          27
+        ],
+        [
+          "Speaking at the public hearing in opposition to the proposal, were residents of the area and representatives of the'Ad-Hoc Committee for Re-development of the.South-. side Triangle. They stated that the-property would be disposed to wealthy individ- uals when the site should be used for housing for Tow and moderate income families, or for jobs as originally in the renewal plan. They stated that the City had not made sufficient effort to market the site for industrial use; that Hispanics and blacks couldn't affort to buy or rent the housing on the site; and that the developer would seek 42D(a)tax exemption, and that the buildings in the area had been allowed to deteriorate . The District Manager of Community Board 1 spoke in favor of the project. He stated that the project would provide middle and moderate income housing for large families; that the project did not conflict with subsidized housing; and that the project is compatible with adjacent residential development. He stated that the Community Board approval is conditional on development of the Site 7 park and the placement, by the proposed developer of advertisements in one black and one Hispanic newspaper. The representative of the Community Board stated that they believe the purchase price is fair and that the map changes will not negatively impact traffic. The representative of the developer urged approval of the proposal. He stated that upper-lower income persons could afford the new dwelling units; that there is a need for this type of housing and that the local community would benefit. There were no other speakers and the hearing was closed. On November 19, 1981, in response to the requests by the City Planning Commission at the Public Hearing, the development corporation submitted a list of prospective customers and a statement that it will not discriminate agains any individual be- cause of race, sex, color or religion . Sale of said development will be on a first come basis... .Former site tenants will be informed of the proposed development. Those not previously accomodated will have preference as tenants. The developer also indicated it had placed advertisements in the Amsterdam News and The El niario as well as North Brooklyn News and Der Yid.\" CONSIDERATION The City Planning Commission has reviewed the chances required in the Urban Renewal Plan, the Land Disposition, the zoning and map changes needed to develop the 36 semi-attached three-family houses on Site 8A and 8B in the Williamsburg Urban Renewal Area. The Commission understands the need for subsidized housing-for low income families in the Williamsburg area. There are, however, no subsidies available for this site at this time. The proposal will provide needed housing for large moderate and middle income families. The development corporation has submitted a list of prospective customers and a list of newspapers in which it has placed advertisements. It has advertised in newspapers which have Black and Hispanic readers. In addition, the developer has made a statement promising not to discriminate against any individual because of race, sex, color or religion. The tax abatement for which the developer may apply under \"421(a)\" is available to many builders including those constructing luxury buildings with higher rent levels. The Commission notes that historically the ethnic and religious groups that reside in Williamsburg have not worked to frame a cohesive plan to meet the housing needs of all Williamsburg citizens. The resulting lack of community cooperation is of concern to the Commission. The project under consideration is an example of housing that will not serve all Williamsburg residents - only a small portion of the population. It is the Commission's hope that in the future the citizens of Williamsburg can set aside differences and work cooperatively for community goals that satisfy the needs of the vast majority of Williamsburg's population. The Commission urges the various groups to coalesce on the need for, the permitted uses and development of, the park on Site 7, a project which is of importance to the Community Board. As noted in the report on the plan for the Williamsburg Urban Renewal Area that was approved by the City Planning Commission on March 28, 1979, the Department of Parks and Recreation wrote, in a letter dated October 19, 1978, that it would assume responsibility for design of the park. The projected cost of design of the park was estimated at $92,000 and the cost for the develop- ment of the park was estimated at 1.8 million dollars. This park has a budget line in the Capital Budget, P-839 but the Office of Management and Budget has not approved any expenditure of funds for this park. The Commissdon urges approval for the development of the park so that this area, with large numbers of children and limited open space, can have an active park. -2 C820001HUK",
+          25
+        ],
+        [
+          "2004 (Calendar No. 11), in conjunction with the public hearings on the applications for the related actions (N 040172 ZRK, C 040173 HUK, C 040174 HUK, C 040175 HUK, N 040176 HGK, C 040177 HDK, C 040178 HDK, C 040179 HDK, C 040180 PPK, C 040181 ZSK, C 040182 ZSK, C 040183 ZSK, C 040184 ZSK, and C 040185 PSK. There were 25 speakers in favor of the applications and 33 speakers in opposition. Speakers in favor included representatives of the applicants from the Economic Development Corporation, the Department of Housing Preservation and Development, Polytechnic University, and the Brooklyn Academy of Music Local Development Corporation. Also speaking in favor were the Council Member from the 33rd Council District, the Commissioner of the Department of Small Business Services, representatives of Community Board 2, several local universities, the Downtown Brooklyn Council, the Brooklyn Chamber of Commerce, other community organizations and a local developer. The speakers described the necessity for a comprehensive approach to the expansion of Downtown Brooklyn and how the proposed Plan’s actions would accomplish that goal. They testified that the proposed actions would allow the development of new commercial office and residential buildings with new public open spaces. The new development would reinforce Downtown Brooklyn’s role as a regional business district and improve New York City’s competitiveness in the region. The Council Member from the 33rd district expressed his general support for the Plan but also asked that additional commitments be made by the city to address transportation issues and improve local parks in Downtown Brooklyn. A local property owner explained how the proposed zoning and street mapping actions would benefit his proposal for a new office building with ground-floor retail. Representatives from the Brooklyn Academy of Music LDC described how the proposed urban renewal plan changes and special permits for public parking garages would allow the development of additional cultural space, housing and accessory parking. Speakers from the City’s Department of Housing Preservation and Development explained the extent of the relocation benefits available to 57 C 040171 ZMK",
+          24
+        ]
+      ]
+    },
+    "source_text_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 434715,
+      "distinct_nonmissing": 2762,
+      "most_common": [
+        [
+          "844a625fe56495e5b8311f1424497c75d77bd1356191f90071be551bd80b926e",
+          241
+        ],
+        [
+          "f74f56b1d90718a0a3d175a1c2c0c93a6e00b04f4bb363c250039970295517ad",
+          189
+        ],
+        [
+          "a33327200af428b21dbd1907a65ee0dab21b890a732f86d4b89653e72c6f5c6a",
+          135
+        ],
+        [
+          "0249656188cafb28a4920c1ee925e743693fa5c1e05973bef49afdb97db9fe41",
+          118
+        ],
+        [
+          "2744ee329470453d24642c9985f3a74d9507d6db275963c8c439e7693a43dcd5",
+          98
+        ]
+      ]
+    },
+    "evidence_disagrees": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          449429
+        ],
+        [
+          "1",
+          4523
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    }
+  }
+}

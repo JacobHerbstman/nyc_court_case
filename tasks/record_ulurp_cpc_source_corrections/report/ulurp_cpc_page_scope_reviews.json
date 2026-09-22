@@ -1,0 +1,222 @@
+{
+  "dataset": "ulurp_cpc_page_scope_reviews.csv",
+  "rows": 17,
+  "key": [
+    "source_document_id",
+    "first_page",
+    "last_page"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "8cb326ff81f05785f8af76e86869ffc83489f0eb005fa134ec322c798e141a68",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "source_document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 14,
+      "most_common": [
+        [
+          "26f03d0909c6323e9605",
+          2
+        ],
+        [
+          "5234f33b1a4d555ea125",
+          2
+        ],
+        [
+          "67edf27e744fedae6cf1",
+          2
+        ],
+        [
+          "02c18c0a3b85fce07355",
+          1
+        ],
+        [
+          "1818edbd692337c3eeeb",
+          1
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 14,
+      "most_common": [
+        [
+          "C 910119 HUK",
+          2
+        ],
+        [
+          "C 920197 PPQ",
+          2
+        ],
+        [
+          "C 990218 ZSK",
+          2
+        ],
+        [
+          "C 160064 ZMX",
+          1
+        ],
+        [
+          "C 170452 ZSM",
+          1
+        ]
+      ]
+    },
+    "first_page": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 11,
+      "most_common": [
+        [
+          "13",
+          3
+        ],
+        [
+          "7",
+          3
+        ],
+        [
+          "8",
+          3
+        ],
+        [
+          "12",
+          1
+        ],
+        [
+          "15",
+          1
+        ]
+      ]
+    },
+    "last_page": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 15,
+      "most_common": [
+        [
+          "11",
+          2
+        ],
+        [
+          "21",
+          2
+        ],
+        [
+          "13",
+          1
+        ],
+        [
+          "14",
+          1
+        ],
+        [
+          "15",
+          1
+        ]
+      ]
+    },
+    "scope": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "in_scope",
+          15
+        ],
+        [
+          "out_of_scope",
+          2
+        ]
+      ]
+    },
+    "source_text_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 14,
+      "most_common": [
+        [
+          "28566623bf99453d793e6600cd07e22c483117d05a7bc5eb4f02ef56f689e820",
+          2
+        ],
+        [
+          "c3dc79b67b044d47381d5c846642a732cd8afb26063b2c3368b4a23316f596e4",
+          2
+        ],
+        [
+          "f6ef3b39575a07ea97e94f663b8ee4b50ae5c606373332462ca1d951c1e6a67a",
+          2
+        ],
+        [
+          "10a923188ab5f73b551ae2d9ec9870b159fb3de81c4dad48ec2adfa5b8227a6c",
+          1
+        ],
+        [
+          "5e11b08a84e4196d13ef4b621e4ce6bafc6c40ebb61e287d3959184955362515",
+          1
+        ]
+      ]
+    },
+    "reviewer": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "Codex source review with Sol-medium reader; not a human coding adjudication",
+          13
+        ],
+        [
+          "Codex attachment source review, 2026-09-22; not a human coding adjudication",
+          4
+        ]
+      ]
+    },
+    "reason": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 17,
+      "most_common": [
+        [
+          "Brooklyn BP report and applicant letter concern the same Bay Ridge project; page 78 explicitly identifies 990218 ZSK. Last pages are low-text but retained with this document block. OCR source recheck 2026-09-22: changed pages visually checked against the PDF: a site map, a short committee continuation, and photographs; same application scope. Photograph OCR is noisy.",
+          1
+        ],
+        [
+          "CB and BP forms and the Fifth Amendment BP report explicitly identify related Brownsville actions 910170 HUK, 910171 HDK, 910237 MMK and 910238 ZMK; final pages continue that report.",
+          1
+        ],
+        [
+          "CB form and continuation identify 910237 MMK; BP form and report identify the four-action Brownsville bundle. Unreadable page 14 remains unresolved. OCR source recheck 2026-09-22: reviewed pages are byte-identical; recovered text is outside this reviewed range.",
+          1
+        ],
+        [
+          "CB form identifies 910119 HUK; BP form and report cover explicitly related East New York I actions 900513 HDK, 900511 MMK, 910119 HUK and 900512 ZMK. OCR source recheck 2026-09-22: changed final page continues the same Brooklyn Borough President recommendation, including industrial-use, development-timetable, and site-cleanup conditions; same application scope.",
+          1
+        ],
+        [
+          "CB/BP forms and Martin Luther Court Senior Housing report identify 920049 HDK and 910119 HUK; pages 11-14 continue it and retain Councilmember Wooten opposition.",
+          1
+        ]
+      ]
+    }
+  }
+}

@@ -1,0 +1,274 @@
+{
+  "dataset": "cpc_sol_labels_v1.csv",
+  "rows": 144,
+  "key": [
+    "document_id",
+    "field"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "7c20063758b5087f4e64662604bf94f4075164653dbc51d21e9f608881ceed3f",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "18bfb1ad1fab83a2555e",
+          36
+        ],
+        [
+          "28cc037f9056f9cd9141",
+          36
+        ],
+        [
+          "a89b9ba39beede21a028",
+          36
+        ],
+        [
+          "e70fca539711f235a7ab",
+          36
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "C 190426 PCX",
+          36
+        ],
+        [
+          "C 230091 ZMQ",
+          36
+        ],
+        [
+          "C 800193 HPK",
+          36
+        ],
+        [
+          "C 870156 ZSM",
+          36
+        ]
+      ]
+    },
+    "reader": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "a",
+          72
+        ],
+        [
+          "b",
+          36
+        ],
+        [
+          "c",
+          36
+        ]
+      ]
+    },
+    "field": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 36,
+      "most_common": [
+        [
+          "affordability__concern_request",
+          4
+        ],
+        [
+          "affordability__discussed",
+          4
+        ],
+        [
+          "affordability__specific_obligation",
+          4
+        ],
+        [
+          "civic__opposition",
+          4
+        ],
+        [
+          "civic__request",
+          4
+        ]
+      ]
+    },
+    "value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "0",
+          93
+        ],
+        [
+          "1",
+          47
+        ],
+        [
+          "unresolved",
+          4
+        ]
+      ]
+    },
+    "segments": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 93,
+      "distinct_nonmissing": 18,
+      "most_common": [
+        [
+          "s0004",
+          7
+        ],
+        [
+          "s0005",
+          7
+        ],
+        [
+          "s0001",
+          5
+        ],
+        [
+          "s0002",
+          5
+        ],
+        [
+          "s0008",
+          4
+        ]
+      ]
+    },
+    "quote": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 93,
+      "distinct_nonmissing": 46,
+      "most_common": [
+        [
+          "All lead based paint will be removed wherever it occurs.",
+          2
+        ],
+        [
+          "CB7Q RESTRICTIVE DECLARATIONS - AGREED BY DEVELOPER",
+          2
+        ],
+        [
+          "Ensure Department vehicles and employee vehicles park in and on property ONLY.",
+          2
+        ],
+        [
+          "The applicant will also provide street trees along the Gleason Avenue and Commerce Avenue frontages.",
+          2
+        ],
+        [
+          "concerns raised by the Board and the council member regarding recreational use within the PAA",
+          2
+        ]
+      ]
+    },
+    "reason": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 65,
+      "most_common": [
+        [
+          "Not established in the supplied report.",
+          48
+        ],
+        [
+          "No qualifying focal-project evidence in the supplied reports.",
+          25
+        ],
+        [
+          "No position, request, or concern is attributed to an individual City Council member or representative.",
+          6
+        ],
+        [
+          "No position or substantive request is attributed to an independent civic organization.",
+          3
+        ],
+        [
+          "No qualifying evidence in the supplied report.",
+          2
+        ]
+      ]
+    },
+    "quote_found": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          93
+        ],
+        [
+          "1",
+          51
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "source_scope": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "clear",
+          144
+        ]
+      ]
+    },
+    "scope_reason": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "All supplied segments concern the focal application and its related review.",
+          72
+        ],
+        [
+          "Focal parking permit, concurrent related rezoning report, and signed declaration concern the same proposed development; no material source-scope ambiguity.",
+          36
+        ],
+        [
+          "Segments s0001-s0005 are the focal Group III report. Segments s0006-s0017 are separately identified Group II and IV context reports; their distinct project events were excluded.",
+          36
+        ]
+      ]
+    }
+  }
+}

@@ -1,0 +1,182 @@
+{
+  "dataset": "cpc_subagent_repeat_v3.csv",
+  "rows": 105,
+  "key": [
+    "document_id",
+    "field"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "0963dda0a32dc0ced3a50280e14bb7035908f3fd9aeb45a82e0e8625eef9611b",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "0568137a2968387b992b",
+          35
+        ],
+        [
+          "5ff15b38926793e89ae6",
+          35
+        ],
+        [
+          "9c32b9eff5a407a7ce5f",
+          35
+        ]
+      ]
+    },
+    "field": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 35,
+      "most_common": [
+        [
+          "affordability",
+          3
+        ],
+        [
+          "affordability_displacement",
+          3
+        ],
+        [
+          "approved_unresolved_objection",
+          3
+        ],
+        [
+          "bp_request_or_opposition",
+          3
+        ],
+        [
+          "cb_opposition_votes",
+          3
+        ]
+      ]
+    },
+    "primary_reader": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "a",
+          35
+        ],
+        [
+          "b",
+          35
+        ],
+        [
+          "c",
+          35
+        ]
+      ]
+    },
+    "repeat_reader": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "a",
+          35
+        ],
+        [
+          "b",
+          35
+        ],
+        [
+          "c",
+          35
+        ]
+      ]
+    },
+    "primary_value": {
+      "python_types": [
+        "int",
+        "str"
+      ],
+      "missing": 3,
+      "distinct_nonmissing": 10,
+      "most_common": [
+        [
+          "0",
+          62
+        ],
+        [
+          "1",
+          25
+        ],
+        [
+          "none_or_procedural",
+          4
+        ],
+        [
+          "more",
+          3
+        ],
+        [
+          "none",
+          2
+        ]
+      ]
+    },
+    "repeat_value": {
+      "python_types": [
+        "int",
+        "str"
+      ],
+      "missing": 3,
+      "distinct_nonmissing": 10,
+      "most_common": [
+        [
+          "0",
+          62
+        ],
+        [
+          "1",
+          25
+        ],
+        [
+          "none_or_procedural",
+          4
+        ],
+        [
+          "none",
+          3
+        ],
+        [
+          "more",
+          2
+        ]
+      ]
+    },
+    "agreement": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "True",
+          96
+        ],
+        [
+          "False",
+          9
+        ]
+      ]
+    }
+  }
+}

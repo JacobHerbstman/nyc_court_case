@@ -1,0 +1,147 @@
+{
+  "dataset": "ulurp_cb_opposition_approval_cases.csv",
+  "rows": 181,
+  "key": ["outcome_stage", "document_id"],
+  "unique_nonmissing_key": true,
+  "md5_csv_bytes": "1ae0d5798e3d5d44eb3a92d2107f1a05",
+  "fingerprint_scope": "Saved CSV bytes, including row order; not proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 175
+    },
+    "application_number": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 175
+    },
+    "project_name": {
+      "type": "character",
+      "missing": 10,
+      "distinct_nonmissing": 150
+    },
+    "year": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 47,
+      "minimum": 1977,
+      "maximum": 2025
+    },
+    "action_code": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 14
+    },
+    "analysis_non_pp_flag": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 2
+    },
+    "analysis_zm_zr_zs_flag": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 2
+    },
+    "official_community_district": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 54
+    },
+    "cb_coding_source": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 2
+    },
+    "cb_support_votes": {
+      "type": "integer",
+      "missing": 48,
+      "distinct_nonmissing": 17,
+      "minimum": 0,
+      "maximum": 17
+    },
+    "cb_opposition_votes": {
+      "type": "integer",
+      "missing": 53,
+      "distinct_nonmissing": 32,
+      "minimum": 9,
+      "maximum": 46
+    },
+    "cpc_decision": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 4
+    },
+    "cpc_approved": {
+      "type": "integer",
+      "missing": 33,
+      "distinct_nonmissing": 2,
+      "minimum": 0,
+      "maximum": 1
+    },
+    "council_matter_file": {
+      "type": "character",
+      "missing": 56,
+      "distinct_nonmissing": 119
+    },
+    "council_decision_year": {
+      "type": "integer",
+      "missing": 56,
+      "distinct_nonmissing": 26,
+      "minimum": 1998,
+      "maximum": 2025
+    },
+    "council_disposition": {
+      "type": "character",
+      "missing": 56,
+      "distinct_nonmissing": 5
+    },
+    "council_approved": {
+      "type": "integer",
+      "missing": 59,
+      "distinct_nonmissing": 2,
+      "minimum": 0,
+      "maximum": 1
+    },
+    "official_pdf_url": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 175
+    },
+    "council_matter_url": {
+      "type": "character",
+      "missing": 56,
+      "distinct_nonmissing": 119
+    },
+    "cb_evidence": {
+      "type": "character",
+      "missing": 47,
+      "distinct_nonmissing": 127
+    },
+    "cpc_decision_evidence": {
+      "type": "character",
+      "missing": 27,
+      "distinct_nonmissing": 141
+    },
+    "period": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 3
+    },
+    "outcome_stage": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 2
+    },
+    "outcome_category": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 7
+    },
+    "review_reason": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 2
+    }
+  }
+}

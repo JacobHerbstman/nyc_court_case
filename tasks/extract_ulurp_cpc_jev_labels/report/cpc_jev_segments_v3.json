@@ -1,0 +1,347 @@
+{
+  "dataset": "cpc_jev_segments_v3.csv",
+  "rows": 38288,
+  "key": [
+    "document_id",
+    "segment_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "ea0d24bf7d271e14fbb6fd7a1b9eeea24ecdc155b145a5d277b6969d1a9a6f96",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4343,
+      "most_common": [
+        [
+          "cdddb93dc61ef9a30321",
+          162
+        ],
+        [
+          "2256c4207c42ec8e1e12",
+          142
+        ],
+        [
+          "430f7133bcb53576e66f",
+          142
+        ],
+        [
+          "6e1a82a9f99e3fe205a1",
+          142
+        ],
+        [
+          "becef76ad71d74633b6c",
+          142
+        ]
+      ]
+    },
+    "segment_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 162,
+      "most_common": [
+        [
+          "s0001",
+          4343
+        ],
+        [
+          "s0002",
+          4051
+        ],
+        [
+          "s0003",
+          2904
+        ],
+        [
+          "s0004",
+          2481
+        ],
+        [
+          "s0005",
+          2172
+        ]
+      ]
+    },
+    "source_document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4539,
+      "most_common": [
+        [
+          "d648f3aea1713af93752",
+          532
+        ],
+        [
+          "6e1a82a9f99e3fe205a1",
+          510
+        ],
+        [
+          "0054038024f32a4c7cf9",
+          312
+        ],
+        [
+          "b377d824cbb66c116213",
+          296
+        ],
+        [
+          "e40ecad2aae0cccec7be",
+          200
+        ]
+      ]
+    },
+    "source_application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4539,
+      "most_common": [
+        [
+          "N 090273A ZRK",
+          532
+        ],
+        [
+          "C 070531A ZSM",
+          510
+        ],
+        [
+          "C 060059 MMX",
+          312
+        ],
+        [
+          "C 030509 HUQ",
+          296
+        ],
+        [
+          "C 860777 ZSM",
+          200
+        ]
+      ]
+    },
+    "source_role": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "focal_report",
+          25844
+        ],
+        [
+          "context_companion",
+          10919
+        ],
+        [
+          "represented_related_action",
+          1345
+        ],
+        [
+          "verified_n_companion",
+          180
+        ]
+      ]
+    },
+    "pdf_page": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 131,
+      "most_common": [
+        [
+          "1",
+          6009
+        ],
+        [
+          "2",
+          5711
+        ],
+        [
+          "3",
+          4067
+        ],
+        [
+          "4",
+          3229
+        ],
+        [
+          "5",
+          2702
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 131
+    },
+    "page_start": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "0",
+          38288
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 0
+    },
+    "page_end": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3306,
+      "most_common": [
+        [
+          "15",
+          59
+        ],
+        [
+          "1536",
+          55
+        ],
+        [
+          "1673",
+          55
+        ],
+        [
+          "1473",
+          52
+        ],
+        [
+          "1739",
+          51
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 5707
+    },
+    "source_text_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4539,
+      "most_common": [
+        [
+          "1e49eb4154e418ae36b202ec3f63839e3d3554388f493ddb19ad907932ad601a",
+          532
+        ],
+        [
+          "b09088a642cf484814e9b44c7bbe2087b62ad4cd4221d4a219a722a6428fa741",
+          510
+        ],
+        [
+          "c5a32ef01baa62f9423dde3bde0e6509c36f4c266c7011e2cf33c8ceacbc9eaa",
+          312
+        ],
+        [
+          "9ebc2dca53051f329638bed8f2245488be3ddc2b33678c7a138c912467174c6f",
+          296
+        ],
+        [
+          "dd1ac92980002ac22e8843ed718a6fb415e900692e5ff7c60fb567bfa4c9a736",
+          200
+        ]
+      ]
+    },
+    "public_pdf_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4539,
+      "most_common": [
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/090273a.pdf",
+          532
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/070531a.pdf",
+          510
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/060059.pdf",
+          312
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/030509.pdf",
+          296
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/860777.pdf",
+          200
+        ]
+      ]
+    },
+    "text": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 27273,
+      "most_common": [
+        [
+          "Borough President City Planning Commission Recommendation 120 Broadway, 31st Floor, New York, NY 10271 Fax # (212) 720-3488 INSTRUCTIONS 1. Return this completed form with any attachments 2. Send one copy with any attachments to the Calendar Information Office, City Planning to the applicant’s representative as Commission, Room 2E at the above address. indicated on the Notice of Certification. Applications: C 180181 ZSM, C 180182 ZSM, and C 180183 ZSM Docket Description: IN THE MATTER OF an application submitted by Knickerbocker Plaza LLC to Sections 13-45, 13-455(a)(1), and 13-455(a)(2)(ii) of the New York City Charter for three special permits to increase parking spaces at the following locations: C 180181 ZSM 1. An increase of 98 parking spaces in an existing, accessory, unattended parking garage within Knickerbocker Plaza Garage located at 1749-1763 Second Avenue, Manhattan (Block 1537, Lot 22). The increase of 98 parking spaces will amount to a total of 202 parking spaces (35% of 578 Dwelling Units). C 180182 ZSM 1. An increase of 150 parking spaces in an existing, accessory, unattended parking garage within Ruppert Tower Garage located at 1601-1619 Third Avenue, Manhattan (Block 1536, Lot 7501). The increase of 150 parking spaces will amount to a total of 370 parking spaces (67% of 555 Dwelling Units). C 180183 ZSM 1. An increase of 205 parking spaces in an existing, accessory, unattended parking garage within Yorkville Tower Garage located at 1623-1641 Third Avenue, Manhattan (Block 1537, Lot 7501). The increase of 205 parking spaces will amount to a total of 506 parking spaces (71% of 709 Dwelling Units). Borough of Manhattan, Community District 5. (See Continued) COMMUNITY BOARD NO: 8 BOROUGH: Manhattan RECOMMENDATION APPROVE APPROVE WITH MODIFICATIONS/CONDITIONS (List below) DISAPPROVE X DISAPPROVE WITH MODIFICATIONS/CONDITONS (Listed below) EXPLANATION OF RECOMMENDATION – MODIFICATION/CONDITIONS (Attach additional sheets if necessary) See Attached _____________________________________________________ __2/4/2019______________ BOROUGH PRESIDENT DATE",
+          9
+        ],
+        [
+          "C 180181 ZSM, C 180182 ZSM, and C 180183 ZSM Cover Sheet – Page 2 of 2 C 180181 ZSM, C 180182 ZSM, and C 180183 ZSM Modifications/Conditions:  Significantly lower parking rates for residents of the respective buildings;  At least 10 electric vehicle charging stations in the Knickerbocker Plaza garage;  At least 20 electric vehicle charging stations in the Ruppert Tower garage;  At least 25 electric vehicle charging stations in the Yorkville Tower garage;  At least 10 spaces in the Knickerbocker Plaza garage be reserved for car-share services;  At least 50 bicycle spaces in the Ruppert Tower garage.",
+          9
+        ],
+        [
+          "CITY PLANNING COMMISSION C 790502 TLX March 12, 1980/ Calendar No. 56: Lease o6 City PAopeAty tocated at Fulton Avenue and East 166th Stteet, aeock.2608, Lot's 58,5_60 in-the BAonx, pumuant to Section 197-c o6 the New Voidz City Chattet, 6oA the constAuction 06 a puotic open apace 60t the bene6it o the community. An apptication by the DepaAtment o6 PaAhs 6oA the tease o6 this pAopetty ula.s Aeceived on June 25, 1979 and cotied by the City Panning Comma4ion on NovembeA 13, 1979. BACKGROUND INFORMATION The South Bronx Open Space Task Force has an active staff composed of community organizers, architects, landscape architects, and horticulturalists. Nine sites are curruntly being reviewed in accordance with the Uniform Land Use Review procedure. One of the nine sites and parts of two sites will become neighbor- hood land trusts, that is, will be owned by non-profit corporations, in the interests of all neighborhood residents. All designs are the result of parti- cipatory planning, based on prioritized community needs; all construction will be carried out by the community residents; and all future maintenance will be assumed by the responsible community. All other sites are City-owned and will be leased to the community group by the City. For a more detailed description of the proposal, including a list of community groups involved and summaries of the proposed leases, see CPC report C790495PLX, dated March 12, 1980. This application, C790502PLX, requests the lease of City-owned property, Block 2608, Lots 58 & 60, located at Fulton Avenue and East 166th Street in the Bronx, to the South Bronx Roots Community Association, for the development of community open space. The proposed site has already been cultivated as a gardening demonstration area. Some residents of the surrounding tenant-managed properties have planted individual plots as well as contributed to cultivation of a com- munal garden, all with considerable effort and minimal resources. The plans for this site include the continued introduction of new gardening techniques, with the aid of such technical assistance groups as the Cornell Extension Service and the Council on the Environment.",
+          9
+        ],
+        [
+          "CITY PLANNING COMMISSION March 12, 1980 / Calendar No. 50 C 790496A PLX C 790496B PLX Lease o6 pAopeAty tocate at &Auto Stuet etveen Spo6iond and Ran Avenues, Stock 2765, Lots 246 and 250 in the Stonx, putsuant to Section 197-c o6 the New VoAk City ChaAteA, Oit the conAtAuction o6 a pubZic open Apace 6o.t the ben- 1/42(iit oi the community. An apptication by the Vepaitineiv o PaAks licA the lease b'S this pAopetty Wa4 Aeceived on June 25, 1979 and cettitiied by the atyPeann-i.ng Commission on Novembelt 13, 1979. has an active staff composed of community The South Bronx Open Space Task Force and horticulturalists. Nine sites organizers, architects, landscape architects, with the Uniform Land Use Review are curruntly being reviewed in accordance sites will become neighbor- procedure. One of the nine sites and parts of two the owned by non-profit corporations, in hood land trusts, that is, will be All designs are the result of parti- interests of all neighborhood residents. community needs; all construction will cipatory planning, based on prioritized and all future maintenance will be be carried out by the community residents; All other sites are City-owned and will assumed by the responsible community. the City. be leased to the community group by For a more detailed description of the proposal, including a list of the leases, and summaries of the terms of the proposed community groups involved March 12, 1980. see CPC Report C790495PLX, dated This application (C790496 A/B PLX) involves a double action. Part A of the application requests the lease of Block 2765, Lot 246, which is City-owned, to the Barreto Street Community. Part B requests thTrivat ly-owned parcel, Block 2765, Lot 250 to the City. The planned use for these two lots is for the construction of an active recrea- tion area which will include two hard surfaced handball courts. The lots are part of a large-scale neighborhood revitalization strategy that includes a large community-owned garden and other similar recreation areas on nearby sites. Although the site is presently undeveloped, it has been maintained free of refuse for the past three years. COMMUNITY BOARD PUBLIC HEARING Bronx Community Board No.2 held a public hearing on this proposal on November 28, 1979 and madea favorable recommendation to the City Planning Commission.",
+          9
+        ],
+        [
+          "CITY PLANNING COMMISSION March 12, 1980/ Calendar No. 49 C 790495 PLX Lea4e o6 pnivate pnopetty tocated at East 168th StAeet and Washington Avenue (Bock 2372, Lot 20 in the Manx, by the City, pu4suant to Section 197-c o6 the New Yank City Chan-ten, On the con4tAucti.on oi a pubtic open pace The bene6it oi the community. An apptication by the Depattment oi Pank4 6oft the tease o6 th,i4 pAopetty was eceived on June 25, 1979 and centiiied by the City Rearming Commi.44ion on Novembet 13, 1979. BACKGROUND INFORMATION The South Bronx Open Space Task Force has an active staff composed of community organizers, architects, landscape architects, and horticulturalists. Nine sites are curruntly being reviewed in accordance with the Uniform Land Use Review procedure. One of the nine sites and parts of two sites will become neighbor- hood land trusts, that is, will be owned by non-profit corporations, in the interests of all neighborhood residents. All designs are the result of parti- cipatory planning, based on prioritized community needs; all construction will be carried out by the community residents; and all future maintenance will be assumed by the responsible community. All other sites are City-owned and will be leased to the community group by the City. Following is a list of the community groups involved with each of the sites: Unit Place (site community-owned. (Cr19045#5-F'LY) Barretto Street Community (site partly community-owned). (C.70/4, 6itlig pLX) The Rock Greening Association (site partly community-owned).(cicio497/r3pLx) Grand Avenue Community Association (cricioc.i. g. p Li) Bronx River Restoration. (c1 L4qciP Lx) Hoe Avenue Housing Development Fund Corporation. (c7cto 5-0 pLx) Banana Kelly Community Improvement Association. (C7/OSO/PLX South Bronx Roots. (C 790 o2. P Youth Village Park. Cc pq 03 LA) All of these sponsoring groups are, or will soon be, non-profit, tax exempt (501-(c) (3) corporations, with local residents forming the board of directors, membership and staff. Some of the above sites have already been partially devel- oped by community residents with very limited funds and assistance.",
+          9
+        ]
+      ]
+    },
+    "request_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5067,
+      "most_common": [
+        [
+          "0030ee4f2ff8b573da4d_part001",
+          20
+        ],
+        [
+          "003910e645d83630872e_part001",
+          20
+        ],
+        [
+          "003910e645d83630872e_part003",
+          20
+        ],
+        [
+          "0054038024f32a4c7cf9_part001",
+          20
+        ],
+        [
+          "0054038024f32a4c7cf9_part002",
+          20
+        ]
+      ]
+    }
+  }
+}

@@ -1,0 +1,378 @@
+{
+  "dataset": "cpc_jev_answers_v12.csv",
+  "rows": 1040,
+  "key": [
+    "request_id",
+    "field"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "3a959aa624da0b5471dbc9813198dbc8308c852d4eeb0937c555fbf3d24958ec",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 11,
+      "most_common": [
+        [
+          "26f03d0909c6323e9605",
+          325
+        ],
+        [
+          "e70fca539711f235a7ab",
+          130
+        ],
+        [
+          "28cc037f9056f9cd9141",
+          65
+        ],
+        [
+          "3d3e349c0ec6fa272928",
+          65
+        ],
+        [
+          "432d15e476c6bd58a1b0",
+          65
+        ]
+      ]
+    },
+    "condition": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "candidate",
+          528
+        ],
+        [
+          "original",
+          512
+        ]
+      ]
+    },
+    "request_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 32,
+      "most_common": [
+        [
+          "candidate__26f03d0909c6323e9605_part001",
+          33
+        ],
+        [
+          "candidate__26f03d0909c6323e9605_part002",
+          33
+        ],
+        [
+          "candidate__26f03d0909c6323e9605_part003",
+          33
+        ],
+        [
+          "candidate__26f03d0909c6323e9605_part004",
+          33
+        ],
+        [
+          "candidate__26f03d0909c6323e9605_part005",
+          33
+        ]
+      ]
+    },
+    "part": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "1",
+          715
+        ],
+        [
+          "2",
+          130
+        ],
+        [
+          "3",
+          65
+        ],
+        [
+          "4",
+          65
+        ],
+        [
+          "5",
+          65
+        ]
+      ]
+    },
+    "field": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 33,
+      "most_common": [
+        [
+          "affordability__adopted",
+          32
+        ],
+        [
+          "affordability__concern_request",
+          32
+        ],
+        [
+          "affordability__discussed",
+          32
+        ],
+        [
+          "civic__opposition",
+          32
+        ],
+        [
+          "civic__request",
+          32
+        ]
+      ]
+    },
+    "value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 264,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          532
+        ],
+        [
+          "1",
+          244
+        ]
+      ]
+    },
+    "probability_yes": {
+      "python_types": [
+        "float",
+        "str"
+      ],
+      "missing": 455,
+      "distinct_nonmissing": 83,
+      "most_common": [
+        [
+          "0.04",
+          77
+        ],
+        [
+          "0.05",
+          64
+        ],
+        [
+          "0.03",
+          48
+        ],
+        [
+          "0.06",
+          28
+        ],
+        [
+          "0.98",
+          21
+        ]
+      ]
+    },
+    "selected_segment_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 455,
+      "distinct_nonmissing": 37,
+      "most_common": [
+        [
+          "none",
+          418
+        ],
+        [
+          "s0002",
+          16
+        ],
+        [
+          "s0003",
+          14
+        ],
+        [
+          "s0005",
+          13
+        ],
+        [
+          "s0010",
+          13
+        ]
+      ]
+    },
+    "source_document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 873,
+      "distinct_nonmissing": 11,
+      "most_common": [
+        [
+          "26f03d0909c6323e9605",
+          89
+        ],
+        [
+          "b90e3062bee3abb7f35e",
+          22
+        ],
+        [
+          "a7b89b5b22c825f035e7",
+          14
+        ],
+        [
+          "28cc037f9056f9cd9141",
+          12
+        ],
+        [
+          "4663594bf497e636e685",
+          8
+        ]
+      ]
+    },
+    "pdf_page": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 873,
+      "distinct_nonmissing": 37,
+      "most_common": [
+        [
+          "5",
+          19
+        ],
+        [
+          "2",
+          16
+        ],
+        [
+          "3",
+          14
+        ],
+        [
+          "10",
+          13
+        ],
+        [
+          "1",
+          9
+        ]
+      ]
+    },
+    "evidence_text": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 873,
+      "distinct_nonmissing": 49,
+      "most_common": [
+        [
+          "Other speakers in favor included the Councilmember from the 43\"I District, the Chairperson of Community Board 10 and a member of Community Board 10. They stated that under the current zoning, the site could permit a movie theater and that this project represented a better use than a multiplex theater or any other commercial use. Speaking in opposition were representatives from the 70th Street Block Association, the Alliance for Block Association (in Bay Ridge), the Concerned Citizens of Bay Ridge, a gerontologist, an attorney who specializes in issues pertaining to the elderly, a church parish official, and other community residents. They stated opposition to the development's height, and streetwall length. They objected to such quality of life issues as the building's excessive interior corridor lengths and the distances to and lack of sufficient elevators. There was also testimony questioning how affordable the project would be to the area's elderly population. The Brooklyn Borough President's representative stated that an assisted living facility was an appropriate land use but that the excessive bulk would impact on light and air to nearby properties and did not blend harmoniously with the surrounding area. A representative of the State Senator from the 23rd District, opposed the proposed bulk and raised concern about the current zoning that allows for multiplex movie theater at this site. Additional speakers in opposition stated that previous amendments to the SBRD either adhered to the respective area heights or was more restrictive and that the underlying residential bulk 10 C 990218 ZSK",
+          13
+        ],
+        [
+          "obligated to accept any animal in need. A DOHMH representative stated that after a Request for Proposals is issued, the design process would take approximately 18 to 24 months, followed by a bidding process to select contractors, which would be expected to take approximately nine months. Two ASCPA representatives spoke in support, stating that the organization has been advocating for full-service animal shelters in all five boroughs for close to 20 years. Regarding concerns about the safety of residents and shoppers in the vicinity, they also stated that the Manhattan shelter is in close proximity to a school, several residential buildings, and a hotel, and that complaints about noise, safety, or cleanliness have not been an issue. The ASCPA speakers stated that full-service animal shelters provide vital community resources and do a significant amount of work to deliver social services to animal owners. They stated their belief that the Bronx is considered a “pet desert” that is lacking in pet services. Residents of Co-op City testified in support of the application. They stated that, despite the no-pet policy, many residents own pets, including emotional support and service animals, and other animals that were grandfathered prior to the enactment of the policy that restricts pet ownership. Advocates who spoke in favor of the shelter submitted 4,200 signatures from residents around New York City, and noted that 300 of the signatures were from Co-op City residents, demonstrating that there was support for the shelter within Co-op City. A speaker who identified as a Bronx resident and animal advocate spoke in support of the shelter noting that, in interacting with ACC’s full-service animal shelter in Manhattan, that she had not witnessed animals being dropped off outside of the shelter after hours and was not aware of concerns about cleanliness or noise. On the topic of transportation, the speaker stated that the proposed location is accessible via mass transit. Some Co-op City residents spoke in opposition to the application and stated that 2050 Bartow Avenue could be a potential site for a youth center to serve Co-op City residents. They stated that that a developer had shared a proposal to develop the vacant parcel at 2050 Bartow Avenue as housing with community facility space with the Community Board and Co-op City residents. They noted that the existing community center, located at 3750 Baychester Avenue, does not offer enough space for the broad range of programming the community needs. They also expressed 5 C 180346 PSX",
+          13
+        ],
+        [
+          "The Commission determines that residential zoning is not appropriate opposite the existing manufacturing zone across Boston Road. Rather, extension of that exist- ing manufacturing zone to include the site which is the subject of this report is appropriate and consistent with the development along Boston Road in this vicinity. However, to protect the existing residential area just northerly of the subject property, the Commission requires that development on this site shall be subject to all appropriate M1 regulations and to the following restrictions: uses must be fully enclosed within a building, except for accessory parking which may be open on Boston Road; a 15 foot side yard buffer must be provided between the existing R4 and the new M1-1 Districts in which no parking, loading or storage shall_ be permitted and which shall be tastefully landscaped through- out, such landscaping to include, at a distance of four feet from the existing R4 District line and running the entire length of the side yard, a screen consisting of at least one row of densely planted shrubs or trees which are at least four feet high at the time of planting and which are of a type which may be expected to form a year-round dense screen at least six feet high within three years; lighting of the above side yard must be shielded from the adjacent residential areas; no curb cuts shall be permitted on the side streets, Palmer and Boller Avenues;--.- front yards must be provided along Palmer and-Boller Avenues, hav- ing a width of at least four feet and screened with a dense ever- green planting as described in item (b), above; sidewalk tree plantings, properly installed and maintained, consis- ting of appropriate trees with a minimum caliper of 4 inches must be planted on centers of twenty feet, with gratings or other covers flush to grade and in at least 3.5 cubic yards of topsoil per tree with a minimum depth of soil of 3 feet 6 inches. The owner of the subject property has signed a restrictive declaration limit- above by the Commission. ing development of the property to the conditions indicated 3 C 830464 ZMX",
+          10
+        ],
+        [
+          "UNIFORM LAND USE REVIEW The application was certified as complete by the City Planning Commission on September 19, 1983 in accordance with Article 3 of the Uniform Land Use Re- view Procedure (ULURP) and was duly referred to Community Board No. 12. Community Board Public Hearing Community Board No. 12 held a public hearing on the application ( C 830464 ZMX) on October 17, 1983. On October 27, 1983 Community Board No. 12 unanimously recommended by a vote of 14-0 that this request for a zoning change be denied, however, a quorum was not present at the time of the voting. City Planning Commission Public Hearing On November 23, 1983 (Calendar No. 3) the Commission scheduled a public hearing on the proposed change. The hearing was duly held on December 7, 1983 (Calendar No. 26). Four speakers appeared at this time, 3 being in opposition and one, the applicant, in favor of the proposal. An opposing speaker, claiming that his view is shared by some 60 homeowners, stated that there are already too many used car dealers in the neighborhood and that while the proposed change is for the benefit of only one businessman, it will have a negative economic effect on the homeowners in the area. A second resident stated that there are already unsightly car dumps in the area. A third resident stated that the proposed used car lot is to be directly on Palmer Avenue in front-of the residences, rather than on Boston Road itself. In favor of the zoning change, the architect for the owner stated that the portion of the property under consideration will never be developed residentially and that a C-1 zone is not viable. He indicated that the owner would be-willing to buffer the site and locate use(s) in an enclosed building. CONSIDERATION The existing zoning on the subject property and the surrounding area includes a mixture of residential (R4), commercial (C8) and Manufacturing (M1-1). Boston Road, in the area which is the subject of this rezoning request (C 830464 ZMX) is a major thoroughfare developed with a mixture of light manufacturing and commercial uses; no residential development fronts on Boston Road in this area. 2 C 830464 ZMX",
+          10
+        ],
+        [
+          "for a residential development not greater than 60 feet in height on a zoning lot greater than 40,000 square feet located at the southwest corner of Bay Ridge Avenue and Narrows Avenue (Block 5868, Lots 12,21, 27 and 29), in the Midblock Preservation Area (Area A) within the Special Bay Ridge District, in a C2-3 District mapped within an R6.District, Borough of Brooklyn, Community District 10 is approved subject to the following conditions: This permit is conditioned upon the applicant obtaining approval from the MTA to have the bus stop relocated an appropriate distance from the curb cut. The applicant shall provide the Commission with documentation by the MTA of such relocation prior to applying to the Department of Buildings for a building permit. The property that is the subject of this application (C 990218 ZSK) shall be developed in size and arrangement substantially in accordance with the dimensions, specifications and zoning computations indicated on the following plans, prepared by Felix Tambasco, filed with this application and incorporated in this resolution: Drawing No. Title Last Date Revised A1.1 Site Plan September 11, 1999 A1.2 Elevation Plan September 11, 1999 The building facade including recesses, the outer court, window treatment, materials, front and rear yards and landscaping and furniture shall be developed, constructed and planted substantially in accordance with Drawings No. A1.1 and A1.2. 18 C 990218 ZSK",
+          9
+        ]
+      ]
+    },
+    "evidence_conflict": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          1011
+        ],
+        [
+          "1",
+          29
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "reused",
+          448
+        ],
+        [
+          "successful",
+          329
+        ],
+        [
+          "failed",
+          263
+        ]
+      ]
+    },
+    "request_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 32,
+      "most_common": [
+        [
+          "0a8bf8357d4d19c9df817b0f50c89f2e1e1c26c394044d0a972e9436685cbe9f",
+          33
+        ],
+        [
+          "2a5e4ff0140e17722221b5d67a83d2eb1412ece4ee43f86ddb44512f94af66da",
+          33
+        ],
+        [
+          "471117d6833f2d3cd6e5b864f2a4fe16d5672fbe91be3b7b0250c74b61875dce",
+          33
+        ],
+        [
+          "49dc3c18b4915613ea033f5256a0511ba2175883fb9209570f2eb7d6fdfb3a7f",
+          33
+        ],
+        [
+          "4b6573697b2dbfd8aa815f928885be01d0a88ff8bdf3c777c1a545632225e57d",
+          33
+        ]
+      ]
+    }
+  }
+}

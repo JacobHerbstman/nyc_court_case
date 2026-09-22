@@ -8,42 +8,15 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 
-# setwd("tasks/audits/audit_official_ulurp_cpc_text_measurement/code")
+# setwd("/Users/jacobherbstman/Desktop/nyc_court_case/tasks/audits/audit_official_ulurp_cpc_text_measurement/code")
 # start_year = 1975
 # end_year = 2025
 # documents_per_decade = 100
 
 
-RESOLUTION_HEADING = re.compile(
-    r"(?im)^[ \t\f]*RESOLVED(?:[ \t]*,|[ \t]+BY\b|[ \t]+THAT\b).*$"
-)
-FILING_PARAGRAPH = re.compile(
-    r"(?is)(?:the[ \t\r\n]+(?:above|foregoing)[ \t\r\n]+resol\w*|"
-    r"the[ \t\r\n]+resol\w*[ \t\r\n]*\([^)]{1,80}\))"
-    r".{0,1600}?(?:is[ \t\r\n]+)?(?:hereby[ \t\r\n]+|herewith[ \t\r\n]+)?"
-    r"(?:filed|fuled|tiled|ffled)"
-)
-ANCHOR_HEADING = re.compile(
-    r"(?im)^[ \t\f]*(?:CONSIDERATION|FINDINGS(?:[ \t]+AND[ \t]+(?:APPROVAL|RECOMMENDATIONS?))?|"
-    r"UNIFORM[ \t]+LAND[ \t]+USE[ \t]+REVIEW(?:[ \t]+PROCEDURE)?)[ \t]*:?\s*$"
-)
-PAGE_HEADER = re.compile(
-    r"(?i)^\s*(?:page\s+)?\d+\s+(?:C\s*)?\d{6}(?:\s*\([A-Z]\))?\s*[A-Z]{2,4}\s*$"
-)
-COMMISSION_SIGNATURE = re.compile(
-    r"(?im)^[ \t\f]*[A-Z][A-Za-z.'-]+(?:[ \t]+[A-Z][A-Za-z.'-]+){1,5},?[ \t]+"
-    r"(?:Chair|Chairman|Chairperson|Vice[- ]?Chairman|Vice[- ]?Chairperson)\b.*$",
-    re.IGNORECASE | re.MULTILINE,
-)
-ADOPTED_RESOLUTION = re.compile(
-    r"(?is)(?:city[ \t\r\n]+planning[ \t\r\n]+commission|the[ \t\r\n]+commission)"
-    r".{0,260}?(?:adopts?|adopted).{0,80}?(?:following[ \t\r\n]+)?resol\w*"
-)
-MANUAL_EXCLUSION_METHODS = {
-    "exclude_incomplete_source",
-    "exclude_supplemental_statement_without_main_report",
-    "exclude_related_action_covered_by_companion",
-}
+sys.path.insert(0, "../../../_lib")
+from cpc_narratives import MANUAL_EXCLUSION_METHODS, narrative_boundary, normalize_narrative, project_review_key
+from data_reports import save_csv
 
 
 def clean_text(value):
@@ -57,57 +30,6 @@ def resolve_task_path(raw_path, manifest_real_path):
     if path.is_absolute():
         return path
     return manifest_real_path.parent.parent / "code" / path
-
-
-def write_csv(rows, fieldnames, path):
-    with Path(path).open("w", newline="", encoding="utf-8") as output_file:
-        writer = csv.DictWriter(output_file, fieldnames=fieldnames, extrasaction="ignore")
-        writer.writeheader()
-        writer.writerows(rows)
-
-
-def narrative_boundary(text):
-    anchor_matches = list(ANCHOR_HEADING.finditer(text))
-    if anchor_matches and anchor_matches[0].start() < 0.75 * len(text):
-        anchor = anchor_matches[0].start()
-    else:
-        anchor = min(500, len(text))
-    resolution_matches = [match for match in RESOLUTION_HEADING.finditer(text) if match.start() > anchor]
-    if resolution_matches:
-        return resolution_matches[0].start(), "resolution_heading"
-
-    filing_matches = [match for match in FILING_PARAGRAPH.finditer(text) if match.start() > anchor]
-    if filing_matches:
-        return filing_matches[0].start(), "filing_paragraph"
-
-    adopted_resolution_matches = [
-        match for match in ADOPTED_RESOLUTION.finditer(text) if match.start() > anchor
-    ]
-    if adopted_resolution_matches:
-        return adopted_resolution_matches[0].start(), "adopted_resolution_paragraph"
-
-    signature_matches = [match for match in COMMISSION_SIGNATURE.finditer(text) if match.start() > anchor]
-    if signature_matches:
-        return signature_matches[0].start(), "commission_signature"
-
-    return len(text), "full_text_no_boundary_found"
-
-
-def normalize_narrative(text):
-    kept_lines = []
-    for line in text.replace("\f", "\n").splitlines():
-        stripped = line.strip()
-        if not stripped or re.fullmatch(r"[_\-]{10,}", stripped):
-            continue
-        if PAGE_HEADER.fullmatch(stripped):
-            continue
-        kept_lines.append(stripped)
-    return re.sub(r"\s+", " ", " ".join(kept_lines)).strip().lower()
-
-
-def normalized_project_name(value):
-    normalized = re.sub(r"[^a-z0-9]+", " ", clean_text(value).lower()).strip()
-    return re.sub(r"\bsize\s+\d+(?:\s+\d+)?\s+mb\b", "", normalized).strip()
 
 
 def stable_hash(*values):
@@ -205,10 +127,10 @@ for source_row in source_rows:
         normalized_text = ""
         narrative_word_count = 0
         narrative_hash = ""
-    project_name_key = normalized_project_name(source_row["official_project_name"])
     lead_group_key = (
-        f"{source_row['official_vote_date']}|{project_name_key}"
-        if source_usable and project_name_key
+        project_review_key(source_row['official_vote_date'], source_row['zap_project_ids'], source_row['official_project_name'])
+        if source_usable
+        and source_row["corpus_role"] != "related_project_narrative_companion"
         else ""
     )
 
@@ -297,6 +219,7 @@ eligible_rows = [
     row
     for row in rows
     if row["document_id"] not in related_to_lead
+    and row["corpus_role"] != "related_project_narrative_companion"
     and row["narrative_boundary_method"] != "full_text_no_boundary_found"
     and row["narrative_boundary_method"] not in MANUAL_EXCLUSION_METHODS
     and int(row["narrative_word_count"]) >= 100
@@ -314,11 +237,17 @@ for narrative_hash, group_rows in exact_groups.items():
         )
     )
     representative = group_rows[0]["application_number"]
+    group_flags = {field: str(any(row[field] == "TRUE" for row in group_rows)).upper()
+                   for field in ("analysis_non_pp_flag", "analysis_zm_zr_zs_flag")}
     for row in group_rows:
+        row.update(group_flags)
         row["exact_narrative_group_size"] = len(group_rows)
         exact_representative[row["document_id"]] = representative
 
 for row in rows:
+    if row["corpus_role"] == "related_project_narrative_companion":
+        row["analysis_narrative_unit_reason"] = "verified_context_companion"
+        continue
     if row["narrative_boundary_method"] == "documented_source_unavailable":
         row["analysis_narrative_unit_reason"] = "documented_source_unavailable"
         continue
@@ -389,10 +318,11 @@ manifest_fieldnames = [
     "analysis_non_pp_flag",
     "analysis_zm_zr_zs_flag",
 ]
-write_csv(
-    rows,
+save_csv(
+    [{field: row[field] for field in manifest_fieldnames} for row in rows],
     manifest_fieldnames,
     "../output/official_ulurp_cpc_narrative_manifest.csv",
+    ["document_id"],
 )
 
 analysis_rows = [row for row in rows if row["analysis_narrative_unit_flag"] == "TRUE"]
@@ -427,15 +357,21 @@ for decade, decade_rows in sorted(by_decade.items()):
         )
 
 sample_fieldnames = list(sample_rows[0].keys())
-write_csv(
+save_csv(
     sample_rows,
     sample_fieldnames,
     "../output/official_ulurp_cpc_narrative_boundary_sample.csv",
+    ["sample_id"],
 )
 
 boundary_counts = Counter(row["narrative_boundary_method"] for row in rows)
 reason_counts = Counter(row["analysis_narrative_unit_reason"] for row in rows)
 summary_rows = [
+    {
+        "metric": "verified_n_companion_sources",
+        "value": reason_counts["verified_context_companion"],
+        "note": "Explicitly linked N sources supply context without adding independent narratives.",
+    },
     {
         "metric": "official_source_rows",
         "value": len(rows),
@@ -551,10 +487,11 @@ for decade in sorted(by_decade):
         }
     )
 
-write_csv(
+save_csv(
     summary_rows,
     ["metric", "value", "note"],
     "../output/official_ulurp_cpc_text_measurement_summary.csv",
+    ["metric"],
 )
 
 print(

@@ -6,7 +6,7 @@
     "project_status"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "a1dcd6f4b304fdf4e7202c377e4b6f95d5603e8d909ae9970825210a85ce20f0",
+  "sha256_csv_bytes": "c7d812dfaf4e8fea62862b1513e12c2b851d45e33db5b68838a6848805ea7072",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "ulurp_scope": {
@@ -145,12 +145,12 @@
           1
         ],
         [
-          "29",
+          "38",
           1
         ]
       ],
       "minimum": 0,
-      "maximum": 9420
+      "maximum": 9421
     },
     "has_bulk_ulurp_number": {
       "python_types": [

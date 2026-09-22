@@ -1,0 +1,361 @@
+{
+  "dataset": "cpc_sol_expansion_comparison_v3.csv",
+  "rows": 200,
+  "key": [
+    "document_id",
+    "field",
+    "variant"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "6736b5e67024ee70347176e18a202d679f784af1653e524dace4e701af21fbcf",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 20,
+      "most_common": [
+        [
+          "02c18c0a3b85fce07355",
+          10
+        ],
+        [
+          "06c90a5bde6a4a3cadd7",
+          10
+        ],
+        [
+          "180f2f3d15c99c5ab311",
+          10
+        ],
+        [
+          "1818edbd692337c3eeeb",
+          10
+        ],
+        [
+          "42bb40d7172d1fb33d15",
+          10
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 20,
+      "most_common": [
+        [
+          "C 040270 ZMM",
+          10
+        ],
+        [
+          "C 050145 ZMR",
+          10
+        ],
+        [
+          "C 060272 ZMK",
+          10
+        ],
+        [
+          "C 060335 ZMX",
+          10
+        ],
+        [
+          "C 070065 ZMQ",
+          10
+        ]
+      ]
+    },
+    "selection_group": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "civic_opposition",
+          40
+        ],
+        [
+          "council_support",
+          40
+        ],
+        [
+          "long_issue_any_actor",
+          40
+        ],
+        [
+          "random_remainder",
+          40
+        ],
+        [
+          "civic_support",
+          20
+        ]
+      ]
+    },
+    "field": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "affordability_displacement",
+          40
+        ],
+        [
+          "environment_open_space",
+          40
+        ],
+        [
+          "infrastructure_services",
+          40
+        ],
+        [
+          "scale_character_preservation",
+          40
+        ],
+        [
+          "traffic_parking",
+          40
+        ]
+      ]
+    },
+    "variant": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "concern_only",
+          100
+        ],
+        [
+          "concern_or_obligation",
+          100
+        ]
+      ]
+    },
+    "value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          107
+        ],
+        [
+          "0",
+          93
+        ]
+      ]
+    },
+    "original_reference": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 4,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          102
+        ],
+        [
+          "1",
+          94
+        ]
+      ]
+    },
+    "jacob_reference": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 70,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          74
+        ],
+        [
+          "0",
+          56
+        ]
+      ]
+    },
+    "tyler_reference": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 120,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          54
+        ],
+        [
+          "1",
+          26
+        ]
+      ]
+    },
+    "human_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "single_human_coder",
+          190
+        ],
+        [
+          "human_agreement",
+          6
+        ],
+        [
+          "coder_disagreement",
+          4
+        ]
+      ]
+    },
+    "original_raw": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 4,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          102
+        ],
+        [
+          "1",
+          94
+        ]
+      ]
+    },
+    "jacob_raw": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 70,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          74
+        ],
+        [
+          "0",
+          56
+        ]
+      ]
+    },
+    "tyler_raw": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 120,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          54
+        ],
+        [
+          "1",
+          26
+        ]
+      ]
+    },
+    "jacob_complete": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 70,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "1",
+          130
+        ]
+      ]
+    },
+    "tyler_complete": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 120,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "1",
+          80
+        ]
+      ]
+    },
+    "jacob_notes": {
+      "python_types": [],
+      "missing": 200,
+      "distinct_nonmissing": 0,
+      "most_common": []
+    },
+    "tyler_notes": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 140,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "Bring existing use of land into conformance with zoning code",
+          10
+        ],
+        [
+          "Change in grade of road",
+          10
+        ],
+        [
+          "Developer modified project in advance of required conditions",
+          10
+        ],
+        [
+          "Proposal to build a bank, conditioned on remediating soil.",
+          10
+        ],
+        [
+          "Rezoning to allow manufacturing use, not controversial, some conditions added. BP and CB want say over new uses",
+          10
+        ]
+      ]
+    },
+    "coding_source_check": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "identifier_match_only_no_original_text_hash",
+          200
+        ]
+      ]
+    }
+  }
+}

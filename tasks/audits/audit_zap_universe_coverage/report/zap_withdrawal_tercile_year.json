@@ -1,0 +1,57 @@
+{
+  "dataset": "zap_withdrawal_tercile_year.csv",
+  "rows": 204,
+  "key": ["year", "tercile"],
+  "unique_nonmissing_key": true,
+  "md5_csv_bytes": "5ce1c69fbd0771fd74caabcb389b23a8",
+  "fingerprint_scope": "Saved CSV bytes, including row order; not proof of source correctness.",
+  "columns": {
+    "year": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 51,
+      "minimum": 1975,
+      "maximum": 2025
+    },
+    "tercile": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 4
+    },
+    "projects": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 104,
+      "minimum": 0,
+      "maximum": 365
+    },
+    "withdrawn": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 30,
+      "minimum": 0,
+      "maximum": 47
+    },
+    "terminated": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "minimum": 0,
+      "maximum": 6
+    },
+    "withdrawn_share": {
+      "type": "numeric",
+      "missing": 8,
+      "distinct_nonmissing": 118,
+      "minimum": 0,
+      "maximum": 0.45
+    },
+    "withdrawn_terminated_share": {
+      "type": "numeric",
+      "missing": 8,
+      "distinct_nonmissing": 124,
+      "minimum": 0,
+      "maximum": 0.5
+    }
+  }
+}

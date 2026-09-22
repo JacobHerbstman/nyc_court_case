@@ -1,0 +1,119 @@
+{
+  "dataset": "ulurp_cb_opposition_transition.csv",
+  "rows": 374,
+  "key": ["analysis_unit", "sample", "grouping", "homeowner_group_label", "council_decision_year"],
+  "unique_nonmissing_key": true,
+  "md5_csv_bytes": "de671456facfb2c3efdc5a8ae7c0b112",
+  "fingerprint_scope": "Saved CSV bytes, including row order; not proof of source correctness.",
+  "columns": {
+    "analysis_unit": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 2
+    },
+    "sample": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 3
+    },
+    "grouping": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 2
+    },
+    "homeowner_group_label": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 4
+    },
+    "era": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 3
+    },
+    "era_start_year": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "minimum": 1998,
+      "maximum": 2010
+    },
+    "era_end_year": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "minimum": 2001,
+      "maximum": 2025
+    },
+    "council_decision_year": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 28,
+      "minimum": 1998,
+      "maximum": 2025
+    },
+    "weighted_matched_applications": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 60,
+      "minimum": 0.2,
+      "maximum": 46
+    },
+    "weighted_cb_opposed_applications": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 0.2,
+      "maximum": 38
+    },
+    "weighted_approved_applications": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 57,
+      "minimum": 0,
+      "maximum": 38
+    },
+    "weighted_disapproved_applications": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "minimum": 0,
+      "maximum": 4
+    },
+    "weighted_filed_or_withdrawn_applications": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "minimum": 0,
+      "maximum": 4
+    },
+    "weighted_end_session_unresolved_applications": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "minimum": 0,
+      "maximum": 8
+    },
+    "approval_share": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 43,
+      "minimum": 0,
+      "maximum": 1
+    },
+    "disapproval_share": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 29,
+      "minimum": 0,
+      "maximum": 1
+    },
+    "filed_or_withdrawn_share": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 34,
+      "minimum": 0,
+      "maximum": 1
+    }
+  }
+}

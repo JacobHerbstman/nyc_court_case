@@ -1,0 +1,945 @@
+{
+  "dataset": "ulurp_cpc_report_manifest.csv",
+  "rows": 11314,
+  "key": [
+    "document_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "d03fac03df0b2f9e3f11fb581049499cd744e8acb22f5d4befc180955fe7d87a",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 11314,
+      "most_common": [
+        [
+          "C 000002 ZSM",
+          1
+        ],
+        [
+          "C 000012 ZSR",
+          1
+        ],
+        [
+          "C 000013 ZSR",
+          1
+        ],
+        [
+          "C 000014 ZSR",
+          1
+        ],
+        [
+          "C 000016A ZSR",
+          1
+        ]
+      ]
+    },
+    "official_index_application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 111,
+      "distinct_nonmissing": 11203,
+      "most_common": [
+        [
+          "800670 PPK",
+          1
+        ],
+        [
+          "C 000002 ZSM",
+          1
+        ],
+        [
+          "C 000012 ZSR",
+          1
+        ],
+        [
+          "C 000013 ZSR",
+          1
+        ],
+        [
+          "C 000014 ZSR",
+          1
+        ]
+      ]
+    },
+    "application_key": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 11314,
+      "most_common": [
+        [
+          "000002ZSM",
+          1
+        ],
+        [
+          "000012ZSR",
+          1
+        ],
+        [
+          "000013ZSR",
+          1
+        ],
+        [
+          "000014ZSR",
+          1
+        ],
+        [
+          "000016AZSR",
+          1
+        ]
+      ]
+    },
+    "action_code": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 35,
+      "most_common": [
+        [
+          "PP",
+          3240
+        ],
+        [
+          "ZS",
+          1502
+        ],
+        [
+          "ZM",
+          1494
+        ],
+        [
+          "HD",
+          908
+        ],
+        [
+          "MM",
+          764
+        ]
+      ]
+    },
+    "corpus_role": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "certified_ulurp_report",
+          11258
+        ],
+        [
+          "related_project_narrative_lead",
+          36
+        ],
+        [
+          "related_project_narrative_companion",
+          20
+        ]
+      ]
+    },
+    "source_usable": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "TRUE",
+          11208
+        ],
+        [
+          "FALSE",
+          106
+        ]
+      ]
+    },
+    "official_index_row_flag": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "TRUE",
+          11203
+        ],
+        [
+          "FALSE",
+          111
+        ]
+      ]
+    },
+    "official_project_name": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 1952,
+      "distinct_nonmissing": 6903,
+      "most_common": [
+        [
+          "C-O-P",
+          906
+        ],
+        [
+          "Lda",
+          30
+        ],
+        [
+          "Hra Boarding Home",
+          21
+        ],
+        [
+          "Culver El",
+          16
+        ],
+        [
+          "Metrotech",
+          13
+        ]
+      ]
+    },
+    "official_community_district": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 5,
+      "distinct_nonmissing": 231,
+      "most_common": [
+        [
+          "MN 02",
+          420
+        ],
+        [
+          "BK 01",
+          410
+        ],
+        [
+          "BK 02",
+          391
+        ],
+        [
+          "SI 03",
+          372
+        ],
+        [
+          "BK 05",
+          325
+        ]
+      ]
+    },
+    "official_index_vote_date": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 111,
+      "distinct_nonmissing": 1531,
+      "most_common": [
+        [
+          "08/12/1981",
+          79
+        ],
+        [
+          "12/23/1980",
+          77
+        ],
+        [
+          "10/06/1982",
+          71
+        ],
+        [
+          "03/23/1983",
+          58
+        ],
+        [
+          "07/25/1984",
+          56
+        ]
+      ]
+    },
+    "official_vote_date": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1547,
+      "most_common": [
+        [
+          "08/12/1981",
+          79
+        ],
+        [
+          "12/23/1980",
+          77
+        ],
+        [
+          "10/06/1982",
+          71
+        ],
+        [
+          "03/23/1983",
+          58
+        ],
+        [
+          "07/25/1984",
+          56
+        ]
+      ]
+    },
+    "official_vote_year": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 50,
+      "most_common": [
+        [
+          "1981",
+          722
+        ],
+        [
+          "1982",
+          714
+        ],
+        [
+          "1980",
+          579
+        ],
+        [
+          "1983",
+          575
+        ],
+        [
+          "1984",
+          497
+        ]
+      ],
+      "minimum": 1976,
+      "maximum": 2025
+    },
+    "official_lead_report_flag": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "FALSE",
+          10641
+        ],
+        [
+          "TRUE",
+          673
+        ]
+      ]
+    },
+    "official_pdf_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 105,
+      "distinct_nonmissing": 11205,
+      "most_common": [
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/140132.pdf",
+          4
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/080533.pdf",
+          2
+        ],
+        [
+          "https://www.nyc.gov/assets/planning/download/pdf/about/cpc/090125.pdf",
+          1
+        ],
+        [
+          "https://www.nyc.gov/assets/planning/download/pdf/about/cpc/150196.pdf",
+          1
+        ],
+        [
+          "https://www.nyc.gov/assets/planning/download/pdf/about/cpc/150197.pdf",
+          1
+        ]
+      ]
+    },
+    "resolved_pdf_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 106,
+      "distinct_nonmissing": 11193,
+      "most_common": [
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/821188.pdf",
+          12
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/140132.pdf",
+          4
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/770266.pdf",
+          2
+        ],
+        [
+          "https://www.nyc.gov/assets/planning/download/pdf/about/cpc/010653.pdf",
+          1
+        ],
+        [
+          "https://www.nyc.gov/assets/planning/download/pdf/about/cpc/060066.pdf",
+          1
+        ]
+      ]
+    },
+    "source_correction_type": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 11160,
+      "distinct_nonmissing": 13,
+      "most_common": [
+        [
+          "index_omission_source_unavailable",
+          105
+        ],
+        [
+          "action_code_correction",
+          20
+        ],
+        [
+          "link_correction",
+          12
+        ],
+        [
+          "index_omission_addition",
+          6
+        ],
+        [
+          "prefix_correction",
+          3
+        ]
+      ]
+    },
+    "source_correction_reason": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 11160,
+      "distinct_nonmissing": 137,
+      "most_common": [
+        [
+          "The raw PDF is only the later Board of Estimate resolution; 821188.pdf is the CPC report for C 821188-200 PPK.",
+          11
+        ],
+        [
+          "Council introduced this Section 197-c ULURP referral on January 22, 1998. The referral immediately followed the January 21 CPC meeting, the only CPC vote meeting between the surrounding January 7 and February 4 indexed reports. No DCP index row or public report file exists.",
+          3
+        ],
+        [
+          "The ZAP project API records a completed CPC vote on January 22, 1990 with outcome Fail to Adopt. The action is absent from the DCP CPC Reports index, and no authentic CPC report is posted at the DCP or ZAP public document routes. Evidence: https://zap-api-production.herokuapp.com/projects/P1990K0009?include=actions,milestones",
+          3
+        ],
+        [
+          "Council introduced this Section 197-c ULURP referral on April 10, 2002. Other applications in the same referral cohort state that CPC voted April 3 and filed decisions April 9. No DCP index row or public report file exists.",
+          2
+        ],
+        [
+          "The ZAP project API records a completed CPC vote on January 8, 2001 with outcome Fail to Adopt. The action is absent from the DCP CPC Reports index, and no authentic CPC report is posted at the DCP or ZAP public document routes. Evidence: https://zap-api-production.herokuapp.com/projects/P1999K0430?include=actions,milestones",
+          2
+        ]
+      ]
+    },
+    "official_report_stem": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 11310,
+      "most_common": [
+        [
+          "140132",
+          4
+        ],
+        [
+          "080533",
+          2
+        ],
+        [
+          "000002",
+          1
+        ],
+        [
+          "000012",
+          1
+        ],
+        [
+          "000013",
+          1
+        ]
+      ]
+    },
+    "zap_project_ids": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 521,
+      "distinct_nonmissing": 9520,
+      "most_common": [
+        [
+          "P2010K0210",
+          16
+        ],
+        [
+          "P2004K0140",
+          13
+        ],
+        [
+          "2019Y0061",
+          11
+        ],
+        [
+          "P1986K0168",
+          10
+        ],
+        [
+          "P2012M0292",
+          10
+        ]
+      ]
+    },
+    "zap_project_names": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 1726,
+      "distinct_nonmissing": 6504,
+      "most_common": [
+        [
+          "C-O-P",
+          875
+        ],
+        [
+          "DISPOSITION OF CITY-OWNED PROPERTY",
+          363
+        ],
+        [
+          "SALE OF CITY-OWNED PROPERTY",
+          190
+        ],
+        [
+          "LDA",
+          30
+        ],
+        [
+          "METROTECH",
+          20
+        ]
+      ]
+    },
+    "zap_ulurp_groups": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 523,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "ULURP",
+          10742
+        ],
+        [
+          "Non-ULURP",
+          49
+        ]
+      ]
+    },
+    "pdf_source": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 106,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "official_cpc_index_download",
+          11202
+        ],
+        [
+          "verified_index_omission_download",
+          6
+        ]
+      ]
+    },
+    "download_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "downloaded_official_index",
+          11208
+        ],
+        [
+          "known_source_unavailable",
+          106
+        ]
+      ]
+    },
+    "download_error": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 11208,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "No authentic CPC report is posted in the DCP index, direct report route, or ZAP public document route.",
+          91
+        ],
+        [
+          "No authentic CPC report is posted in the DCP index or ZAP public document routes.",
+          13
+        ],
+        [
+          "The Commission failed to adopt the favorable report; no authentic CPC report is posted in the DCP index or public document routes.",
+          1
+        ],
+        [
+          "The DCP index identifies the April 16, 1984 C 840260 ZMM report, but 840260.pdf now contains the January 22, 2020 M 840260(F) LDM modification. Council and DCP records verify the original certified action, but no authentic CPC report PDF was recovered.",
+          1
+        ]
+      ]
+    },
+    "local_pdf_path": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 106,
+      "distinct_nonmissing": 11208,
+      "most_common": [
+        [
+          "../output/cpc_report_pdfs/000002_000002ZSM.pdf",
+          1
+        ],
+        [
+          "../output/cpc_report_pdfs/000012_000012ZSR.pdf",
+          1
+        ],
+        [
+          "../output/cpc_report_pdfs/000013_000013ZSR.pdf",
+          1
+        ],
+        [
+          "../output/cpc_report_pdfs/000014_000014ZSR.pdf",
+          1
+        ],
+        [
+          "../output/cpc_report_pdfs/000016a_000016AZSR.pdf",
+          1
+        ]
+      ]
+    },
+    "text_method": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 106,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "pdftotext",
+          9032
+        ],
+        [
+          "partial_page_ocr",
+          2175
+        ],
+        [
+          "full_document_ocr",
+          1
+        ]
+      ]
+    },
+    "text_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "text_extracted",
+          11208
+        ],
+        [
+          "text_unavailable",
+          106
+        ]
+      ]
+    },
+    "text_error": {
+      "python_types": [],
+      "missing": 11314,
+      "distinct_nonmissing": 0,
+      "most_common": []
+    },
+    "text_word_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4647,
+      "most_common": [
+        [
+          "0",
+          106
+        ],
+        [
+          "583",
+          23
+        ],
+        [
+          "948",
+          22
+        ],
+        [
+          "1000",
+          19
+        ],
+        [
+          "4347",
+          19
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 141915
+    },
+    "text_char_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 8483,
+      "most_common": [
+        [
+          "0",
+          106
+        ],
+        [
+          "209373",
+          18
+        ],
+        [
+          "248481",
+          18
+        ],
+        [
+          "63662",
+          18
+        ],
+        [
+          "10932",
+          17
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 4887502
+    },
+    "local_text_path": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 106,
+      "distinct_nonmissing": 11208,
+      "most_common": [
+        [
+          "../output/cpc_report_text/000002_000002ZSM.txt",
+          1
+        ],
+        [
+          "../output/cpc_report_text/000012_000012ZSR.txt",
+          1
+        ],
+        [
+          "../output/cpc_report_text/000013_000013ZSR.txt",
+          1
+        ],
+        [
+          "../output/cpc_report_text/000014_000014ZSR.txt",
+          1
+        ],
+        [
+          "../output/cpc_report_text/000016a_000016AZSR.txt",
+          1
+        ]
+      ]
+    },
+    "pdf_page_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 106,
+      "distinct_nonmissing": 149,
+      "most_common": [
+        [
+          "2",
+          1677
+        ],
+        [
+          "3",
+          1212
+        ],
+        [
+          "4",
+          781
+        ],
+        [
+          "6",
+          699
+        ],
+        [
+          "5",
+          621
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 418
+    },
+    "partial_ocr_pages": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 9138,
+      "distinct_nonmissing": 615,
+      "most_common": [
+        [
+          "6",
+          78
+        ],
+        [
+          "3",
+          69
+        ],
+        [
+          "7",
+          67
+        ],
+        [
+          "2",
+          57
+        ],
+        [
+          "4",
+          54
+        ]
+      ]
+    },
+    "skipped_ocr_pages": {
+      "python_types": [],
+      "missing": 11314,
+      "distinct_nonmissing": 0,
+      "most_common": []
+    },
+    "short_text_pages_after_ocr": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 10023,
+      "distinct_nonmissing": 259,
+      "most_common": [
+        [
+          "6",
+          87
+        ],
+        [
+          "8",
+          81
+        ],
+        [
+          "4",
+          64
+        ],
+        [
+          "7",
+          64
+        ],
+        [
+          "9",
+          64
+        ]
+      ]
+    },
+    "main_report_resolution_page": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 2044,
+      "distinct_nonmissing": 83,
+      "most_common": [
+        [
+          "2",
+          2160
+        ],
+        [
+          "3",
+          1129
+        ],
+        [
+          "4",
+          1064
+        ],
+        [
+          "5",
+          968
+        ],
+        [
+          "1",
+          804
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 126
+    },
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 11314,
+      "most_common": [
+        [
+          "00119c3b0ee800f4d8ba",
+          1
+        ],
+        [
+          "00126d30463744ba647c",
+          1
+        ],
+        [
+          "00167643a19f5c30bf57",
+          1
+        ],
+        [
+          "001f885d7d891a8711f7",
+          1
+        ],
+        [
+          "00231b56ec914bf6ccd9",
+          1
+        ]
+      ]
+    }
+  }
+}

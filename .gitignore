@@ -16,6 +16,9 @@ tasks/*/slurmlogs/
 
 # --- Raw & Intermediate Data ---
 data_raw/*
+!data_raw/cpc_human_coding/
+!data_raw/cpc_subagent_pilot/
+!data_raw/cpc_jev_corpus_audit/
 !data_raw/dcp_boundary_city_council_districts_archive/
 data_raw/dcp_boundary_city_council_districts_archive/*
 !data_raw/dcp_boundary_city_council_districts_archive/10C/
@@ -45,6 +48,12 @@ tasks/record_ulurp_cpc_source_corrections/output/*
 !tasks/record_ulurp_cpc_source_corrections/output/ulurp_cpc_source_corrections.csv
 !tasks/record_ulurp_cpc_source_corrections/output/ulurp_cpc_narrative_boundary_exceptions.csv
 !tasks/record_ulurp_cpc_source_corrections/output/ulurp_cpc_community_district_corrections.csv
+!tasks/record_ulurp_cpc_source_corrections/output/ulurp_cpc_companion_reports.csv
+!tasks/record_ulurp_cpc_source_corrections/output/ulurp_cpc_page_scope_reviews.csv
+!tasks/record_ulurp_cpc_training_labels/output/
+tasks/record_ulurp_cpc_training_labels/output/*
+!tasks/record_ulurp_cpc_training_labels/output/ulurp_cpc_training_labels_jacob.csv
+!tasks/record_ulurp_cpc_training_labels/output/ulurp_cpc_coding_adjudications.csv
 
 # Audit coding ledgers intentionally committed for replication.
 !tasks/audits/record_ulurp_cpc_source_validation/output/
@@ -53,6 +62,7 @@ tasks/audits/record_ulurp_cpc_source_validation/output/*
 !tasks/audits/record_ulurp_cpc_source_validation/output/official_ulurp_cpc_external_reference_exclusions.csv
 !tasks/audits/record_ulurp_cpc_source_validation/output/official_ulurp_cpc_short_page_validation.csv
 !tasks/audits/record_ulurp_cpc_source_validation/output/official_ulurp_cpc_source_exception_labels.csv
+!tasks/audits/record_ulurp_cpc_source_validation/output/cpc_selection_reviews.csv
 !tasks/audits/record_ulurp_cpc_text_analysis_decisions/output/
 tasks/audits/record_ulurp_cpc_text_analysis_decisions/output/*
 !tasks/audits/record_ulurp_cpc_text_analysis_decisions/output/ulurp_cpc_event_validation_labels.csv

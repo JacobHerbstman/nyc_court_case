@@ -6,7 +6,7 @@
     "field"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "2140c8fb182476641151cb4b1443d9d8f97309d801dd96dbff3ee9dd834cfd9a",
+  "sha256_csv_bytes": "4aa1b85d62f7def508e4aeeb4b0c942ebfd56c470e0df5c1102e92fd7c376b83",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "period": {
@@ -148,7 +148,7 @@
         ]
       ],
       "minimum": 104,
-      "maximum": 6455
+      "maximum": 6460
     },
     "resolved": {
       "python_types": [
@@ -174,12 +174,12 @@
           2
         ],
         [
-          "1490",
+          "1492",
           2
         ]
       ],
       "minimum": 96,
-      "maximum": 6032
+      "maximum": 6037
     },
     "resolved_share": {
       "python_types": [
@@ -205,7 +205,7 @@
           2
         ],
         [
-          "0.619824016563147",
+          "0.6203416149068323",
           2
         ]
       ],

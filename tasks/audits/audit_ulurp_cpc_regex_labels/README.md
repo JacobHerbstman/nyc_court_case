@@ -16,6 +16,16 @@ establish that regex understands revisions, conditions, or concessions.
 Run `make` from `code/` to produce:
 
 - The five existing training/validation/holdout agreement and disagreement CSVs.
+- `ulurp_cpc_regex_tyler_agreement.csv`: the same comparable broad fields
+  against Tyler's saved coding, with all-recorded and marked-complete slices.
+  It is a comparison against his human coding, not against his regex program.
+- `ulurp_cpc_human_coding_agreement.csv`: Jacob/Tyler agreement by field on
+  their current overlapping readings, with completed-row results separate.
+- `ulurp_cpc_reconciliation_review.csv` and `ulurp_cpc_reconciliation_findings.md`:
+  source-based rulings on all differing human fields, with the original values,
+  reasons, confidence, page quotations, and unresolved cases. Completed readings
+  and provisional coding are counted separately. These AI-assisted rulings are
+  summarized without recomputing model accuracy against them.
 - `ulurp_cpc_regex_coverage.csv` and `.md`: coverage by field and decade, reasons
   for review, and agreement with existing human development labels.
 - `ulurp_cpc_regex_review_queue.csv`: narrative identifiers, status, source
@@ -24,7 +34,8 @@ Run `make` from `code/` to produce:
   stratified by decade, action family, and extraction route. The sheet omits
   predictions and includes stratum population/sample sizes and sampling weights.
 
-The new review sheet excludes every report in the three earlier samples and
+The unused review sheet excludes every previously coded report in both human sources,
+the two Codex samples, and
 those inspected during rule development, recorded in `code/rule_development_reports.csv`.
 Related report bundles are excluded as well to prevent reusing the same hearing
 through a different application number. Treat
@@ -37,6 +48,15 @@ Leave unavailable counts blank. Zero requires evidence. Use the weights for
 population summaries, with separate results for extraction route and decade.
 A weighted accuracy estimate and uncertainty interval require actual independent
 human coding; this task does not invent those results.
+
+Existing human values are retained in the production human-coding table. The
+extraction queue lists the human fields already available and unresolved count
+fields lacking a completed, nonconflicting human value, so future work need not
+repeat completed reading. The unused 150-report sheet is available for later
+independent validation; importing Tyler's coding does not request new reading.
+Nonstandard categories such as Tyler's literal `both` are preserved in source
+data and excluded from categorical agreement denominators. His older direction
+field is not compared to the newer split definitions.
 
 `python3 test_cpc_counts.py` checks source-derived edge cases and controlled
 ambiguity examples against the shared extraction functions. These tests catch

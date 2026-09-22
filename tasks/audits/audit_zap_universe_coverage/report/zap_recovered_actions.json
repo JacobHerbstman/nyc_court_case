@@ -6,7 +6,7 @@
     "action_id"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "9027c97a7cd83fb176b9d9aa161be93f92ba675f2e79ca6e98d0c34565d73aa4",
+  "sha256_csv_bytes": "2840678258743dc593e062a8c594a5b4286daf714c9458cfc2293eea50772a80",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "project_id": {
@@ -314,6 +314,93 @@
         [
           "True",
           388
+        ]
+      ]
+    },
+    "matched_cpc_document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 2438,
+      "distinct_nonmissing": 388,
+      "most_common": [
+        [
+          "00119c3b0ee800f4d8ba",
+          1
+        ],
+        [
+          "002d5b81eb4ca6b13a55",
+          1
+        ],
+        [
+          "00d3d32609734b4e2bcb",
+          1
+        ],
+        [
+          "0104b029dbfc2ac308b8",
+          1
+        ],
+        [
+          "0168fbfe7c1a54994697",
+          1
+        ]
+      ]
+    },
+    "matched_cpc_application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 2438,
+      "distinct_nonmissing": 388,
+      "most_common": [
+        [
+          "C 000048 MMX",
+          1
+        ],
+        [
+          "C 000052 ZSM",
+          1
+        ],
+        [
+          "C 000074 PPM",
+          1
+        ],
+        [
+          "C 000189 ZMX",
+          1
+        ],
+        [
+          "C 000272 MMQ",
+          1
+        ]
+      ]
+    },
+    "matched_cpc_pdf_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 2443,
+      "distinct_nonmissing": 383,
+      "most_common": [
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/000048.pdf",
+          1
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/000052.pdf",
+          1
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/000189.pdf",
+          1
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/000272.pdf",
+          1
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/000444.pdf",
+          1
         ]
       ]
     },

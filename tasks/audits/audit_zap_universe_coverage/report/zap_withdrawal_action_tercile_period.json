@@ -1,0 +1,60 @@
+{
+  "dataset": "zap_withdrawal_action_tercile_period.csv",
+  "rows": 48,
+  "key": ["sample", "period", "tercile"],
+  "unique_nonmissing_key": true,
+  "md5_csv_bytes": "a2f2f3e3a81e5574871f7f347d1e1085",
+  "fingerprint_scope": "Saved CSV bytes, including row order; not proof of source correctness.",
+  "columns": {
+    "sample": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 2
+    },
+    "period": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 6
+    },
+    "tercile": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 4
+    },
+    "projects": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 44,
+      "minimum": 0,
+      "maximum": 453
+    },
+    "withdrawn": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 27,
+      "minimum": 0,
+      "maximum": 73
+    },
+    "terminated": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "minimum": 0,
+      "maximum": 7
+    },
+    "withdrawal_share": {
+      "type": "numeric",
+      "missing": 1,
+      "distinct_nonmissing": 38,
+      "minimum": 0,
+      "maximum": 0.3818
+    },
+    "withdrawn_terminated_share": {
+      "type": "numeric",
+      "missing": 1,
+      "distinct_nonmissing": 39,
+      "minimum": 0,
+      "maximum": 0.4898
+    }
+  }
+}

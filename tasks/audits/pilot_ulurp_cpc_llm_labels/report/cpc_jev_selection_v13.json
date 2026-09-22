@@ -1,0 +1,76 @@
+{
+  "dataset": "cpc_jev_selection_v13.csv",
+  "rows": 2,
+  "key": [
+    "stratum"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "d2cb696f56933b9727f0e6d97dd0926dbaea8112ce8d11921f847218f092ee7b",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "stratum": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "long",
+          1
+        ],
+        [
+          "short",
+          1
+        ]
+      ]
+    },
+    "eligible": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "154",
+          1
+        ],
+        [
+          "3988",
+          1
+        ]
+      ],
+      "minimum": 154,
+      "maximum": 3988
+    },
+    "selected": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "5",
+          2
+        ]
+      ],
+      "minimum": 5,
+      "maximum": 5
+    },
+    "selection_seed": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "jev-frozen-v13-20260922",
+          2
+        ]
+      ]
+    }
+  }
+}

@@ -1,0 +1,660 @@
+{
+  "dataset": "ulurp_cpc_human_coding.csv",
+  "rows": 7033,
+  "key": [
+    "source_document_id",
+    "field"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "8a51f2ce42ee206102fa66ff621ef270872b78a699288bc88ffcbfb145128fdb",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "source_document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 340,
+      "most_common": [
+        [
+          "00326891d3391480524d",
+          23
+        ],
+        [
+          "0385e4de7488ec4762c5",
+          23
+        ],
+        [
+          "06c90a5bde6a4a3cadd7",
+          23
+        ],
+        [
+          "0b62c4bf7d20ec91b688",
+          23
+        ],
+        [
+          "13e5c76bb268bbd78e25",
+          23
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 340,
+      "most_common": [
+        [
+          "C 010691 ZSM",
+          23
+        ],
+        [
+          "C 020612 HAM",
+          23
+        ],
+        [
+          "C 030300 ZMK",
+          23
+        ],
+        [
+          "C 040515 ZMX",
+          23
+        ],
+        [
+          "C 060063 ZMR",
+          23
+        ]
+      ]
+    },
+    "field": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 23,
+      "most_common": [
+        [
+          "affordability_displacement",
+          340
+        ],
+        [
+          "approved_unresolved_objection",
+          340
+        ],
+        [
+          "bp_request_or_opposition",
+          340
+        ],
+        [
+          "cb_request_or_opposition",
+          340
+        ],
+        [
+          "civic_group_position",
+          340
+        ]
+      ]
+    },
+    "human_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 206,
+      "distinct_nonmissing": 56,
+      "most_common": [
+        [
+          "0",
+          3282
+        ],
+        [
+          "1",
+          1872
+        ],
+        [
+          "none_or_procedural",
+          577
+        ],
+        [
+          "none",
+          293
+        ],
+        [
+          "upzone",
+          157
+        ]
+      ]
+    },
+    "human_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "single_human_coder",
+          5673
+        ],
+        [
+          "human_agreement",
+          777
+        ],
+        [
+          "provisional",
+          377
+        ],
+        [
+          "coder_disagreement",
+          202
+        ],
+        [
+          "unclear_or_nonstandard",
+          4
+        ]
+      ]
+    },
+    "jacob_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 2710,
+      "distinct_nonmissing": 56,
+      "most_common": [
+        [
+          "0",
+          1711
+        ],
+        [
+          "1",
+          1478
+        ],
+        [
+          "none_or_procedural",
+          328
+        ],
+        [
+          "none",
+          174
+        ],
+        [
+          "more",
+          87
+        ]
+      ]
+    },
+    "tyler_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 3272,
+      "distinct_nonmissing": 26,
+      "most_common": [
+        [
+          "0",
+          2286
+        ],
+        [
+          "1",
+          781
+        ],
+        [
+          "none_or_procedural",
+          363
+        ],
+        [
+          "none",
+          119
+        ],
+        [
+          "upzone",
+          70
+        ]
+      ]
+    },
+    "jacob_source_field": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 200,
+      "distinct_nonmissing": 22,
+      "most_common": [
+        [
+          "affordability_displacement",
+          340
+        ],
+        [
+          "approved_unresolved_objection",
+          340
+        ],
+        [
+          "bp_request_or_opposition",
+          340
+        ],
+        [
+          "cb_request_or_opposition",
+          340
+        ],
+        [
+          "civic_group_position",
+          340
+        ]
+      ]
+    },
+    "tyler_source_field": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 400,
+      "distinct_nonmissing": 21,
+      "most_common": [
+        [
+          "affordability_displacement",
+          340
+        ],
+        [
+          "approved_unresolved_objection",
+          340
+        ],
+        [
+          "bp_request_or_opposition",
+          340
+        ],
+        [
+          "cb_request_or_opposition",
+          340
+        ],
+        [
+          "civic_group_position",
+          340
+        ]
+      ]
+    },
+    "jacob_review_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 2644,
+      "distinct_nonmissing": 200,
+      "most_common": [
+        [
+          "J001",
+          23
+        ],
+        [
+          "J002",
+          23
+        ],
+        [
+          "J003",
+          23
+        ],
+        [
+          "J004",
+          23
+        ],
+        [
+          "J008",
+          23
+        ]
+      ]
+    },
+    "tyler_review_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 2171,
+      "distinct_nonmissing": 240,
+      "most_common": [
+        [
+          "T003",
+          23
+        ],
+        [
+          "T004",
+          23
+        ],
+        [
+          "T007",
+          23
+        ],
+        [
+          "T013",
+          23
+        ],
+        [
+          "T028",
+          23
+        ]
+      ]
+    },
+    "jacob_coding_complete": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 2644,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "1",
+          4389
+        ]
+      ]
+    },
+    "tyler_coding_complete": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 3452,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "1",
+          3581
+        ]
+      ]
+    },
+    "jacob_evidence_pages": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 2996,
+      "distinct_nonmissing": 78,
+      "most_common": [
+        [
+          "1-3",
+          305
+        ],
+        [
+          "1-2",
+          271
+        ],
+        [
+          "2-6",
+          266
+        ],
+        [
+          "2-5",
+          220
+        ],
+        [
+          "1-5",
+          197
+        ]
+      ]
+    },
+    "tyler_evidence_pages": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 3138,
+      "distinct_nonmissing": 28,
+      "most_common": [
+        [
+          "1-4",
+          760
+        ],
+        [
+          "1-2",
+          688
+        ],
+        [
+          "1-3",
+          556
+        ],
+        [
+          "1-5",
+          425
+        ],
+        [
+          "1-6",
+          355
+        ]
+      ]
+    },
+    "jacob_evidence_summary": {
+      "python_types": [],
+      "missing": 7033,
+      "distinct_nonmissing": 0,
+      "most_common": []
+    },
+    "tyler_evidence_summary": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 4064,
+      "distinct_nonmissing": 130,
+      "most_common": [
+        [
+          "Disposition",
+          181
+        ],
+        [
+          "sidewalk café",
+          61
+        ],
+        [
+          "Sidewalk café",
+          57
+        ],
+        [
+          "library",
+          57
+        ],
+        [
+          "Downzoning in SI ",
+          42
+        ]
+      ]
+    },
+    "jacob_coder_notes": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6308,
+      "distinct_nonmissing": 33,
+      "most_common": [
+        [
+          "Borough president insisted on sale with use restrictions, CPC approved and said that is the div. of real estate services job",
+          23
+        ],
+        [
+          "CB formally voted 23-0 to approve only on the condition that the shelter use an entirely different Bronx site; coded substantively as 0 support and 23 opposition to this exact site.",
+          23
+        ],
+        [
+          "Companion special-permit report: https://www.nyc.gov/assets/planning/download/pdf/about/cpc/880041.pdf. The companion contains most of the project detail. The documented modifications respond to CPC, not local actors.",
+          23
+        ],
+        [
+          "Major modification to an already approved project, not a new upzoning. Organized civic opposition led to meetings and some design/landscaping changes, but CPC retained the disputed 950-space garage requirement.",
+          23
+        ],
+        [
+          "Small concessions about radioactive use and review of anything that was not allowed under old urban renewal plan. Also approved without flushing recreation concession since it was out of the scope of the proposal",
+          23
+        ]
+      ]
+    },
+    "tyler_coder_notes": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6940,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "1",
+          36
+        ],
+        [
+          "one speaker in favor asked for a condition that was granted",
+          23
+        ],
+        [
+          "dialysis, no opposition, basic conditions on size",
+          17
+        ],
+        [
+          "sidewalk café. No opposition ",
+          17
+        ]
+      ]
+    },
+    "jacob_confidence": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 2644,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "high",
+          4224
+        ],
+        [
+          "medium",
+          165
+        ]
+      ]
+    },
+    "tyler_confidence": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 3319,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "high",
+          3535
+        ],
+        [
+          "high ",
+          95
+        ],
+        [
+          "low",
+          46
+        ],
+        [
+          "medium",
+          38
+        ]
+      ]
+    },
+    "narrative_match_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "retained_focal_narrative",
+          7033
+        ]
+      ]
+    },
+    "represented_narrative_ids": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 340,
+      "most_common": [
+        [
+          "00326891d3391480524d",
+          23
+        ],
+        [
+          "0385e4de7488ec4762c5",
+          23
+        ],
+        [
+          "06c90a5bde6a4a3cadd7",
+          23
+        ],
+        [
+          "0b62c4bf7d20ec91b688",
+          23
+        ],
+        [
+          "13e5c76bb268bbd78e25",
+          23
+        ]
+      ]
+    },
+    "regex_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 1157,
+      "distinct_nonmissing": 47,
+      "most_common": [
+        [
+          "0",
+          3169
+        ],
+        [
+          "1",
+          1712
+        ],
+        [
+          "none_or_procedural",
+          609
+        ],
+        [
+          "2",
+          39
+        ],
+        [
+          "opposition",
+          37
+        ]
+      ]
+    },
+    "current_source_text_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 340,
+      "most_common": [
+        [
+          "08ced533dff174e876a8e72e336e10f3ca8d10af3272111a9048f9163ddad146",
+          23
+        ],
+        [
+          "23d89a4f0b2ecb3944aa2976c81fcab6ee3910c9b7cb4ef0ae989c0d731fd88d",
+          23
+        ],
+        [
+          "2912268db0ab932e9cb8a37066f3722ef6ef34ea743868b1d537517b0d28ceda",
+          23
+        ],
+        [
+          "2c7b2d8254eb8bbc581907f23bc86468003a7a4179d20e24c6790889734d4e0d",
+          23
+        ],
+        [
+          "373b45a4f725b2da6400238e18560c01cd3e1c7843b995adf35480ffd5c9b3a8",
+          23
+        ]
+      ]
+    },
+    "coding_source_check": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "identifier_match_only_no_original_text_hash",
+          7033
+        ]
+      ]
+    }
+  }
+}

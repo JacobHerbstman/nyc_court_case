@@ -1,0 +1,227 @@
+{
+  "dataset": "ulurp_cpc_human_coding_agreement.csv",
+  "rows": 23,
+  "key": [
+    "field"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "6f6c80b9668da83ad738aec1ea3674c6431034b896e2abb6b36d7f8144637349",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "field": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 23,
+      "most_common": [
+        [
+          "affordability_displacement",
+          1
+        ],
+        [
+          "approved_unresolved_objection",
+          1
+        ],
+        [
+          "bp_request_or_opposition",
+          1
+        ],
+        [
+          "cb_opposition_votes",
+          1
+        ],
+        [
+          "cb_request_or_opposition",
+          1
+        ]
+      ]
+    },
+    "paired_reports": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "60",
+          14
+        ],
+        [
+          "0",
+          5
+        ],
+        [
+          "45",
+          1
+        ],
+        [
+          "47",
+          1
+        ],
+        [
+          "58",
+          1
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 60
+    },
+    "exact": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 15,
+      "most_common": [
+        [
+          "0",
+          5
+        ],
+        [
+          "47",
+          3
+        ],
+        [
+          "39",
+          2
+        ],
+        [
+          "40",
+          2
+        ],
+        [
+          "43",
+          1
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 60
+    },
+    "agreement_share": {
+      "python_types": [
+        "float"
+      ],
+      "missing": 5,
+      "distinct_nonmissing": 15,
+      "most_common": [
+        [
+          "0.7833333333333333",
+          3
+        ],
+        [
+          "0.65",
+          2
+        ],
+        [
+          "0.6666666666666666",
+          1
+        ],
+        [
+          "0.7166666666666667",
+          1
+        ],
+        [
+          "0.7333333333333333",
+          1
+        ]
+      ],
+      "minimum": 0.65,
+      "maximum": 1.0
+    },
+    "both_marked_complete": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "55",
+          14
+        ],
+        [
+          "0",
+          5
+        ],
+        [
+          "40",
+          1
+        ],
+        [
+          "42",
+          1
+        ],
+        [
+          "53",
+          1
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 55
+    },
+    "completed_exact": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 15,
+      "most_common": [
+        [
+          "0",
+          5
+        ],
+        [
+          "36",
+          3
+        ],
+        [
+          "43",
+          3
+        ],
+        [
+          "37",
+          1
+        ],
+        [
+          "39",
+          1
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 55
+    },
+    "completed_agreement_share": {
+      "python_types": [
+        "float"
+      ],
+      "missing": 5,
+      "distinct_nonmissing": 14,
+      "most_common": [
+        [
+          "0.7818181818181819",
+          3
+        ],
+        [
+          "0.6545454545454545",
+          2
+        ],
+        [
+          "1.0",
+          2
+        ],
+        [
+          "0.6727272727272727",
+          1
+        ],
+        [
+          "0.7090909090909091",
+          1
+        ]
+      ],
+      "minimum": 0.6545454545454545,
+      "maximum": 1.0
+    }
+  }
+}

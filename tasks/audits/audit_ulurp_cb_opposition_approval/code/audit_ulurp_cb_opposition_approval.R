@@ -15,6 +15,8 @@ suppressPackageStartupMessages({
   library(tidyr)
 })
 
+source("../../../_lib/data_reports.R")
+
 cli_args <- commandArgs(trailingOnly = TRUE)
 if (length(cli_args) != 5) {
   stop("Expected BREAK_YEAR, TRANSITION_END_YEAR, START_YEAR, END_YEAR, and VALIDATION_CASES_PER_PERIOD.")
@@ -276,27 +278,8 @@ documents$cpc_decision_evidence <- vapply(
 documents$full_text <- NULL
 documents$cpc_decision_block <- NULL
 
-community_district_corrections <- read_csv(
-  "../input/ulurp_cpc_community_district_corrections.csv",
-  col_types = cols(.default = col_character()),
-  show_col_types = FALSE,
-  na = c("", "NA")
-)
-if (anyDuplicated(community_district_corrections$application_number)) {
-  stop("Community-district corrections must be unique by application_number.")
-}
-
 documents <- documents |>
-  rename(source_official_community_district = community_district) |>
-  left_join(
-    community_district_corrections,
-    by = "application_number",
-    relationship = "many-to-one"
-  ) |>
-  mutate(official_community_district = coalesce(
-    corrected_community_district,
-    source_official_community_district
-  ))
+  rename(official_community_district = represented_community_districts)
 
 district_treatment <- read_csv(
   "../input/cd_homeownership_1990_measure.csv",
@@ -590,7 +573,8 @@ summary_table <- bind_rows(cpc_summary, council_summary) |>
   ungroup() |>
   arrange(outcome_stage, sample, grouping, homeowner_group_label, period_start_year)
 
-write_csv(summary_table, "../output/ulurp_cb_opposition_approval_summary.csv", na = "")
+save_csv(summary_table, "../output/ulurp_cb_opposition_approval_summary.csv",
+  c("outcome_stage", "sample", "grouping", "homeowner_group_label", "period"))
 
 transition_rows <- analysis_rows |>
   filter(
@@ -751,7 +735,8 @@ project_transition_annual <- project_transition |>
 transition_output <- bind_rows(transition_annual, project_transition_annual) |>
   arrange(analysis_unit, sample, grouping, homeowner_group_label, council_decision_year)
 
-write_csv(transition_output, "../output/ulurp_cb_opposition_transition.csv", na = "")
+save_csv(transition_output, "../output/ulurp_cb_opposition_transition.csv",
+  c("analysis_unit", "sample", "grouping", "homeowner_group_label", "council_decision_year"))
 
 transition_summary <- transition_annual |>
   group_by(
@@ -1138,4 +1123,5 @@ transition_cases <- documents |>
 bind_rows(transition_cases, case_pool) |>
   distinct(outcome_stage, document_id, .keep_all = TRUE) |>
   arrange(desc(review_reason), outcome_stage, council_decision_year, document_id) |>
-  write_csv("../output/ulurp_cb_opposition_approval_cases.csv", na = "")
+  save_csv("../output/ulurp_cb_opposition_approval_cases.csv",
+    c("outcome_stage", "document_id"))

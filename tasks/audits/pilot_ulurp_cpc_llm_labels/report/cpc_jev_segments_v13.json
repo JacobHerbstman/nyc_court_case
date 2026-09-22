@@ -1,0 +1,337 @@
+{
+  "dataset": "cpc_jev_segments_v13.csv",
+  "rows": 659,
+  "key": [
+    "document_id",
+    "segment_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "e0020c676e6d1f01adf9b6aa8240df8c646a6a5c6706eed83ba8f19bc16a3217",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 20,
+      "most_common": [
+        [
+          "30055e9ac87c9778dcff",
+          133
+        ],
+        [
+          "b9735dce46604a258616",
+          107
+        ],
+        [
+          "c927e137dbaa9e0b7afd",
+          91
+        ],
+        [
+          "26f03d0909c6323e9605",
+          89
+        ],
+        [
+          "a89b9ba39beede21a028",
+          51
+        ]
+      ]
+    },
+    "segment_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 133,
+      "most_common": [
+        [
+          "s0001",
+          20
+        ],
+        [
+          "s0002",
+          20
+        ],
+        [
+          "s0003",
+          17
+        ],
+        [
+          "s0004",
+          17
+        ],
+        [
+          "s0005",
+          16
+        ]
+      ]
+    },
+    "source_document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 41,
+      "most_common": [
+        [
+          "26f03d0909c6323e9605",
+          89
+        ],
+        [
+          "d648f3aea1713af93752",
+          76
+        ],
+        [
+          "b377d824cbb66c116213",
+          74
+        ],
+        [
+          "c927e137dbaa9e0b7afd",
+          62
+        ],
+        [
+          "04e35ee68278581991cc",
+          42
+        ]
+      ]
+    },
+    "source_application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 41,
+      "most_common": [
+        [
+          "C 990218 ZSK",
+          89
+        ],
+        [
+          "N 090273A ZRK",
+          76
+        ],
+        [
+          "C 030509 HUQ",
+          74
+        ],
+        [
+          "N 090302 ZRX",
+          62
+        ],
+        [
+          "C 861180 ZMM",
+          42
+        ]
+      ]
+    },
+    "source_role": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "context_companion",
+          345
+        ],
+        [
+          "focal_report",
+          291
+        ],
+        [
+          "represented_related_action",
+          23
+        ]
+      ]
+    },
+    "pdf_page": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 89,
+      "most_common": [
+        [
+          "1",
+          41
+        ],
+        [
+          "2",
+          41
+        ],
+        [
+          "3",
+          36
+        ],
+        [
+          "4",
+          35
+        ],
+        [
+          "5",
+          34
+        ]
+      ]
+    },
+    "page_start": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "0",
+          659
+        ]
+      ]
+    },
+    "page_end": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 576,
+      "most_common": [
+        [
+          "19",
+          5
+        ],
+        [
+          "1450",
+          3
+        ],
+        [
+          "1459",
+          3
+        ],
+        [
+          "1582",
+          3
+        ],
+        [
+          "1673",
+          3
+        ]
+      ]
+    },
+    "source_text_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 41,
+      "most_common": [
+        [
+          "cb7e38072c5d8c1ed5871763838e4a948621afe2f3d5768b995cc131ef56a65d",
+          89
+        ],
+        [
+          "1e49eb4154e418ae36b202ec3f63839e3d3554388f493ddb19ad907932ad601a",
+          76
+        ],
+        [
+          "9ebc2dca53051f329638bed8f2245488be3ddc2b33678c7a138c912467174c6f",
+          74
+        ],
+        [
+          "034e8f5627bfd428e744be0e0c04a5f4898040bb88b237aad6018cab4f525ccc",
+          62
+        ],
+        [
+          "1c8cba065b8e5f196770746d81c689a8655dadf56f06192d6598ab836c20e59e",
+          42
+        ]
+      ]
+    },
+    "public_pdf_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 41,
+      "most_common": [
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/990218.pdf",
+          89
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/090273a.pdf",
+          76
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/030509.pdf",
+          74
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/090302.pdf",
+          62
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/861180.pdf",
+          42
+        ]
+      ]
+    },
+    "text": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 658,
+      "most_common": [
+        [
+          "STATEMENT BY COMMISSIONERS R. SUSAN MOTLEY AND THEODORE E. TEAH ON LOWER EAST SIDE PUBLIC HOUSING PROJECT November 10, 1982 C831083HOM C830007HDM C830008HUM N830009HGM We abstain. We cannot in good conscience vote against desperately needed low income housing to be built on the Lower East Side. However, this project - both the process by which it was developed and several components of the end plan including the planned demolition of 53 Stanton Street - raise serious issues that have not, in our judgment, been adequately addressed. We therefore withhold our votes on this project.",
+          2
+        ],
+        [
+          "! condominium development on the Property, it shall unless pro- hibited by applicable law, include in the offering plan or prospectus associated therewith a true copy or summary of the material terms of this Declaration, in addition to any reporting requirements set forth in applicable provisions of state or local law. 5.06. Wherever in this Declaration the certifica- tion, consent or approval of the Declarant or the Chairperson of CPC is required or permitted to be given, such certifica- tion, consent or approval will not be unreasonably withheld or delayed. 5.07. The provisions of this Declaration shall be considered covenants running with the land, and shall inure to the benefit of and be binding upon all heirs, successors, assigns, legal representatives, and mortgagees in possession of Declarant's interest in the Property and any improvements thereon. References to \"Declarant\" shall be deemed to refer to the named Declarant, its heirs, successors, assigns, legal representatives and mortgagees in posession, each to the extent of their respective interest in the Property. Refer- ences in this Declaration to agencies or instrumentalities of the City of New York shall be deemed to include agencies or instrumentalities succeeding to the jurisdiction thereof, 20",
+          1
+        ],
+        [
+          "#Enclosed Sidewalk #Unenclosed Cafe# Sidewalk Cafe# Brooklyn Bay Ridge District Yes Yes Coney Island District No Yes Coney Island Mixed Use District Yes Yes Downtown Brooklyn District Yes Yes Mixed Use District-8 Yes Yes (Greenpoint-Williamsburg) Ocean Parkway District* Yes Yes Sheepshead Bay District No Yes ------- * #Sidewalk cafes# are not allowed on Ocean Parkway * * * Chapter 5 Residential Conversion of Existing Non-Residential Buildings * * * 15-011 Applicability within Special Districts * * * The provisions of this Chapter shall apply in the #Special St. George District# as modified by Article XII, Chapter 8 (Special St. George District). The provisions of this Chapter shall apply in the #Special Coney Island District# as modified by Article XIII, Chapter 1 (Special Coney Island District). * * * ALL TEXT IN ARTICLE XIII, CHAPTER 1 IS NEW 131-00 GENERAL PURPOSES The #Special Coney Island District# established in this Resolution is designed to promote and protect public health, safety and general welfare. These general goals include, among others, the following specific purposes, to: (a) preserve, protect and enhance the character of the existing amusement district as the location of the city’s foremost concentration of amusements and an area of diverse uses of a primarily entertainment and entertainment-related nature; (b) facilitate and guide the development of a year-round amusement, entertainment and hotel district; 43 N 090273 (A) ZRK",
+          1
+        ],
+        [
+          "#street lines# and shall coincide with that portion of the #street wall# along Surf Avenue that rises to a height of between 60 to 65 feet, pursuant to the provisions of paragraph (b)(1) of Section 131-421. However, where the portion of the #block# that fronts on Surf Avenue is #developed# or #enlarged# pursuant to the special regulations for Use Group A, in paragraph (c)(3) of Section 131-421 (Coney East Subdistrict, south side of Surf Avenue), the #street wall may rise after a setback of 20 feet to a maximum height of 60 feet for the entire length of the Bowery #street line#, or may extend beyond the 40 percent of the #aggregate width of #street wall# for the length of the #street wall# of such Use Group A #development# or #enlargement# which fronts along Surf Avenue, whichever is less. Furthermore, a #building# that exceeds a height of 60 feet shall be permitted where the Chairperson of the City Planning Department certifies to the Department of Buildings that such additional height is necessary to accommodate an amusement #use# listed in Use Group A1. 131-43 Coney West Subdistrict The regulations of this Section shall apply to all #buildings or other structures# in the Coney West Subdistrict. Map 4 (Street Wall Location), Map 5 (Minimum and Maximum Base Heights) and Map 6 (Coney West Subdistrict Transition Heights), in the Appendix to this Chapter, illustrate the #street wall# location provisions, minimum and maximum base height provisions and transition height provisions of this Section, inclusive. For the purposes of this Section, the “building line” shown on Parcel F shall be considered a #street line# of Ocean Way or Parachute Way, as indicated on such maps. 131-431 Coney West District, Surf Avenue The regulations of this Section shall apply along Surf Avenue. The #street wall# location provisions of paragraph (a) of this Section shall also apply along #streets# intersecting Surf Avenue within 50 feet of Surf Avenue, and the building base regulations of paragraph (b) of this Section shall also apply along #streets# within 100 feet of Surf Avenue. (a) #Street wall# location The #street wall# of a building base of a #development# or #enlargement# shall be located on the Surf Avenue #street line# and extend along the entire Surf Avenue frontage of the #zoning lot#, except that: (1) ground floor level recesses up to three feet deep shall be permitted for access to building entrances; However, for building entrances providing direct access to the lowest #story# located above the #base flood elevation#, such recesses shall be permitted to have a depth of up to ten feet provided the width of such recess does not exceed 20 feet and the height of such recessed area is not less than 15 feet at any point as measured from the #base flood elevation#; (2) to allow for corner articulation, the #street wall# may be located anywhere within an area bounded by intersecting #street lines# and lines 15 feet from and parallel to such #street lines#; and (3) to allow for portions of towers to rise without setback from grade, a portion of a building base below a tower may be set back ten feet from a #street line#, provided the width of such setback area is not greater than 40 percent of the width of the #street wall# of the tower and provided such setback area complies with the provisions of Section 131-47 (Design Requirements for Ground Level Setbacks). (b) Building base 59 N 090273 (A) ZRK",
+          1
+        ],
+        [
+          "' CITY PLANNING COMMISSION December 21, 1987 / Calendar No. 1 C 861180 ZMM IN THE MATTER OF an application submitted by Glenwood Management Corporation pursuant to Sections 197-c and 200 of the New York City Charter for an amendment to the Zoning Map, Section 9a, changing: 1)fromaC8-4distri.to an R8 district property bounded by a line 464 feet east of First Avenue, the former northerly street line of East 93rd Street, a line 488 feet east of First Avenue, and East 92nd Street; and 2) from a C8-4 district to an R10 district property bounded by a line 488 feet east of First Avenue, Franklin D. Roosevelt Drive, York Avenue and East 92nd Street and establishing within the proposed R10 district a C2-5 district, Borough of Manhattan, Community District 8, as shown on a diagram dated September 16, 1987. The application for a Zoning Map amendment to facilitate the development of a 36-story mixed-use, predominantly residential development located on the northwest corner of East 92nd Street and York Avenue was submitted by Glenwood Management on June 9, 1986 and revised in August, 1987. RELATED ACTION In addition to the proposed amendment of the Zoning Map, implementation of the proposed project also requires favorable action by the City Planning Commission and Board of Estimate on a related application (C 870156 ZSM), being considered concurrently with the proposed Zoning Map change, for a special permit for a 137-car public parking garage pursuant to Sections 13-462 and 74-52 of the Zoning Resolution, which is the subject of a separate report dated December 21, 1987. BACKGROUND The site is located in the Yorkville neighborhood of Community District 8. The surrounding mid-blocks are generally low-rise and residential in character, although there are clusters of high-rise residential structures and a pocket of light-industrial and automotive uses just west of the site. Most of these low-rise structures were built in the late 19th and early 20th centuries.",
+          1
+        ]
+      ]
+    },
+    "request_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 47,
+      "most_common": [
+        [
+          "03222ef01b16353505f6_part001",
+          20
+        ],
+        [
+          "03222ef01b16353505f6_part002",
+          20
+        ],
+        [
+          "26f03d0909c6323e9605_part001",
+          20
+        ],
+        [
+          "26f03d0909c6323e9605_part002",
+          20
+        ],
+        [
+          "30055e9ac87c9778dcff_part001",
+          20
+        ]
+      ]
+    }
+  }
+}

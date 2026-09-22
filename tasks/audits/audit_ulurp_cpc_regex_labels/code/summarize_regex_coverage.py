@@ -24,6 +24,12 @@ with Path("../input/ulurp_cpc_training_labels_jacob.csv").open(newline="") as so
     human_rows = [row for row in csv.DictReader(source) if row["coding_complete"] == "1"]
 assert len(human_rows) == len({row["document_id"] for row in human_rows})
 human = {row["document_id"]: row for row in human_rows}
+with open("../input/ulurp_cpc_human_coding.csv", newline="") as source:
+    existing_coding = list(csv.DictReader(source))
+assert len(existing_coding) == len({(row["source_document_id"], row["field"]) for row in existing_coding})
+coding_by_report = defaultdict(dict)
+for row in existing_coding:
+    coding_by_report[row["source_document_id"]][row["field"]] = row
 with Path("../input/ulurp_cpc_regex_validation_labels_codex.csv").open(newline="") as source:
     development_rows = list(csv.DictReader(source))
 assert len(development_rows) == len({row["document_id"] for row in development_rows})
@@ -41,7 +47,7 @@ assert len(inspected_rows) == len({row["document_id"] for row in inspected_rows}
 by_id = {row["document_id"]: row for row in rows}
 assert all(row["source_text_sha256"] == by_id[row["document_id"]]["source_text_sha256"] for row in inspected_rows)
 inspected = {row["document_id"] for row in inspected_rows}
-known = set(human) | development | previous_holdout | inspected
+known = set(coding_by_report) | development | previous_holdout | inspected
 known_applications = {manifest[document_id]["application_number"] for document_id in known}
 for row in rows:
     if row["document_id"] in known:
@@ -126,7 +132,26 @@ for row in rows:
         "cb_evidence", "cb_source_application", "cpc_speakers_status",
         "cpc_speakers_evidence", "cpc_speakers_source_application",
     )} | {"official_pdf_url": manifest[row["document_id"]]["official_pdf_url"]})
+    codes = coding_by_report[row["document_id"]]
+    queue[-1]["existing_human_fields"] = "; ".join(sorted(codes))
+    queue[-1]["unresolved_count_fields_without_completed_human_value"] = "; ".join(
+        field for _, field, status in fields if row[status] != "resolved" and
+        codes.get(field, {}).get("human_status") not in {"human_agreement", "single_human_coder"})
 save_csv(queue, list(queue[0]), "../output/ulurp_cpc_regex_review_queue.csv", ["document_id"])
+
+human_agreement = []
+for field in sorted({row["field"] for row in existing_coding}):
+    paired = [row for row in existing_coding if row["field"] == field and
+              row["jacob_value"] != "" and row["tyler_value"] != "" and
+              row["human_status"] != "unclear_or_nonstandard"]
+    complete = [row for row in paired if row["jacob_coding_complete"] == row["tyler_coding_complete"] == "1"]
+    exact = sum(row["jacob_value"] == row["tyler_value"] for row in paired)
+    complete_exact = sum(row["jacob_value"] == row["tyler_value"] for row in complete)
+    human_agreement.append(dict(field=field, paired_reports=len(paired), exact=exact,
+        agreement_share=exact / len(paired) if paired else None,
+        both_marked_complete=len(complete), completed_exact=complete_exact,
+        completed_agreement_share=complete_exact / len(complete) if complete else None))
+save_csv(human_agreement, list(human_agreement[0]), "../output/ulurp_cpc_human_coding_agreement.csv", ["field"])
 
 reported_board_tallies = sum(row["cb_reported_for"] != "" and row["cb_reported_against"] != "" for row in rows)
 both = sum(row["cb_status"] == row["cpc_speakers_status"] == "resolved" for row in rows)
@@ -137,8 +162,9 @@ lines = [
     f"The remaining {len(queue):,} have at least one field group requiring review.", "",
     f"A literal board tally is retained for {reported_board_tallies:,} narratives "
     f"({reported_board_tallies / len(rows):.1%}), including some whose proposal orientation requires review.", "",
-    "Resolved is an extraction status, not a certified accuracy level. The current "
-    "human comparison reuses Jacob's 200-report development sample. The earlier "
+    "Resolved is an extraction status, not a certified accuracy level. The count table below "
+    "reuses Jacob's 200-report development sample. A separate agreement CSV compares the regex "
+    "with Tyler's existing coding. The earlier "
     "Codex holdout has now been inspected and is a regression benchmark, not a fresh test.", "",
     "| Field | Resolved / all narratives | Matched human counts | Exact matches |", "|---|---:|---:|---:|",
 ]
@@ -170,5 +196,25 @@ lines += ["", f"A fresh {sample_size}-report sheet is ready for human coding. It
     "abstentions only where the report explicitly establishes that rule. Formal board recommendation "
     "is recorded independently of the tally. Multiple tallies and conflicting companion reports "
     "are retained for review rather than combined into a fabricated vote."]
+lines += ["", "## Reusing existing human coding", "",
+    f"The linked human-coding table preserves {len(existing_coding):,} field records across "
+    f"{len({r['source_document_id'] for r in existing_coding}):,} reports. "
+    "Each coder's original values, notes, evidence, and completion flags remain separate. "
+    "Matching values and single-coder judgments have usable human values; conflicts and nonstandard values remain unresolved. "
+    "Provisional coding is retained and identified. No new human or model reading was used.", "",
+    f"Existing completed human values cover every unresolved count field for "
+    f"{sum(not row['unresolved_count_fields_without_completed_human_value'] for row in queue):,} "
+    "narratives in the regex review queue. These counts can use the existing reading without changing regex extraction status.", "",
+    "The earlier broad issue labels remain the comparison targets. New issue and actor detail fields are regex detections, "
+    "not retrospective human judgments. Tyler's legacy development-direction field remains separate from the newer definitions.", "",
+    "| Field | Paired reports | Agreement |", "|---|---:|---:|"]
+for row in human_agreement:
+    if row["paired_reports"]:
+        lines.append(f"| {row['field'].replace('_', ' ')} | {row['paired_reports']} | "
+                     f"{row['exact']} ({row['agreement_share']:.1%}) |")
+lines += ["", "These are comparisons of existing development labels, including provisional rows in the all-recorded comparison. "
+    "Separate completed-row results are in the CSV. Differences can reflect coding thresholds. "
+    "All previously coded reports, including Tyler's, and their related bundles are excluded from the unused review sheet. "
+    "The extraction queue identifies available human fields so future reading can target unresolved information."]
 Path("../output/ulurp_cpc_regex_coverage.md").write_text("\n".join(lines) + "\n")
 print(f"Summarized {len(rows):,} narratives; prepared {len(sample)} fresh human reviews.")

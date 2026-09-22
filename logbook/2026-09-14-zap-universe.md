@@ -89,6 +89,63 @@ the date with the apparent year in a project ID without source confirmation.
 Recent active cases have incomplete follow-up, so a cross-sectional terminal
 share is not a final probability of failure.
 
+### Withdrawal trends in the recovered project universe
+
+A descriptive check of the September 14 snapshot groups explicit ULURP
+projects by their reported certification/referral year, counting each project
+once. Withdrawals alone account for 489 of 2,583 projects dated 1990-2001
+(18.9%), 113 of 1,354 dated 2002-2013 (8.3%), and 43 of 896 dated 2014-2025
+(4.8%). Adding terminations raises these shares to 21.8%, 9.2%, and 5.1%.
+These groups describe current status, not the year a withdrawal occurred.
+
+The 1991 spike needs particular caution: 95 of that year's 125 withdrawn
+projects share November 13 in the certification/referral field. Excluding
+every project with that date for a diagnostic comparison lowers the
+1990-2001 withdrawal share to 394 of 2,487 (15.8%); the broader decline
+remains. This exclusion is not applied to the saved data or figure. Across
+all explicit ULURP projects, 253 lack a certification/referral date, including
+84 withdrawals. Among 1,283 withdrawals with a recorded date, 625 have equal
+certification/referral and completion dates. That coincidence warrants source
+checking before treating these fields as independently verified milestones.
+
+The pattern is consistent with Tyler's observation, but does not establish a
+political break in 2001. Date recording, historical coverage, case composition,
+and incomplete follow-up remain possible explanations. Filing dates are present
+for only 16 of the 1,367 withdrawn projects, so this export cannot yet support
+a historical filing-cohort withdrawal rate. The figure uses the existing annual
+audit table and is reproduced by `make` in the coverage audit's `code/` folder.
+
+![Withdrawal counts and shares by reported certification/referral year.](input/zap_withdrawals_over_time.pdf)
+
+### Homeowner terciles
+
+The same series split by the existing within-borough 1990 community-district
+homeownership terciles shows declines in all three groups. The share withdrawn
+among low-homeownership projects is 17.9% in 1990-2001, 8.1% in 2002-2013,
+and 3.7% in 2014-2025. The corresponding middle-tercile shares are 19.3%,
+8.5%, and 5.0%; high-tercile shares are 20.1%, 8.8%, and 5.9%. Each share
+uses all assigned projects in that tercile and period as its denominator,
+including ongoing projects. Terminations are not part of this numerator.
+
+The direct ZAP district assignment covers 11,641 of 11,978 projects dated
+1975-2025 (97.2%), including 1,247 of 1,283 withdrawals (97.2%). A project
+listing several districts enters a tercile only when all listed districts are
+standard and belong to that same tercile. Missing, nonstandard, and conflicting
+district assignments remain in the saved project table with explicit reasons.
+No project is counted twice, and no first-district or parcel fallback is used.
+
+The suspicious November 13, 1991 cluster spans all three terciles: 40 low,
+31 middle, and 23 high withdrawals, plus one unassigned withdrawal. Omitting
+that date as a diagnostic comparison lowers the 1990-2001 shares to 14.1%,
+16.5%, and 17.4%, respectively. The plotted series retains the cluster. The
+broad decline therefore is not confined to high-homeownership districts, and
+the shared spike increases the importance of checking historical date records.
+Annual recent shares are noisy because there are few withdrawals and follow-up
+is incomplete. These are descriptive comparisons, not estimates of a policy
+effect or final failure probabilities.
+
+![Withdrawal shares and counts by within-borough homeowner tercile.](input/zap_withdrawals_by_homeowner_tercile.pdf)
+
 ## Reading Tyler's extraction results
 
 Tyler's August 28 write-up describes a useful deterministic pipeline: OCR

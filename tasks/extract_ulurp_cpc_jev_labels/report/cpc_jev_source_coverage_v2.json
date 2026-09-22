@@ -1,0 +1,229 @@
+{
+  "dataset": "cpc_jev_source_coverage_v2.csv",
+  "rows": 11314,
+  "key": [
+    "document_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "719c2925372fc6697696dd78ebd3b1b4c9a80210f15d41813dff5adba59e3c19",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 11314,
+      "most_common": [
+        [
+          "00119c3b0ee800f4d8ba",
+          1
+        ],
+        [
+          "00126d30463744ba647c",
+          1
+        ],
+        [
+          "00167643a19f5c30bf57",
+          1
+        ],
+        [
+          "001f885d7d891a8711f7",
+          1
+        ],
+        [
+          "00231b56ec914bf6ccd9",
+          1
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 11314,
+      "most_common": [
+        [
+          "C 000002 ZSM",
+          1
+        ],
+        [
+          "C 000012 ZSR",
+          1
+        ],
+        [
+          "C 000013 ZSR",
+          1
+        ],
+        [
+          "C 000014 ZSR",
+          1
+        ],
+        [
+          "C 000016A ZSR",
+          1
+        ]
+      ]
+    },
+    "corpus_role": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "certified_ulurp_report",
+          11258
+        ],
+        [
+          "related_project_narrative_lead",
+          36
+        ],
+        [
+          "related_project_narrative_companion",
+          20
+        ]
+      ]
+    },
+    "source_usable": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "TRUE",
+          11208
+        ],
+        [
+          "FALSE",
+          106
+        ]
+      ]
+    },
+    "represented_narrative_ids": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 134,
+      "distinct_nonmissing": 8906,
+      "most_common": [
+        [
+          "866a54b363e46a002939",
+          18
+        ],
+        [
+          "893918c1c4d4cff7020d",
+          18
+        ],
+        [
+          "e38eec40e72e7fe6c4a8",
+          18
+        ],
+        [
+          "a1e7040e5dafc3ef04ec",
+          17
+        ],
+        [
+          "4a634046696010fa9409",
+          16
+        ]
+      ]
+    },
+    "context_narrative_ids": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 102,
+      "distinct_nonmissing": 7223,
+      "most_common": [
+        [
+          "00126d30463744ba647c;10507621d921dde7c0d7;274b10dad2c7d8c3d289;58bbfba48ce2be16119f;909d462731d43bf82142;a1fadd39dd63b0358f1c;c3b259cd35716505559a;dee304480e9129d5c0e0;e34420e8ab2f4c4cca80;e382a90c2b99ef76a6de",
+          22
+        ],
+        [
+          "866a54b363e46a002939",
+          18
+        ],
+        [
+          "893918c1c4d4cff7020d",
+          18
+        ],
+        [
+          "e38eec40e72e7fe6c4a8",
+          18
+        ],
+        [
+          "1ff3c132fb6f612ec1df;2450cd155bb2742cfc53;3a053a813e177ced4879;3c060ba66bb654677821;4258c4a49d88eac3e993;5cac110adb229f52bf58;96a037fb0cc3c9e1d8ea;a13703562871fa2cbdd4;b612c28eafa091f77471;c01ef635f6c1ae15121e;c0f9c2da259e96aa0b5f;d69c2b7e86b4bf2a3206;ef76ec2e28601163e459;f4b81a0c540396f0c010",
+          17
+        ]
+      ]
+    },
+    "coverage_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "represented",
+          11180
+        ],
+        [
+          "no_usable_text",
+          106
+        ],
+        [
+          "context_only",
+          28
+        ]
+      ]
+    },
+    "complete_narrative_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          8027
+        ],
+        [
+          "1",
+          3287
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "represented_narrative_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "1",
+          11175
+        ],
+        [
+          "0",
+          134
+        ],
+        [
+          "3",
+          5
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 3
+    }
+  }
+}

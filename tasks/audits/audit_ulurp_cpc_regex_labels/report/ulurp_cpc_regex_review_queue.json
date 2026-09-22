@@ -1,11 +1,11 @@
 {
   "dataset": "ulurp_cpc_regex_review_queue.csv",
-  "rows": 5460,
+  "rows": 5459,
   "key": [
     "document_id"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "e17c94a6bbfa92bace69adeeae640fec397fe3a3897a12aca44219c781869591",
+  "sha256_csv_bytes": "50d4de294732428481346556e12ac67553590cdda9ec83af86c823a0285d7198",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -13,7 +13,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 5460,
+      "distinct_nonmissing": 5459,
       "most_common": [
         [
           "00119c3b0ee800f4d8ba",
@@ -42,7 +42,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 5460,
+      "distinct_nonmissing": 5459,
       "most_common": [
         [
           "C 000012 ZSR",
@@ -71,7 +71,7 @@
         "str"
       ],
       "missing": 800,
-      "distinct_nonmissing": 3925,
+      "distinct_nonmissing": 3924,
       "most_common": [
         [
           "C-O-P",
@@ -149,7 +149,7 @@
         ],
         [
           "MM",
-          393
+          392
         ]
       ]
     },
@@ -158,7 +158,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 5460,
+      "distinct_nonmissing": 5459,
       "most_common": [
         [
           "00135a3546a6f0fe84f5525e642cc85c9e329d230530a2b6223f4c0a42fcc148",
@@ -186,8 +186,8 @@
       "python_types": [
         "str"
       ],
-      "missing": 3839,
-      "distinct_nonmissing": 1621,
+      "missing": 3825,
+      "distinct_nonmissing": 1634,
       "most_common": [
         [
           "C 000012 ZSR; C 000013 ZSR; C 000014 ZSR; C 000016A ZSR; C 000017 ZMR; C 000018 PCR",
@@ -224,7 +224,7 @@
         ],
         [
           "resolved",
-          1080
+          1079
         ],
         [
           "unknown_motion",
@@ -253,7 +253,7 @@
         ],
         [
           "support",
-          1367
+          1366
         ],
         [
           "no_recommendation",
@@ -274,7 +274,7 @@
         "str"
       ],
       "missing": 1795,
-      "distinct_nonmissing": 3597,
+      "distinct_nonmissing": 3596,
       "most_common": [
         [
           "community board No. 3 held a public hearing on this matter on July 10, 1978. The board recommends approval of this proposal. The City Planning Commission received the report from community board No. 3 on July 31, 1978 and is attached.",
@@ -303,7 +303,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 5428,
+      "distinct_nonmissing": 5427,
       "most_common": [
         [
           "C 890654 GFK",
@@ -336,15 +336,15 @@
       "most_common": [
         [
           "resolved",
-          2587
+          2591
         ],
         [
           "no_count_match",
-          766
+          763
         ],
         [
           "no_section",
-          707
+          705
         ],
         [
           "partial",
@@ -360,8 +360,8 @@
       "python_types": [
         "str"
       ],
-      "missing": 1651,
-      "distinct_nonmissing": 3199,
+      "missing": 1646,
+      "distinct_nonmissing": 3203,
       "most_common": [
         [
           "the Hearing was duly held. There were no speakers and the Hearing was closed. CITY PLANNING COMMISSION FINDINGS AND recommendation",
@@ -390,7 +390,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 5344,
+      "distinct_nonmissing": 5343,
       "most_common": [
         [
           "C 960205 HUK",
@@ -419,7 +419,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 5459,
+      "distinct_nonmissing": 5458,
       "most_common": [
         [
           "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/080533.pdf",
@@ -440,6 +440,64 @@
         [
           "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/000014.pdf",
           1
+        ]
+      ]
+    },
+    "existing_human_fields": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 5301,
+      "distinct_nonmissing": 12,
+      "most_common": [
+        [
+          "affordability_displacement; approved_unresolved_objection; bp_request_or_opposition; cb_request_or_opposition; civic_group_position; councilmember_position; cpc_opposition_speakers; cpc_support_speakers; environment_open_space; explicit_local_response; infrastructure_services; legacy_development_direction; local_request_condition; procedural_response; revision_or_concession; scale_character_preservation; specific_project; substantial_local_opposition; traffic_parking",
+          64
+        ],
+        [
+          "affordability_displacement; approved_unresolved_objection; bp_request_or_opposition; cb_opposition_votes; cb_request_or_opposition; cb_support_votes; civic_group_position; councilmember_position; cpc_opposition_speakers; cpc_support_speakers; dev_direction; environment_open_space; explicit_local_response; infrastructure_services; local_request_condition; procedural_response; revision_or_concession; scale_character_preservation; specific_project; substantial_local_opposition; traffic_parking; zone_change",
+          45
+        ],
+        [
+          "affordability_displacement; approved_unresolved_objection; bp_request_or_opposition; cb_opposition_votes; cb_request_or_opposition; cb_support_votes; civic_group_position; councilmember_position; cpc_opposition_speakers; cpc_support_speakers; dev_direction; environment_open_space; explicit_local_response; infrastructure_services; legacy_development_direction; local_request_condition; procedural_response; revision_or_concession; scale_character_preservation; specific_project; substantial_local_opposition; traffic_parking; zone_change",
+          15
+        ],
+        [
+          "affordability_displacement; approved_unresolved_objection; bp_request_or_opposition; cb_request_or_opposition; civic_group_position; councilmember_position; cpc_opposition_speakers; cpc_support_speakers; dev_direction; environment_open_space; explicit_local_response; infrastructure_services; legacy_development_direction; local_request_condition; procedural_response; revision_or_concession; scale_character_preservation; specific_project; substantial_local_opposition; traffic_parking; zone_change",
+          9
+        ],
+        [
+          "affordability_displacement; approved_unresolved_objection; bp_request_or_opposition; cb_request_or_opposition; civic_group_position; councilmember_position; cpc_opposition_speakers; cpc_support_speakers; dev_direction; environment_open_space; explicit_local_response; infrastructure_services; local_request_condition; procedural_response; revision_or_concession; scale_character_preservation; specific_project; substantial_local_opposition; traffic_parking; zone_change",
+          9
+        ]
+      ]
+    },
+    "unresolved_count_fields_without_completed_human_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 72,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "cb_support_votes; cb_opposition_votes",
+          2595
+        ],
+        [
+          "cb_support_votes; cb_opposition_votes; cpc_support_speakers; cpc_opposition_speakers",
+          1746
+        ],
+        [
+          "cpc_support_speakers; cpc_opposition_speakers",
+          1037
+        ],
+        [
+          "cb_support_votes; cb_opposition_votes; cpc_support_speakers",
+          6
+        ],
+        [
+          "cpc_support_speakers",
+          3
         ]
       ]
     }

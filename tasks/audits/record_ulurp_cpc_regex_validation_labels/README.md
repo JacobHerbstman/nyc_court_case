@@ -10,7 +10,9 @@ revise the regex rules and are therefore a development sample.
 
 `ulurp_cpc_regex_holdout_labels_codex.csv` contains a second 100 reports that
 exclude both the training and development samples. Its labels were recorded
-only after the revised rules were frozen, so it provides an out-of-sample test.
+only after the then-current rules were frozen. It was subsequently inspected
+during rule development, so it now provides a regression benchmark rather than
+an independent out-of-sample test. The filename is retained for continuity.
 
 The labels use the same definitions as the human training codebook, with three
 additional fields needed to evaluate every production regex measure:

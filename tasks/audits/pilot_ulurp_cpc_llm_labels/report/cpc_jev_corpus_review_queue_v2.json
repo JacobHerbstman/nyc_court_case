@@ -1,0 +1,122 @@
+{
+  "dataset": "cpc_jev_corpus_review_queue_v2.csv",
+  "rows": 24,
+  "key": [
+    "document_id",
+    "reason"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "45ceaab4661b24341b0af928be6c0900120a617a8ddac7fc798a65b804e0a84a",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 14,
+      "most_common": [
+        [
+          "6a4a3e07d85490f294d7",
+          4
+        ],
+        [
+          "135bd4f0e8a383c1999c",
+          3
+        ],
+        [
+          "c20ec387f1672c2d80d0",
+          3
+        ],
+        [
+          "0b6804417da7f35e4ee2",
+          2
+        ],
+        [
+          "acd5b0bcf70dca18417d",
+          2
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 14,
+      "most_common": [
+        [
+          "C 970403 PPM",
+          4
+        ],
+        [
+          "C 821011 PPX",
+          3
+        ],
+        [
+          "C 940296 HDK",
+          3
+        ],
+        [
+          "C 000266 MMQ",
+          2
+        ],
+        [
+          "C 860885 HOX",
+          2
+        ]
+      ]
+    },
+    "reason": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "binary_evidence_conflict",
+          6
+        ],
+        [
+          "positive_council_or_civic",
+          6
+        ],
+        [
+          "positive_topic_concern",
+          6
+        ],
+        [
+          "stage_conflict",
+          6
+        ]
+      ]
+    },
+    "extraction_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "complete",
+          24
+        ]
+      ]
+    },
+    "review_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "pending_source_review",
+          24
+        ]
+      ]
+    }
+  }
+}

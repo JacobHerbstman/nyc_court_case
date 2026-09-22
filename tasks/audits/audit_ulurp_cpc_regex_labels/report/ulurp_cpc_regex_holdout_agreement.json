@@ -6,7 +6,7 @@
     "field"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "580822f31afd2d23cc8c2f7472412ee190e7fc01e46c35006ff48e23f8e948c2",
+  "sha256_csv_bytes": "a79d53af210dfd46b82139789f13a6e585c47815ca12246e9ecb00364a2e13f8",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "sample_slice": {
@@ -155,7 +155,7 @@
         "int"
       ],
       "missing": 0,
-      "distinct_nonmissing": 41,
+      "distinct_nonmissing": 42,
       "most_common": [
         [
           "11",
@@ -186,7 +186,7 @@
         "float"
       ],
       "missing": 0,
-      "distinct_nonmissing": 58,
+      "distinct_nonmissing": 57,
       "most_common": [
         [
           "1.0",
@@ -217,7 +217,7 @@
         "int"
       ],
       "missing": 42,
-      "distinct_nonmissing": 25,
+      "distinct_nonmissing": 26,
       "most_common": [
         [
           "1",
@@ -256,19 +256,19 @@
         ],
         [
           "1",
-          23
+          22
         ],
         [
           "2",
-          13
+          14
         ],
         [
           "3",
-          6
+          5
         ],
         [
           "4",
-          3
+          4
         ]
       ],
       "minimum": 0,
@@ -303,14 +303,14 @@
         ]
       ],
       "minimum": 0,
-      "maximum": 33
+      "maximum": 32
     },
     "true_negative": {
       "python_types": [
         "int"
       ],
       "missing": 42,
-      "distinct_nonmissing": 39,
+      "distinct_nonmissing": 38,
       "most_common": [
         [
           "3",
@@ -348,15 +348,15 @@
           46
         ],
         [
-          "0.8333333333333334",
-          5
-        ],
-        [
           "0.75",
           4
         ],
         [
-          "0.875",
+          "0.8333333333333334",
+          4
+        ],
+        [
+          "0.7142857142857143",
           3
         ],
         [
@@ -372,7 +372,7 @@
         "float"
       ],
       "missing": 51,
-      "distinct_nonmissing": 45,
+      "distinct_nonmissing": 44,
       "most_common": [
         [
           "1.0",
@@ -380,7 +380,7 @@
         ],
         [
           "0.5",
-          7
+          8
         ],
         [
           "0.7142857142857143",
@@ -403,7 +403,7 @@
         "float"
       ],
       "missing": 2,
-      "distinct_nonmissing": 52,
+      "distinct_nonmissing": 51,
       "most_common": [
         [
           "1.0",

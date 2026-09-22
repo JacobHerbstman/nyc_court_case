@@ -1,0 +1,326 @@
+{
+  "dataset": "cpc_jev_labels_v1.csv",
+  "rows": 1054,
+  "key": [
+    "request_id",
+    "field"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "1b4bb72e51b0acd85b12c4e6a2242d8a16890f0323e057a8f4860710d775f0b6",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "request_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 34,
+      "most_common": [
+        [
+          "00326891d3391480524d_part1",
+          31
+        ],
+        [
+          "0568137a2968387b992b_part1",
+          31
+        ],
+        [
+          "0b62c4bf7d20ec91b688_part1",
+          31
+        ],
+        [
+          "0b62c4bf7d20ec91b688_part2",
+          31
+        ],
+        [
+          "0e6500033b0a740f5091_part1",
+          31
+        ]
+      ]
+    },
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 29,
+      "most_common": [
+        [
+          "5bc99ad23483b9958616",
+          93
+        ],
+        [
+          "0b62c4bf7d20ec91b688",
+          62
+        ],
+        [
+          "5ddc4880eedb9c6cb953",
+          62
+        ],
+        [
+          "a46b9f409bc0222e209d",
+          62
+        ],
+        [
+          "00326891d3391480524d",
+          31
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 29,
+      "most_common": [
+        [
+          "C 190072 ZSK",
+          93
+        ],
+        [
+          "C 020048 PPK",
+          62
+        ],
+        [
+          "C 240369 ZMM",
+          62
+        ],
+        [
+          "C 940309 ZMM",
+          62
+        ],
+        [
+          "C 010472 ZSX",
+          31
+        ]
+      ]
+    },
+    "part_number": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "1",
+          899
+        ],
+        [
+          "2",
+          124
+        ],
+        [
+          "3",
+          31
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 3
+    },
+    "total_parts": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "1",
+          775
+        ],
+        [
+          "2",
+          186
+        ],
+        [
+          "3",
+          93
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 3
+    },
+    "field": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 31,
+      "most_common": [
+        [
+          "affordability",
+          34
+        ],
+        [
+          "affordability_displacement",
+          34
+        ],
+        [
+          "approved_unresolved_objection",
+          34
+        ],
+        [
+          "bp_request_or_opposition",
+          34
+        ],
+        [
+          "cb_request_or_opposition",
+          34
+        ]
+      ]
+    },
+    "jev_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 11,
+      "most_common": [
+        [
+          "0",
+          588
+        ],
+        [
+          "1",
+          330
+        ],
+        [
+          "none_or_procedural",
+          59
+        ],
+        [
+          "none",
+          25
+        ],
+        [
+          "more",
+          24
+        ]
+      ]
+    },
+    "confidence": {
+      "python_types": [
+        "float",
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 80,
+      "most_common": [
+        [
+          "1",
+          308
+        ],
+        [
+          "0.99",
+          148
+        ],
+        [
+          "0.98",
+          69
+        ],
+        [
+          "0.97",
+          33
+        ],
+        [
+          "0.96",
+          22
+        ]
+      ],
+      "minimum": 0.17,
+      "maximum": 1
+    },
+    "chosen_probability": {
+      "python_types": [
+        "float",
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 63,
+      "most_common": [
+        [
+          "1",
+          392
+        ],
+        [
+          "0.99",
+          128
+        ],
+        [
+          "0.98",
+          50
+        ],
+        [
+          "0.96",
+          29
+        ],
+        [
+          "0.97",
+          29
+        ]
+      ],
+      "minimum": 0.34,
+      "maximum": 1
+    },
+    "probabilities_json": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 303,
+      "most_common": [
+        [
+          "{\"0\": 1, \"1\": 0, \"unclear\": 0}",
+          267
+        ],
+        [
+          "{\"0\": 0, \"1\": 1, \"unclear\": 0}",
+          76
+        ],
+        [
+          "{\"0\": 0.99, \"1\": 0.01, \"unclear\": 0}",
+          63
+        ],
+        [
+          "{\"0\": 0.01, \"1\": 0.99, \"unclear\": 0}",
+          41
+        ],
+        [
+          "{\"none_or_procedural\": 1, \"opposition\": 0, \"support_or_request\": 0, \"unclear\": 0}",
+          28
+        ]
+      ]
+    },
+    "request_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 34,
+      "most_common": [
+        [
+          "02f655b9f0b8e0c33411a1716120b2a8dc2a00a1c5d081bf470376ca5eef0063",
+          31
+        ],
+        [
+          "11620fe767a47982841da95560c9128c044fc8716105dc7bafa8ffd6607bc594",
+          31
+        ],
+        [
+          "14a0e678df05974b03c447fae598a3e64fb9e2123764e323e7eea5efafcff799",
+          31
+        ],
+        [
+          "2afaf2a57526d6baef5cdc4ab3d7b3bfca35943a461606bda322caf0ef55f6b4",
+          31
+        ],
+        [
+          "42c1187013495ff0122e1d52e242e6716504af8a35dc02a3a754810d2d458515",
+          31
+        ]
+      ]
+    }
+  }
+}

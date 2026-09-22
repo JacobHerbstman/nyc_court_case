@@ -1,0 +1,275 @@
+{
+  "dataset": "cpc_sol_actor_selection_v2.csv",
+  "rows": 340,
+  "key": [
+    "document_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "42fb7dac6bfd3a6156acc59d692fad63cef4f70166d4c6a4bd2ae485fdffa182",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 340,
+      "most_common": [
+        [
+          "00326891d3391480524d",
+          1
+        ],
+        [
+          "027b0c0b2938ee5f5961",
+          1
+        ],
+        [
+          "0290f3b8b3e9437b9ac9",
+          1
+        ],
+        [
+          "02c18c0a3b85fce07355",
+          1
+        ],
+        [
+          "0385e4de7488ec4762c5",
+          1
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 340,
+      "most_common": [
+        [
+          "C 000029 ZSM",
+          1
+        ],
+        [
+          "C 000040 PPM",
+          1
+        ],
+        [
+          "C 000092 PPM",
+          1
+        ],
+        [
+          "C 000151 ZMR",
+          1
+        ],
+        [
+          "C 000478 PPQ",
+          1
+        ]
+      ]
+    },
+    "reason": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "source_not_ready",
+          198
+        ],
+        [
+          "eligible",
+          128
+        ],
+        [
+          "no_completed_human",
+          7
+        ],
+        [
+          "prior_pilot_source",
+          7
+        ]
+      ]
+    },
+    "council": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 21,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "none_or_procedural",
+          284
+        ],
+        [
+          "support_or_request",
+          22
+        ],
+        [
+          "opposition",
+          13
+        ]
+      ]
+    },
+    "civic": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 32,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "none_or_procedural",
+          251
+        ],
+        [
+          "opposition",
+          42
+        ],
+        [
+          "support_or_request",
+          15
+        ]
+      ]
+    },
+    "issue_positive": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          197
+        ],
+        [
+          "0",
+          143
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "source_parts": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "0",
+          198
+        ],
+        [
+          "1",
+          127
+        ],
+        [
+          "2",
+          10
+        ],
+        [
+          "3",
+          5
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 3
+    },
+    "rank": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 340,
+      "most_common": [
+        [
+          "00a92693c612db54c53da3dd08b30cbea093d552eeab9d5685a7b8d0247c47c0",
+          1
+        ],
+        [
+          "00ebd0dffce9896955754835b387490d81d12ffd8448b2d7668d7b412d96b31a",
+          1
+        ],
+        [
+          "015d6d9dc8446dd9d1890c0af2e8a5458dab6ffaaabbfac9edeae47cd244b1c8",
+          1
+        ],
+        [
+          "0198354f39a7e15dc944892cd6b8c9d561c44d79ea2940e75ab5136b097cfce6",
+          1
+        ],
+        [
+          "032644f24bd66f038b26d58230c18d73bf62a23647e5f1fb7662deb176f04242",
+          1
+        ]
+      ]
+    },
+    "selected_group": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 334,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "council_opposition",
+          2
+        ],
+        [
+          "fresh_civic_opposition",
+          2
+        ],
+        [
+          "civic_both",
+          1
+        ],
+        [
+          "fresh_actor_negative",
+          1
+        ]
+      ]
+    },
+    "earlier_development": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          206
+        ],
+        [
+          "1",
+          134
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "civic_both": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          336
+        ],
+        [
+          "1",
+          4
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    }
+  }
+}

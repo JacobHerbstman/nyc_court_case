@@ -1,0 +1,48 @@
+{
+  "dataset": "zap_withdrawal_tercile_period.csv",
+  "rows": 16,
+  "key": ["period", "tercile"],
+  "unique_nonmissing_key": true,
+  "md5_csv_bytes": "24e18331815c3a9d6adf01b94505af93",
+  "fingerprint_scope": "Saved CSV bytes, including row order; not proof of source correctness.",
+  "columns": {
+    "period": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 4
+    },
+    "tercile": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 4
+    },
+    "projects": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 16,
+      "minimum": 25,
+      "maximum": 2643
+    },
+    "withdrawn": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 16,
+      "minimum": 2,
+      "maximum": 261
+    },
+    "terminated": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 10,
+      "minimum": 0,
+      "maximum": 29
+    },
+    "withdrawn_share": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 16,
+      "minimum": 0.0366,
+      "maximum": 0.2006
+    }
+  }
+}

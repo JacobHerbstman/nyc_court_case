@@ -1,0 +1,236 @@
+{
+  "dataset": "cpc_jev_quality_source_checks_v1.csv",
+  "rows": 384,
+  "key": [
+    "document_id",
+    "field"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "2114940c0f9a9acab7a06c64820360485459b1b25c8fcb8e75d10e9cccbb07b7",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 12,
+      "most_common": [
+        [
+          "26f03d0909c6323e9605",
+          32
+        ],
+        [
+          "432c5e44979906b907dc",
+          32
+        ],
+        [
+          "432d15e476c6bd58a1b0",
+          32
+        ],
+        [
+          "4fa9fb4f2fb26acfa73a",
+          32
+        ],
+        [
+          "5234f33b1a4d555ea125",
+          32
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 12,
+      "most_common": [
+        [
+          "C 800518 HDK",
+          32
+        ],
+        [
+          "C 820666 HDK",
+          32
+        ],
+        [
+          "C 860562 ZSQ",
+          32
+        ],
+        [
+          "C 860649 ZMM",
+          32
+        ],
+        [
+          "C 870321 HDK",
+          32
+        ]
+      ]
+    },
+    "selection_group": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "affordability_positive",
+          96
+        ],
+        [
+          "character_adopted_positive",
+          96
+        ],
+        [
+          "civic_positive",
+          96
+        ],
+        [
+          "council_positive",
+          96
+        ]
+      ]
+    },
+    "field": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 32,
+      "most_common": [
+        [
+          "affordability__adopted",
+          12
+        ],
+        [
+          "affordability__concern_request",
+          12
+        ],
+        [
+          "affordability__discussed",
+          12
+        ],
+        [
+          "civic__opposition",
+          12
+        ],
+        [
+          "civic__request",
+          12
+        ]
+      ]
+    },
+    "reference_value": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          273
+        ],
+        [
+          "1",
+          111
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "jev_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 2,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          255
+        ],
+        [
+          "1",
+          127
+        ]
+      ]
+    },
+    "reason": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 158,
+      "most_common": [
+        [
+          "No person, board, agency, or organization raises a concern, question, objection, or request on this topic for the focal project.",
+          36
+        ],
+        [
+          "No explicit accepted commitment or binding substantive condition on this topic is established for the focal project.",
+          33
+        ],
+        [
+          "No City Council member or representative explicitly tied to a member or member's office is attributed this position or request.",
+          28
+        ],
+        [
+          "The supplied focal and companion sources do not substantively discuss this topic for the focal project.",
+          21
+        ],
+        [
+          "No independent civic organization is attributed this position or a qualifying substantive request for the focal project.",
+          10
+        ]
+      ]
+    },
+    "reader": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "d",
+          192
+        ],
+        [
+          "e",
+          192
+        ]
+      ]
+    },
+    "evidence_json": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 110,
+      "most_common": [
+        [
+          "[]",
+          262
+        ],
+        [
+          "[{\"source_document_id\": \"ead095b4db2539098984\", \"pdf_page\": \"5\", \"quote\": \"wide street. Accordingly, the Commission believes that it might have been appropriate to zone the midblock portion of the south side of West 40th Street to higher density than typically permitted in a midblock area. However, thc rezoning boundaries were cut back along West 40th Street to 400 feet from Fifth Avenue to reyond to Landmarks Preservation Commissions concerns that rezoning of the entire I ntags could put undue development pressure on a number of landmarks on the street !uding\"}]",
+          3
+        ],
+        [
+          "[{\"source_document_id\": \"26f03d0909c6323e9605\", \"pdf_page\": \"12\", \"quote\": \"uildings developed throughout comparable neighborhoods in the City, and urged the applicant to consider a streetwall with recesses and courts to create building sections that would break the monotony of the continuous streetwall. The applicant has responded to these concerns by redesigning the building and creating deeper recesses and an outer court along Bay Ridge Avenue. The redesigned Bay Ridge Avenue facade is defined by recesses of various depths, the inclusion of an outer court, 26.8 feet wide by 19.10 feet deep, above th\"}]",
+          2
+        ],
+        [
+          "[{\"source_document_id\": \"26f03d0909c6323e9605\", \"pdf_page\": \"34\", \"quote\": \"2. Strong opposition was voiced by members of the community. 3.. 'Councilman Albanese established a Task Force to explore ways to prevent the construction of a theater. 4. Construction was halted as a result of the filing of objections concerning open space by the Task Force to the Buildings Department. 5. The developers agreed not to build a theater if the community would enter into negotiatio\"}]",
+          2
+        ],
+        [
+          "[{\"source_document_id\": \"26f03d0909c6323e9605\", \"pdf_page\": \"34\", \"quote\": \"2. Strong opposition was voiced by members of the community. 3.. 'Councilman Albanese established a Task Force to explore ways to prevent the construction of a theater. 4. Construction was halted as a result of the filing of objections concerning open space by the Task Force to the Buildings Department. 5. The developers agreed not to build a theater if the community would enter into negotiations aimed at developing an acceptable alternative. 6. By October 1996, the parties entered into an agreement\"}]",
+          2
+        ]
+      ]
+    }
+  }
+}

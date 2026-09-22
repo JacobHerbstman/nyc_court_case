@@ -1,0 +1,379 @@
+{
+  "dataset": "cpc_jev_council_v10.csv",
+  "rows": 9,
+  "key": [
+    "case_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "737d47490b5a4fe78c4b0aa6c81df0e2ca865549cdb4d67bc68fbaf66d9d51d1",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "case_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9,
+      "most_common": [
+        [
+          "affordability_recommendation",
+          1
+        ],
+        [
+          "concerns_prompted_rezoning",
+          1
+        ],
+        [
+          "historical_council_action",
+          1
+        ],
+        [
+          "other_actors",
+          1
+        ],
+        [
+          "representative_opposition",
+          1
+        ]
+      ]
+    },
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9,
+      "most_common": [
+        [
+          "07437e462fa3908ed8a2",
+          1
+        ],
+        [
+          "0dc9707e6f13fd73ad07",
+          1
+        ],
+        [
+          "1818edbd692337c3eeeb",
+          1
+        ],
+        [
+          "1dc1155eaeee22e0fecb",
+          1
+        ],
+        [
+          "3e7310d44e76d5e0a616",
+          1
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9,
+      "most_common": [
+        [
+          "C 090367 ZSM",
+          1
+        ],
+        [
+          "C 090387 ZMK",
+          1
+        ],
+        [
+          "C 180085 ZMQ",
+          1
+        ],
+        [
+          "C 210174 ZMK",
+          1
+        ],
+        [
+          "C 760072 HDK",
+          1
+        ]
+      ]
+    },
+    "cohort": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "additional_coded_report",
+          3
+        ],
+        [
+          "v8_miss",
+          3
+        ],
+        [
+          "v8_negative_control",
+          3
+        ]
+      ]
+    },
+    "original_council_code": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "support_or_request",
+          4
+        ],
+        [
+          "none_or_procedural",
+          3
+        ],
+        [
+          "opposition",
+          2
+        ]
+      ]
+    },
+    "jacob_council_code": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 4,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "support_or_request",
+          3
+        ],
+        [
+          "opposition",
+          2
+        ]
+      ]
+    },
+    "tyler_council_code": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 5,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "none_or_procedural",
+          3
+        ],
+        [
+          "support_or_request",
+          1
+        ]
+      ]
+    },
+    "support": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          8
+        ],
+        [
+          "1",
+          1
+        ]
+      ]
+    },
+    "requested_project": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          7
+        ],
+        [
+          "1",
+          2
+        ]
+      ]
+    },
+    "requested_provision": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          7
+        ],
+        [
+          "1",
+          2
+        ]
+      ]
+    },
+    "opposition": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          7
+        ],
+        [
+          "1",
+          2
+        ]
+      ]
+    },
+    "motivating_concern": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          8
+        ],
+        [
+          "1",
+          1
+        ]
+      ]
+    },
+    "any_involvement": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          6
+        ],
+        [
+          "0",
+          3
+        ]
+      ]
+    },
+    "position_candidate": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "support_or_request",
+          4
+        ],
+        [
+          "none_or_procedural",
+          3
+        ],
+        [
+          "opposition",
+          2
+        ]
+      ]
+    },
+    "expected_involvement": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          6
+        ],
+        [
+          "0",
+          3
+        ]
+      ]
+    },
+    "component_matches": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "5",
+          8
+        ],
+        [
+          "4",
+          1
+        ]
+      ],
+      "minimum": 4,
+      "maximum": 5
+    },
+    "component_missing": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "0",
+          9
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 0
+    },
+    "signal_sources_json": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "{\"motivating_concern\": \"v9_carried_not_rerun\", \"opposition\": \"v9_carried_not_rerun\", \"requested_project\": \"v10\", \"requested_provision\": \"v10\", \"support\": \"v10\"}",
+          6
+        ],
+        [
+          "{\"motivating_concern\": \"v9_carried_not_rerun\", \"opposition\": \"v9_carried_not_rerun\", \"requested_project\": \"v9_carried_not_rerun\", \"requested_provision\": \"v9_carried_not_rerun\", \"support\": \"v9_carried_not_rerun\"}",
+          3
+        ]
+      ]
+    },
+    "diagnostic_conflict_questions": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 8,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "requested_project",
+          1
+        ]
+      ]
+    }
+  }
+}

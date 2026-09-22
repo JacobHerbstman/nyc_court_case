@@ -1,0 +1,1286 @@
+[
+  {
+    "reader": "a",
+    "document_id": "d3a74443db94b01c2748",
+    "application_number": "C 140181 ZMM",
+    "packet_sha256": "e5525c1a6911b4dac76108c880e0bf06c053a595c94dd8d474a799c5af49ffd0",
+    "fields": [
+      "substantial_local_opposition",
+      "approved_unresolved_objection",
+      "infrastructure_services",
+      "environment_open_space",
+      "civic_group_position"
+    ],
+    "sources": [
+      {
+        "source_document_id": "d3a74443db94b01c2748",
+        "application_number": "C 140181 ZMM",
+        "role": "focal_report",
+        "sha256": "635b87e07da9587ae5b96e2a32a8c94bf8303f56d73e366e72776e281fe4a0fb"
+      },
+      {
+        "source_document_id": "951a66d4c9724088748e",
+        "application_number": "C 140185 HAM",
+        "role": "represented_related_action",
+        "sha256": "ecb86b4579d62a03fcdf80fcbad4070aadbaafd03d27390cc1b6400b9790604b"
+      },
+      {
+        "source_document_id": "9c7da5b2431398456198",
+        "application_number": "C 140183 ZSM",
+        "role": "represented_related_action",
+        "sha256": "cfa5ba1c0cc3fbea487f723fd44028f79f475fffd534a29cb822edf2e9d05d56"
+      }
+    ]
+  },
+  {
+    "reader": "a",
+    "document_id": "99e283a277aa316e5861",
+    "application_number": "C 230064 ZMK",
+    "packet_sha256": "c6e22baf4451edc4b39af1cdb4a2ba3492acaefe2c93decb46a3672049e4653c",
+    "fields": [
+      "local_request_condition",
+      "procedural_response",
+      "explicit_local_response",
+      "bp_request_or_opposition",
+      "affordability_displacement",
+      "scale_character_preservation",
+      "environment_open_space"
+    ],
+    "sources": [
+      {
+        "source_document_id": "99e283a277aa316e5861",
+        "application_number": "C 230064 ZMK",
+        "role": "focal_report",
+        "sha256": "854db648abf2d07d7a97e9e92af503064f3b46b64da5c725a0b27977efa71310"
+      }
+    ]
+  },
+  {
+    "reader": "a",
+    "document_id": "06c90a5bde6a4a3cadd7",
+    "application_number": "N 090318 ZRQ",
+    "packet_sha256": "87d891e249a1459e2cb3cc5258e2165dd501b9d9abb115a58077f5382604d798",
+    "fields": [
+      "substantial_local_opposition",
+      "approved_unresolved_objection",
+      "traffic_parking",
+      "environment_open_space",
+      "civic_group_position"
+    ],
+    "sources": [
+      {
+        "source_document_id": "06c90a5bde6a4a3cadd7",
+        "application_number": "N 090318 ZRQ",
+        "role": "focal_report",
+        "sha256": "ac7a9d821228ebb125d5d8866a5eee5b90fbd38f576d8f787ed88aacfaf91400"
+      },
+      {
+        "source_document_id": "bdde9c72160f371cd250",
+        "application_number": "C 090319 ZMQ",
+        "role": "represented_related_action",
+        "sha256": "c790cc426bae59b8c3bc59cf9e137122d4cc092d882ad451beedcb1ffff4aec3"
+      }
+    ]
+  },
+  {
+    "reader": "a",
+    "document_id": "160defec91155f5c6a83",
+    "application_number": "C 880040 MMQ",
+    "packet_sha256": "cd695be092fe7f6a428cc725266a8514042d2865f17e3f8f6825ee7da253fbc4",
+    "fields": [
+      "revision_or_concession",
+      "procedural_response",
+      "scale_character_preservation",
+      "infrastructure_services",
+      "environment_open_space",
+      "cpc_support_speakers"
+    ],
+    "sources": [
+      {
+        "source_document_id": "160defec91155f5c6a83",
+        "application_number": "C 880040 MMQ",
+        "role": "focal_report",
+        "sha256": "dfc52cbf6634412bad400220c0384cef2f9058d3b3897ae5ebca2656e1f4e96a"
+      },
+      {
+        "source_document_id": "253c7e5e151bac0d75a4",
+        "application_number": "C 880041 ZSQ",
+        "role": "context_companion",
+        "sha256": "3b730aa3b85c48809c93dbe4b4521f4a4916df12bea277fae1710665a57e2d13"
+      }
+    ]
+  },
+  {
+    "reader": "a",
+    "document_id": "e7fca30f01ed17d39753",
+    "application_number": "C 170382 ZSM",
+    "packet_sha256": "ece4b01e2e2046c151e6c83734a65a1c6f4c954ea1e9a01af37c7f6b8fb05631",
+    "fields": [
+      "scale_character_preservation"
+    ],
+    "sources": [
+      {
+        "source_document_id": "e7fca30f01ed17d39753",
+        "application_number": "C 170382 ZSM",
+        "role": "focal_report",
+        "sha256": "ca2b34904f40e1682707ada16aa3beef0a0bcedb4acb4c96da0406f07f667154"
+      }
+    ]
+  },
+  {
+    "reader": "a",
+    "document_id": "a4495ff4e165569cdeef",
+    "application_number": "C 160243 PSK",
+    "packet_sha256": "6d3e5bc7cd71d19bdea274044499b4880745908b84c899865db7d65d51798b33",
+    "fields": [
+      "revision_or_concession",
+      "procedural_response",
+      "cb_request_or_opposition",
+      "environment_open_space"
+    ],
+    "sources": [
+      {
+        "source_document_id": "a4495ff4e165569cdeef",
+        "application_number": "C 160243 PSK",
+        "role": "focal_report",
+        "sha256": "6227571682b7e1588966b706ba4e2df4c945e4d06abbd7602c552afeae6fad9c"
+      },
+      {
+        "source_document_id": "25124840bd9e6d4e6222",
+        "application_number": "C 120120 MMK",
+        "role": "represented_related_action",
+        "sha256": "f54776c5f2649cec3d5ca1597b7d47044843aac911b53b8c9b53418784b4dd0b"
+      }
+    ]
+  },
+  {
+    "reader": "a",
+    "document_id": "a9a1cee75bbb0ff39871",
+    "application_number": "C 770472 HOM",
+    "packet_sha256": "b298f9ab045c9aed5d8e2319e649942631090c988f123f1ac68e4f4c9143e963",
+    "fields": [
+      "approved_unresolved_objection",
+      "traffic_parking",
+      "scale_character_preservation",
+      "cpc_support_speakers"
+    ],
+    "sources": [
+      {
+        "source_document_id": "a9a1cee75bbb0ff39871",
+        "application_number": "C 770472 HOM",
+        "role": "focal_report",
+        "sha256": "fd62472fe28ffd3a9baf255cd2a1e1908cc558a53cb9224d5f6a6cf64a2d8675"
+      },
+      {
+        "source_document_id": "4becb3d7a79e147f0ee5",
+        "application_number": "C 770471 HDM",
+        "role": "context_companion",
+        "sha256": "1a3a0a02678cf0ed30bd6047e3883037fef22967dc4fa0d5344cde52385c8fdb"
+      }
+    ]
+  },
+  {
+    "reader": "a",
+    "document_id": "963b77de060fb7cf97f3",
+    "application_number": "C 960282 PPK",
+    "packet_sha256": "1bc5cc5e2003f64ca24132011d4599dc03c2ab8f30c4a3d6120556d8dd060098",
+    "fields": [
+      "local_request_condition",
+      "revision_or_concession",
+      "explicit_local_response",
+      "approved_unresolved_objection",
+      "bp_request_or_opposition",
+      "scale_character_preservation"
+    ],
+    "sources": [
+      {
+        "source_document_id": "963b77de060fb7cf97f3",
+        "application_number": "C 960282 PPK",
+        "role": "focal_report",
+        "sha256": "2912268db0ab932e9cb8a37066f3722ef6ef34ea743868b1d537517b0d28ceda"
+      },
+      {
+        "source_document_id": "5c380b5d23bb4e6676a7",
+        "application_number": "C 960320 PPK",
+        "role": "context_companion",
+        "sha256": "4dd1727da60cffea472c2c651838116e850cf0219f062431dfd35cd033e76e50"
+      }
+    ]
+  },
+  {
+    "reader": "a",
+    "document_id": "7b71c3ec545c37f94412",
+    "application_number": "C 040515 ZMX",
+    "packet_sha256": "b1e3f9f363f1406068e1b2d8fe5853ccfeee60dfe4ae59c19b39e051f03108b9",
+    "fields": [
+      "local_request_condition",
+      "procedural_response",
+      "explicit_local_response",
+      "cb_request_or_opposition",
+      "scale_character_preservation",
+      "cpc_support_speakers"
+    ],
+    "sources": [
+      {
+        "source_document_id": "7b71c3ec545c37f94412",
+        "application_number": "C 040515 ZMX",
+        "role": "focal_report",
+        "sha256": "3f7f7e131f2fa6d37c7d9d2e929cd2f5a6b766342c1a1eafcf856aa88786405e"
+      }
+    ]
+  },
+  {
+    "reader": "a",
+    "document_id": "aa24e961978c9f498728",
+    "application_number": "C 160249 PCQ",
+    "packet_sha256": "728b66e4beb0d04c90ba926c12dfaea83390b7dceb1ac3bd287b57fe7058c3ce",
+    "fields": [
+      "scale_character_preservation"
+    ],
+    "sources": [
+      {
+        "source_document_id": "aa24e961978c9f498728",
+        "application_number": "C 160249 PCQ",
+        "role": "focal_report",
+        "sha256": "796ac74754b917d7bc1bf9a3d5a37f097b1557389a449cdbcaedc0c39939e121"
+      },
+      {
+        "source_document_id": "e080fd35dd8a98c4ba55",
+        "application_number": "C 160248 PQQ",
+        "role": "context_companion",
+        "sha256": "177f7b691a0a275e5041ecf2a9cdcdd6fc16f8fd295e7a9a96eac1519dfd09ce"
+      }
+    ]
+  },
+  {
+    "reader": "a",
+    "document_id": "599fb10afbf5301a27ee",
+    "application_number": "C 080313 ZSM",
+    "packet_sha256": "916091105608bdbd49a7e279a8df48550ac5700eba15ab7c141aaa989a87822f",
+    "fields": [
+      "revision_or_concession",
+      "scale_character_preservation",
+      "environment_open_space"
+    ],
+    "sources": [
+      {
+        "source_document_id": "599fb10afbf5301a27ee",
+        "application_number": "C 080313 ZSM",
+        "role": "focal_report",
+        "sha256": "2c7b2d8254eb8bbc581907f23bc86468003a7a4179d20e24c6790889734d4e0d"
+      }
+    ]
+  },
+  {
+    "reader": "a",
+    "document_id": "d9f70406732d73939cbd",
+    "application_number": "C 980323 PPQ",
+    "packet_sha256": "ec3d98e30d57b5533c7dd46255132aedbe43b7d37f2a6be0258c283c89820cb4",
+    "fields": [
+      "substantial_local_opposition",
+      "civic_group_position"
+    ],
+    "sources": [
+      {
+        "source_document_id": "d9f70406732d73939cbd",
+        "application_number": "C 980323 PPQ",
+        "role": "focal_report",
+        "sha256": "b6a258fec6441a5e046173e8bd304b6099e474bdb7d00853bb8f4d2e1ce00286"
+      }
+    ]
+  },
+  {
+    "reader": "a",
+    "document_id": "027b0c0b2938ee5f5961",
+    "application_number": "C 810498 ZMK",
+    "packet_sha256": "aa876464b8410b955ad6a36542d3c39549cdbabd3f9771801cd69890d6a0fbeb",
+    "fields": [
+      "revision_or_concession"
+    ],
+    "sources": [
+      {
+        "source_document_id": "027b0c0b2938ee5f5961",
+        "application_number": "C 810498 ZMK",
+        "role": "focal_report",
+        "sha256": "fce5d90af88c6b73de14952338b6dca5a1b8099daa1fce583735cdaac42918e3"
+      },
+      {
+        "source_document_id": "8c185b8a3ac3605850ca",
+        "application_number": "C 810433 HDK",
+        "role": "context_companion",
+        "sha256": "b9be895259a5dc570448ee9f2aff3e42d4f629c988226dfea7371aebaff7c83f"
+      },
+      {
+        "source_document_id": "ddbab79ce728f6c36709",
+        "application_number": "C 810535 HDK",
+        "role": "context_companion",
+        "sha256": "c170bbaa70e171194fe8bed6eea0d3446e40b1614979f526407cd9c6918f80bf"
+      }
+    ]
+  },
+  {
+    "reader": "a",
+    "document_id": "60823e417b420ecdb63c",
+    "application_number": "C 090447 HAK",
+    "packet_sha256": "abfaf0a5870e169422b781119d5e8677e9cea9552feca13c0771ec8ad580ddd5",
+    "fields": [
+      "affordability_displacement",
+      "infrastructure_services"
+    ],
+    "sources": [
+      {
+        "source_document_id": "60823e417b420ecdb63c",
+        "application_number": "C 090447 HAK",
+        "role": "focal_report",
+        "sha256": "769aeccef422f6a6db5911b9ae7d7eafb42caa49650e36e02b359dc8641b373a"
+      }
+    ]
+  },
+  {
+    "reader": "a",
+    "document_id": "13e5c76bb268bbd78e25",
+    "application_number": "C 900172 ZMR",
+    "packet_sha256": "630c3515cbccc1beb7f89b48f22847be6d287de83be330cede31c81c88111f33",
+    "fields": [
+      "specific_project",
+      "local_request_condition",
+      "environment_open_space"
+    ],
+    "sources": [
+      {
+        "source_document_id": "13e5c76bb268bbd78e25",
+        "application_number": "C 900172 ZMR",
+        "role": "focal_report",
+        "sha256": "b669db8d7b1a61070651b488053b2e4db5f7b546b4d8459020ae51b255ddfa07"
+      }
+    ]
+  },
+  {
+    "reader": "a",
+    "document_id": "62d8d1ec137fa1bdc30b",
+    "application_number": "C 860640 MMQ",
+    "packet_sha256": "169fe42cb516ecb2b2b5def4c5da8567184c2e1c76fa6c02341abfbe79ee059f",
+    "fields": [
+      "traffic_parking"
+    ],
+    "sources": [
+      {
+        "source_document_id": "62d8d1ec137fa1bdc30b",
+        "application_number": "C 860640 MMQ",
+        "role": "focal_report",
+        "sha256": "c98f0baf25d99a44f27cdbe9145bf4045e618fdacf86803937efbe6cf0da12de"
+      }
+    ]
+  },
+  {
+    "reader": "b",
+    "document_id": "5bc99ad23483b9958616",
+    "application_number": "C 190072 ZSK",
+    "packet_sha256": "ab5dc6e8f5de928d40c07d8cf347df37483f2bb595b151d6723c09856be623a9",
+    "fields": [
+      "substantial_local_opposition",
+      "procedural_response",
+      "approved_unresolved_objection",
+      "cb_request_or_opposition",
+      "environment_open_space",
+      "civic_group_position"
+    ],
+    "sources": [
+      {
+        "source_document_id": "5bc99ad23483b9958616",
+        "application_number": "C 190072 ZSK",
+        "role": "focal_report",
+        "sha256": "f0b7faa9893091db896cc5f0bf6c7a9aaa37f1ade171c57a6c6808e17c4b1df9"
+      },
+      {
+        "source_document_id": "15b53782d85c1764eab6",
+        "application_number": "C 190071 ZMK",
+        "role": "represented_related_action",
+        "sha256": "9a9877cf7b19ce621b902d0ed7cc065cc3351258b3b79f466c37340ba88d0432"
+      },
+      {
+        "source_document_id": "de9f528d217eba10f45b",
+        "application_number": "C 190073 ZSK",
+        "role": "represented_related_action",
+        "sha256": "f3dee8b37cbd6cec139073571a484687b3480525e9ff8afad6241f4eac046b51"
+      }
+    ]
+  },
+  {
+    "reader": "b",
+    "document_id": "8d256b8645ef3570947d",
+    "application_number": "C 940135 PPX",
+    "packet_sha256": "59f493c839473561c218e8819b4d5099dbf65b15951f02d3c963367b513451e0",
+    "fields": [
+      "revision_or_concession"
+    ],
+    "sources": [
+      {
+        "source_document_id": "8d256b8645ef3570947d",
+        "application_number": "C 940135 PPX",
+        "role": "focal_report",
+        "sha256": "373b45a4f725b2da6400238e18560c01cd3e1c7843b995adf35480ffd5c9b3a8"
+      },
+      {
+        "source_document_id": "1e5b47e251add2cb7cc4",
+        "application_number": "C 940289 PPK",
+        "role": "context_companion",
+        "sha256": "3eb7304a09088bc577ecacb80d86459de1cc3964d18fefa01e7b63b7a4d1df44"
+      },
+      {
+        "source_document_id": "2e2b6d0e4f76822259f6",
+        "application_number": "C 930263 PPK",
+        "role": "context_companion",
+        "sha256": "c3098baf2d4b557b9954539dbeefefe8c396695ae72f7e5a166d531a67169770"
+      },
+      {
+        "source_document_id": "31c14354b2c7b37b82d7",
+        "application_number": "C 940163 PPK",
+        "role": "context_companion",
+        "sha256": "b4b87f01aa67d73e24db0c04f78b2f1a8dd3163a9accadc774b333b98cdde968"
+      },
+      {
+        "source_document_id": "5fb8a8bafd2eb319301d",
+        "application_number": "C 930123 PPX",
+        "role": "context_companion",
+        "sha256": "8956dcbcd9695616de80710b88275470777ffdb58993c5fc211fe30c9bad4174"
+      },
+      {
+        "source_document_id": "a461954c754633617f00",
+        "application_number": "C 940165 PPR",
+        "role": "context_companion",
+        "sha256": "52971e250f38bd6205a9d92d03393f908260368b1d06509b7e548f0fbf245e63"
+      }
+    ]
+  },
+  {
+    "reader": "b",
+    "document_id": "2bf00e9741a60b35e29b",
+    "application_number": "C 970372 HDK",
+    "packet_sha256": "c7e29404ad5357e817d8ee06ad2afe3dfc51d5264c556edb2c4e106685182aa8",
+    "fields": [
+      "specific_project",
+      "substantial_local_opposition",
+      "local_request_condition",
+      "revision_or_concession",
+      "procedural_response",
+      "explicit_local_response",
+      "approved_unresolved_objection",
+      "cb_request_or_opposition",
+      "bp_request_or_opposition",
+      "affordability_displacement",
+      "traffic_parking",
+      "scale_character_preservation",
+      "environment_open_space",
+      "cpc_support_speakers",
+      "cpc_opposition_speakers"
+    ],
+    "sources": [
+      {
+        "source_document_id": "2bf00e9741a60b35e29b",
+        "application_number": "C 970372 HDK",
+        "role": "focal_report",
+        "sha256": "4280cb7b348aac5460145b91229976458675e6661bd5a529a86f72f9a060bc99"
+      },
+      {
+        "source_document_id": "48182d2a59d32dddb472",
+        "application_number": "C 970371 HUK",
+        "role": "context_companion",
+        "sha256": "46f0167b18f9da83450e2e5276252785b6a46008f70aa63b947c40869370d837"
+      }
+    ]
+  },
+  {
+    "reader": "b",
+    "document_id": "717d4d21cc6a432a8c40",
+    "application_number": "C 870568 ZMQ",
+    "packet_sha256": "89dcf7434915002e3b439dec8dd35ba5de041d1e5f8ea511c5df9dae9dda90c6",
+    "fields": [
+      "local_request_condition",
+      "procedural_response"
+    ],
+    "sources": [
+      {
+        "source_document_id": "717d4d21cc6a432a8c40",
+        "application_number": "C 870568 ZMQ",
+        "role": "focal_report",
+        "sha256": "9cfb58d25b8f302ff2c9cdc618a9777ee28ddcdeb4befc2bf6a977f80154edea"
+      }
+    ]
+  },
+  {
+    "reader": "b",
+    "document_id": "a18d979d3f34a1736785",
+    "application_number": "C 790789 MMM",
+    "packet_sha256": "0386e8e21b2748d81b3c687696fcd944c4041f0972584ee19a26f8ca23c44f3e",
+    "fields": [
+      "substantial_local_opposition",
+      "procedural_response",
+      "bp_request_or_opposition",
+      "traffic_parking",
+      "environment_open_space"
+    ],
+    "sources": [
+      {
+        "source_document_id": "a18d979d3f34a1736785",
+        "application_number": "C 790789 MMM",
+        "role": "focal_report",
+        "sha256": "750c84ed967da5140ebe6a8ced7905016f9c121125aa55d61a73a9e2cf4ec39b"
+      },
+      {
+        "source_document_id": "775faae450f0ebdcdd05",
+        "application_number": "C 790554 ZMM",
+        "role": "context_companion",
+        "sha256": "0da3b169c7ee78fc1a81030f0405ea6044c577779fdc23a8b78047494b89d553"
+      },
+      {
+        "source_document_id": "9c040fb61971886d043f",
+        "application_number": "C 790553 ZSM",
+        "role": "context_companion",
+        "sha256": "e1a88a1dbbc26504b817e14f53eaf19ba4ae85560cb806836984a1d8d9422fd6"
+      },
+      {
+        "source_document_id": "9ce9ce87a9073451fd72",
+        "application_number": "C 790508 MMM",
+        "role": "context_companion",
+        "sha256": "5579716f256fa76048e875d0d03f5770b8f20e65d99ff0d2a11cf39f6af962cf"
+      }
+    ]
+  },
+  {
+    "reader": "b",
+    "document_id": "0385e4de7488ec4762c5",
+    "application_number": "C 030300 ZMK",
+    "packet_sha256": "ce4b23e54869e745bcbe9180eb0d5078d9dd06910f559ad52c67fe2b2f0ffbd0",
+    "fields": [
+      "revision_or_concession",
+      "procedural_response",
+      "explicit_local_response",
+      "cb_request_or_opposition",
+      "affordability_displacement",
+      "traffic_parking",
+      "scale_character_preservation",
+      "environment_open_space"
+    ],
+    "sources": [
+      {
+        "source_document_id": "0385e4de7488ec4762c5",
+        "application_number": "C 030300 ZMK",
+        "role": "focal_report",
+        "sha256": "dec64c35b0fb0cf2bf408f0ff66f9e822ef42d5716c7d4a08890e5cf052bda73"
+      },
+      {
+        "source_document_id": "7dc554208c436d328df0",
+        "application_number": "C 030301 HDK",
+        "role": "context_companion",
+        "sha256": "4a0b80af704a0219fa60ef50b80bcc36064ec142a5fcb37d86722b16167c03a6"
+      },
+      {
+        "source_document_id": "d32471ca057e65a97c62",
+        "application_number": "C 030299 HUK",
+        "role": "context_companion",
+        "sha256": "c192b0d5911f640ee8f846b10f720e304a8c267be6e0ce42f6e3fea47d16c4dd"
+      }
+    ]
+  },
+  {
+    "reader": "b",
+    "document_id": "f3085cc56cd0d4a25efb",
+    "application_number": "C 220185 ZMQ",
+    "packet_sha256": "3b309e13dcb95b8811fcbdf700d02da3b419893b7f26cb6f63f7659ab97f956c",
+    "fields": [
+      "approved_unresolved_objection",
+      "traffic_parking"
+    ],
+    "sources": [
+      {
+        "source_document_id": "f3085cc56cd0d4a25efb",
+        "application_number": "C 220185 ZMQ",
+        "role": "focal_report",
+        "sha256": "696d82ebf427dfdf33656d755b6d2af90aaf08773b1d82a35d7a40be42fdf776"
+      }
+    ]
+  },
+  {
+    "reader": "b",
+    "document_id": "f3b36ee2799e8f224a5b",
+    "application_number": "C 150110 ZSM",
+    "packet_sha256": "ad4409a1ff055d27bcd7c09630eefb7756a6f56b434adaf1a5c36817581b33cf",
+    "fields": [
+      "local_request_condition",
+      "revision_or_concession",
+      "explicit_local_response",
+      "cb_request_or_opposition",
+      "bp_request_or_opposition",
+      "traffic_parking",
+      "scale_character_preservation",
+      "infrastructure_services"
+    ],
+    "sources": [
+      {
+        "source_document_id": "f3b36ee2799e8f224a5b",
+        "application_number": "C 150110 ZSM",
+        "role": "focal_report",
+        "sha256": "87b572ed162c963a30f05e8313957a5c087dfd5fd35bfccf730140ce094c2866"
+      }
+    ]
+  },
+  {
+    "reader": "b",
+    "document_id": "972066b72c66c8244bb9",
+    "application_number": "C 910255 ZMK",
+    "packet_sha256": "e824c3b74b4811c4070ba1f35b9a212f755e27e52eb02dd0c808da813fb7e2a0",
+    "fields": [
+      "local_request_condition",
+      "procedural_response",
+      "explicit_local_response",
+      "cb_request_or_opposition"
+    ],
+    "sources": [
+      {
+        "source_document_id": "972066b72c66c8244bb9",
+        "application_number": "C 910255 ZMK",
+        "role": "focal_report",
+        "sha256": "f9f56ca22342a37113cc01695f3a578942a79267ef479e286b94e583c856809d"
+      }
+    ]
+  },
+  {
+    "reader": "b",
+    "document_id": "447f786f9f1ffc6d7eb0",
+    "application_number": "C 180308 ZSR",
+    "packet_sha256": "86727ffa93d0abf49e4e39646b5aaa4f100c85e2c1988825c436371d7f475480",
+    "fields": [
+      "substantial_local_opposition",
+      "revision_or_concession",
+      "explicit_local_response",
+      "scale_character_preservation",
+      "infrastructure_services"
+    ],
+    "sources": [
+      {
+        "source_document_id": "447f786f9f1ffc6d7eb0",
+        "application_number": "C 180308 ZSR",
+        "role": "focal_report",
+        "sha256": "dee33fd9a82c1937180b8ddd94c828427788f03bba08fb53fc4d7eb78943e8ce"
+      }
+    ]
+  },
+  {
+    "reader": "b",
+    "document_id": "c1ef08d5d2f9399b80eb",
+    "application_number": "C 920157 HDX",
+    "packet_sha256": "90950dc03ce5a23d8ce8ea9a1475c7fa763b8aa7d933a31316ccf63862025b30",
+    "fields": [
+      "revision_or_concession",
+      "environment_open_space"
+    ],
+    "sources": [
+      {
+        "source_document_id": "c1ef08d5d2f9399b80eb",
+        "application_number": "C 920157 HDX",
+        "role": "focal_report",
+        "sha256": "878bb87db1ff91586f07a20d1d6075739e6be878178ce627f56302f5a77346d3"
+      }
+    ]
+  },
+  {
+    "reader": "b",
+    "document_id": "9fac5dd0d7f16bc0caa8",
+    "application_number": "C 800337 ZMX",
+    "packet_sha256": "1ec544df1b4d38c9fbb69f8639f5bc015edd0f9923d38ad1dc670bf9ce5fc061",
+    "fields": [
+      "environment_open_space"
+    ],
+    "sources": [
+      {
+        "source_document_id": "9fac5dd0d7f16bc0caa8",
+        "application_number": "C 800337 ZMX",
+        "role": "focal_report",
+        "sha256": "f76187f54a3ff75cb2ac53cff067c06f92f836977e0979c4db5f2054d329982f"
+      },
+      {
+        "source_document_id": "d47b90ec57e3cf3504ac",
+        "application_number": "C 800201 HPX",
+        "role": "context_companion",
+        "sha256": "a47b7be4f1857609efdf4bf2e01018c060024a82dd93ee62a29ca27c43d5bf98"
+      }
+    ]
+  },
+  {
+    "reader": "b",
+    "document_id": "8431ae9e31ecbb0e7ddf",
+    "application_number": "C 970554 ZMR",
+    "packet_sha256": "b6927d1f4289fa14f4ee177ce3da2540f58ee4905dae942edcb4f63559ce816a",
+    "fields": [
+      "scale_character_preservation",
+      "infrastructure_services",
+      "civic_group_position"
+    ],
+    "sources": [
+      {
+        "source_document_id": "8431ae9e31ecbb0e7ddf",
+        "application_number": "C 970554 ZMR",
+        "role": "focal_report",
+        "sha256": "b5373c3145cc2dc52204742dbd4519930439a04ad4b2ffb206d3cfad067dc957"
+      }
+    ]
+  },
+  {
+    "reader": "b",
+    "document_id": "64def187d5b6703c71ee",
+    "application_number": "C 130170 ZMQ",
+    "packet_sha256": "d0f79d2ca540512505c85f6520a90d6a69133dfb91aa26c11b45bb31f1b409c4",
+    "fields": [
+      "scale_character_preservation",
+      "environment_open_space"
+    ],
+    "sources": [
+      {
+        "source_document_id": "64def187d5b6703c71ee",
+        "application_number": "C 130170 ZMQ",
+        "role": "focal_report",
+        "sha256": "375cbba3800d817db4ca6ce990a5454fd422d13336226064b39fd905efc43754"
+      }
+    ]
+  },
+  {
+    "reader": "b",
+    "document_id": "55f58faac321062fc6ac",
+    "application_number": "C 010691 ZSM",
+    "packet_sha256": "3374d86798f234d132fb47574c4d05c867beda470177f0a7aa74a92fc68f9b1b",
+    "fields": [
+      "revision_or_concession",
+      "scale_character_preservation"
+    ],
+    "sources": [
+      {
+        "source_document_id": "55f58faac321062fc6ac",
+        "application_number": "C 010691 ZSM",
+        "role": "focal_report",
+        "sha256": "8385aa05100e86f6b5e08161a963a147f20b783843b443f41e964c55e18e4a8c"
+      }
+    ]
+  },
+  {
+    "reader": "b",
+    "document_id": "1ed8ae661487257b6804",
+    "application_number": "C 770196 TCM",
+    "packet_sha256": "eea3d89aa80dc9ebe93ba8a70525ca26e79e815b33176f2d3440a194bd29c89a",
+    "fields": [
+      "substantial_local_opposition",
+      "local_request_condition",
+      "revision_or_concession",
+      "approved_unresolved_objection",
+      "cb_request_or_opposition",
+      "scale_character_preservation",
+      "infrastructure_services"
+    ],
+    "sources": [
+      {
+        "source_document_id": "1ed8ae661487257b6804",
+        "application_number": "C 770196 TCM",
+        "role": "focal_report",
+        "sha256": "6d32d87cfe9ef5130efcd1f3dbd82584b5d2e234ac8352bf02f4262f569ceb79"
+      }
+    ]
+  },
+  {
+    "reader": "b",
+    "document_id": "00326891d3391480524d",
+    "application_number": "C 851020 PPQ",
+    "packet_sha256": "dee36ad5e17418ffc2908c9a0a1e4fc8c6a1383dd1497bf80a7f12f33e15d6e9",
+    "fields": [
+      "specific_project",
+      "procedural_response",
+      "explicit_local_response",
+      "approved_unresolved_objection",
+      "scale_character_preservation"
+    ],
+    "sources": [
+      {
+        "source_document_id": "00326891d3391480524d",
+        "application_number": "C 851020 PPQ",
+        "role": "focal_report",
+        "sha256": "f00ba2f3abb3ed3fcd51e9e95e8963ed6e91d8bc7f267d6de109323c3bfac149"
+      }
+    ]
+  },
+  {
+    "reader": "b",
+    "document_id": "e75ad629024e8e5d586a",
+    "application_number": "C 820363 HDM",
+    "packet_sha256": "c539d6c83f5109a818015b6d21da5d092248c89563887a94fef7e28bc12ef601",
+    "fields": [
+      "specific_project",
+      "local_request_condition",
+      "procedural_response",
+      "explicit_local_response",
+      "approved_unresolved_objection",
+      "cb_request_or_opposition",
+      "affordability_displacement"
+    ],
+    "sources": [
+      {
+        "source_document_id": "e75ad629024e8e5d586a",
+        "application_number": "C 820363 HDM",
+        "role": "focal_report",
+        "sha256": "08ced533dff174e876a8e72e336e10f3ca8d10af3272111a9048f9163ddad146"
+      }
+    ]
+  },
+  {
+    "reader": "c",
+    "document_id": "0b62c4bf7d20ec91b688",
+    "application_number": "C 240369 ZMM",
+    "packet_sha256": "27e173ea1f64067f160596916c18f826c83d627000d7dff2e3bf277d568a8cd7",
+    "fields": [
+      "substantial_local_opposition",
+      "civic_group_position"
+    ],
+    "sources": [
+      {
+        "source_document_id": "0b62c4bf7d20ec91b688",
+        "application_number": "C 240369 ZMM",
+        "role": "focal_report",
+        "sha256": "d49857433c5d9f22ec783e8ed5ae4b7b20481b7e95b9c322ff06181570416acf"
+      },
+      {
+        "source_document_id": "16268a4129b42992b6ee",
+        "application_number": "C 240370 ZSM",
+        "role": "represented_related_action",
+        "sha256": "b3e5d1e730696454979709a745879f8c2118516a323733a9406b049fa2782151"
+      },
+      {
+        "source_document_id": "266ee0186333e3ba5b97",
+        "application_number": "C 240373 PCM",
+        "role": "represented_related_action",
+        "sha256": "ac661090b55ead0b6bd43ff9ffdc8e0a059ace7abac1cf7c30bcd832855ad662"
+      },
+      {
+        "source_document_id": "9bf0b198c55c6ec46b87",
+        "application_number": "C 240391 PQM",
+        "role": "represented_related_action",
+        "sha256": "20f596d5fe003b70467269a0a4ebf739c9e63ce61bb01bc286ba20855dc9d822"
+      },
+      {
+        "source_document_id": "abd21c92a1f2d4ee02c3",
+        "application_number": "C 240390 ZSM",
+        "role": "represented_related_action",
+        "sha256": "70c3ac325095ecdd3d3f7f5e41fc31108e3b416eb2be6fc9e1a8e6111ddb929f"
+      },
+      {
+        "source_document_id": "d5f9a52b649244ea2041",
+        "application_number": "C 240309 MMM",
+        "role": "represented_related_action",
+        "sha256": "a036d504e5e57a83bef39841c5df6156b7eb7a792458c7db9a44d006e77aa048"
+      },
+      {
+        "source_document_id": "f454b3692a03f497f642",
+        "application_number": "C 240372 PPM",
+        "role": "represented_related_action",
+        "sha256": "92c31d885daeef617228a252d3858306076063d825eb3477da78d243b3c3cf15"
+      }
+    ]
+  },
+  {
+    "reader": "c",
+    "document_id": "8454cf00b6f05f5dd077",
+    "application_number": "C 150447 ZSR",
+    "packet_sha256": "1b2e36d0e343697a356150dcadcb28d672e018c71f38f228e85c9889611f39a2",
+    "fields": [
+      "infrastructure_services",
+      "civic_group_position"
+    ],
+    "sources": [
+      {
+        "source_document_id": "8454cf00b6f05f5dd077",
+        "application_number": "C 150447 ZSR",
+        "role": "focal_report",
+        "sha256": "ccbf9237a729c148e509f25993912a77b8fd392cf524722a9d98aeb66d6c4506"
+      }
+    ]
+  },
+  {
+    "reader": "c",
+    "document_id": "c56f2e54cc845b5ea9ec",
+    "application_number": "C 210173 HAK",
+    "packet_sha256": "6aeecf7604dc8c37818002baf53c67b9afb00ef1864db92763b65e91cdfeec04",
+    "fields": [
+      "substantial_local_opposition",
+      "revision_or_concession",
+      "procedural_response",
+      "explicit_local_response",
+      "environment_open_space"
+    ],
+    "sources": [
+      {
+        "source_document_id": "c56f2e54cc845b5ea9ec",
+        "application_number": "C 210173 HAK",
+        "role": "focal_report",
+        "sha256": "83cf9166ce27640038df37410885e5a5c63320fcc4072e07a791405b83287958"
+      }
+    ]
+  },
+  {
+    "reader": "c",
+    "document_id": "e8c5096b1e43a5e720be",
+    "application_number": "C 060063 ZMR",
+    "packet_sha256": "65248dc4b07b88c7fd4acf0a6dd30286df60f17dee7fc8debe41ea2edaaef87c",
+    "fields": [
+      "scale_character_preservation"
+    ],
+    "sources": [
+      {
+        "source_document_id": "e8c5096b1e43a5e720be",
+        "application_number": "C 060063 ZMR",
+        "role": "focal_report",
+        "sha256": "6600c9a892e023101d3e5eeb3d7c59e92fc220909f4711ce8194d26bd897a434"
+      },
+      {
+        "source_document_id": "04cf4f41f4572c0b7e15",
+        "application_number": "N 060066 ZRR",
+        "role": "verified_n_companion",
+        "sha256": "8026f055a8270403b48c92315af4673c77be6e504314ceb31c410cf850453f8b"
+      },
+      {
+        "source_document_id": "a9249fc521234e103a54",
+        "application_number": "C 060061 ZMR",
+        "role": "context_companion",
+        "sha256": "79a78b16756a9941e75602997b3d95d2300efa57a5f35227955b739d981780e0"
+      },
+      {
+        "source_document_id": "e5c07ef79f2e4626eaff",
+        "application_number": "C 060062 ZMR",
+        "role": "context_companion",
+        "sha256": "59042d0ae63ffc0e9c5df4a9b2983090498753ca031defd85655271117caee21"
+      }
+    ]
+  },
+  {
+    "reader": "c",
+    "document_id": "657f43fe237dec69725c",
+    "application_number": "C 910337 HUX",
+    "packet_sha256": "7d1d3daaa604106669d3e7c33f8ca43ecb4cf1974dc64113887cccb33fd58565",
+    "fields": [
+      "revision_or_concession",
+      "procedural_response",
+      "cb_request_or_opposition",
+      "bp_request_or_opposition",
+      "environment_open_space",
+      "civic_group_position"
+    ],
+    "sources": [
+      {
+        "source_document_id": "657f43fe237dec69725c",
+        "application_number": "C 910337 HUX",
+        "role": "focal_report",
+        "sha256": "778894f86d02cd5eaab95b5d65853f26c828c47409a41d40389e57a8e1a978f4"
+      },
+      {
+        "source_document_id": "bc0838d321cd547b1f2c",
+        "application_number": "C 920258 HMX",
+        "role": "context_companion",
+        "sha256": "5c43989cdec45a698bcaa0a1851aa92934381ea24b59ed0437e7e4de05405705"
+      }
+    ]
+  },
+  {
+    "reader": "c",
+    "document_id": "3dba139ecd6b71369289",
+    "application_number": "C 140316 ZSR",
+    "packet_sha256": "3ddf60e9159471a51b1a4c0939ab32537db444002021815c7cd8f90cd604b39c",
+    "fields": [
+      "revision_or_concession",
+      "traffic_parking",
+      "scale_character_preservation",
+      "environment_open_space"
+    ],
+    "sources": [
+      {
+        "source_document_id": "3dba139ecd6b71369289",
+        "application_number": "C 140316 ZSR",
+        "role": "focal_report",
+        "sha256": "9b22ddf9035a938dd41dcbaf39df863201f814e36b6dadc6068accdf3c51dbfd"
+      },
+      {
+        "source_document_id": "630e4a3a4eed93a21e90",
+        "application_number": "C 190188 MMR",
+        "role": "represented_related_action",
+        "sha256": "6b16e86a6dfab0359f0d991eb02c1d78ce590a4d812db318770bb8e39ef874a9"
+      }
+    ]
+  },
+  {
+    "reader": "c",
+    "document_id": "c2a9d6be6f0d130af7c5",
+    "application_number": "C 891083 PLQ",
+    "packet_sha256": "41e6976739dbaf05027c5036ffebcd0f017da58267ec4d4beef231e0b9f1c368",
+    "fields": [
+      "approved_unresolved_objection",
+      "infrastructure_services"
+    ],
+    "sources": [
+      {
+        "source_document_id": "c2a9d6be6f0d130af7c5",
+        "application_number": "C 891083 PLQ",
+        "role": "focal_report",
+        "sha256": "414c6a052cc5bab429456a8b26c4cd97e4292529fbe50204a50661e4f27e34f7"
+      },
+      {
+        "source_document_id": "31500726555ed55587bb",
+        "application_number": "C 891078 PLQ",
+        "role": "context_companion",
+        "sha256": "164fb8f390df9383fc73c1341e54cd4048c6cb46f2ab44db884f337a06eedf53"
+      },
+      {
+        "source_document_id": "3b20f543976ffdd4c890",
+        "application_number": "C 890989 PLQ",
+        "role": "context_companion",
+        "sha256": "490abe5611ec6159d8064ddf682f87f307db74af1214c17b8b4bb87a16893410"
+      },
+      {
+        "source_document_id": "98201e64b0247197290c",
+        "application_number": "C 900038 PLQ",
+        "role": "context_companion",
+        "sha256": "094408abe428a34cfeeaab6d3d7721b6409cdc5af3d542ad7bc8e65fdbc7124e"
+      }
+    ]
+  },
+  {
+    "reader": "c",
+    "document_id": "f0603a16d0f473d75e4a",
+    "application_number": "C 020612 HAM",
+    "packet_sha256": "a2760181595b46c9b36c2c5b62c89c7b0b21cbbb3fe435b19e0b3c59515b6098",
+    "fields": [
+      "affordability_displacement"
+    ],
+    "sources": [
+      {
+        "source_document_id": "f0603a16d0f473d75e4a",
+        "application_number": "C 020612 HAM",
+        "role": "focal_report",
+        "sha256": "63d8195703f36694a7d8750a1891c3cb8aca1e28142fcd863e528cc7d24dc45b"
+      }
+    ]
+  },
+  {
+    "reader": "c",
+    "document_id": "ca107f682dc894bf84e0",
+    "application_number": "C 780413 HUK",
+    "packet_sha256": "3ac546b618623c44c27004d9bb6cff4ead2d148f5ff6a2a4e8abb5d0056958a4",
+    "fields": [
+      "substantial_local_opposition",
+      "revision_or_concession",
+      "approved_unresolved_objection",
+      "cb_request_or_opposition",
+      "infrastructure_services",
+      "cpc_support_speakers"
+    ],
+    "sources": [
+      {
+        "source_document_id": "ca107f682dc894bf84e0",
+        "application_number": "C 780413 HUK",
+        "role": "focal_report",
+        "sha256": "8cbc7e8e123431560c500c6c9eb8433c63540e07c2e27699f36b7507766efedb"
+      },
+      {
+        "source_document_id": "0fa5efb81c5ae7d66274",
+        "application_number": "C 780262 HDK",
+        "role": "context_companion",
+        "sha256": "75fc1683cd118afb33c6b145c4ed69369c0f921cf60b30bbb616980db8d66616"
+      },
+      {
+        "source_document_id": "8d252fea2a603ffc0fb3",
+        "application_number": "C 780263 HDK",
+        "role": "context_companion",
+        "sha256": "4e67b9e23e8fc80603f7d7417f57a40017b36f341c3c0e1ad0fa14f603908288"
+      },
+      {
+        "source_document_id": "9fcec9bceee5e57700db",
+        "application_number": "C 780264 HDK",
+        "role": "context_companion",
+        "sha256": "3e6cb2a3a794d19965b5271f4b76b244934eb980b0b6b6a700f3ffc498764f19"
+      }
+    ]
+  },
+  {
+    "reader": "c",
+    "document_id": "8f003470ccbe08b35ecb",
+    "application_number": "C 910511 PQK",
+    "packet_sha256": "0603a3be0d9f0296b73a19b93582aa9411615bdeaff556fad9f01581692f16a5",
+    "fields": [
+      "local_request_condition",
+      "revision_or_concession",
+      "procedural_response",
+      "explicit_local_response",
+      "approved_unresolved_objection",
+      "infrastructure_services"
+    ],
+    "sources": [
+      {
+        "source_document_id": "8f003470ccbe08b35ecb",
+        "application_number": "C 910511 PQK",
+        "role": "focal_report",
+        "sha256": "fc1ab91003e41a63e86d0a7985749b4207c7eadbc17b176d3c5f6de87b2100ab"
+      }
+    ]
+  },
+  {
+    "reader": "c",
+    "document_id": "44f8891d9333548f1907",
+    "application_number": "C 970578 ZMX",
+    "packet_sha256": "02abc95f3f54f4cb7d9f7788e640ac6190a27e1d4d7c90dc0a9aa002112f83be",
+    "fields": [
+      "substantial_local_opposition",
+      "revision_or_concession",
+      "procedural_response",
+      "explicit_local_response",
+      "approved_unresolved_objection",
+      "scale_character_preservation",
+      "environment_open_space"
+    ],
+    "sources": [
+      {
+        "source_document_id": "44f8891d9333548f1907",
+        "application_number": "C 970578 ZMX",
+        "role": "focal_report",
+        "sha256": "91b1bd853439ed94fcc8283aa8c8273c57bd228d165e76644496f144e637eb8d"
+      }
+    ]
+  },
+  {
+    "reader": "c",
+    "document_id": "748948f8cbb9ea3be10a",
+    "application_number": "C 840424 HPM",
+    "packet_sha256": "84336f786984d2fde7fb702051d36c459ae23974913f9ab81480369687f53847",
+    "fields": [
+      "infrastructure_services",
+      "environment_open_space"
+    ],
+    "sources": [
+      {
+        "source_document_id": "748948f8cbb9ea3be10a",
+        "application_number": "C 840424 HPM",
+        "role": "focal_report",
+        "sha256": "23d89a4f0b2ecb3944aa2976c81fcab6ee3910c9b7cb4ef0ae989c0d731fd88d"
+      },
+      {
+        "source_document_id": "7bb05287fbfe8bb0b4ea",
+        "application_number": "C 840425 HAM",
+        "role": "context_companion",
+        "sha256": "dbd4f4fe22aae03f9ff865390140b5276be49bad866fa4c98793e73a82fd7932"
+      },
+      {
+        "source_document_id": "8e771b73e462351ae7bb",
+        "application_number": "C 840423 HUM",
+        "role": "context_companion",
+        "sha256": "9cb33c0a60569fe82964b20a3012d973466d6d07aae9039ae9729edafb5e7315"
+      }
+    ]
+  },
+  {
+    "reader": "c",
+    "document_id": "a7b89b5b22c825f035e7",
+    "application_number": "C 180346 PSX",
+    "packet_sha256": "4920507ac479a3cb5e90fd4162fd613fe0562d93b0f115765890a15d3fa4e828",
+    "fields": [
+      "procedural_response",
+      "explicit_local_response",
+      "cb_request_or_opposition",
+      "civic_group_position"
+    ],
+    "sources": [
+      {
+        "source_document_id": "a7b89b5b22c825f035e7",
+        "application_number": "C 180346 PSX",
+        "role": "focal_report",
+        "sha256": "4cea2546cd22728fc24f62452e856d7ddab40cc752b7b7fa0d2505fa905d12a9"
+      }
+    ]
+  },
+  {
+    "reader": "c",
+    "document_id": "c966df32c353011154bf",
+    "application_number": "C 180070 MMK",
+    "packet_sha256": "eb1ab2dfa99a1bbc070158a0f1a0297d65f14fe3ce00afac4d352cc2ddb082d2",
+    "fields": [
+      "revision_or_concession",
+      "infrastructure_services",
+      "environment_open_space"
+    ],
+    "sources": [
+      {
+        "source_document_id": "c966df32c353011154bf",
+        "application_number": "C 180070 MMK",
+        "role": "focal_report",
+        "sha256": "e1360116f28030979374a72ecd07a159d7c22fd02f048606b7103012471ce8bb"
+      }
+    ]
+  },
+  {
+    "reader": "c",
+    "document_id": "a2fe5d5a89f0163a9c93",
+    "application_number": "C 920262 PQQ",
+    "packet_sha256": "3a410e6acaf42859d60fba35bcf8257f5f8ab5df5ae59f930724bad115c5de69",
+    "fields": [
+      "local_request_condition",
+      "revision_or_concession",
+      "explicit_local_response",
+      "cb_request_or_opposition",
+      "bp_request_or_opposition",
+      "scale_character_preservation"
+    ],
+    "sources": [
+      {
+        "source_document_id": "a2fe5d5a89f0163a9c93",
+        "application_number": "C 920262 PQQ",
+        "role": "focal_report",
+        "sha256": "38f8b213c7c739801811a5e22b19caf51dcadcdffeb905d74d5ce1784fb2105d"
+      }
+    ]
+  },
+  {
+    "reader": "c",
+    "document_id": "96f54aa7fbd13c054a11",
+    "application_number": "C 850111 ZMM",
+    "packet_sha256": "2682c08bd30652a57de24cf0d91a22e602e30f1e28286f90cb17ebcb8342ab2a",
+    "fields": [
+      "local_request_condition",
+      "explicit_local_response",
+      "approved_unresolved_objection",
+      "traffic_parking"
+    ],
+    "sources": [
+      {
+        "source_document_id": "96f54aa7fbd13c054a11",
+        "application_number": "C 850111 ZMM",
+        "role": "focal_report",
+        "sha256": "459be60165b870b6bae24ab0f4c811f2e21df38328acaa065578988f70da729c"
+      }
+    ]
+  },
+  {
+    "reader": "c",
+    "document_id": "f6809b0ef748b33da617",
+    "application_number": "C 810436 PSK",
+    "packet_sha256": "885ada6e96615b926a4888da672546eb333f3e8db83d9f317ccae968de9434db",
+    "fields": [
+      "traffic_parking"
+    ],
+    "sources": [
+      {
+        "source_document_id": "f6809b0ef748b33da617",
+        "application_number": "C 810436 PSK",
+        "role": "focal_report",
+        "sha256": "30581d9b1d3b09afb1ea16e8647ec9ccb0754b709aec72fac1be392ed3297d19"
+      },
+      {
+        "source_document_id": "0ed0c5ff228a2f39d8d9",
+        "application_number": "C 820025 ZSK",
+        "role": "context_companion",
+        "sha256": "99a3b67d5be824286c6823eca608256f892d5ad226696653c6a9bef2243637ba"
+      }
+    ]
+  }
+]

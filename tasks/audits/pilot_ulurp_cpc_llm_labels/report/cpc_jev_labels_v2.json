@@ -1,0 +1,268 @@
+{
+  "dataset": "cpc_jev_labels_v2.csv",
+  "rows": 3220,
+  "key": [
+    "document_id",
+    "repeat",
+    "question"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "f7ebf7b05be4c7f4e20e72039bb24ba1a5c581b45da396bc5b98dd399833a6e2",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 46,
+      "most_common": [
+        [
+          "00326891d3391480524d",
+          70
+        ],
+        [
+          "02c18c0a3b85fce07355",
+          70
+        ],
+        [
+          "0385e4de7488ec4762c5",
+          70
+        ],
+        [
+          "0568137a2968387b992b",
+          70
+        ],
+        [
+          "067c9ef3c97fd3686486",
+          70
+        ]
+      ]
+    },
+    "cohort": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "original_development",
+          1820
+        ],
+        [
+          "additional_balanced_test",
+          1400
+        ]
+      ]
+    },
+    "repeat": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "1",
+          644
+        ],
+        [
+          "2",
+          644
+        ],
+        [
+          "3",
+          644
+        ],
+        [
+          "4",
+          644
+        ],
+        [
+          "5",
+          644
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 5
+    },
+    "question": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 14,
+      "most_common": [
+        [
+          "boundary_revision_or_concession",
+          230
+        ],
+        [
+          "boundary_scale_character_preservation",
+          230
+        ],
+        [
+          "character_actor",
+          230
+        ],
+        [
+          "character_basis",
+          230
+        ],
+        [
+          "clear_revision_or_concession",
+          230
+        ]
+      ]
+    },
+    "value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 83,
+      "most_common": [
+        [
+          "1",
+          1118
+        ],
+        [
+          "0",
+          722
+        ],
+        [
+          "none",
+          346
+        ],
+        [
+          "adopted_change",
+          185
+        ],
+        [
+          "concrete_issue",
+          170
+        ]
+      ]
+    },
+    "confidence": {
+      "python_types": [
+        "float",
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 86,
+      "most_common": [
+        [
+          "0.99",
+          183
+        ],
+        [
+          "1",
+          175
+        ],
+        [
+          "0.98",
+          118
+        ],
+        [
+          "0.97",
+          87
+        ],
+        [
+          "0.96",
+          82
+        ]
+      ],
+      "minimum": 0.15,
+      "maximum": 1
+    },
+    "probabilities_json": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1361,
+      "most_common": [
+        [
+          "{\"0\": 1, \"1\": 0, \"unclear\": 0}",
+          117
+        ],
+        [
+          "{\"0\": 0.01, \"1\": 0.99, \"unclear\": 0}",
+          115
+        ],
+        [
+          "{\"0\": 0, \"1\": 1, \"unclear\": 0}",
+          78
+        ],
+        [
+          "{\"0\": 0.02, \"1\": 0.98, \"unclear\": 0}",
+          55
+        ],
+        [
+          "{\"concrete_issue\": 1, \"description_only\": 0, \"none\": 0, \"routine_finding\": 0, \"unclear\": 0}",
+          45
+        ]
+      ]
+    },
+    "request_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 230,
+      "most_common": [
+        [
+          "00326891d3391480524d_repeat1",
+          14
+        ],
+        [
+          "00326891d3391480524d_repeat2",
+          14
+        ],
+        [
+          "00326891d3391480524d_repeat3",
+          14
+        ],
+        [
+          "00326891d3391480524d_repeat4",
+          14
+        ],
+        [
+          "00326891d3391480524d_repeat5",
+          14
+        ]
+      ]
+    },
+    "request_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 46,
+      "most_common": [
+        [
+          "0357e841a5bccf33d27a6c97d4c1ff87a2399e0f0e929fa1d8f6ea00cea1d8dd",
+          70
+        ],
+        [
+          "0541bc72593947db81a21ad97eba1d9d3e63e9ba6f648351af8b5fc68b042316",
+          70
+        ],
+        [
+          "13a58c5b215a5a460f8e201af04979998cb66509bfe53cba0a60bb69812e8243",
+          70
+        ],
+        [
+          "1a10273ec3d235fc960eab87c9e4b94f0f171b390b673f89255d1cb2cd8f114c",
+          70
+        ],
+        [
+          "1fc94b67c7a8bc051f5f27ad5dc9122ef8e6a2c4b5733757e56f4df4d6dae44f",
+          70
+        ]
+      ]
+    }
+  }
+}

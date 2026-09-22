@@ -1,0 +1,406 @@
+{
+  "dataset": "cpc_duplicate_narrative_groups.csv",
+  "rows": 420,
+  "key": [
+    "narrative_sha256"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "447f1778833c9dad9672def180a46f13989ef3f0a3f692d6da85b53bcd2a5c35",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "narrative_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 420,
+      "most_common": [
+        [
+          "0163aa601525e3931036ab37f3a7cb5636e74589d52bc842c1e009d543bd1f40",
+          1
+        ],
+        [
+          "0184d80f64a04c34173efd492479fec48049478da41a7fcd8214723575082ca4",
+          1
+        ],
+        [
+          "025bfcb09dd7beaaeda235a2396ee2a578d6fbd1cd9ef4dd4de6ffa6dff0546e",
+          1
+        ],
+        [
+          "0282c15013ebad04706fc9771f0aa5a16aaf72ec2836f840f288b593eabfd86f",
+          1
+        ],
+        [
+          "0291f41495513f8af956082169f54dc76fc3356cc3bd098e5ed9d521b2fad3b8",
+          1
+        ]
+      ]
+    },
+    "representative_application": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 420,
+      "most_common": [
+        [
+          "C 000020 PQQ",
+          1
+        ],
+        [
+          "C 000355 ZSM",
+          1
+        ],
+        [
+          "C 010238 MMR",
+          1
+        ],
+        [
+          "C 030514 MMK",
+          1
+        ],
+        [
+          "C 050463 PQK",
+          1
+        ]
+      ]
+    },
+    "member_applications": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 420,
+      "most_common": [
+        [
+          "C 000020 PQQ; C 000021 PPQ",
+          1
+        ],
+        [
+          "C 000355 ZSM; C 000356 ZSM",
+          1
+        ],
+        [
+          "C 010238 MMR; C 990535 MMR",
+          1
+        ],
+        [
+          "C 030514 MMK; C 030515 MMK; C 030516 MMK; C 030517 MMK",
+          1
+        ],
+        [
+          "C 050463 PQK; C 050464 PPK",
+          1
+        ]
+      ]
+    },
+    "source_rows": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 17,
+      "most_common": [
+        [
+          "2",
+          145
+        ],
+        [
+          "3",
+          89
+        ],
+        [
+          "4",
+          36
+        ],
+        [
+          "5",
+          30
+        ],
+        [
+          "6",
+          27
+        ]
+      ],
+      "minimum": 2,
+      "maximum": 18
+    },
+    "rows_collapsed": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 17,
+      "most_common": [
+        [
+          "1",
+          145
+        ],
+        [
+          "2",
+          89
+        ],
+        [
+          "3",
+          36
+        ],
+        [
+          "4",
+          30
+        ],
+        [
+          "5",
+          27
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 17
+    },
+    "distinct_full_extracted_texts": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          416
+        ],
+        [
+          "2",
+          4
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 2
+    },
+    "distinct_unnormalized_narrative_prefixes": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "1",
+          420
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 1
+    },
+    "distinct_vote_dates": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          419
+        ],
+        [
+          "2",
+          1
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 2
+    },
+    "distinct_project_names": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9,
+      "most_common": [
+        [
+          "1",
+          274
+        ],
+        [
+          "2",
+          70
+        ],
+        [
+          "3",
+          33
+        ],
+        [
+          "4",
+          17
+        ],
+        [
+          "5",
+          8
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 9
+    },
+    "distinct_action_codes": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          397
+        ],
+        [
+          "2",
+          23
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 2
+    },
+    "distinct_community_district_strings": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 17,
+      "most_common": [
+        [
+          "2",
+          115
+        ],
+        [
+          "3",
+          87
+        ],
+        [
+          "1",
+          39
+        ],
+        [
+          "4",
+          35
+        ],
+        [
+          "5",
+          29
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 18
+    },
+    "all_member_zap_project_ids": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 5,
+      "distinct_nonmissing": 414,
+      "most_common": [
+        [
+          "P1996M0429",
+          2
+        ],
+        [
+          "P1977K0386; P1977K0387; P1977K0388; P1977K0389; P1977K0390; P1977K0391; P1977K0392; P1977K0393; P1977K0394; P1977K0395; P1977K0396; P1977K0397; P1977K0398; P1977K0399; P1977K0400; P1977K0401; P1977K0402; P1977K0403",
+          1
+        ],
+        [
+          "P1977M0404; P1977M0405; P1977M0406; P1977M0407; P1977M0409; P1977M0410; P1977M0411; P1977M0412; P1977M0413; P1977M0414",
+          1
+        ],
+        [
+          "P1977Q0416; P1977Q0417; P1977Q0419; P1977Q0420; P1977Q0421; P1977Q0422; P1977Q0423; P1977Q0424; P1977Q0425; P1977Q0427; P1977Q0428; P1977Q0429",
+          1
+        ],
+        [
+          "P1977R0354; P1977R0355; P1977R0356",
+          1
+        ]
+      ]
+    },
+    "representative_zap_project_ids": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 5,
+      "distinct_nonmissing": 414,
+      "most_common": [
+        [
+          "P1996M0429",
+          2
+        ],
+        [
+          "P1977K0386; P1977K0387; P1977K0388; P1977K0389; P1977K0390; P1977K0391; P1977K0392; P1977K0393; P1977K0394; P1977K0395; P1977K0396; P1977K0397; P1977K0398; P1977K0399; P1977K0400; P1977K0401; P1977K0402; P1977K0403",
+          1
+        ],
+        [
+          "P1977M0404; P1977M0405; P1977M0406; P1977M0407; P1977M0409; P1977M0410; P1977M0411; P1977M0412; P1977M0413; P1977M0414",
+          1
+        ],
+        [
+          "P1977Q0416; P1977Q0417; P1977Q0419; P1977Q0420; P1977Q0421; P1977Q0422; P1977Q0423; P1977Q0424; P1977Q0425; P1977Q0427; P1977Q0428; P1977Q0429",
+          1
+        ],
+        [
+          "P1977R0354; P1977R0355; P1977R0356",
+          1
+        ]
+      ]
+    },
+    "omitted_zap_project_ids": {
+      "python_types": [],
+      "missing": 420,
+      "distinct_nonmissing": 0,
+      "most_common": []
+    },
+    "representative_non_pp_flag": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "FALSE",
+          378
+        ],
+        [
+          "TRUE",
+          42
+        ]
+      ]
+    },
+    "any_member_non_pp_flag": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "FALSE",
+          378
+        ],
+        [
+          "TRUE",
+          42
+        ]
+      ]
+    },
+    "non_pp_classification_disagrees": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "False",
+          420
+        ]
+      ]
+    }
+  }
+}

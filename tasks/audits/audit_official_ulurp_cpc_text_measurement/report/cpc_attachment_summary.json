@@ -1,0 +1,122 @@
+{
+  "dataset": "cpc_attachment_summary.csv",
+  "rows": 11,
+  "key": [
+    "metric"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "424f1e22cc56d6fe26183bf03560a466247df426b1bf1f51af8708f1c38c768a",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "metric": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 11,
+      "most_common": [
+        [
+          "blank_candidate_source_reports",
+          1
+        ],
+        [
+          "candidate_narrative_bundles",
+          1
+        ],
+        [
+          "candidate_pages",
+          1
+        ],
+        [
+          "candidate_source_reports",
+          1
+        ],
+        [
+          "narrative_bundles_before",
+          1
+        ]
+      ]
+    },
+    "value": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 11,
+      "most_common": [
+        [
+          "11208",
+          1
+        ],
+        [
+          "11314",
+          1
+        ],
+        [
+          "11641",
+          1
+        ],
+        [
+          "1172",
+          1
+        ],
+        [
+          "1584",
+          1
+        ]
+      ],
+      "minimum": 750,
+      "maximum": 11641
+    },
+    "unit": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "source reports",
+          6
+        ],
+        [
+          "focal narrative bundles",
+          3
+        ],
+        [
+          "PDF pages",
+          2
+        ]
+      ]
+    },
+    "meaning": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 11,
+      "most_common": [
+        [
+          "All preserved corpus source rows, including known unavailable sources.",
+          1
+        ],
+        [
+          "All short pages after the prior resolution.",
+          1
+        ],
+        [
+          "At least one candidate page had no extracted text.",
+          1
+        ],
+        [
+          "At least one candidate page now has 50 or more extracted words; this is recovered text, not a manual content classification.",
+          1
+        ],
+        [
+          "At least one page after the prior resolution had fewer than 50 extracted words; includes maps and blanks.",
+          1
+        ]
+      ]
+    }
+  }
+}

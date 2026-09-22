@@ -1,0 +1,259 @@
+{
+  "dataset": "cpc_excluded_n_reports.csv",
+  "rows": 2835,
+  "key": [
+    "application_number",
+    "vote_date",
+    "pdf_url"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "246a12e869a25038588a937f46822a2c5a0b16d4f73caf5d7863a12bd0e46389",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2834,
+      "most_common": [
+        [
+          "N 180167 PXM",
+          2
+        ],
+        [
+          "N 000001 HKQ",
+          1
+        ],
+        [
+          "N 000008 HKQ",
+          1
+        ],
+        [
+          "N 000010 HKM",
+          1
+        ],
+        [
+          "N 000083 HKK",
+          1
+        ]
+      ]
+    },
+    "vote_date": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1101,
+      "most_common": [
+        [
+          "08/14/2019",
+          20
+        ],
+        [
+          "12/30/1987",
+          19
+        ],
+        [
+          "06/12/1991",
+          16
+        ],
+        [
+          "08/18/1997",
+          15
+        ],
+        [
+          "08/21/2013",
+          14
+        ]
+      ]
+    },
+    "pdf_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2834,
+      "most_common": [
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/180167.pdf",
+          2
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/000001.pdf",
+          1
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/000008.pdf",
+          1
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/000010.pdf",
+          1
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/000083.pdf",
+          1
+        ]
+      ]
+    },
+    "project_name": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 338,
+      "distinct_nonmissing": 2384,
+      "most_common": [
+        [
+          "Hra/Cwa Family Preservation Office",
+          6
+        ],
+        [
+          "Central Park West House",
+          5
+        ],
+        [
+          "Battery Park City",
+          4
+        ],
+        [
+          "Atlantic Terminal Ura",
+          3
+        ],
+        [
+          "Dept Of Youth & Community Dev",
+          3
+        ]
+      ]
+    },
+    "lead_report_flag": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "FALSE",
+          2831
+        ],
+        [
+          "TRUE",
+          4
+        ]
+      ]
+    },
+    "same_project_and_vote_as_certified_flag": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "False",
+          2318
+        ],
+        [
+          "True",
+          517
+        ]
+      ]
+    },
+    "same_project_name_as_certified_flag": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "False",
+          2292
+        ],
+        [
+          "True",
+          543
+        ]
+      ]
+    },
+    "referencing_certified_reports": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 16,
+      "most_common": [
+        [
+          "0",
+          2051
+        ],
+        [
+          "1",
+          370
+        ],
+        [
+          "2",
+          180
+        ],
+        [
+          "3",
+          102
+        ],
+        [
+          "4",
+          52
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 22
+    },
+    "nearby_referral_language_flag": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "False",
+          2643
+        ],
+        [
+          "True",
+          192
+        ]
+      ]
+    },
+    "review_decisions": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 2833,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "not_a_narrative_referral_in_reviewed_passage",
+          2
+        ]
+      ]
+    },
+    "reviewed_c_applications": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 2833,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "C 150361 ZMK",
+          1
+        ],
+        [
+          "C 790844 PSX",
+          1
+        ]
+      ]
+    }
+  }
+}

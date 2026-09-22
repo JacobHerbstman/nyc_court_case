@@ -1,0 +1,407 @@
+{
+  "dataset": "cpc_jev_comparison_v2.csv",
+  "rows": 800,
+  "key": [
+    "document_id",
+    "field",
+    "method"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "49239734ed6e61127038477f3054c51b1f6408e5b76074ee28ed3380c34a5c69",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 50,
+      "most_common": [
+        [
+          "00326891d3391480524d",
+          16
+        ],
+        [
+          "02c18c0a3b85fce07355",
+          16
+        ],
+        [
+          "0385e4de7488ec4762c5",
+          16
+        ],
+        [
+          "0568137a2968387b992b",
+          16
+        ],
+        [
+          "067c9ef3c97fd3686486",
+          16
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 50,
+      "most_common": [
+        [
+          "C 000478 PPQ",
+          16
+        ],
+        [
+          "C 010472 ZSX",
+          16
+        ],
+        [
+          "C 010691 ZSM",
+          16
+        ],
+        [
+          "C 020048 PPK",
+          16
+        ],
+        [
+          "C 030300 ZMK",
+          16
+        ]
+      ]
+    },
+    "cohort": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "original_development",
+          480
+        ],
+        [
+          "additional_balanced_test",
+          320
+        ]
+      ]
+    },
+    "field": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "revision_or_concession",
+          400
+        ],
+        [
+          "scale_character_preservation",
+          400
+        ]
+      ]
+    },
+    "method": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 8,
+      "most_common": [
+        [
+          "clear_first",
+          100
+        ],
+        [
+          "clear_repeat_majority",
+          100
+        ],
+        [
+          "diagnostic_first",
+          100
+        ],
+        [
+          "diagnostic_repeat_majority",
+          100
+        ],
+        [
+          "original_first",
+          100
+        ]
+      ]
+    },
+    "value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 64,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          517
+        ],
+        [
+          "0",
+          219
+        ]
+      ]
+    },
+    "received_repeats": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "5",
+          736
+        ],
+        [
+          "0",
+          64
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 5
+    },
+    "expected_repeats": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "5",
+          736
+        ],
+        [
+          "0",
+          64
+        ]
+      ]
+    },
+    "status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "complete",
+          736
+        ],
+        [
+          "split_bundle_not_tested",
+          64
+        ]
+      ]
+    },
+    "original_human_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 64,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          408
+        ],
+        [
+          "1",
+          328
+        ]
+      ]
+    },
+    "original_human_eligible": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "True",
+          736
+        ],
+        [
+          "False",
+          64
+        ]
+      ]
+    },
+    "working_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          432
+        ],
+        [
+          "1",
+          368
+        ]
+      ]
+    },
+    "working_eligible": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "True",
+          800
+        ]
+      ]
+    },
+    "human_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "single_human_coder",
+          640
+        ],
+        [
+          "human_agreement",
+          96
+        ],
+        [
+          "coder_disagreement",
+          64
+        ]
+      ]
+    },
+    "reconciliation_provenance": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "original_single_human_coder",
+          640
+        ],
+        [
+          "original_human_agreement",
+          96
+        ],
+        [
+          "source_review_jacob",
+          40
+        ],
+        [
+          "source_review_tyler",
+          24
+        ]
+      ]
+    },
+    "v1_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 400,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          272
+        ],
+        [
+          "0",
+          128
+        ]
+      ]
+    },
+    "first_original_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 64,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          472
+        ],
+        [
+          "0",
+          264
+        ]
+      ]
+    },
+    "first_diagnostic": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 64,
+      "distinct_nonmissing": 8,
+      "most_common": [
+        [
+          "adopted_change",
+          296
+        ],
+        [
+          "concrete_issue",
+          264
+        ],
+        [
+          "undertaken_commitment",
+          56
+        ],
+        [
+          "routine_finding",
+          48
+        ],
+        [
+          "none",
+          40
+        ]
+      ]
+    },
+    "candidate_evidence_page": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 64,
+      "distinct_nonmissing": 62,
+      "most_common": [
+        [
+          "none",
+          176
+        ],
+        [
+          "02c18c0a3b85fce07355:p7",
+          16
+        ],
+        [
+          "0e6500033b0a740f5091:p1",
+          16
+        ],
+        [
+          "13e5c76bb268bbd78e25:p7",
+          16
+        ],
+        [
+          "402c767ca7f40e6b6bcb:p5",
+          16
+        ]
+      ]
+    }
+  }
+}

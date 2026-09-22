@@ -1,0 +1,312 @@
+{
+  "dataset": "cpc_sol_evidence_v1.csv",
+  "rows": 36,
+  "key": [
+    "document_id",
+    "record"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "8b9116d1113e8e383669cc092852ac610c5a2a3e6b9bcff3ddf4911331ff3a00",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "28cc037f9056f9cd9141",
+          12
+        ],
+        [
+          "a89b9ba39beede21a028",
+          12
+        ],
+        [
+          "e70fca539711f235a7ab",
+          7
+        ],
+        [
+          "18bfb1ad1fab83a2555e",
+          5
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "C 230091 ZMQ",
+          12
+        ],
+        [
+          "C 870156 ZSM",
+          12
+        ],
+        [
+          "C 800193 HPK",
+          7
+        ],
+        [
+          "C 190426 PCX",
+          5
+        ]
+      ]
+    },
+    "record": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 12,
+      "most_common": [
+        [
+          "1",
+          4
+        ],
+        [
+          "2",
+          4
+        ],
+        [
+          "3",
+          4
+        ],
+        [
+          "4",
+          4
+        ],
+        [
+          "5",
+          4
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 12
+    },
+    "actor": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 22,
+      "most_common": [
+        [
+          "City Planning Commission",
+          4
+        ],
+        [
+          "Queens Community Board 7",
+          4
+        ],
+        [
+          "92ND REALTY CO.",
+          3
+        ],
+        [
+          "Bronx Community Board 9",
+          2
+        ],
+        [
+          "Department of Housing Preservation and Development",
+          2
+        ]
+      ]
+    },
+    "actor_role": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "applicant",
+          11
+        ],
+        [
+          "community_board",
+          8
+        ],
+        [
+          "other",
+          7
+        ],
+        [
+          "cpc",
+          6
+        ],
+        [
+          "independent_civic",
+          3
+        ]
+      ]
+    },
+    "status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 11,
+      "most_common": [
+        [
+          "request",
+          9
+        ],
+        [
+          "concern",
+          7
+        ],
+        [
+          "main_approval",
+          4
+        ],
+        [
+          "proposal_description",
+          4
+        ],
+        [
+          "adopted_requirement",
+          3
+        ]
+      ]
+    },
+    "topics": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 3,
+      "distinct_nonmissing": 12,
+      "most_common": [
+        [
+          "traffic_parking",
+          8
+        ],
+        [
+          "affordability",
+          6
+        ],
+        [
+          "environment_open_space",
+          6
+        ],
+        [
+          "scale_density_design",
+          3
+        ],
+        [
+          "infrastructure_services",
+          2
+        ]
+      ]
+    },
+    "segments": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 17,
+      "most_common": [
+        [
+          "s0008",
+          5
+        ],
+        [
+          "s0005",
+          4
+        ],
+        [
+          "s0007",
+          4
+        ],
+        [
+          "s0002",
+          3
+        ],
+        [
+          "s0003",
+          3
+        ]
+      ]
+    },
+    "quote": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 36,
+      "most_common": [
+        [
+          "All lead based paint will be removed wherever it occurs.",
+          1
+        ],
+        [
+          "CB7Q RESTRICTIVE DECLARATIONS - AGREED BY DEVELOPER",
+          1
+        ],
+        [
+          "Community Board 7’s request for larger family-sized dwelling units",
+          1
+        ],
+        [
+          "Ensure Department vehicles and employee vehicles obey all street and traffic regulations in front of and in the vicinity of their facilities.",
+          1
+        ],
+        [
+          "Ensure Department vehicles and employee vehicles park in and on property ONLY.",
+          1
+        ]
+      ]
+    },
+    "quote_found": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "1",
+          36
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 1
+    },
+    "reason": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 36,
+      "most_common": [
+        [
+          "Association supports the application while raising traffic challenges.",
+          1
+        ],
+        [
+          "Board condition accompanies favorable recommendation; CPC approval does not expressly impose it.",
+          1
+        ],
+        [
+          "Board requested 300 parking spaces and additional access restrictions.",
+          1
+        ],
+        [
+          "Board requested a 350-unit cap in its conditional approval.",
+          1
+        ],
+        [
+          "Board requested location of the contemplated affordable units.",
+          1
+        ]
+      ]
+    }
+  }
+}

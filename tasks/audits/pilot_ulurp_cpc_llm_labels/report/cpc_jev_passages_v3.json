@@ -1,0 +1,330 @@
+{
+  "dataset": "cpc_jev_passages_v3.csv",
+  "rows": 496,
+  "key": [
+    "document_id",
+    "passage_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "976aaccb2c5d4d467b5d29f6f971b913fa2b01dd516fb5872606f51e60097045",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 20,
+      "most_common": [
+        [
+          "be57154ccfdcbdc208c8",
+          58
+        ],
+        [
+          "717d4d21cc6a432a8c40",
+          55
+        ],
+        [
+          "5ff15b38926793e89ae6",
+          54
+        ],
+        [
+          "1a4a52796d298f4a766f",
+          52
+        ],
+        [
+          "d2902dde63337bff2964",
+          47
+        ]
+      ]
+    },
+    "passage_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 496,
+      "most_common": [
+        [
+          "00326891p1b1",
+          1
+        ],
+        [
+          "00326891p1b2",
+          1
+        ],
+        [
+          "00326891p2b1",
+          1
+        ],
+        [
+          "00326891p3b1",
+          1
+        ],
+        [
+          "00326891p4b1",
+          1
+        ]
+      ]
+    },
+    "source_document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 33,
+      "most_common": [
+        [
+          "717d4d21cc6a432a8c40",
+          55
+        ],
+        [
+          "5ff15b38926793e89ae6",
+          54
+        ],
+        [
+          "1a4a52796d298f4a766f",
+          52
+        ],
+        [
+          "be57154ccfdcbdc208c8",
+          47
+        ],
+        [
+          "8ef726cc2434fe58fc0f",
+          31
+        ]
+      ]
+    },
+    "source_application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 33,
+      "most_common": [
+        [
+          "C 870568 ZMQ",
+          55
+        ],
+        [
+          "C 850328 ZMQ",
+          54
+        ],
+        [
+          "C 190453 HAK",
+          52
+        ],
+        [
+          "C 140409 ZSM",
+          47
+        ],
+        [
+          "C 010471 ZMX",
+          31
+        ]
+      ]
+    },
+    "source_role": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "focal_report",
+          389
+        ],
+        [
+          "context_companion",
+          85
+        ],
+        [
+          "represented_related_action",
+          22
+        ]
+      ]
+    },
+    "pdf_page": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 51,
+      "most_common": [
+        [
+          "1",
+          62
+        ],
+        [
+          "2",
+          50
+        ],
+        [
+          "4",
+          37
+        ],
+        [
+          "3",
+          35
+        ],
+        [
+          "5",
+          34
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 51
+    },
+    "page_start": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 21,
+      "most_common": [
+        [
+          "0",
+          324
+        ],
+        [
+          "1798",
+          35
+        ],
+        [
+          "1796",
+          23
+        ],
+        [
+          "1797",
+          22
+        ],
+        [
+          "1794",
+          19
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 3598
+    },
+    "page_end": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 312,
+      "most_common": [
+        [
+          "1798",
+          35
+        ],
+        [
+          "1796",
+          23
+        ],
+        [
+          "1797",
+          22
+        ],
+        [
+          "1794",
+          19
+        ],
+        [
+          "1799",
+          18
+        ]
+      ],
+      "minimum": 48,
+      "maximum": 5124
+    },
+    "source_text_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 33,
+      "most_common": [
+        [
+          "9cfb58d25b8f302ff2c9cdc618a9777ee28ddcdeb4befc2bf6a977f80154edea",
+          55
+        ],
+        [
+          "ab6229653cd2a1f21596f1f1fc9d3c2a5686f74ab31cec71e4edd40bb081ae29",
+          54
+        ],
+        [
+          "8bbafcbb973aa5428a86f1e1ff8596f5bac4662ffd7ba1d70ee37d9319c9c3d8",
+          52
+        ],
+        [
+          "045779fbc048b4c992fa2aad6228dc8697f9a4106cedcb5ddf6b31507f806725",
+          47
+        ],
+        [
+          "033f6febadbfd50ae583b2b1c5a8f3f7f5bfd1eb6d10feb3e16ca975ef6d36a2",
+          31
+        ]
+      ]
+    },
+    "passage_text": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 496,
+      "most_common": [
+        [
+          " (Block 4422, Lot 1 and Block 4423, Lot 1). Building \"A\" is four-stories. Building \"B\" is - five-stories. Both buildings are located on Block 4423, Lot 1. Building \"C\", located on Block 4422, Lot 1 is four stories. Block 4423, Lot 1 is bounded by Waring Avenue to the north, Gun Hill Road to the east, Stillwell Avenue to the south and Ely Avenue to the west. Block 4422, Lot 1 is bounded by Waring Avenue to the north, Ely Avenue to the east, Stillwell Avenue to the south and",
+          1
+        ],
+        [
+          " .60 Northbound/Southbound .323 Total Clearance .077 Page 1 of 3 JOSEPH MeGOUGH, Commsvoner, Depvtment of Enviiunmen tat Proie:t cm, HERBERT STURZ, Chaffrnan, City Planning COMMISSION gib",
+          1
+        ],
+        [
+          " 13737, Lot .1i: App:oved is not ,old for heavy Approved on condition that this parcel lock No. 1209, Lot 1A: trucks. sir freight related waret.ousing sad 10 ANOTHER BOARD AND WE RECEIVED THEM LATE. TALSE PARCELS WEr. HMEHT VOTiNg AGA:E57 1, ABSTATNTNO i) : : . IN FAVOA .\"? TO AoARD 117 TOTAL kaNass2 APPD!%7SN C0100.114127/130ROU011B DCWICNE TLS FA-1. L/132)74-",
+          1
+        ],
+        [
+          " 14 and 10. CITY PLANNING COMMISSION RECOMMENDATION In response to Community Board 12 concerns over the disposition of City-owned par- cels in their district. The Division of Real Property attended a Community Board 12 public hearing to explain, their Adjacent Homeowner Program (AHOP)mwd the Neighboring Industrial/Commercial Owners Program (NICOP). DRP developed these programs to attract local residents to purchase city-owned property. The commission recommends that where appro- priate, parcels be disposed via the AHOP and NICOP programs. Approve unrestricted disposition.",
+          1
+        ],
+        [
+          " 1977. The plan's recommendations included street closings and traffic rechannelizations in order to achieve the following goals: reduction of traffic conflicts; circulation improvements; elimination of truck through- traffic in the residential area of Springfield Gardens; and, creation of a landscape buffer between the two uses. Although the entire plan was not formally adopted by the Board of Estimate, elements of it involving changes to the City Map and traffic improvements have been implemented according to its recommendations. Page 5 C850382ZMQ",
+          1
+        ]
+      ]
+    },
+    "passage_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 496,
+      "most_common": [
+        [
+          "00234d2e8897fc378c689c62b91304d777b8d8134f646daec7e23db63a9267a9",
+          1
+        ],
+        [
+          "004f6e042d291c2b7dda2861edd5777c49b6a762229a0a07164b762ef5e1972d",
+          1
+        ],
+        [
+          "009c3b8eae8b9b1ee668c9fe65460b2693525313688b8763123e1547e8eee03d",
+          1
+        ],
+        [
+          "0170a5129391b4ec92dd106c23d2f1bc2894fa2f8d7f64c23b21ecbfe9e781b6",
+          1
+        ],
+        [
+          "017e6d2ee1d8faab24c97a22dc764b7969461ddff9aebe48b97094de855dac01",
+          1
+        ]
+      ]
+    }
+  }
+}

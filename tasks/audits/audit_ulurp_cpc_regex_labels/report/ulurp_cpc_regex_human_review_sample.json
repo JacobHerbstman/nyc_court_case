@@ -5,7 +5,7 @@
     "document_id"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "205dbd6ae1a85fd6faaaf0df229d422442edda9c2387d92740e38eefca105350",
+  "sha256_csv_bytes": "59d8ca54d154e01336706ed9efb6a75bf7e23c664ffa70f0932ee9b47def266c",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -28,11 +28,11 @@
           1
         ],
         [
-          "067c9ef3c97fd3686486",
+          "080a3926aa6bc8d3b271",
           1
         ],
         [
-          "080a3926aa6bc8d3b271",
+          "095c76d93b65f0cfa8c8",
           1
         ]
       ]
@@ -71,7 +71,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 43,
+      "distinct_nonmissing": 44,
       "most_common": [
         [
           "1978",
@@ -90,7 +90,7 @@
           5
         ],
         [
-          "1979",
+          "1980",
           5
         ]
       ]
@@ -104,15 +104,15 @@
       "most_common": [
         [
           "ZM",
-          45
+          43
         ],
         [
           "ZS",
-          26
+          27
         ],
         [
           "PP",
-          14
+          16
         ],
         [
           "MM",
@@ -129,11 +129,11 @@
         "str"
       ],
       "missing": 10,
-      "distinct_nonmissing": 133,
+      "distinct_nonmissing": 131,
       "most_common": [
         [
           "C-O-P",
-          7
+          9
         ],
         [
           "Hra Boarding Home",
@@ -169,15 +169,15 @@
           5
         ],
         [
-          "S04",
-          5
-        ],
-        [
           "S05",
           5
         ],
         [
           "S06",
+          5
+        ],
+        [
+          "S07",
           5
         ]
       ]
@@ -187,10 +187,14 @@
         "int"
       ],
       "missing": 0,
-      "distinct_nonmissing": 35,
+      "distinct_nonmissing": 34,
       "most_common": [
         [
-          "107",
+          "39",
+          10
+        ],
+        [
+          "102",
           5
         ],
         [
@@ -198,20 +202,16 @@
           5
         ],
         [
-          "2515",
+          "159",
           5
         ],
         [
-          "39",
-          5
-        ],
-        [
-          "41",
+          "2482",
           5
         ]
       ],
       "minimum": 3,
-      "maximum": 2515
+      "maximum": 2482
     },
     "stratum_sample": {
       "python_types": [
@@ -241,31 +241,31 @@
         "float"
       ],
       "missing": 0,
-      "distinct_nonmissing": 34,
+      "distinct_nonmissing": 33,
       "most_common": [
         [
-          "1.0",
-          8
+          "7.8",
+          10
         ],
         [
-          "106.8",
+          "1.0",
+          7
+        ],
+        [
+          "105.6",
           5
         ],
         [
-          "121.8",
+          "119.0",
           5
         ],
         [
           "13.2",
           5
-        ],
-        [
-          "139.0",
-          5
         ]
       ],
       "minimum": 1.0,
-      "maximum": 503.0
+      "maximum": 496.4
     },
     "source_text_sha256": {
       "python_types": [
@@ -274,6 +274,10 @@
       "missing": 0,
       "distinct_nonmissing": 150,
       "most_common": [
+        [
+          "01214da1b1b9b328358571e53e7e4fd49bd17f1a135578087f12741c74c66a9e",
+          1
+        ],
         [
           "02cdc1f2049061559d5db39bc166cb575a6edcd60c193a566cf9b2beee86df6e",
           1
@@ -288,10 +292,6 @@
         ],
         [
           "070d2ecc64885ea148aeea968a089f6c7952bf8e0410e343e14accf079180c40",
-          1
-        ],
-        [
-          "072f6a58f57152c30f6f1dabfff6a3497a2ea971abe90bd02ad7cab0aa0c34a7",
           1
         ]
       ]

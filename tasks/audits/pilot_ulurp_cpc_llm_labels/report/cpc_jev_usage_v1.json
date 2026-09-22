@@ -1,0 +1,284 @@
+{
+  "dataset": "cpc_jev_usage_v1.csv",
+  "rows": 63,
+  "key": [
+    "request_id",
+    "attempt_number"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "e923182774bf2ed88574617e0596617fecf521ed339e96641ebeb5a2c4858c75",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "request_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 35,
+      "most_common": [
+        [
+          "0385e4de7488ec4762c5_part1",
+          5
+        ],
+        [
+          "1ed8ae661487257b6804_part1",
+          4
+        ],
+        [
+          "5bc99ad23483b9958616_part1",
+          4
+        ],
+        [
+          "5ddc4880eedb9c6cb953_part1",
+          4
+        ],
+        [
+          "7f25258f0af490b3ae3e_part1",
+          4
+        ]
+      ]
+    },
+    "attempt_number": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "1",
+          35
+        ],
+        [
+          "2",
+          14
+        ],
+        [
+          "3",
+          7
+        ],
+        [
+          "4",
+          6
+        ],
+        [
+          "5",
+          1
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 5
+    },
+    "status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "successful",
+          34
+        ],
+        [
+          "failed",
+          29
+        ]
+      ]
+    },
+    "http_status": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "200",
+          34
+        ],
+        [
+          "503",
+          29
+        ]
+      ],
+      "minimum": 200,
+      "maximum": 503
+    },
+    "started_at": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 63,
+      "most_common": [
+        [
+          "2026-09-19T19:33:11.668011+00:00",
+          1
+        ],
+        [
+          "2026-09-19T19:33:41.479618+00:00",
+          1
+        ],
+        [
+          "2026-09-19T19:33:42.155886+00:00",
+          1
+        ],
+        [
+          "2026-09-19T19:35:54.695851+00:00",
+          1
+        ],
+        [
+          "2026-09-19T19:35:55.403206+00:00",
+          1
+        ]
+      ]
+    },
+    "received_at": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 63,
+      "most_common": [
+        [
+          "2026-09-19T19:33:14.550396+00:00",
+          1
+        ],
+        [
+          "2026-09-19T19:33:42.155293+00:00",
+          1
+        ],
+        [
+          "2026-09-19T19:33:42.588049+00:00",
+          1
+        ],
+        [
+          "2026-09-19T19:35:55.402455+00:00",
+          1
+        ],
+        [
+          "2026-09-19T19:35:56.392633+00:00",
+          1
+        ]
+      ]
+    },
+    "requested_model": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "typesafe-ai/jev",
+          63
+        ]
+      ]
+    },
+    "returned_model": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 29,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "typesafe-ai/jev",
+          34
+        ]
+      ]
+    },
+    "input_tokens": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 29,
+      "distinct_nonmissing": 34,
+      "most_common": [
+        [
+          "13626",
+          1
+        ],
+        [
+          "13645",
+          1
+        ],
+        [
+          "13893",
+          1
+        ],
+        [
+          "13935",
+          1
+        ],
+        [
+          "13978",
+          1
+        ]
+      ],
+      "minimum": 13626,
+      "maximum": 40445
+    },
+    "output_tokens": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 29,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "1302",
+          16
+        ],
+        [
+          "1303",
+          11
+        ],
+        [
+          "1301",
+          4
+        ],
+        [
+          "1299",
+          1
+        ],
+        [
+          "1300",
+          1
+        ]
+      ],
+      "minimum": 1299,
+      "maximum": 1304
+    },
+    "request_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 35,
+      "most_common": [
+        [
+          "24dabd29253ff1a795756185ba959bb32103586d8950795e5b5f7ae1cd11cc50",
+          5
+        ],
+        [
+          "14a0e678df05974b03c447fae598a3e64fb9e2123764e323e7eea5efafcff799",
+          4
+        ],
+        [
+          "80a09be06f0f65798b833c9ae28abeffff2ddb09024bcfb357546139789f98f6",
+          4
+        ],
+        [
+          "c7f69d7ac6ec6b82c9b0f5f079887d77ebde3af42fab504ae5de079b6a23eeec",
+          4
+        ],
+        [
+          "ceff39b59c65fcc9bb7c3b41898b43c0708770db5205bf533754a14505c12553",
+          4
+        ]
+      ]
+    }
+  }
+}

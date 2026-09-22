@@ -1,0 +1,603 @@
+{
+  "dataset": "cpc_sol_actor_comparison_v3.csv",
+  "rows": 40,
+  "key": [
+    "document_id",
+    "family"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "1eaf1871c9bf3f9eccfddacc9c127aadaa469dee5ccc2055e60c7e807e4d603b",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 20,
+      "most_common": [
+        [
+          "02c18c0a3b85fce07355",
+          2
+        ],
+        [
+          "06c90a5bde6a4a3cadd7",
+          2
+        ],
+        [
+          "180f2f3d15c99c5ab311",
+          2
+        ],
+        [
+          "1818edbd692337c3eeeb",
+          2
+        ],
+        [
+          "42bb40d7172d1fb33d15",
+          2
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 20,
+      "most_common": [
+        [
+          "C 040270 ZMM",
+          2
+        ],
+        [
+          "C 050145 ZMR",
+          2
+        ],
+        [
+          "C 060272 ZMK",
+          2
+        ],
+        [
+          "C 060335 ZMX",
+          2
+        ],
+        [
+          "C 070065 ZMQ",
+          2
+        ]
+      ]
+    },
+    "project_name": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 20,
+      "most_common": [
+        [
+          "14 – 20 West 40th Street",
+          2
+        ],
+        [
+          "19 East 72nd Street",
+          2
+        ],
+        [
+          "200 Park Ave",
+          2
+        ],
+        [
+          "3276 Jerome Avenue",
+          2
+        ],
+        [
+          "375 Hudson Street",
+          2
+        ]
+      ]
+    },
+    "earlier_development": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          30
+        ],
+        [
+          "0",
+          10
+        ]
+      ]
+    },
+    "selection_group": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "civic_opposition",
+          8
+        ],
+        [
+          "council_support",
+          8
+        ],
+        [
+          "long_issue_any_actor",
+          8
+        ],
+        [
+          "random_remainder",
+          8
+        ],
+        [
+          "civic_support",
+          4
+        ]
+      ]
+    },
+    "family": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "civic",
+          20
+        ],
+        [
+          "council",
+          20
+        ]
+      ]
+    },
+    "support": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          30
+        ],
+        [
+          "1",
+          10
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "opposition": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          30
+        ],
+        [
+          "1",
+          10
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "request": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          31
+        ],
+        [
+          "1",
+          9
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "concern": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          30
+        ],
+        [
+          "1",
+          10
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "model_position": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "none_or_procedural",
+          25
+        ],
+        [
+          "both",
+          6
+        ],
+        [
+          "support_or_request",
+          5
+        ],
+        [
+          "opposition",
+          4
+        ]
+      ]
+    },
+    "human_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "single_human_coder",
+          38
+        ],
+        [
+          "coder_disagreement",
+          1
+        ],
+        [
+          "human_agreement",
+          1
+        ]
+      ]
+    },
+    "human_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 1,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "none_or_procedural",
+          20
+        ],
+        [
+          "opposition",
+          13
+        ],
+        [
+          "support_or_request",
+          6
+        ]
+      ]
+    },
+    "actors": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 23,
+      "distinct_nonmissing": 17,
+      "most_common": [
+        [
+          "Bryant Park Corporation; Bryant Park Neighborhood Coalition",
+          1
+        ],
+        [
+          "Building and Construction Trade Council; Real Estate Board of New York; Queens Chamber of Commerce; Tudor City Tenants Association (name garbled in source); Turtle Bay Association; East 49th Street Tenant Association",
+          1
+        ],
+        [
+          "City Council member (46th District in hearing roster; 43rd District in detailed account)",
+          1
+        ],
+        [
+          "College Point Board of Trade; College Point Civic and Taxpayer Association",
+          1
+        ],
+        [
+          "Council Member representing the 11th District",
+          1
+        ]
+      ]
+    },
+    "segments": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 23,
+      "distinct_nonmissing": 15,
+      "most_common": [
+        [
+          "s0003",
+          2
+        ],
+        [
+          "s0009",
+          2
+        ],
+        [
+          "s0002",
+          1
+        ],
+        [
+          "s0005",
+          1
+        ],
+        [
+          "s0006",
+          1
+        ]
+      ]
+    },
+    "jacob_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 14,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "none_or_procedural",
+          11
+        ],
+        [
+          "opposition",
+          10
+        ],
+        [
+          "support_or_request",
+          5
+        ]
+      ]
+    },
+    "jacob_complete": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 14,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "1",
+          26
+        ]
+      ]
+    },
+    "jacob_compared": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          26
+        ],
+        [
+          "0",
+          14
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "jacob_matches": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 14,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          15
+        ],
+        [
+          "0",
+          11
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "tyler_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 24,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "none_or_procedural",
+          11
+        ],
+        [
+          "opposition",
+          3
+        ],
+        [
+          "support_or_request",
+          2
+        ]
+      ]
+    },
+    "tyler_complete": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 24,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "1",
+          16
+        ]
+      ]
+    },
+    "tyler_compared": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          24
+        ],
+        [
+          "1",
+          16
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "tyler_matches": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 24,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          13
+        ],
+        [
+          "0",
+          3
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "involvement": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          23
+        ],
+        [
+          "1",
+          17
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "jacob_involvement": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 14,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          15
+        ],
+        [
+          "0",
+          11
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "jacob_involvement_matches": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 14,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          24
+        ],
+        [
+          "0",
+          2
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "tyler_involvement": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 24,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          11
+        ],
+        [
+          "1",
+          5
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "tyler_involvement_matches": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 24,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          14
+        ],
+        [
+          "0",
+          2
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    }
+  }
+}

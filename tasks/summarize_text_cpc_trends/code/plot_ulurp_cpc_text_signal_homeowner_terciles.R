@@ -104,20 +104,6 @@ count_labels <- c(
   cb_opposition_votes = "CB votes supporting disapproval"
 )
 
-community_district_corrections <- read_csv(
-  "../input/ulurp_cpc_community_district_corrections.csv",
-  col_types = cols(.default = col_character()),
-  show_col_types = FALSE,
-  na = c("", "NA")
-)
-
-if (
-  nrow(community_district_corrections) !=
-    n_distinct(community_district_corrections$application_number)
-) {
-  stop("Community-district corrections are not unique by application_number.")
-}
-
 text_labels <- read_csv(
   "../output/ulurp_cpc_text_labels.csv",
   col_types = cols(.default = col_character()),
@@ -152,34 +138,10 @@ if (
 ) {
   stop("Document-level text signals must be complete binary indicators.")
 }
-if (nrow(anti_join(community_district_corrections, text_labels, by = "application_number")) > 0) {
-  stop("At least one community-district correction has no analysis narrative.")
-}
-
 documents <- text_labels |>
   rename(
-    source_official_community_district = community_district,
-    official_vote_year = year
-  ) |>
-  left_join(
-    community_district_corrections,
-    by = "application_number",
-    relationship = "many-to-one"
-  )
-
-if (any(
-  !is.na(documents$reported_community_district) &
-  documents$source_official_community_district != documents$reported_community_district
-)) {
-  stop("A community-district correction no longer matches its reported source value.")
-}
-
-documents <- documents |>
-  mutate(
-    official_community_district = coalesce(
-      corrected_community_district,
-      source_official_community_district
-    )
+    official_vote_year = year,
+    official_community_district = represented_community_districts
   )
 
 project_bbl <- read_parquet(

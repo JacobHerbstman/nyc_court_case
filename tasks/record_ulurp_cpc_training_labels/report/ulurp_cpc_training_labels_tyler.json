@@ -1,0 +1,180 @@
+{
+  "dataset": "ulurp_cpc_training_labels_tyler.csv",
+  "rows": 300,
+  "key": "document_id",
+  "unique_nonmissing_key": true,
+  "md5_csv_bytes": "aeaf83ff02261604e5e007b01a3cf1ca",
+  "fingerprint_scope": "Saved CSV bytes, including row order; not proof of source correctness.",
+  "columns": {
+    "review_id": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 300
+    },
+    "project_name": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 281
+    },
+    "vote_year": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 50
+    },
+    "application_number": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 300
+    },
+    "open_report": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 1
+    },
+    "specific_project": {
+      "type": "character",
+      "missing": 100,
+      "distinct_nonmissing": 2
+    },
+    "dev_direction": {
+      "type": "character",
+      "missing": 100,
+      "distinct_nonmissing": 4
+    },
+    "speakers_for": {
+      "type": "character",
+      "missing": 119,
+      "distinct_nonmissing": 16
+    },
+    "speakers_against": {
+      "type": "character",
+      "missing": 119,
+      "distinct_nonmissing": 13
+    },
+    "local_opposition": {
+      "type": "character",
+      "missing": 100,
+      "distinct_nonmissing": 2
+    },
+    "local_request_condition": {
+      "type": "character",
+      "missing": 100,
+      "distinct_nonmissing": 2
+    },
+    "revision_or_concession": {
+      "type": "character",
+      "missing": 100,
+      "distinct_nonmissing": 2
+    },
+    "procedural_response": {
+      "type": "character",
+      "missing": 100,
+      "distinct_nonmissing": 2
+    },
+    "explicit_local_response": {
+      "type": "character",
+      "missing": 100,
+      "distinct_nonmissing": 2
+    },
+    "approved_unresolved_objection": {
+      "type": "character",
+      "missing": 100,
+      "distinct_nonmissing": 2
+    },
+    "cb_request_or_opposition": {
+      "type": "character",
+      "missing": 100,
+      "distinct_nonmissing": 2
+    },
+    "bp_request_or_opposition": {
+      "type": "character",
+      "missing": 101,
+      "distinct_nonmissing": 2
+    },
+    "councilmember_position": {
+      "type": "character",
+      "missing": 100,
+      "distinct_nonmissing": 3
+    },
+    "civic_group_position": {
+      "type": "character",
+      "missing": 100,
+      "distinct_nonmissing": 4
+    },
+    "affordability_displacement": {
+      "type": "character",
+      "missing": 100,
+      "distinct_nonmissing": 2
+    },
+    "traffic_parking": {
+      "type": "character",
+      "missing": 100,
+      "distinct_nonmissing": 2
+    },
+    "scale_character_preservation": {
+      "type": "character",
+      "missing": 100,
+      "distinct_nonmissing": 2
+    },
+    "infrastructure_services": {
+      "type": "character",
+      "missing": 100,
+      "distinct_nonmissing": 2
+    },
+    "environment_open_space": {
+      "type": "character",
+      "missing": 100,
+      "distinct_nonmissing": 2
+    },
+    "evidence_pages": {
+      "type": "character",
+      "missing": 105,
+      "distinct_nonmissing": 28
+    },
+    "evidence_summary": {
+      "type": "character",
+      "missing": 151,
+      "distinct_nonmissing": 130
+    },
+    "coding_confidence": {
+      "type": "character",
+      "missing": 114,
+      "distinct_nonmissing": 4
+    },
+    "coding_complete": {
+      "type": "character",
+      "missing": 121,
+      "distinct_nonmissing": 1
+    },
+    "coder_notes": {
+      "type": "character",
+      "missing": 295,
+      "distinct_nonmissing": 4
+    },
+    "sample_group": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 2
+    },
+    "shared_id": {
+      "type": "character",
+      "missing": 200,
+      "distinct_nonmissing": 100
+    },
+    "document_id": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 300
+    },
+    "action_code": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 23
+    },
+    "community_district": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 64
+    }
+  }
+}

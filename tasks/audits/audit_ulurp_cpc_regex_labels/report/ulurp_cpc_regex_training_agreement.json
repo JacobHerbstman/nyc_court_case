@@ -6,7 +6,7 @@
     "field"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "12708ec53b0ee4897fc9ffa2ad2bdaf0424d65bc0498a3cd221f1f2ebc25999b",
+  "sha256_csv_bytes": "46b7882d779cee62c3479e5fa94ff070c0dc9dca7d373153f00e074a8bf23a29",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "sample_slice": {
@@ -138,7 +138,7 @@
           2
         ],
         [
-          "121",
+          "120",
           1
         ],
         [
@@ -154,7 +154,7 @@
           1
         ]
       ],
-      "minimum": 121,
+      "minimum": 120,
       "maximum": 183
     },
     "agreement_share": {
@@ -169,7 +169,7 @@
           2
         ],
         [
-          "0.605",
+          "0.6",
           1
         ],
         [
@@ -185,7 +185,7 @@
           1
         ]
       ],
-      "minimum": 0.605,
+      "minimum": 0.6,
       "maximum": 0.915
     },
     "true_positive": {
@@ -224,7 +224,7 @@
         "int"
       ],
       "missing": 6,
-      "distinct_nonmissing": 11,
+      "distinct_nonmissing": 10,
       "most_common": [
         [
           "10",
@@ -235,20 +235,20 @@
           2
         ],
         [
+          "6",
+          2
+        ],
+        [
           "1",
           1
         ],
         [
           "14",
           1
-        ],
-        [
-          "18",
-          1
         ]
       ],
       "minimum": 1,
-      "maximum": 37
+      "maximum": 38
     },
     "false_negative": {
       "python_types": [
@@ -286,12 +286,8 @@
         "int"
       ],
       "missing": 6,
-      "distinct_nonmissing": 12,
+      "distinct_nonmissing": 13,
       "most_common": [
-        [
-          "58",
-          2
-        ],
         [
           "108",
           1
@@ -307,9 +303,13 @@
         [
           "135",
           1
+        ],
+        [
+          "43",
+          1
         ]
       ],
-      "minimum": 44,
+      "minimum": 43,
       "maximum": 135
     },
     "precision": {
@@ -328,11 +328,11 @@
           1
         ],
         [
-          "0.725925925925926",
+          "0.7205882352941176",
           1
         ],
         [
-          "0.7718120805369127",
+          "0.7666666666666667",
           1
         ],
         [
@@ -386,7 +386,7 @@
           2
         ],
         [
-          "0.605",
+          "0.6",
           1
         ],
         [
@@ -402,7 +402,7 @@
           1
         ]
       ],
-      "minimum": 0.605,
+      "minimum": 0.6,
       "maximum": 1.0
     }
   }

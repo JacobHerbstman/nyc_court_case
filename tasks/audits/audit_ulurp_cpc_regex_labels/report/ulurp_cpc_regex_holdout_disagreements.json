@@ -6,7 +6,7 @@
     "field"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "2d1c3efad7c9e707756a9cead1d52d788dabf78bccf913df7f6d62d30813cafb",
+  "sha256_csv_bytes": "3457b1692e4a5d08d2f61923cf5ca6cbadab2777d6022c4c42ea99eb39241433",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "validation_id": {
@@ -196,7 +196,7 @@
         ],
         [
           "revision_or_concession",
-          35
+          34
         ],
         [
           "approved_unresolved_objection",
@@ -221,11 +221,11 @@
       "most_common": [
         [
           "1",
-          209
+          208
         ],
         [
           "0",
-          106
+          107
         ],
         [
           "support_or_request",
@@ -250,11 +250,11 @@
       "most_common": [
         [
           "0",
-          200
+          199
         ],
         [
           "1",
-          84
+          85
         ],
         [
           "none_or_procedural",
@@ -279,11 +279,11 @@
       "most_common": [
         [
           "false_negative",
-          200
+          199
         ],
         [
           "false_positive",
-          82
+          83
         ],
         [
           "regex_missing",

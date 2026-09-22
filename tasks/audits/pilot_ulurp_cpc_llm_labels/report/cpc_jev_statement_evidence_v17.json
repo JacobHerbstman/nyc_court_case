@@ -1,0 +1,230 @@
+{
+  "dataset": "cpc_jev_statement_evidence_v17.csv",
+  "rows": 23,
+  "key": [
+    "case_id",
+    "role",
+    "excerpt"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "b73f96b388eb4e159e00f722ae6175fbdafc4bb75cc7ff8237a98590db6b448b",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "case_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 12,
+      "most_common": [
+        [
+          "c09",
+          6
+        ],
+        [
+          "c01",
+          2
+        ],
+        [
+          "c02",
+          2
+        ],
+        [
+          "c05",
+          2
+        ],
+        [
+          "c08",
+          2
+        ]
+      ]
+    },
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "18bfb1ad1fab83a2555e",
+          8
+        ],
+        [
+          "a89b9ba39beede21a028",
+          8
+        ],
+        [
+          "e70fca539711f235a7ab",
+          4
+        ],
+        [
+          "28cc037f9056f9cd9141",
+          3
+        ]
+      ]
+    },
+    "role": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "statement",
+          14
+        ],
+        [
+          "context",
+          9
+        ]
+      ]
+    },
+    "excerpt": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "1",
+          18
+        ],
+        [
+          "2",
+          3
+        ],
+        [
+          "3",
+          1
+        ],
+        [
+          "4",
+          1
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 4
+    },
+    "segment_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 10,
+      "most_common": [
+        [
+          "s0005",
+          5
+        ],
+        [
+          "s0008",
+          4
+        ],
+        [
+          "s0016",
+          4
+        ],
+        [
+          "s0004",
+          2
+        ],
+        [
+          "s0027",
+          2
+        ]
+      ]
+    },
+    "source_application": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "C 190426 PCX",
+          8
+        ],
+        [
+          "C 861180 ZMM",
+          6
+        ],
+        [
+          "C 800194 HPK",
+          4
+        ],
+        [
+          "C 230091 ZMQ",
+          3
+        ],
+        [
+          "C 870156 ZSM",
+          2
+        ]
+      ]
+    },
+    "pdf_page": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9,
+      "most_common": [
+        [
+          "5",
+          9
+        ],
+        [
+          "8",
+          4
+        ],
+        [
+          "18",
+          2
+        ],
+        [
+          "19",
+          2
+        ],
+        [
+          "4",
+          2
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 19
+    },
+    "quote": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 21,
+      "most_common": [
+        [
+          "not exceed a 137 car capacity as permitted by special permit of the CPC pursuant to section 74-52 of the Resolution.",
+          2
+        ],
+        [
+          "with the exception of a public parking garage which shall",
+          2
+        ],
+        [
+          "Community Board Public Hearing Bronx Community Board 9 held a public hearing on this application (C 190426 PCX) on June 20, 2019, and on that day, by a vote of 19 in favor, none opposed, and none abstaining, adopted a resolution recommending approval of the application with the following conditions:",
+          1
+        ],
+        [
+          "Compliance with the terms of the restrictive declaration is hereby made a condition of this special permit.",
+          1
+        ],
+        [
+          "DECLARATION THIS DECLARATION, made as of the 21st day of Decem- ber, 1987, by 92ND REALTY CO., with offices at 1200 Union Turnpike, New Hyde Park, New York 11040 (hereinafter called \"the Declarant\").",
+          1
+        ]
+      ]
+    }
+  }
+}

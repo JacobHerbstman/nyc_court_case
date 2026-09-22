@@ -1,0 +1,674 @@
+{
+  "dataset": "ulurp_cpc_evidence.csv",
+  "rows": 128764,
+  "key": [
+    "event_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "108cade0b5d4cf7856b9e9893df8d95a5726a73d17caf14a29b998dade014bbd",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "event_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 128764,
+      "most_common": [
+        [
+          "000015f671b6858ed7578dcc",
+          1
+        ],
+        [
+          "0000f3732913923fec3f2abe",
+          1
+        ],
+        [
+          "00012d5f41d26598eb6ce2c4",
+          1
+        ],
+        [
+          "0001adca0ff45b831f231865",
+          1
+        ],
+        [
+          "00039617959f1202cab6852e",
+          1
+        ]
+      ]
+    },
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 8203,
+      "most_common": [
+        [
+          "43038a2d2c3699ec65ea",
+          644
+        ],
+        [
+          "17c8293e404d5c32e56c",
+          643
+        ],
+        [
+          "6a937f1d97054454cef9",
+          643
+        ],
+        [
+          "82131dace11efa6b5646",
+          643
+        ],
+        [
+          "86af1ece434e00b8f6cc",
+          643
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 8203,
+      "most_common": [
+        [
+          "C 100296A ZSM",
+          644
+        ],
+        [
+          "C 100287 ZSM",
+          643
+        ],
+        [
+          "C 100288 ZSM",
+          643
+        ],
+        [
+          "C 100289 ZSM",
+          643
+        ],
+        [
+          "C 100290 ZSM",
+          643
+        ]
+      ]
+    },
+    "section": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9,
+      "most_common": [
+        [
+          "consideration_findings",
+          70230
+        ],
+        [
+          "community_board",
+          27111
+        ],
+        [
+          "borough_president",
+          13866
+        ],
+        [
+          "cpc_hearing",
+          12061
+        ],
+        [
+          "ulurp",
+          2141
+        ]
+      ]
+    },
+    "sentence_start": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 892,
+      "most_common": [
+        [
+          "1",
+          8275
+        ],
+        [
+          "0",
+          5261
+        ],
+        [
+          "2",
+          4743
+        ],
+        [
+          "5",
+          4308
+        ],
+        [
+          "3",
+          4062
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1039
+    },
+    "sentence_end": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 898,
+      "most_common": [
+        [
+          "1",
+          8197
+        ],
+        [
+          "2",
+          4988
+        ],
+        [
+          "0",
+          4166
+        ],
+        [
+          "5",
+          4080
+        ],
+        [
+          "3",
+          4004
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1039
+    },
+    "linked_sentences": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "False",
+          89078
+        ],
+        [
+          "True",
+          39686
+        ]
+      ]
+    },
+    "evidence_text": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 71287,
+      "most_common": [
+        [
+          "Existing and planned public facilities, planned streets, provisions for light and air and cultural and recreational facilities are adequate for the density of the population contemplated by the project and conform to the purposes of the Redevelopment Companies Law.",
+          157
+        ],
+        [
+          "(e) that the streets providing access to such use will be adequate to handle the traffic generated thereby;",
+          85
+        ],
+        [
+          "The density of population contemplated by the project bears appropriate relationship to the distribution of population in other parts of the City; and Adequate provision has been made for commercial facilities appurtenant to the project.",
+          82
+        ],
+        [
+          "That the streets providing access to such use will be adequate to handle the traffic generated thereby.",
+          76
+        ],
+        [
+          "This application was considered by the Borough President, who issued a recommendation approving the application with conditions on March 10, 2004.",
+          71
+        ]
+      ]
+    },
+    "actors": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 65684,
+      "distinct_nonmissing": 31,
+      "most_common": [
+        [
+          "community_board",
+          34552
+        ],
+        [
+          "borough_president",
+          16480
+        ],
+        [
+          "borough_president; community_board",
+          4533
+        ],
+        [
+          "other_local",
+          2899
+        ],
+        [
+          "civic_group",
+          1103
+        ]
+      ]
+    },
+    "actor_assignment_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "no_actor_detected",
+          65684
+        ],
+        [
+          "single_actor_candidate",
+          55672
+        ],
+        [
+          "multiple_actor_candidates",
+          7408
+        ]
+      ]
+    },
+    "issue_families": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 47387,
+      "distinct_nonmissing": 31,
+      "most_common": [
+        [
+          "scale_character_preservation",
+          21971
+        ],
+        [
+          "traffic_parking",
+          18431
+        ],
+        [
+          "environment_open_space",
+          12089
+        ],
+        [
+          "infrastructure_services",
+          6429
+        ],
+        [
+          "affordability_displacement",
+          6286
+        ]
+      ]
+    },
+    "issue_details": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 66827,
+      "distinct_nonmissing": 77,
+      "most_common": [
+        [
+          "scale_density_design",
+          19483
+        ],
+        [
+          "traffic",
+          9536
+        ],
+        [
+          "parking",
+          9394
+        ],
+        [
+          "affordability",
+          6101
+        ],
+        [
+          "historic_preservation",
+          5090
+        ]
+      ]
+    },
+    "support_detected": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          109255
+        ],
+        [
+          "1",
+          19509
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "opposition_detected": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          114184
+        ],
+        [
+          "1",
+          14580
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "request_detected": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          83543
+        ],
+        [
+          "1",
+          45221
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "revision_detected": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          121944
+        ],
+        [
+          "1",
+          6820
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "explicit_response_detected": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          103692
+        ],
+        [
+          "1",
+          25072
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "unresolved_detected": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          125153
+        ],
+        [
+          "1",
+          3611
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "source_document_ids": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6100,
+      "distinct_nonmissing": 9437,
+      "most_common": [
+        [
+          "43038a2d2c3699ec65ea",
+          5436
+        ],
+        [
+          "805bb038c3f7601dd073",
+          5035
+        ],
+        [
+          "d69c2b7e86b4bf2a3206",
+          2203
+        ],
+        [
+          "6e1a82a9f99e3fe205a1",
+          1356
+        ],
+        [
+          "51d404cdade16988575a",
+          1279
+        ]
+      ]
+    },
+    "source_application_numbers": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6100,
+      "distinct_nonmissing": 9437,
+      "most_common": [
+        [
+          "C 100296A ZSM",
+          5436
+        ],
+        [
+          "N 040500A ZRM",
+          5035
+        ],
+        [
+          "C 040171 ZMK",
+          2203
+        ],
+        [
+          "C 070531A ZSM",
+          1356
+        ],
+        [
+          "C 090433 ZMM",
+          1279
+        ]
+      ]
+    },
+    "source_match_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "unique_source_excerpt",
+          115864
+        ],
+        [
+          "unlocated_excerpt",
+          6100
+        ],
+        [
+          "multiple_sources",
+          5335
+        ],
+        [
+          "repeated_in_source",
+          1465
+        ]
+      ]
+    },
+    "normalized_source_start": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 12900,
+      "distinct_nonmissing": 34882,
+      "most_common": [
+        [
+          "147705",
+          33
+        ],
+        [
+          "5163",
+          33
+        ],
+        [
+          "6456",
+          30
+        ],
+        [
+          "7019",
+          30
+        ],
+        [
+          "154795",
+          29
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 298451
+    },
+    "normalized_source_end": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 12900,
+      "distinct_nonmissing": 34886,
+      "most_common": [
+        [
+          "196909",
+          34
+        ],
+        [
+          "8491",
+          29
+        ],
+        [
+          "137134",
+          28
+        ],
+        [
+          "141438",
+          28
+        ],
+        [
+          "147833",
+          28
+        ]
+      ],
+      "minimum": 352,
+      "maximum": 299068
+    },
+    "source_text_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 11435,
+      "distinct_nonmissing": 8419,
+      "most_common": [
+        [
+          "784c80528b70d050b375f6c819b2cc535c25ff0b4927be3204f1d2474de12076",
+          5436
+        ],
+        [
+          "c52b9ae8d9d0b731689bacefdfb3b001a2a042941f8da0da1a32a880c417d340",
+          5035
+        ],
+        [
+          "844a625fe56495e5b8311f1424497c75d77bd1356191f90071be551bd80b926e",
+          2203
+        ],
+        [
+          "b09088a642cf484814e9b44c7bbe2087b62ad4cd4221d4a219a722a6428fa741",
+          1356
+        ],
+        [
+          "3aeb7a7f6d477a82458018e527148f9c4c82055479351b7bebb936b5e40d5f17",
+          1279
+        ]
+      ]
+    },
+    "analysis_text_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 8203,
+      "most_common": [
+        [
+          "0685a63f0ed1d9a6a1ed423d420a4ba0587f032cd5b284d6e1c4e231a40ceb40",
+          644
+        ],
+        [
+          "26b039ce1d1edff5cc8a9d609266f5af40fdebc2391ba404e6c2075e3dc79b0d",
+          643
+        ],
+        [
+          "3e008e8c9ed0d3de5362250f1c2893dae2f85f8006178044227a1c761329ba66",
+          643
+        ],
+        [
+          "4b3b36debee1804fe72f89ad29ac34ed8ad59cd5cd88fd8d23f9a2f48ea629d6",
+          643
+        ],
+        [
+          "744700ce241008f0c731a0e1101c6aa3ce5e4095e789be84c19a8c05dbba6874",
+          643
+        ]
+      ]
+    },
+    "extraction_method": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "regex_candidate",
+          128764
+        ]
+      ]
+    }
+  }
+}

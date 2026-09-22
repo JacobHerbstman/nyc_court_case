@@ -1,0 +1,1119 @@
+{
+  "dataset": "cpc_jev_labels_v2.csv",
+  "rows": 8905,
+  "key": [
+    "document_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "81bb94772d362e5617648539821e77a09a4e9c4eec64a3c669548dc61575e3bc",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 8905,
+      "most_common": [
+        [
+          "00119c3b0ee800f4d8ba",
+          1
+        ],
+        [
+          "00126d30463744ba647c",
+          1
+        ],
+        [
+          "00167643a19f5c30bf57",
+          1
+        ],
+        [
+          "001f885d7d891a8711f7",
+          1
+        ],
+        [
+          "00231b56ec914bf6ccd9",
+          1
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 8905,
+      "most_common": [
+        [
+          "C 000002 ZSM",
+          1
+        ],
+        [
+          "C 000012 ZSR",
+          1
+        ],
+        [
+          "C 000013 ZSR",
+          1
+        ],
+        [
+          "C 000014 ZSR",
+          1
+        ],
+        [
+          "C 000016A ZSR",
+          1
+        ]
+      ]
+    },
+    "year": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 50,
+      "most_common": [
+        [
+          "1982",
+          552
+        ],
+        [
+          "1981",
+          511
+        ],
+        [
+          "1989",
+          434
+        ],
+        [
+          "1983",
+          412
+        ],
+        [
+          "1980",
+          390
+        ]
+      ]
+    },
+    "project_name": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 850,
+      "distinct_nonmissing": 6536,
+      "most_common": [
+        [
+          "C-O-P",
+          754
+        ],
+        [
+          "Lda",
+          30
+        ],
+        [
+          "Hra Boarding Home",
+          21
+        ],
+        [
+          "C-O-P (1 Parcel)",
+          12
+        ],
+        [
+          "Metrotech",
+          11
+        ]
+      ]
+    },
+    "zap_project_ids": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 432,
+      "distinct_nonmissing": 7877,
+      "most_common": [
+        [
+          "P2004K0140",
+          13
+        ],
+        [
+          "P1986K0168",
+          10
+        ],
+        [
+          "P1984K0109",
+          7
+        ],
+        [
+          "P1987K0062",
+          6
+        ],
+        [
+          "P1989K0603",
+          6
+        ]
+      ]
+    },
+    "preparation_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "ready",
+          8905
+        ]
+      ]
+    },
+    "request_count": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 24,
+      "most_common": [
+        [
+          "1",
+          6675
+        ],
+        [
+          "2",
+          1084
+        ],
+        [
+          "3",
+          536
+        ],
+        [
+          "4",
+          241
+        ],
+        [
+          "5",
+          117
+        ]
+      ]
+    },
+    "split_context": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          6675
+        ],
+        [
+          "1",
+          2230
+        ]
+      ]
+    },
+    "random_audit": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          8881
+        ],
+        [
+          "1",
+          24
+        ]
+      ]
+    },
+    "source_document_ids": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7223,
+      "most_common": [
+        [
+          "1ff3c132fb6f612ec1df;2450cd155bb2742cfc53;3a053a813e177ced4879;3c060ba66bb654677821;4258c4a49d88eac3e993;5cac110adb229f52bf58;96a037fb0cc3c9e1d8ea;a13703562871fa2cbdd4;b612c28eafa091f77471;c01ef635f6c1ae15121e;c0f9c2da259e96aa0b5f;d69c2b7e86b4bf2a3206;ef76ec2e28601163e459;f4b81a0c540396f0c010",
+          14
+        ],
+        [
+          "3027e59e7c52daec9631;3548341846832bcf585d;4bb21ed9a897dd8d33de;4e5208745de8e05ebea3;5110319b2f6568092352;91e53bf62f2bf7c5a07e;9a4ed19dd79bdb82290c;b2bbae5c99af48da3916;be05c45debfbdea35864;c097633ebc2de087da77;c766bbea7067b77fb3de;db2567250f199800cef1;f3cf9169ba93e046669e",
+          13
+        ],
+        [
+          "005b7902341c132ae6ab;13b528aeafa905b7c17d;21e567d4f17c0fd90f2e;284036090e3f0c4e1f3e;729e02509506549e1128;8515dc2d833d6d3fe2bb;a6c2040cee92ccb390ed;ac377e78d16fc2301213;f03bb5c428d4afae31ff;f1005ab06591f2104703;fec941db68670610e6c0;ff64a4a4e6d010da6055",
+          12
+        ],
+        [
+          "0525e5c06cc49f840007;533ce2cebcc427a3c7c6;6388a053abf5c4b6c7b3;71cea30f51e375c9af8b;7eeaaacb1902b323abc7;8e8beace33096779b334;935c4538a4ffc2c3852e;9925a5066870e0740303;a730f59cc3c187cacdf8;c8836c9f56929cf99738;d1579ec1be4306a98c55;db599763b3ee700a8b86",
+          12
+        ],
+        [
+          "20e7f51c62bc15a2d84f;23cef7434887c974ad40;2f2884a31e155c7786f1;7d2a715b7145cf9a4bd6;8316b3db607b04e27d7f;99fba24e0baa9b261e81;9f0d90fe0aab0727525b;a4f6b796051610b76d48;cc3da5427517f97307da;dab548104173d85f0c13;eb4fa5f6afb7ba83b6e4;fff25dd850da1472deec",
+          12
+        ]
+      ]
+    },
+    "extraction_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "not_attempted",
+          5697
+        ],
+        [
+          "complete",
+          2620
+        ],
+        [
+          "failed",
+          354
+        ],
+        [
+          "partial",
+          234
+        ]
+      ]
+    },
+    "observation_vintage": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "v2",
+          8902
+        ],
+        [
+          "v1_carried",
+          3
+        ]
+      ]
+    },
+    "successful_parts": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 16,
+      "most_common": [
+        [
+          "0",
+          6051
+        ],
+        [
+          "1",
+          2178
+        ],
+        [
+          "2",
+          342
+        ],
+        [
+          "3",
+          157
+        ],
+        [
+          "4",
+          70
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 24
+    },
+    "evidence_conflicts": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 18,
+      "most_common": [
+        [
+          "0",
+          6948
+        ],
+        [
+          "1",
+          903
+        ],
+        [
+          "2",
+          490
+        ],
+        [
+          "3",
+          252
+        ],
+        [
+          "4",
+          115
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 25
+    },
+    "affordability__discussed": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6209,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          1862
+        ],
+        [
+          "1",
+          834
+        ]
+      ]
+    },
+    "affordability__concern_request": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6229,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          2292
+        ],
+        [
+          "1",
+          384
+        ]
+      ]
+    },
+    "affordability__adopted": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6240,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          2358
+        ],
+        [
+          "1",
+          307
+        ]
+      ]
+    },
+    "displacement__discussed": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6211,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          2239
+        ],
+        [
+          "1",
+          455
+        ]
+      ]
+    },
+    "displacement__concern_request": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6218,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          2305
+        ],
+        [
+          "1",
+          382
+        ]
+      ]
+    },
+    "displacement__adopted": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6240,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          2421
+        ],
+        [
+          "1",
+          244
+        ]
+      ]
+    },
+    "neighborhood_character__discussed": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6109,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          1791
+        ],
+        [
+          "0",
+          1005
+        ]
+      ]
+    },
+    "neighborhood_character__concern_request": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6159,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          1827
+        ],
+        [
+          "1",
+          919
+        ]
+      ]
+    },
+    "neighborhood_character__adopted": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6149,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          1805
+        ],
+        [
+          "1",
+          951
+        ]
+      ]
+    },
+    "scale_density_design__discussed": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6149,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          1602
+        ],
+        [
+          "0",
+          1154
+        ]
+      ]
+    },
+    "scale_density_design__concern_request": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6187,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          2019
+        ],
+        [
+          "1",
+          699
+        ]
+      ]
+    },
+    "scale_density_design__adopted": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6153,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          1766
+        ],
+        [
+          "1",
+          986
+        ]
+      ]
+    },
+    "historic_preservation__discussed": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6220,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          2275
+        ],
+        [
+          "1",
+          410
+        ]
+      ]
+    },
+    "historic_preservation__concern_request": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6243,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          2427
+        ],
+        [
+          "1",
+          235
+        ]
+      ]
+    },
+    "historic_preservation__adopted": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6246,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          2406
+        ],
+        [
+          "1",
+          253
+        ]
+      ]
+    },
+    "traffic_parking__discussed": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6127,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          1452
+        ],
+        [
+          "1",
+          1326
+        ]
+      ]
+    },
+    "traffic_parking__concern_request": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6180,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          2070
+        ],
+        [
+          "1",
+          655
+        ]
+      ]
+    },
+    "traffic_parking__adopted": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6178,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          2157
+        ],
+        [
+          "1",
+          570
+        ]
+      ]
+    },
+    "infrastructure_services__discussed": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6144,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          1458
+        ],
+        [
+          "0",
+          1303
+        ]
+      ]
+    },
+    "infrastructure_services__concern_request": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6181,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          1994
+        ],
+        [
+          "1",
+          730
+        ]
+      ]
+    },
+    "infrastructure_services__adopted": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6206,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          2263
+        ],
+        [
+          "1",
+          436
+        ]
+      ]
+    },
+    "environment_open_space__discussed": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6123,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          1888
+        ],
+        [
+          "0",
+          894
+        ]
+      ]
+    },
+    "environment_open_space__concern_request": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6173,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          2075
+        ],
+        [
+          "1",
+          657
+        ]
+      ]
+    },
+    "environment_open_space__adopted": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6165,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          2008
+        ],
+        [
+          "1",
+          732
+        ]
+      ]
+    },
+    "council__support": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6268,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          2537
+        ],
+        [
+          "1",
+          100
+        ]
+      ]
+    },
+    "council__opposition": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6272,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          2559
+        ],
+        [
+          "1",
+          74
+        ]
+      ]
+    },
+    "council__requested_project": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6284,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          2611
+        ],
+        [
+          "1",
+          10
+        ]
+      ]
+    },
+    "council__requested_provision": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6266,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          2556
+        ],
+        [
+          "1",
+          83
+        ]
+      ]
+    },
+    "council__motivating_concern": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6284,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          2614
+        ],
+        [
+          "1",
+          7
+        ]
+      ]
+    },
+    "civic__support": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6225,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          2298
+        ],
+        [
+          "1",
+          382
+        ]
+      ]
+    },
+    "civic__opposition": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6232,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          2339
+        ],
+        [
+          "1",
+          334
+        ]
+      ]
+    },
+    "civic__request": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6227,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          2378
+        ],
+        [
+          "1",
+          300
+        ]
+      ]
+    },
+    "stage_conflicts": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "0",
+          8486
+        ],
+        [
+          "1",
+          322
+        ],
+        [
+          "2",
+          67
+        ],
+        [
+          "3",
+          18
+        ],
+        [
+          "4",
+          7
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 6
+    },
+    "affordability_displacement__concern_request": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6201,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          2111
+        ],
+        [
+          "1",
+          593
+        ]
+      ]
+    },
+    "affordability_displacement__review_issue": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6190,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          1962
+        ],
+        [
+          "1",
+          753
+        ]
+      ]
+    },
+    "scale_character_preservation__concern_request": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6150,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          1692
+        ],
+        [
+          "1",
+          1063
+        ]
+      ]
+    },
+    "scale_character_preservation__review_issue": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6112,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          1480
+        ],
+        [
+          "0",
+          1313
+        ]
+      ]
+    },
+    "traffic_parking__review_issue": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6156,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          1925
+        ],
+        [
+          "1",
+          824
+        ]
+      ]
+    },
+    "infrastructure_services__review_issue": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6167,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          1896
+        ],
+        [
+          "1",
+          842
+        ]
+      ]
+    },
+    "environment_open_space__review_issue": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6139,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          1823
+        ],
+        [
+          "1",
+          943
+        ]
+      ]
+    },
+    "council_involvement": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6256,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          2460
+        ],
+        [
+          "1",
+          189
+        ]
+      ]
+    },
+    "councilmember_position": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6272,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "none_or_procedural",
+          2460
+        ],
+        [
+          "support_or_request",
+          99
+        ],
+        [
+          "opposition",
+          74
+        ]
+      ]
+    },
+    "civic_group_position": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6237,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "none_or_procedural",
+          2123
+        ],
+        [
+          "opposition",
+          334
+        ],
+        [
+          "support_or_request",
+          211
+        ]
+      ]
+    }
+  }
+}

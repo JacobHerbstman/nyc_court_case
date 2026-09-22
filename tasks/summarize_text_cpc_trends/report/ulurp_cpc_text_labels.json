@@ -1,11 +1,11 @@
 {
   "dataset": "ulurp_cpc_text_labels.csv",
-  "rows": 8905,
+  "rows": 9063,
   "key": [
     "document_id"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "0bb8948934dac903eace748da400bb734667f3fa2feefd1813bbad8e2365181d",
+  "sha256_csv_bytes": "d6367d8e6e816dc8ffff99cc988f3b64a4070e634f77a1bfbd0120a8f8e87ce9",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -13,7 +13,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 8905,
+      "distinct_nonmissing": 9063,
       "most_common": [
         [
           "00119c3b0ee800f4d8ba",
@@ -42,7 +42,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 8905,
+      "distinct_nonmissing": 9063,
       "most_common": [
         [
           "C 000002 ZSM",
@@ -75,23 +75,23 @@
       "most_common": [
         [
           "PP",
-          1662
+          1674
         ],
         [
           "ZM",
-          1336
+          1359
         ],
         [
           "ZS",
-          1176
+          1226
         ],
         [
           "HD",
-          889
+          890
         ],
         [
           "MM",
-          655
+          701
         ]
       ]
     },
@@ -100,7 +100,7 @@
         "str"
       ],
       "missing": 850,
-      "distinct_nonmissing": 6536,
+      "distinct_nonmissing": 6539,
       "most_common": [
         [
           "C-O-P",
@@ -129,27 +129,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 212,
+      "distinct_nonmissing": 213,
       "most_common": [
         [
           "MN 02",
-          378
+          386
         ],
         [
           "BK 01",
-          375
+          380
         ],
         [
           "SI 03",
-          324
+          326
         ],
         [
           "BK 02",
-          301
+          306
         ],
         [
-          "MN 10",
-          260
+          "MN 04",
+          268
         ]
       ]
     },
@@ -201,7 +201,7 @@
         ],
         [
           "2000s",
-          1254
+          1339
         ],
         [
           "1970s",
@@ -209,7 +209,7 @@
         ],
         [
           "2010s",
-          684
+          725
         ]
       ]
     },
@@ -218,7 +218,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 8905,
+      "distinct_nonmissing": 9063,
       "most_common": [
         [
           "00135a3546a6f0fe84f5525e642cc85c9e329d230530a2b6223f4c0a42fcc148",
@@ -247,7 +247,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 8905,
+      "distinct_nonmissing": 9063,
       "most_common": [
         [
           "000764074e039715324add431a3c275edda7dfc5671eb83d225f03baaa87fce5",
@@ -276,7 +276,7 @@
         "int"
       ],
       "missing": 0,
-      "distinct_nonmissing": 3130,
+      "distinct_nonmissing": 3141,
       "most_common": [
         [
           "370",
@@ -307,8 +307,12 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 8905,
+      "distinct_nonmissing": 9063,
       "most_common": [
+        [
+          "000764074e039715324add431a3c275edda7dfc5671eb83d225f03baaa87fce5",
+          1
+        ],
         [
           "000e20d955222ec543f8e2a013e6ba0c1de8ca1163aa55dc07cb23744e637198",
           1
@@ -324,10 +328,6 @@
         [
           "00187c4e173c838d2b7278db02a3fa38be0bb0a5f4cb14e6bb757a7e5a129ca4",
           1
-        ],
-        [
-          "0019fe5c318062fd7902095016998cdb22c7317b215f1aa1c687edbc4ef9a384",
-          1
         ]
       ]
     },
@@ -336,26 +336,26 @@
         "int"
       ],
       "missing": 0,
-      "distinct_nonmissing": 3322,
+      "distinct_nonmissing": 3279,
       "most_common": [
+        [
+          "370",
+          16
+        ],
+        [
+          "400",
+          16
+        ],
         [
           "6131",
           16
         ],
         [
-          "370",
+          "379",
           15
         ],
         [
           "382",
-          15
-        ],
-        [
-          "385",
-          15
-        ],
-        [
-          "400",
           15
         ]
       ],
@@ -366,8 +366,8 @@
       "python_types": [
         "str"
       ],
-      "missing": 5999,
-      "distinct_nonmissing": 2906,
+      "missing": 6724,
+      "distinct_nonmissing": 2339,
       "most_common": [
         [
           "C 000012 ZSR; C 000013 ZSR; C 000014 ZSR; C 000016A ZSR; C 000017 ZMR; C 000018 PCR",
@@ -391,6 +391,93 @@
         ]
       ]
     },
+    "represented_application_numbers": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9063,
+      "most_common": [
+        [
+          "C 000002 ZSM",
+          1
+        ],
+        [
+          "C 000012 ZSR",
+          1
+        ],
+        [
+          "C 000013 ZSR",
+          1
+        ],
+        [
+          "C 000014 ZSR",
+          1
+        ],
+        [
+          "C 000016A ZSR",
+          1
+        ]
+      ]
+    },
+    "represented_action_codes": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 106,
+      "most_common": [
+        [
+          "PP",
+          1660
+        ],
+        [
+          "ZM",
+          1275
+        ],
+        [
+          "ZS",
+          1172
+        ],
+        [
+          "HD",
+          889
+        ],
+        [
+          "MM",
+          697
+        ]
+      ]
+    },
+    "represented_community_districts": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 499,
+      "most_common": [
+        [
+          "MN 02",
+          380
+        ],
+        [
+          "SI 03",
+          325
+        ],
+        [
+          "BK 01",
+          319
+        ],
+        [
+          "BK 02",
+          294
+        ],
+        [
+          "MN 04",
+          268
+        ]
+      ]
+    },
     "narrative_boundary_method": {
       "python_types": [
         "str"
@@ -400,7 +487,7 @@
       "most_common": [
         [
           "resolution_heading",
-          7981
+          8123
         ],
         [
           "filing_paragraph",
@@ -408,11 +495,11 @@
         ],
         [
           "resolution_heading_fallback",
-          176
+          177
         ],
         [
           "cpc_resolution_after_quoted_resolution",
-          110
+          125
         ],
         [
           "commission_signature",
@@ -424,8 +511,8 @@
       "python_types": [
         "str"
       ],
-      "missing": 439,
-      "distinct_nonmissing": 7871,
+      "missing": 475,
+      "distinct_nonmissing": 7953,
       "most_common": [
         [
           "P2004K0140",
@@ -436,16 +523,16 @@
           10
         ],
         [
+          "P2004M0399",
+          8
+        ],
+        [
+          "P2010M0191",
+          8
+        ],
+        [
           "P1984K0109",
           7
-        ],
-        [
-          "P1987K0062",
-          6
-        ],
-        [
-          "P1989K0603",
-          6
         ]
       ]
     },
@@ -458,11 +545,11 @@
       "most_common": [
         [
           "TRUE",
-          7254
+          7402
         ],
         [
           "FALSE",
-          1651
+          1661
         ]
       ]
     },
@@ -475,11 +562,11 @@
       "most_common": [
         [
           "FALSE",
-          6269
+          6361
         ],
         [
           "TRUE",
-          2636
+          2702
         ]
       ]
     },
@@ -492,11 +579,11 @@
       "most_common": [
         [
           "unknown",
-          5853
+          5939
         ],
         [
           "approved",
-          2879
+          2951
         ],
         [
           "denied",
@@ -513,7 +600,7 @@
       "most_common": [
         [
           "0",
-          7314
+          7472
         ],
         [
           "1",
@@ -532,11 +619,11 @@
       "most_common": [
         [
           "1",
-          5749
+          5642
         ],
         [
           "0",
-          3156
+          3421
         ]
       ],
       "minimum": 0,
@@ -551,11 +638,11 @@
       "most_common": [
         [
           "0",
-          7001
+          7178
         ],
         [
           "1",
-          1904
+          1885
         ]
       ],
       "minimum": 0,
@@ -570,11 +657,11 @@
       "most_common": [
         [
           "0",
-          7285
+          7542
         ],
         [
           "1",
-          1620
+          1521
         ]
       ],
       "minimum": 0,
@@ -589,11 +676,11 @@
       "most_common": [
         [
           "0",
-          6184
+          6479
         ],
         [
           "1",
-          2721
+          2584
         ]
       ],
       "minimum": 0,
@@ -608,11 +695,11 @@
       "most_common": [
         [
           "0",
-          8194
+          8310
         ],
         [
           "1",
-          711
+          753
         ]
       ],
       "minimum": 0,
@@ -627,11 +714,11 @@
       "most_common": [
         [
           "0",
-          7865
+          7970
         ],
         [
           "1",
-          1040
+          1093
         ]
       ],
       "minimum": 0,
@@ -646,11 +733,11 @@
       "most_common": [
         [
           "1",
-          5209
+          5041
         ],
         [
           "0",
-          3696
+          4022
         ]
       ],
       "minimum": 0,
@@ -665,11 +752,11 @@
       "most_common": [
         [
           "0",
-          6661
+          6822
         ],
         [
           "1",
-          2244
+          2241
         ]
       ],
       "minimum": 0,
@@ -684,11 +771,11 @@
       "most_common": [
         [
           "0",
-          7646
+          7780
         ],
         [
           "1",
-          1259
+          1283
         ]
       ],
       "minimum": 0,
@@ -703,11 +790,11 @@
       "most_common": [
         [
           "0",
-          5934
+          6172
         ],
         [
           "1",
-          2971
+          2891
         ]
       ],
       "minimum": 0,
@@ -722,11 +809,11 @@
       "most_common": [
         [
           "0",
-          5168
+          5404
         ],
         [
           "1",
-          3737
+          3659
         ]
       ],
       "minimum": 0,
@@ -741,11 +828,11 @@
       "most_common": [
         [
           "0",
-          6643
+          6817
         ],
         [
           "1",
-          2262
+          2246
         ]
       ],
       "minimum": 0,
@@ -760,11 +847,11 @@
       "most_common": [
         [
           "0",
-          6180
+          6433
         ],
         [
           "1",
-          2725
+          2630
         ]
       ],
       "minimum": 0,
@@ -779,11 +866,11 @@
       "most_common": [
         [
           "0",
-          8457
+          8570
         ],
         [
           "1",
-          448
+          493
         ]
       ],
       "minimum": 0,
@@ -798,11 +885,11 @@
       "most_common": [
         [
           "0",
-          8890
+          9045
         ],
         [
           "1",
-          15
+          18
         ]
       ],
       "minimum": 0,
@@ -817,15 +904,15 @@
       "most_common": [
         [
           "none_or_procedural",
-          8502
+          8617
         ],
         [
           "support_or_request",
-          263
+          298
         ],
         [
           "opposition",
-          140
+          148
         ]
       ]
     },
@@ -838,15 +925,15 @@
       "most_common": [
         [
           "none_or_procedural",
-          8013
+          8187
         ],
         [
           "opposition",
-          461
+          519
         ],
         [
           "support_or_request",
-          431
+          357
         ]
       ]
     },
@@ -854,28 +941,28 @@
       "python_types": [
         "int"
       ],
-      "missing": 2450,
-      "distinct_nonmissing": 47,
+      "missing": 2497,
+      "distinct_nonmissing": 49,
       "most_common": [
         [
           "0",
-          3417
+          3391
         ],
         [
           "1",
-          1188
+          1191
         ],
         [
           "2",
-          569
+          575
         ],
         [
           "3",
-          388
+          397
         ],
         [
           "4",
-          208
+          221
         ]
       ],
       "minimum": 0,
@@ -885,28 +972,28 @@
       "python_types": [
         "int"
       ],
-      "missing": 2584,
-      "distinct_nonmissing": 48,
+      "missing": 2635,
+      "distinct_nonmissing": 49,
       "most_common": [
         [
           "0",
-          5365
+          5377
         ],
         [
           "1",
-          341
+          345
         ],
         [
           "2",
-          113
+          116
         ],
         [
           "3",
-          63
+          69
         ],
         [
           "5",
-          48
+          52
         ]
       ],
       "minimum": 0,
@@ -916,28 +1003,28 @@
       "python_types": [
         "int"
       ],
-      "missing": 4354,
+      "missing": 4401,
       "distinct_nonmissing": 50,
       "most_common": [
         [
           "0",
-          381
+          393
         ],
         [
           "29",
-          229
-        ],
-        [
-          "27",
-          214
+          234
         ],
         [
           "25",
-          212
+          219
         ],
         [
-          "26",
-          188
+          "27",
+          215
+        ],
+        [
+          "32",
+          198
         ]
       ],
       "minimum": 0,
@@ -947,32 +1034,279 @@
       "python_types": [
         "int"
       ],
-      "missing": 4252,
+      "missing": 4300,
       "distinct_nonmissing": 49,
       "most_common": [
         [
           "0",
-          2710
+          2729
         ],
         [
           "1",
-          387
+          407
         ],
         [
           "2",
-          184
+          187
         ],
         [
           "3",
-          134
+          138
         ],
         [
           "5",
-          99
+          103
         ]
       ],
       "minimum": 0,
       "maximum": 4100
+    },
+    "affordability_detected": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          7985
+        ],
+        [
+          "1",
+          1078
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "displacement_detected": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          8626
+        ],
+        [
+          "1",
+          437
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "traffic_detected": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          6955
+        ],
+        [
+          "1",
+          2108
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "parking_detected": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          6948
+        ],
+        [
+          "1",
+          2115
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "neighborhood_character_detected": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          8528
+        ],
+        [
+          "1",
+          535
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "scale_density_design_detected": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          6322
+        ],
+        [
+          "1",
+          2741
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "historic_preservation_detected": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          7030
+        ],
+        [
+          "1",
+          2033
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "councilmember_support_detected": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          8902
+        ],
+        [
+          "1",
+          161
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "councilmember_opposition_detected": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          9006
+        ],
+        [
+          "1",
+          57
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "councilmember_request_detected": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          8988
+        ],
+        [
+          "1",
+          75
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "civic_group_support_detected": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          8813
+        ],
+        [
+          "1",
+          250
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "civic_group_opposition_detected": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          8921
+        ],
+        [
+          "1",
+          142
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "civic_group_request_detected": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          8847
+        ],
+        [
+          "1",
+          216
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
     },
     "cb_position": {
       "python_types": [
@@ -983,23 +1317,23 @@
       "most_common": [
         [
           "support",
-          3626
+          3649
         ],
         [
           "not_reported",
-          2692
+          2725
         ],
         [
           "support_with_conditions",
-          1007
+          1054
         ],
         [
           "oppose",
-          852
+          889
         ],
         [
           "no_recommendation",
-          540
+          542
         ]
       ]
     },
@@ -1012,19 +1346,19 @@
       "most_common": [
         [
           "approval",
-          4633
+          4703
         ],
         [
           "no_position_match",
-          2095
+          2127
         ],
         [
           "disapproval",
-          1039
+          1092
         ],
         [
           "no_section",
-          597
+          598
         ],
         [
           "noncomplying_recommendation",
@@ -1036,28 +1370,28 @@
       "python_types": [
         "int"
       ],
-      "missing": 3248,
+      "missing": 3289,
       "distinct_nonmissing": 54,
       "most_common": [
         [
           "29",
-          307
+          313
         ],
         [
           "25",
-          293
+          300
         ],
         [
           "26",
-          288
-        ],
-        [
-          "27",
-          281
+          290
         ],
         [
           "32",
-          268
+          282
+        ],
+        [
+          "27",
+          280
         ]
       ],
       "minimum": 0,
@@ -1067,28 +1401,28 @@
       "python_types": [
         "int"
       ],
-      "missing": 3248,
+      "missing": 3289,
       "distinct_nonmissing": 43,
       "most_common": [
         [
           "0",
-          3588
+          3620
         ],
         [
           "1",
-          586
+          608
         ],
         [
           "2",
-          281
+          286
         ],
         [
           "3",
-          200
+          218
         ],
         [
           "5",
-          144
+          148
         ]
       ],
       "minimum": 0,
@@ -1098,28 +1432,28 @@
       "python_types": [
         "int"
       ],
-      "missing": 3702,
+      "missing": 3766,
       "distinct_nonmissing": 16,
       "most_common": [
         [
           "0",
-          2780
+          2812
         ],
         [
           "1",
-          1174
+          1193
         ],
         [
           "2",
-          555
+          575
         ],
         [
           "3",
-          313
+          324
         ],
         [
           "4",
-          147
+          149
         ]
       ],
       "minimum": 0,
@@ -1134,7 +1468,7 @@
       "most_common": [
         [
           "not_stated",
-          8904
+          9062
         ],
         [
           "opposition_explicit",
@@ -1146,7 +1480,7 @@
       "python_types": [
         "int"
       ],
-      "missing": 8904,
+      "missing": 9062,
       "distinct_nonmissing": 1,
       "most_common": [
         [
@@ -1166,23 +1500,23 @@
       "most_common": [
         [
           "resolved",
-          4525
+          4635
         ],
         [
           "no_tally_match",
-          1865
+          1972
         ],
         [
           "unknown_motion",
-          858
+          863
         ],
         [
           "no_section",
-          586
+          592
         ],
         [
           "multiple_tallies",
-          307
+          313
         ]
       ]
     },
@@ -1195,19 +1529,19 @@
       "most_common": [
         [
           "direct_approval",
-          3814
+          3878
         ],
         [
           "none",
-          2562
+          2591
         ],
         [
           "review_required",
-          1507
+          1525
         ],
         [
           "inverted_disapproval",
-          711
+          757
         ],
         [
           "not_proposal_aligned",
@@ -1219,28 +1553,28 @@
       "python_types": [
         "str"
       ],
-      "missing": 1795,
-      "distinct_nonmissing": 6903,
+      "missing": 1819,
+      "distinct_nonmissing": 7032,
       "most_common": [
         [
           "community board 2 held a public hearing on this application on January 21, 2004, and on February 3, 2004, voted with 19 in favor, 17 opposed and 3 abstentions, to approve certain applications and disapprove others. Because this vote did not receive the necessary majority, the recommendation was not adopted. On February 18, 2004, community board 2 issued a letter explaining its review of ",
           14
         ],
         [
+          "pplication (N 090273 ZRK) and related applications (C 090272 ZMK, C 090107 MMK, C 090274 PQK, C 090275 PQK, C 090276 HAK and C 090277 PPK) on March 3, 2009, and on March 16, 2009, by a vote of 32 to 1 with 3 recusals, adopted a resolution recommending approval of the applications with the following conditions: 1. Remove from consideration the construction of WONDER WHEEL WAY. With its removal, more open acreage will be available for needed additi",
+          7
+        ],
+        [
+          "community board 4 held a public hearing on this application on November 22, 2005, and on that date, by a vote of 16 to 8 with 5 abstentions, adopted a resolution recommending disapproval of the application.",
+          6
+        ],
+        [
           "community board No. 3 held a public hearing on this matter on July 10, 1978. The board recommends approval of this proposal. The City Planning Commission received the report from community board No. 3 on July 31, 1978 and is attached.",
           6
         ],
         [
-          "Procedure (ULURP) rules. community board 2 held a public hearing on this application on April 17, 1989, and adopted a resolution on May 10, 1989 recommending approval by a vote of 27 in favor and none in opposition with no abstentions. A summary of the vote of community board 2 appears in the report on the related action for the special permits (C 890650-652 ZSK).",
+          " original application (N 050110 ZRK) and related applications (C 050111 ZMK, C 040415 MMK, C 040416 MMK, C 040417 MMK, C 040418 MMK) on November 16, 2004, and on December 6, 2004, by a vote of 37 to 0 with no abstentions, adopted a resolution recommending disapproval of the zoning map and text change applications (C 050111 ZMK and N 050110 ZRK) with conditions and approval of the City Map change applications (C 040415 MMK, C 040416 MMK, C 040417 ",
           5
-        ],
-        [
-          " Staten Island community board No. 2. On January 12, 1983, the community board held a public hearing on these matters. On January 18, 1983, the board voted to approve the project (36 in favor, 0 against and 2 abstaining). In addition to the amendment of the zoning map, which is the subject of this report, implementation of this proposal will require approval by the City Planning Commission and the board of Estimate on the following related actions ",
-          4
-        ],
-        [
-          "community Planning board 3. On April 7, 1980, the community Planning board voted to approve the amended Urban Renewal Plan (27 in favor, 0 against, 0 abstaining). On April 30, 1980, Calendar No. 4, the",
-          4
         ]
       ]
     },
@@ -1253,19 +1587,19 @@
       "most_common": [
         [
           "1",
-          5729
+          5847
         ],
         [
           "0",
-          2869
+          2903
         ],
         [
           "2",
-          204
+          206
         ],
         [
           "3",
-          70
+          74
         ],
         [
           "4",
@@ -1280,11 +1614,19 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 8770,
+      "distinct_nonmissing": 8932,
       "most_common": [
         [
           "C 040171 ZMK",
           14
+        ],
+        [
+          "N 090273A ZRK",
+          7
+        ],
+        [
+          "N 050110A ZRK",
+          5
         ],
         [
           "C 790722 HUK",
@@ -1292,14 +1634,6 @@
         ],
         [
           "C 830449 ZMR",
-          4
-        ],
-        [
-          "C 890566 PSK",
-          4
-        ],
-        [
-          "C 890654 GFK",
           4
         ]
       ]
@@ -1309,15 +1643,19 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 8770,
+      "distinct_nonmissing": 8932,
       "most_common": [
         [
           "844a625fe56495e5b8311f1424497c75d77bd1356191f90071be551bd80b926e",
           14
         ],
         [
-          "40a646d121f3b436e88f44c4825288617f038fb0df94004f8c48616026d8466f",
-          4
+          "1e49eb4154e418ae36b202ec3f63839e3d3554388f493ddb19ad907932ad601a",
+          7
+        ],
+        [
+          "070d2ecc64885ea148aeea968a089f6c7952bf8e0410e343e14accf079180c40",
+          5
         ],
         [
           "4b6c621d4a070fe40ad10c57c52ead9a85fda071ac69c57611b4607fadab4148",
@@ -1325,10 +1663,6 @@
         ],
         [
           "796961d75837952d05d0facd256ba8349168e399e10c1aa57c5acbdf0d8c1c15",
-          4
-        ],
-        [
-          "88b59989327aafc8906b89f6e224884bb97bc78800d4bffb17e44da50a19e862",
           4
         ]
       ]
@@ -1342,23 +1676,23 @@
       "most_common": [
         [
           "focal_report",
-          7461
+          7698
         ],
         [
           "focal_report_bounded_prose",
-          1194
-        ],
-        [
-          "review_required",
-          111
+          1204
         ],
         [
           "companion_report",
-          108
+          102
         ],
         [
           "companion_report_bounded_prose",
-          31
+          32
+        ],
+        [
+          "review_required",
+          27
         ]
       ]
     },
@@ -1371,19 +1705,19 @@
       "most_common": [
         [
           "resolved",
-          6032
+          6139
         ],
         [
           "no_count_match",
-          766
+          793
         ],
         [
           "no_section",
-          707
+          725
         ],
         [
           "partial",
-          644
+          648
         ],
         [
           "conflicting_counts",
@@ -1400,19 +1734,19 @@
       "most_common": [
         [
           "explicit_none",
-          3361
+          3332
         ],
         [
           "independent_sides",
-          2693
+          2829
         ],
         [
           "one_side",
-          1584
+          1617
         ],
         [
           "none",
-          711
+          729
         ],
         [
           "review_required",
@@ -1424,8 +1758,8 @@
       "python_types": [
         "str"
       ],
-      "missing": 1651,
-      "distinct_nonmissing": 6268,
+      "missing": 1698,
+      "distinct_nonmissing": 6327,
       "most_common": [
         [
           "the Hearing was duly held. There were no speakers and the Hearing was closed. CITY PLANNING COMMISSION FINDINGS AND recommendation",
@@ -1458,11 +1792,11 @@
       "most_common": [
         [
           "1",
-          8082
+          8222
         ],
         [
           "0",
-          711
+          729
         ],
         [
           "2",
@@ -1481,27 +1815,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 8576,
+      "distinct_nonmissing": 8682,
       "most_common": [
         [
           "C 040171 ZMK",
           14
         ],
         [
-          "C 800251 HUM",
+          "C 100296A ZSM",
+          9
+        ],
+        [
+          "N 040500A ZRM",
+          9
+        ],
+        [
+          "C 060059 MMX",
           8
         ],
         [
-          "C 000225 ZSQ",
-          6
-        ],
-        [
-          "C 831248 HOX",
-          6
-        ],
-        [
-          "C 960205 HUK",
-          6
+          "C 800251 HUM",
+          8
         ]
       ]
     },
@@ -1510,27 +1844,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 8576,
+      "distinct_nonmissing": 8682,
       "most_common": [
         [
           "844a625fe56495e5b8311f1424497c75d77bd1356191f90071be551bd80b926e",
           14
         ],
         [
+          "784c80528b70d050b375f6c819b2cc535c25ff0b4927be3204f1d2474de12076",
+          9
+        ],
+        [
+          "c52b9ae8d9d0b731689bacefdfb3b001a2a042941f8da0da1a32a880c417d340",
+          9
+        ],
+        [
           "684a6808d8e827301301b6d54d3445a382552acec6d856a972a16eef67ad62dd",
           8
         ],
         [
-          "44dce75c3437f6bef1f72707be38f2f320d24f385f1db1ca926056dba40518a1",
-          6
-        ],
-        [
-          "569530f3a8b3084bd2374f9480dde4d32fe7d7cb2d2d84795b3fdd71a11837f7",
-          6
-        ],
-        [
-          "5a4de1e2121922519adb09184b0afb7ff54f94a2da1fbc8c3c8affd3e6dc81f9",
-          6
+          "c5a32ef01baa62f9423dde3bde0e6509c36f4c266c7011e2cf33c8ceacbc9eaa",
+          8
         ]
       ]
     },
@@ -1543,23 +1877,23 @@
       "most_common": [
         [
           "focal_report",
-          6289
+          6366
         ],
         [
           "focal_report_bounded_prose",
-          2266
+          2294
         ],
         [
           "companion_report",
-          238
+          300
         ],
         [
           "companion_report_bounded_prose",
-          95
+          89
         ],
         [
           "review_required",
-          17
+          14
         ]
       ]
     }

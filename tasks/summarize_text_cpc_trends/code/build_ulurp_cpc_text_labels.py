@@ -10,42 +10,12 @@ from pathlib import Path
 
 sys.path.insert(0, "../../_lib")
 from cpc_counts import board_review, hearing_speakers, prose_review_section
+from cpc_narratives import (
+    FILING_PARAGRAPH, COMMISSION_SIGNATURE, MANUAL_EXCLUSION_METHODS,
+    narrative_boundary, normalize_narrative, project_review_key,
+)
 from data_reports import save_csv
 
-RESOLUTION_SECTION_HEADING = re.compile(
-    r"(?im)^[ \t\f]*RESOLUTION[ \t]*:?[ \t]*$"
-)
-CPC_RESOLVED_HEADING = re.compile(
-    r"(?im)^[ \t\f]*RESOLVED(?:[ \t]*,|[ \t]+BY\b|[ \t]+THAT\b)"
-    r"(?=[\s\S]{0,300}?\bCITY[ \t\r\n]+PLANNING[ \t\r\n]+COMMISSION\b).*$"
-)
-FILING_PARAGRAPH = re.compile(
-    r"(?is)(?:the[ \t\r\n]+(?:above|foregoing)[ \t\r\n]+resol\w*|"
-    r"the[ \t\r\n]+resol\w*[ \t\r\n]*\([^)]{1,80}\))"
-    r".{0,1600}?(?:is[ \t\r\n]+)?(?:hereby[ \t\r\n]+|herewith[ \t\r\n]+)?"
-    r"(?:filed|fuled|tiled|ffled)"
-)
-ANCHOR_HEADING = re.compile(
-    r"(?im)^[ \t\f]*(?:CONSIDERATION|FINDINGS(?:[ \t]+AND[ \t]+(?:APPROVAL|RECOMMENDATIONS?))?|"
-    r"UNIFORM[ \t]+LAND[ \t]+USE[ \t]+REVIEW(?:[ \t]+PROCEDURE)?)[ \t]*:?\s*$"
-)
-PAGE_HEADER = re.compile(
-    r"(?i)^\s*(?:page\s+)?\d+\s+(?:C\s*)?\d{6}(?:\s*\([A-Z]\))?\s*[A-Z]{2,4}\s*$"
-)
-COMMISSION_SIGNATURE = re.compile(
-    r"(?im)^[ \t\f]*[A-Z][A-Za-z.'-]+(?:[ \t]+[A-Z][A-Za-z.'-]+){1,5},?[ \t]+"
-    r"(?:Chair|Chairman|Chairperson|Vice[- ]?Chairman|Vice[- ]?Chairperson)\b.*$",
-    re.IGNORECASE | re.MULTILINE,
-)
-ADOPTED_RESOLUTION = re.compile(
-    r"(?is)(?:city[ \t\r\n]+planning[ \t\r\n]+commission|the[ \t\r\n]+commission)"
-    r".{0,260}?(?:adopts?|adopted).{0,80}?(?:following[ \t\r\n]+)?resol\w*"
-)
-MANUAL_EXCLUSION_METHODS = {
-    "exclude_incomplete_source",
-    "exclude_supplemental_statement_without_main_report",
-    "exclude_related_action_covered_by_companion",
-}
 
 SECTION_ORDER = [
     "background",
@@ -137,9 +107,6 @@ APPLICATION_REFERENCE = re.compile(
     r"(?<![A-Z0-9])(?:[CN][ \t]*)?\d{6}(?:[ \t]*\([A-Z]\)|[A-Z])?"
     r"[ \t]*[A-Z]{2,4}[A-Z](?![A-Z0-9])",
     re.IGNORECASE,
-)
-ANY_RESOLVED_HEADING = re.compile(
-    r"(?im)^[ \t\f]*RESOLVED(?:[ \t]*,|[ \t]+BY\b|[ \t]+THAT\b).*$"
 )
 
 REVIEW_ACTION = re.compile(
@@ -357,6 +324,20 @@ ISSUE_PATTERNS = {
     ),
 }
 
+# Add detail while retaining the broad categories already coded by the researchers.
+DETAILED_ISSUE_PATTERNS = {
+    "affordability": re.compile(r"\b(?:affordab\w*|housing access|rent burden)\b", re.IGNORECASE),
+    "displacement": re.compile(r"\b(?:displac\w*|gentrif\w*|tenant protection|harassment)\b", re.IGNORECASE),
+    "traffic": re.compile(r"\b(?:traffic|loading|trucks?|congestion|curb use|vehicular)\b", re.IGNORECASE),
+    "parking": re.compile(r"\bparking\b", re.IGNORECASE),
+    "neighborhood_character": re.compile(r"\b(?:neighbou?rhood character|out of character|contextual)\b", re.IGNORECASE),
+    "scale_density_design": re.compile(r"\b(?:scale|height|density|bulk|design|shadows?)\b", re.IGNORECASE),
+    "historic_preservation": re.compile(r"\b(?:landmarks?|preserv\w*|historic)\b", re.IGNORECASE),
+}
+ACTOR_SIGNAL_FIELDS = [f"{actor}_{stance}_detected"
+    for actor in ("councilmember", "civic_group")
+    for stance in ("support", "opposition", "request")]
+
 BINARY_SIGNAL_FIELDS = [
     "substantial_local_opposition",
     "local_request_condition",
@@ -405,46 +386,6 @@ def resolve_task_path(raw_path, manifest_real_path):
     return manifest_real_path.parent.parent / "code" / path
 
 
-def narrative_boundary(text):
-    anchor_matches = list(ANCHOR_HEADING.finditer(text))
-    anchor = (
-        anchor_matches[0].start()
-        if anchor_matches and anchor_matches[0].start() < 0.75 * len(text)
-        else min(500, len(text))
-    )
-    resolved_matches = [
-        match for match in ANY_RESOLVED_HEADING.finditer(text) if match.start() > anchor
-    ]
-    cpc_resolved_matches = [
-        match for match in CPC_RESOLVED_HEADING.finditer(text) if match.start() > anchor
-    ]
-    if resolved_matches and cpc_resolved_matches:
-        first_resolved = resolved_matches[0]
-        first_cpc_resolved = cpc_resolved_matches[0]
-        if first_resolved.start() == first_cpc_resolved.start():
-            return first_resolved.start(), "resolution_heading"
-        resolution_headings = [
-            match
-            for match in RESOLUTION_SECTION_HEADING.finditer(text)
-            if first_resolved.start() < match.start() < first_cpc_resolved.start()
-        ]
-        if resolution_headings:
-            return resolution_headings[-1].start(), "cpc_resolution_after_quoted_resolution"
-        return first_cpc_resolved.start(), "cpc_resolution_after_quoted_resolution"
-    if resolved_matches:
-        return resolved_matches[0].start(), "resolution_heading_fallback"
-
-    for pattern, method in (
-        (FILING_PARAGRAPH, "filing_paragraph"),
-        (ADOPTED_RESOLUTION, "adopted_resolution_paragraph"),
-        (COMMISSION_SIGNATURE, "commission_signature"),
-    ):
-        matches = [match for match in pattern.finditer(text) if match.start() > anchor]
-        if matches:
-            return matches[0].start(), method
-    return len(text), "full_text_no_boundary_found"
-
-
 def cpc_disposition(text, narrative_end):
     decision_text = normalize_whitespace(text[max(0, narrative_end - 20000) :])
     if not decision_text:
@@ -474,22 +415,6 @@ def cpc_disposition(text, narrative_end):
         return "approved"
     return "unknown"
 
-
-def normalize_narrative(text):
-    kept_lines = []
-    for line in text.replace("\f", "\n").splitlines():
-        stripped = line.strip()
-        if not stripped or re.fullmatch(r"[_\-]{10,}", stripped):
-            continue
-        if PAGE_HEADER.fullmatch(stripped):
-            continue
-        kept_lines.append(stripped)
-    return re.sub(r"\s+", " ", " ".join(kept_lines)).strip().lower()
-
-
-def normalized_project_name(value):
-    normalized = re.sub(r"[^a-z0-9]+", " ", clean_text(value).lower()).strip()
-    return re.sub(r"\bsize\s+\d+(?:\s+\d+)?\s+mb\b", "", normalized).strip()
 
 def as_int(value):
     if value in ("", None):
@@ -722,7 +647,7 @@ def actor_position(contexts, actor_pattern):
 
 def issue_is_positive(issue_name, events):
     for event in events:
-        if issue_name not in event["issues"]:
+        if issue_name not in event["issues"] and issue_name not in event.get("detailed_issues", set()):
             continue
         if event["section"] in {"community_board", "borough_president", "cpc_hearing"}:
             if event["review_action"] and (event["actors"] or event["linked"]):
@@ -765,6 +690,14 @@ with Path("../input/ulurp_cpc_report_manifest.csv").open(
         if start_year <= int(row["official_vote_year"]) <= end_year
     ]
 
+with open("../input/ulurp_cpc_companion_reports.csv", newline="") as stream:
+    verified_companion_links = list(csv.DictReader(stream))
+if len(verified_companion_links) != len({
+    (r["certified_application_number"], r["companion_application_number"])
+    for r in verified_companion_links
+}):
+    raise RuntimeError("Verified companion links are not unique by application pair.")
+
 with Path("../input/ulurp_cpc_narrative_boundary_exceptions.csv").open(
     newline="", encoding="utf-8"
 ) as input_file:
@@ -777,9 +710,20 @@ if len(boundary_exceptions) != len(boundary_exception_rows):
 if len(source_rows) != len({row["document_id"] for row in source_rows}):
     raise RuntimeError("Official corpus manifest is not unique by document_id.")
 
+with open("../input/ulurp_cpc_community_district_corrections.csv", newline="") as stream:
+    district_correction_rows = list(csv.DictReader(stream))
+district_corrections = {row["application_number"]: row for row in district_correction_rows}
+if len(district_corrections) != len(district_correction_rows):
+    raise RuntimeError("District corrections must be unique by application.")
+if set(district_corrections) - {row["application_number"] for row in source_rows}:
+    raise RuntimeError("A district correction has no corpus application.")
+
 candidate_rows = []
 applied_boundary_exceptions = set()
 for source_row in source_rows:
+    district_correction = district_corrections.get(source_row["application_number"], {})
+    if district_correction and district_correction["reported_community_district"] != source_row["official_community_district"]:
+        raise RuntimeError("Stale district correction for " + source_row["application_number"])
     text_path = resolve_task_path(
         source_row["local_text_path"], corpus_manifest_real_path
     )
@@ -846,10 +790,10 @@ for source_row in source_rows:
         text_path = None
         cb_attachment_flag = False
 
-    project_name_key = normalized_project_name(source_row["official_project_name"])
     lead_group_key = (
-        f"{source_row['official_vote_date']}|{project_name_key}"
-        if source_usable and project_name_key
+        project_review_key(source_row['official_vote_date'], source_row['zap_project_ids'], source_row['official_project_name'])
+        if source_usable
+        and source_row["corpus_role"] != "related_project_narrative_companion"
         else ""
     )
     candidate_rows.append(
@@ -860,6 +804,7 @@ for source_row in source_rows:
             "corpus_role": source_row["corpus_role"],
             "project_name": source_row["official_project_name"],
             "community_district": source_row["official_community_district"],
+            "analysis_community_district": district_correction.get("corrected_community_district", source_row["official_community_district"]),
             "year": int(source_row["official_vote_year"]),
             "zap_project_ids": source_row["zap_project_ids"],
             "official_vote_date": source_row["official_vote_date"],
@@ -890,12 +835,15 @@ if unapplied_boundary_exceptions:
         + "; ".join(sorted(unapplied_boundary_exceptions))
     )
 
+base_candidate_rows = [row for row in candidate_rows
+                       if row["corpus_role"] != "related_project_narrative_companion"]
 lead_groups = defaultdict(list)
-for row in candidate_rows:
+for row in base_candidate_rows:
     if row["lead_group_key"]:
         lead_groups[row["lead_group_key"]].append(row)
 
 related_to_lead = set()
+representation_parents = defaultdict(set)
 for group_rows in lead_groups.values():
     lead_rows = [row for row in group_rows if row["official_lead_report_flag"] == "TRUE"]
     if len(group_rows) > 1 and lead_rows:
@@ -912,8 +860,9 @@ for group_rows in lead_groups.values():
             row["analysis_zm_zr_zs_flag"] = str(group_zm_zr_zs_flag).upper()
             if row["official_lead_report_flag"] != "TRUE":
                 related_to_lead.add(row["document_id"])
+                representation_parents[row["document_id"]].update(r["document_id"] for r in lead_rows)
 
-for row in candidate_rows:
+for row in base_candidate_rows:
     if row["manual_companion_application"]:
         related_to_lead.add(row["document_id"])
 
@@ -923,54 +872,66 @@ rows_by_application = {
 if len(rows_by_application) != len(candidate_rows):
     raise RuntimeError("Analysis source rows are not unique by application number.")
 
+verified_companions = defaultdict(set)
+for link in verified_companion_links:
+    certified = rows_by_application[application_key(link["certified_application_number"])]
+    companion = rows_by_application[application_key(link["companion_application_number"])]
+    if certified["corpus_role"] != "certified_ulurp_report":
+        raise RuntimeError("A verified N companion must be attached to a certified report.")
+    if certified["source_text_sha256"] != link["certified_source_text_sha256"]:
+        raise RuntimeError("Stale source evidence for " + link["certified_application_number"])
+    verified_companions[certified["document_id"]].add(companion["document_id"])
+
 companion_neighbors = defaultdict(set)
-for row in candidate_rows:
+relationship_reasons = defaultdict(set)
+
+
+def connect_sources(left, right, reason):
+    companion_neighbors[left].add(right)
+    companion_neighbors[right].add(left)
+    relationship_reasons[tuple(sorted((left, right)))].add(reason)
+
+
+for row in base_candidate_rows:
     for match in APPLICATION_REFERENCE.finditer(row["text"]):
         companion = rows_by_application.get(application_key(match.group(0)))
         if (
             companion is None
+            or companion["corpus_role"] == "related_project_narrative_companion"
             or companion["document_id"] == row["document_id"]
             or companion["official_vote_date"] != row["official_vote_date"]
         ):
             continue
-        companion_neighbors[row["document_id"]].add(companion["document_id"])
-        companion_neighbors[companion["document_id"]].add(row["document_id"])
+        connect_sources(row['document_id'], companion['document_id'], 'application_reference_same_vote')
 
 rows_by_zap_project = defaultdict(list)
-for row in candidate_rows:
+for row in base_candidate_rows:
     for project_id in row["zap_project_ids"].split("; "):
         if project_id:
             rows_by_zap_project[(row["official_vote_date"], project_id)].append(row)
 for group_rows in rows_by_zap_project.values():
     for row in group_rows[1:]:
-        companion_neighbors[group_rows[0]["document_id"]].add(row["document_id"])
-        companion_neighbors[row["document_id"]].add(group_rows[0]["document_id"])
-
-for group_rows in lead_groups.values():
-    for row in group_rows[1:]:
-        companion_neighbors[group_rows[0]["document_id"]].add(row["document_id"])
-        companion_neighbors[row["document_id"]].add(group_rows[0]["document_id"])
+        connect_sources(group_rows[0]['document_id'], row['document_id'], 'shared_zap_project_same_vote')
 
 rows_by_narrative = defaultdict(list)
-for row in candidate_rows:
+for row in base_candidate_rows:
     if row["narrative_sha256"]:
         rows_by_narrative[row["narrative_sha256"]].append(row)
 for group_rows in rows_by_narrative.values():
     for row in group_rows[1:]:
-        companion_neighbors[group_rows[0]["document_id"]].add(row["document_id"])
-        companion_neighbors[row["document_id"]].add(group_rows[0]["document_id"])
+        connect_sources(group_rows[0]['document_id'], row['document_id'], 'identical_normalized_narrative')
 
-for row in candidate_rows:
+for row in base_candidate_rows:
     companion = rows_by_application.get(
         application_key(row["manual_companion_application"])
     )
     if companion is not None:
-        companion_neighbors[row["document_id"]].add(companion["document_id"])
-        companion_neighbors[companion["document_id"]].add(row["document_id"])
+        representation_parents[row["document_id"]].add(companion["document_id"])
+        connect_sources(row['document_id'], companion['document_id'], 'recorded_narrative_companion')
 
 rows_by_document_id = {row["document_id"]: row for row in candidate_rows}
 companion_components = {}
-unassigned_document_ids = set(rows_by_document_id)
+unassigned_document_ids = {row["document_id"] for row in base_candidate_rows}
 while unassigned_document_ids:
     first_document_id = min(unassigned_document_ids)
     component = {first_document_id}
@@ -986,7 +947,7 @@ while unassigned_document_ids:
 
 eligible_rows = [
     row
-    for row in candidate_rows
+    for row in base_candidate_rows
     if row["document_id"] not in related_to_lead
     and row["narrative_boundary_method"] != "full_text_no_boundary_found"
     and row["narrative_boundary_method"] not in MANUAL_EXCLUSION_METHODS
@@ -997,6 +958,7 @@ for row in eligible_rows:
     exact_groups[row["narrative_sha256"]].append(row)
 
 documents = []
+narrative_sources = []
 for group_rows in exact_groups.values():
     group_rows.sort(
         key=lambda row: (
@@ -1004,14 +966,53 @@ for group_rows in exact_groups.values():
             row["application_number"],
         )
     )
-    document = group_rows[0]
-    component_rows = [
-        rows_by_document_id[document_id]
-        for document_id in companion_components[document["document_id"]]
-    ]
+    document = dict(group_rows[0])
+    represented_ids = {row["document_id"] for row in group_rows}
+    while True:
+        expanded_ids = represented_ids | {
+            source_id for source_id, parents in representation_parents.items()
+            if parents & represented_ids
+        }
+        if expanded_ids == represented_ids:
+            break
+        represented_ids = expanded_ids
+    base_component_ids = companion_components[document["document_id"]]
+    # Save an explicit shortest relationship path for every context source.
+    source_paths = {document['document_id']: [document['document_id']]}
+    pending = [document['document_id']]
+    for parent in pending:
+        for neighbor in sorted(companion_neighbors[parent]):
+            if neighbor not in source_paths:
+                source_paths[neighbor] = source_paths[parent] + [neighbor]
+                pending.append(neighbor)
+    if not represented_ids <= base_component_ids:
+        raise RuntimeError("Represented applications must belong to their narrative's source group.")
+    represented_rows = [rows_by_document_id[source_id] for source_id in sorted(represented_ids)]
+    document["represented_application_numbers"] = "; ".join(sorted(
+        row["application_number"] for row in represented_rows
+    ))
+    document["represented_community_districts"] = "; ".join(sorted({
+        row["analysis_community_district"] for row in represented_rows if row["analysis_community_district"]
+    }))
+    document["represented_action_codes"] = "; ".join(sorted({row["action_code"] for row in represented_rows}))
+    document["zap_project_ids"] = "; ".join(sorted({
+        project_id.strip() for row in represented_rows
+        for project_id in row["zap_project_ids"].split(";") if project_id.strip()
+    }))
+    for field in ("analysis_non_pp_flag", "analysis_zm_zr_zs_flag"):
+        document[field] = str(any(row[field] == "TRUE" for row in represented_rows)).upper()
+
+    # Verified N sources add context without connecting otherwise separate cases.
+    verified_ids = set().union(*(verified_companions[source_id] for source_id in base_component_ids))
+    for source_id in sorted(verified_ids):
+        parent = next(p for p in sorted(base_component_ids) if source_id in verified_companions[p])
+        source_paths[source_id] = source_paths[parent] + [source_id]
+        relationship_reasons[tuple(sorted((parent, source_id)))].add('recorded_n_companion')
+    component_rows = [rows_by_document_id[source_id] for source_id in base_component_ids | verified_ids]
     component_rows.sort(
         key=lambda row: (
             row["document_id"] != document["document_id"],
+            row["corpus_role"] == "related_project_narrative_companion",
             row["official_lead_report_flag"] != "TRUE",
             row["application_number"],
         )
@@ -1029,6 +1030,7 @@ for group_rows in exact_groups.values():
         analysis_rows.append(row)
         included_narratives.add(row["narrative_sha256"])
     document["analysis_text"] = "\n\n".join(row["text"] for row in analysis_rows)
+    document["analysis_source_ids"] = [row["document_id"] for row in analysis_rows]
     document["analysis_text_sha256"] = hashlib.sha256(
         normalize_narrative(document["analysis_text"]).encode("utf-8")
     ).hexdigest()
@@ -1038,6 +1040,42 @@ for group_rows in exact_groups.values():
         for row in analysis_rows
         if row["document_id"] != document["document_id"]
     )
+    included_source_ids = {row["document_id"] for row in analysis_rows}
+    analysis_text_order = {row["document_id"]: index for index, row in enumerate(analysis_rows, 1)}
+    repeated_ids = {row["document_id"] for row in group_rows}
+    for row in component_rows:
+        source_id = row["document_id"]
+        link_role = (
+            "focal_report" if source_id == document["document_id"] else
+            "repeated_narrative" if source_id in repeated_ids else
+            "represented_related_action" if source_id in represented_ids else
+            "verified_n_companion" if source_id in verified_ids else "context_companion"
+        )
+        narrative_sources.append({
+            "document_id": document["document_id"],
+            "narrative_application_number": document["application_number"],
+            "source_document_id": source_id,
+            "source_application_number": row["application_number"],
+            "link_role": link_role,
+            "relationship_path": '; '.join(source_paths[source_id]),
+            "relationship_basis": '; '.join(
+                '+'.join(sorted(relationship_reasons[tuple(sorted((left, right)))]))
+                for left, right in zip(source_paths[source_id], source_paths[source_id][1:])
+            ) or 'focal_report',
+            "represented_application_flag": str(source_id in represented_ids).upper(),
+            "text_included_flag": str(source_id in included_source_ids).upper(),
+            "analysis_text_order": analysis_text_order.get(source_id, ""),
+            "source_corpus_role": row["corpus_role"],
+            "source_action_code": row["action_code"],
+            "source_project_name": row["project_name"],
+            "source_community_district": row["community_district"],
+            "source_analysis_community_district": row["analysis_community_district"],
+            "source_zap_project_ids": row["zap_project_ids"],
+            "source_vote_date": row["official_vote_date"],
+            "source_text_sha256": row["source_text_sha256"],
+            "source_narrative_sha256": row["narrative_sha256"],
+            "source_narrative_boundary_method": row["narrative_boundary_method"],
+        })
     document["decade"] = f"{document['year'] // 10 * 10}s"
     documents.append(document)
 
@@ -1087,6 +1125,10 @@ boilerplate_sentences = {
 }
 
 document_measurements = {}
+evidence_records = []
+# Match excerpts to the same dehyphenated, whitespace-collapsed source used by sections.
+source_search_text = {row["document_id"]: normalize_whitespace(
+    re.sub(r"-\s*\n\s*", "", row["text"])) for row in candidate_rows}
 for document in documents:
     document_id = document["document_id"]
     context_rows = []
@@ -1116,7 +1158,8 @@ for document in documents:
             section_contexts[section].append(context)
 
     event_units = [
-        {"section": row["section"], "text": row["sentence"], "linked": False}
+        {"section": row["section"], "text": row["sentence"], "linked": False,
+         "sentence_start": row["sentence_position"], "sentence_end": row["sentence_position"]}
         for row in context_rows
     ]
     for section in SECTION_ORDER:
@@ -1133,6 +1176,8 @@ for document in documents:
                         "section": section,
                         "text": first_row["sentence"] + " " + second_row["sentence"],
                         "linked": True,
+                        "sentence_start": first_row["sentence_position"],
+                        "sentence_end": second_row["sentence_position"],
                     }
                 )
 
@@ -1211,9 +1256,56 @@ for document in documents:
                     "explicit_response": explicit_response,
                     "unresolved": unresolved,
                     "issues": issues,
+                    "detailed_issues": {name for name, pattern in DETAILED_ISSUE_PATTERNS.items()
+                                        if pattern.search(sentence)},
                     "linked": unit["linked"],
+                    "sentence_start": unit["sentence_start"],
+                    "sentence_end": unit["sentence_end"],
                 }
             )
+
+    # Evidence rows are candidates, not additional projects or adjudicated actor statements.
+    for event in events:
+        issue_families = {name for name in ISSUE_PATTERNS if issue_is_positive(name, [event])}
+        issue_details = {name for name in DETAILED_ISSUE_PATTERNS if issue_is_positive(name, [event])}
+        actor_statement = event["actors"] and any(event[k] for k in ("support", "opposition", "request"))
+        if not (issue_families or actor_statement or event["revision"] or
+                event["explicit_response"] or event["unresolved"]):
+            continue
+        locations = []
+        for source_id in document["analysis_source_ids"]:
+            search_text = source_search_text[source_id]
+            start = search_text.find(event["text"])
+            if start >= 0:
+                locations.append((source_id, start, search_text.count(event["text"])))
+        match_status = ("unlocated_excerpt" if not locations else "multiple_sources" if len(locations) > 1
+                        else "repeated_in_source" if locations[0][2] > 1 else "unique_source_excerpt")
+        source_id = locations[0][0] if len(locations) == 1 else ""
+        actor_status = ("multiple_actor_candidates" if len(event["actors"]) > 1 else
+                        "single_actor_candidate" if event["actors"] else "no_actor_detected")
+        event_key = f"{document_id}|{event['section']}|{event['sentence_start']}|{event['sentence_end']}"
+        evidence_records.append({
+            "event_id": hashlib.sha256(event_key.encode()).hexdigest()[:24],
+            "document_id": document_id, "application_number": document["application_number"],
+            "section": event["section"], "sentence_start": event["sentence_start"],
+            "sentence_end": event["sentence_end"], "linked_sentences": event["linked"],
+            "evidence_text": event["text"], "actors": "; ".join(sorted(event["actors"])),
+            "actor_assignment_status": actor_status,
+            "issue_families": "; ".join(sorted(issue_families)),
+            "issue_details": "; ".join(sorted(issue_details)),
+            "support_detected": int(event["support"]), "opposition_detected": int(event["opposition"]),
+            "request_detected": int(event["request"]), "revision_detected": int(event["revision"]),
+            "explicit_response_detected": int(event["explicit_response"]),
+            "unresolved_detected": int(event["unresolved"]),
+            "source_document_ids": "; ".join(item[0] for item in locations),
+            "source_application_numbers": "; ".join(rows_by_document_id[item[0]]["application_number"] for item in locations),
+            "source_match_status": match_status,
+            "normalized_source_start": locations[0][1] if match_status == "unique_source_excerpt" else "",
+            "normalized_source_end": locations[0][1] + len(event["text"]) if match_status == "unique_source_excerpt" else "",
+            "source_text_sha256": rows_by_document_id[source_id]["source_text_sha256"] if source_id else "",
+            "analysis_text_sha256": document["analysis_text_sha256"],
+            "extraction_method": "regex_candidate",
+        })
 
     # Prefer the focal report. Use a companion only for absent evidence, and
     # only when all resolved companion results agree on the complete record.
@@ -1390,6 +1482,12 @@ for document in documents:
     }
     for field in ISSUE_PATTERNS:
         measurements[field] = int(issue_is_positive(field, events))
+    for field in DETAILED_ISSUE_PATTERNS:
+        measurements[field + "_detected"] = int(issue_is_positive(field, events))
+    for actor in ("councilmember", "civic_group"):
+        actor_events = [event for event in single_events if event["actors"] == {actor}]
+        for stance in ("support", "opposition", "request"):
+            measurements[f"{actor}_{stance}_detected"] = int(any(event[stance] for event in actor_events))
 
     document_measurements[document_id] = measurements
 
@@ -1407,6 +1505,9 @@ fieldnames = [
     "analysis_text_sha256",
     "analysis_word_count",
     "companion_application_numbers",
+    "represented_application_numbers",
+    "represented_action_codes",
+    "represented_community_districts",
     "narrative_boundary_method",
     "zap_project_ids",
     "analysis_non_pp_flag",
@@ -1415,6 +1516,8 @@ fieldnames = [
     *BINARY_SIGNAL_FIELDS,
     *POSITION_FIELDS,
     *COUNT_FIELDS,
+    *[field + "_detected" for field in DETAILED_ISSUE_PATTERNS],
+    *ACTOR_SIGNAL_FIELDS,
     *[f"cb_{key}" for key in (
         "position", "position_rule", "reported_for", "reported_against", "abstentions",
         "abstention_rule", "effective_against", "status", "vote_rule", "evidence",
@@ -1431,3 +1534,9 @@ for document in sorted(documents, key=lambda row: (row["year"], row["document_id
     row.update(document_measurements[document["document_id"]])
     output_rows.append(row)
 save_csv(output_rows, fieldnames, "../output/ulurp_cpc_text_labels.csv", ["document_id"])
+
+narrative_sources.sort(key=lambda row: (row["document_id"], row["source_document_id"]))
+save_csv(narrative_sources, list(narrative_sources[0]), "../output/ulurp_cpc_narrative_sources.csv",
+         ["document_id", "source_document_id"])
+evidence_records.sort(key=lambda row: (row["document_id"], row["section"], row["sentence_start"], row["sentence_end"]))
+save_csv(evidence_records, list(evidence_records[0]), "../output/ulurp_cpc_evidence.csv", ["event_id"])

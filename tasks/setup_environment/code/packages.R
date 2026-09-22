@@ -13,7 +13,7 @@ system_dependency_help <- paste(
 
 cran_pkgs <- c(
   "arrow", "dplyr", "fixest", "foreign",
-  "ggplot2", "ipumsr", "jsonlite", "lubridate", "readr", "sf", "stringr",
+  "ggplot2", "ipumsr", "jsonlite", "lubridate", "readr", "readxl", "sf", "stringr",
   "tibble", "tidyr"
 )
 

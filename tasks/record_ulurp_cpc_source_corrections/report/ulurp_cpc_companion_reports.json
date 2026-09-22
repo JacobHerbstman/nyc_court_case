@@ -1,0 +1,174 @@
+{
+  "dataset": "ulurp_cpc_companion_reports.csv",
+  "rows": 20,
+  "key": [
+    "certified_application_number"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "f1a062fc4000fe20d9dceaf90e6f05b1b7b3582f36d7b9c078affe51c6b003f2",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "certified_application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 20,
+      "most_common": [
+        [
+          "C 010652 ZMM",
+          1
+        ],
+        [
+          "C 060061 ZMR",
+          1
+        ],
+        [
+          "C 130190 ZMM",
+          1
+        ],
+        [
+          "C 150203 MMM",
+          1
+        ],
+        [
+          "C 780265 MMM",
+          1
+        ]
+      ]
+    },
+    "companion_application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 20,
+      "most_common": [
+        [
+          "N 010653 ZRM",
+          1
+        ],
+        [
+          "N 060066 ZRR",
+          1
+        ],
+        [
+          "N 130189A ZRM",
+          1
+        ],
+        [
+          "N 150267 ZRM",
+          1
+        ],
+        [
+          "N 780405 ZRM",
+          1
+        ]
+      ]
+    },
+    "resolved_pdf_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 20,
+      "most_common": [
+        [
+          "https://www.nyc.gov/assets/planning/download/pdf/about/cpc/010653.pdf",
+          1
+        ],
+        [
+          "https://www.nyc.gov/assets/planning/download/pdf/about/cpc/060066.pdf",
+          1
+        ],
+        [
+          "https://www.nyc.gov/assets/planning/download/pdf/about/cpc/130189a.pdf",
+          1
+        ],
+        [
+          "https://www.nyc.gov/assets/planning/download/pdf/about/cpc/150267.pdf",
+          1
+        ],
+        [
+          "https://www.nyc.gov/assets/planning/download/pdf/about/cpc/780405.pdf",
+          1
+        ]
+      ]
+    },
+    "certified_source_text_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 20,
+      "most_common": [
+        [
+          "039e1653da6b2644ec91597b1bcb71dbc33a3cb6fb0d37b0368450d352936d30",
+          1
+        ],
+        [
+          "07786f3e6cd887a248769e678c100b12d7b4feea20930bc66ca1e91b68ac3e69",
+          1
+        ],
+        [
+          "167c2d9ae2c533f686b9b76af3f01aa700e2296502de82d267ea0d9169e91b0f",
+          1
+        ],
+        [
+          "23469a48058da1669f2659fd89e5303118e2398059aa128becb65fdf4030f425",
+          1
+        ],
+        [
+          "287e4473e4b13d09da2f1d999ec2d6a17ae753ef525f80c590a1faaf741723cc",
+          1
+        ]
+      ]
+    },
+    "relationship_reason": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 20,
+      "most_common": [
+        [
+          "explicit_project_narrative_referral: 0316 HUM The eighth amendment to the Brooklyn Bridge Southeast Urban Renewal Plan. BACKGROUND A full background discussion and description of this project appears in the report on the related application for an amendment of the Zoning Resolution (N 980314 ZRM). SPECIAL DISTRICTS The area proposed for the new Special Lower Manhattan District (LMD), which would be mapped as part of this action, contains within it the Special Manhattan Landing Development District (MLD), the Special Greenwich Street Development District (G) and the Special South Street Seaport District. The MLD and the G districts, as",
+          1
+        ],
+        [
+          "explicit_project_narrative_referral: ACTIONS In addition to the zoning map amendment (C 130190 ZMM), which is the subject of this report, implementation of the proposal also requires action by the City Planning Commission on the following application, which is being considered concurrently with this application: N 130189(A) ZRM Amendment to the Zoning Resolution creating the Special Governors Island District, and amending related sections of the Zoning Resolution BACKGROUND A full background discussion and description of this application appears in the related report for a zoning text amendment application (N 130189(A) ZRM). ENVIRONMENTA",
+          1
+        ],
+        [
+          "explicit_project_narrative_referral: City Planning seeking amendments to the Zoning Resolution relating to various sections of the Special Midtown District. Application N880331(A) ZRM was preceded by application N880331 ZRM. BACKGROUND A complete discussion of the zoning map amendment is set forth in the report on the related action (N 880331(A) ZRM). 3",
+          1
+        ],
+        [
+          "explicit_project_narrative_referral: On May 11, 1983 (Calendar No. 30), the Commission scheduled a PbBlIC HEARING on the proposed amendment. The hearing was duly held on June 1, 198:3 (Calendar No. 48), in conjunction with the related hearing on the zoning text change (N 830530 ZRM). There were no appearances, and the hearing was closed. An analysis of theissues and consideration, and the reasons for approvino the proposal as finally adopted are all set forth in the related report on the zoning text change (N 830530 ZRM). This zoning map change from a",
+          1
+        ],
+        [
+          "explicit_project_narrative_referral: The hearing was duly held on June 3, 1981 (Cal. #47). There were 4 appearances in favor and the hearing was closed. Implementation of this amendment of the zoning map requires favorable action by the City Planning Commission and the Board of Estimate on N801024ZRM, an amendment of the Zoning Resolution establishing the Special Manhattan Bridge District which is the subject of a separate report. A complete discussion of the Commission's action is set forth in the related reports N801024ZRM and C810060ZSM. The City Planning Commission therefore considers t",
+          1
+        ]
+      ]
+    },
+    "review_date": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "2026-09-14",
+          17
+        ],
+        [
+          "2026-09-22",
+          3
+        ]
+      ]
+    }
+  }
+}

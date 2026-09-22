@@ -1,0 +1,477 @@
+{
+  "dataset": "cpc_sol_actor_statements_v2.csv",
+  "rows": 99,
+  "key": [
+    "document_id",
+    "actor_number",
+    "statement_number"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "4eb0e9d952ed3584b4012d02ab06eaeb8ce33910519998904479ed60b358d0d4",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "a7b89b5b22c825f035e7",
+          25
+        ],
+        [
+          "18260b21162594a64c6a",
+          20
+        ],
+        [
+          "fa6e3fcdf734265379a8",
+          19
+        ],
+        [
+          "5d3d79916b32a13cf192",
+          18
+        ],
+        [
+          "1e85e142e879ca35bd4b",
+          11
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "C 180346 PSX",
+          25
+        ],
+        [
+          "C 960307 ZSQ",
+          20
+        ],
+        [
+          "C 080178 ZSM",
+          19
+        ],
+        [
+          "C 090310 ZMK",
+          18
+        ],
+        [
+          "C 200088 ZMX",
+          11
+        ]
+      ]
+    },
+    "actor_number": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 15,
+      "most_common": [
+        [
+          "5",
+          15
+        ],
+        [
+          "2",
+          11
+        ],
+        [
+          "3",
+          11
+        ],
+        [
+          "1",
+          9
+        ],
+        [
+          "6",
+          9
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 15
+    },
+    "actor": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 55,
+      "most_common": [
+        [
+          "City Planning Commission",
+          6
+        ],
+        [
+          "Brooklyn Borough President",
+          5
+        ],
+        [
+          "Manhattan Borough President",
+          5
+        ],
+        [
+          "Bronx Borough President",
+          4
+        ],
+        [
+          "Bronx Community Board 10",
+          4
+        ]
+      ]
+    },
+    "role": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 8,
+      "most_common": [
+        [
+          "government",
+          32
+        ],
+        [
+          "independent_civic",
+          13
+        ],
+        [
+          "unclear",
+          13
+        ],
+        [
+          "applicant",
+          12
+        ],
+        [
+          "community_board",
+          12
+        ]
+      ]
+    },
+    "statement_number": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "1",
+          63
+        ],
+        [
+          "2",
+          22
+        ],
+        [
+          "3",
+          8
+        ],
+        [
+          "4",
+          4
+        ],
+        [
+          "5",
+          2
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 5
+    },
+    "kind": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "support",
+          34
+        ],
+        [
+          "concern",
+          25
+        ],
+        [
+          "request",
+          24
+        ],
+        [
+          "opposition",
+          16
+        ]
+      ]
+    },
+    "summary": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 91,
+      "most_common": [
+        [
+          "Its representative supported the rezoning application.",
+          3
+        ],
+        [
+          "Testified in favor of the application.",
+          3
+        ],
+        [
+          "Expressed concern about safety near the school.",
+          2
+        ],
+        [
+          "Recommended approval of the rezoning application.",
+          2
+        ],
+        [
+          "Recommended disapproval of the application.",
+          2
+        ]
+      ]
+    },
+    "segment_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 16,
+      "most_common": [
+        [
+          "s0004",
+          23
+        ],
+        [
+          "s0001",
+          12
+        ],
+        [
+          "s0005",
+          12
+        ],
+        [
+          "s0017",
+          7
+        ],
+        [
+          "s0006",
+          6
+        ]
+      ]
+    },
+    "quote": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 90,
+      "most_common": [
+        [
+          "The speakers in support of the proposal included representatives of the Brooklyn Chamber of Commerce, the DUMBO Improvement District, the Downtown Brooklyn Partnership, property owners and retailers.",
+          5
+        ],
+        [
+          "DOHMH and DCAS are seeking approval of an application for the site selection",
+          2
+        ],
+        [
+          "This application for a special permit was filed by Park Avenue Hotel Acquisition, LLC and 375 Park Avenue, L.P., on November 17, 2007, to facilitate the construction of a 63 story, approximately 712-foot tall, mixed-use building",
+          2
+        ],
+        [
+          "Those in opposition included a representative from the Manhattan Borough President’s office and from the office of the Councilmember from the 4th District, and residents in Community District 5.",
+          2
+        ],
+        [
+          "adopted a resolution recommending approval of the application with the condition that a full- service animal shelter be located at a different site in the Bronx.",
+          2
+        ]
+      ]
+    },
+    "quote_found": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "1",
+          99
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 1
+    },
+    "source_document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "a7b89b5b22c825f035e7",
+          25
+        ],
+        [
+          "18260b21162594a64c6a",
+          20
+        ],
+        [
+          "fa6e3fcdf734265379a8",
+          19
+        ],
+        [
+          "5d3d79916b32a13cf192",
+          18
+        ],
+        [
+          "1e85e142e879ca35bd4b",
+          11
+        ]
+      ]
+    },
+    "source_application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "C 180346 PSX",
+          25
+        ],
+        [
+          "C 960307 ZSQ",
+          20
+        ],
+        [
+          "C 080178 ZSM",
+          19
+        ],
+        [
+          "C 090310 ZMK",
+          18
+        ],
+        [
+          "C 200088 ZMX",
+          11
+        ]
+      ]
+    },
+    "source_role": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "focal_report",
+          99
+        ]
+      ]
+    },
+    "pdf_page": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 16,
+      "most_common": [
+        [
+          "4",
+          23
+        ],
+        [
+          "1",
+          12
+        ],
+        [
+          "5",
+          12
+        ],
+        [
+          "17",
+          7
+        ],
+        [
+          "16",
+          6
+        ]
+      ]
+    },
+    "source_text_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "4cea2546cd22728fc24f62452e856d7ddab40cc752b7b7fa0d2505fa905d12a9",
+          25
+        ],
+        [
+          "6784272c67663d395f37e9649d95a0821001d366f828986905fb9069291343fe",
+          20
+        ],
+        [
+          "e2903a9f30272dc05e3e8790e183d0a95c402f548eb0223e6958279b040f070b",
+          19
+        ],
+        [
+          "b0cf2d1e4d8a50e727ee3666453290197c4852572043d804ec31d523166a61e5",
+          18
+        ],
+        [
+          "9e3d3e9f557190fa0b9c89255dbfd9823a6f382238d206e4480e5fac4c2bc3c0",
+          11
+        ]
+      ]
+    },
+    "public_pdf_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/180346.pdf",
+          25
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/960307.pdf",
+          20
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/080178.pdf",
+          19
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/090310.pdf",
+          18
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/200088.pdf",
+          11
+        ]
+      ]
+    }
+  }
+}

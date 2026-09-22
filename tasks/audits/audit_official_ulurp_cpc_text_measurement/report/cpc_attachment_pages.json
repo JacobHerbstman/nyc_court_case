@@ -1,0 +1,405 @@
+{
+  "dataset": "cpc_attachment_pages.csv",
+  "rows": 129271,
+  "key": [
+    "document_id",
+    "pdf_page"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "58be0bdaabf46a6a7fa64076ca89c5cc67bfd75704d0b77201af3f38a3d67f1c",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 11208,
+      "most_common": [
+        [
+          "f50d1c130991350112af",
+          418
+        ],
+        [
+          "f2e99a296a4948e1d194",
+          371
+        ],
+        [
+          "a8de3f7af1ca32dee41f",
+          341
+        ],
+        [
+          "43038a2d2c3699ec65ea",
+          329
+        ],
+        [
+          "51d404cdade16988575a",
+          297
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 11208,
+      "most_common": [
+        [
+          "C 120124 ZSM",
+          418
+        ],
+        [
+          "N 130247A ZRM",
+          371
+        ],
+        [
+          "C 140404 ZSM",
+          341
+        ],
+        [
+          "C 100296A ZSM",
+          329
+        ],
+        [
+          "C 090433 ZMM",
+          297
+        ]
+      ]
+    },
+    "pdf_page": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 418,
+      "most_common": [
+        [
+          "1",
+          11208
+        ],
+        [
+          "2",
+          10870
+        ],
+        [
+          "3",
+          9193
+        ],
+        [
+          "4",
+          7981
+        ],
+        [
+          "5",
+          7200
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 418
+    },
+    "after_prior_resolution": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          69742
+        ],
+        [
+          "1",
+          59529
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "words_before": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 980,
+      "most_common": [
+        [
+          "0",
+          7622
+        ],
+        [
+          "260",
+          483
+        ],
+        [
+          "241",
+          463
+        ],
+        [
+          "246",
+          451
+        ],
+        [
+          "262",
+          449
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 5127
+    },
+    "words_after": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1035,
+      "most_common": [
+        [
+          "260",
+          491
+        ],
+        [
+          "241",
+          471
+        ],
+        [
+          "246",
+          464
+        ],
+        [
+          "262",
+          463
+        ],
+        [
+          "248",
+          455
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 5127
+    },
+    "blank_before": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          121658
+        ],
+        [
+          "1",
+          7613
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "blank_after": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          129258
+        ],
+        [
+          "1",
+          13
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "candidate": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          117630
+        ],
+        [
+          "1",
+          11641
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "changed": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          119222
+        ],
+        [
+          "1",
+          10049
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "ocr_applied": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          117379
+        ],
+        [
+          "1",
+          11892
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "words_added": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 856,
+      "most_common": [
+        [
+          "0",
+          119222
+        ],
+        [
+          "4",
+          182
+        ],
+        [
+          "5",
+          90
+        ],
+        [
+          "86",
+          81
+        ],
+        [
+          "6",
+          71
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1837
+    },
+    "recovered_50_words": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          119968
+        ],
+        [
+          "1",
+          9303
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "recommendation_marker": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          125492
+        ],
+        [
+          "1",
+          3779
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "before_page_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 99425,
+      "most_common": [
+        [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          7613
+        ],
+        [
+          "01e7a506fc808866e3446764dcf93a37c3c618686f7b2a9c6b8fde727760e090",
+          18
+        ],
+        [
+          "03f257559ea8e3e3a6231e195097d70a1d0ce679eb37cbcdf03314dc37197dc1",
+          18
+        ],
+        [
+          "050ae97ee9e11d6cd4f7c4d938da3b0e3475dead2076a943a394fd88515a1708",
+          18
+        ],
+        [
+          "08f0a093066f80036145a0d7697372b44878fc85c4e5bc8a9225cb7609de3fd5",
+          18
+        ]
+      ]
+    },
+    "after_page_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 106849,
+      "most_common": [
+        [
+          "01e7a506fc808866e3446764dcf93a37c3c618686f7b2a9c6b8fde727760e090",
+          18
+        ],
+        [
+          "03f257559ea8e3e3a6231e195097d70a1d0ce679eb37cbcdf03314dc37197dc1",
+          18
+        ],
+        [
+          "050ae97ee9e11d6cd4f7c4d938da3b0e3475dead2076a943a394fd88515a1708",
+          18
+        ],
+        [
+          "08f0a093066f80036145a0d7697372b44878fc85c4e5bc8a9225cb7609de3fd5",
+          18
+        ],
+        [
+          "09a1d6fa76b42db2106a1b70bcdfe1b67a505a2d9fd53a5594f04186870e85c6",
+          18
+        ]
+      ]
+    }
+  }
+}

@@ -1,0 +1,359 @@
+{
+  "dataset": "ulurp_cpc_coding_adjudications.csv",
+  "rows": 204,
+  "key": [
+    "document_id",
+    "field"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "d86c4dd37f67d623d328606fb2d7a6285bbf86503715cda94bc4cb9182157834",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 51,
+      "most_common": [
+        [
+          "2bf00e9741a60b35e29b",
+          15
+        ],
+        [
+          "0385e4de7488ec4762c5",
+          8
+        ],
+        [
+          "f3b36ee2799e8f224a5b",
+          8
+        ],
+        [
+          "1ed8ae661487257b6804",
+          7
+        ],
+        [
+          "44f8891d9333548f1907",
+          7
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 51,
+      "most_common": [
+        [
+          "C 970372 HDK",
+          15
+        ],
+        [
+          "C 030300 ZMK",
+          8
+        ],
+        [
+          "C 150110 ZSM",
+          8
+        ],
+        [
+          "C 230064 ZMK",
+          7
+        ],
+        [
+          "C 770196 TCM",
+          7
+        ]
+      ]
+    },
+    "field": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 17,
+      "most_common": [
+        [
+          "revision_or_concession",
+          21
+        ],
+        [
+          "scale_character_preservation",
+          21
+        ],
+        [
+          "environment_open_space",
+          20
+        ],
+        [
+          "procedural_response",
+          17
+        ],
+        [
+          "explicit_local_response",
+          16
+        ]
+      ]
+    },
+    "jacob_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "1",
+          173
+        ],
+        [
+          "0",
+          20
+        ],
+        [
+          "support_or_request",
+          6
+        ],
+        [
+          "opposition",
+          3
+        ],
+        [
+          "11",
+          1
+        ]
+      ]
+    },
+    "tyler_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "0",
+          173
+        ],
+        [
+          "1",
+          20
+        ],
+        [
+          "none_or_procedural",
+          7
+        ],
+        [
+          "both",
+          2
+        ],
+        [
+          "2",
+          1
+        ]
+      ]
+    },
+    "value_local_scope": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 1,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "1",
+          134
+        ],
+        [
+          "0",
+          58
+        ],
+        [
+          "support_or_request",
+          5
+        ],
+        [
+          "none_or_procedural",
+          2
+        ],
+        [
+          "opposition",
+          2
+        ]
+      ]
+    },
+    "value_broad_scope": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 1,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "1",
+          148
+        ],
+        [
+          "0",
+          44
+        ],
+        [
+          "support_or_request",
+          5
+        ],
+        [
+          "none_or_procedural",
+          2
+        ],
+        [
+          "opposition",
+          2
+        ]
+      ]
+    },
+    "status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "resolved",
+          199
+        ],
+        [
+          "definition_mismatch",
+          4
+        ],
+        [
+          "source_insufficient",
+          1
+        ]
+      ]
+    },
+    "confidence": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "high",
+          181
+        ],
+        [
+          "medium",
+          23
+        ]
+      ]
+    },
+    "reason": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 204,
+      "most_common": [
+        [
+          "A directly affected owner opposed acquisition of his parcels and described his competing development plan; several owners had also raised concerns before the CB.",
+          1
+        ],
+        [
+          "A local community group opposed acquisitions and raised affordability, but it is not named; the codebook requires a named organization for this actor category.",
+          1
+        ],
+        [
+          "A named community service organization gave detailed opposition to unrestricted disposition of one of the seven focal parcels, sought a restricted sale so it could purchase the lot, and explained its maintenance, parking, and planned pre-kindergarten uses. This is meaningful documented opposition to part of the application.",
+          1
+        ],
+        [
+          "After the Borough President hearing, the developer proposed a revised affordability program; the applicant also committed to concrete sustainability measures.",
+          1
+        ],
+        [
+          "America Sevashram Sangha, a named monastic community-service organization, opposed unrestricted disposition of the parcel it leased and maintained.",
+          1
+        ]
+      ]
+    },
+    "reader": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "b",
+          85
+        ],
+        [
+          "c",
+          62
+        ],
+        [
+          "a",
+          57
+        ]
+      ]
+    },
+    "review_method": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "Sol medium with Codex source review",
+          204
+        ]
+      ]
+    },
+    "manager_note": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 202,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "Harmonized with the other bare-vote cases: original any-dissent and substantial-opposition labels may answer different questions. Keep both original values; no replacement until the opposition definition is settled.",
+          2
+        ]
+      ]
+    },
+    "evidence_json": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 204,
+      "most_common": [
+        [
+          "[{\"source_document_id\": \"00326891d3391480524d\", \"pdf_page\": 1, \"quote\": \"Approve unrestricted disposition.\", \"explanation\": \"The unrestricted approval left the CB's specific local-priority restrictions unadopted.\", \"source_text_sha256\": \"f00ba2f3abb3ed3fcd51e9e95e8963ed6e91d8bc7f267d6de109323c3bfac149\"}]",
+          1
+        ],
+        [
+          "[{\"source_document_id\": \"00326891d3391480524d\", \"pdf_page\": 1, \"quote\": \"In response to Community Board 12 concerns over the disposition of City-owned par- cels in their district. The Division of Real Property attended a Community Board 12 public hearing to explain\", \"explanation\": \"This is an explicit local-concern-to-response link.\", \"source_text_sha256\": \"f00ba2f3abb3ed3fcd51e9e95e8963ed6e91d8bc7f267d6de109323c3bfac149\"}]",
+          1
+        ],
+        [
+          "[{\"source_document_id\": \"00326891d3391480524d\", \"pdf_page\": 1, \"quote\": \"The Division of Real Property attended a Community Board 12 public hearing to explain, their Adjacent Homeowner Program (AHOP)mwd the Neighboring Industrial/Commercial Owners Program (NICOP).\", \"explanation\": \"Attending the hearing to explain programs is an outreach response.\", \"source_text_sha256\": \"f00ba2f3abb3ed3fcd51e9e95e8963ed6e91d8bc7f267d6de109323c3bfac149\"}]",
+          1
+        ],
+        [
+          "[{\"source_document_id\": \"00326891d3391480524d\", \"pdf_page\": 1, \"quote\": \"The dioasition oi 23 City-owned patcet4 kn Community Diztkict 12\", \"explanation\": \"This is a parcel-disposition program rather than a specific development project.\", \"source_text_sha256\": \"f00ba2f3abb3ed3fcd51e9e95e8963ed6e91d8bc7f267d6de109323c3bfac149\"}]",
+          1
+        ],
+        [
+          "[{\"source_document_id\": \"00326891d3391480524d\", \"pdf_page\": 1, \"quote\": \"the parcels be offered to the adjacent property owners\", \"explanation\": \"This is a purchaser-priority restriction; full review found no qualifying scale or preservation issue.\", \"source_text_sha256\": \"f00ba2f3abb3ed3fcd51e9e95e8963ed6e91d8bc7f267d6de109323c3bfac149\"}]",
+          1
+        ]
+      ]
+    }
+  }
+}

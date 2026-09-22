@@ -1,0 +1,409 @@
+{
+  "dataset": "official_ulurp_cpc_narrative_boundary_sample.csv",
+  "rows": 600,
+  "key": [
+    "sample_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "fb2a8383e0128c36b9e8ea5883b5388d4646d258fd5f029198e32d9248ebd1be",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "sample_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 600,
+      "most_common": [
+        [
+          "1970s_001",
+          1
+        ],
+        [
+          "1970s_002",
+          1
+        ],
+        [
+          "1970s_003",
+          1
+        ],
+        [
+          "1970s_004",
+          1
+        ],
+        [
+          "1970s_005",
+          1
+        ]
+      ]
+    },
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 600,
+      "most_common": [
+        [
+          "00167643a19f5c30bf57",
+          1
+        ],
+        [
+          "00af64b4be2a4f908a17",
+          1
+        ],
+        [
+          "00fb12039905cfc5bd97",
+          1
+        ],
+        [
+          "01bf4c4477709b291e18",
+          1
+        ],
+        [
+          "028581cd31ccb2b21591",
+          1
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 600,
+      "most_common": [
+        [
+          "C 000013 ZSR",
+          1
+        ],
+        [
+          "C 000014 ZSR",
+          1
+        ],
+        [
+          "C 000017 ZMR",
+          1
+        ],
+        [
+          "C 000019 PPR",
+          1
+        ],
+        [
+          "C 000023 ZSK",
+          1
+        ]
+      ]
+    },
+    "official_vote_year": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 49,
+      "most_common": [
+        [
+          "1979",
+          39
+        ],
+        [
+          "1977",
+          35
+        ],
+        [
+          "1978",
+          26
+        ],
+        [
+          "2021",
+          24
+        ],
+        [
+          "1989",
+          23
+        ]
+      ]
+    },
+    "decade": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "1970s",
+          100
+        ],
+        [
+          "1980s",
+          100
+        ],
+        [
+          "1990s",
+          100
+        ],
+        [
+          "2000s",
+          100
+        ],
+        [
+          "2010s",
+          100
+        ]
+      ]
+    },
+    "action_code": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 28,
+      "most_common": [
+        [
+          "ZM",
+          141
+        ],
+        [
+          "ZS",
+          82
+        ],
+        [
+          "PP",
+          79
+        ],
+        [
+          "HD",
+          46
+        ],
+        [
+          "MM",
+          43
+        ]
+      ]
+    },
+    "official_project_name": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 50,
+      "distinct_nonmissing": 499,
+      "most_common": [
+        [
+          "C-O-P",
+          34
+        ],
+        [
+          "Staten Island Ballpark",
+          4
+        ],
+        [
+          "Bronx Metro North Station Area",
+          3
+        ],
+        [
+          "123Th & 124Th Sts Bet 7Th & 8Th Aves",
+          2
+        ],
+        [
+          "515 7th Avenue",
+          2
+        ]
+      ]
+    },
+    "official_pdf_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 600,
+      "most_common": [
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/000013.pdf",
+          1
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/000014.pdf",
+          1
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/000017.pdf",
+          1
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/000019.pdf",
+          1
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/000023.pdf",
+          1
+        ]
+      ]
+    },
+    "local_pdf_path": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 600,
+      "most_common": [
+        [
+          "/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_ulurp_cpc_report_corpus/code/../output/cpc_report_pdfs/000013_000013ZSR.pdf",
+          1
+        ],
+        [
+          "/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_ulurp_cpc_report_corpus/code/../output/cpc_report_pdfs/000014_000014ZSR.pdf",
+          1
+        ],
+        [
+          "/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_ulurp_cpc_report_corpus/code/../output/cpc_report_pdfs/000017_000017ZMR.pdf",
+          1
+        ],
+        [
+          "/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_ulurp_cpc_report_corpus/code/../output/cpc_report_pdfs/000019_000019PPR.pdf",
+          1
+        ],
+        [
+          "/Users/jacobherbstman/Desktop/nyc_court_case/tasks/build_ulurp_cpc_report_corpus/code/../output/cpc_report_pdfs/000023_000023ZSK.pdf",
+          1
+        ]
+      ]
+    },
+    "narrative_boundary_method": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "resolution_heading",
+          554
+        ],
+        [
+          "filing_paragraph",
+          22
+        ],
+        [
+          "cpc_resolution_after_quoted_resolution",
+          12
+        ],
+        [
+          "resolution_heading_fallback",
+          9
+        ],
+        [
+          "commission_signature",
+          2
+        ]
+      ]
+    },
+    "narrative_word_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 550,
+      "most_common": [
+        [
+          "925",
+          4
+        ],
+        [
+          "1331",
+          3
+        ],
+        [
+          "303",
+          3
+        ],
+        [
+          "552",
+          3
+        ],
+        [
+          "897",
+          3
+        ]
+      ],
+      "minimum": 189,
+      "maximum": 38908
+    },
+    "narrative_tail": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 599,
+      "most_common": [
+        [
+          "and has provided a timetable to relocate the District 4 garage. The Commission notes that Section 1602 of the City Charter stipulates that the business terms of the proposed acquisition, including provisions governing the length of a lease, will be the subject of a separate public hearing, however, the Commission concurs with the Department of Sanitation that limiting the lease length as part of the ULURP approval could have a negative impact upon the City's ability to negotiate leases. RESOLUTION",
+          2
+        ],
+        [
+          "#4. On August 30, 1977, the Community Board scheduled September 21, 1977, as the date for a public hearing. Follow- ing the public hearing, the Community Board approved the applications (15 in favor, 1 opposed). On October 12, 1977, Calendar Nos. 27 and 28, the City Planning Commission scheduled October 26, 1977, as the date for a Public Hearing on the housing plan and project and land disposition applications. There were no speakers and the hearing was closed. ' APPROVAL",
+          1
+        ],
+        [
+          "(C 060354 ZSK). There were a number of speakers, as described in the report on the related application for the grant of a special permit (C 060354 ZSK) and the hearing was closed. CONSIDERATION The Commission believes that this amendment of the Zoning Map is appropriate. A full consideration and analysis of the issues, and the reasons for approving this application, appear in the report on the related application for the grant of a special permit (C 060354 ZSK). RESOLUTION",
+          1
+        ],
+        [
+          "(C 930125 PPQ). The hearing was held on November 15, 1995 (Calendar No. 21). There were no appearances and the hearing was closed. CONSIDERATION The Commission believes that the disposition of these city-owned properties is appropriate. The properties consist of seven (7) condominium parking spaces within three (3) residential buildings in the neighborhood of Flushing. The Department of General Services will indicate in its offering that the use of these spaces will be restricted to accessory residential parking. RESOLUTION |",
+          1
+        ],
+        [
+          "(C 940673 PPX). The hearing was duly held on October 26, 1994 (Calendar No. 22). There were no appearances and the hearing was closed. 2 C 940514 PPX CONSIDERATION The Commission believes that this disposition of city-owned property is appropriate. The recent development of nearby blocks for new community facility, commercial and residential uses has improved local conditions and returning the subject parcel to private ownership will complement this revitalization as well as contributing to the city's tax revenues. RESOLUTION",
+          1
+        ]
+      ]
+    },
+    "excluded_text_prefix": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 580,
+      "most_common": [
+        [
+          "RESOLVED, that the City Planning Commission finds that the action described herein will have no significant impact on the environment; and be it further RESOLVED, by the City Planning Commission, pursuant to Sections 197-c and 200 of the New York City Charter, that based on the environmental determination and the consideration described in this report, the Zoning Resolution of the City of New York, effective as of December 15, 1961, and as subsequently amended, is further amended by changing the",
+          7
+        ],
+        [
+          "RESOLVED, that the City Planning Commission finds that the action described herein will have no significant impact on the environment; and be it further RESOLVED, that the City Planning Commission, in its capacity as the City Coastal Commission, has reviewed the waterfront aspects of this application and finds that the proposed action is consistent with WRP policies; and be it further RESOLVED, by the City Planning Commission, pursuant to Sections 197-c and 200 of the New York City Charter, that",
+          6
+        ],
+        [
+          "RESOLVED, that having considered the Final Environmental Impact Statement (FEIS) for which a Notice of Completion was issued on June 14, 2024, with respect to this application (CEQR No. 23DCP065X), the City Planning Commission finds that the requirements of the New York State Environmental Quality Review Act and Regulations have been met and that: 1. The environmental impacts disclosed in the FEIS were evaluated in relation to the social, economic, and other considerations associated with the actions that are set",
+          3
+        ],
+        [
+          "RESOLVED, that having considered the Environmental Assessment Statement, for which Negative Declaration was issued on April 7, 2025, with respect to this application (CEQR No. 24DCP114M) the City Planning Commission finds that the actions described herein will have no significant impact on the environment; and be it further RESOLVED, by the City Planning Commission, pursuant to Sections 197-c and 200 of the New York City Charter that based on the environmental determination, and the consideration and findings described in this",
+          2
+        ],
+        [
+          "RESOLVED, that the City Planning Commission finds that the action described herein will have no significant impact on the environment; and RESOLVED, by the City Planning Commission, pursuant to Sections 197-c and 201 of the New York City Charter, that based on the environmental determination and the consideration described in this report, the Zoning Resolution of the City of New York, effective as of December 15, 1961, and as subsequently amended, is further amended by changing the Zoning Map, Section",
+          2
+        ]
+      ]
+    },
+    "manual_boundary_correct": {
+      "python_types": [],
+      "missing": 600,
+      "distinct_nonmissing": 0,
+      "most_common": []
+    },
+    "manual_substantive_narrative": {
+      "python_types": [],
+      "missing": 600,
+      "distinct_nonmissing": 0,
+      "most_common": []
+    },
+    "manual_notes": {
+      "python_types": [],
+      "missing": 600,
+      "distinct_nonmissing": 0,
+      "most_common": []
+    }
+  }
+}

@@ -1,0 +1,490 @@
+{
+  "dataset": "cpc_jev_controls_v7.csv",
+  "rows": 14,
+  "key": [
+    "case_id",
+    "proposition",
+    "context",
+    "primitive"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "77b5233fbdfad270d5f337a82b2d0501cbfd614f3aebf28dbb79278c3b09ec9e",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "case_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "board_conditions",
+          8
+        ],
+        [
+          "density_cap",
+          2
+        ],
+        [
+          "landscape_buffer",
+          2
+        ],
+        [
+          "meeting_space",
+          2
+        ]
+      ]
+    },
+    "proposition": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "applicant_accepted_cap",
+          2
+        ],
+        [
+          "applicant_committed",
+          2
+        ],
+        [
+          "bedroom_acceptance",
+          2
+        ],
+        [
+          "height_acceptance",
+          2
+        ],
+        [
+          "height_timing",
+          2
+        ]
+      ]
+    },
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "be57154ccfdcbdc208c8",
+          8
+        ],
+        [
+          "4e7e6c94860495994417",
+          2
+        ],
+        [
+          "717d4d21cc6a432a8c40",
+          2
+        ],
+        [
+          "b8979ed517f12d94e906",
+          2
+        ]
+      ]
+    },
+    "source_document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "be57154ccfdcbdc208c8",
+          8
+        ],
+        [
+          "402c767ca7f40e6b6bcb",
+          2
+        ],
+        [
+          "717d4d21cc6a432a8c40",
+          2
+        ],
+        [
+          "b8979ed517f12d94e906",
+          2
+        ]
+      ]
+    },
+    "source_application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "C 140409 ZSM",
+          8
+        ],
+        [
+          "C 210192 ZMQ",
+          2
+        ],
+        [
+          "C 870568 ZMQ",
+          2
+        ],
+        [
+          "C 870729 HUK",
+          2
+        ]
+      ]
+    },
+    "context": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "excerpt",
+          7
+        ],
+        [
+          "full",
+          7
+        ]
+      ]
+    },
+    "primitive": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "noul",
+          14
+        ]
+      ]
+    },
+    "request_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 8,
+      "most_common": [
+        [
+          "board_conditions_excerpt_acceptance",
+          4
+        ],
+        [
+          "board_conditions_full_acceptance",
+          4
+        ],
+        [
+          "density_cap_excerpt_acceptance",
+          1
+        ],
+        [
+          "density_cap_full_acceptance",
+          1
+        ],
+        [
+          "landscape_buffer_excerpt_acceptance",
+          1
+        ]
+      ]
+    },
+    "question_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "applicant_accepted_cap",
+          2
+        ],
+        [
+          "applicant_committed",
+          2
+        ],
+        [
+          "bedroom_acceptance",
+          2
+        ],
+        [
+          "height_acceptance",
+          2
+        ],
+        [
+          "height_timing",
+          2
+        ]
+      ]
+    },
+    "question": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "Does `report.text` explicitly say the Public Development Corporation agreed to add the planted-buffer provision to the urban renewal plan?",
+          2
+        ],
+        [
+          "Does `report.text` explicitly say the applicant agreed to a restrictive declaration limiting the site to 412 dwelling units?",
+          2
+        ],
+        [
+          "Does `report.text` explicitly say the applicant agreed to provide at least 50 percent two-bedroom units?",
+          2
+        ],
+        [
+          "Does `report.text` explicitly say the applicant agreed to provide meeting space for tenants?",
+          2
+        ],
+        [
+          "Does `report.text` explicitly say the applicant agreed to reduce parking from 35 to 23 spaces?",
+          2
+        ]
+      ]
+    },
+    "expected": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          11
+        ],
+        [
+          "0",
+          3
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "expectation_provenance": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "AI-authored diagnostic, frozen before calls; not an original human label",
+          14
+        ]
+      ]
+    },
+    "reference_page": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "11",
+          4
+        ],
+        [
+          "5",
+          4
+        ],
+        [
+          "12",
+          2
+        ],
+        [
+          "8",
+          2
+        ],
+        [
+          "9",
+          2
+        ]
+      ],
+      "minimum": 5,
+      "maximum": 12
+    },
+    "reference_quote": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "After certification, the applicant revised its development",
+          2
+        ],
+        [
+          "agreed to modify its proposal to reduce the height of the building from 164 feet to 154 feet",
+          2
+        ],
+        [
+          "agrees to at least a minimum of 50% two bedroom units",
+          2
+        ],
+        [
+          "the Public Development Corporation agreed to add this provision to the urban renewal plan",
+          2
+        ],
+        [
+          "the applicant has committed to provide meeting space within the building for tenants",
+          2
+        ]
+      ]
+    },
+    "reason": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "A specific agreed density cap must remain positive.",
+          2
+        ],
+        [
+          "An explicit voluntary commitment counts even when it is not a CPC approval condition.",
+          2
+        ],
+        [
+          "Date of a board request is distinct from the date of an accepted change.",
+          2
+        ],
+        [
+          "Explicit agency/applicant agreement to a mitigation provision must remain positive.",
+          2
+        ],
+        [
+          "Explicit agreement within board conditions must survive the clarification.",
+          2
+        ]
+      ]
+    },
+    "excerpt_passage_ids": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "be57154cp7b2;be57154cp8b1;be57154cp8b2",
+          8
+        ],
+        [
+          "402c767cp5b1;402c767cp5b2;402c767cp6b1",
+          2
+        ],
+        [
+          "717d4d21p4b2;717d4d21p5b1;717d4d21p5b2",
+          2
+        ],
+        [
+          "b8979ed5p8b2;b8979ed5p9b1;b8979ed5p9b2",
+          2
+        ]
+      ]
+    },
+    "supplied_pdf_pages": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 8,
+      "most_common": [
+        [
+          "1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24;25",
+          4
+        ],
+        [
+          "7;8",
+          4
+        ],
+        [
+          "1;2;3;4;5;6",
+          1
+        ],
+        [
+          "1;2;3;4;5;6;7;8;9;10;11;12;13",
+          1
+        ],
+        [
+          "1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24;25;26;27;28;29;30;31;32;33;34;35;36;37;38;39;40;41;42;43;44;45;46;47;48;49;50;51",
+          1
+        ]
+      ]
+    },
+    "source_text_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "045779fbc048b4c992fa2aad6228dc8697f9a4106cedcb5ddf6b31507f806725",
+          8
+        ],
+        [
+          "466d6c8bc1e191b6858daad000baf00b85acf8536e6ecf931c9b58aac90de701",
+          2
+        ],
+        [
+          "5ff81bf0cab1f941e3fd6403302c02aacdcdecb166aecf2a87f26f61410eb341",
+          2
+        ],
+        [
+          "9cfb58d25b8f302ff2c9cdc618a9777ee28ddcdeb4befc2bf6a977f80154edea",
+          2
+        ]
+      ]
+    },
+    "context_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 8,
+      "most_common": [
+        [
+          "7796aa67945ef1cd807efb09818922fff481567094ec472658c15472a80a37f0",
+          4
+        ],
+        [
+          "c98b4b0266894dd65217855ab5e8270d085eb11f53c71190f2ab2be691d19ba2",
+          4
+        ],
+        [
+          "07dde73b89d99c94c0b145bdc842513f43707629c956edc657f05cd893ad8397",
+          1
+        ],
+        [
+          "7247630095bb395d772068d3fd215d7b3f19daf805ddf9b826719388bd4513bb",
+          1
+        ],
+        [
+          "7f7bbd7293f7fef41bb341cf24e360c662675854e6de6cfcbf8272da764ab578",
+          1
+        ]
+      ]
+    }
+  }
+}

@@ -1,0 +1,74 @@
+DEVELOPMENT CANDIDATE -- NOT YET RUN
+
+Proposed clarification for scale_character_preservation and
+revision_or_concession after inspecting v3 disagreements on September 15, 2026.
+This file has not been used to produce any labels. The frozen v3 prompt,
+schema, packets, and submitted readings remain the record of that experiment.
+For a future test, supply these instructions after the v3 prompt and retain
+the existing schema. All other v3 rules continue to apply.
+
+Character, scale, and preservation
+
+The broad scale_character_preservation field is not synonymous with opposition
+to neighborhood change. It also covers substantive physical design, height,
+bulk, density, and preservation issues. Continue to separate
+neighborhood_character, scale_density_design, and historic_preservation.
+
+Require a project-specific review issue: an actor's concern, question, request,
+or substantive assessment about one of these topics. A supportive actor or CPC
+can raise an issue. The explanation must identify the actor, the physical or
+preservation question being assessed, and the relevant action. Do not infer
+local opposition from CPC discussion or from the issue flag alone.
+
+Neutral descriptions of dimensions, facade materials, the proposed design, or
+surrounding buildings do not qualify simply because they were spoken at a
+hearing. Nor do generic statements that development is appropriate, that land
+can be developed, or that sale will maximize development potential. A concrete
+question about a building's height or its buffer from neighboring homes does
+qualify as scale/design; neighborhood_character additionally requires explicit
+evidence about neighborhood fit or character, not just a dimensional answer.
+
+Do not require the word "character" for the broad field. Actual requests to
+change a cafe layout, building facade, streetwall, or height can qualify even
+for a small project. Interior design or layout requires an actual review issue,
+not a description of a rehabilitation program. Jobs, tax revenues, and industrial
+employment alone do not establish physical character or historic preservation;
+retain their documented opposition in the relevant actor/process fields.
+
+A companion's issue counts only when it concerns the focal site's proposal or
+shared review. Quote the connection. A common project title, vote date, or
+supplied-source membership alone does not prove that it applies.
+
+Revisions, commitments, and mitigation
+
+Preserve the broad legacy meaning: a substantive application/project change
+OR an explicitly undertaken or imposed project-specific commitment/mitigation.
+This field alone does not establish a change made during ULURP or a concession
+caused by local opposition. Do not optimize it to reproduce a human zero.
+
+Before coding 1, identify what changed or was committed, who undertook or
+imposed it, and the statement establishing that status. A request, suggestion,
+or recommendation alone does not establish adoption. Generic promises to obey
+the law and generic resolution conditions do not qualify. Neither does an
+ordinary proposed feature without a documented mitigation/commitment purpose.
+
+In the evidence explanation distinguish: adopted project change; undertaken
+or imposed commitment/mitigation; request only; original project feature; or
+procedural/administrative action. State whether the report establishes a new
+change during review, a pre-existing commitment, or unknown timing. Do not infer
+timing from the section in which a commitment is described. An actual binding
+mitigation can meet the broad legacy field even when its timing is unknown;
+describe that limit instead of calling it a newly negotiated concession.
+
+Studies, outreach, monitoring, auction scheduling, and document processing alone
+are not substantive revisions. A mandatory restriction on how parcels may be
+developed or disposed of can qualify when the report explains its substantive
+effect; do not exclude every disposition condition as administrative. A
+modification to a separate area-wide proposal is not a revision to the focal
+application. Preserve a documented related action in the explanation.
+
+Use explicit_local_response only for an express link to a local request or
+opposition, identifying the same event. A mitigation's existence, CPC's question,
+or a change after a hearing does not by itself establish that link. Explain
+conflicting or insufficient evidence rather than silently guessing its timing,
+actor, application, or adoption status.

@@ -1,0 +1,388 @@
+{
+  "dataset": "cpc_sol_actor_review_v2.csv",
+  "rows": 9,
+  "key": [
+    "finding_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "9a7a07495929ac570b729a8262f33bf0585f557e37374a4f462285467aaae403",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "finding_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9,
+      "most_common": [
+        [
+          "bartow_operator",
+          1
+        ],
+        [
+          "bartow_opponents",
+          1
+        ],
+        [
+          "bartow_relocation",
+          1
+        ],
+        [
+          "bartow_signatures",
+          1
+        ],
+        [
+          "baychester_affiliation",
+          1
+        ]
+      ]
+    },
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "a7b89b5b22c825f035e7",
+          4
+        ],
+        [
+          "18260b21162594a64c6a",
+          1
+        ],
+        [
+          "1e85e142e879ca35bd4b",
+          1
+        ],
+        [
+          "5d3d79916b32a13cf192",
+          1
+        ],
+        [
+          "f6809b0ef748b33da617",
+          1
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "C 180346 PSX",
+          4
+        ],
+        [
+          "C 080178 ZSM",
+          1
+        ],
+        [
+          "C 090310 ZMK",
+          1
+        ],
+        [
+          "C 200088 ZMX",
+          1
+        ],
+        [
+          "C 810436 PSK",
+          1
+        ]
+      ]
+    },
+    "category": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "definition_ambiguity",
+          3
+        ],
+        [
+          "role_error",
+          2
+        ],
+        [
+          "correct_context",
+          1
+        ],
+        [
+          "related_source_omission",
+          1
+        ],
+        [
+          "source_supports_added_stance",
+          1
+        ]
+      ]
+    },
+    "actor": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9,
+      "most_common": [
+        [
+          "Animal Care Centers of NYC",
+          1
+        ],
+        [
+          "Animal shelter advocates submitting signatures",
+          1
+        ],
+        [
+          "Bronx Community Board 10",
+          1
+        ],
+        [
+          "City Planning Commission draft report and no-vote commissioners",
+          1
+        ],
+        [
+          "Co-op City resident and Riverbay Board member",
+          1
+        ]
+      ]
+    },
+    "segment_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "s0004",
+          2
+        ],
+        [
+          "s0005",
+          2
+        ],
+        [
+          "s0002",
+          1
+        ],
+        [
+          "s0003",
+          1
+        ],
+        [
+          "s0010",
+          1
+        ]
+      ]
+    },
+    "quote": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9,
+      "most_common": [
+        [
+          "A resident of Co-op City and member of the Riverbay (Co-op City) Board of Directors spoke in opposition to the application",
+          1
+        ],
+        [
+          "Advocates who spoke in favor of the shelter submitted 4,200 signatures from residents around New York City",
+          1
+        ],
+        [
+          "Members of the West 54th & West 55th Street block associations raised concerns about the applicability of the proposed text amendment to future projects in Midtown.",
+          1
+        ],
+        [
+          "Some Co-op City residents spoke in opposition to the application and stated that 2050 Bartow Avenue could be a potential site for a youth center to serve Co-op City residents.",
+          1
+        ],
+        [
+          "The Commission failed to adopt this report.",
+          1
+        ]
+      ]
+    },
+    "model_observation": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9,
+      "most_common": [
+        [
+          "Sol assigns Animal Care Centers of NYC independent_civic.",
+          1
+        ],
+        [
+          "Sol assigns unnamed advocates independent_civic.",
+          1
+        ],
+        [
+          "Sol captures opposition under resident; Tyler records civic opposition.",
+          1
+        ],
+        [
+          "Sol distinguishes the favorable draft report from its failure to be adopted.",
+          1
+        ],
+        [
+          "Sol extracts civic support and opposition; Tyler records opposition.",
+          1
+        ]
+      ]
+    },
+    "assessment": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9,
+      "most_common": [
+        [
+          "A petition and individual advocates do not establish an organization under the existing civic definition. Preserve the supportive testimony with unclear/individual affiliation instead of inventing organizational status.",
+          1
+        ],
+        [
+          "A single actor-role choice loses the affiliation in an aggregate, although the actor name preserves it. Source membership alone does not establish an authorized organizational position. Retain the affiliation and mark the organizational attribution uncertain.",
+          1
+        ],
+        [
+          "Opposition is present in the inventory. The source calls these speakers residents, not a named organization; the old civic bin may have included residents. Do not erase either source interpretation or original coder values.",
+          1
+        ],
+        [
+          "The broad negative legacy bin conceals recorded concern. The preceding hearing summary lists residents among opponents but does not explicitly identify these associations as opponents. Preserve the distinction; do not declare the human value wrong.",
+          1
+        ],
+        [
+          "The inventory retains the consequential final outcome despite favorable language earlier in the report.",
+          1
+        ]
+      ]
+    },
+    "review_origin": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "Manager source review after first readings; no reference or raw answer changed",
+          9
+        ]
+      ]
+    },
+    "quote_found": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "1",
+          9
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 1
+    },
+    "source_document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "a7b89b5b22c825f035e7",
+          4
+        ],
+        [
+          "0ed0c5ff228a2f39d8d9",
+          1
+        ],
+        [
+          "18260b21162594a64c6a",
+          1
+        ],
+        [
+          "1e85e142e879ca35bd4b",
+          1
+        ],
+        [
+          "5d3d79916b32a13cf192",
+          1
+        ]
+      ]
+    },
+    "source_application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "C 180346 PSX",
+          4
+        ],
+        [
+          "C 080178 ZSM",
+          1
+        ],
+        [
+          "C 090310 ZMK",
+          1
+        ],
+        [
+          "C 200088 ZMX",
+          1
+        ],
+        [
+          "C 820025 ZSK",
+          1
+        ]
+      ]
+    },
+    "pdf_page": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "4",
+          2
+        ],
+        [
+          "5",
+          2
+        ],
+        [
+          "1",
+          1
+        ],
+        [
+          "10",
+          1
+        ],
+        [
+          "11",
+          1
+        ]
+      ]
+    }
+  }
+}

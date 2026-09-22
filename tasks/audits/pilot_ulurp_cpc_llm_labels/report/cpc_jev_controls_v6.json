@@ -1,0 +1,522 @@
+{
+  "dataset": "cpc_jev_controls_v6.csv",
+  "rows": 106,
+  "key": [
+    "case_id",
+    "proposition",
+    "context",
+    "primitive"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "83c2b7ab6a8d60b5ba8830a98491002a9f6e0acc6baffdec182af69556ab994d",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "case_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9,
+      "most_common": [
+        [
+          "affordability",
+          18
+        ],
+        [
+          "board_conditions",
+          16
+        ],
+        [
+          "infrastructure",
+          12
+        ],
+        [
+          "landscape_buffer",
+          12
+        ],
+        [
+          "meeting_space",
+          12
+        ]
+      ]
+    },
+    "proposition": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 25,
+      "most_common": [
+        [
+          "cpc_concern",
+          6
+        ],
+        [
+          "financing_secured",
+          6
+        ],
+        [
+          "income_restricted",
+          6
+        ],
+        [
+          "applicant_accepted_cap",
+          4
+        ],
+        [
+          "applicant_committed",
+          4
+        ]
+      ]
+    },
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "b8979ed517f12d94e906",
+          24
+        ],
+        [
+          "4e7e6c94860495994417",
+          20
+        ],
+        [
+          "717d4d21cc6a432a8c40",
+          20
+        ],
+        [
+          "2382e71942949ef0b6fa",
+          18
+        ],
+        [
+          "be57154ccfdcbdc208c8",
+          16
+        ]
+      ]
+    },
+    "source_document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "b8979ed517f12d94e906",
+          24
+        ],
+        [
+          "402c767ca7f40e6b6bcb",
+          20
+        ],
+        [
+          "717d4d21cc6a432a8c40",
+          20
+        ],
+        [
+          "2382e71942949ef0b6fa",
+          18
+        ],
+        [
+          "be57154ccfdcbdc208c8",
+          16
+        ]
+      ]
+    },
+    "source_application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "C 210192 ZMQ",
+          24
+        ],
+        [
+          "C 870568 ZMQ",
+          20
+        ],
+        [
+          "C 870729 HUK",
+          20
+        ],
+        [
+          "C 220438 ZMK",
+          18
+        ],
+        [
+          "C 140409 ZSM",
+          16
+        ]
+      ]
+    },
+    "context": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "excerpt",
+          50
+        ],
+        [
+          "full",
+          50
+        ],
+        [
+          "guided",
+          6
+        ]
+      ]
+    },
+    "primitive": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "choice",
+          53
+        ],
+        [
+          "noul",
+          53
+        ]
+      ]
+    },
+    "request_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 16,
+      "most_common": [
+        [
+          "b8979ed517f12d94e906_full",
+          12
+        ],
+        [
+          "402c767ca7f40e6b6bcb_full",
+          10
+        ],
+        [
+          "717d4d21cc6a432a8c40_full",
+          10
+        ],
+        [
+          "be57154ccfdcbdc208c8_full",
+          8
+        ],
+        [
+          "board_conditions_excerpt",
+          8
+        ]
+      ]
+    },
+    "question_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 50,
+      "most_common": [
+        [
+          "affordability__cpc_concern__choice",
+          3
+        ],
+        [
+          "affordability__cpc_concern__noul",
+          3
+        ],
+        [
+          "affordability__financing_secured__choice",
+          3
+        ],
+        [
+          "affordability__financing_secured__noul",
+          3
+        ],
+        [
+          "affordability__income_restricted__choice",
+          3
+        ]
+      ]
+    },
+    "question": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 25,
+      "most_common": [
+        [
+          "Does `report.text` describe a proposal for one hundred percent income-restricted housing?",
+          6
+        ],
+        [
+          "Does `report.text` say the City Planning Commission expressed concerns about affordability?",
+          6
+        ],
+        [
+          "Does `report.text` say the applicant has already secured subsidies for one hundred percent income-restricted housing?",
+          6
+        ],
+        [
+          "Does `report.text` describe a requirement to relocate bus stops to Sheffield Avenue?",
+          4
+        ],
+        [
+          "Does `report.text` explicitly mention infrastructure?",
+          4
+        ]
+      ]
+    },
+    "expected": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          66
+        ],
+        [
+          "0",
+          40
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "expectation_provenance": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "AI-authored diagnostic, frozen before calls; not an original human label",
+          106
+        ]
+      ]
+    },
+    "reference_page": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "3",
+          20
+        ],
+        [
+          "8",
+          20
+        ],
+        [
+          "9",
+          18
+        ],
+        [
+          "5",
+          16
+        ],
+        [
+          "13",
+          12
+        ]
+      ],
+      "minimum": 3,
+      "maximum": 13
+    },
+    "reference_quote": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 25,
+      "most_common": [
+        [
+          "The Commission reiterates its concerns about affordability",
+          6
+        ],
+        [
+          "contingent on receiving subsidies from the city and state",
+          6
+        ],
+        [
+          "make the project one hundred percent income restricted",
+          6
+        ],
+        [
+          "Community Board 8's members cited concerns with the infrastructure",
+          4
+        ],
+        [
+          "Parking will be reduced from 35 to 23 spaces",
+          4
+        ]
+      ]
+    },
+    "reason": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 25,
+      "most_common": [
+        [
+          "A contingent proposal is not secured financing.",
+          6
+        ],
+        [
+          "The earlier selected window ends on page 8, before this direct concern.",
+          6
+        ],
+        [
+          "Topic discussion is present before the CPC concern appears.",
+          6
+        ],
+        [
+          "A future capital request does not establish completed installation.",
+          4
+        ],
+        [
+          "Accepted environmental/design provision.",
+          4
+        ]
+      ]
+    },
+    "excerpt_passage_ids": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9,
+      "most_common": [
+        [
+          "2382e719p7b2;2382e719p8b1;2382e719p8b2",
+          18
+        ],
+        [
+          "be57154cp7b2;be57154cp8b1;be57154cp8b2",
+          16
+        ],
+        [
+          "402c767cp5b1;402c767cp5b2;402c767cp6b1",
+          12
+        ],
+        [
+          "717d4d21p2b2;717d4d21p3b1;717d4d21p4b1",
+          12
+        ],
+        [
+          "b8979ed5p13b1;b8979ed5p13b2",
+          12
+        ]
+      ]
+    },
+    "supplied_pdf_pages": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 15,
+      "most_common": [
+        [
+          "7;8",
+          14
+        ],
+        [
+          "1;2;3;4;5;6;7;8;9;10;11;12;13",
+          12
+        ],
+        [
+          "1;2;3;4;5;6",
+          10
+        ],
+        [
+          "1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24;25;26;27;28;29;30;31;32;33;34;35;36;37;38;39;40;41;42;43;44;45;46;47;48;49;50;51",
+          10
+        ],
+        [
+          "1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24;25",
+          8
+        ]
+      ]
+    },
+    "source_text_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "5ff81bf0cab1f941e3fd6403302c02aacdcdecb166aecf2a87f26f61410eb341",
+          24
+        ],
+        [
+          "466d6c8bc1e191b6858daad000baf00b85acf8536e6ecf931c9b58aac90de701",
+          20
+        ],
+        [
+          "9cfb58d25b8f302ff2c9cdc618a9777ee28ddcdeb4befc2bf6a977f80154edea",
+          20
+        ],
+        [
+          "2be0b0744b85949f1300dccf1de48022f5984a3a3cc286d22e51da5a3c688752",
+          18
+        ],
+        [
+          "045779fbc048b4c992fa2aad6228dc8697f9a4106cedcb5ddf6b31507f806725",
+          16
+        ]
+      ]
+    },
+    "context_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 16,
+      "most_common": [
+        [
+          "ee109ce810f796438c1e9a3b070e8b0d06c38515c479f0f994756f889e6ee446",
+          12
+        ],
+        [
+          "7f7bbd7293f7fef41bb341cf24e360c662675854e6de6cfcbf8272da764ab578",
+          10
+        ],
+        [
+          "dc0c4cdd5103c60f3905150d77462fc143443940155ce39a97a26bf418e722dc",
+          10
+        ],
+        [
+          "7796aa67945ef1cd807efb09818922fff481567094ec472658c15472a80a37f0",
+          8
+        ],
+        [
+          "c98b4b0266894dd65217855ab5e8270d085eb11f53c71190f2ab2be691d19ba2",
+          8
+        ]
+      ]
+    }
+  }
+}

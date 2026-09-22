@@ -1,0 +1,268 @@
+{
+  "dataset": "cpc_jev_pages_v11.csv",
+  "rows": 790,
+  "key": [
+    "document_id",
+    "page_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "1b9571615d1b03ec40f10eaa9eec19f1d726a6b53bbdbe98cde7879288dbaaae",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 50,
+      "most_common": [
+        [
+          "4474461b50965e8b90f0",
+          46
+        ],
+        [
+          "8af7fa7ebb7ba8a841eb",
+          42
+        ],
+        [
+          "c27f7af95a119ee12e69",
+          37
+        ],
+        [
+          "b7be22f34595957d2d0b",
+          36
+        ],
+        [
+          "690d21974b50e992d814",
+          35
+        ]
+      ]
+    },
+    "page_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 790,
+      "most_common": [
+        [
+          "0b008ed8f908c702c641:p1",
+          1
+        ],
+        [
+          "0b008ed8f908c702c641:p2",
+          1
+        ],
+        [
+          "0b008ed8f908c702c641:p3",
+          1
+        ],
+        [
+          "0b008ed8f908c702c641:p4",
+          1
+        ],
+        [
+          "0b008ed8f908c702c641:p5",
+          1
+        ]
+      ]
+    },
+    "source_document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 70,
+      "most_common": [
+        [
+          "4474461b50965e8b90f0",
+          46
+        ],
+        [
+          "c27f7af95a119ee12e69",
+          37
+        ],
+        [
+          "8af7fa7ebb7ba8a841eb",
+          35
+        ],
+        [
+          "76a18d4e356e547223ff",
+          33
+        ],
+        [
+          "a81120b674b2198628e4",
+          24
+        ]
+      ]
+    },
+    "source_application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 70,
+      "most_common": [
+        [
+          "C 910115 ZSM",
+          46
+        ],
+        [
+          "C 190403 ZMX",
+          37
+        ],
+        [
+          "N 080425 ZRR",
+          35
+        ],
+        [
+          "C 950227 ZSM",
+          33
+        ],
+        [
+          "C 980067 ZMK",
+          24
+        ]
+      ]
+    },
+    "source_role": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "focal_report",
+          651
+        ],
+        [
+          "context_companion",
+          116
+        ],
+        [
+          "represented_related_action",
+          23
+        ]
+      ]
+    },
+    "pdf_page": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 46,
+      "most_common": [
+        [
+          "1",
+          70
+        ],
+        [
+          "2",
+          70
+        ],
+        [
+          "3",
+          67
+        ],
+        [
+          "4",
+          65
+        ],
+        [
+          "5",
+          55
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 46
+    },
+    "source_text_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 70,
+      "most_common": [
+        [
+          "f60871aa33e6be541a688f6b86a1b4e93ba8044dd096b9563e0ec1c63efccb06",
+          46
+        ],
+        [
+          "964f0bac964cc06d4620e2a589c8460eb623aa9e30443f7407ddbee2bc2a68a4",
+          37
+        ],
+        [
+          "e340a9280668ed07eab8b31ee96dc3621e6aa9f84fa9d3d7541f77843760f048",
+          35
+        ],
+        [
+          "01c5cfb81a178ea09e2e69ff0deae12e369d83bbb23884b9fdac85b51f2c1a6b",
+          33
+        ],
+        [
+          "2b05e0ec5102da459498e19770106c3fbce811ae1e7317e7a4eb00e1a146f533",
+          24
+        ]
+      ]
+    },
+    "public_pdf_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 70,
+      "most_common": [
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/910115.pdf",
+          46
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/190403.pdf",
+          37
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/080425.pdf",
+          35
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/950227.pdf",
+          33
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/980067.pdf",
+          24
+        ]
+      ]
+    },
+    "text": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 784,
+      "most_common": [
+        [
+          "Manhattan Community Board Five Vikki Barbero, Chair 450 Seventh Avenue, Suite 2109 Marisa Maack, District Manager New York, NY 10123-2199 212.465.0907 f-212.465.1628 October 14, 2022 Marisa Lago Chair of the City Planning Commission 22 Reade Street New York, NY 10007 Re: Request from 215 West 28th Street Property Owner LLC and 225 West 28th Street Property Owner LLC, for two special permits pursuant to Sections 13-45 and 13-451 of the New York City Zoning Resolution, to allow two accessory off-street parking facilities. Dear Chair Lago: At the regularly scheduled monthly Community Board Five meeting on Thursday, October 13, 2022, the following resolution passed with a vote of 31 in favor; 0 opposed; 1 abstaining; 1 present not entitled to vote: WHEREAS, The special permit is for a portion of the ground floor and sub-cellars of a proposed mixed- use development under construction at 213- 219 W. 28th Street (Block 778, Lot 31) (“Building A”), with 20 maximum accessory parking spaces, and one on portion of the ground floor and sub-cellars of a proposed mixed-use development under construction at 221-227 W. 28th Street (Manhattan Block 778, Lot 25) (“Building B”), with 24 maximum accessory parking spaces; and WHEREAS, The applicant is seeking approval to construct a total of 41 spaces in building A, and a total of 36 spaces in building B, for a total 33 additional spaces; and WHEREAS, The Zoning Lot is located in Manhattan Community District 5 in northern Chelsea on the north side of West 28th Street between 7th and 8th Avenues; and WHEREAS, The Zoning Lot was rezoned from an M1-5 district to an M1-6D district in 2011 (C 100063 ZMM and N 110285 ZRY). The rezoning encompassed the mid-blocks beyond 100 feet from 7th and 8th Avenues, extending from the north side of West 28th Street to the south side of West 30th Street; and WHEREAS, Construction of Building A and B is substantially complete, and a 25-space licensed public parking facility previously occupied the western portion of Lot 31 of development site A; and WHEREAS, The Applicant proposes to construct a new, 11.9FAR, 20-story rental apartment building (Building B) with 30% affordable units, that would contain ground floor retail with residential use above and a 36-car accessory residential parking garage with an entrance on the ground floor and spaces in the building’s sub- cellars (the “Garage”); and WHEREAS, The Applicant proposes to construct a new, 11.9 FAR 20-story condo apartment building (Building A) that would contain ground floor retail with residential use above and a 41-car accessory residential parking garage with an entrance on the ground floor and spaces in the building’s sub- cellars (the “Garage”) ; and www.cb5.org office@cb5.org",
+          2
+        ],
+        [
+          "No. C200012ZSM & C200013ZSM – Garage Special Permit Page 2 of 4 excessive in relation to recent trends in close proximity to the proposed facility” including any changes in the number of residential units and the number of local public and off-street parking spaces. Alternatively, the Commission may grant the special permit if the total number of parking spaces does not exceed 20 percent of the total number of dwelling units. BACKGROUND In 2011, the project site was rezoned from an M1-5 district to a newly-created M1-6D district (C 100063 ZMM and N 110285 ZRY). That rezoning encompassed the blocks beyond 100 feet from 7th and 8th Avenues, between the north side of West 28th Street to the south side of West 30th Street. This rezoning was approved with the intention of preserving the neighborhood’s character while allowing residential growth and the creation of affordable housing through the Inclusionary Housing program. In M1-6D districts, residential development is as-of-right as long as it occurs on lots that did not have buildings with over 40,000 square feet of floor area as of April 25, 2011. Proposed Development The applicant has been constructing two 20-story, 210-foot tall buildings with sub-cellar levels and one curb cut since 2018. The building at 213-219 West 28th Street (Building A) will contain approximately 87 residential units, 14,080 gross square feet of retail, and 20 accessory parking spaces, as allowed as-of-right. The building at 221-227 W. 28th (Building B) will have approximately 112 residential units, 11,349 gross square feet of retail space, and 24 accessory parking spaces, as allowed as-of-right. The special permit for Building A would allow for a 41-space automated accessory residential parking garage. The maximum number of accessory parking spaces permitted as-of-right for 87 dwelling units is 20. The proposed parking garage would be 18,028 square feet of parking area, occupying 8,125 gross square feet of building floor slab through an automated tray system. The special permit for Building B would allow for a 36-space automated accessory residential parking garage. The maximum number of accessory parking spaces permitted as-of-right for 112 dwelling units is 24. The proposed parking garage would be 18,678 square feet of parking area, occupying 6,935 gross square feet of building floor slab, also through an automated tray system. The applicant proposes parking garages that will place cars in parking spaces using trays and conveyor belts. These automated parking systems will be utilized via an Automated Parking Management Software on a mobile phone application and will not require any attendants on either premises. Area Context The Proposed Development is located in a M1-6D zoning district in Manhattan Community District 5 on the south side of West 28th Street between 7th and 8th Avenues. The predominant zoning districts around the Proposed Development are M1-5 and C6-2.",
+          2
+        ],
+        [
+          "No. C200012ZSM & C200013ZSM – Garage Special Permit Page 3 of 4 Adjacent to the project site on the west side is a 12-story office building, and to the east is a 14- story multi-family elevator building. Across the street are Fashion Institute of Technology facilities, which include a 10-story and 6-story building. The area is very well served by mass transit, as Penn Station is two blocks north on West 31st Street. The station provides access to the A, C, E, 1, 2, and 3 Subway lines, along with the Long Island Railroad, New Jersey Transit, and Amtrak. The area is also served by the 28th Street station of the 1 train, while the M20 bus route runs north along 8th Avenue and south along 7th Avenue. COMMUNITY BOARD RESOLUTION Manhattan Community Board 5 Land Use Committee held a hearing on the application on September 28, 2022. Board members unanimously voted to recommend denial of the application during this hearing. Members cited the transit-rich nature of the surrounding area, the lack of vehicle ownership in the neighborhood, and a lack of justification in terms of neighborhood need. During the hearing, Board members also expressed concern of pricing and availability for those in affordable housing units on the development site, and precedent setting for neighboring developments. BOROUGH PRESIDENT’S COMMENTS The neighborhood where the proposed project is located is rich with public transportation alternatives and has lower levels of car ownership. As such, creating more parking spaces is not a neighborhood priority. While I understand that the applicant demonstrated a net loss in parking spaces in the community, I do not believe that it is necessary to grant a special permit to remedy the decrease. The number of parking spaces available to residents significantly influences behavior when it comes to car usage. Academic studies have shown that buildings with just one parking space per unit have more than twice the car ownership rate of buildings that have no parking. The parking space-to-residential unit ratio in any given building influences car ownership, vehicle travel, and transit use.3 During a time when New York City is actively grappling with and adapting to the effects of climate change on our homes, built environment, and health, it is counterproductive to encourage the use of personal vehicles. The need to shift behavior is so urgent that our City is having conversations about eliminating parking requirements, not making it possible to build more parking. 3 MillardBall_West_Rezaei_Desai_SFBMR_UrbanStudies.pdf (ucsc.edu)",
+          2
+        ],
+        [
+          "No. C200012ZSM & C200013ZSM – Garage Special Permit Page 4 of 4 BOROUGH PRESIDENT’S RECOMMENDATION I therefore recommend denial of the application. Mark Levine Manhattan Borough President",
+          2
+        ],
+        [
+          "November 17, 2022 Recommendation on ULURP Application No. C200012ZSM & C200013ZSM 215-225 West 28th Street Parking Special Permits By 215 West 28th Street Property Owner LLC PROPOSED ACTION 215 West 28th Street Property Owner LLC, the owner of 213-219 and 221-227 215-225 West 28th Street (Manhattan Block 778, Lots 25 and 31) is seeking a zoning special permit pursuant to Sections 13-45 and 13-451 of the New York City Zoning Resolution (ZR § 13-45 and ZR § 13- 451). The proposed action would allow an additional 44 parking spaces which would be distributed between two different garages in two new buildings at 213-219 and 221-227 West 28th Street in Manhattan Community District 5 (the “Proposed Development”). In order to obtain a permit pursuant to Section 13-45 of the Zoning Resolution, the City Planning Commission must find that1: (1) the location of the vehicular entrances and exits to such parking facility will not unduly interrupt the flow of pedestrian traffic associated with uses or public facilities, including access points to mass transit facilities in close proximity thereto, or result in any undue conflict between pedestrian and vehicular movements, due to the entering and leaving movement of vehicles; (2) the location of the vehicular entrances and exits to such parking facility will not interfere with the efficient functioning of streets, including any lanes designated for specific types of users or vehicles, due to the entering and leaving movement of vehicles; (3) such use will not create or contribute to serious traffic congestion and will not unduly inhibit surface traffic and pedestrian flow; (4) for public parking garages, where any floor space is exempted from the definition of floor area, such additional floor space is needed in order to prevent excessive on-street parking demand and relieve traffic congestion; and (5) such parking facility will not be inconsistent with the character of the existing streetscape. The Commission must also find that the proposed off-street parking facility meets the findings set forth in ZR § 13-4512, which require that the number of spaces is “reasonable and not 1 https://zr.planning.nyc.gov/article-i/chapter-3#13-45 2 https://zr.planning.nyc.gov/article-i/chapter-3/13-451",
+          2
+        ]
+      ]
+    }
+  }
+}

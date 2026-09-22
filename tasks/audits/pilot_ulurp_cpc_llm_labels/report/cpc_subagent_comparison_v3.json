@@ -1,0 +1,341 @@
+{
+  "dataset": "cpc_subagent_comparison_v3.csv",
+  "rows": 1345,
+  "key": [
+    "document_id",
+    "field",
+    "reference"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "eae73893c2b94b3f418fa2f81d8ec61e78c03462d824aa755078c560d40cb327",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 30,
+      "most_common": [
+        [
+          "0b62c4bf7d20ec91b688",
+          60
+        ],
+        [
+          "55f58faac321062fc6ac",
+          60
+        ],
+        [
+          "d9f70406732d73939cbd",
+          60
+        ],
+        [
+          "13e5c76bb268bbd78e25",
+          59
+        ],
+        [
+          "717d4d21cc6a432a8c40",
+          58
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 30,
+      "most_common": [
+        [
+          "C 010691 ZSM",
+          60
+        ],
+        [
+          "C 240369 ZMM",
+          60
+        ],
+        [
+          "C 980323 PPQ",
+          60
+        ],
+        [
+          "C 900172 ZMR",
+          59
+        ],
+        [
+          "C 870568 ZMQ",
+          58
+        ]
+      ]
+    },
+    "field": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 22,
+      "most_common": [
+        [
+          "bp_request_or_opposition",
+          70
+        ],
+        [
+          "councilmember_position",
+          70
+        ],
+        [
+          "affordability_displacement",
+          69
+        ],
+        [
+          "traffic_parking",
+          69
+        ],
+        [
+          "explicit_local_response",
+          68
+        ]
+      ]
+    },
+    "reference": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "completed_nonconflicting",
+          563
+        ],
+        [
+          "jacob",
+          428
+        ],
+        [
+          "tyler",
+          354
+        ]
+      ]
+    },
+    "human_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 33,
+      "most_common": [
+        [
+          "0",
+          613
+        ],
+        [
+          "1",
+          435
+        ],
+        [
+          "none_or_procedural",
+          119
+        ],
+        [
+          "none",
+          36
+        ],
+        [
+          "more",
+          20
+        ]
+      ]
+    },
+    "completed_reference": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "True",
+          1345
+        ]
+      ]
+    },
+    "valid_reference": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "True",
+          1345
+        ]
+      ]
+    },
+    "human_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "single_human_coder",
+          860
+        ],
+        [
+          "human_agreement",
+          399
+        ],
+        [
+          "coder_disagreement",
+          86
+        ]
+      ]
+    },
+    "model_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6,
+      "distinct_nonmissing": 32,
+      "most_common": [
+        [
+          "1",
+          532
+        ],
+        [
+          "0",
+          510
+        ],
+        [
+          "none_or_procedural",
+          112
+        ],
+        [
+          "none",
+          40
+        ],
+        [
+          "more",
+          26
+        ]
+      ]
+    },
+    "regex_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 196,
+      "distinct_nonmissing": 23,
+      "most_common": [
+        [
+          "0",
+          564
+        ],
+        [
+          "1",
+          390
+        ],
+        [
+          "none_or_procedural",
+          131
+        ],
+        [
+          "7",
+          8
+        ],
+        [
+          "2",
+          7
+        ]
+      ]
+    },
+    "model_agreement": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "True",
+          1135
+        ],
+        [
+          "False",
+          210
+        ]
+      ]
+    },
+    "regex_agreement": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 148,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "True",
+          897
+        ],
+        [
+          "False",
+          300
+        ]
+      ]
+    },
+    "regex_field_implemented": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "True",
+          1197
+        ],
+        [
+          "False",
+          148
+        ]
+      ]
+    },
+    "regex_count_resolved": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 1158,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "True",
+          136
+        ],
+        [
+          "False",
+          51
+        ]
+      ]
+    },
+    "confidence": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "high",
+          1232
+        ],
+        [
+          "medium",
+          113
+        ]
+      ]
+    }
+  }
+}

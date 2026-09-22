@@ -1,0 +1,216 @@
+{
+  "dataset": "cpc_jev_verification_index_v15.csv",
+  "rows": 28,
+  "key": [
+    "verification_request_id",
+    "field"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "4584a321cbe06568bdfbde74ad63e6370691613208d750e1b886e031d1e79e75",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "verification_request_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9,
+      "most_common": [
+        [
+          "verify__e70fca539711f235a7ab__4b80f774bc",
+          7
+        ],
+        [
+          "verify__18bfb1ad1fab83a2555e__49e0347081",
+          5
+        ],
+        [
+          "verify__a89b9ba39beede21a028__1d79d255b0",
+          4
+        ],
+        [
+          "verify__18bfb1ad1fab83a2555e__3b7b3f26b3",
+          3
+        ],
+        [
+          "verify__98201e64b0247197290c__cfdd304887",
+          2
+        ]
+      ]
+    },
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "18bfb1ad1fab83a2555e",
+          8
+        ],
+        [
+          "e70fca539711f235a7ab",
+          7
+        ],
+        [
+          "a89b9ba39beede21a028",
+          6
+        ],
+        [
+          "a7b89b5b22c825f035e7",
+          4
+        ],
+        [
+          "98201e64b0247197290c",
+          2
+        ]
+      ]
+    },
+    "field": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 13,
+      "most_common": [
+        [
+          "civic__request",
+          3
+        ],
+        [
+          "civic__support",
+          3
+        ],
+        [
+          "neighborhood_character__concern_request",
+          3
+        ],
+        [
+          "neighborhood_character__specific_obligation",
+          3
+        ],
+        [
+          "scale_density_design__concern_request",
+          3
+        ]
+      ]
+    },
+    "segment_ids": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "s0004;s0005;s0006",
+          7
+        ],
+        [
+          "s0015;s0016;s0017",
+          7
+        ],
+        [
+          "s0003;s0004;s0005",
+          5
+        ],
+        [
+          "s0028;s0029;s0030",
+          4
+        ],
+        [
+          "s0002;s0003;s0004",
+          2
+        ]
+      ]
+    },
+    "source_document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "18bfb1ad1fab83a2555e",
+          8
+        ],
+        [
+          "e0806633011cade21f13",
+          7
+        ],
+        [
+          "04e35ee68278581991cc",
+          6
+        ],
+        [
+          "a7b89b5b22c825f035e7",
+          4
+        ],
+        [
+          "98201e64b0247197290c",
+          2
+        ]
+      ]
+    },
+    "page_first": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "4",
+          14
+        ],
+        [
+          "3",
+          5
+        ],
+        [
+          "19",
+          4
+        ],
+        [
+          "18",
+          2
+        ],
+        [
+          "2",
+          2
+        ]
+      ]
+    },
+    "page_last": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "6",
+          14
+        ],
+        [
+          "5",
+          5
+        ],
+        [
+          "21",
+          4
+        ],
+        [
+          "20",
+          2
+        ],
+        [
+          "4",
+          2
+        ]
+      ]
+    }
+  }
+}

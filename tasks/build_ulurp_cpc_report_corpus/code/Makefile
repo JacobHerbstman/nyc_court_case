@@ -11,7 +11,8 @@ all: ../output/ulurp_cpc_report_manifest.csv
 	../input/official_cpc_report_index.csv \
 	../input/zap_project_data.parquet \
 	../input/ulurp_cpc_source_corrections.csv \
-	../input/ulurp_cpc_index_additions.csv | ../output ../output/cpc_report_pdfs/ ../output/cpc_report_text/
+	../input/ulurp_cpc_index_additions.csv ../input/ulurp_cpc_companion_reports.csv \
+	../../_lib/data_reports.py Makefile | ../output ../report ../temp ../output/cpc_report_pdfs/ ../output/cpc_report_text/
 	python3 $< $(START_YEAR) $(END_YEAR) $(WORKERS) $(OCR_DPI) $(OCR_PAGE_TIMEOUT_SECONDS) $(MINIMUM_EMBEDDED_PAGE_WORDS)
 
 ../input/official_cpc_report_index.csv: ../../fetch_ulurp_cpc_report_index/output/official_cpc_report_index.csv | ../input
@@ -26,9 +27,12 @@ all: ../output/ulurp_cpc_report_manifest.csv
 ../input/ulurp_cpc_index_additions.csv: ../../record_ulurp_cpc_source_corrections/output/ulurp_cpc_index_additions.csv | ../input
 	ln -sf "$<" "$@"
 
+../input/ulurp_cpc_companion_reports.csv: ../../record_ulurp_cpc_source_corrections/output/ulurp_cpc_companion_reports.csv | ../input
+	ln -sf $< $@
+
 link-inputs: ../input/official_cpc_report_index.csv \
 	../input/zap_project_data.parquet \
 	../input/ulurp_cpc_source_corrections.csv \
-	../input/ulurp_cpc_index_additions.csv
+	../input/ulurp_cpc_index_additions.csv ../input/ulurp_cpc_companion_reports.csv
 
 include ../../generic.make

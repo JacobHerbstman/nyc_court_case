@@ -25,6 +25,8 @@ from pathlib import Path
 
 import pandas as pd
 
+sys.path.insert(0, "../../_lib")
+from data_reports import save_csv
 
 DOWNLOAD_ATTEMPTS = 3
 DOWNLOAD_TIMEOUT_SECONDS = 120
@@ -203,6 +205,7 @@ def ocr_pdf_page(pdf_path, page_number, ocr_dpi, page_timeout_seconds, temp_dir)
             text=True,
             timeout=page_timeout_seconds,
             check=False,
+            env={**os.environ, "OMP_THREAD_LIMIT": "1"},
         )
     except subprocess.TimeoutExpired:
         return None
@@ -229,25 +232,17 @@ def add_missing_report_page_ocr(
         ),
         None,
     )
+    # Recommendations often follow the resolution; check the entire PDF.
     candidate_page_indexes = [
         page_index
         for page_index, page_text in enumerate(pages)
         if text_word_count(page_text) < minimum_embedded_page_words
-        and (
-            main_report_resolution_page is None
-            or page_index + 1 <= main_report_resolution_page
-        )
     ]
 
     with tempfile.TemporaryDirectory() as temp_dir:
         repaired_page_numbers = []
         skipped_page_numbers = []
         for page_index in candidate_page_indexes:
-            if (
-                main_report_resolution_page is not None
-                and page_index + 1 > main_report_resolution_page
-            ):
-                break
             page_text = ocr_pdf_page(
                 pdf_path,
                 page_index + 1,
@@ -260,17 +255,16 @@ def add_missing_report_page_ocr(
             elif text_word_count(page_text) > text_word_count(pages[page_index]):
                 pages[page_index] = f"[PAGE {page_index + 1} OCR]\n{page_text}\n"
                 repaired_page_numbers.append(page_index + 1)
-            if CPC_RESOLUTION_PATTERN.search(page_text or ""):
+            if CPC_RESOLUTION_PATTERN.search(page_text or "") and (
+                main_report_resolution_page is None
+                or page_index + 1 < main_report_resolution_page
+            ):
                 main_report_resolution_page = page_index + 1
 
     short_page_numbers = [
         page_index + 1
         for page_index, page_text in enumerate(pages)
         if text_word_count(page_text) < minimum_embedded_page_words
-        and (
-            main_report_resolution_page is None
-            or page_index + 1 <= main_report_resolution_page
-        )
     ]
     return (
         "\f".join(pages),
@@ -336,12 +330,23 @@ def main():
     if len(source_corrections) != len(correction_rows):
         raise RuntimeError("Source-correction application numbers must be unique.")
     index_additions = read_csv("../input/ulurp_cpc_index_additions.csv")
+    companion_links = read_csv("../input/ulurp_cpc_companion_reports.csv")
+    companion_urls = {}
+    for link in companion_links:
+        key = indexed_application_key(link["companion_application_number"])
+        if not noticed_identifier(link["companion_application_number"]):
+            raise RuntimeError("Recorded narrative companions must be N applications.")
+        if key in companion_urls and companion_urls[key] != link["resolved_pdf_url"]:
+            raise RuntimeError("Recorded companion URLs disagree for " + key)
+        companion_urls[key] = link["resolved_pdf_url"]
 
     indexed_keys = {
         indexed_application_key(row["application_number"])
         for row in official_index_rows
     }
     missing_correction_keys = sorted(set(source_corrections) - indexed_keys)
+    if set(companion_urls) - indexed_keys:
+        raise RuntimeError("Recorded N companions must have a saved index row.")
     if missing_correction_keys:
         raise RuntimeError(
             "Source corrections do not match the fetched CPC index: "
@@ -393,6 +398,10 @@ def main():
         )
         if correction.get("corpus_role") == "related_project_narrative_lead" or related_by_exact_project_vote:
             row["corpus_role"] = "related_project_narrative_lead"
+            official_rows.append(row)
+            continue
+        if indexed_application_key(row["canonical_application_number"]) in companion_urls:
+            row["corpus_role"] = "related_project_narrative_companion"
             official_rows.append(row)
 
     for addition in index_additions:
@@ -448,12 +457,15 @@ def main():
         output_text_path = Path("../output/cpc_report_text") / (
             f"{safe_filename_part(official_row['report_stem'])}_{safe_filename_part(key)}.txt"
         )
+        staged_text_path = Path("../temp") / output_text_path.name
         source_usable = (
             official_row.get("source_usable")
             or correction.get("source_usable", "1")
         ) == "1"
         resolved_pdf_url = (
-            correction.get("resolved_pdf_url") or official_row["pdf_url"]
+            correction.get("resolved_pdf_url")
+            or companion_urls.get(indexed_application_key(corrected_application_number))
+            or official_row["pdf_url"]
             if source_usable
             else correction.get("resolved_pdf_url", "")
         )
@@ -527,7 +539,7 @@ def main():
 
             if extracted_text_is_usable(fresh_text):
                 text = fresh_text
-                output_text_path.write_text(text, encoding="utf-8")
+                staged_text_path.write_text(text, encoding="utf-8")
                 text_path = output_text_path
                 if repaired_page_numbers:
                     text_method = "partial_page_ocr"
@@ -553,7 +565,7 @@ def main():
                 main_report_resolution_page = ""
                 if text_word_count(ocr_text) >= 50:
                     text = ocr_text
-                    output_text_path.write_text(text, encoding="utf-8")
+                    staged_text_path.write_text(text, encoding="utf-8")
                     text_path = output_text_path
                     text_method = "full_document_ocr"
                     text_error = ""
@@ -671,18 +683,20 @@ def main():
     if len(document_ids) != len(set(document_ids)):
         raise RuntimeError("CPC corpus document identifiers must be unique.")
 
+    for row in results:
+        if row["local_text_path"]:
+            destination = Path(row["local_text_path"])
+            os.replace(Path("../temp") / destination.name, destination)
     fieldnames = list(results[0].keys())
-    with Path("../output/ulurp_cpc_report_manifest.csv").open("w", newline="", encoding="utf-8") as output_file:
-        writer = csv.DictWriter(output_file, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(results)
+    save_csv(results, fieldnames, "../output/ulurp_cpc_report_manifest.csv", ["document_id"])
 
     certified_count = sum(row["corpus_role"] == "certified_ulurp_report" for row in results)
     narrative_lead_count = sum(row["corpus_role"] == "related_project_narrative_lead" for row in results)
+    companion_count = sum(row["corpus_role"] == "related_project_narrative_companion" for row in results)
     unavailable_count = sum(row["text_status"] != "text_extracted" for row in results)
     print(
         f"Wrote {len(results)} CPC source rows: {certified_count} certified ULURP reports and "
-        f"{narrative_lead_count} related project narrative leads; "
+        f"{narrative_lead_count} related project narrative leads and {companion_count} verified N companions; "
         f"{unavailable_count} lack usable text",
         flush=True,
     )

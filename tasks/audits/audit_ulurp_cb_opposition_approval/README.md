@@ -4,6 +4,11 @@ Compares the share of Community Board-opposed applications that were approved
 before and after 2002, citywide and by the paper's 59-community-district
 homeowner terciles.
 
+Geography uses the project IDs and corrected community districts of every
+application represented by a narrative, as recorded in the text-label producer.
+Each narrative retains total geographic weight one. Context-only companions
+do not add geographic locations or change the action sample.
+
 The long series uses the decision stated in each CPC report. A second series
 uses final Council dispositions matched by exact ULURP application number; that
 series begins in 1998 and therefore has only four pre-2002 years. The Council

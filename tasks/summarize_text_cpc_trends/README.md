@@ -12,6 +12,32 @@ unchanged; the output separately records the bundled-text hash, word count,
 and contributing companion applications. Historical prose transitions are
 used when older reports lack modern CB, BP, hearing, or consideration headings.
 
+The September 21 attribution repair removes shared-title/date links. A generic
+title such as C-O-P is not a project identifier. Designated-lead grouping now
+requires the same nonempty ZAP project-ID set as well as the original normalized
+name/date match. Sources with insufficient evidence remain separate narratives.
+The source-link table records `relationship_path` and `relationship_basis`,
+including transitive connections and recorded N-companion decisions. The paused
+Jev v2 input snapshot preserves the previous grouping for comparison.
+
+Exact duplicate text is counted once, while every application collapsed into
+that narrative keeps a source link. The same applies to actions represented by
+a designated lead. `represented_application_numbers` and
+`represented_action_codes` expose that membership in the labels; `zap_project_ids`
+is the union across represented applications. Action flags use the represented
+applications. `represented_community_districts` combines their districts after
+source-specific corrections, while `community_district` retains the focal
+report's original value. The geography summary uses the combined field.
+Context-only companions do not automatically
+expand these action or geography definitions.
+
+The reviewed pairs in `ulurp_cpc_companion_reports.csv` add N reports as context
+for existing narratives. Their inclusion does not require a lead flag, matching
+name, or matching date. The recorded certified-report text hash verifies the
+referral evidence. N sources are attached after the existing case groups are
+formed, so these new sources cannot join otherwise separate groups or create
+independent narrative observations.
+
 The document-level file follows the human coding sheet where regex can make a
 defensible measurement: substantial opposition, local requests, revisions or
 concessions, responses, unresolved objections, CB opposition, broader CB/BP
@@ -35,6 +61,31 @@ because reporting completeness changes sharply over time. Partial counts and
 cases requiring review remain in the CSV but are excluded from count plots.
 
 - `ulurp_cpc_text_labels.csv` contains one row per analysis narrative.
+- `ulurp_cpc_evidence.csv` retains candidate statements behind issue, actor,
+  request, and response signals. Each row has a stable event ID, narrative,
+  section, sentence positions, excerpt, actor candidates, broad and detailed
+  issue matches, and separate stance/request flags. It is an evidence table,
+  not a count of projects, people, or independent statements. A linked sentence
+  pair can overlap its constituent sentences.
+- `ulurp_cpc_human_coding.csv` makes the existing Jacob and Tyler readings
+  available by original source document and field. It preserves each coder's
+  values, evidence, notes, confidence, and completion status alongside the
+  regex value. `human_value` retains an agreed or single-coder value; conflicts
+  and nonstandard values stay blank with an explicit status. Provisional values
+  are available but remain marked provisional. No new human labels are inferred.
+- `ulurp_cpc_reconciled_coding.csv` adds a working value and review provenance
+  to every original human row. It applies the recorded source review for each
+  Jacob/Tyler disagreement without changing either original column. Unresolved
+  reviews stay blank. Agreed and single-coder values remain identifiable as
+  original, unreviewed coding. Use this table for subsequent coding development;
+  historical comparisons continue to use the original human table.
+- `ulurp_cpc_narrative_sources.csv` contains one row per narrative/source pair.
+  It retains each source's application, role, project IDs, action, district,
+  vote date, and text hashes. `represented_application_flag` distinguishes
+  represented applications from context sources. `text_included_flag` and
+  `analysis_text_order` identify the unique source excerpts used to reconstruct
+  the measured text; a repeated source's metadata remains even when its text
+  does not need another copy. The corpus manifest supplies source paths.
 - `ulurp_cpc_text_signal_trends.pdf` compares all reports, non-PP reports, and
   ZM/ZR/ZS reports.
 - `ulurp_cpc_text_signal_homeowner_tercile_trends.pdf` splits the same signals
@@ -42,6 +93,60 @@ cases requiring review remain in the CSV but are excluded from count plots.
 
 The reviewed narrative and district corrections are preserved in
 `record_ulurp_cpc_source_corrections`.
+
+## Added detail and existing human coding
+
+The existing broad labels, count fields, sample membership, and text hashes are
+preserved. New `_detected` columns separate affordability, displacement, traffic,
+parking, neighborhood character, scale/density/design, and historic preservation.
+Additional columns separate councilmember and civic-group support, opposition,
+and requests. These actor flags require a single-sentence candidate with only
+that actor class detected. Mixed actor candidates stay in the evidence table.
+Zero means no detection by these rules, not a verified absence in the report.
+The broad human labels do not automatically become judgments on the new details.
+
+Evidence source matching uses dehyphenated, whitespace-collapsed source text.
+`normalized_source_start` and `normalized_source_end` are zero-based character
+offsets in that representation, with an exclusive end, filled only for a unique
+occurrence. Multiple-source matches, repeated occurrences, and unlocated excerpts
+remain explicit. They are not assigned invented PDF page numbers. The source
+manifest supplies the original text/PDF paths. Source and analysis hashes remain
+available. Candidate phrases do not establish which actor made a statement when
+multiple actors appear, or that a request caused a concession.
+
+Human coding is linked by report identifier, with application-number agreement
+checked. The source table records representation by other narratives; labels are
+not copied from a context companion onto other cases. All 340 currently coded
+reports match retained focal narratives. The old coding files have no source-text
+hash captured at coding time, so current hashes do not certify unchanged source
+content since that reading. Both coder values remain visible when they disagree.
+Tyler's older development-direction codes are retained as
+`legacy_development_direction`; they are not silently mapped to the newer
+`zone_change` and `dev_direction` definitions. His literal `both` civic-group
+codes remain nonstandard/unresolved instead of being overwritten.
+
+The separate reconciled table applies
+`record_ulurp_cpc_training_labels/output/ulurp_cpc_coding_adjudications.csv`.
+Before applying a ruling, it checks unique keys, exact disagreement coverage,
+both original values, source-bundle membership, source-text hashes, and each
+quotation on its cited PDF page. A matching quotation establishes provenance,
+not the correctness of the interpretation. Two literal `both` civic-group codes
+are mapped to the common position categories using the source review; their
+original categories remain visible.
+
+`RECONCILIATION_ISSUE_SCOPE := broad` in the Makefile is the current working
+assumption: count substantive CPC or local discussion, excluding neutral
+descriptions and routine findings. It is not a user-confirmed codebook change.
+The source ledger also saves the narrower local-actor reading; 14 disputed
+fields depend on that choice. Edit this scalar in the Makefile to change the
+canonical output. Four opposition differences await a distinction between
+any dissent and substantive opposition; a fifth lacks clear actor information.
+These source reviews are AI-assisted development judgments, not an independent
+human gold standard. They do not alter the frozen v3 pilot results or rescore
+model accuracy.
+
+The entire ZAP project universe remains in its existing project table. Neither
+an absent CPC report nor an unresolved human or regex field removes a project.
 
 ## Vote and hearing codebook
 

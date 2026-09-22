@@ -1,0 +1,215 @@
+{
+  "dataset": "cpc_jev_usage_v9.csv",
+  "rows": 12,
+  "key": [
+    "request_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "989db8d3cd8053cd2e50871403e1ced69c9114e944a5fc52cc24ac74943e6090",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "request_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 12,
+      "most_common": [
+        [
+          "affordability_recommendation_full_council",
+          1
+        ],
+        [
+          "concerns_prompted_rezoning_excerpt_council",
+          1
+        ],
+        [
+          "concerns_prompted_rezoning_full_council",
+          1
+        ],
+        [
+          "historical_council_action_full_council",
+          1
+        ],
+        [
+          "other_actors_full_council",
+          1
+        ]
+      ]
+    },
+    "status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "successful",
+          12
+        ]
+      ]
+    },
+    "http_status": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "200",
+          12
+        ]
+      ],
+      "minimum": 200,
+      "maximum": 200
+    },
+    "input_tokens": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 12,
+      "most_common": [
+        [
+          "14185",
+          1
+        ],
+        [
+          "1469",
+          1
+        ],
+        [
+          "1930",
+          1
+        ],
+        [
+          "20040",
+          1
+        ],
+        [
+          "2514",
+          1
+        ]
+      ],
+      "minimum": 1469,
+      "maximum": 20040
+    },
+    "output_tokens": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "95",
+          12
+        ]
+      ],
+      "minimum": 95,
+      "maximum": 95
+    },
+    "returned_model": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "typesafe-ai/jev",
+          12
+        ]
+      ]
+    },
+    "started_at": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 12,
+      "most_common": [
+        [
+          "2026-09-20T00:26:13.949909+00:00",
+          1
+        ],
+        [
+          "2026-09-20T00:26:24.573717+00:00",
+          1
+        ],
+        [
+          "2026-09-20T00:26:35.183372+00:00",
+          1
+        ],
+        [
+          "2026-09-20T00:26:45.790449+00:00",
+          1
+        ],
+        [
+          "2026-09-20T00:26:56.391754+00:00",
+          1
+        ]
+      ]
+    },
+    "received_at": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 12,
+      "most_common": [
+        [
+          "2026-09-20T00:26:14.305467+00:00",
+          1
+        ],
+        [
+          "2026-09-20T00:26:25.024701+00:00",
+          1
+        ],
+        [
+          "2026-09-20T00:26:35.507958+00:00",
+          1
+        ],
+        [
+          "2026-09-20T00:26:46.229269+00:00",
+          1
+        ],
+        [
+          "2026-09-20T00:26:56.788460+00:00",
+          1
+        ]
+      ]
+    },
+    "request_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 12,
+      "most_common": [
+        [
+          "0822207ad3b8eedb6caafded26165b1d1716849e1839227c89a3461139284f99",
+          1
+        ],
+        [
+          "0b3bb4aa5df49e7cef687bca5591492749cd53cc18064d19504c93024091488a",
+          1
+        ],
+        [
+          "13bb4808ad6bbf4783a7b45eb63d8a976d0ca9e46c61ca53b75f396ee14f3b6c",
+          1
+        ],
+        [
+          "1f102f670dda61d94d2e2882a4d803f44294083fef08d9c1ba6474134dd540dd",
+          1
+        ],
+        [
+          "3a64048d4f63639262981b1f5d86133f5c5ec1de8ad46c346cf0ae613586a884",
+          1
+        ]
+      ]
+    }
+  }
+}

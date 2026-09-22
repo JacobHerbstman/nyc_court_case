@@ -78,8 +78,40 @@ for project in projects:
             "action_state": attributes.get("statecode") or "",
             "cpc_report_url_raw": attributes.get("dcp-spabsoluteurl") or "",
             "matches_existing_cpc_report": key in reports_by_key,
+            "matched_cpc_document_id": reports_by_key.get(key, {}).get("document_id", ""),
+            "matched_cpc_application_number": reports_by_key.get(key, {}).get("application_number", ""),
+            "matched_cpc_pdf_url": reports_by_key.get(key, {}).get("official_pdf_url", ""),
             "source_url": detail["source_url"], "source_sha256": detail["source_sha256"],
         })
+
+    # Recover literal action codes, retaining each source and every unparsed token.
+    number_codes = {"bulk": set(), "api": set()}
+    unparsed_numbers = {"bulk": [], "api": []}
+    for source, numbers in [
+        ("bulk", re.split(r"[;,|]", project["ulurp_numbers"])),
+        ("api", [e.get("attributes", {}).get("dcp-ulurpnumber") or "" for e in detail_actions]),
+    ]:
+        for number in numbers:
+            if not number.strip():
+                continue
+            normalized = re.sub(r"[^A-Z0-9]", "", number.upper())
+            match = re.fullmatch(r"[A-Z]?\d{6}[A-Z]?([A-Z]{2})[A-Z]", normalized)
+            if match:
+                number_codes[source].add(match[1])
+            else:
+                unparsed_numbers[source].append(number.strip())
+    bulk_tokens = {v.strip().upper() for v in re.split(r"[;,|]", project["actions"]) if v.strip()}
+    api_tokens = {(e.get("attributes", {}).get("dcp-action-value") or "").strip().upper()
+                  for e in detail_actions} - {""}
+    evidence = {
+        "bulk_actions": {v for v in bulk_tokens if re.fullmatch(r"[A-Z]{2}", v)},
+        "bulk_numbers": number_codes["bulk"],
+        "api_actions": {v for v in api_tokens if re.fullmatch(r"[A-Z]{2}", v)},
+        "api_numbers": number_codes["api"],
+    }
+    action_codes = set().union(*evidence.values())
+    has_zoning = bool(action_codes & {"ZM", "ZR", "ZS"})
+    all_report_keys = reports_by_project[project_id] | linked_reports
     api_scope = ""
     if detail and detail["fetch_status"] == "success":
         api_scope = detail["response"]["data"].get("attributes", {}).get("dcp-ulurp-nonulurp") or ""
@@ -92,6 +124,27 @@ for project in projects:
         "in_previous_raw_snapshot": project_id in old_by_id,
         "in_existing_application_spine": project_id in spine_ids,
         "existing_cpc_project_link_count": len(reports_by_project[project_id]),
+        "linked_cpc_application_keys": "; ".join(sorted(all_report_keys)),
+        "linked_cpc_document_ids": "; ".join(sorted(reports_by_key[k]["document_id"] for k in all_report_keys)),
+        "linked_cpc_report_count": len(all_report_keys),
+        "recorded_action_codes": "; ".join(sorted(action_codes)),
+        "action_code_sources": "; ".join(source for source, codes in evidence.items() if codes),
+        "bulk_action_codes": "; ".join(sorted(evidence["bulk_actions"])),
+        "bulk_number_action_codes": "; ".join(sorted(evidence["bulk_numbers"])),
+        "api_action_codes": "; ".join(sorted(evidence["api_actions"])),
+        "api_number_action_codes": "; ".join(sorted(evidence["api_numbers"])),
+        "unparsed_bulk_numbers": "; ".join(unparsed_numbers["bulk"]),
+        "unparsed_api_numbers": "; ".join(unparsed_numbers["api"]),
+        "unparsed_action_tokens": "; ".join(sorted((bulk_tokens | api_tokens) - action_codes)),
+        "action_code_sets_disagree": len({frozenset(codes) for codes in evidence.values() if codes}) > 1,
+        "action_evidence_present": bool(action_codes),
+        "has_zoning_action": has_zoning,
+        "has_zoning_map_action": "ZM" in action_codes,
+        "pp_only": action_codes == {"PP"},
+        "action_group": "zoning_map" if "ZM" in action_codes else
+                        "other_zoning" if has_zoning else "pp_only" if action_codes == {"PP"} else
+                        "other_recorded_actions" if action_codes else "no_action_evidence",
+        "certified_referred": project["certified_referred"],
         "bulk_ulurp_number_present": bool(project["ulurp_numbers"]),
         "bulk_actions_present": bool(project["actions"]),
         "project_brief_present": bool(project["project_brief"]),
@@ -163,7 +216,7 @@ save_csv(status_rows, list(status_rows[0]), "../output/zap_status_coverage.csv",
 save_csv(annual_rows, list(annual_rows[0]), "../output/zap_dates_by_year.csv", ["ulurp_scope", "project_status", "date_field", "year"])
 save_csv(cluster_rows, list(cluster_rows[0]), "../output/zap_date_clusters.csv", ["ulurp_scope", "project_status", "date_field", "date"])
 save_csv(changes, ["project_id", "change_type", "changed_fields", "previous_project_status", "current_project_status"], "../output/zap_snapshot_changes.csv", ["project_id"])
-save_csv(actions, ["project_id", "action_id", "bulk_project_status", "bulk_ulurp_non", "action_name", "action_code", "raw_application_number", "application_key", "action_status", "action_state", "cpc_report_url_raw", "matches_existing_cpc_report", "source_url", "source_sha256"], "../output/zap_recovered_actions.csv", ["project_id", "action_id"])
+save_csv(actions, list(actions[0]), "../output/zap_recovered_actions.csv", ["project_id", "action_id"])
 
 ulurp = [r for r in coverage if r["ulurp_scope"] == "explicit_ulurp"]
 terminal = [r for r in ulurp if r["withdrawn_or_terminated"]]

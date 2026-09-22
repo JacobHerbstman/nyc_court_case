@@ -1,0 +1,256 @@
+{
+  "dataset": "cpc_n_report_references.csv",
+  "rows": 3686,
+  "key": [
+    "c_application_number",
+    "n_application_key"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "ec57d83deace87e3e28576e4f55d99f3e0b3f27bc3ee938502c05b414dc9260c",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "c_application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1904,
+      "most_common": [
+        [
+          "C 250014 ZMK",
+          21
+        ],
+        [
+          "C 210438A ZSM",
+          17
+        ],
+        [
+          "C 250276 ZSK",
+          14
+        ],
+        [
+          "C 140019 HAK",
+          13
+        ],
+        [
+          "C 160310 ZSM",
+          13
+        ]
+      ]
+    },
+    "n_application_key": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1801,
+      "most_common": [
+        [
+          "N240290ZRY",
+          22
+        ],
+        [
+          "N040172ZRK",
+          19
+        ],
+        [
+          "N040176HGK",
+          17
+        ],
+        [
+          "N040500AZRM",
+          16
+        ],
+        [
+          "N050110AZRK",
+          16
+        ]
+      ]
+    },
+    "n_source_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "excluded_indexed",
+          1809
+        ],
+        [
+          "not_in_index",
+          1684
+        ],
+        [
+          "included",
+          193
+        ]
+      ]
+    },
+    "c_pdf_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1901,
+      "most_common": [
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/140132.pdf",
+          44
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/250014.pdf",
+          21
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/210438a.pdf",
+          17
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/250276.pdf",
+          14
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/140019.pdf",
+          13
+        ]
+      ]
+    },
+    "c_source_text_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1888,
+      "most_common": [
+        [
+          "780abe1dd9e57419d1aa81c8b89b4ee839c37d6abcde0ca4430d9a0fb6585853",
+          44
+        ],
+        [
+          "f430b8cc8979982dd7ebb377149ea4efa3d6ee919e0952a9f1311b8cde1afa6e",
+          21
+        ],
+        [
+          "7f0755f079975348dc9371699d4f245344e4dc36ebb008ea1f4fef3b896084be",
+          17
+        ],
+        [
+          "23169a35b7f918c2154ae479db8d843b7dbdc6c087663d5d01cc0a9d1dceec86",
+          14
+        ],
+        [
+          "3af577b43edbe40d7c61b282c20a03edf495019faa45090257859b026a5e6120",
+          13
+        ]
+      ]
+    },
+    "pdf_pages": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1009,
+      "most_common": [
+        [
+          "2",
+          456
+        ],
+        [
+          "1",
+          266
+        ],
+        [
+          "2; 3; 4",
+          186
+        ],
+        [
+          "3",
+          179
+        ],
+        [
+          "2; 3",
+          176
+        ]
+      ]
+    },
+    "occurrence_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 28,
+      "most_common": [
+        [
+          "1",
+          1423
+        ],
+        [
+          "2",
+          436
+        ],
+        [
+          "4",
+          382
+        ],
+        [
+          "3",
+          352
+        ],
+        [
+          "7",
+          216
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 51
+    },
+    "nearby_referral_language_flag": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "False",
+          2897
+        ],
+        [
+          "True",
+          789
+        ]
+      ]
+    },
+    "example_context": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3584,
+      "most_common": [
+        [
+          "ing and closing streets and widening streets. C 860685 ZMK Change in the Zoning Map from M1-1, C8-2, C6-1, R6 and C1-3 Districts to C6-4 and C6-1A Districts. 2 C 860686 - 693 ZSK N 870083 HGK Designation of the Metrotech Urban Renewal Area. C 870084 HUK Urban Renewal Plan for the Metrotech Urban Renewal Area. C 870085 HDK Disposition of city-owned property within the Metrotech Urban",
+          8
+        ],
+        [
+          "special permit regulations for large-scale general developments, relating to the former Seward Park Extension Urban Renewal Area. C 120228 ZSM Special Permit, to modify the bulk regulations within a Large-Scale General Development. C 120229 ZSM Special Permit, to modify the use regulations within a Large-Scale General Development. N 120230 ZAM A request for the grant of an Authorization by the Commission, pursuant to Section 74-744, to modify signage regulations to allow signs accessory to non-residential uses above the level of the finished floor of the third story. C 120231 ZSM Special Permit, pursuant to Sections 13-562 and 74-52 of the Zoning Resolution, to allow a public parking garage on property bounded by Delancey Street, Norfolk Street, Broome Street",
+          7
+        ],
+        [
+          "essitated thereby, including authorization for any disposition or acquisition of real property related thereto, in accordance with Map No. 30236, dated March 14, 2012, and signed by the Borough President. C 120226 ZMM A proposed amendment to the Zoning Map, Section No. 12c, establishing a C2-5 District within an existing R8 District. N 120227 ZRM A proposed amendment to the Zoning Resolution, modifying Sections 74- 743 (Special Provisions for Bulk Modifications) and 74-744 (Modification of Use Regulations) concerning special permit regulations for large-scale general developments, relating to the former Seward Park Extension Urban Renewal Area. C 120228 ZSM Special Permit, to modify the bulk regulations within a Large-Scale General Development. C 120229 ZSM S",
+          6
+        ],
+        [
+          "6 Carl Weisbrod, Chairman City Planning Commission 22 Reade Street New York, NY 10007 Dear Mr. Weisbrod: At its Full Board meeting on July 21, 2016, CB#2, Manhattan (CB2, Man.), adopted the following resolution: 550 Washington Street (Manhattan Block 596, Lot 1) and Pier 40 (Manhattan Block 656, Lot 1) N160309ZMM. 160310ZSM, 160311ZSM, 160312ZSM, 160313ZSM, N160314ZAM, N160315ZAM, N160316ZAM, N160317ZCM This is a ULURP action including two land use applications to the City Planning Commission as follows: (1) a zoning map amendment (a) to rezone a property at 550 Washington Street consisting of a single zoning lot from an Ml-5 and M2-4 district to a C6-4, C6-3, and Ml-5 district, and (b) to map the the property and Pier 40, located at West Houston Street in Hudson River Park, as part of the proposed Special Hudson River Park District, which Special District is proposed to be created by an appli",
+          5
+        ],
+        [
+          "0 square feet of ground-floor commercial uses on the upland parcel but that these would consist of small-scale local retail spaces, the largest of which would be 8,410 square feet. The Commission believes that with this configuration, the proposed retail space can be served by curb-side deliveries without adverse effect on the surrounding area. Waterfront Authorizations (62-822) – N 140136 ZAK, N 140137 ZAK, N 140138 ZAK The Commission believes the requested authorizations are appropriate. As part of these authorizations, the applicant requests modification of waterfront public access requirements pertaining to dimensions, configuration, planting and other design requirements of the required waterfront public access areas, and approval of the phased implementation of these public access improvements. The Commission believes that the modifications to the dimensional requirements of ZR Section 62-",
+          4
+        ]
+      ]
+    }
+  }
+}

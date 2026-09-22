@@ -1,0 +1,69 @@
+{
+  "dataset": "zap_withdrawal_action_period.csv",
+  "rows": 29,
+  "key": ["sample", "period"],
+  "unique_nonmissing_key": true,
+  "md5_csv_bytes": "a5743c95bbaa09a877bd157f5e38d887",
+  "fingerprint_scope": "Saved CSV bytes, including row order; not proof of source correctness.",
+  "columns": {
+    "sample": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 5
+    },
+    "period": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 6
+    },
+    "projects": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 28,
+      "minimum": 1,
+      "maximum": 7145
+    },
+    "withdrawn": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 21,
+      "minimum": 0,
+      "maximum": 638
+    },
+    "terminated": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 14,
+      "minimum": 0,
+      "maximum": 73
+    },
+    "action_evidence_projects": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 25,
+      "minimum": 0,
+      "maximum": 7105
+    },
+    "cpc_linked_projects": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 20,
+      "minimum": 0,
+      "maximum": 5926
+    },
+    "withdrawal_share": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 22,
+      "minimum": 0,
+      "maximum": 0.5
+    },
+    "withdrawn_terminated_share": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 22,
+      "minimum": 0,
+      "maximum": 0.5
+    }
+  }
+}

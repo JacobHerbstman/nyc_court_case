@@ -1,0 +1,371 @@
+{
+  "dataset": "cpc_jev_comparison_v12.csv",
+  "rows": 153,
+  "key": [
+    "document_id",
+    "field"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "12c6f0f4beb6e61988eaf89c520a6b8cc4845bd8a7cc41305070c3fc83d143e5",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 11,
+      "most_common": [
+        [
+          "3d3e349c0ec6fa272928",
+          33
+        ],
+        [
+          "4663594bf497e636e685",
+          33
+        ],
+        [
+          "b90e3062bee3abb7f35e",
+          33
+        ],
+        [
+          "e70fca539711f235a7ab",
+          33
+        ],
+        [
+          "26f03d0909c6323e9605",
+          8
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 11,
+      "most_common": [
+        [
+          "C 050480 ZMX",
+          33
+        ],
+        [
+          "C 800193 HPK",
+          33
+        ],
+        [
+          "C 810488 PPM",
+          33
+        ],
+        [
+          "C 830464 ZMX",
+          33
+        ],
+        [
+          "C 990218 ZSK",
+          8
+        ]
+      ]
+    },
+    "test_group": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "fresh",
+          132
+        ],
+        [
+          "known_error",
+          11
+        ],
+        [
+          "positive_control",
+          10
+        ]
+      ]
+    },
+    "field": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 33,
+      "most_common": [
+        [
+          "civic__opposition",
+          7
+        ],
+        [
+          "civic__support",
+          7
+        ],
+        [
+          "council__requested_provision",
+          6
+        ],
+        [
+          "neighborhood_character__adopted",
+          6
+        ],
+        [
+          "scale_density_design__adopted",
+          6
+        ]
+      ]
+    },
+    "value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          96
+        ],
+        [
+          "1",
+          57
+        ]
+      ]
+    },
+    "reason": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 126,
+      "most_common": [
+        [
+          "No concern, question, objection, or request about affordability, rents, prices, income eligibility, or affordable-housing access is recorded.",
+          2
+        ],
+        [
+          "No concern, question, objection, or request about displacement, relocation, eviction, harassment, or occupant protection is recorded.",
+          2
+        ],
+        [
+          "No concern, question, objection, or request about traffic, congestion, loading, pedestrian circulation, or parking is recorded.",
+          2
+        ],
+        [
+          "No qualifying commitment or binding substantive condition concerning affordability, rents, prices, income eligibility, or affordable-housing access is recorded.",
+          2
+        ],
+        [
+          "No qualifying commitment or binding substantive condition concerning displacement, relocation, eviction, harassment, or occupant protection is recorded.",
+          2
+        ]
+      ]
+    },
+    "evidence_json": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 58,
+      "most_common": [
+        [
+          "[]",
+          89
+        ],
+        [
+          "[{\"source_document_id\": \"28cc037f9056f9cd9141\", \"pdf_page\": 8, \"quote\": \"identifying concerns raised by the Board and the council member regarding recreational use within the PAA.\"}]",
+          4
+        ],
+        [
+          "[{\"source_document_id\": \"26f03d0909c6323e9605\", \"pdf_page\": \"12\", \"quote\": \"uildings developed throughout comparable neighborhoods in the City, and urged the applicant to consider a streetwall with recesses and courts to create building sections that would break the monotony of the continuous streetwall. The applicant has responded to these concerns by redesigning the building and creating deeper recesses and an outer court along Bay Ridge Avenue. The redesigned Bay Ridge Avenue facade is defined by recesses of various depths, the inclusion of an outer court, 26.8 feet wide by 19.10 feet deep, above th\"}]",
+          2
+        ],
+        [
+          "[{\"source_document_id\": \"3d3e349c0ec6fa272928\", \"pdf_page\": \"2\", \"quote\": \"One of the major goals of this plan was to preserve the building context and scale of neighborhoods within Community District 8.\"}, {\"source_document_id\": \"3d3e349c0ec6fa272928\", \"pdf_page\": \"7\", \"quote\": \"The Chair of the community Board 8 Land Use Committee also mentioned how the community sought this rezoning as part of its 197-a plan.\"}]",
+          2
+        ],
+        [
+          "[{\"source_document_id\": \"3d3e349c0ec6fa272928\", \"pdf_page\": \"6\", \"quote\": \"There were four speakers in favor of the application, and no speakers in opposition. The speakers included the City Councilmember representing District 11, a representative of the Bronx Borough President, the Chair of the Land Use Committee of Community Board 8, and the Chair of the Riverdale Nature Preservancy.\"}]",
+          2
+        ]
+      ]
+    },
+    "reviewer": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "sol_a",
+          66
+        ],
+        [
+          "sol_b",
+          66
+        ],
+        [
+          "Previously blinded Sol-medium reader e; not human adjudication",
+          10
+        ],
+        [
+          "Codex primary agent; source review, not human adjudication",
+          4
+        ],
+        [
+          "Codex source review with Sol-medium reader; not human adjudication",
+          4
+        ]
+      ]
+    },
+    "historical": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          93
+        ],
+        [
+          "1",
+          54
+        ]
+      ]
+    },
+    "corrected_original": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 7,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          95
+        ],
+        [
+          "1",
+          51
+        ]
+      ]
+    },
+    "corrected_candidate": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 48,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          76
+        ],
+        [
+          "1",
+          29
+        ]
+      ]
+    },
+    "original_complete": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          152
+        ],
+        [
+          "0",
+          1
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "candidate_complete": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          105
+        ],
+        [
+          "0",
+          48
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "historical_match": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 6,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          123
+        ],
+        [
+          "0",
+          24
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "corrected_original_match": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 7,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          125
+        ],
+        [
+          "0",
+          21
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "corrected_candidate_match": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 48,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          93
+        ],
+        [
+          "0",
+          12
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    }
+  }
+}

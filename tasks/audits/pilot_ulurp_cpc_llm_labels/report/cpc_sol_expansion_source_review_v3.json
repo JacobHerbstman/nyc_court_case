@@ -1,0 +1,346 @@
+{
+  "dataset": "cpc_sol_expansion_source_review_v3.csv",
+  "rows": 14,
+  "key": [
+    "finding_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "272d00c7a4c77f82f8b3be157a9d70b1f5db4c21766ce70586b4b9f106f77658",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "finding_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 14,
+      "most_common": [
+        [
+          "bay_council_applicant",
+          1
+        ],
+        [
+          "bridge_repair",
+          1
+        ],
+        [
+          "bronx_components",
+          1
+        ],
+        [
+          "canarsie_civic",
+          1
+        ],
+        [
+          "commerce_scale",
+          1
+        ]
+      ]
+    },
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 11,
+      "most_common": [
+        [
+          "769cdf5492002cd3fc79",
+          2
+        ],
+        [
+          "8af7fa7ebb7ba8a841eb",
+          2
+        ],
+        [
+          "ac082f8f948e1421a132",
+          2
+        ],
+        [
+          "02c18c0a3b85fce07355",
+          1
+        ],
+        [
+          "1818edbd692337c3eeeb",
+          1
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 11,
+      "most_common": [
+        [
+          "C 070065 ZMQ",
+          2
+        ],
+        [
+          "C 090387 ZMK",
+          2
+        ],
+        [
+          "N 080425 ZRR",
+          2
+        ],
+        [
+          "C 050145 ZMR",
+          1
+        ],
+        [
+          "C 060272 ZMK",
+          1
+        ]
+      ]
+    },
+    "field": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "civic_group_position",
+          5
+        ],
+        [
+          "councilmember_position",
+          4
+        ],
+        [
+          "infrastructure_services__concern_request",
+          1
+        ],
+        [
+          "infrastructure_services__specific_obligation",
+          1
+        ],
+        [
+          "scale_character_preservation",
+          1
+        ]
+      ]
+    },
+    "category": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "human_label_disagreement",
+          4
+        ],
+        [
+          "aggregation_limit",
+          3
+        ],
+        [
+          "correct_role_distinction",
+          2
+        ],
+        [
+          "model_stage_error",
+          2
+        ],
+        [
+          "attribution_risk",
+          1
+        ]
+      ]
+    },
+    "segment_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 10,
+      "most_common": [
+        [
+          "s0003",
+          2
+        ],
+        [
+          "s0005",
+          2
+        ],
+        [
+          "s0014",
+          2
+        ],
+        [
+          "s0028",
+          2
+        ],
+        [
+          "s0001",
+          1
+        ]
+      ]
+    },
+    "quote": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 14,
+      "most_common": [
+        [
+          "A representative of the City Councilman from Council District 51, who is the applicant",
+          1
+        ],
+        [
+          "A representative of the Staten Island Economic Development Corporation spoke in favor of the project.",
+          1
+        ],
+        [
+          "DOT has agreed to address the concerns of the Community Board by restoring that portion of 9th Avenue to a safe condition",
+          1
+        ],
+        [
+          "One off-street parking space shall be provided for each #dwelling unit# created after (effective date of amendment)",
+          1
+        ],
+        [
+          "Others in opposition included members of the Committee to Protect Sunset Park and Sunset Park Alliance of Neighbors (SPAN)",
+          1
+        ]
+      ]
+    },
+    "assessment": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 14,
+      "most_common": [
+        [
+          "Sol assigns organizational opposition to both named groups. The passage establishes opposition by members; under the instruction membership alone does not establish an authorized organizational position. This remains an attribution risk despite the correct extraction of the testimony.",
+          1
+        ],
+        [
+          "Sol calls an ordinary provision of the enacted special-district text a specific obligation. The frozen definition excludes enactment of the main land-use action alone and requires an applicant undertaking or individualized condition. This positive is too broad under that definition; the independently documented parking request remains valid.",
+          1
+        ],
+        [
+          "Sol correctly avoids treating the stated intention alone as an accepted specific obligation. This check does not independently validate all negative obligation fields.",
+          1
+        ],
+        [
+          "Sol identifies a specific roadway-safety undertaking in response to board concerns. The original traffic label is zero; the main report supports the broader positive even though the repair is outside the mapped amendment boundary.",
+          1
+        ],
+        [
+          "Sol keeps this actor and his testimony but assigns only the applicant role. Consequently the Council summary is a false absence. Political office and project capacity must be retained together; excluding project actors from independent civic groups must not erase an official Council role.",
+          1
+        ]
+      ]
+    },
+    "quote_found": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "1",
+          14
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 1
+    },
+    "source_document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 11,
+      "most_common": [
+        [
+          "769cdf5492002cd3fc79",
+          2
+        ],
+        [
+          "8af7fa7ebb7ba8a841eb",
+          2
+        ],
+        [
+          "ac082f8f948e1421a132",
+          2
+        ],
+        [
+          "02c18c0a3b85fce07355",
+          1
+        ],
+        [
+          "1818edbd692337c3eeeb",
+          1
+        ]
+      ]
+    },
+    "source_application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 11,
+      "most_common": [
+        [
+          "C 070065 ZMQ",
+          2
+        ],
+        [
+          "C 090387 ZMK",
+          2
+        ],
+        [
+          "N 080425 ZRR",
+          2
+        ],
+        [
+          "C 050145 ZMR",
+          1
+        ],
+        [
+          "C 060272 ZMK",
+          1
+        ]
+      ]
+    },
+    "pdf_page": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 10,
+      "most_common": [
+        [
+          "14",
+          2
+        ],
+        [
+          "28",
+          2
+        ],
+        [
+          "3",
+          2
+        ],
+        [
+          "5",
+          2
+        ],
+        [
+          "1",
+          1
+        ]
+      ]
+    }
+  }
+}

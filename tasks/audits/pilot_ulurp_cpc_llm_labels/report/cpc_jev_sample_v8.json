@@ -1,0 +1,178 @@
+{
+  "dataset": "cpc_jev_sample_v8.csv",
+  "rows": 340,
+  "key": [
+    "document_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "a9f6be63f5bb16c9b1a27506e0d584f5af89c1be267deaaa2a7deae4f8f6ab67",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 340,
+      "most_common": [
+        [
+          "00326891d3391480524d",
+          1
+        ],
+        [
+          "027b0c0b2938ee5f5961",
+          1
+        ],
+        [
+          "0290f3b8b3e9437b9ac9",
+          1
+        ],
+        [
+          "02c18c0a3b85fce07355",
+          1
+        ],
+        [
+          "0385e4de7488ec4762c5",
+          1
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 340,
+      "most_common": [
+        [
+          "C 000029 ZSM",
+          1
+        ],
+        [
+          "C 000040 PPM",
+          1
+        ],
+        [
+          "C 000092 PPM",
+          1
+        ],
+        [
+          "C 000151 ZMR",
+          1
+        ],
+        [
+          "C 000478 PPQ",
+          1
+        ]
+      ]
+    },
+    "selected": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          330
+        ],
+        [
+          "1",
+          10
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "selection_reason": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "outside_fixed_test_size_or_selected_source_overlap",
+          175
+        ],
+        [
+          "prior_pilot_or_source_review_overlap",
+          112
+        ],
+        [
+          "whole_bundle_exceeds_state_limit",
+          23
+        ],
+        [
+          "incomplete_or_conflicting_original_reference",
+          20
+        ],
+        [
+          "original_label_coverage",
+          10
+        ]
+      ]
+    },
+    "reference_cells": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 21,
+      "distinct_nonmissing": 103,
+      "most_common": [
+        [
+          "affordability_displacement=0;scale_character_preservation=0;traffic_parking=0;infrastructure_services=0;environment_open_space=0;councilmember_position=none_or_procedural;civic_group_position=none_or_procedural",
+          95
+        ],
+        [
+          "affordability_displacement=0;scale_character_preservation=0;traffic_parking=0;infrastructure_services=1;environment_open_space=0;councilmember_position=none_or_procedural;civic_group_position=none_or_procedural",
+          11
+        ],
+        [
+          "affordability_displacement=0;scale_character_preservation=1;traffic_parking=0;infrastructure_services=0;environment_open_space=0;councilmember_position=none_or_procedural;civic_group_position=none_or_procedural",
+          10
+        ],
+        [
+          "affordability_displacement=0;scale_character_preservation=0;traffic_parking=1;infrastructure_services=0;environment_open_space=0;councilmember_position=none_or_procedural;civic_group_position=none_or_procedural",
+          9
+        ],
+        [
+          "affordability_displacement=0;scale_character_preservation=0;traffic_parking=0;infrastructure_services=0;environment_open_space=1;councilmember_position=none_or_procedural;civic_group_position=none_or_procedural",
+          8
+        ]
+      ]
+    },
+    "state_characters": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 132,
+      "distinct_nonmissing": 208,
+      "most_common": [
+        [
+          "100659",
+          1
+        ],
+        [
+          "100777",
+          1
+        ],
+        [
+          "10127",
+          1
+        ],
+        [
+          "10184",
+          1
+        ],
+        [
+          "102641",
+          1
+        ]
+      ],
+      "minimum": 2265,
+      "maximum": 610660
+    }
+  }
+}
