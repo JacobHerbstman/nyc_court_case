@@ -64,9 +64,11 @@ extraction runs once on frozen, repaired text and the rows are then treated as
 fixed raw data. Jacob accepts the model's judgment of statement status; a small
 spot check will report its error rate rather than adjudicate every row.
 
-Two constraints carry forward. The page-scope step, now
-`build_ulurp_cpc_reading_text`, holds any report with an attachment page it
-cannot attribute to the focal application; on the repaired text that is 5,068 of
-9,063 narratives. Pilot samples drawn after September 21 came only from ready
-reports, and the new extraction needs a rule for attachments rather than
-excluding most of the corpus. Original human coding and the full ZAP project universe are unchanged.
+The page-scope step, now `build_ulurp_cpc_reading_text`, used to hold any
+report with an attachment page it could not attribute to the focal application:
+5,068 of 9,063 narratives on the repaired text. Pilot samples drawn after
+September 21 came only from the remaining reports. Jacob decided instead to
+supply those pages, flagged, and have the reader record the application for
+each statement. The full reading text is about 52.6 million words, 24% of it
+from such pages. Original human coding and the full ZAP project universe are
+unchanged.

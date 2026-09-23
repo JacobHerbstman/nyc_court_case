@@ -1,12 +1,12 @@
 {
   "dataset": "ulurp_cpc_reading_segments.csv",
-  "rows": 33580,
+  "rows": 176193,
   "key": [
     "document_id",
     "segment_id"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "f50cd4359b840c84dd1d045407ce3398fdfb7c32de1c0ef93fa0b4bee2df678d",
+  "sha256_csv_bytes": "6061830f154cb5c561a100b394701c298103e8249c94af76569ee884e724e08f",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -14,27 +14,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 3995,
+      "distinct_nonmissing": 9063,
       "most_common": [
         [
-          "2256c4207c42ec8e1e12",
-          142
+          "0b946b35415497776bf9",
+          584
         ],
         [
-          "430f7133bcb53576e66f",
-          142
+          "5facd79440eead459640",
+          435
         ],
         [
-          "6e1a82a9f99e3fe205a1",
-          142
+          "f50d1c130991350112af",
+          435
         ],
         [
-          "becef76ad71d74633b6c",
-          142
+          "aa02a7dd6c6282ef52e5",
+          407
         ],
         [
-          "d3341b9b297c246b62e0",
-          142
+          "ac106cd954a5b13d87df",
+          407
         ]
       ]
     },
@@ -43,27 +43,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 142,
+      "distinct_nonmissing": 584,
       "most_common": [
         [
           "s0001",
-          3995
+          9063
         ],
         [
           "s0002",
-          3704
+          8771
         ],
         [
           "s0003",
-          2555
+          7463
         ],
         [
           "s0004",
-          2133
+          6737
         ],
         [
           "s0005",
-          1846
+          6258
         ]
       ]
     },
@@ -72,27 +72,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 4130,
+      "distinct_nonmissing": 9655,
       "most_common": [
         [
-          "d648f3aea1713af93752",
-          532
+          "43038a2d2c3699ec65ea",
+          2961
         ],
         [
-          "6e1a82a9f99e3fe205a1",
-          510
+          "805bb038c3f7601dd073",
+          2448
         ],
         [
-          "0054038024f32a4c7cf9",
-          312
+          "51d404cdade16988575a",
+          1485
         ],
         [
-          "b377d824cbb66c116213",
-          296
+          "d69c2b7e86b4bf2a3206",
+          1232
         ],
         [
-          "e40ecad2aae0cccec7be",
-          200
+          "5ee0701ba502805b33c6",
+          1026
         ]
       ]
     },
@@ -101,27 +101,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 4130,
+      "distinct_nonmissing": 9655,
       "most_common": [
         [
-          "N 090273A ZRK",
-          532
+          "C 100296A ZSM",
+          2961
         ],
         [
-          "C 070531A ZSM",
-          510
+          "N 040500A ZRM",
+          2448
         ],
         [
-          "C 060059 MMX",
-          312
+          "C 090433 ZMM",
+          1485
         ],
         [
-          "C 030509 HUQ",
-          296
+          "C 040171 ZMK",
+          1232
         ],
         [
-          "C 860777 ZSM",
-          200
+          "C 900163A ZSQ",
+          1026
         ]
       ]
     },
@@ -130,23 +130,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 4,
+      "distinct_nonmissing": 5,
       "most_common": [
         [
           "focal_report",
-          22178
+          100056
         ],
         [
           "context_companion",
-          10316
+          67418
         ],
         [
           "represented_related_action",
-          922
+          7469
         ],
         [
           "verified_n_companion",
-          164
+          1221
+        ],
+        [
+          "repeated_narrative",
+          29
         ]
       ]
     },
@@ -155,104 +159,137 @@
         "int"
       ],
       "missing": 0,
-      "distinct_nonmissing": 131,
+      "distinct_nonmissing": 418,
       "most_common": [
         [
           "1",
-          5548
+          14412
         ],
         [
           "2",
-          5251
+          14114
         ],
         [
           "3",
-          3614
+          12179
         ],
         [
           "4",
-          2782
+          10652
         ],
         [
           "5",
-          2288
+          9601
         ]
       ],
       "minimum": 1,
-      "maximum": 131
+      "maximum": 418
+    },
+    "page_scope": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "in_scope",
+          135279
+        ],
+        [
+          "unresolved",
+          40914
+        ]
+      ]
     },
     "page_start": {
       "python_types": [
         "int"
       ],
       "missing": 0,
-      "distinct_nonmissing": 1,
+      "distinct_nonmissing": 13,
       "most_common": [
         [
           "0",
-          33580
+          176161
+        ],
+        [
+          "11998",
+          8
+        ],
+        [
+          "11996",
+          6
+        ],
+        [
+          "11999",
+          4
+        ],
+        [
+          "23995",
+          3
         ]
       ],
       "minimum": 0,
-      "maximum": 0
+      "maximum": 23995
     },
     "page_end": {
       "python_types": [
         "int"
       ],
       "missing": 0,
-      "distinct_nonmissing": 3232,
+      "distinct_nonmissing": 4858,
       "most_common": [
         [
-          "1473",
-          52
-        ],
-        [
-          "1739",
-          46
+          "1533",
+          160
         ],
         [
           "1536",
-          45
+          158
         ],
         [
-          "2180",
-          45
+          "2133",
+          157
         ],
         [
-          "1673",
-          44
+          "1582",
+          148
+        ],
+        [
+          "1593",
+          146
         ]
       ],
-      "minimum": 3,
-      "maximum": 5707
+      "minimum": 2,
+      "maximum": 28090
     },
     "source_text_sha256": {
       "python_types": [
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 4130,
+      "distinct_nonmissing": 9655,
       "most_common": [
         [
-          "2439403f2023b804c6ec123899b7c996fa7f86c726169e08f9500a8f0e76faf4",
-          532
+          "8aa8d1cb216e7c5bf373c443d18fd5da5837a7a025bbe54ee37b26c63bcddf29",
+          2961
         ],
         [
-          "b09088a642cf484814e9b44c7bbe2087b62ad4cd4221d4a219a722a6428fa741",
-          510
+          "9da76a8e5264aca645d83c98bd9568df1301ccc1d1b749e7876bb415bff35968",
+          2448
         ],
         [
-          "c5a32ef01baa62f9423dde3bde0e6509c36f4c266c7011e2cf33c8ceacbc9eaa",
-          312
+          "89566c21aff42ea53c5961446aa7ccc189a621fed8934a570aee96245e0d9f54",
+          1485
         ],
         [
-          "9ebc2dca53051f329638bed8f2245488be3ddc2b33678c7a138c912467174c6f",
-          296
+          "844a625fe56495e5b8311f1424497c75d77bd1356191f90071be551bd80b926e",
+          1232
         ],
         [
-          "dd1ac92980002ac22e8843ed718a6fb415e900692e5ff7c60fb567bfa4c9a736",
-          200
+          "f74f56b1d90718a0a3d175a1c2c0c93a6e00b04f4bb363c250039970295517ad",
+          1026
         ]
       ]
     },
@@ -261,27 +298,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 4130,
+      "distinct_nonmissing": 9655,
       "most_common": [
         [
-          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/090273a.pdf",
-          532
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/100296a.pdf",
+          2961
         ],
         [
-          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/070531a.pdf",
-          510
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/040500a.pdf",
+          2448
         ],
         [
-          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/060059.pdf",
-          312
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/090433.pdf",
+          1485
         ],
         [
-          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/030509.pdf",
-          296
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/040171.pdf",
+          1232
         ],
         [
-          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/860777.pdf",
-          200
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/900163a.pdf",
+          1026
         ]
       ]
     },
@@ -290,27 +327,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 23210,
+      "distinct_nonmissing": 106793,
       "most_common": [
         [
-          "CITY PLANNING COMMISSION C 790502 TLX March 12, 1980/ Calendar No. 56: Lease o6 City PAopeAty tocated at Fulton Avenue and East 166th Stteet, aeock.2608, Lot's 58,5_60 in-the BAonx, pumuant to Section 197-c o6 the New Voidz City Chattet, 6oA the constAuction 06 a puotic open apace 60t the bene6it o the community. An apptication by the DepaAtment o6 PaAhs 6oA the tease o6 this pAopetty ula.s Aeceived on June 25, 1979 and cotied by the City Panning Comma4ion on NovembeA 13, 1979. BACKGROUND INFORMATION The South Bronx Open Space Task Force has an active staff composed of community organizers, architects, landscape architects, and horticulturalists. Nine sites are curruntly being reviewed in accordance with the Uniform Land Use Review procedure. One of the nine sites and parts of two sites will become neighbor- hood land trusts, that is, will be owned by non-profit corporations, in the interests of all neighborhood residents. All designs are the result of parti- cipatory planning, based on prioritized community needs; all construction will be carried out by the community residents; and all future maintenance will be assumed by the responsible community. All other sites are City-owned and will be leased to the community group by the City. For a more detailed description of the proposal, including a list of community groups involved and summaries of the proposed leases, see CPC report C790495PLX, dated March 12, 1980. This application, C790502PLX, requests the lease of City-owned property, Block 2608, Lots 58 & 60, located at Fulton Avenue and East 166th Street in the Bronx, to the South Bronx Roots Community Association, for the development of community open space. The proposed site has already been cultivated as a gardening demonstration area. Some residents of the surrounding tenant-managed properties have planted individual plots as well as contributed to cultivation of a com- munal garden, all with considerable effort and minimal resources. The plans for this site include the continued introduction of new gardening techniques, with the aid of such technical assistance groups as the Cornell Extension Service and the Council on the Environment.",
-          9
+          "CITY OF NEW YORK MANHATTAN COMMUNITY BOARD 10 215 West 125th Street, 4th Floor—New York, NY 10027 T: 212-749-3105 F: 212-662-4215 CICELY HARRIS Chairperson SHATIC MITCHELL District Manager Central Harlem Open Door/Neighborhood Construction Program (NCP) Resolution Manhattan Community Board 10 RESOLUTION: To approve the Central Harlem Open Door/Neighborhood Construction Program (NCP) Cluster Certification seeking the designation of an Urban Development Action Area (UDAA), approval of an Urban Development Action Area Project (UDAAP), and the disposition of City-owned property. Whereas, New York City Housing Preservation & Development (hereafter known as \"HPD\") Division of Planning and Predevelopment, Iris Development, and Lemor Development Group are seeking approval of a Uniform Land Use Review Procedure (hereafter known as \"ULURP\") application, C200277-HAM, C200278-HAM, and C200279-HAM for the Central Harlem Open Door/NCP Cluster Certification. The application is to approve the designation of an Urban Development Action Area (UDAA), an Urban Development Action Area Project (UDAAP), and the disposition of City-owned property; and Whereas, Iris Development and Lemor Development Group are Minority Business Enterprises (MBE) that develop affordable housing, worked with Curtis Ginsberg Architects, a Women Business Enterprise (WBE) to develop three 4-story buildings, seven 6-story buildings, and one 10-story building that will be HPD and Enterprise Green Communities Standard compliant; and Whereas, there are eleven sites located in Manhattan Community Board 10 and one in Manhattan Community Board 11 mainly clustered around 135 th Street and 145 th Street stations, that are currently empty, narrow lots between 16'8\" to 33'3\" wide; and Whereas, Lemor Development Group stated that the project is financed with the Neighborhood Construction Program for rentals, and the Open Door Program for home ownership, based on 2020 rates that are developed annually and subject to change; and Whereas, the NCP Program will provide 78 affordable housing rental units with AMIs between 27% and 77%, for family sizes of 1-4 individuals with income ranges from $23,880 to $90,960, with monthly rents from $433 - $751 at the 27% AMI level to $1286 - $2229 at the 80% AMI",
+          16
         ],
         [
-          "CITY PLANNING COMMISSION March 12, 1980 / Calendar No. 50 C 790496A PLX C 790496B PLX Lease o6 pAopeAty tocate at &Auto Stuet etveen Spo6iond and Ran Avenues, Stock 2765, Lots 246 and 250 in the Stonx, putsuant to Section 197-c o6 the New VoAk City ChaAteA, Oit the conAtAuction o6 a pubZic open Apace 6o.t the ben- 1/42(iit oi the community. An apptication by the Vepaitineiv o PaAks licA the lease b'S this pAopetty Wa4 Aeceived on June 25, 1979 and cettitiied by the atyPeann-i.ng Commission on Novembelt 13, 1979. has an active staff composed of community The South Bronx Open Space Task Force and horticulturalists. Nine sites organizers, architects, landscape architects, with the Uniform Land Use Review are curruntly being reviewed in accordance sites will become neighbor- procedure. One of the nine sites and parts of two the owned by non-profit corporations, in hood land trusts, that is, will be All designs are the result of parti- interests of all neighborhood residents. community needs; all construction will cipatory planning, based on prioritized and all future maintenance will be be carried out by the community residents; All other sites are City-owned and will assumed by the responsible community. the City. be leased to the community group by For a more detailed description of the proposal, including a list of the leases, and summaries of the terms of the proposed community groups involved March 12, 1980. see CPC Report C790495PLX, dated This application (C790496 A/B PLX) involves a double action. Part A of the application requests the lease of Block 2765, Lot 246, which is City-owned, to the Barreto Street Community. Part B requests thTrivat ly-owned parcel, Block 2765, Lot 250 to the City. The planned use for these two lots is for the construction of an active recrea- tion area which will include two hard surfaced handball courts. The lots are part of a large-scale neighborhood revitalization strategy that includes a large community-owned garden and other similar recreation areas on nearby sites. Although the site is presently undeveloped, it has been maintained free of refuse for the past three years. COMMUNITY BOARD PUBLIC HEARING Bronx Community Board No.2 held a public hearing on this proposal on November 28, 1979 and madea favorable recommendation to the City Planning Commission.",
-          9
+          "RECOMMENDATION FOR Constellation CB 3 – C250312HAK; Constellation CB 5 – C250313HAK; Constellation CB 16 - C250314HAK; Constellation CB 17 - C250315HAK BE IT RESOLVED that the Brooklyn Borough President, pursuant to Section 197-c of the New York City Charter, recommends that the City Planning Commission and City Council approve these applications. PROJECT DESCRIPTION This memo outlines the Borough President’s recommendations for four ULURP applications being sought concurrently by the Department of Housing Preservation and Development (HPD) as part of the Constellation project. The Constellation project consists of a cluster of scattered sites across four community districts, which, if approved, would facilitate eight new buildings that would provide a total of 96 affordable homeownership units. To facilitate the construction of these buildings, HPD is proposing a series of Urban Development Action Area Projects (UDAAP) and the disposition of City-owned land. All eight buildings are proposed to be built under existing zoning; no zoning map amendments or zoning text amendments are necessary. COMMUNITY BOARD POSITION At the time of writing, Community Boards 3 and 5 have not submitted recommendations. Community Board 16 has submitted an unfavorable recommendation. Community Board 17 has submitted a conditional favorable recommendation. BOROUGH PRESIDENT PUBLIC HEARING The Borough President held a hearing on this item on October 15, 2025. Two members of the public provided testimony at the hearing, and the Borough President’s Office received written testimony from two members of the public via email. APPROVAL RATIONALE Borough President Reynoso believes that the proposed actions are appropriate. By facilitating affordable homeownership units, these applications are aligned with the Housing Element of the 2025 Comprehensive Plan for Brooklyn, in particular Objective 1, Strategy 9: Maximize the potential for affordable housing development on vacant and underutilized City-owned property. Additionally, most of the proposed units are located within the Plan’s Affordability Priority Areas: areas in which the risk of residential displacement is highest and where affordable housing and tenant protection programs should be prioritized. 2",
+          16
         ],
         [
-          "CITY PLANNING COMMISSION March 12, 1980/ Calendar No. 49 C 790495 PLX Lea4e o6 pnivate pnopetty tocated at East 168th StAeet and Washington Avenue (Bock 2372, Lot 20 in the Manx, by the City, pu4suant to Section 197-c o6 the New Yank City Chan-ten, On the con4tAucti.on oi a pubtic open pace The bene6it oi the community. An apptication by the Depattment oi Pank4 6oft the tease o6 th,i4 pAopetty was eceived on June 25, 1979 and centiiied by the City Rearming Commi.44ion on Novembet 13, 1979. BACKGROUND INFORMATION The South Bronx Open Space Task Force has an active staff composed of community organizers, architects, landscape architects, and horticulturalists. Nine sites are curruntly being reviewed in accordance with the Uniform Land Use Review procedure. One of the nine sites and parts of two sites will become neighbor- hood land trusts, that is, will be owned by non-profit corporations, in the interests of all neighborhood residents. All designs are the result of parti- cipatory planning, based on prioritized community needs; all construction will be carried out by the community residents; and all future maintenance will be assumed by the responsible community. All other sites are City-owned and will be leased to the community group by the City. Following is a list of the community groups involved with each of the sites: Unit Place (site community-owned. (Cr19045#5-F'LY) Barretto Street Community (site partly community-owned). (C.70/4, 6itlig pLX) The Rock Greening Association (site partly community-owned).(cicio497/r3pLx) Grand Avenue Community Association (cricioc.i. g. p Li) Bronx River Restoration. (c1 L4qciP Lx) Hoe Avenue Housing Development Fund Corporation. (c7cto 5-0 pLx) Banana Kelly Community Improvement Association. (C7/OSO/PLX South Bronx Roots. (C 790 o2. P Youth Village Park. Cc pq 03 LA) All of these sponsoring groups are, or will soon be, non-profit, tax exempt (501-(c) (3) corporations, with local residents forming the board of directors, membership and staff. Some of the above sites have already been partially devel- oped by community residents with very limited funds and assistance.",
-          9
+          "UNIFORM LAND USE REVIEW PROCESS (ULURP) APPLICATION ULURP NUMBERS C250312HAK; C250313HAK; C250314HAK; C250315HAK PROJECT NAMES Constellation CB 3; Constellation CB 5; Constellation CB 16; Constellation CB 17 APPLICANT TEAM New York City Department of Housing Preservation and Development (HPD) Constellation CB 3: A UDAAP and disposition to facilitate two new four- and seven-story buildings, containing a total of 34 residential units is being sought by HPD at 908 Madison Street and 1901 Atlantic Avenue in the Bedford-Stuyvesant neighborhood of Brooklyn, Community District 3. Constellation CB 5: A UDAAP and disposition to facilitate two new three- and four-story buildings, containing a total of 14 residential units is being sought by HPD at 881 New Jersey Avenue and 650 Glenmore Avenue in the East New York neighborhood of Brooklyn, Community PROJECT BRIEF District 5. Constellation CB 16: A UDAAP and disposition to facilitate three new six-story buildings, containing a total of 36 residential units is being sought by HPD at 1794 St. John’s Place, 85 Legion Street, and 250 Herzl Street in the Brownsville neighborhood of Brooklyn, Community District 16. Constellation CB 17: A UDAAP and disposition to facilitate a new four-story building, containing 12 residential units is being sought by HPD at 395 East 94th Street in the East Flatbush neighborhood of Brooklyn, Community District 17. COMMUNITY DISTRICT Brooklyn Community Districts 3, 5, 16, and 17 COUNCIL MEMBER Council Members Darlene Mealy and Chris Banks BROOKLYN BOROUGH PRESIDENT’S RECOMMENDATION DATE November 3, 2025 FAVORABLE UNFAVORABLE FAVORABLE WITH UNFAVORABLE MODIFICATIONS / CONDITIONS WITH MODIFICATIONS / CONDITIONS Brooklyn Borough President Antonio Reynoso",
+          16
         ],
         [
-          "CITY PLANNING COMMISSION March 12, 1980/ Calendar No. 51 C 790497A PLX C 790497B PLX Lease (36 pnopetty iocated at East 167th Stteet and 3td Avenue in the Stonx, putsuant to Section 197-c o6 the New Yotk City Chattet, Sot the constauction o6 a pubtic open space Sot the beneSit o6 the community. An apptication by the Depattmentc Patks 6oit. the tease oi this ptopetty aeceived on June 25, 1979 and cedttiiiied by the City Rearming Commission on Novemben 13, 1979. BACKGROUND INFORMATION The South Bronx Open Space Task Force has an active staff composed of community organizers, architects, landscape architects, and horticulturalists. Nine sites are curruntly being reviewed in accordance with the Uniform Land Use Review procedure. One of the nine sites and parts of two sites will become neighbor- hood land trusts, that is, will be owned by non-profit corporations, in the interests of all neighborhood residents. All designs are the result of parti- cipatory planning, based on prioritized community needs; all construction will be carried out by the community residents; and all future maintenance will be assumed by the responsible community. All other sites are City-owned and will be leased to the community group by the City. For a more detailed description of the proposal, including a list of the community groups involved and summaries of the terms of the proposed leases, see CPC Report C790495PLX, dated March 12, 1980. This application (C790497 A/B PLX) involves a double action. Part A requests the lease of City-owned property, Block 2608, Lots 39, 40, 43, 48, 53 and 54 to a local community group and part B requests the lease of privately-owned property, Block 2608, Lots 37 and 38 by the City. The site is part of a one block open space recreation and gardening program sponsored by People's Development Corporation and Roots, Inc. The site is composed of a rocky area with a number of large trees and other vegetation. The community group's objective is to maintain the area in its natural state and use it as a small park for the neighborhood. COMMUNITY BOARD PUBLIC HEARING Bronx Community Board No.3 scheduled a public hearing on this proposal for January 7, 1980 but did not submit a written recommendation to the City Planning Commission.",
-          9
+          "level for studio to 3-bedroom apartments respectively, with 10% of the apartments set aside for the homeless; and Whereas, the Central Harlem Open Door Program will provide 48 affordable home ownership units with AMIs between 80% and 130%, for family sizes of 1-4 individuals with income ranges from $90,960 (80% AMI) to $147,810 (130% AMI), with a monthly maintenance of $365 - $978 for studio to 3-bedroom units respectively; and Whereas, the buildings located on the wide lots will have elevator access and ADA accessibility on all floors, an onsite laundry room, and a bicycle storage room, while the buildings located on the narrow lots will have all of the aforementioned features but will only have ADA accessibility on the ground floor with other ADA amenities in the kitchens and bathrooms of the apartments on the upper floors; and Whereas, the buildings will be contextually similar to other buildings in the neighborhood, the apartments will have individualized heating and cooling units, as well as ample natural daylight in the living rooms and bedrooms; and Whereas, Manhattan Community Board 10 has 60 days to review the Central Harlem Open Door/NCP Cluster Certification application and render an opinion on same, which such time to review began on October 14, 2020; and Whereas, Community Board 10 through its Land Use Committee held two public meetings on October 15, 2020 and November 19, 2020, respectively, affording HPD, Lemor Development Group, and Iris Development the opportunity to present to the board and the public, and affording the community at large to review said applications and comment; and Whereas, on November 19, 2020, the Land Use Committee after hearing all of the views, including written submissions, for and against the project voted 11 Yes, 0 No, 0 Abstention, and 0 Recusal to approve the application; and Whereas, on December 1, 2020, The Executive Committee voted 7 Yes, 0 No, 1 Abstention, and 1 Recusal to approve the application. NOW THEREFORE, BE IT RESOLVED Community Board 10 APPROVES C200277-HAM, C200278-HAM, and C200279-HAM applications for designation of an Urban Development Action Area (UDAA), approval of an Urban Development Action Area Project (UDAAP), and the disposition of City-owned property for the Central Harlem Open Door/NCP Cluster Certification. During the December 2, 2020 General Board Meeting, the board voted 19 Yes, 6 No, 2 Abstention, and 1 Recusal.",
+          16
         ],
         [
-          "CITY PLANNING COMMISSION March 12, 1980/ Calendar No. 53 C 790499P1X Lease of City Property located on East 180th Street and Devoe Avenue, Block 4003, Lot 1, in the Bronx. Pursuant to Section 197-c of the New pork City Charter, for the construction of a public open space for the benefit of the -Dr community. An application by the Department of Parks for the lease of this property was received on June 25, 1979 and certified by the City Planning Commission on November 13, 1979. BACKGROUND INFORMATION The South Bronx Open Space Task Force has an active staff composed of community organizers, architects, landscape architects, and horticulturalists. Nine sites are curruntly. being reviewed in accordance with the Uniform Land Use Review procedure. One of the nine sites and parts of two sites will become neighbor- hood land tr.usts, that is, will be owned by non-profit corporations, in the interests of all neighborhood residents. All designs are the result of parti- cipatory planning, based on prioritized community needs; all construction will be carried out by the community residents; and all future maintenance will be assumed by the responsible community. All other sites are City-owned and will be leased to the community group by the City. For a more detailed description of the proposal, including a list of community groups involved and summaries of the proposed leases, see CPC report C790495PLX, dated March 12, 1980. This application, C790499PLX, requests the _lease of city-owned property, Block 4003, Lot 1, located at East 18(lth Street and Devoe Avenue Bronx, to the Bronx River Restoration Association, for the development of community open space. This vacant corner lot, bordering the Bronx River on the west and Devoe Avenue on the east, is part of the Bronx River Restoration Comprehensive Plan for restoring the natural aspects of the river. The organization has worked on the restoration of various sites along the river during the past five years. The plan for this site is cwofold. The area along the river will be maintainea in its natural state and community gardens will be developed. The area closer to Devoe Avenue will fill the need for an active recreation area closer to Devoe Avenue will fill the need for an active recreation area for youths in a lars9,n0ghborhood hous.ing deve1opm2nt, The purpose of this agreement will be to provide this community in the South Bronx with useable open space which will be designed according to community needs.",
-          9
+          "(c) Prior to City instituting any proceeding to enforce the terms or conditions of this Declaration due to any alleged violation hereof, City shall give Declarant, every mortgagee of all or any portion of the Property (a “Mortgagee”) and every Party in Interest thirty (30) business days written notice of such alleged violation, during which period Declarant, any Party in Interest and Mortgagee shall have the opportunity to effect a cure of such alleged violation or to demonstrate to City why the alleged violation has not occurred. If a Mortgagee or Party in Interest performs any obligation or effects any cure Declarant is required to perform or cure pursuant to this Declaration, such performance or cure shall be deemed performance on behalf of Declarant and shall be accepted by any person or entity benefited hereunder, including CPC and City, as if performed by Declarant. If Declarant, any Party in Interest or Mortgagee commences to effect such cure within such thirty (30) day period (or if cure is not capable of being commenced within such thirty (30) day period, Declarant, any Party in Interest or Mortgagee commences to effect such cure when such commencement is reasonably possible), and thereafter proceeds diligently toward the effectuation of such cure, the aforesaid thirty (30) day period (as such may be extended in accordance with the preceding clause) shall be extended for so long as Declarant, any Party in Interest or Mortgagee continues to proceed diligently with the effectuation of such cure. In the event that more than one Declarant exists at any time on the Subject Property, notice shall be provided to all Declarants from whom City has received notice in accordance with Section 8 hereof, and the right to cure shall apply equally to all Declarants. (d) If, after due notice and opportunity to cure as set forth in this Declaration, Declarant, Mortgagee or a Party in Interest shall fail to cure the alleged violation, the City 12 KL3 3068777.10",
+          15
         ]
       ]
     }

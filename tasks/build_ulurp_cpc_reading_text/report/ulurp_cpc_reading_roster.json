@@ -5,7 +5,7 @@
     "document_id"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "5b507195eb5e6352b3ef851f422d5e65fed782eea914e3bf2f829bb55c396d58",
+  "sha256_csv_bytes": "1cdcfbf063a6046e3cc738f39d0b6c6aee7f5512c013df54a9c19536a14e1e9d",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -158,15 +158,11 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 2,
+      "distinct_nonmissing": 1,
       "most_common": [
         [
-          "needs_scope_review",
-          5068
-        ],
-        [
           "ready",
-          3995
+          9063
         ]
       ]
     },
@@ -229,62 +225,93 @@
         "int"
       ],
       "missing": 0,
-      "distinct_nonmissing": 77,
+      "distinct_nonmissing": 179,
       "most_common": [
         [
-          "0",
-          5068
-        ],
-        [
           "2",
-          1149
+          1308
         ],
         [
           "3",
-          422
-        ],
-        [
-          "1",
-          291
+          726
         ],
         [
           "4",
-          287
+          479
+        ],
+        [
+          "6",
+          455
+        ],
+        [
+          "8",
+          409
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 584
+    },
+    "unresolved_segments": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 106,
+      "most_common": [
+        [
+          "0",
+          3995
+        ],
+        [
+          "1",
+          1420
+        ],
+        [
+          "2",
+          821
+        ],
+        [
+          "3",
+          567
+        ],
+        [
+          "4",
+          483
         ]
       ],
       "minimum": 0,
-      "maximum": 142
+      "maximum": 320
     },
     "segment_characters": {
       "python_types": [
         "int"
       ],
       "missing": 0,
-      "distinct_nonmissing": 3103,
+      "distinct_nonmissing": 6745,
       "most_common": [
         [
-          "0",
-          5068
+          "389302",
+          14
+        ],
+        [
+          "281086",
+          12
+        ],
+        [
+          "85296",
+          10
+        ],
+        [
+          "323923",
+          9
         ],
         [
           "36667",
           9
-        ],
-        [
-          "167444",
-          8
-        ],
-        [
-          "41337",
-          8
-        ],
-        [
-          "296742",
-          7
         ]
       ],
-      "minimum": 0,
-      "maximum": 296742
+      "minimum": 1626,
+      "maximum": 1407545
     },
     "source_document_ids": {
       "python_types": [

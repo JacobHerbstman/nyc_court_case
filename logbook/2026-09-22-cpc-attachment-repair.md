@@ -49,13 +49,13 @@ processing roster, and manual source reviews are preserved in
 `data_raw/cpc_text_repair/20260922_before/`. Source-link and page-scope reviews
 are reanchored only after checking their evidence in the repaired text.
 
-Recovered pages still need application attribution before anyone reads them.
-`build_ulurp_cpc_reading_text` keeps every narrative on its roster and holds a
-report out of reading while any of its pages has unresolved application scope.
-Rebuilt on the repaired text, it holds 5,068 of 9,063 narratives and marks
-3,995 ready, compared with 4,720 held and 4,343 ready before the repair: 353
-reports became held and 5 were released. Most of the hold therefore predates
-the repair. A held report is never coded as lacking a concern.
+Many recovered pages cannot be attributed to an application from their text.
+Under the earlier rule, `build_ulurp_cpc_reading_text` held any report with such
+a page out of reading: 5,068 of 9,063 narratives on the repaired text, compared
+with 4,720 before the repair (353 newly held, 5 released). Most of the hold
+therefore predated the repair. Jacob then decided to supply these pages to the
+reader, flagged as unresolved, and to record the application on each extracted
+statement; all 9,063 narratives are now ready.
 
 The corpus builder owns extraction, and the text-measurement audit owns the
 before/after counts below.
