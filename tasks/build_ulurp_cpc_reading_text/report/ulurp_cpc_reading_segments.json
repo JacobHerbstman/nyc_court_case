@@ -1,0 +1,318 @@
+{
+  "dataset": "ulurp_cpc_reading_segments.csv",
+  "rows": 33580,
+  "key": [
+    "document_id",
+    "segment_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "f50cd4359b840c84dd1d045407ce3398fdfb7c32de1c0ef93fa0b4bee2df678d",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3995,
+      "most_common": [
+        [
+          "2256c4207c42ec8e1e12",
+          142
+        ],
+        [
+          "430f7133bcb53576e66f",
+          142
+        ],
+        [
+          "6e1a82a9f99e3fe205a1",
+          142
+        ],
+        [
+          "becef76ad71d74633b6c",
+          142
+        ],
+        [
+          "d3341b9b297c246b62e0",
+          142
+        ]
+      ]
+    },
+    "segment_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 142,
+      "most_common": [
+        [
+          "s0001",
+          3995
+        ],
+        [
+          "s0002",
+          3704
+        ],
+        [
+          "s0003",
+          2555
+        ],
+        [
+          "s0004",
+          2133
+        ],
+        [
+          "s0005",
+          1846
+        ]
+      ]
+    },
+    "source_document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4130,
+      "most_common": [
+        [
+          "d648f3aea1713af93752",
+          532
+        ],
+        [
+          "6e1a82a9f99e3fe205a1",
+          510
+        ],
+        [
+          "0054038024f32a4c7cf9",
+          312
+        ],
+        [
+          "b377d824cbb66c116213",
+          296
+        ],
+        [
+          "e40ecad2aae0cccec7be",
+          200
+        ]
+      ]
+    },
+    "source_application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4130,
+      "most_common": [
+        [
+          "N 090273A ZRK",
+          532
+        ],
+        [
+          "C 070531A ZSM",
+          510
+        ],
+        [
+          "C 060059 MMX",
+          312
+        ],
+        [
+          "C 030509 HUQ",
+          296
+        ],
+        [
+          "C 860777 ZSM",
+          200
+        ]
+      ]
+    },
+    "source_role": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "focal_report",
+          22178
+        ],
+        [
+          "context_companion",
+          10316
+        ],
+        [
+          "represented_related_action",
+          922
+        ],
+        [
+          "verified_n_companion",
+          164
+        ]
+      ]
+    },
+    "pdf_page": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 131,
+      "most_common": [
+        [
+          "1",
+          5548
+        ],
+        [
+          "2",
+          5251
+        ],
+        [
+          "3",
+          3614
+        ],
+        [
+          "4",
+          2782
+        ],
+        [
+          "5",
+          2288
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 131
+    },
+    "page_start": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "0",
+          33580
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 0
+    },
+    "page_end": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3232,
+      "most_common": [
+        [
+          "1473",
+          52
+        ],
+        [
+          "1739",
+          46
+        ],
+        [
+          "1536",
+          45
+        ],
+        [
+          "2180",
+          45
+        ],
+        [
+          "1673",
+          44
+        ]
+      ],
+      "minimum": 3,
+      "maximum": 5707
+    },
+    "source_text_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4130,
+      "most_common": [
+        [
+          "2439403f2023b804c6ec123899b7c996fa7f86c726169e08f9500a8f0e76faf4",
+          532
+        ],
+        [
+          "b09088a642cf484814e9b44c7bbe2087b62ad4cd4221d4a219a722a6428fa741",
+          510
+        ],
+        [
+          "c5a32ef01baa62f9423dde3bde0e6509c36f4c266c7011e2cf33c8ceacbc9eaa",
+          312
+        ],
+        [
+          "9ebc2dca53051f329638bed8f2245488be3ddc2b33678c7a138c912467174c6f",
+          296
+        ],
+        [
+          "dd1ac92980002ac22e8843ed718a6fb415e900692e5ff7c60fb567bfa4c9a736",
+          200
+        ]
+      ]
+    },
+    "public_pdf_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4130,
+      "most_common": [
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/090273a.pdf",
+          532
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/070531a.pdf",
+          510
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/060059.pdf",
+          312
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/030509.pdf",
+          296
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/860777.pdf",
+          200
+        ]
+      ]
+    },
+    "text": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 23210,
+      "most_common": [
+        [
+          "CITY PLANNING COMMISSION C 790502 TLX March 12, 1980/ Calendar No. 56: Lease o6 City PAopeAty tocated at Fulton Avenue and East 166th Stteet, aeock.2608, Lot's 58,5_60 in-the BAonx, pumuant to Section 197-c o6 the New Voidz City Chattet, 6oA the constAuction 06 a puotic open apace 60t the bene6it o the community. An apptication by the DepaAtment o6 PaAhs 6oA the tease o6 this pAopetty ula.s Aeceived on June 25, 1979 and cotied by the City Panning Comma4ion on NovembeA 13, 1979. BACKGROUND INFORMATION The South Bronx Open Space Task Force has an active staff composed of community organizers, architects, landscape architects, and horticulturalists. Nine sites are curruntly being reviewed in accordance with the Uniform Land Use Review procedure. One of the nine sites and parts of two sites will become neighbor- hood land trusts, that is, will be owned by non-profit corporations, in the interests of all neighborhood residents. All designs are the result of parti- cipatory planning, based on prioritized community needs; all construction will be carried out by the community residents; and all future maintenance will be assumed by the responsible community. All other sites are City-owned and will be leased to the community group by the City. For a more detailed description of the proposal, including a list of community groups involved and summaries of the proposed leases, see CPC report C790495PLX, dated March 12, 1980. This application, C790502PLX, requests the lease of City-owned property, Block 2608, Lots 58 & 60, located at Fulton Avenue and East 166th Street in the Bronx, to the South Bronx Roots Community Association, for the development of community open space. The proposed site has already been cultivated as a gardening demonstration area. Some residents of the surrounding tenant-managed properties have planted individual plots as well as contributed to cultivation of a com- munal garden, all with considerable effort and minimal resources. The plans for this site include the continued introduction of new gardening techniques, with the aid of such technical assistance groups as the Cornell Extension Service and the Council on the Environment.",
+          9
+        ],
+        [
+          "CITY PLANNING COMMISSION March 12, 1980 / Calendar No. 50 C 790496A PLX C 790496B PLX Lease o6 pAopeAty tocate at &Auto Stuet etveen Spo6iond and Ran Avenues, Stock 2765, Lots 246 and 250 in the Stonx, putsuant to Section 197-c o6 the New VoAk City ChaAteA, Oit the conAtAuction o6 a pubZic open Apace 6o.t the ben- 1/42(iit oi the community. An apptication by the Vepaitineiv o PaAks licA the lease b'S this pAopetty Wa4 Aeceived on June 25, 1979 and cettitiied by the atyPeann-i.ng Commission on Novembelt 13, 1979. has an active staff composed of community The South Bronx Open Space Task Force and horticulturalists. Nine sites organizers, architects, landscape architects, with the Uniform Land Use Review are curruntly being reviewed in accordance sites will become neighbor- procedure. One of the nine sites and parts of two the owned by non-profit corporations, in hood land trusts, that is, will be All designs are the result of parti- interests of all neighborhood residents. community needs; all construction will cipatory planning, based on prioritized and all future maintenance will be be carried out by the community residents; All other sites are City-owned and will assumed by the responsible community. the City. be leased to the community group by For a more detailed description of the proposal, including a list of the leases, and summaries of the terms of the proposed community groups involved March 12, 1980. see CPC Report C790495PLX, dated This application (C790496 A/B PLX) involves a double action. Part A of the application requests the lease of Block 2765, Lot 246, which is City-owned, to the Barreto Street Community. Part B requests thTrivat ly-owned parcel, Block 2765, Lot 250 to the City. The planned use for these two lots is for the construction of an active recrea- tion area which will include two hard surfaced handball courts. The lots are part of a large-scale neighborhood revitalization strategy that includes a large community-owned garden and other similar recreation areas on nearby sites. Although the site is presently undeveloped, it has been maintained free of refuse for the past three years. COMMUNITY BOARD PUBLIC HEARING Bronx Community Board No.2 held a public hearing on this proposal on November 28, 1979 and madea favorable recommendation to the City Planning Commission.",
+          9
+        ],
+        [
+          "CITY PLANNING COMMISSION March 12, 1980/ Calendar No. 49 C 790495 PLX Lea4e o6 pnivate pnopetty tocated at East 168th StAeet and Washington Avenue (Bock 2372, Lot 20 in the Manx, by the City, pu4suant to Section 197-c o6 the New Yank City Chan-ten, On the con4tAucti.on oi a pubtic open pace The bene6it oi the community. An apptication by the Depattment oi Pank4 6oft the tease o6 th,i4 pAopetty was eceived on June 25, 1979 and centiiied by the City Rearming Commi.44ion on Novembet 13, 1979. BACKGROUND INFORMATION The South Bronx Open Space Task Force has an active staff composed of community organizers, architects, landscape architects, and horticulturalists. Nine sites are curruntly being reviewed in accordance with the Uniform Land Use Review procedure. One of the nine sites and parts of two sites will become neighbor- hood land trusts, that is, will be owned by non-profit corporations, in the interests of all neighborhood residents. All designs are the result of parti- cipatory planning, based on prioritized community needs; all construction will be carried out by the community residents; and all future maintenance will be assumed by the responsible community. All other sites are City-owned and will be leased to the community group by the City. Following is a list of the community groups involved with each of the sites: Unit Place (site community-owned. (Cr19045#5-F'LY) Barretto Street Community (site partly community-owned). (C.70/4, 6itlig pLX) The Rock Greening Association (site partly community-owned).(cicio497/r3pLx) Grand Avenue Community Association (cricioc.i. g. p Li) Bronx River Restoration. (c1 L4qciP Lx) Hoe Avenue Housing Development Fund Corporation. (c7cto 5-0 pLx) Banana Kelly Community Improvement Association. (C7/OSO/PLX South Bronx Roots. (C 790 o2. P Youth Village Park. Cc pq 03 LA) All of these sponsoring groups are, or will soon be, non-profit, tax exempt (501-(c) (3) corporations, with local residents forming the board of directors, membership and staff. Some of the above sites have already been partially devel- oped by community residents with very limited funds and assistance.",
+          9
+        ],
+        [
+          "CITY PLANNING COMMISSION March 12, 1980/ Calendar No. 51 C 790497A PLX C 790497B PLX Lease (36 pnopetty iocated at East 167th Stteet and 3td Avenue in the Stonx, putsuant to Section 197-c o6 the New Yotk City Chattet, Sot the constauction o6 a pubtic open space Sot the beneSit o6 the community. An apptication by the Depattmentc Patks 6oit. the tease oi this ptopetty aeceived on June 25, 1979 and cedttiiiied by the City Rearming Commission on Novemben 13, 1979. BACKGROUND INFORMATION The South Bronx Open Space Task Force has an active staff composed of community organizers, architects, landscape architects, and horticulturalists. Nine sites are curruntly being reviewed in accordance with the Uniform Land Use Review procedure. One of the nine sites and parts of two sites will become neighbor- hood land trusts, that is, will be owned by non-profit corporations, in the interests of all neighborhood residents. All designs are the result of parti- cipatory planning, based on prioritized community needs; all construction will be carried out by the community residents; and all future maintenance will be assumed by the responsible community. All other sites are City-owned and will be leased to the community group by the City. For a more detailed description of the proposal, including a list of the community groups involved and summaries of the terms of the proposed leases, see CPC Report C790495PLX, dated March 12, 1980. This application (C790497 A/B PLX) involves a double action. Part A requests the lease of City-owned property, Block 2608, Lots 39, 40, 43, 48, 53 and 54 to a local community group and part B requests the lease of privately-owned property, Block 2608, Lots 37 and 38 by the City. The site is part of a one block open space recreation and gardening program sponsored by People's Development Corporation and Roots, Inc. The site is composed of a rocky area with a number of large trees and other vegetation. The community group's objective is to maintain the area in its natural state and use it as a small park for the neighborhood. COMMUNITY BOARD PUBLIC HEARING Bronx Community Board No.3 scheduled a public hearing on this proposal for January 7, 1980 but did not submit a written recommendation to the City Planning Commission.",
+          9
+        ],
+        [
+          "CITY PLANNING COMMISSION March 12, 1980/ Calendar No. 53 C 790499P1X Lease of City Property located on East 180th Street and Devoe Avenue, Block 4003, Lot 1, in the Bronx. Pursuant to Section 197-c of the New pork City Charter, for the construction of a public open space for the benefit of the -Dr community. An application by the Department of Parks for the lease of this property was received on June 25, 1979 and certified by the City Planning Commission on November 13, 1979. BACKGROUND INFORMATION The South Bronx Open Space Task Force has an active staff composed of community organizers, architects, landscape architects, and horticulturalists. Nine sites are curruntly. being reviewed in accordance with the Uniform Land Use Review procedure. One of the nine sites and parts of two sites will become neighbor- hood land tr.usts, that is, will be owned by non-profit corporations, in the interests of all neighborhood residents. All designs are the result of parti- cipatory planning, based on prioritized community needs; all construction will be carried out by the community residents; and all future maintenance will be assumed by the responsible community. All other sites are City-owned and will be leased to the community group by the City. For a more detailed description of the proposal, including a list of community groups involved and summaries of the proposed leases, see CPC report C790495PLX, dated March 12, 1980. This application, C790499PLX, requests the _lease of city-owned property, Block 4003, Lot 1, located at East 18(lth Street and Devoe Avenue Bronx, to the Bronx River Restoration Association, for the development of community open space. This vacant corner lot, bordering the Bronx River on the west and Devoe Avenue on the east, is part of the Bronx River Restoration Comprehensive Plan for restoring the natural aspects of the river. The organization has worked on the restoration of various sites along the river during the past five years. The plan for this site is cwofold. The area along the river will be maintainea in its natural state and community gardens will be developed. The area closer to Devoe Avenue will fill the need for an active recreation area closer to Devoe Avenue will fill the need for an active recreation area for youths in a lars9,n0ghborhood hous.ing deve1opm2nt, The purpose of this agreement will be to provide this community in the South Bronx with useable open space which will be designed according to community needs.",
+          9
+        ]
+      ]
+    }
+  }
+}

@@ -1,12 +1,12 @@
 {
   "dataset": "cpc_n_report_references.csv",
-  "rows": 3686,
+  "rows": 3814,
   "key": [
     "c_application_number",
     "n_application_key"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "ec57d83deace87e3e28576e4f55d99f3e0b3f27bc3ee938502c05b414dc9260c",
+  "sha256_csv_bytes": "602ab0dda92567d8a422ff68218333e0e2e006cffab1f7ba91a2849472bd5e9b",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "c_application_number": {
@@ -14,7 +14,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 1904,
+      "distinct_nonmissing": 1914,
       "most_common": [
         [
           "C 250014 ZMK",
@@ -25,16 +25,16 @@
           17
         ],
         [
-          "C 250276 ZSK",
-          14
+          "C 140132 ZSK",
+          15
         ],
         [
-          "C 140019 HAK",
-          13
+          "C 140133 ZSK",
+          15
         ],
         [
-          "C 160310 ZSM",
-          13
+          "C 140134 ZSK",
+          15
         ]
       ]
     },
@@ -43,7 +43,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 1801,
+      "distinct_nonmissing": 1858,
       "most_common": [
         [
           "N240290ZRY",
@@ -76,15 +76,15 @@
       "most_common": [
         [
           "excluded_indexed",
-          1809
+          1830
         ],
         [
           "not_in_index",
-          1684
+          1787
         ],
         [
           "included",
-          193
+          197
         ]
       ]
     },
@@ -93,11 +93,11 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 1901,
+      "distinct_nonmissing": 1911,
       "most_common": [
         [
           "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/140132.pdf",
-          44
+          60
         ],
         [
           "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/250014.pdf",
@@ -108,12 +108,12 @@
           17
         ],
         [
-          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/250276.pdf",
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/130279.pdf",
           14
         ],
         [
-          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/140019.pdf",
-          13
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/250276.pdf",
+          14
         ]
       ]
     },
@@ -122,18 +122,18 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 1888,
+      "distinct_nonmissing": 1898,
       "most_common": [
         [
-          "780abe1dd9e57419d1aa81c8b89b4ee839c37d6abcde0ca4430d9a0fb6585853",
-          44
+          "9b2cbb484e420b6f00a68d24f23fc0b884e5883f7aca9e571f9180034110fe34",
+          60
         ],
         [
           "f430b8cc8979982dd7ebb377149ea4efa3d6ee919e0952a9f1311b8cde1afa6e",
           21
         ],
         [
-          "7f0755f079975348dc9371699d4f245344e4dc36ebb008ea1f4fef3b896084be",
+          "e0d758efa3d0edc7a6c6dc3d3c451f80f9b504c5f77e1767715224ea13b86e81",
           17
         ],
         [
@@ -141,8 +141,8 @@
           14
         ],
         [
-          "3af577b43edbe40d7c61b282c20a03edf495019faa45090257859b026a5e6120",
-          13
+          "387a039333512f4616fd988524c1a44a2b76458aa50c2430ce9bb657220728ab",
+          14
         ]
       ]
     },
@@ -151,27 +151,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 1009,
+      "distinct_nonmissing": 1100,
       "most_common": [
         [
           "2",
-          456
+          452
         ],
         [
           "1",
-          266
+          263
         ],
         [
           "2; 3; 4",
-          186
-        ],
-        [
-          "3",
           179
         ],
         [
+          "3",
+          175
+        ],
+        [
           "2; 3",
-          176
+          149
         ]
       ]
     },
@@ -180,31 +180,31 @@
         "int"
       ],
       "missing": 0,
-      "distinct_nonmissing": 28,
+      "distinct_nonmissing": 39,
       "most_common": [
         [
           "1",
-          1423
+          1519
         ],
         [
           "2",
-          436
+          443
         ],
         [
           "4",
-          382
+          362
         ],
         [
           "3",
-          352
+          319
         ],
         [
           "7",
-          216
+          213
         ]
       ],
       "minimum": 1,
-      "maximum": 51
+      "maximum": 54
     },
     "nearby_referral_language_flag": {
       "python_types": [
@@ -215,11 +215,11 @@
       "most_common": [
         [
           "False",
-          2897
+          3026
         ],
         [
           "True",
-          789
+          788
         ]
       ]
     },
@@ -228,7 +228,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 3584,
+      "distinct_nonmissing": 3659,
       "most_common": [
         [
           "ing and closing streets and widening streets. C 860685 ZMK Change in the Zoning Map from M1-1, C8-2, C6-1, R6 and C1-3 Districts to C6-4 and C6-1A Districts. 2 C 860686 - 693 ZSK N 870083 HGK Designation of the Metrotech Urban Renewal Area. C 870084 HUK Urban Renewal Plan for the Metrotech Urban Renewal Area. C 870085 HDK Disposition of city-owned property within the Metrotech Urban",
@@ -243,12 +243,12 @@
           6
         ],
         [
-          "6 Carl Weisbrod, Chairman City Planning Commission 22 Reade Street New York, NY 10007 Dear Mr. Weisbrod: At its Full Board meeting on July 21, 2016, CB#2, Manhattan (CB2, Man.), adopted the following resolution: 550 Washington Street (Manhattan Block 596, Lot 1) and Pier 40 (Manhattan Block 656, Lot 1) N160309ZMM. 160310ZSM, 160311ZSM, 160312ZSM, 160313ZSM, N160314ZAM, N160315ZAM, N160316ZAM, N160317ZCM This is a ULURP action including two land use applications to the City Planning Commission as follows: (1) a zoning map amendment (a) to rezone a property at 550 Washington Street consisting of a single zoning lot from an Ml-5 and M2-4 district to a C6-4, C6-3, and Ml-5 district, and (b) to map the the property and Pier 40, located at West Houston Street in Hudson River Park, as part of the proposed Special Hudson River Park District, which Special District is proposed to be created by an appli",
+          ", open space, retail, and public access are needed to truly stitch this development into its surrounding neighborhood and to ameliorate the impacts cited above. I look forward to continued conversations with you, DCP, the rest of the City Planning Commission, and my colleagues at City Council to improve this proposal. Sincerely, Gale A. Brewer BOROUGH PRESIDENT RECOMMENDATION Text Amendment (N 160308 ZRM) The 2013 amendment to the Hudson River Park Act (the “Act”) subjects the transfer of development rights to local zoning. Following its passage, this office hosted a series of meetings with the Department of City Planning, elected officials and the Community Boards bordering the Hudson River Park to discuss the mechanism through which the transfers of development rights should occur. This resulted in the current application for a text amendment by DCP which creates the Special Hudson River Par",
           5
         ],
         [
-          "0 square feet of ground-floor commercial uses on the upland parcel but that these would consist of small-scale local retail spaces, the largest of which would be 8,410 square feet. The Commission believes that with this configuration, the proposed retail space can be served by curb-side deliveries without adverse effect on the surrounding area. Waterfront Authorizations (62-822) – N 140136 ZAK, N 140137 ZAK, N 140138 ZAK The Commission believes the requested authorizations are appropriate. As part of these authorizations, the applicant requests modification of waterfront public access requirements pertaining to dimensions, configuration, planting and other design requirements of the required waterfront public access areas, and approval of the phased implementation of these public access improvements. The Commission believes that the modifications to the dimensional requirements of ZR Section 62-",
-          4
+          "0314 ZAM, N 160315 ZAM, N 160316 ZAM, N 160318 ZCM) The authorizations are subject to City Planning Commission approval but not subject to ULURP, nor is the certification action. The authorizations will allow for parking garages and loading berths to be accessed from West Street, a wide street. Curb cuts are not permitted as of right pursuant to §13-441 of the Zoning Resolution. The certification N 160318 ZCM is a requirement of the Special Permit pursuant to §89-21(d)(i) to allow for the issuance of a building permit once receipt of the development rights have been received and funds transferred to the Hudson River Park Trust have been verified. ANTICIPATED IMPACTS Pursuant to City Environmental Quality Review (CEQR) and to the rules of the State Environmental Quality Review Act (SEQRA), amongst others, a Draft Environmental Impact Statement (DEIS) was prepared for all of the related actions descri",
+          5
         ]
       ]
     }

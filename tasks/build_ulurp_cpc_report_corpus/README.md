@@ -38,8 +38,7 @@ usable sources before publishing repaired text and the manifest. The original
 PDF cache is reused. The pre-repair manifest, all extracted text and page-level
 fingerprints are preserved in `data_raw/cpc_text_repair/20260922_before/`.
 The existing text-measurement audit compares the two vintages and reports both
-source-PDF and focal-narrative counts. Frozen model-reading trials remain
-historical records; they do not silently acquire the new attachments.
+source-PDF and focal-narrative counts.
 
 `python3 -m unittest test_cpc_page_ocr.py` checks that an embedded or OCR-detected
 resolution cannot stop attachment recovery and that OCR timeouts remain explicit.

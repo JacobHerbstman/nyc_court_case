@@ -17,8 +17,7 @@ title such as C-O-P is not a project identifier. Designated-lead grouping now
 requires the same nonempty ZAP project-ID set as well as the original normalized
 name/date match. Sources with insufficient evidence remain separate narratives.
 The source-link table records `relationship_path` and `relationship_basis`,
-including transitive connections and recorded N-companion decisions. The paused
-Jev v2 input snapshot preserves the previous grouping for comparison.
+including transitive connections and recorded N-companion decisions.
 
 Exact duplicate text is counted once, while every application collapsed into
 that narrative keeps a source link. The same applies to actions represented by
@@ -142,8 +141,7 @@ fields depend on that choice. Edit this scalar in the Makefile to change the
 canonical output. Four opposition differences await a distinction between
 any dissent and substantive opposition; a fifth lacks clear actor information.
 These source reviews are AI-assisted development judgments, not an independent
-human gold standard. They do not alter the frozen v3 pilot results or rescore
-model accuracy.
+human gold standard.
 
 The entire ZAP project universe remains in its existing project table. Neither
 an absent CPC report nor an unresolved human or regex field removes a project.

@@ -74,7 +74,7 @@ visible; the screening counts are not manual classifications.
 
 The former processing roster supplies an explicit mapping from source PDFs to
 focal narrative bundles. A source can contribute to multiple bundles, so the
-reported affected-bundle count uses distinct focal IDs. The four known Sol
-pilot reports are checked separately. The audit does not modify frozen model
-answers or infer that newly extracted attachments belong to the focal project;
-that remains the downstream page-scope check's responsibility.
+reported affected-bundle count uses distinct focal IDs. Four reports whose page
+images showed missing recommendation attachments are checked separately. The
+audit does not infer that newly extracted attachments belong to the focal
+project; that is the page-scope check in `build_ulurp_cpc_reading_text`.

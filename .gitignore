@@ -17,8 +17,6 @@ tasks/*/slurmlogs/
 # --- Raw & Intermediate Data ---
 data_raw/*
 !data_raw/cpc_human_coding/
-!data_raw/cpc_subagent_pilot/
-!data_raw/cpc_jev_corpus_audit/
 !data_raw/dcp_boundary_city_council_districts_archive/
 data_raw/dcp_boundary_city_council_districts_archive/*
 !data_raw/dcp_boundary_city_council_districts_archive/10C/

@@ -45,17 +45,17 @@ review is preserved in the snapshot. No coding ruling was changed in this repair
 the recovered passage is evidence for a later review.
 
 The pre-repair manifest, complete extracted text, page fingerprints, source links,
-processing roster, prepared requests, and manual source reviews are preserved in
-`data_raw/cpc_text_repair/20260922_before/`. Completed Jev and Sol comparisons use
-that original source vintage. Their model answers are unchanged; no new model
-calls are part of this repair. Source-link and page-scope reviews are reanchored
-only after checking their evidence in the repaired text.
+processing roster, and manual source reviews are preserved in
+`data_raw/cpc_text_repair/20260922_before/`. Source-link and page-scope reviews
+are reanchored only after checking their evidence in the repaired text.
 
-At Jacob's request, work stops after OCR and coverage measurement. No new model
-test, coding run, or reading-packet rebuild was performed. Before later readings,
-the newly recovered pages still need application attribution and affected
-source reviews need updating. Existing validation checks remain in place.
+Recovered pages still need application attribution before anyone reads them.
+`build_ulurp_cpc_reading_text` keeps every narrative on its roster and holds a
+report out of reading while any of its pages has unresolved application scope.
+Rebuilt on the repaired text, it holds 5,068 of 9,063 narratives and marks
+3,995 ready, compared with 4,720 held and 4,343 ready before the repair: 353
+reports became held and 5 were released. Most of the hold therefore predates
+the repair. A held report is never coded as lacking a concern.
 
-The existing corpus builder owns extraction, and the existing text-measurement
-audit owns the before/after counts below. The pilot owner preserves completed
-experiments. No new processing framework or research task was introduced.
+The corpus builder owns extraction, and the text-measurement audit owns the
+before/after counts below.

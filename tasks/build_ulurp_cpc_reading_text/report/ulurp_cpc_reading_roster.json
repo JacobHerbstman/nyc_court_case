@@ -1,0 +1,319 @@
+{
+  "dataset": "ulurp_cpc_reading_roster.csv",
+  "rows": 9063,
+  "key": [
+    "document_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "5b507195eb5e6352b3ef851f422d5e65fed782eea914e3bf2f829bb55c396d58",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9063,
+      "most_common": [
+        [
+          "00119c3b0ee800f4d8ba",
+          1
+        ],
+        [
+          "00126d30463744ba647c",
+          1
+        ],
+        [
+          "00167643a19f5c30bf57",
+          1
+        ],
+        [
+          "001f885d7d891a8711f7",
+          1
+        ],
+        [
+          "00231b56ec914bf6ccd9",
+          1
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9063,
+      "most_common": [
+        [
+          "C 000002 ZSM",
+          1
+        ],
+        [
+          "C 000012 ZSR",
+          1
+        ],
+        [
+          "C 000013 ZSR",
+          1
+        ],
+        [
+          "C 000014 ZSR",
+          1
+        ],
+        [
+          "C 000016A ZSR",
+          1
+        ]
+      ]
+    },
+    "year": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 50,
+      "most_common": [
+        [
+          "1982",
+          552
+        ],
+        [
+          "1981",
+          511
+        ],
+        [
+          "1989",
+          434
+        ],
+        [
+          "1983",
+          412
+        ],
+        [
+          "1980",
+          390
+        ]
+      ]
+    },
+    "project_name": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 850,
+      "distinct_nonmissing": 6539,
+      "most_common": [
+        [
+          "C-O-P",
+          754
+        ],
+        [
+          "Lda",
+          30
+        ],
+        [
+          "Hra Boarding Home",
+          21
+        ],
+        [
+          "C-O-P (1 Parcel)",
+          12
+        ],
+        [
+          "Metrotech",
+          11
+        ]
+      ]
+    },
+    "zap_project_ids": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 475,
+      "distinct_nonmissing": 7953,
+      "most_common": [
+        [
+          "P2004K0140",
+          13
+        ],
+        [
+          "P1986K0168",
+          10
+        ],
+        [
+          "P2004M0399",
+          8
+        ],
+        [
+          "P2010M0191",
+          8
+        ],
+        [
+          "P1984K0109",
+          7
+        ]
+      ]
+    },
+    "preparation_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "needs_scope_review",
+          5068
+        ],
+        [
+          "ready",
+          3995
+        ]
+      ]
+    },
+    "unresolved_pages": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 105,
+      "most_common": [
+        [
+          "0",
+          3995
+        ],
+        [
+          "1",
+          1420
+        ],
+        [
+          "2",
+          821
+        ],
+        [
+          "3",
+          570
+        ],
+        [
+          "4",
+          483
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 320
+    },
+    "excluded_unrelated_pages": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "0",
+          9057
+        ],
+        [
+          "4",
+          5
+        ],
+        [
+          "5",
+          1
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 5
+    },
+    "segment_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 77,
+      "most_common": [
+        [
+          "0",
+          5068
+        ],
+        [
+          "2",
+          1149
+        ],
+        [
+          "3",
+          422
+        ],
+        [
+          "1",
+          291
+        ],
+        [
+          "4",
+          287
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 142
+    },
+    "segment_characters": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3103,
+      "most_common": [
+        [
+          "0",
+          5068
+        ],
+        [
+          "36667",
+          9
+        ],
+        [
+          "167444",
+          8
+        ],
+        [
+          "41337",
+          8
+        ],
+        [
+          "296742",
+          7
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 296742
+    },
+    "source_document_ids": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7784,
+      "most_common": [
+        [
+          "1ff3c132fb6f612ec1df;2450cd155bb2742cfc53;3a053a813e177ced4879;3c060ba66bb654677821;4258c4a49d88eac3e993;5cac110adb229f52bf58;96a037fb0cc3c9e1d8ea;a13703562871fa2cbdd4;b612c28eafa091f77471;c01ef635f6c1ae15121e;c0f9c2da259e96aa0b5f;d69c2b7e86b4bf2a3206;ef76ec2e28601163e459;f4b81a0c540396f0c010",
+          14
+        ],
+        [
+          "20e7f51c62bc15a2d84f;23cef7434887c974ad40;2f2884a31e155c7786f1;7d2a715b7145cf9a4bd6;8316b3db607b04e27d7f;99fba24e0baa9b261e81;9f0d90fe0aab0727525b;a4f6b796051610b76d48;cc3da5427517f97307da;dab548104173d85f0c13;eb4fa5f6afb7ba83b6e4;fff25dd850da1472deec",
+          12
+        ],
+        [
+          "2397390c8f8459da346f;298a49858363e9fed826;30c39857d0ba2d10fd7f;57156143b185a532250e;a42dd8fdd952bf7a8feb;afaa7833ab2ca05f18ec;b31e963db7736679bb9b;b9c7235e80f8b76107d7;ca91792a01231322c733;e96fd0d298f1a3c6d50c",
+          10
+        ],
+        [
+          "17c8293e404d5c32e56c;43038a2d2c3699ec65ea;6a937f1d97054454cef9;82131dace11efa6b5646;86af1ece434e00b8f6cc;ad6fd532208256c413c6;c8a184d85670ddb970d5;d7f0f0f503caae417e85;d9faaa50123055692e71",
+          9
+        ],
+        [
+          "1b010b299941bc4ecc3b;3f2839fd98b2f905a8f6;46d0517308398906cb5a;5ee0701ba502805b33c6;5fb192160ade973de6a1;b408060558ca5c9abf84;d451349018dfc02fa3bb;f859027a222fcc8f3a2d;fb79df4a92508fc4d147",
+          9
+        ]
+      ]
+    }
+  }
+}

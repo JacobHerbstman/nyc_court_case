@@ -14,7 +14,7 @@ all: ../output/cpc_attachment_pages.csv ../output/cpc_attachment_reports.csv \
 ../out%/cpc_attachment_summary.csv ../out%/cpc_attachment_findings.md: audit_cpc_attachments.py \
 	../../../_lib/data_reports.py ../input/official_ulurp_cpc_report_manifest.csv \
 	../input/cpc_attachment_manifest_before.csv ../input/cpc_attachment_pages_before.csv \
-	../input/cpc_attachment_roster_before.csv ../input/cpc_attachment_pilot_sample.csv | ../output ../report
+	../input/cpc_attachment_roster_before.csv | ../output ../report
 	python3 $<
 
 ../out%/official_ulurp_cpc_narrative_manifest.csv \
@@ -43,9 +43,6 @@ all: ../output/cpc_attachment_pages.csv ../output/cpc_attachment_reports.csv \
 ../input/cpc_attachment_roster_before.csv: ../../../../data_raw/cpc_text_repair/20260922_before/cpc_jev_roster_v3.csv | ../input
 	ln -sf $< $@
 
-../input/cpc_attachment_pilot_sample.csv: ../../../../data_raw/cpc_subagent_pilot/20260922_sol_expansion/sample_snapshot.csv | ../input
-	ln -sf $< $@
-
 ../input/official_ulurp_cpc_report_manifest.csv: ../../../build_ulurp_cpc_report_corpus/output/ulurp_cpc_report_manifest.csv | ../input
 	ln -sf "$<" "$@"
 
@@ -68,7 +65,7 @@ all: ../output/cpc_attachment_pages.csv ../output/cpc_attachment_reports.csv \
 	ln -sf $< $@
 
 link-inputs: ../input/cpc_attachment_manifest_before.csv ../input/cpc_attachment_pages_before.csv \
-	../input/cpc_attachment_roster_before.csv ../input/cpc_attachment_pilot_sample.csv \
+	../input/cpc_attachment_roster_before.csv \
 	../input/official_ulurp_cpc_report_manifest.csv \
 	../input/official_ulurp_cpc_narrative_boundary_exceptions.csv \
 	../input/official_cpc_report_index.csv ../input/ulurp_cpc_text_labels.csv \

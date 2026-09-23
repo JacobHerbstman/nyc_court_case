@@ -7,7 +7,7 @@
     "pdf_url"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "246a12e869a25038588a937f46822a2c5a0b16d4f73caf5d7863a12bd0e46389",
+  "sha256_csv_bytes": "b0671b8ff16f6d67628c84cf6ce6103e9adc4c2ad22ebbfbdfdd22a053fde3f7",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "application_number": {
@@ -186,11 +186,11 @@
       "most_common": [
         [
           "0",
-          2051
+          2047
         ],
         [
           "1",
-          370
+          372
         ],
         [
           "2",
@@ -198,11 +198,11 @@
         ],
         [
           "3",
-          102
+          101
         ],
         [
           "4",
-          52
+          54
         ]
       ],
       "minimum": 0,

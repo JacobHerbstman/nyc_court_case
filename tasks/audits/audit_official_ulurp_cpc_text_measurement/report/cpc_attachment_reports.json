@@ -5,7 +5,7 @@
     "document_id"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "70d1d807159e0701f02c3bd61825925c8f8d7e25252d871f694000effd99a975",
+  "sha256_csv_bytes": "515afca2062de22fa8425c9e9b192dc496aba738a4624e16234d3cb433d1c7bf",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -422,25 +422,6 @@
       ],
       "minimum": 0,
       "maximum": 0
-    },
-    "pilot_focal": {
-      "python_types": [
-        "int"
-      ],
-      "missing": 0,
-      "distinct_nonmissing": 2,
-      "most_common": [
-        [
-          "0",
-          11294
-        ],
-        [
-          "1",
-          20
-        ]
-      ],
-      "minimum": 0,
-      "maximum": 1
     },
     "public_pdf_url": {
       "python_types": [

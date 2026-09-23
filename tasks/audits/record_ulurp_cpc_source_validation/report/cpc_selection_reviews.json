@@ -5,7 +5,7 @@
     "review_id"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "34868f9f06e52c057dff8eb6d8b862e18c7090de3fa9c808c2f3c1f68f81aa10",
+  "sha256_csv_bytes": "975351a1d1612a778768de9464b004afb94204ffbd217b73286f34e24e633741",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "review_id": {
@@ -120,10 +120,6 @@
       "distinct_nonmissing": 27,
       "most_common": [
         [
-          "024d4976ef4b9495f2f1a9883495e2e93f0ed20035cf2c07b3b36a088a93b9d7",
-          1
-        ],
-        [
           "039e1653da6b2644ec91597b1bcb71dbc33a3cb6fb0d37b0368450d352936d30",
           1
         ],
@@ -132,11 +128,15 @@
           1
         ],
         [
+          "12e5f2d613265dd7f3cbe917eaee82efc187192d349a42b3fe263c049efe44b2",
+          1
+        ],
+        [
           "151e0d278b78778f2292e7914822b9099227681fcd5fc43eb7f8b88e0fcb101f",
           1
         ],
         [
-          "188d5c95bd2f85623cfd3016f9ec28e3d93b79bf1dc32b8b03eb1474647a8f3a",
+          "167c2d9ae2c533f686b9b76af3f01aa700e2296502de82d267ea0d9169e91b0f",
           1
         ]
       ]

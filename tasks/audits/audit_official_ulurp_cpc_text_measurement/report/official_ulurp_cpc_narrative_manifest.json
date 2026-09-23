@@ -5,7 +5,7 @@
     "document_id"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "ed04324f48affe2651fc5c381d271d3573365e47a2a90a723f70860be3081a1f",
+  "sha256_csv_bytes": "1f6f1928ac34a5dd6f89c76616e8295588d90d329ba529ade9476e1d11e31a7b",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -390,7 +390,7 @@
       "distinct_nonmissing": 9664,
       "most_common": [
         [
-          "5c8f3ccad02086edf6dc2995f9dfccb1ae95943554599618cdbba9e82ed5a418",
+          "4a297a2652a35f58a34ac37e971a14a6bf5653b31c3ed70a6a596ff375e3a414",
           18
         ],
         [
@@ -406,7 +406,7 @@
           17
         ],
         [
-          "292dfda14fc6d81dea264ac08e861d02b53efe16ced90370a8489040cdb1b7d1",
+          "0e43fd08c065bcf535065bcd6ea4206c9c56b3d444b33afabc2a56b5c3c15f5f",
           16
         ]
       ]
@@ -462,7 +462,7 @@
         "int"
       ],
       "missing": 0,
-      "distinct_nonmissing": 8465,
+      "distinct_nonmissing": 8511,
       "most_common": [
         [
           "0",
@@ -473,7 +473,7 @@
           18
         ],
         [
-          "248583",
+          "248482",
           18
         ],
         [
@@ -493,7 +493,7 @@
         "int"
       ],
       "missing": 0,
-      "distinct_nonmissing": 6848,
+      "distinct_nonmissing": 7044,
       "most_common": [
         [
           "0",
@@ -505,14 +505,14 @@
         ],
         [
           "1577",
-          20
+          19
         ],
         [
           "186979",
           18
         ],
         [
-          "237075",
+          "236974",
           18
         ]
       ],

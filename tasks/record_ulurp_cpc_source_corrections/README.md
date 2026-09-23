@@ -27,10 +27,10 @@ and summarize the Department of City Planning CPC report corpus.
   not mark N reports as independent observations or change their official lead
   flags. Other possible referrals still require review.
 - `ulurp_cpc_page_scope_reviews.csv` records hash-locked page ranges resolving
-  application identity for Jev packet preparation. The initial decisions retain
+  application identity for `build_ulurp_cpc_reading_text`. The initial decisions retain
   the Queens report and local recommendations, exclude its unrelated Manhattan
   testimony, and preserve the Bay Ridge attachment blocks despite OCR-corrupted
-  dockets. These are Codex/Sol source reviews, not new human topic labels. Every
+  dockets. These are model-assisted source reviews, not new human topic labels. Every
   decision is validated against the source hash and applied page range.
 
 The Makefile only verifies that the committed decisions exist; it does not
@@ -47,7 +47,8 @@ column records whether the reviewed pages were identical or newly extracted
 continuations, maps, or photographs. The original review versions remain in the
 snapshot.
 
-Four additional page-scope records verify the recovered pilot attachments: Bronx
+Four additional page-scope records verify recovered attachments that page images
+showed were missing before the repair: Bronx
 Special Districts (38--52), 3276 Jerome Avenue (8--11), 19 East 72nd Street
 (13--21), and Variety Boys and Girls Club (12--18). They document explicit project
 identity, paired actions, OCR errors in docket headers, and contextual references

@@ -24,6 +24,10 @@ the corpus contains the intended CPC reports and readable substantive text.
   language that does not establish such a referral. Decisions describe what the
   inspected passage establishes, not a blanket instruction to include a source
   or merge observations. The text-measurement audit consumes this ledger.
+  After the September 22 attachment OCR repair, eight reviewed sources had new
+  full-text fingerprints. Their cited pages and narratives are byte-identical
+  before and after the repair, and C 890406/890407 PPQ still have identical
+  text, so only `source_text_sha256` was updated; decisions are unchanged.
 
 The Governors Island referral was additionally corroborated by downloading
 `https://www.nyc.gov/assets/planning/download/pdf/about/cpc/130189a.pdf` on

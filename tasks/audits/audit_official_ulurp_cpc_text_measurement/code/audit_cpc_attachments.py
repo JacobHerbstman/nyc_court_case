@@ -16,8 +16,6 @@ with open('../input/cpc_attachment_pages_before.csv') as f:
     old_pages = list(csv.DictReader(f))
 with open('../input/cpc_attachment_roster_before.csv') as f:
     roster = list(csv.DictReader(f))
-with open('../input/cpc_attachment_pilot_sample.csv') as f:
-    pilot = list(csv.DictReader(f))
 
 before = {r['document_id']: r for r in before_rows}
 after = {r['document_id']: r for r in after_rows}
@@ -26,7 +24,6 @@ assert len(before) == len(before_rows) == len(after) == len(after_rows)
 assert set(before) == set(after)
 assert len(old) == len(old_pages)
 assert len(roster) == len({r['document_id'] for r in roster})
-assert len(pilot) == len({r['document_id'] for r in pilot}) == 20
 
 pages, reports = [], []
 for doc, source in after.items():
@@ -67,7 +64,6 @@ for doc, source in after.items():
         candidate_words_added=sum(max(0, p['words_added']) for p in candidates),
         remaining_short_candidate_pages=sum(p['words_after'] < 50 for p in candidates),
         changed_other_pages=sum(p['changed'] for p in supplied if not p['candidate']),
-        pilot_focal=int(any(r['document_id'] == doc for r in pilot)),
         public_pdf_url=source['resolved_pdf_url']))
 assert len(pages) == len(old_pages)
 assert {(p['document_id'], p['pdf_page']) for p in pages} == set(old)
@@ -106,7 +102,8 @@ lines = ['# CPC attachment OCR repair', '',
     f'The former processing roster contains {len(roster):,} focal narrative bundles. '
     f'{len(affected_bundles):,} link to a candidate source; {len(recovered_bundles):,} link to a source with '
     'newly recovered text. Source-report counts must not be interpreted as distinct project counts.', '',
-    '| Known pilot report | Previously short pages | Pages recovered to 50 words | Added words |',
+    'Four reports where page images showed missing recommendation attachments before the repair:', '',
+    '| Report | Previously short pages | Pages recovered to 50 words | Added words |',
     '|---|---:|---:|---:|']
 for app in ['C 190403 ZMX', 'C 160064 ZMX', 'C 170452 ZSM', 'C 180085 ZMQ']:
     r = next(r for r in reports if r['application_number'] == app)
@@ -116,8 +113,6 @@ lines += ['', 'The repair checks every short page, including attachments after t
     'PDFs are reused and the pre-repair text is archived. Report identifiers and source availability are unchanged. '
     'A page remaining short is retained and flagged; it is not automatically treated as missing or discarded. '
     'OCR remains imperfect: photographs can produce spurious words, and text above the threshold can still contain errors. The word-count screen is not a measure of reading accuracy.', '',
-    'The completed Sol trial and raw model answers remain frozen. This run stops after OCR and coverage '
-    'measurement, as requested: no new model test, coding run, or reading-packet rebuild was performed. '
-    'Application attribution and coding updates remain separate follow-up work.', '']
+    '']
 Path('../output/cpc_attachment_findings.md').write_text('\n'.join(lines))
 print(f'OCR repair: {len(candidate_docs)} candidate sources; {len(recovered_docs)} with pages recovered to 50 words.')

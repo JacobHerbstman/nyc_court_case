@@ -5,7 +5,7 @@
     "document_id"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "d6367d8e6e816dc8ffff99cc988f3b64a4070e634f77a1bfbd0120a8f8e87ce9",
+  "sha256_csv_bytes": "63b83102a1a9c1d824af1c710ca572e1fba18db397d0d3ca8d7610a2ee82b174",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -579,15 +579,15 @@
       "most_common": [
         [
           "unknown",
-          5939
+          5931
         ],
         [
           "approved",
-          2951
+          2958
         ],
         [
           "denied",
-          173
+          174
         ]
       ]
     },
@@ -695,11 +695,11 @@
       "most_common": [
         [
           "0",
-          8310
+          8306
         ],
         [
           "1",
-          753
+          757
         ]
       ],
       "minimum": 0,
@@ -1650,11 +1650,11 @@
           14
         ],
         [
-          "1e49eb4154e418ae36b202ec3f63839e3d3554388f493ddb19ad907932ad601a",
+          "2439403f2023b804c6ec123899b7c996fa7f86c726169e08f9500a8f0e76faf4",
           7
         ],
         [
-          "070d2ecc64885ea148aeea968a089f6c7952bf8e0410e343e14accf079180c40",
+          "9e70337c98fa22f83b951b6be0071020d5532760213e6a354c1bde11ca01bd12",
           5
         ],
         [
@@ -1851,11 +1851,11 @@
           14
         ],
         [
-          "784c80528b70d050b375f6c819b2cc535c25ff0b4927be3204f1d2474de12076",
+          "8aa8d1cb216e7c5bf373c443d18fd5da5837a7a025bbe54ee37b26c63bcddf29",
           9
         ],
         [
-          "c52b9ae8d9d0b731689bacefdfb3b001a2a042941f8da0da1a32a880c417d340",
+          "9da76a8e5264aca645d83c98bd9568df1301ccc1d1b749e7876bb415bff35968",
           9
         ],
         [
