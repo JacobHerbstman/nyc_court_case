@@ -15,5 +15,14 @@ It creates annual
 `legistar_*_broad_recall_action_details.csv`, and
 `legistar_*_broad_recall_member_votes.csv` files.
 
+The action-detail file keeps the latest Council approval event for each matter
+(the lowest `history_sequence`, since Legistar lists history newest first). A
+saved action-detail page is checked against the HistoryDetail ID it was fetched
+for; a page saved for a different event stops the run. Two pages saved under the
+earlier event rule (M 0745-2003, M 0746-2003) were moved to
+`superseded_action_detail_pages/` on 2026-09-26. Application numbers and Council
+districts in titles are parsed with the shared `_lib/member_deference_utils.py`
+patterns. Each CSV has a data report in `report/`.
+
 Runtime: about 25-35 minutes for a full rebuild when the Legistar HTML files
 are already saved locally.

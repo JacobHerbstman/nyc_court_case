@@ -12,7 +12,7 @@ all: ../output/member_deference_vote_panel.csv \
 	$(foreach year,$(RECALL_YEARS),../input/legistar_$(year)_broad_recall_history_events.csv) \
 	../input/council_member_roster_master.csv \
 	../input/zap_project_data.parquet \
-	../input/council_land_use_ai_geography_accepted_repairs.csv | ../output
+	../input/council_land_use_ai_geography_accepted_repairs.csv | ../output ../report
 	python3 $<
 
 ../input/legistar_%_broad_recall_action_details.csv: ../../fetch_council_land_use_records/output/legistar_%_broad_recall_action_details.csv | ../input

@@ -1,0 +1,555 @@
+{
+  "dataset": "member_deference_final_action_vote_queue.csv",
+  "rows": 593,
+  "key": [
+    "matter_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "3f192e0d0cc5d59943cf1c1a9ec14a1ce90feee126630d8d75d6b63472e29984",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "query_year": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 27,
+      "most_common": [
+        [
+          "2017",
+          38
+        ],
+        [
+          "2013",
+          37
+        ],
+        [
+          "2005",
+          35
+        ],
+        [
+          "2004",
+          34
+        ],
+        [
+          "2018",
+          33
+        ]
+      ]
+    },
+    "matter_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 593,
+      "most_common": [
+        [
+          "1043476",
+          1
+        ],
+        [
+          "1050074",
+          1
+        ],
+        [
+          "1078127",
+          1
+        ],
+        [
+          "1078140",
+          1
+        ],
+        [
+          "1078141",
+          1
+        ]
+      ]
+    },
+    "matter_file": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 593,
+      "most_common": [
+        [
+          "LU 0001-2018",
+          1
+        ],
+        [
+          "LU 0006-2024",
+          1
+        ],
+        [
+          "LU 0007-2024",
+          1
+        ],
+        [
+          "LU 0008-2024",
+          1
+        ],
+        [
+          "LU 0009-2002",
+          1
+        ]
+      ]
+    },
+    "query_matter_type": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "Land Use Application",
+          312
+        ],
+        [
+          "Resolution",
+          280
+        ],
+        [
+          "Land Use Call-Up",
+          1
+        ]
+      ]
+    },
+    "matter_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "Filed",
+          422
+        ],
+        [
+          "Disapproved",
+          167
+        ],
+        [
+          "Withdrawn",
+          4
+        ]
+      ]
+    },
+    "disposition_group": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "filed_by_council_other",
+          231
+        ],
+        [
+          "filed_withdrawal_or_motion",
+          187
+        ],
+        [
+          "disapproved",
+          167
+        ],
+        [
+          "filed_other",
+          4
+        ],
+        [
+          "withdrawn",
+          4
+        ]
+      ]
+    },
+    "filed_age_group": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 171,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "filed_same_year_matter",
+          409
+        ],
+        [
+          "filed_older_matter",
+          13
+        ]
+      ]
+    },
+    "final_action_vote_fetch_tier": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "core_city_council_nonapproval",
+          585
+        ],
+        [
+          "low_information_final_action",
+          7
+        ],
+        [
+          "no_final_history_detail_url",
+          1
+        ]
+      ]
+    },
+    "fetch_vote_detail_first_pass": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "True",
+          585
+        ],
+        [
+          "False",
+          8
+        ]
+      ]
+    },
+    "final_history_date": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 1,
+      "distinct_nonmissing": 191,
+      "most_common": [
+        [
+          "2017-08-09",
+          14
+        ],
+        [
+          "2018-08-08",
+          10
+        ],
+        [
+          "2020-10-15",
+          10
+        ],
+        [
+          "2022-06-02",
+          10
+        ],
+        [
+          "2004-07-21",
+          8
+        ]
+      ]
+    },
+    "final_history_action_by": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 1,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "City Council",
+          588
+        ],
+        [
+          "Committee on Land Use",
+          3
+        ],
+        [
+          "Subcommittee on Planning, Dispositions and Concessions",
+          1
+        ]
+      ]
+    },
+    "final_history_action": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 1,
+      "distinct_nonmissing": 10,
+      "most_common": [
+        [
+          "Filed by Council",
+          418
+        ],
+        [
+          "Disapproved by Council",
+          154
+        ],
+        [
+          "Overridden by Council",
+          8
+        ],
+        [
+          "Approved, by Council",
+          5
+        ],
+        [
+          "Approved by Committee",
+          2
+        ]
+      ]
+    },
+    "final_history_result": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 20,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "Pass",
+          573
+        ]
+      ]
+    },
+    "final_history_detail_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 1,
+      "distinct_nonmissing": 592,
+      "most_common": [
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=10396369&GUID=DB852FB2-5D6A-46EF-9B3E-6C1F788CC8A4",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=10396370&GUID=85373D5A-5493-4BDD-8DE6-ABAFE9ED6F27",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=10404287&GUID=84A9ABBA-135F-41DA-A612-50DF1AC16D64",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=10404288&GUID=B320B685-0FD3-4C6B-A74E-70CC96D6CBDA",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=10912604&GUID=D08188B9-02A0-43F1-84AD-DD54388151CA",
+          1
+        ]
+      ]
+    },
+    "affected_council_districts": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 304,
+      "distinct_nonmissing": 54,
+      "most_common": [
+        [
+          "3",
+          34
+        ],
+        [
+          "1",
+          24
+        ],
+        [
+          "2",
+          16
+        ],
+        [
+          "9",
+          16
+        ],
+        [
+          "33",
+          11
+        ]
+      ]
+    },
+    "affected_district_source": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "missing",
+          304
+        ],
+        [
+          "legistar_matter_index",
+          283
+        ],
+        [
+          "ai_geography_repair",
+          5
+        ],
+        [
+          "zap_application_key",
+          1
+        ]
+      ]
+    },
+    "ai_geography_repair_applied": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "false",
+          588
+        ],
+        [
+          "true",
+          5
+        ]
+      ]
+    },
+    "ai_geography_repair_signature_review_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 588,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "clu_geo_037",
+          2
+        ],
+        [
+          "clu_geo_118",
+          2
+        ],
+        [
+          "clu_geo_081",
+          1
+        ]
+      ]
+    },
+    "ai_geography_repair_source": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 588,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "manual_queue_ai_review_researcher_accepted",
+          5
+        ]
+      ]
+    },
+    "ai_geography_repair_confidence": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 588,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "medium",
+          3
+        ],
+        [
+          "high",
+          2
+        ]
+      ]
+    },
+    "local_members_from_roster": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 305,
+      "distinct_nonmissing": 110,
+      "most_common": [
+        [
+          "Christine C. Quinn",
+          26
+        ],
+        [
+          "Margaret S. Chin",
+          17
+        ],
+        [
+          "Bill Perkins",
+          13
+        ],
+        [
+          "Kalman Yeger",
+          10
+        ],
+        [
+          "Rosie Mendez",
+          9
+        ]
+      ]
+    },
+    "application_keys": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 23,
+      "distinct_nonmissing": 311,
+      "most_common": [
+        [
+          "20025386TCM",
+          4
+        ],
+        [
+          "000074PPM",
+          2
+        ],
+        [
+          "000189ZMX",
+          2
+        ],
+        [
+          "000577PPK",
+          2
+        ],
+        [
+          "010354HAK",
+          2
+        ]
+      ]
+    },
+    "title": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 590,
+      "most_common": [
+        [
+          "Application no. 19985360 TCM, pursuant to Section 20-226 of the Administrative Code of the City of New York, concerning the petition of Starbucks Corporation, d/b/a Starbucks Coffee Company #7341, to establish and operate an unenclosed sidewalk cafe located at 296-300 Third Avenue, Borough of Manhattan, Council District no. 2. This application is subject to review and action by the Council pursuant to Rule 11.20b of the Council and Section 20-226(g) of the New York City Administrative Code.",
+          2
+        ],
+        [
+          "Application number C 210230 ZMK (1571 McDonald Avenue Rezoning) submitted by 1571 Development, LLC, pursuant to Sections 197-c and 201 of the New York City Charter for the amendment of the Zoning Map, Section No. 22d, eliminating from within an existing R5 District a C2-3 District and changing from an R5 District to an C4-4L District, Borough of Brooklyn, Community District 12, Council District 44.",
+          2
+        ],
+        [
+          "Application number N 210231 ZRK (1571 McDonald Avenue Rezoning) submitted by 1571 Development, LLC, pursuant to Section 201 of the New York City Charter, for an amendment to the Zoning Resolution of the City of New York, modifying APPENDIX F for the purpose of establishing a Mandatory Inclusionary Housing area, Borough of Brooklyn, Community District 12, Council District 44.",
+          2
+        ],
+        [
+          "360 Preservation, Block 1550, Lots 31 and 36, Brooklyn, Community District No.16. Council District No. 41",
+          1
+        ],
+        [
+          "A proposal by the Department of General Services, pursuant to §195 of the New York City Charter, for the acquisition of office space located at 808/810 East 16th Street, Borough of Brooklyn, Council District no. 44, for use by Brooklyn Community Board #14. (Non-ULURP no. 20005093 PXK)",
+          1
+        ]
+      ]
+    }
+  }
+}

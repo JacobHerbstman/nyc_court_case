@@ -1,0 +1,871 @@
+{
+  "dataset": "member_deference_nonapproval_geography_conservative_queue.csv",
+  "rows": 585,
+  "key": [
+    "matter_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "3a6a8058f2f37edba6b215a4759f01e556e8b324fe801132d82a598c8766d210",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "query_year": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 27,
+      "most_common": [
+        [
+          "2017",
+          38
+        ],
+        [
+          "2013",
+          37
+        ],
+        [
+          "2005",
+          35
+        ],
+        [
+          "2004",
+          34
+        ],
+        [
+          "2018",
+          33
+        ]
+      ]
+    },
+    "matter_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 585,
+      "most_common": [
+        [
+          "1043476",
+          1
+        ],
+        [
+          "1050074",
+          1
+        ],
+        [
+          "1078127",
+          1
+        ],
+        [
+          "1078140",
+          1
+        ],
+        [
+          "1078141",
+          1
+        ]
+      ]
+    },
+    "matter_file": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 585,
+      "most_common": [
+        [
+          "LU 0001-2018",
+          1
+        ],
+        [
+          "LU 0006-2024",
+          1
+        ],
+        [
+          "LU 0007-2024",
+          1
+        ],
+        [
+          "LU 0008-2024",
+          1
+        ],
+        [
+          "LU 0009-2002",
+          1
+        ]
+      ]
+    },
+    "query_matter_type": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "Land Use Application",
+          305
+        ],
+        [
+          "Resolution",
+          280
+        ]
+      ]
+    },
+    "matter_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "Filed",
+          418
+        ],
+        [
+          "Disapproved",
+          167
+        ]
+      ]
+    },
+    "disposition_group": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "filed_by_council_other",
+          231
+        ],
+        [
+          "filed_withdrawal_or_motion",
+          187
+        ],
+        [
+          "disapproved",
+          167
+        ]
+      ]
+    },
+    "filed_age_group": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 167,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "filed_same_year_matter",
+          407
+        ],
+        [
+          "filed_older_matter",
+          11
+        ]
+      ]
+    },
+    "final_action_vote_fetch_tier": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "core_city_council_nonapproval",
+          585
+        ]
+      ]
+    },
+    "fetch_vote_detail_first_pass": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "True",
+          585
+        ]
+      ]
+    },
+    "final_history_date": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 185,
+      "most_common": [
+        [
+          "2017-08-09",
+          14
+        ],
+        [
+          "2018-08-08",
+          10
+        ],
+        [
+          "2020-10-15",
+          10
+        ],
+        [
+          "2022-06-02",
+          10
+        ],
+        [
+          "2004-07-21",
+          8
+        ]
+      ]
+    },
+    "final_history_action_by": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "City Council",
+          585
+        ]
+      ]
+    },
+    "final_history_action": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "Filed by Council",
+          418
+        ],
+        [
+          "Disapproved by Council",
+          154
+        ],
+        [
+          "Overridden by Council",
+          8
+        ],
+        [
+          "Approved, by Council",
+          5
+        ]
+      ]
+    },
+    "final_history_result": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 14,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "Pass",
+          571
+        ]
+      ]
+    },
+    "final_history_detail_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 585,
+      "most_common": [
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=10396369&GUID=DB852FB2-5D6A-46EF-9B3E-6C1F788CC8A4",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=10396370&GUID=85373D5A-5493-4BDD-8DE6-ABAFE9ED6F27",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=10404287&GUID=84A9ABBA-135F-41DA-A612-50DF1AC16D64",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=10404288&GUID=B320B685-0FD3-4C6B-A74E-70CC96D6CBDA",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=10912604&GUID=D08188B9-02A0-43F1-84AD-DD54388151CA",
+          1
+        ]
+      ]
+    },
+    "affected_council_districts": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 118,
+      "distinct_nonmissing": 55,
+      "most_common": [
+        [
+          "3",
+          54
+        ],
+        [
+          "1",
+          39
+        ],
+        [
+          "2",
+          31
+        ],
+        [
+          "9",
+          24
+        ],
+        [
+          "33",
+          15
+        ]
+      ]
+    },
+    "affected_district_source": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 10,
+      "most_common": [
+        [
+          "legistar_matter_index",
+          276
+        ],
+        [
+          "manual_review_unresolved",
+          118
+        ],
+        [
+          "title_bbl_current_mappluto",
+          76
+        ],
+        [
+          "title_address_exact_current_mappluto",
+          58
+        ],
+        [
+          "verified_direct_official_district",
+          24
+        ]
+      ]
+    },
+    "application_keys": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 22,
+      "distinct_nonmissing": 306,
+      "most_common": [
+        [
+          "000074PPM",
+          2
+        ],
+        [
+          "000189ZMX",
+          2
+        ],
+        [
+          "000577PPK",
+          2
+        ],
+        [
+          "010354HAK",
+          2
+        ],
+        [
+          "010645ZMK",
+          2
+        ]
+      ]
+    },
+    "title": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 582,
+      "most_common": [
+        [
+          "Application no. 19985360 TCM, pursuant to Section 20-226 of the Administrative Code of the City of New York, concerning the petition of Starbucks Corporation, d/b/a Starbucks Coffee Company #7341, to establish and operate an unenclosed sidewalk cafe located at 296-300 Third Avenue, Borough of Manhattan, Council District no. 2. This application is subject to review and action by the Council pursuant to Rule 11.20b of the Council and Section 20-226(g) of the New York City Administrative Code.",
+          2
+        ],
+        [
+          "Application number C 210230 ZMK (1571 McDonald Avenue Rezoning) submitted by 1571 Development, LLC, pursuant to Sections 197-c and 201 of the New York City Charter for the amendment of the Zoning Map, Section No. 22d, eliminating from within an existing R5 District a C2-3 District and changing from an R5 District to an C4-4L District, Borough of Brooklyn, Community District 12, Council District 44.",
+          2
+        ],
+        [
+          "Application number N 210231 ZRK (1571 McDonald Avenue Rezoning) submitted by 1571 Development, LLC, pursuant to Section 201 of the New York City Charter, for an amendment to the Zoning Resolution of the City of New York, modifying APPENDIX F for the purpose of establishing a Mandatory Inclusionary Housing area, Borough of Brooklyn, Community District 12, Council District 44.",
+          2
+        ],
+        [
+          "360 Preservation, Block 1550, Lots 31 and 36, Brooklyn, Community District No.16. Council District No. 41",
+          1
+        ],
+        [
+          "A proposal by the Department of General Services, pursuant to §195 of the New York City Charter, for the acquisition of office space located at 808/810 East 16th Street, Borough of Brooklyn, Council District no. 44, for use by Brooklyn Community Board #14. (Non-ULURP no. 20005093 PXK)",
+          1
+        ]
+      ]
+    },
+    "affected_council_districts_original": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 303,
+      "distinct_nonmissing": 53,
+      "most_common": [
+        [
+          "3",
+          34
+        ],
+        [
+          "1",
+          24
+        ],
+        [
+          "2",
+          16
+        ],
+        [
+          "9",
+          13
+        ],
+        [
+          "33",
+          11
+        ]
+      ]
+    },
+    "affected_district_source_original": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "missing",
+          303
+        ],
+        [
+          "legistar_matter_index",
+          276
+        ],
+        [
+          "ai_geography_repair",
+          5
+        ],
+        [
+          "zap_application_key",
+          1
+        ]
+      ]
+    },
+    "local_members_from_roster_original": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 304,
+      "distinct_nonmissing": 106,
+      "most_common": [
+        [
+          "Christine C. Quinn",
+          26
+        ],
+        [
+          "Margaret S. Chin",
+          17
+        ],
+        [
+          "Bill Perkins",
+          10
+        ],
+        [
+          "Kalman Yeger",
+          10
+        ],
+        [
+          "Rosie Mendez",
+          9
+        ]
+      ]
+    },
+    "affected_district_confidence_conservative": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "original_legistar_or_zap_geography",
+          282
+        ],
+        [
+          "unresolved",
+          118
+        ],
+        [
+          "current_geography_backup",
+          84
+        ],
+        [
+          "current_geography_backup_fragile",
+          60
+        ],
+        [
+          "direct_official_legistar",
+          24
+        ]
+      ]
+    },
+    "affected_district_source_detail_conservative": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 118,
+      "distinct_nonmissing": 48,
+      "most_common": [
+        [
+          "legistar_matter_index",
+          276
+        ],
+        [
+          "title_bbl_to_current_mappluto_25v4",
+          76
+        ],
+        [
+          "title_address_exact_to_current_mappluto_25v4",
+          58
+        ],
+        [
+          "zap_bbl_to_current_mappluto_25v4",
+          8
+        ],
+        [
+          "ai_geography_repair",
+          5
+        ]
+      ]
+    },
+    "geography_incorporation_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "accepted_original_queue_geography",
+          282
+        ],
+        [
+          "accepted_deterministic_recovery",
+          144
+        ],
+        [
+          "excluded_pending_manual_review",
+          118
+        ],
+        [
+          "accepted_first_pass_official_verification",
+          41
+        ]
+      ]
+    },
+    "affected_districts_conservative_missing": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "False",
+          467
+        ],
+        [
+          "True",
+          118
+        ]
+      ]
+    },
+    "recovered_affected_council_districts": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 159,
+      "distinct_nonmissing": 55,
+      "most_common": [
+        [
+          "3",
+          51
+        ],
+        [
+          "1",
+          34
+        ],
+        [
+          "2",
+          29
+        ],
+        [
+          "9",
+          17
+        ],
+        [
+          "13",
+          14
+        ]
+      ]
+    },
+    "geography_recovery_method": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "legistar_existing",
+          282
+        ],
+        [
+          "unresolved",
+          159
+        ],
+        [
+          "title_bbl_current_mappluto",
+          76
+        ],
+        [
+          "title_address_exact_current_mappluto",
+          58
+        ],
+        [
+          "zap_application_project_bbl_current_mappluto",
+          8
+        ]
+      ]
+    },
+    "geography_recovery_confidence": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "official",
+          282
+        ],
+        [
+          "unresolved",
+          159
+        ],
+        [
+          "current_geography_backup",
+          84
+        ],
+        [
+          "current_geography_backup_fragile",
+          60
+        ]
+      ]
+    },
+    "geography_recovery_source": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 159,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "legistar",
+          282
+        ],
+        [
+          "title_bbl_to_current_mappluto_25v4",
+          76
+        ],
+        [
+          "title_address_exact_to_current_mappluto_25v4",
+          58
+        ],
+        [
+          "zap_bbl_to_current_mappluto_25v4",
+          8
+        ],
+        [
+          "title_address_variant_to_current_mappluto_25v4",
+          2
+        ]
+      ]
+    },
+    "verification_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 426,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "needs_manual_review_no_verified_geography",
+          100
+        ],
+        [
+          "verified_direct_official_district",
+          24
+        ],
+        [
+          "verified_official_bbl_to_current_mappluto",
+          17
+        ],
+        [
+          "needs_manual_review_bbl_not_in_current_mappluto",
+          10
+        ],
+        [
+          "needs_manual_review_partial_bbl_current_mappluto",
+          8
+        ]
+      ]
+    },
+    "verified_districts": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 536,
+      "distinct_nonmissing": 21,
+      "most_common": [
+        [
+          "9",
+          10
+        ],
+        [
+          "1",
+          5
+        ],
+        [
+          "33",
+          4
+        ],
+        [
+          "12",
+          3
+        ],
+        [
+          "19",
+          3
+        ]
+      ]
+    },
+    "verification_evidence_level": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 426,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "no_accepted_official_geography",
+          100
+        ],
+        [
+          "direct_official_legistar",
+          24
+        ],
+        [
+          "official_matter_bbl_current_mappluto",
+          17
+        ],
+        [
+          "official_matter_bbl_unmatched_current_mappluto",
+          10
+        ],
+        [
+          "partial_official_matter_bbl_current_mappluto",
+          8
+        ]
+      ]
+    },
+    "verification_source_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 526,
+      "distinct_nonmissing": 59,
+      "most_common": [
+        [
+          "https://legistar.council.nyc.gov/LegislationDetail.aspx?GUID=1D635B34-7F90-4498-A543-CF0AC789EC25&ID=441555",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/LegislationDetail.aspx?GUID=443B009C-C163-41E3-B466-23E0A49A4CDC&ID=449947",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/LegislationDetail.aspx?GUID=4A8FA497-ACE4-4C13-BB63-6A5F5BBF1A71&ID=448745",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/LegislationDetail.aspx?GUID=553008AD-BB86-4C70-AA6D-9F1E51989D9C&ID=444558",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/LegislationDetail.aspx?GUID=79595DB4-1944-4BB1-AC68-68872B874D21&ID=535118",
+          1
+        ]
+      ]
+    },
+    "verification_source_relation": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 526,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "same_matter_id",
+          47
+        ],
+        [
+          "application_key_overlap",
+          11
+        ],
+        [
+          "lu_number_overlap",
+          1
+        ]
+      ]
+    },
+    "in_review_queue": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 426,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "True",
+          130
+        ],
+        [
+          "False",
+          29
+        ]
+      ]
+    }
+  }
+}

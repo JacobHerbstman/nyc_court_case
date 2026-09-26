@@ -1,0 +1,925 @@
+{
+  "dataset": "member_deference_vote_panel.csv",
+  "rows": 13984,
+  "key": [
+    "matter_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "de9ec02fd064be32a05cc3a52e92900a24d0cd9bd36a6fc316c9e97ce191d16f",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "query_year": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 28,
+      "most_common": [
+        [
+          "2001",
+          697
+        ],
+        [
+          "2004",
+          653
+        ],
+        [
+          "1999",
+          649
+        ],
+        [
+          "2006",
+          629
+        ],
+        [
+          "2005",
+          623
+        ]
+      ]
+    },
+    "matter_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 13984,
+      "most_common": [
+        [
+          "1009669",
+          1
+        ],
+        [
+          "1009670",
+          1
+        ],
+        [
+          "1009671",
+          1
+        ],
+        [
+          "1009672",
+          1
+        ],
+        [
+          "1009673",
+          1
+        ]
+      ]
+    },
+    "matter_file": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 13984,
+      "most_common": [
+        [
+          "LU 0001-1998",
+          1
+        ],
+        [
+          "LU 0001-2002",
+          1
+        ],
+        [
+          "LU 0001-2004",
+          1
+        ],
+        [
+          "LU 0001-2006",
+          1
+        ],
+        [
+          "LU 0001-2010",
+          1
+        ]
+      ]
+    },
+    "query_matter_type": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "Land Use Application",
+          6780
+        ],
+        [
+          "Resolution",
+          5942
+        ],
+        [
+          "Land Use Call-Up",
+          1262
+        ]
+      ]
+    },
+    "vote_date": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 610,
+      "most_common": [
+        [
+          "2009-07-29",
+          85
+        ],
+        [
+          "2019-10-17",
+          76
+        ],
+        [
+          "2000-05-24",
+          73
+        ],
+        [
+          "2021-11-23",
+          71
+        ],
+        [
+          "2018-06-28",
+          69
+        ]
+      ]
+    },
+    "vote_margin": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 148,
+      "most_common": [
+        [
+          "48-0-0",
+          2039
+        ],
+        [
+          "50-0-0",
+          1836
+        ],
+        [
+          "49-0-0",
+          1797
+        ],
+        [
+          "47-0-0",
+          1482
+        ],
+        [
+          "51-0-0",
+          1087
+        ]
+      ]
+    },
+    "affirmative_count": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 26,
+      "most_common": [
+        [
+          "48",
+          2220
+        ],
+        [
+          "49",
+          1980
+        ],
+        [
+          "50",
+          1911
+        ],
+        [
+          "47",
+          1874
+        ],
+        [
+          "46",
+          1245
+        ]
+      ]
+    },
+    "negative_count": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 20,
+      "most_common": [
+        [
+          "0",
+          12614
+        ],
+        [
+          "1",
+          867
+        ],
+        [
+          "2",
+          218
+        ],
+        [
+          "3",
+          106
+        ],
+        [
+          "5",
+          53
+        ]
+      ]
+    },
+    "abstain_count": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 10,
+      "most_common": [
+        [
+          "0",
+          13241
+        ],
+        [
+          "1",
+          587
+        ],
+        [
+          "2",
+          101
+        ],
+        [
+          "3",
+          23
+        ],
+        [
+          "4",
+          11
+        ]
+      ]
+    },
+    "application_keys": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 925,
+      "distinct_nonmissing": 7022,
+      "most_common": [
+        [
+          "19975269TCM",
+          4
+        ],
+        [
+          "20115007TCM",
+          4
+        ],
+        [
+          "980068HAK",
+          4
+        ],
+        [
+          "990525PCR",
+          4
+        ],
+        [
+          "000037PPK",
+          3
+        ]
+      ]
+    },
+    "zap_matched_application_keys": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6473,
+      "distinct_nonmissing": 3989,
+      "most_common": [
+        [
+          "160030ZMK",
+          7
+        ],
+        [
+          "980319ZMK",
+          5
+        ],
+        [
+          "090403PSQ",
+          4
+        ],
+        [
+          "980068HAK",
+          4
+        ],
+        [
+          "990098ZMM",
+          4
+        ]
+      ]
+    },
+    "zap_project_ids": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6473,
+      "distinct_nonmissing": 2501,
+      "most_common": [
+        [
+          "P2010K0210",
+          35
+        ],
+        [
+          "P2004K0140",
+          33
+        ],
+        [
+          "2019Y0061",
+          27
+        ],
+        [
+          "P2012M0292",
+          25
+        ],
+        [
+          "P2004M0399",
+          24
+        ]
+      ]
+    },
+    "zap_project_names": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6473,
+      "distinct_nonmissing": 2352,
+      "most_common": [
+        [
+          "C-O-P",
+          139
+        ],
+        [
+          "DOWNTOWN BKLYN DEVELOPMENT",
+          42
+        ],
+        [
+          "CULVER EL",
+          35
+        ],
+        [
+          "HUDSON YARDS",
+          30
+        ],
+        [
+          "New York City Borough - Based Jail System",
+          27
+        ]
+      ]
+    },
+    "zap_cc_districts": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 12435,
+      "distinct_nonmissing": 72,
+      "most_common": [
+        [
+          "33",
+          132
+        ],
+        [
+          "3",
+          95
+        ],
+        [
+          "26",
+          71
+        ],
+        [
+          "35",
+          71
+        ],
+        [
+          "39",
+          59
+        ]
+      ]
+    },
+    "matter_index_districts": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 7912,
+      "distinct_nonmissing": 200,
+      "most_common": [
+        [
+          "3",
+          471
+        ],
+        [
+          "9",
+          394
+        ],
+        [
+          "17",
+          302
+        ],
+        [
+          "1",
+          271
+        ],
+        [
+          "8",
+          255
+        ]
+      ]
+    },
+    "legistar_text_districts": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 7724,
+      "distinct_nonmissing": 203,
+      "most_common": [
+        [
+          "3",
+          473
+        ],
+        [
+          "9",
+          409
+        ],
+        [
+          "17",
+          307
+        ],
+        [
+          "1",
+          272
+        ],
+        [
+          "8",
+          259
+        ]
+      ]
+    },
+    "affected_council_districts": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6486,
+      "distinct_nonmissing": 233,
+      "most_common": [
+        [
+          "3",
+          581
+        ],
+        [
+          "9",
+          457
+        ],
+        [
+          "17",
+          342
+        ],
+        [
+          "33",
+          307
+        ],
+        [
+          "1",
+          297
+        ]
+      ]
+    },
+    "affected_district_source": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "missing",
+          6486
+        ],
+        [
+          "legistar_matter_index",
+          6072
+        ],
+        [
+          "zap_application_key",
+          1012
+        ],
+        [
+          "ai_geography_repair",
+          226
+        ],
+        [
+          "legistar_text",
+          188
+        ]
+      ]
+    },
+    "ai_geography_repair_applied": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "false",
+          13758
+        ],
+        [
+          "true",
+          226
+        ]
+      ]
+    },
+    "ai_geography_repair_signature_review_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 13755,
+      "distinct_nonmissing": 98,
+      "most_common": [
+        [
+          "clu_geo_020",
+          18
+        ],
+        [
+          "clu_geo_021",
+          14
+        ],
+        [
+          "clu_geo_031",
+          10
+        ],
+        [
+          "clu_geo_065",
+          7
+        ],
+        [
+          "clu_geo_011",
+          6
+        ]
+      ]
+    },
+    "ai_geography_repair_source": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 13755,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "deterministic_geography_verification",
+          94
+        ],
+        [
+          "manual_queue_ai_review_researcher_accepted",
+          72
+        ],
+        [
+          "remaining_queue_ai_review_researcher_adjudicated",
+          63
+        ]
+      ]
+    },
+    "ai_geography_repair_confidence": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 13755,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "high",
+          149
+        ],
+        [
+          "medium",
+          78
+        ],
+        [
+          "low",
+          2
+        ]
+      ]
+    },
+    "ai_geography_repair_note": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 13755,
+      "distinct_nonmissing": 85,
+      "most_common": [
+        [
+          "AI-adjudicated geography matched deterministic zap_bbl assignment using DCP Council boundary release 09C.",
+          35
+        ],
+        [
+          "AI-adjudicated geography matched deterministic zap_bbl assignment using DCP Council boundary release 10C.",
+          11
+        ],
+        [
+          "AI-adjudicated geography matched deterministic zap_bbl assignment using DCP Council boundary release 15D.",
+          9
+        ],
+        [
+          "AI-adjudicated geography matched deterministic text_bbl_or_block_lot assignment using DCP Council boundary release 20D.",
+          8
+        ],
+        [
+          "Matter-level decomposition resolves the bundled call-up. Official Council materials identify the Queens Center Mall-related zoning/disposition/special permit/map actions as Council District 25; the Maujer Street Urban Renewal Plan-related Brooklyn action as...",
+          7
+        ]
+      ]
+    },
+    "local_members_from_roster": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6553,
+      "distinct_nonmissing": 460,
+      "most_common": [
+        [
+          "Christine C. Quinn",
+          354
+        ],
+        [
+          "Bill Perkins",
+          264
+        ],
+        [
+          "Stephen T. Levin",
+          160
+        ],
+        [
+          "Margaret S. Chin",
+          147
+        ],
+        [
+          "Maria Del Carmen Arroyo",
+          140
+        ]
+      ]
+    },
+    "local_member_person_ids": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6593,
+      "distinct_nonmissing": 458,
+      "most_common": [
+        [
+          "33949",
+          354
+        ],
+        [
+          "33945",
+          264
+        ],
+        [
+          "42519",
+          160
+        ],
+        [
+          "42514",
+          147
+        ],
+        [
+          "34327",
+          140
+        ]
+      ]
+    },
+    "local_member_vote_match_methods": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6553,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "person_id",
+          7204
+        ],
+        [
+          "not_in_roll_call",
+          184
+        ],
+        [
+          "unique_surname",
+          35
+        ],
+        [
+          "person_id; not_in_roll_call",
+          6
+        ],
+        [
+          "not_in_roll_call; person_id",
+          1
+        ]
+      ]
+    },
+    "local_member_votes": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6737,
+      "distinct_nonmissing": 622,
+      "most_common": [
+        [
+          "Christine C. Quinn: Affirmative",
+          346
+        ],
+        [
+          "Bill Perkins: Affirmative",
+          236
+        ],
+        [
+          "Stephen T. Levin: Affirmative",
+          157
+        ],
+        [
+          "Margaret S. Chin: Affirmative",
+          143
+        ],
+        [
+          "Maria Del Carmen Arroyo: Affirmative",
+          134
+        ]
+      ]
+    },
+    "local_member_negative": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 13932,
+      "distinct_nonmissing": 25,
+      "most_common": [
+        [
+          "David Yassky",
+          9
+        ],
+        [
+          "Stephen Fiala",
+          5
+        ],
+        [
+          "Simcha Felder",
+          4
+        ],
+        [
+          "Bill Perkins",
+          3
+        ],
+        [
+          "Darlene Mealy",
+          3
+        ]
+      ]
+    },
+    "local_member_abstain": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 13980,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "Kalman Yeger",
+          2
+        ],
+        [
+          "Andy L. King",
+          1
+        ],
+        [
+          "Eva S. Moskowitz",
+          1
+        ]
+      ]
+    },
+    "missing_roster_districts": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 13902,
+      "distinct_nonmissing": 13,
+      "most_common": [
+        [
+          "15",
+          31
+        ],
+        [
+          "9",
+          12
+        ],
+        [
+          "48",
+          8
+        ],
+        [
+          "18",
+          6
+        ],
+        [
+          "3",
+          6
+        ]
+      ]
+    },
+    "local_member_vote_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9,
+      "most_common": [
+        [
+          "local_member_affirmative_only",
+          6751
+        ],
+        [
+          "no_affected_district",
+          6486
+        ],
+        [
+          "local_member_not_voting_only",
+          362
+        ],
+        [
+          "no_member_vote_rows",
+          128
+        ],
+        [
+          "missing_roster",
+          82
+        ]
+      ]
+    },
+    "title": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 13928,
+      "most_common": [
+        [
+          "Resolution authorizing franchises for cable television services.",
+          3
+        ],
+        [
+          "Application No. 20185134 HKK (N 180179 HKK) pursuant to Section 3020 of the New York City Charter, concerning the designation by the Landmarks Preservation Commission (DL 503, LP-2575) of the Empire State Dairy Company Buildings, 2840 Atlantic Avenue (Block 3964, part of Lot 8), as an historic landmark, Borough of Brooklyn, Community Board 5, Council District 37.",
+          2
+        ],
+        [
+          "Application No. 20205258 HAM (272 East 7th Street – UDAAP/Article XI) submitted by the New York City Department of Housing Preservation and Development pursuant to Article 16 of the General Municipal Law and Section 577 of Article XI of the Private Housing Finance Law for approval of an urban development action area project, waiver of the area designation requirement, waiver of the requirements of Sections 197-c and 197-d of the New York City Charter, and approval of a real property tax exemption for property located at 272 East 7th Street (Block 376, Lot 28), Borough of Manhattan, Council Dis",
+          2
+        ],
+        [
+          "Application No. 20205405 HAK (461 Alabama Avenue) submitted by the New York City Department of Housing Preservation and Development requesting the amendment of Resolution 773, which the Council previously approved on February 28, 2019, to delete a paragraph referencing Section 576-(a)(2) of the Private Housing Finance Law and to replace it with language referencing the designation of an urban development action area and approval of an urban development action area project pursuant to Article 16 of the General Municipal Law, for property located at 461 Alabama Avenue (Block 3803, Lot 6), Boroug",
+          2
+        ],
+        [
+          "Application No. C 170024 ZMK submitted by 116 Bedford Avenue, LLC pursuant to Sections 197-c and 201 of the New York City Charter, for an amendment of the zoning map, section no. 13a, establishing within an existing R6A District a C1-4 District bounded by North 11th Street, Bedford Avenue, North 10th Street, and a line 100 feet northwesterly of Bedford Avenue, Borough of Brooklyn, Community Board 1, Council District 33.",
+          2
+        ]
+      ]
+    },
+    "history_detail_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 13984,
+      "most_common": [
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=10013005&GUID=89B3FC6B-1B92-4A16-A127-29CEF26FB9A7",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=10019644&GUID=C3BEC2B0-DC80-4EE7-A025-4DE0C97F30C1",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=10019645&GUID=28B685D7-33E4-4358-A3AF-839B253D6F33",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=10019646&GUID=5FF4620B-CF66-430F-B15C-68DEB4D4889E",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=10019647&GUID=09239A8F-C51C-41C7-BCB4-57B7E35B10BC",
+          1
+        ]
+      ]
+    }
+  }
+}

@@ -14,16 +14,14 @@ from bs4 import BeautifulSoup
 sys.path.append("../../_lib")
 from member_deference_utils import (
     application_keys,
-    borough_code_from_application_suffix,
+    borough_code_from_text,
     collapse_districts,
-    collapse_examples,
     collapse_semicolon_values as collapse_values,
     council_districts_from_text,
     lot_numbers_from_text,
-    norm_name,
     normalize_space,
+    save_frame,
     split_semicolon,
-    write_csv,
 )
 lu_re = re.compile(r"\bL\.?\s*U\.?\s*(?:No\.?)?\s*(\d{1,4})(?:\s*-\s*\d{4})?\b", flags=re.IGNORECASE)
 
@@ -90,25 +88,6 @@ def fetch_source_text(session: requests.Session, source_url: str, source_role: s
     return str(response.status_code), "", normalize_space(BeautifulSoup(response.text, "html.parser").get_text(" "))
 
 
-def borough_code_from_text(text: object, keys: object) -> tuple[str, str]:
-    text_upper = normalize_space(text).upper()
-    borough_hits = []
-    for name, code in [
-        ("MANHATTAN", "1"),
-        ("THE BRONX", "2"),
-        ("BRONX", "2"),
-        ("BROOKLYN", "3"),
-        ("QUEENS", "4"),
-        ("STATEN ISLAND", "5"),
-    ]:
-        if name in text_upper and code not in borough_hits:
-            borough_hits.append(code)
-    if len(borough_hits) == 1:
-        return borough_hits[0], "official_text_borough"
-
-    return borough_code_from_application_suffix(keys)
-
-
 def bbls_from_text(text: object, keys: object) -> tuple[str, str, str]:
     borough_code, borough_source = borough_code_from_text(text, keys)
     if borough_code == "":
@@ -146,19 +125,19 @@ def source_snippet(text: str, needles: list[str]) -> str:
             return text[start:end].strip()
     return text[:500].strip()
 
-queue = pd.read_csv("../input/member_deference_nonapproval_geography_review_queue.csv", dtype=str, keep_default_na=False)
+review_queue = pd.read_csv(
+    "../input/member_deference_nonapproval_geography_review_queue.csv", dtype=str, keep_default_na=False
+)
 full_queue = pd.read_csv("../input/member_deference_final_action_vote_queue.csv", dtype=str, keep_default_na=False)
 full_queue = full_queue[full_queue["fetch_vote_detail_first_pass"].str.lower().eq("true")].copy()
 recovery = pd.read_csv("../input/member_deference_nonapproval_geography_recovery.csv", dtype=str, keep_default_na=False)
-recovery["recovered_affected_district_missing_bool"] = recovery["recovered_affected_district_missing"].str.lower().eq("true")
 chatgpt = pd.read_csv(
     "../input/member_deference_nonapproval_geography_chatgpt_review_responses.csv", dtype=str, keep_default_na=False
 )
 matter_universe = pd.read_csv("../input/member_deference_matter_universe.csv", dtype=str, keep_default_na=False)
 mappluto = pd.read_parquet("../input/mappluto_current_lot_lookup.parquet", columns=["bbl", "council"])
-roster = pd.read_csv("../input/council_member_roster_master.csv", dtype=str, keep_default_na=False)
 
-if queue["matter_id"].duplicated().any():
+if review_queue["matter_id"].duplicated().any():
     raise RuntimeError("Review list must be unique by matter_id.")
 if full_queue["matter_id"].duplicated().any():
     raise RuntimeError("Full final-action list must be unique by matter_id.")
@@ -166,20 +145,23 @@ if recovery["matter_id"].duplicated().any():
     raise RuntimeError("Geography recovery output must be unique by matter_id.")
 if chatgpt["matter_file"].duplicated().any():
     raise RuntimeError("ChatGPT review responses must be unique by matter_file.")
-if not chatgpt["matter_file"].isin(set(queue["matter_file"])).all():
-    raise RuntimeError("Every ChatGPT review response must link to the current review list.")
+if not chatgpt["matter_file"].isin(set(review_queue["matter_file"])).all():
+    raise RuntimeError("Every ChatGPT review response must link to the committed review list.")
 if matter_universe["matter_id"].duplicated().any():
     raise RuntimeError("Matter universe must be unique by matter_id.")
 
+# Every matter left unresolved by deterministic recovery is checked against its official
+# Legistar page. The committed review list and ChatGPT responses only add candidate links;
+# they cover the unresolved list as it stood when the review was run.
+queue = recovery[recovery["recovered_affected_district_missing"].str.lower().eq("true")][
+    ["query_year", "matter_id", "matter_file", "disposition_group", "application_keys", "title"]
+].copy()
+queue["in_review_queue"] = queue["matter_id"].isin(set(review_queue["matter_id"]))
 queue = queue.merge(
     chatgpt[
         [
             "matter_file",
-            "likely_location",
             "likely_current_or_historical_council_district",
-            "confidence_high_medium_low",
-            "official_source_to_check_or_source_url",
-            "reasoning_notes",
             "source_links_found_in_cell",
         ]
     ],
@@ -187,25 +169,19 @@ queue = queue.merge(
     how="left",
     validate="one_to_one",
 )
-queue["chatgpt_response_found"] = queue["likely_current_or_historical_council_district"].notna()
-for col in [
-    "likely_location",
-    "likely_current_or_historical_council_district",
-    "confidence_high_medium_low",
-    "official_source_to_check_or_source_url",
-    "reasoning_notes",
-    "source_links_found_in_cell",
-]:
-    queue[col] = queue[col].fillna("")
-
+queue = queue.fillna("")
 queue = queue.merge(
     matter_universe[["matter_id", "matter_url", "final_history_detail_url"]],
     on="matter_id",
     how="left",
     validate="one_to_one",
 )
-if queue["matter_url"].eq("").any():
-    raise RuntimeError("Every review-queue row must have a Legistar matter URL.")
+if queue["matter_url"].fillna("").eq("").any():
+    raise RuntimeError("Every unresolved matter must have a Legistar matter URL.")
+print(
+    f"Unresolved matters checked: {len(queue)}; in committed review list: {int(queue['in_review_queue'].sum())}; "
+    f"review-list rows no longer unresolved: {int((~review_queue['matter_id'].isin(set(queue['matter_id']))).sum())}"
+)
 
 mappluto["bbl"] = mappluto["bbl"].astype(str)
 mappluto["current_mappluto_council_district"] = mappluto["council"].map(lambda x: collapse_districts([x]))
@@ -242,18 +218,11 @@ for row in queue.to_dict("records"):
             continue
         seen_urls.add(url_row["source_url"])
 
-        fetched_text = ""
-        fetch_status = ""
-        fetch_error = ""
-        try:
-            fetch_status, fetch_error, fetched_text = fetch_source_text(
-                session,
-                url_row["source_url"],
-                url_row["source_role"],
-            )
-        except Exception as exc:
-            fetch_status = "error"
-            fetch_error = str(exc)
+        fetch_status, fetch_error, fetched_text = fetch_source_text(
+            session,
+            url_row["source_url"],
+            url_row["source_role"],
+        )
 
         row_application_keys = set(split_semicolon(row["application_keys"]))
         source_application_keys = set(application_keys(fetched_text))
@@ -388,9 +357,6 @@ for col in ["official_matter_bbl_count", "official_matter_bbl_current_mappluto_m
         verification[col] = 0
     verification[col] = verification[col].fillna(0).astype(int)
 
-verification["chatgpt_suggested_districts_parsed"] = verification[
-    "likely_current_or_historical_council_district"
-].map(lambda x: collapse_districts([x]))
 verification["official_matter_bbl_unmatched_count"] = (
     verification["official_matter_bbl_count"] - verification["official_matter_bbl_current_mappluto_match_count"]
 )
@@ -454,19 +420,6 @@ verification["verification_evidence_level"] = result_columns[2]
 verification["verification_source_url"] = result_columns[3]
 verification["verification_source_relation"] = result_columns[4]
 verification["verification_notes"] = result_columns[5]
-verification["verified_districts_match_chatgpt"] = verification.apply(
-    lambda row: row["verified_districts"] != ""
-    and set(split_semicolon(row["verified_districts"]))
-    == set(split_semicolon(row["chatgpt_suggested_districts_parsed"])),
-    axis=1,
-)
-
-roster["term_start_date_parsed"] = pd.to_datetime(roster["term_start_date"], errors="coerce")
-roster["term_end_date_parsed"] = pd.to_datetime(roster["term_end_date"], errors="coerce").fillna(
-    pd.Timestamp("2100-01-01")
-)
-roster["member_name_norm"] = roster["member_name"].map(norm_name)
-roster = roster[roster["member_name_norm"] != "vacant"].copy()
 
 conservative_queue = full_queue.merge(
     recovery[
@@ -493,6 +446,7 @@ conservative_queue = conservative_queue.merge(
             "verification_evidence_level",
             "verification_source_url",
             "verification_source_relation",
+            "in_review_queue",
         ]
     ],
     on="matter_id",
@@ -553,33 +507,11 @@ conservative_queue["affected_districts_conservative_missing"] = (
     conservative_queue["affected_council_districts_conservative"] == ""
 )
 
-local_members_conservative = []
-missing_roster_districts_conservative = []
-for row in conservative_queue.to_dict("records"):
-    final_date = pd.to_datetime(row["final_history_date"], errors="coerce")
-    local_members = []
-    missing_roster_districts = []
-    if not pd.isna(final_date):
-        for district in split_semicolon(row["affected_council_districts_conservative"]):
-            matches = roster[
-                (roster["district"].astype(str) == str(int(district)))
-                & (roster["term_start_date_parsed"] <= final_date)
-                & (final_date <= roster["term_end_date_parsed"])
-            ]
-            if matches.empty:
-                missing_roster_districts.append(str(int(district)))
-                continue
-            local_members.extend(matches["member_name"].tolist())
-    local_members_conservative.append(collapse_examples(local_members))
-    missing_roster_districts_conservative.append(collapse_examples(missing_roster_districts))
-
 conservative_queue["affected_council_districts_original"] = conservative_queue["affected_council_districts"]
 conservative_queue["affected_district_source_original"] = conservative_queue["affected_district_source"]
 conservative_queue["local_members_from_roster_original"] = conservative_queue["local_members_from_roster"]
 conservative_queue["affected_council_districts"] = conservative_queue["affected_council_districts_conservative"]
 conservative_queue["affected_district_source"] = conservative_queue["affected_district_source_conservative"]
-conservative_queue["local_members_from_roster"] = local_members_conservative
-conservative_queue["missing_roster_districts_conservative"] = missing_roster_districts_conservative
 
 conservative_queue = conservative_queue[
     [
@@ -599,7 +531,6 @@ conservative_queue = conservative_queue[
         "final_history_detail_url",
         "affected_council_districts",
         "affected_district_source",
-        "local_members_from_roster",
         "application_keys",
         "title",
         "affected_council_districts_original",
@@ -609,7 +540,6 @@ conservative_queue = conservative_queue[
         "affected_district_source_detail_conservative",
         "geography_incorporation_status",
         "affected_districts_conservative_missing",
-        "missing_roster_districts_conservative",
         "recovered_affected_council_districts",
         "geography_recovery_method",
         "geography_recovery_confidence",
@@ -619,54 +549,14 @@ conservative_queue = conservative_queue[
         "verification_evidence_level",
         "verification_source_url",
         "verification_source_relation",
+        "in_review_queue",
     ]
 ]
 
-verification = verification[
-    [
-        "query_year",
-        "matter_id",
-        "matter_file",
-        "disposition_group",
-        "verification_status",
-        "verified_districts",
-        "verification_evidence_level",
-        "verification_source_url",
-        "verification_source_relation",
-        "verified_districts_match_chatgpt",
-        "chatgpt_suggested_districts_parsed",
-        "likely_current_or_historical_council_district",
-        "confidence_high_medium_low",
-        "likely_location",
-        "application_keys",
-        "title_bbls",
-        "official_matter_bbl_count",
-        "official_matter_bbl_current_mappluto_match_count",
-        "official_matter_bbl_unmatched_count",
-        "official_matter_bbl_current_mappluto_districts",
-        "official_matter_bbl_examples",
-        "verified_direct_official_districts",
-        "verified_direct_official_url",
-        "verified_direct_official_relation",
-        "verified_direct_official_snippet",
-        "verification_notes",
-        "official_source_to_check_or_source_url",
-        "reasoning_notes",
-        "source_links_found_in_cell",
-        "matter_url",
-        "final_history_detail_url",
-        "title",
-    ]
-]
-
-if len(queue) != int(recovery["recovered_affected_district_missing_bool"].sum()):
-    raise RuntimeError("Verification input must cover every unresolved recovery row.")
-if not queue.loc[queue["chatgpt_response_found"], "matter_file"].isin(set(chatgpt["matter_file"])).all():
-    raise RuntimeError("Every marked ChatGPT review response must link to the current review list.")
 if verification["matter_id"].duplicated().any():
     raise RuntimeError("Verification ledger must be unique by matter_id.")
 if int(sources["source_role"].eq("exact_matter_legistar").sum()) != len(queue):
-    raise RuntimeError("Every review-list row must have an exact Legistar matter source.")
+    raise RuntimeError("Every unresolved matter must have an exact Legistar matter source.")
 if not sources.loc[sources["source_role"].eq("exact_matter_legistar"), "fetch_status"].eq("200").all():
     raise RuntimeError("Every exact Legistar matter page must return HTTP 200.")
 if not verification.loc[verification["verification_status"].str.startswith("verified_"), "verified_districts"].ne("").all():
@@ -679,4 +569,4 @@ if not verification.loc[
 if conservative_queue["matter_id"].duplicated().any():
     raise RuntimeError("Conservative geography queue must be unique by matter_id.")
 
-write_csv("../output/member_deference_nonapproval_geography_conservative_queue.csv", conservative_queue)
+save_frame(conservative_queue, "../output/member_deference_nonapproval_geography_conservative_queue.csv", ["matter_id"])

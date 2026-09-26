@@ -5,27 +5,7 @@ import sys
 import pandas as pd
 
 sys.path.append("../../_lib")
-from member_deference_utils import write_csv
-
-
-def approval_vote_status(value: object) -> str:
-    if value == "approved_with_all_local_members_affirmative":
-        return "local_member_affirmative_only"
-    if value in {"approved_with_local_member_negative", "approved_with_local_member_abstain"}:
-        return "local_member_negative_or_abstain"
-    if value == "approved_with_local_member_other_nonaffirmative":
-        return "local_member_excused_nonvoting_absent_or_other"
-    if value == "unresolved_no_affected_district":
-        return "no_affected_district"
-    if value == "unresolved_missing_roster":
-        return "missing_roster"
-    if value == "unresolved_no_member_vote_rows":
-        return "no_member_vote_rows"
-    if value == "unresolved_no_local_member_vote_match":
-        return "local_member_missing_from_vote_rows"
-    if value == "unresolved_partial_local_member_vote_match":
-        return "partial_local_member_vote_match"
-    return "not_classified"
+from member_deference_utils import save_frame, split_semicolon
 
 matter_universe = pd.read_csv("../input/member_deference_matter_universe.csv", dtype=str, keep_default_na=False)
 approval_panel = pd.read_csv("../input/member_deference_vote_panel.csv", dtype=str, keep_default_na=False)
@@ -48,7 +28,6 @@ for name, df in [
         raise RuntimeError(f"{name} must be unique by matter_id.")
 
 approval_panel["approval_source_row"] = "true"
-approval_panel["approval_vote_status_standardized"] = approval_panel["vote_evidence_status"].map(approval_vote_status)
 approval_panel = approval_panel[
     [
         "matter_id",
@@ -61,14 +40,10 @@ approval_panel = approval_panel[
         "affected_council_districts",
         "affected_district_source",
         "local_members_from_roster",
+        "local_member_vote_match_methods",
         "local_member_votes",
-        "local_member_negative",
         "local_member_abstain",
-        "local_member_other_nonaffirmative",
-        "missing_roster_districts",
-        "vote_evidence_status",
-        "vote_evidence_strength",
-        "approval_vote_status_standardized",
+        "local_member_vote_status",
         "history_detail_url",
     ]
 ].rename(
@@ -81,13 +56,10 @@ approval_panel = approval_panel[
         "affected_council_districts": "approval_affected_council_districts",
         "affected_district_source": "approval_affected_district_source",
         "local_members_from_roster": "approval_local_members_from_roster",
+        "local_member_vote_match_methods": "approval_local_member_vote_match_methods",
         "local_member_votes": "approval_local_member_votes",
-        "local_member_negative": "approval_local_member_negative",
         "local_member_abstain": "approval_local_member_abstain",
-        "local_member_other_nonaffirmative": "approval_local_member_other_nonaffirmative",
-        "missing_roster_districts": "approval_missing_roster_districts",
-        "vote_evidence_status": "approval_vote_evidence_status",
-        "vote_evidence_strength": "approval_vote_evidence_strength",
+        "local_member_vote_status": "approval_local_member_vote_status",
         "history_detail_url": "approval_history_detail_url",
     }
 )
@@ -115,8 +87,9 @@ nonapproval_actions = nonapproval_actions.merge(
             "local_member_rows",
             "local_member_vote_rows_found",
             "matched_vote_person_names",
+            "local_member_vote_match_methods",
             "local_member_final_action_votes",
-            "local_member_final_action_vote_categories",
+            "local_member_abstain",
             "local_member_final_action_vote_status",
         ]
     ],
@@ -134,8 +107,9 @@ for col in [
     "local_member_rows",
     "local_member_vote_rows_found",
     "matched_vote_person_names",
+    "local_member_vote_match_methods",
     "local_member_final_action_votes",
-    "local_member_final_action_vote_categories",
+    "local_member_abstain",
     "local_member_final_action_vote_status",
 ]:
     nonapproval_actions[col] = nonapproval_actions[col].fillna("")
@@ -162,8 +136,9 @@ nonapproval_actions = nonapproval_actions[
         "local_member_rows",
         "local_member_vote_rows_found",
         "matched_vote_person_names",
+        "local_member_vote_match_methods",
         "local_member_final_action_votes",
-        "local_member_final_action_vote_categories",
+        "local_member_abstain",
         "local_member_final_action_vote_status",
         "geography_incorporation_status",
         "affected_district_confidence_conservative",
@@ -191,8 +166,9 @@ nonapproval_actions = nonapproval_actions[
         "local_member_rows": "nonapproval_local_member_rows",
         "local_member_vote_rows_found": "nonapproval_local_member_vote_rows_found",
         "matched_vote_person_names": "nonapproval_matched_vote_person_names",
+        "local_member_vote_match_methods": "nonapproval_local_member_vote_match_methods",
         "local_member_final_action_votes": "nonapproval_local_member_final_action_votes",
-        "local_member_final_action_vote_categories": "nonapproval_local_member_final_action_vote_categories",
+        "local_member_abstain": "nonapproval_local_member_abstain",
         "local_member_final_action_vote_status": "nonapproval_local_member_final_action_vote_status",
     }
 )
@@ -225,8 +201,8 @@ decision_panel["abstain_count"] = ""
 decision_panel["parsed_vote_rows"] = ""
 decision_panel["local_member_final_action_vote_status"] = "not_fetched"
 decision_panel["local_member_final_action_votes"] = ""
-decision_panel["local_member_final_action_vote_categories"] = ""
-decision_panel["member_deference_vote_signal"] = "not_observed"
+decision_panel["local_member_abstain"] = ""
+decision_panel["local_member_vote_match_methods"] = ""
 decision_panel["geography_incorporation_status_main"] = "matter_universe"
 
 approval_rows = decision_panel["vote_source"].isin(
@@ -247,13 +223,14 @@ decision_panel.loc[approval_rows, "local_members_from_roster"] = decision_panel.
     approval_rows, "approval_local_members_from_roster"
 ]
 decision_panel.loc[approval_rows, "local_member_final_action_vote_status"] = decision_panel.loc[
-    approval_rows, "approval_vote_status_standardized"
+    approval_rows, "approval_local_member_vote_status"
 ]
 decision_panel.loc[approval_rows, "local_member_final_action_votes"] = decision_panel.loc[
     approval_rows, "approval_local_member_votes"
 ]
-decision_panel.loc[approval_rows, "member_deference_vote_signal"] = decision_panel.loc[
-    approval_rows, "approval_vote_evidence_strength"
+decision_panel.loc[approval_rows, "local_member_abstain"] = decision_panel.loc[approval_rows, "approval_local_member_abstain"]
+decision_panel.loc[approval_rows, "local_member_vote_match_methods"] = decision_panel.loc[
+    approval_rows, "approval_local_member_vote_match_methods"
 ]
 decision_panel.loc[approval_rows, "geography_incorporation_status_main"] = "approval_panel"
 
@@ -287,11 +264,11 @@ decision_panel.loc[nonapproval_rows, "local_member_final_action_vote_status"] = 
 decision_panel.loc[nonapproval_rows, "local_member_final_action_votes"] = decision_panel.loc[
     nonapproval_rows, "nonapproval_local_member_final_action_votes"
 ]
-decision_panel.loc[nonapproval_rows, "local_member_final_action_vote_categories"] = decision_panel.loc[
-    nonapproval_rows, "nonapproval_local_member_final_action_vote_categories"
+decision_panel.loc[nonapproval_rows, "local_member_abstain"] = decision_panel.loc[
+    nonapproval_rows, "nonapproval_local_member_abstain"
 ]
-decision_panel.loc[nonapproval_rows, "member_deference_vote_signal"] = decision_panel.loc[
-    nonapproval_rows, "nonapproval_local_member_final_action_vote_status"
+decision_panel.loc[nonapproval_rows, "local_member_vote_match_methods"] = decision_panel.loc[
+    nonapproval_rows, "nonapproval_local_member_vote_match_methods"
 ]
 decision_panel.loc[nonapproval_rows, "geography_incorporation_status_main"] = decision_panel.loc[
     nonapproval_rows, "geography_incorporation_status"
@@ -301,6 +278,68 @@ decision_panel["has_affected_council_district"] = decision_panel["affected_counc
 decision_panel["has_local_member_from_roster"] = decision_panel["local_members_from_roster"].ne("")
 decision_panel["has_local_member_vote_observed"] = decision_panel["local_member_final_action_votes"].ne("")
 decision_panel["matter_in_main_vote_sample"] = decision_panel["vote_source"].ne("not_fetched")
+decision_panel["n_affected_districts"] = decision_panel["affected_council_districts"].map(lambda x: len(split_semicolon(x)))
+
+# Project outcome comes from the matter's Legistar disposition, not from which vote page
+# was fetched. A "Resolution disapproving ..." that is adopted means the project was
+# disapproved.
+disapproval_resolution = decision_panel["title"].str.match(r"(?i)\s*resolution\s+disapprov")
+decision_panel["project_outcome"] = ""
+decision_panel.loc[decision_panel["disposition_group"].eq("adopted"), "project_outcome"] = "approved"
+decision_panel.loc[
+    decision_panel["disposition_group"].eq("disapproved")
+    | (decision_panel["disposition_group"].eq("adopted") & disapproval_resolution),
+    "project_outcome",
+] = "disapproved"
+
+# Direction of the roll call. A yes vote supports the project on an approval vote and
+# opposes it on a vote to disapprove, file, or override a veto of a disapproval. A
+# Council approval of a disapproved matter or of a disapproval resolution is a vote to
+# disapprove (for example LU 0468-2005 and LU 0470-2005, the 2005 marine transfer stations).
+decision_panel["rollcall_direction"] = ""
+decision_panel.loc[approval_rows, "rollcall_direction"] = "approve_project"
+decision_panel.loc[
+    (approval_rows & (decision_panel["disposition_group"].eq("disapproved") | disapproval_resolution)) | nonapproval_rows,
+    "rollcall_direction",
+] = "reject_project"
+
+local_negative = decision_panel["local_member_final_action_vote_status"].eq("local_member_negative")
+local_affirmative = decision_panel["local_member_final_action_vote_status"].eq("local_member_affirmative_only")
+approve_vote = decision_panel["rollcall_direction"].eq("approve_project")
+reject_vote = decision_panel["rollcall_direction"].eq("reject_project")
+decision_panel["local_member_project_position"] = ""
+decision_panel.loc[(approve_vote & local_affirmative) | (reject_vote & local_negative), "local_member_project_position"] = "supports"
+decision_panel.loc[(approve_vote & local_negative) | (reject_vote & local_affirmative), "local_member_project_position"] = "opposes"
+decision_panel.loc[decision_panel["project_outcome"].eq(""), "local_member_project_position"] = ""
+
+# Events. Companion matters for one project (the LU application, its resolution, and
+# related M items) share ZAP project ids or application keys. Matters in the same query
+# year that share any id or key are one event (connected components).
+parent = {matter_id: matter_id for matter_id in decision_panel["matter_id"]}
+
+
+def find(matter_id: str) -> str:
+    while parent[matter_id] != matter_id:
+        parent[matter_id] = parent[parent[matter_id]]
+        matter_id = parent[matter_id]
+    return matter_id
+
+
+first_matter_by_token = {}
+for row in decision_panel[["query_year", "matter_id", "zap_project_ids", "application_keys"]].to_dict("records"):
+    tokens = [f"zap:{x}" for x in split_semicolon(row["zap_project_ids"])]
+    tokens += [f"application:{x}" for x in split_semicolon(row["application_keys"])]
+    for token in tokens:
+        key = (row["query_year"], token)
+        if key in first_matter_by_token:
+            parent[find(row["matter_id"])] = find(first_matter_by_token[key])
+        else:
+            first_matter_by_token[key] = row["matter_id"]
+decision_panel["event_root"] = decision_panel["matter_id"].map(find)
+decision_panel["event_id"] = decision_panel.groupby("event_root")["matter_id"].transform(
+    lambda ids: "event_" + min(ids, key=int)
+)
+decision_panel["event_matter_count"] = decision_panel.groupby("event_id")["matter_id"].transform("size")
 
 decision_panel = decision_panel[
     [
@@ -332,11 +371,17 @@ decision_panel = decision_panel[
         "has_affected_council_district",
         "local_members_from_roster",
         "has_local_member_from_roster",
+        "n_affected_districts",
         "local_member_final_action_vote_status",
         "local_member_final_action_votes",
-        "local_member_final_action_vote_categories",
+        "local_member_abstain",
+        "local_member_vote_match_methods",
         "has_local_member_vote_observed",
-        "member_deference_vote_signal",
+        "rollcall_direction",
+        "local_member_project_position",
+        "project_outcome",
+        "event_id",
+        "event_matter_count",
         "application_keys",
         "zap_matched_application_keys",
         "zap_project_ids",
@@ -355,5 +400,7 @@ if decision_panel["matter_id"].duplicated().any():
     raise RuntimeError("Council land-use decision panel must be unique by matter_id.")
 if len(decision_panel) != len(matter_universe):
     raise RuntimeError("Council land-use decision panel must keep every matter-universe row.")
+if not decision_panel.loc[decision_panel["vote_date"].ne(""), "vote_date"].str.fullmatch(r"\d{4}-\d{2}-\d{2}").all():
+    raise RuntimeError("Vote dates must be ISO dates.")
 
-write_csv("../output/council_land_use_decision_panel.csv", decision_panel)
+save_frame(decision_panel, "../output/council_land_use_decision_panel.csv", ["matter_id"])

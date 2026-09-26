@@ -194,3 +194,20 @@ def parse_action_detail(html: str) -> tuple[dict[str, object], list[dict[str, ob
     }
 
     return summary, votes
+
+
+def history_detail_id(url: str) -> str:
+    match = re.search(r"HistoryDetail\.aspx\?ID=(\d+)", url or "", flags=re.IGNORECASE)
+    if not match:
+        raise RuntimeError(f"Not a Legistar HistoryDetail URL: {url}")
+    return match.group(1)
+
+
+def check_cached_history_page(path: Path, url: str) -> None:
+    """A saved action-detail page must be the page for the requested history event."""
+    match = re.search(r'action="\./HistoryDetail\.aspx\?ID=(\d+)', path.read_text(encoding="utf-8"))
+    if match is None or match.group(1) != history_detail_id(url):
+        raise RuntimeError(
+            f"Saved page {path} is not HistoryDetail ID {history_detail_id(url)} ({url}). "
+            "The target event changed; move the superseded page aside before rerunning."
+        )

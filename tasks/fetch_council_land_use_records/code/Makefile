@@ -5,13 +5,16 @@ all: $(foreach year,$(RECALL_YEARS),../output/legistar_$(year)_broad_recall_matt
 	$(foreach year,$(RECALL_YEARS),../output/legistar_$(year)_broad_recall_action_details.csv) \
 	$(foreach year,$(RECALL_YEARS),../output/legistar_$(year)_broad_recall_member_votes.csv)
 
-../output/legistar_%_broad_recall_matter_index.csv ../output/legistar_%_broad_recall_history_events.csv: fetch_legistar_broad_recall.py ../../_lib/legistar_utils.py | ../output
+../output/legistar_%_broad_recall_matter_index.csv ../output/legistar_%_broad_recall_history_events.csv: fetch_legistar_broad_recall.py \
+	../../_lib/legistar_utils.py \
+	../../_lib/member_deference_utils.py | ../output ../report
 	python3 $< $*
 
 ../output/legistar_%_broad_recall_action_details.csv ../output/legistar_%_broad_recall_member_votes.csv: fetch_legistar_action_votes.py \
 	../../_lib/legistar_utils.py \
+	../../_lib/member_deference_utils.py \
 	../output/legistar_%_broad_recall_history_events.csv \
-	../output/legistar_%_broad_recall_matter_index.csv | ../output
+	../output/legistar_%_broad_recall_matter_index.csv | ../output ../report
 	python3 $< $*
 
 link-inputs:

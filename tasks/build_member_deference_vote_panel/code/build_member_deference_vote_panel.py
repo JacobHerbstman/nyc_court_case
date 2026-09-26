@@ -12,11 +12,13 @@ from member_deference_utils import (
     collapse_districts as collapse_int_strings,
     collapse_values,
     council_districts_from_text,
-    edge_name,
-    norm_name,
+    local_member_votes,
+    local_roster_rows,
+    local_vote_status,
     normalize_space,
+    read_roster_by_district,
+    save_frame,
     split_semicolon,
-    write_csv,
 )
 
 RECALL_YEARS = list(range(1998, 2026))
@@ -159,7 +161,7 @@ action_details = read_year_stack("action_details")
 member_votes = read_year_stack("member_votes")
 matter_index = read_year_stack("matter_index")
 history_events = read_year_stack("history_events")
-roster = pd.read_csv("../input/council_member_roster_master.csv", dtype=str, keep_default_na=False)
+roster_by_district = read_roster_by_district("../input/council_member_roster_master.csv")
 zap_projects = pd.read_parquet("../input/zap_project_data.parquet")
 ai_geo_repairs = pd.read_csv("../input/council_land_use_ai_geography_accepted_repairs.csv", dtype=str, keep_default_na=False)
 
@@ -272,11 +274,29 @@ zap_app_key_base = (
 
 matter_zap = build_matter_zap_lookup(action_details[["matter_id", "application_keys"]], zap_app_key_base)
 
-history_events["history_date_parsed"] = pd.to_datetime(history_events["history_date"], errors="coerce")
-history_events["history_sequence_int"] = pd.to_numeric(history_events["history_sequence"], errors="coerce")
+# Final action. Legistar lists history newest date first (history_sequence 1 is on the
+# latest date), but actions on the same date are not listed in the order they happened:
+# the Council vote can appear below that day's committee vote, and introduction or
+# referral rows can appear above it. On the latest date, the final action is the
+# first-listed substantive City Council action, else the first-listed substantive action,
+# else the first-listed action.
+if history_events.duplicated(["matter_id", "history_sequence"]).any():
+    raise RuntimeError("Legistar history events must be unique by matter_id and history_sequence.")
+history_events["history_sequence_int"] = history_events["history_sequence"].astype(int)
+latest_date = history_events.loc[history_events["history_sequence_int"].eq(1), ["matter_id", "history_date"]]
+final_history_candidates = history_events.merge(latest_date, on=["matter_id", "history_date"], how="inner")
+final_history_candidates["procedural_action"] = final_history_candidates["history_action"].str.match(
+    r"(?i)(introduced|referred to comm|re-referred|hearing|laid over|p-c item laid over)"
+)
+final_history_candidates["final_action_rank"] = 3
+final_history_candidates.loc[~final_history_candidates["procedural_action"], "final_action_rank"] = 2
+final_history_candidates.loc[
+    ~final_history_candidates["procedural_action"] & final_history_candidates["history_action_by"].eq("City Council"),
+    "final_action_rank",
+] = 1
 final_history = (
-    history_events.sort_values(["matter_id", "history_date_parsed", "history_sequence_int"])
-    .drop_duplicates("matter_id", keep="last")
+    final_history_candidates.sort_values(["matter_id", "final_action_rank", "history_sequence_int"])
+    .drop_duplicates("matter_id", keep="first")
     [
         [
             "matter_id",
@@ -368,49 +388,7 @@ for column in [
 ]:
     matter_universe_base[column] = matter_universe_base[column].fillna(0).astype(int)
 
-vote_lookup: dict[str, dict[str, str]] = {}
-for row in member_votes.to_dict("records"):
-    matter_id = row["matter_id"]
-    vote_lookup.setdefault(matter_id, {})
-    person_name = row.get("person_name", "")
-    vote_value = row.get("vote", "")
-    vote_lookup[matter_id][norm_name(person_name)] = vote_value
-    vote_lookup[matter_id][edge_name(person_name)] = vote_value
-
-roster["term_start_date_parsed"] = pd.to_datetime(roster["term_start_date"], errors="coerce")
-roster["term_end_date_parsed"] = pd.to_datetime(roster["term_end_date"], errors="coerce").fillna(
-    pd.Timestamp("2100-01-01")
-)
-roster["member_name_norm"] = roster["member_name"].map(norm_name)
-roster["member_name_edge"] = roster["member_name"].map(edge_name)
-roster = roster[roster["member_name_norm"] != "vacant"].copy()
-roster["district_key"] = roster["district"].map(lambda x: str(int(x)) if normalize_space(x) else "")
-
-roster_by_district = {
-    district: rows.to_dict("records")
-    for district, rows in roster.sort_values(["district_key", "term_start_date_parsed", "member_name"]).groupby("district_key")
-}
-
-
-def local_roster_rows(affected_districts: list[str], target_date: object) -> tuple[list[dict[str, object]], list[str]]:
-    if pd.isna(target_date):
-        return [], []
-
-    local_rows = []
-    missing_roster_districts = []
-    for district in affected_districts:
-        district_key = str(int(district))
-        matches = [
-            row
-            for row in roster_by_district.get(district_key, [])
-            if row["term_start_date_parsed"] <= target_date <= row["term_end_date_parsed"]
-        ]
-        if matches:
-            local_rows.extend(matches)
-        else:
-            missing_roster_districts.append(district_key)
-
-    return local_rows, missing_roster_districts
+votes_by_matter = {matter_id: rows.to_dict("records") for matter_id, rows in member_votes.groupby("matter_id")}
 
 matter_universe_rows = []
 for row in matter_universe_base.sort_values(["query_year_int", "matter_file"]).to_dict("records"):
@@ -421,7 +399,7 @@ for row in matter_universe_base.sort_values(["query_year_int", "matter_file"]).t
         ai_geo_repair_lookup,
     )
 
-    local_rows, missing_roster_districts = local_roster_rows(affected_districts, final_date)
+    local_rows, missing_roster_districts = local_roster_rows(roster_by_district, affected_districts, final_date)
     local_members = [local["member_name"] for local in local_rows]
 
     matter_file_year_num = pd.to_numeric(pd.Series([row.get("matter_file_year", "")]), errors="coerce").iloc[0]
@@ -446,7 +424,7 @@ for row in matter_universe_base.sort_values(["query_year_int", "matter_file"]).t
             "matter_status": row["status"],
             "disposition_group": disposition,
             "filed_age_group": filed_age_group(row.get("status", ""), row.get("query_year_int", ""), row.get("matter_file_year", "")),
-            "final_history_date": row.get("final_history_date", ""),
+            "final_history_date": final_date.strftime("%Y-%m-%d") if not pd.isna(final_date) else "",
             "final_history_action_by": row.get("final_history_action_by", ""),
             "final_history_action": row.get("final_history_action", ""),
             "final_history_result": row.get("final_history_result", ""),
@@ -483,73 +461,18 @@ matter_universe = pd.DataFrame(matter_universe_rows)
 
 panel_base = action_details.merge(matter_zap, on="matter_id", how="left", validate="one_to_one")
 panel_rows = []
-panel_ai_geo_repair_keys_used = set()
 for row in panel_base.sort_values(["query_year_int", "history_date", "matter_file"]).to_dict("records"):
-    affected_districts, affected_district_source, ai_geo_repair_key, ai_geo_repair = affected_district_assignment(
+    affected_districts, affected_district_source, _, ai_geo_repair = affected_district_assignment(
         row,
         row.get("vote_date", ""),
         ai_geo_repair_lookup,
     )
-    if affected_district_source == "ai_geography_repair":
-        panel_ai_geo_repair_keys_used.add(ai_geo_repair_key)
 
     vote_date = row["vote_date"]
-    local_rows, missing_roster_districts = local_roster_rows(affected_districts, vote_date)
-
-    local_member_names = []
-    local_member_votes = []
-    local_member_negative = []
-    local_member_abstain = []
-    local_member_other_nonaffirmative = []
-    matter_votes = vote_lookup.get(row["matter_id"], {})
-    for local in local_rows:
-        name = local["member_name"]
-        vote_value = matter_votes.get(local["member_name_norm"]) or matter_votes.get(local["member_name_edge"]) or ""
-        local_member_names.append(name)
-        if vote_value:
-            local_member_votes.append(f"{name}: {vote_value}")
-        if vote_value == "Negative":
-            local_member_negative.append(name)
-        elif vote_value == "Abstain":
-            local_member_abstain.append(name)
-        elif vote_value and vote_value != "Affirmative":
-            local_member_other_nonaffirmative.append(f"{name}: {vote_value}")
-
-    local_vote_count = len(local_member_votes)
-    local_affirmative_count = sum(vote.endswith(": Affirmative") for vote in local_member_votes)
-    # Hamilton Avenue transfer station was a motion to disapprove; a local no vote means project-side support.
-    hamilton_transfer_disapproval = str(row["matter_id"]) in {"450009", "444462"}
-
-    if not affected_districts:
-        vote_evidence_status = "unresolved_no_affected_district"
-        vote_evidence_strength = "unresolved"
-    elif missing_roster_districts:
-        vote_evidence_status = "unresolved_missing_roster"
-        vote_evidence_strength = "unresolved"
-    elif not matter_votes:
-        vote_evidence_status = "unresolved_no_member_vote_rows"
-        vote_evidence_strength = "unresolved"
-    elif local_vote_count == 0:
-        vote_evidence_status = "unresolved_no_local_member_vote_match"
-        vote_evidence_strength = "unresolved"
-    elif hamilton_transfer_disapproval:
-        vote_evidence_status = "excluded_inverted_disapproval_motion"
-        vote_evidence_strength = "excluded"
-    elif local_member_negative:
-        vote_evidence_status = "approved_with_local_member_negative"
-        vote_evidence_strength = "strong_exception_candidate"
-    elif local_member_abstain:
-        vote_evidence_status = "approved_with_local_member_abstain"
-        vote_evidence_strength = "strong_exception_candidate"
-    elif local_member_other_nonaffirmative:
-        vote_evidence_status = "approved_with_local_member_other_nonaffirmative"
-        vote_evidence_strength = "ambiguous_nonaffirmative"
-    elif local_affirmative_count == len(local_rows):
-        vote_evidence_status = "approved_with_all_local_members_affirmative"
-        vote_evidence_strength = "weakly_deference_consistent"
-    else:
-        vote_evidence_status = "unresolved_partial_local_member_vote_match"
-        vote_evidence_strength = "unresolved"
+    local_rows, missing_roster_districts = local_roster_rows(roster_by_district, affected_districts, vote_date)
+    matter_votes = votes_by_matter.get(row["matter_id"], [])
+    local_votes = local_member_votes(local_rows, matter_votes)
+    local_status = local_vote_status(affected_districts, missing_roster_districts, local_votes, len(matter_votes))
 
     panel_rows.append(
         {
@@ -576,15 +499,20 @@ for row in panel_base.sort_values(["query_year_int", "history_date", "matter_fil
             "ai_geography_repair_source": ai_geo_repair.get("repair_source", ""),
             "ai_geography_repair_confidence": ai_geo_repair.get("repair_confidence", ""),
             "ai_geography_repair_note": ai_geo_repair.get("repair_note", ""),
-            "excluded_inverted_disapproval_motion": "true" if hamilton_transfer_disapproval else "false",
-            "local_members_from_roster": collapse_values(local_member_names),
-            "local_member_votes": collapse_values(local_member_votes),
-            "local_member_negative": collapse_values(local_member_negative),
-            "local_member_abstain": collapse_values(local_member_abstain),
-            "local_member_other_nonaffirmative": collapse_values(local_member_other_nonaffirmative),
+            "local_members_from_roster": collapse_values([local["member_name"] for local in local_votes]),
+            "local_member_person_ids": collapse_values([local["person_id"] for local in local_votes]),
+            "local_member_vote_match_methods": collapse_values([local["match_method"] for local in local_votes]),
+            "local_member_votes": collapse_values(
+                [f"{local['member_name']}: {local['vote']}" for local in local_votes if local["vote"]]
+            ),
+            "local_member_negative": collapse_values(
+                [local["member_name"] for local in local_votes if local["vote"] == "Negative"]
+            ),
+            "local_member_abstain": collapse_values(
+                [local["member_name"] for local in local_votes if local["vote"] == "Abstain"]
+            ),
             "missing_roster_districts": collapse_values(missing_roster_districts),
-            "vote_evidence_status": vote_evidence_status,
-            "vote_evidence_strength": vote_evidence_strength,
+            "local_member_vote_status": local_status,
             "title": row["matter_index_title"] or row["action_detail_title"],
             "history_detail_url": row["history_detail_url"],
         }
@@ -675,8 +603,6 @@ if matter_universe["matter_id"].duplicated().any():
     raise RuntimeError("Matter universe must be unique by matter_id.")
 if int(matter_universe["final_history_action"].fillna("").eq("").sum()) > 5:
     raise RuntimeError("Too many recalled matter rows lack a parsed final history action.")
-if not panel["vote_evidence_status"].fillna("").ne("").all():
-    raise RuntimeError("Every vote-panel row must receive a vote-evidence status.")
 if not matter_universe["disposition_group"].fillna("").ne("").all():
     raise RuntimeError("Every recalled matter must receive a disposition group.")
 if not final_action_vote_queue["final_action_vote_fetch_tier"].fillna("").ne("").all():
@@ -684,6 +610,6 @@ if not final_action_vote_queue["final_action_vote_fetch_tier"].fillna("").ne("")
 if accepted_ai_geo_repair_keys - panel_keys - matter_universe_keys:
     raise RuntimeError("Every accepted geography repair key must appear in the panel or matter universe.")
 
-write_csv("../output/member_deference_vote_panel.csv", panel)
-write_csv("../output/member_deference_matter_universe.csv", matter_universe)
-write_csv("../output/member_deference_final_action_vote_queue.csv", final_action_vote_queue)
+save_frame(panel, "../output/member_deference_vote_panel.csv", ["matter_id"])
+save_frame(matter_universe, "../output/member_deference_matter_universe.csv", ["matter_id"])
+save_frame(final_action_vote_queue, "../output/member_deference_final_action_vote_queue.csv", ["matter_id"])

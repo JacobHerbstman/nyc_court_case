@@ -1,0 +1,1318 @@
+{
+  "dataset": "council_land_use_decision_panel.csv",
+  "rows": 15006,
+  "key": [
+    "matter_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "6eeabfe60abbf12efea11b3845421e481915b7f4126d6e366413a14b81de1a5b",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "query_year": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 28,
+      "most_common": [
+        [
+          "2001",
+          823
+        ],
+        [
+          "2005",
+          715
+        ],
+        [
+          "2009",
+          688
+        ],
+        [
+          "2004",
+          687
+        ],
+        [
+          "1999",
+          675
+        ]
+      ]
+    },
+    "matter_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 15006,
+      "most_common": [
+        [
+          "1009669",
+          1
+        ],
+        [
+          "1009670",
+          1
+        ],
+        [
+          "1009671",
+          1
+        ],
+        [
+          "1009672",
+          1
+        ],
+        [
+          "1009673",
+          1
+        ]
+      ]
+    },
+    "matter_file": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 15006,
+      "most_common": [
+        [
+          "LU 0001-1998",
+          1
+        ],
+        [
+          "LU 0001-2002",
+          1
+        ],
+        [
+          "LU 0001-2004",
+          1
+        ],
+        [
+          "LU 0001-2006",
+          1
+        ],
+        [
+          "LU 0001-2010",
+          1
+        ]
+      ]
+    },
+    "matter_file_year": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 10,
+      "distinct_nonmissing": 29,
+      "most_common": [
+        [
+          "2004",
+          733
+        ],
+        [
+          "2001",
+          723
+        ],
+        [
+          "2006",
+          702
+        ],
+        [
+          "1999",
+          683
+        ],
+        [
+          "2005",
+          666
+        ]
+      ]
+    },
+    "matter_age_years": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 10,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "0",
+          14531
+        ],
+        [
+          "1",
+          356
+        ],
+        [
+          "3",
+          60
+        ],
+        [
+          "2",
+          48
+        ],
+        [
+          "-1",
+          1
+        ]
+      ]
+    },
+    "query_matter_type": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "Land Use Application",
+          7455
+        ],
+        [
+          "Resolution",
+          6288
+        ],
+        [
+          "Land Use Call-Up",
+          1263
+        ]
+      ]
+    },
+    "matter_type": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "Land Use Application",
+          7455
+        ],
+        [
+          "Resolution",
+          6288
+        ],
+        [
+          "Land Use Call-Up",
+          1263
+        ]
+      ]
+    },
+    "matter_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "Adopted",
+          13996
+        ],
+        [
+          "Filed",
+          815
+        ],
+        [
+          "Disapproved",
+          167
+        ],
+        [
+          "Filed (End of Session)",
+          21
+        ],
+        [
+          "Withdrawn",
+          4
+        ]
+      ]
+    },
+    "disposition_group": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 8,
+      "most_common": [
+        [
+          "adopted",
+          13996
+        ],
+        [
+          "filed_end_of_session",
+          414
+        ],
+        [
+          "filed_by_council_other",
+          231
+        ],
+        [
+          "filed_withdrawal_or_motion",
+          187
+        ],
+        [
+          "disapproved",
+          167
+        ]
+      ]
+    },
+    "filed_age_group": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 14170,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "filed_same_year_matter",
+          620
+        ],
+        [
+          "filed_older_matter",
+          210
+        ],
+        [
+          "filed_unknown_matter_year",
+          6
+        ]
+      ]
+    },
+    "decision_date": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 1,
+      "distinct_nonmissing": 631,
+      "most_common": [
+        [
+          "2001-12-31",
+          126
+        ],
+        [
+          "2009-12-31",
+          99
+        ],
+        [
+          "2003-12-31",
+          85
+        ],
+        [
+          "2009-07-29",
+          85
+        ],
+        [
+          "2019-10-17",
+          76
+        ]
+      ]
+    },
+    "decision_action_by": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 1,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "City Council",
+          14997
+        ],
+        [
+          "Committee on Land Use",
+          4
+        ],
+        [
+          "Mayor",
+          3
+        ],
+        [
+          "Subcommittee on Planning, Dispositions and Concessions",
+          1
+        ]
+      ]
+    },
+    "decision_action": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 1,
+      "distinct_nonmissing": 18,
+      "most_common": [
+        [
+          "Approved, by Council",
+          12643
+        ],
+        [
+          "Approved by Council",
+          959
+        ],
+        [
+          "Filed by Council",
+          419
+        ],
+        [
+          "Filed (End of Session)",
+          414
+        ],
+        [
+          "Approved with Modifications and Referred to the City Planning Commission pursuant to Section 197-(d) of the New York City Charter.",
+          360
+        ]
+      ]
+    },
+    "decision_result": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 984,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "Pass",
+          14022
+        ]
+      ]
+    },
+    "vote_source": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "approval_action_detail",
+          13975
+        ],
+        [
+          "nonapproval_action_detail",
+          585
+        ],
+        [
+          "not_fetched",
+          443
+        ],
+        [
+          "approval_action_detail_nonfinal_disposition",
+          3
+        ]
+      ]
+    },
+    "matter_in_main_vote_sample": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "True",
+          14563
+        ],
+        [
+          "False",
+          443
+        ]
+      ]
+    },
+    "vote_date": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 443,
+      "distinct_nonmissing": 612,
+      "most_common": [
+        [
+          "2009-07-29",
+          85
+        ],
+        [
+          "2019-10-17",
+          76
+        ],
+        [
+          "2000-05-24",
+          73
+        ],
+        [
+          "2021-11-23",
+          71
+        ],
+        [
+          "2018-06-28",
+          69
+        ]
+      ]
+    },
+    "vote_margin": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 443,
+      "distinct_nonmissing": 150,
+      "most_common": [
+        [
+          "48-0-0",
+          2131
+        ],
+        [
+          "50-0-0",
+          1905
+        ],
+        [
+          "49-0-0",
+          1863
+        ],
+        [
+          "47-0-0",
+          1542
+        ],
+        [
+          "51-0-0",
+          1149
+        ]
+      ]
+    },
+    "parsed_vote_rows": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 14421,
+      "distinct_nonmissing": 10,
+      "most_common": [
+        [
+          "51",
+          370
+        ],
+        [
+          "50",
+          112
+        ],
+        [
+          "49",
+          28
+        ],
+        [
+          "52",
+          28
+        ],
+        [
+          "0",
+          14
+        ]
+      ]
+    },
+    "affirmative_count": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 443,
+      "distinct_nonmissing": 26,
+      "most_common": [
+        [
+          "48",
+          2334
+        ],
+        [
+          "49",
+          2056
+        ],
+        [
+          "50",
+          1984
+        ],
+        [
+          "47",
+          1943
+        ],
+        [
+          "46",
+          1280
+        ]
+      ]
+    },
+    "negative_count": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 443,
+      "distinct_nonmissing": 20,
+      "most_common": [
+        [
+          "0",
+          13160
+        ],
+        [
+          "1",
+          896
+        ],
+        [
+          "2",
+          222
+        ],
+        [
+          "3",
+          107
+        ],
+        [
+          "5",
+          52
+        ]
+      ]
+    },
+    "abstain_count": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 443,
+      "distinct_nonmissing": 10,
+      "most_common": [
+        [
+          "0",
+          13792
+        ],
+        [
+          "1",
+          613
+        ],
+        [
+          "2",
+          101
+        ],
+        [
+          "3",
+          25
+        ],
+        [
+          "4",
+          11
+        ]
+      ]
+    },
+    "affected_council_districts": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6710,
+      "distinct_nonmissing": 238,
+      "most_common": [
+        [
+          "3",
+          668
+        ],
+        [
+          "9",
+          499
+        ],
+        [
+          "17",
+          361
+        ],
+        [
+          "1",
+          355
+        ],
+        [
+          "33",
+          332
+        ]
+      ]
+    },
+    "affected_district_source": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 12,
+      "most_common": [
+        [
+          "legistar_matter_index",
+          6674
+        ],
+        [
+          "missing",
+          6592
+        ],
+        [
+          "zap_application_key",
+          1018
+        ],
+        [
+          "ai_geography_repair",
+          231
+        ],
+        [
+          "legistar_text",
+          188
+        ]
+      ]
+    },
+    "geography_incorporation_status_main": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "approval_panel",
+          13978
+        ],
+        [
+          "matter_universe",
+          443
+        ],
+        [
+          "accepted_original_queue_geography",
+          282
+        ],
+        [
+          "accepted_deterministic_recovery",
+          144
+        ],
+        [
+          "excluded_pending_manual_review",
+          118
+        ]
+      ]
+    },
+    "has_affected_council_district": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "True",
+          8296
+        ],
+        [
+          "False",
+          6710
+        ]
+      ]
+    },
+    "local_members_from_roster": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6781,
+      "distinct_nonmissing": 475,
+      "most_common": [
+        [
+          "Christine C. Quinn",
+          430
+        ],
+        [
+          "Bill Perkins",
+          296
+        ],
+        [
+          "Margaret S. Chin",
+          178
+        ],
+        [
+          "Stephen T. Levin",
+          169
+        ],
+        [
+          "Maria Del Carmen Arroyo",
+          155
+        ]
+      ]
+    },
+    "has_local_member_from_roster": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "True",
+          8225
+        ],
+        [
+          "False",
+          6781
+        ]
+      ]
+    },
+    "n_affected_districts": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 11,
+      "most_common": [
+        [
+          "1",
+          7618
+        ],
+        [
+          "0",
+          6710
+        ],
+        [
+          "2",
+          512
+        ],
+        [
+          "3",
+          111
+        ],
+        [
+          "4",
+          30
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 51
+    },
+    "local_member_final_action_vote_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 10,
+      "most_common": [
+        [
+          "local_member_affirmative_only",
+          7174
+        ],
+        [
+          "no_affected_district",
+          6603
+        ],
+        [
+          "not_fetched",
+          443
+        ],
+        [
+          "local_member_not_voting_only",
+          386
+        ],
+        [
+          "no_member_vote_rows",
+          140
+        ]
+      ]
+    },
+    "local_member_final_action_votes": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 7310,
+      "distinct_nonmissing": 631,
+      "most_common": [
+        [
+          "Christine C. Quinn: Affirmative",
+          388
+        ],
+        [
+          "Bill Perkins: Affirmative",
+          253
+        ],
+        [
+          "Margaret S. Chin: Affirmative",
+          172
+        ],
+        [
+          "Stephen T. Levin: Affirmative",
+          166
+        ],
+        [
+          "Maria Del Carmen Arroyo: Affirmative",
+          141
+        ]
+      ]
+    },
+    "local_member_abstain": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 15002,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "Kalman Yeger",
+          2
+        ],
+        [
+          "Andy L. King",
+          1
+        ],
+        [
+          "Eva S. Moskowitz",
+          1
+        ]
+      ]
+    },
+    "local_member_vote_match_methods": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 7115,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "person_id",
+          7651
+        ],
+        [
+          "not_in_roll_call",
+          195
+        ],
+        [
+          "unique_surname",
+          37
+        ],
+        [
+          "person_id; not_in_roll_call",
+          6
+        ],
+        [
+          "not_in_roll_call; person_id",
+          1
+        ]
+      ]
+    },
+    "has_local_member_vote_observed": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "True",
+          7696
+        ],
+        [
+          "False",
+          7310
+        ]
+      ]
+    },
+    "rollcall_direction": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 443,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "approve_project",
+          13968
+        ],
+        [
+          "reject_project",
+          595
+        ]
+      ]
+    },
+    "local_member_project_position": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 8085,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "supports",
+          6751
+        ],
+        [
+          "opposes",
+          170
+        ]
+      ]
+    },
+    "project_outcome": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 843,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "approved",
+          13987
+        ],
+        [
+          "disapproved",
+          176
+        ]
+      ]
+    },
+    "event_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6763,
+      "most_common": [
+        [
+          "event_442196",
+          42
+        ],
+        [
+          "event_733560",
+          35
+        ],
+        [
+          "event_4086847",
+          27
+        ],
+        [
+          "event_1194314",
+          25
+        ],
+        [
+          "event_803649",
+          23
+        ]
+      ]
+    },
+    "event_matter_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 25,
+      "most_common": [
+        [
+          "2",
+          6598
+        ],
+        [
+          "1",
+          2155
+        ],
+        [
+          "3",
+          1884
+        ],
+        [
+          "4",
+          1136
+        ],
+        [
+          "7",
+          574
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 42
+    },
+    "application_keys": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 1239,
+      "distinct_nonmissing": 7344,
+      "most_common": [
+        [
+          "20025386TCM",
+          5
+        ],
+        [
+          "19975269TCM",
+          4
+        ],
+        [
+          "20095223TCM",
+          4
+        ],
+        [
+          "20125791HKM; 120412HKM",
+          4
+        ],
+        [
+          "970218PQQ",
+          4
+        ]
+      ]
+    },
+    "zap_matched_application_keys": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 7434,
+      "distinct_nonmissing": 4041,
+      "most_common": [
+        [
+          "980319ZMK",
+          5
+        ],
+        [
+          "120412HKM",
+          4
+        ],
+        [
+          "170115ZRM",
+          4
+        ],
+        [
+          "970218PQQ",
+          4
+        ],
+        [
+          "980068HAK",
+          4
+        ]
+      ]
+    },
+    "zap_project_ids": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 7434,
+      "distinct_nonmissing": 2537,
+      "most_common": [
+        [
+          "P2010K0210",
+          35
+        ],
+        [
+          "P2004K0140",
+          33
+        ],
+        [
+          "2019Y0061",
+          27
+        ],
+        [
+          "P2012M0292",
+          25
+        ],
+        [
+          "P2004M0399",
+          24
+        ]
+      ]
+    },
+    "zap_project_names": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 7434,
+      "distinct_nonmissing": 2380,
+      "most_common": [
+        [
+          "C-O-P",
+          135
+        ],
+        [
+          "DOWNTOWN BKLYN DEVELOPMENT",
+          42
+        ],
+        [
+          "CULVER EL",
+          35
+        ],
+        [
+          "HUDSON YARDS",
+          30
+        ],
+        [
+          "New York City Borough - Based Jail System",
+          27
+        ]
+      ]
+    },
+    "zap_cc_districts": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 13452,
+      "distinct_nonmissing": 71,
+      "most_common": [
+        [
+          "33",
+          130
+        ],
+        [
+          "3",
+          95
+        ],
+        [
+          "26",
+          71
+        ],
+        [
+          "35",
+          70
+        ],
+        [
+          "4",
+          61
+        ]
+      ]
+    },
+    "borough": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 8002,
+      "distinct_nonmissing": 44,
+      "most_common": [
+        [
+          "Manhattan",
+          2634
+        ],
+        [
+          "Brooklyn",
+          2034
+        ],
+        [
+          "The Bronx",
+          946
+        ],
+        [
+          "Queens",
+          901
+        ],
+        [
+          "Staten Island",
+          290
+        ]
+      ]
+    },
+    "committee": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 18,
+      "most_common": [
+        [
+          "Committee on Land Use",
+          6677
+        ],
+        [
+          "Subcommittee on Zoning and Franchises",
+          2681
+        ],
+        [
+          "Subcommittee on Planning, Dispositions and Concessions",
+          2072
+        ],
+        [
+          "Committee on Finance",
+          1188
+        ],
+        [
+          "City Council",
+          1156
+        ]
+      ]
+    },
+    "land_use_recall_reason": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "official_land_use_matter_type",
+          8718
+        ],
+        [
+          "land_use_committee_resolution",
+          5913
+        ],
+        [
+          "land_use_text_resolution",
+          375
+        ]
+      ]
+    },
+    "title": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 14829,
+      "most_common": [
+        [
+          "Resolution authorizing franchises for cable television services.",
+          3
+        ],
+        [
+          "Resolution to amend the text of the New York City Zoning Resolution to create Industrial Employment Districts.",
+          3
+        ],
+        [
+          "Resolution to amend the text of the New York City Zoning Resolution to require a Special Permit to be granted by the City Planning Commission for the installation of telephone exchanges or communications equipment in Residence Districts.",
+          3
+        ],
+        [
+          "Application No. 20185134 HKK (N 180179 HKK) pursuant to Section 3020 of the New York City Charter, concerning the designation by the Landmarks Preservation Commission (DL 503, LP-2575) of the Empire State Dairy Company Buildings, 2840 Atlantic Avenue (Block 3964, part of Lot 8), as an historic landmark, Borough of Brooklyn, Community Board 5, Council District 37.",
+          2
+        ],
+        [
+          "Application No. 20205258 HAM (272 East 7th Street – UDAAP/Article XI) submitted by the New York City Department of Housing Preservation and Development pursuant to Article 16 of the General Municipal Law and Section 577 of Article XI of the Private Housing Finance Law for approval of an urban development action area project, waiver of the area designation requirement, waiver of the requirements of Sections 197-c and 197-d of the New York City Charter, and approval of a real property tax exemption for property located at 272 East 7th Street (Block 376, Lot 28), Borough of Manhattan, Council Dis",
+          2
+        ]
+      ]
+    },
+    "matter_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 15006,
+      "most_common": [
+        [
+          "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=1009669&GUID=0BE81D85-8873-4A7C-A98D-1284FE92805D&Options=ID|Text|&Search=",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=1009670&GUID=87EB9688-E15D-4DDD-BB7F-F60BA0AAE05F&Options=ID|Text|&Search=",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=1009671&GUID=F89B0F53-277C-4C2B-89A2-2EECECF2A899&Options=ID|Text|&Search=",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=1009672&GUID=65C69D55-733E-4814-9BB1-44EEF158F25E&Options=ID|Text|&Search=",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=1009673&GUID=A6CE04C3-357C-4E22-ACED-7683DECE5726&Options=ID|Text|&Search=",
+          1
+        ]
+      ]
+    },
+    "history_detail_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 1,
+      "distinct_nonmissing": 15005,
+      "most_common": [
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=10013005&GUID=89B3FC6B-1B92-4A16-A127-29CEF26FB9A7",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=10019644&GUID=C3BEC2B0-DC80-4EE7-A025-4DE0C97F30C1",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=10019645&GUID=28B685D7-33E4-4358-A3AF-839B253D6F33",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=10019646&GUID=5FF4620B-CF66-430F-B15C-68DEB4D4889E",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=10019647&GUID=09239A8F-C51C-41C7-BCB4-57B7E35B10BC",
+          1
+        ]
+      ]
+    }
+  }
+}

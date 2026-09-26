@@ -1,0 +1,449 @@
+{
+  "dataset": "legistar_2011_broad_recall_history_events.csv",
+  "rows": 2762,
+  "key": [
+    "matter_id",
+    "history_sequence"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "926729db6e30764dddb90373a7a254018e2da2152c302d6f6244adfe38005906",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "source_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "nyc_council_legistar_land_use_broad_recall",
+          2762
+        ]
+      ]
+    },
+    "pull_date": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "20260603",
+          2762
+        ]
+      ]
+    },
+    "query_year": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "2011",
+          2762
+        ]
+      ]
+    },
+    "query_matter_type": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "Land Use Application",
+          2242
+        ],
+        [
+          "Resolution",
+          447
+        ],
+        [
+          "Land Use Call-Up",
+          73
+        ]
+      ]
+    },
+    "matter_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 557,
+      "most_common": [
+        [
+          "904482",
+          22
+        ],
+        [
+          "904483",
+          22
+        ],
+        [
+          "777895",
+          20
+        ],
+        [
+          "839087",
+          18
+        ],
+        [
+          "839088",
+          18
+        ]
+      ]
+    },
+    "matter_guid": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 557,
+      "most_common": [
+        [
+          "5F169C8C-5195-47F3-8DAF-B0197770875E",
+          22
+        ],
+        [
+          "C6ABC636-4247-46F1-8EB4-4423BD26D917",
+          22
+        ],
+        [
+          "F7393525-E4C4-42C2-B85E-081FD7CC60F5",
+          20
+        ],
+        [
+          "196A2AC0-878B-4856-AD18-EC46F0EA1AD9",
+          18
+        ],
+        [
+          "B2290689-612F-4FBC-B4B8-9B49062E1629",
+          18
+        ]
+      ]
+    },
+    "matter_file": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 557,
+      "most_common": [
+        [
+          "LU 0387-2011",
+          22
+        ],
+        [
+          "LU 0388-2011",
+          22
+        ],
+        [
+          "LU 0238-2010",
+          20
+        ],
+        [
+          "LU 0314-2011",
+          18
+        ],
+        [
+          "LU 0315-2011",
+          18
+        ]
+      ]
+    },
+    "matter_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 557,
+      "most_common": [
+        [
+          "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=904482&GUID=C6ABC636-4247-46F1-8EB4-4423BD26D917&Options=ID|Text|&Search=",
+          22
+        ],
+        [
+          "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=904483&GUID=5F169C8C-5195-47F3-8DAF-B0197770875E&Options=ID|Text|&Search=",
+          22
+        ],
+        [
+          "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=777895&GUID=F7393525-E4C4-42C2-B85E-081FD7CC60F5&Options=ID|Text|&Search=",
+          20
+        ],
+        [
+          "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=839087&GUID=196A2AC0-878B-4856-AD18-EC46F0EA1AD9&Options=ID|Text|&Search=",
+          18
+        ],
+        [
+          "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=839088&GUID=B2290689-612F-4FBC-B4B8-9B49062E1629&Options=ID|Text|&Search=",
+          18
+        ]
+      ]
+    },
+    "detail_raw_path": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 557,
+      "most_common": [
+        [
+          "../output/source_files/nyc_council_legistar_land_use_broad_recall/20260603/year_2011/detail_pages/land_use_application/lu_0387_2011_904482.html",
+          22
+        ],
+        [
+          "../output/source_files/nyc_council_legistar_land_use_broad_recall/20260603/year_2011/detail_pages/land_use_application/lu_0388_2011_904483.html",
+          22
+        ],
+        [
+          "../output/source_files/nyc_council_legistar_land_use_broad_recall/20260603/year_2011/detail_pages/land_use_application/lu_0238_2010_777895.html",
+          20
+        ],
+        [
+          "../output/source_files/nyc_council_legistar_land_use_broad_recall/20260603/year_2011/detail_pages/land_use_application/lu_0314_2011_839087.html",
+          18
+        ],
+        [
+          "../output/source_files/nyc_council_legistar_land_use_broad_recall/20260603/year_2011/detail_pages/land_use_application/lu_0315_2011_839088.html",
+          18
+        ]
+      ]
+    },
+    "history_sequence": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 22,
+      "most_common": [
+        [
+          "1",
+          557
+        ],
+        [
+          "2",
+          484
+        ],
+        [
+          "3",
+          262
+        ],
+        [
+          "4",
+          261
+        ],
+        [
+          "5",
+          261
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 22
+    },
+    "history_date": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 72,
+      "most_common": [
+        [
+          "4/5/2011",
+          143
+        ],
+        [
+          "3/23/2011",
+          141
+        ],
+        [
+          "11/29/2011",
+          117
+        ],
+        [
+          "1/18/2011",
+          105
+        ],
+        [
+          "7/28/2011",
+          105
+        ]
+      ]
+    },
+    "history_version": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "*",
+          2762
+        ]
+      ]
+    },
+    "history_prime_sponsor": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 18,
+      "distinct_nonmissing": 18,
+      "most_common": [
+        [
+          "Leroy G. Comrie, Jr.",
+          2507
+        ],
+        [
+          "Domenic M. Recchia, Jr.",
+          168
+        ],
+        [
+          "Christine C. Quinn",
+          22
+        ],
+        [
+          "Diana Reyna",
+          10
+        ],
+        [
+          "Joel Rivera",
+          7
+        ]
+      ]
+    },
+    "history_action_by": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 1,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "City Council",
+          1316
+        ],
+        [
+          "Committee on Land Use",
+          694
+        ],
+        [
+          "Subcommittee on Zoning and Franchises",
+          348
+        ],
+        [
+          "Subcommittee on Planning, Dispositions and Concessions",
+          228
+        ],
+        [
+          "Subcommittee on Landmarks, Public Siting and Maritime Uses",
+          106
+        ]
+      ]
+    },
+    "history_action": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 1,
+      "distinct_nonmissing": 27,
+      "most_common": [
+        [
+          "Hearing Held by Committee",
+          545
+        ],
+        [
+          "Approved, by Council",
+          543
+        ],
+        [
+          "Referred to Comm by Council",
+          491
+        ],
+        [
+          "Introduced by Council",
+          261
+        ],
+        [
+          "Approved by Subcommittee",
+          201
+        ]
+      ]
+    },
+    "history_result": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 1721,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "Pass",
+          1041
+        ]
+      ]
+    },
+    "history_detail_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2762,
+      "most_common": [
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=3783153&GUID=AD2FBF26-D2AB-44B1-A52C-FD481DCF26FE",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=3783333&GUID=29E284AA-60FA-4864-B9BD-D07325347913",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=3784571&GUID=8AD57BA7-1AB0-48C6-8F3F-97FECBD0DF68",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=3794899&GUID=C811545E-3792-4FFB-BAFD-A5F881C0F46E",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=3800360&GUID=674EA3E4-EF52-441E-A496-398E7C89B091",
+          1
+        ]
+      ]
+    },
+    "meeting_detail_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 819,
+      "distinct_nonmissing": 87,
+      "most_common": [
+        [
+          "https://legistar.council.nyc.gov/MeetingDetail.aspx?ID=139530&GUID=A62AC591-F9A7-4636-9DFF-C7F1A60AF24B&Options=ID|Text|&Search=",
+          94
+        ],
+        [
+          "https://legistar.council.nyc.gov/MeetingDetail.aspx?ID=173654&GUID=59FB29AB-D956-4BEC-B6E7-56B6D0349994&Options=ID|Text|&Search=",
+          87
+        ],
+        [
+          "https://legistar.council.nyc.gov/MeetingDetail.aspx?ID=159304&GUID=CE88493C-0168-4773-871E-82CFEA81D0DB&Options=ID|Text|&Search=",
+          77
+        ],
+        [
+          "https://legistar.council.nyc.gov/MeetingDetail.aspx?ID=140297&GUID=E374293D-E430-4AA1-9758-A120FECF4C7F&Options=ID|Text|&Search=",
+          64
+        ],
+        [
+          "https://legistar.council.nyc.gov/MeetingDetail.aspx?ID=160956&GUID=7DDC1C5A-D179-4BA0-A9A9-94D708F4395B&Options=ID|Text|&Search=",
+          64
+        ]
+      ]
+    }
+  }
+}

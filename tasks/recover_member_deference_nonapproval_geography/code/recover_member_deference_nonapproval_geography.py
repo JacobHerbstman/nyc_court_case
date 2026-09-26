@@ -8,15 +8,13 @@ import pandas as pd
 sys.path.append("../../_lib")
 from member_deference_utils import (
     application_keys,
-    borough_code_from_application_suffix,
+    borough_code_from_text,
     collapse_districts,
-    collapse_examples,
-    collapse_semicolon_values as collapse_values,
     district_from_scalar,
     lot_numbers_from_text,
     normalize_space,
+    save_frame,
     split_semicolon,
-    write_csv,
 )
 
 ordinal_words = {
@@ -34,28 +32,8 @@ ordinal_words = {
     "TWELFTH": "12",
 }
 
-def collapse_long_examples(values: object) -> str:
-    return collapse_examples(values, limit=20)
-
-
-def borough_from_text(title: object, matter_application_keys: object) -> tuple[str, str]:
-    title_text = normalize_space(title).upper()
-    if "MANHATTAN" in title_text:
-        return "1", "title_borough_text"
-    if "THE BRONX" in title_text or "BRONX" in title_text:
-        return "2", "title_borough_text"
-    if "BROOKLYN" in title_text:
-        return "3", "title_borough_text"
-    if "QUEENS" in title_text:
-        return "4", "title_borough_text"
-    if "STATEN ISLAND" in title_text:
-        return "5", "title_borough_text"
-
-    return borough_code_from_application_suffix(matter_application_keys)
-
-
 def title_bbls(title: object, matter_application_keys: object) -> tuple[list[str], str, str]:
-    borough_code, borough_source = borough_from_text(title, matter_application_keys)
+    borough_code, borough_source = borough_code_from_text(title, matter_application_keys)
     if borough_code == "":
         return [], "", ""
 
@@ -171,11 +149,7 @@ mappluto["address_normalized"] = mappluto["address"].map(normalize_address)
 
 mappluto_bbl_council = (
     mappluto.groupby("bbl", as_index=False)
-    .agg(
-        mappluto_council_districts=("mappluto_council_district", collapse_districts),
-        mappluto_address_examples=("address", collapse_values),
-        mappluto_lot_rows=("bbl", "size"),
-    )
+    .agg(mappluto_council_districts=("mappluto_council_district", collapse_districts))
 )
 if mappluto_bbl_council["bbl"].duplicated().any():
     raise RuntimeError("MapPLUTO BBL lookup must be unique by BBL.")
@@ -183,11 +157,7 @@ if mappluto_bbl_council["bbl"].duplicated().any():
 mappluto_address_council = (
     mappluto[(mappluto["address_normalized"] != "") & (mappluto["mappluto_council_district"] != "")]
     .groupby(["borough", "address_normalized"], as_index=False)
-    .agg(
-        title_address_current_mappluto_council_districts=("mappluto_council_district", collapse_districts),
-        title_address_current_mappluto_bbl_examples=("bbl", collapse_examples),
-        title_address_current_mappluto_bbl_count=("bbl", "nunique"),
-    )
+    .agg(title_address_current_mappluto_council_districts=("mappluto_council_district", collapse_districts))
 )
 mappluto_address_council["unique_single_district_address_match"] = mappluto_address_council[
     "title_address_current_mappluto_council_districts"
@@ -199,17 +169,13 @@ if mappluto_address_council.duplicated(["borough", "address_normalized"]).any():
     raise RuntimeError("MapPLUTO exact address lookup must be unique by borough and normalized address.")
 
 zap_application_rows = []
-for row in zap_project_data[["project_id", "project_name", "ulurp_numbers", "cc_district", "council_district_first"]].to_dict(
-    "records"
-):
+for row in zap_project_data[["project_id", "ulurp_numbers", "cc_district"]].to_dict("records"):
     for key in application_keys(row["ulurp_numbers"]):
         zap_application_rows.append(
             {
                 "application_key": key,
                 "project_id": str(row["project_id"]),
-                "zap_project_name": normalize_space(row["project_name"]),
                 "zap_project_cc_districts": district_from_scalar(row["cc_district"]),
-                "zap_project_council_district_first": district_from_scalar(row["council_district_first"]),
             }
         )
 
@@ -227,11 +193,7 @@ zap_project_bbl_council = (
         validate="many_to_one",
     )
     .groupby("project_id", as_index=False)
-    .agg(
-        zap_project_bbl_count=("bbl_standardized", "nunique"),
-        zap_project_bbl_current_mappluto_council_districts=("mappluto_council_districts", collapse_districts),
-        zap_project_bbl_examples=("bbl_standardized", collapse_examples),
-    )
+    .agg(zap_project_bbl_current_mappluto_council_districts=("mappluto_council_districts", collapse_districts))
 )
 if zap_project_bbl_council["project_id"].duplicated().any():
     raise RuntimeError("ZAP project-BBL Council lookup must be unique by project_id.")
@@ -245,59 +207,42 @@ zap_application_project = zap_application_project.merge(
 zap_application_crosswalk = (
     zap_application_project.groupby("application_key", as_index=False)
     .agg(
-        zap_project_ids=("project_id", collapse_values),
-        zap_project_names=("zap_project_name", collapse_values),
-        zap_project_count=("project_id", "nunique"),
         zap_project_cc_districts=("zap_project_cc_districts", collapse_districts),
-        zap_project_council_district_first=("zap_project_council_district_first", collapse_districts),
-        zap_project_bbl_count=("zap_project_bbl_count", lambda x: int(pd.to_numeric(x, errors="coerce").fillna(0).sum())),
         zap_project_bbl_current_mappluto_council_districts=(
             "zap_project_bbl_current_mappluto_council_districts",
             collapse_districts,
         ),
-        zap_project_bbl_examples=("zap_project_bbl_examples", collapse_values),
     )
 )
-if zap_application_crosswalk["application_key"].duplicated().any():
-    raise RuntimeError("ZAP application crosswalk must be unique by application_key.")
 
-matter_application_rows = []
-for row in target_queue[["matter_id", "application_keys"]].to_dict("records"):
-    for key in split_semicolon(row["application_keys"]):
-        matter_application_rows.append({"matter_id": row["matter_id"], "application_key": key})
-matter_application = pd.DataFrame(matter_application_rows)
-
-if matter_application.empty:
-    matter_application_crosswalk = pd.DataFrame(columns=["matter_id"])
-else:
-    matter_application_crosswalk = (
-        matter_application.merge(zap_application_crosswalk, on="application_key", how="left", validate="many_to_one")
-        .groupby("matter_id", as_index=False)
-        .agg(
-            matched_application_keys=("application_key", collapse_values),
-            zap_project_ids=("zap_project_ids", collapse_values),
-            zap_project_names=("zap_project_names", collapse_values),
-            zap_project_count=("zap_project_count", lambda x: int(pd.to_numeric(x, errors="coerce").fillna(0).sum())),
-            zap_project_cc_districts=("zap_project_cc_districts", collapse_districts),
-            zap_project_council_district_first=("zap_project_council_district_first", collapse_districts),
-            zap_project_bbl_count=("zap_project_bbl_count", lambda x: int(pd.to_numeric(x, errors="coerce").fillna(0).sum())),
-            zap_project_bbl_current_mappluto_council_districts=(
-                "zap_project_bbl_current_mappluto_council_districts",
-                collapse_districts,
-            ),
-            zap_project_bbl_examples=("zap_project_bbl_examples", collapse_values),
-        )
+matter_application = pd.DataFrame(
+    [
+        {"matter_id": row["matter_id"], "application_key": key}
+        for row in target_queue[["matter_id", "application_keys"]].to_dict("records")
+        for key in split_semicolon(row["application_keys"])
+    ],
+    columns=["matter_id", "application_key"],
+)
+matter_application_crosswalk = (
+    matter_application.merge(zap_application_crosswalk, on="application_key", how="left", validate="many_to_one")
+    .groupby("matter_id", as_index=False)
+    .agg(
+        zap_project_cc_districts=("zap_project_cc_districts", collapse_districts),
+        zap_project_bbl_current_mappluto_council_districts=(
+            "zap_project_bbl_current_mappluto_council_districts",
+            collapse_districts,
+        ),
     )
+)
 
 title_location_rows = []
 for row in target_queue[["matter_id", "matter_file", "application_keys", "title"]].to_dict("records"):
-    parsed_bbls, title_borough_code, title_borough_source = title_bbls(row["title"], row["application_keys"])
+    parsed_bbls, title_borough_code, _ = title_bbls(row["title"], row["application_keys"])
     title_location_rows.append(
         {
             "matter_id": row["matter_id"],
             "matter_file": row["matter_file"],
             "title_borough_code_for_location_parse": title_borough_code,
-            "title_borough_source_for_location_parse": title_borough_source,
             "title_bbls": "; ".join(parsed_bbls),
             "title_address_candidate": title_address_candidate(row["title"]),
         }
@@ -306,32 +251,17 @@ for row in target_queue[["matter_id", "matter_file", "application_keys", "title"
 title_location = pd.DataFrame(title_location_rows)
 title_location["title_address_normalized"] = title_location["title_address_candidate"].map(normalize_address)
 
-title_address_variant_rows = []
-for row in title_location[
-    ["matter_id", "matter_file", "title_borough_code_for_location_parse", "title_address_candidate"]
-].to_dict("records"):
-    for variant_sequence, variant in enumerate(address_variants(row["title_address_candidate"]), start=1):
-        title_address_variant_rows.append(
-            {
-                "matter_id": row["matter_id"],
-                "matter_file": row["matter_file"],
-                "title_borough_code_for_location_parse": row["title_borough_code_for_location_parse"],
-                "title_address_variant_sequence": variant_sequence,
-                "title_address_variant": variant,
-                "title_address_variant_normalized": normalize_address(variant),
-            }
-        )
-
 title_address_variants = pd.DataFrame(
-    title_address_variant_rows,
-    columns=[
-        "matter_id",
-        "matter_file",
-        "title_borough_code_for_location_parse",
-        "title_address_variant_sequence",
-        "title_address_variant",
-        "title_address_variant_normalized",
+    [
+        {
+            "matter_id": row["matter_id"],
+            "title_borough_code_for_location_parse": row["title_borough_code_for_location_parse"],
+            "title_address_variant_normalized": normalize_address(variant),
+        }
+        for row in title_location.to_dict("records")
+        for variant in address_variants(row["title_address_candidate"])
     ],
+    columns=["matter_id", "title_borough_code_for_location_parse", "title_address_variant_normalized"],
 )
 
 title_bbl_long = (
@@ -339,31 +269,18 @@ title_bbl_long = (
     .explode("title_bbl")
     .loc[:, ["matter_id", "title_bbl"]]
 )
-title_bbl_long = title_bbl_long[title_bbl_long["title_bbl"].fillna("") != ""]
-if title_bbl_long.duplicated(["matter_id", "title_bbl"]).any():
-    title_bbl_long = title_bbl_long.drop_duplicates(["matter_id", "title_bbl"])
-
-if title_bbl_long.empty:
-    title_bbl_summary = pd.DataFrame(columns=["matter_id"])
-else:
-    title_bbl_summary = (
-        title_bbl_long.merge(
-            mappluto_bbl_council[["bbl", "mappluto_council_districts"]],
-            left_on="title_bbl",
-            right_on="bbl",
-            how="left",
-            validate="many_to_one",
-        )
-        .groupby("matter_id", as_index=False)
-        .agg(
-            title_bbl_count=("title_bbl", "nunique"),
-            title_bbl_current_mappluto_match_count=(
-                "mappluto_council_districts",
-                lambda x: int(x.fillna("").ne("").sum()),
-            ),
-            title_bbl_current_mappluto_council_districts=("mappluto_council_districts", collapse_districts),
-        )
+title_bbl_long = title_bbl_long[title_bbl_long["title_bbl"].fillna("") != ""].drop_duplicates()
+title_bbl_summary = (
+    title_bbl_long.merge(
+        mappluto_bbl_council[["bbl", "mappluto_council_districts"]],
+        left_on="title_bbl",
+        right_on="bbl",
+        how="left",
+        validate="many_to_one",
     )
+    .groupby("matter_id", as_index=False)
+    .agg(title_bbl_current_mappluto_council_districts=("mappluto_council_districts", collapse_districts))
+)
 
 title_location = title_location.merge(title_bbl_summary, on="matter_id", how="left", validate="one_to_one")
 title_location = title_location.merge(
@@ -375,96 +292,35 @@ title_location = title_location.merge(
 )
 title_location = title_location.drop(columns=["borough", "address_normalized"])
 
-if title_address_variants.empty:
-    title_address_variant_summary = pd.DataFrame(columns=["matter_id"])
-else:
-    title_address_variant_matches = title_address_variants.merge(
+title_address_variant_summary = (
+    title_address_variants.merge(
         mappluto_address_council,
         left_on=["title_borough_code_for_location_parse", "title_address_variant_normalized"],
         right_on=["borough", "address_normalized"],
         how="left",
         validate="many_to_one",
     )
-    title_address_variant_matches["title_address_variant_matched"] = title_address_variant_matches[
-        "title_address_variant"
-    ].where(title_address_variant_matches["title_address_current_mappluto_council_districts"].fillna("") != "", "")
-    title_address_variant_matches["title_address_variant_matched_bbl_examples"] = title_address_variant_matches[
-        "title_address_current_mappluto_bbl_examples"
-    ].where(title_address_variant_matches["title_address_current_mappluto_council_districts"].fillna("") != "", "")
-
-    title_address_variant_summary = (
-        title_address_variant_matches
-        .groupby("matter_id", as_index=False)
-        .agg(
-            title_address_variant_count=("title_address_variant", "nunique"),
-            title_address_variant_current_mappluto_match_count=(
-                "title_address_current_mappluto_council_districts",
-                lambda x: int(x.fillna("").ne("").sum()),
-            ),
-            title_address_variant_current_mappluto_council_districts=(
-                "title_address_current_mappluto_council_districts",
-                collapse_districts,
-            ),
-            title_address_variant_matched_examples=("title_address_variant_matched", collapse_long_examples),
-            title_address_variant_current_mappluto_bbl_examples=(
-                "title_address_variant_matched_bbl_examples",
-                collapse_long_examples,
-            ),
+    .groupby("matter_id", as_index=False)
+    .agg(
+        title_address_variant_current_mappluto_council_districts=(
+            "title_address_current_mappluto_council_districts",
+            collapse_districts,
         )
     )
+)
 title_location = title_location.merge(title_address_variant_summary, on="matter_id", how="left", validate="one_to_one")
-
-for col in [
-    "title_bbl_count",
-    "title_bbl_current_mappluto_match_count",
-    "title_address_variant_count",
-    "title_address_variant_current_mappluto_match_count",
-    "title_bbl_current_mappluto_council_districts",
-    "title_address_current_mappluto_council_districts",
-    "title_address_current_mappluto_bbl_examples",
-    "title_address_current_mappluto_bbl_count",
-    "title_address_variant_current_mappluto_council_districts",
-    "title_address_variant_matched_examples",
-    "title_address_variant_current_mappluto_bbl_examples",
-]:
-    if col in title_location.columns:
-        title_location[col] = title_location[col].fillna(0 if col.endswith("_count") else "")
 
 recovery = target_queue.merge(matter_application_crosswalk, on="matter_id", how="left", validate="one_to_one")
 recovery = recovery.merge(title_location, on=["matter_id", "matter_file"], how="left", validate="one_to_one")
-
 for col in [
-    "matched_application_keys",
-    "zap_project_ids",
-    "zap_project_names",
     "zap_project_cc_districts",
-    "zap_project_council_district_first",
     "zap_project_bbl_current_mappluto_council_districts",
-    "zap_project_bbl_examples",
-    "title_borough_code_for_location_parse",
-    "title_borough_source_for_location_parse",
     "title_bbls",
     "title_bbl_current_mappluto_council_districts",
-    "title_address_candidate",
-    "title_address_normalized",
     "title_address_current_mappluto_council_districts",
-    "title_address_current_mappluto_bbl_examples",
     "title_address_variant_current_mappluto_council_districts",
-    "title_address_variant_matched_examples",
-    "title_address_variant_current_mappluto_bbl_examples",
 ]:
-    if col in recovery.columns:
-        recovery[col] = recovery[col].fillna("")
-for col in [
-    "zap_project_count",
-    "zap_project_bbl_count",
-    "title_bbl_count",
-    "title_bbl_current_mappluto_match_count",
-    "title_address_variant_count",
-    "title_address_variant_current_mappluto_match_count",
-]:
-    if col in recovery.columns:
-        recovery[col] = recovery[col].fillna(0).astype(int)
+    recovery[col] = recovery[col].fillna("")
 
 
 def recovered_districts(row: pd.Series) -> tuple[str, str, str, str]:
@@ -540,9 +396,5 @@ if len(recovery) != len(target_queue):
     raise RuntimeError("Recovery output must keep every first-pass nonapproval matter.")
 if recovery["matter_id"].duplicated().any():
     raise RuntimeError("Recovery output must be unique by matter_id.")
-if zap_application_crosswalk["application_key"].duplicated().any():
-    raise RuntimeError("ZAP application crosswalk must be unique by application_key.")
-if mappluto_bbl_council["bbl"].duplicated().any():
-    raise RuntimeError("Current MapPLUTO BBL lookup must be unique by bbl.")
 
-write_csv("../output/member_deference_nonapproval_geography_recovery.csv", recovery)
+save_frame(recovery, "../output/member_deference_nonapproval_geography_recovery.csv", ["matter_id"])

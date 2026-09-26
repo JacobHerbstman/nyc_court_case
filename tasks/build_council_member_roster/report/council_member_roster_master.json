@@ -1,0 +1,690 @@
+{
+  "dataset": "council_member_roster_master.csv",
+  "rows": 558,
+  "key": [
+    "roster_record_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "cfddda7cdb6986009da1d4dbcf0e308cf5daa72b683c524edf113008e8798178",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "roster_record_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 558,
+      "most_common": [
+        [
+          "legistar_1.0_1",
+          1
+        ],
+        [
+          "legistar_1.0_10",
+          1
+        ],
+        [
+          "legistar_1.0_100",
+          1
+        ],
+        [
+          "legistar_1.0_11",
+          1
+        ],
+        [
+          "legistar_1.0_12",
+          1
+        ]
+      ]
+    },
+    "roster_source": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "legistar_office_record",
+          547
+        ],
+        [
+          "legistar_office_record_wikipedia_district",
+          5
+        ],
+        [
+          "legistar_office_record_corrected",
+          3
+        ],
+        [
+          "wikipedia_gap_fill",
+          3
+        ]
+      ]
+    },
+    "source_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "nyc_council_legistar_office_records",
+          554
+        ],
+        [
+          "wikipedia_nyc_council_district_history",
+          3
+        ],
+        [
+          "nyc_council_legistar_person_details",
+          1
+        ]
+      ]
+    },
+    "source_role": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "legistar_office_records_page",
+          554
+        ],
+        [
+          "wikipedia_district_history_page",
+          3
+        ],
+        [
+          "legistar_person_detail_seed",
+          1
+        ]
+      ]
+    },
+    "source_tier": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "official_legistar",
+          555
+        ],
+        [
+          "secondary_wikipedia",
+          3
+        ]
+      ]
+    },
+    "source_precedence": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          555
+        ],
+        [
+          "3",
+          3
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 3
+    },
+    "source_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 58,
+      "most_common": [
+        [
+          "https://legistar.council.nyc.gov/DepartmentDetail.aspx?ID=6897&GUID=CDC6E691-8A8C-4F25-97CB-86F31EDAB081&Mode=MainBody",
+          466
+        ],
+        [
+          "https://legistar.council.nyc.gov/DepartmentDetail.aspx?ID=6897&GUID=CDC6E691-8A8C-4F25-97CB-86F31EDAB081&Mode=MainBody; https://legistar.council.nyc.gov/PersonDetail.aspx?ID=34073&GUID=7122B9AE-1EAF-431A-9695-038CBD7FCCFC&Search=",
+          4
+        ],
+        [
+          "https://legistar.council.nyc.gov/DepartmentDetail.aspx?ID=6897&GUID=CDC6E691-8A8C-4F25-97CB-86F31EDAB081&Mode=MainBody; https://legistar.council.nyc.gov/PersonDetail.aspx?ID=33937&GUID=8847A0EB-04BA-4F48-887E-9E03726E5699&Search=",
+          3
+        ],
+        [
+          "https://legistar.council.nyc.gov/DepartmentDetail.aspx?ID=6897&GUID=CDC6E691-8A8C-4F25-97CB-86F31EDAB081&Mode=MainBody; https://legistar.council.nyc.gov/PersonDetail.aspx?ID=33939&GUID=E321DA60-EBF2-4B5E-8DE7-2D536014099A&Search=",
+          3
+        ],
+        [
+          "https://legistar.council.nyc.gov/DepartmentDetail.aspx?ID=6897&GUID=CDC6E691-8A8C-4F25-97CB-86F31EDAB081&Mode=MainBody; https://legistar.council.nyc.gov/PersonDetail.aspx?ID=33944&GUID=1D8C951B-EBDD-45A9-9B04-6E33648D861C&Search=",
+          3
+        ]
+      ]
+    },
+    "raw_path": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 63,
+      "most_common": [
+        [
+          "../temp/source_files/nyc_council_legistar_office_records/20260512/legistar_city_council_office_records_all_page_02.html",
+          90
+        ],
+        [
+          "../temp/source_files/nyc_council_legistar_office_records/20260512/legistar_city_council_office_records_all_page_01.html",
+          86
+        ],
+        [
+          "../temp/source_files/nyc_council_legistar_office_records/20260512/legistar_city_council_office_records_all_page_03.html",
+          83
+        ],
+        [
+          "../temp/source_files/nyc_council_legistar_office_records/20260512/legistar_city_council_office_records_all_page_04.html",
+          82
+        ],
+        [
+          "../temp/source_files/nyc_council_legistar_office_records/20260512/legistar_city_council_office_records_all_page_05.html",
+          80
+        ]
+      ]
+    },
+    "district": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 51,
+      "most_common": [
+        [
+          "51",
+          14
+        ],
+        [
+          "44",
+          13
+        ],
+        [
+          "48",
+          13
+        ],
+        [
+          "12",
+          12
+        ],
+        [
+          "17",
+          12
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 51
+    },
+    "district_text": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 51,
+      "most_common": [
+        [
+          "District 51",
+          14
+        ],
+        [
+          "District 44",
+          13
+        ],
+        [
+          "District 48",
+          13
+        ],
+        [
+          "District 12",
+          12
+        ],
+        [
+          "District 17",
+          12
+        ]
+      ]
+    },
+    "district_source": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "legistar_office_record_grid",
+          461
+        ],
+        [
+          "legistar_person_detail_notes",
+          89
+        ],
+        [
+          "wikipedia_district_page_surname_match",
+          5
+        ],
+        [
+          "wikipedia_district_page",
+          2
+        ],
+        [
+          "wikipedia_district_page_list",
+          1
+        ]
+      ]
+    },
+    "member_name": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 216,
+      "most_common": [
+        [
+          "James F. Gennaro",
+          8
+        ],
+        [
+          "Gale A. Brewer",
+          7
+        ],
+        [
+          "Darlene Mealy",
+          6
+        ],
+        [
+          "Simcha Felder",
+          6
+        ],
+        [
+          "Bill Perkins",
+          5
+        ]
+      ]
+    },
+    "member_name_clean": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 216,
+      "most_common": [
+        [
+          "james gennaro",
+          8
+        ],
+        [
+          "gale brewer",
+          7
+        ],
+        [
+          "darlene mealy",
+          6
+        ],
+        [
+          "simcha felder",
+          6
+        ],
+        [
+          "bill perkins",
+          5
+        ]
+      ]
+    },
+    "party": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 95,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "Democrat",
+          421
+        ],
+        [
+          "Republican",
+          41
+        ],
+        [
+          "Democratic",
+          1
+        ]
+      ]
+    },
+    "borough": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 96,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "Brooklyn",
+          147
+        ],
+        [
+          "Queens",
+          128
+        ],
+        [
+          "Manhattan",
+          85
+        ],
+        [
+          "Bronx",
+          75
+        ],
+        [
+          "Staten Island",
+          27
+        ]
+      ]
+    },
+    "person_title": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "Council Member",
+          535
+        ],
+        [
+          "Speaker",
+          8
+        ],
+        [
+          "Minority Leader",
+          7
+        ],
+        [
+          "Majority Leader",
+          3
+        ],
+        [
+          "Minority Whip",
+          3
+        ]
+      ]
+    },
+    "term_start_date": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 49,
+      "most_common": [
+        [
+          "2002-01-01",
+          51
+        ],
+        [
+          "2004-01-01",
+          51
+        ],
+        [
+          "2006-01-01",
+          51
+        ],
+        [
+          "2010-01-01",
+          51
+        ],
+        [
+          "2014-01-01",
+          51
+        ]
+      ]
+    },
+    "term_end_date": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 51,
+      "most_common": [
+        [
+          "2001-12-31",
+          51
+        ],
+        [
+          "2005-12-31",
+          51
+        ],
+        [
+          "2009-12-31",
+          51
+        ],
+        [
+          "2013-12-31",
+          51
+        ],
+        [
+          "2017-12-31",
+          51
+        ]
+      ]
+    },
+    "term_text": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 555,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "Andrew Sidamon–Eristoff (1993–1999)",
+          1
+        ],
+        [
+          "January 1, 1998 – December 31, 2001",
+          1
+        ],
+        [
+          "January 1, 2022 –",
+          1
+        ]
+      ]
+    },
+    "person_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 2,
+      "distinct_nonmissing": 214,
+      "most_common": [
+        [
+          "34347",
+          8
+        ],
+        [
+          "34352",
+          7
+        ],
+        [
+          "34332",
+          6
+        ],
+        [
+          "34490",
+          6
+        ],
+        [
+          "259854",
+          5
+        ]
+      ]
+    },
+    "person_guid": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 3,
+      "distinct_nonmissing": 214,
+      "most_common": [
+        [
+          "DE746E5F-0273-4994-B43D-05EF901C99FC",
+          8
+        ],
+        [
+          "AB4A85D3-F71A-454E-98F2-1CE3A6D62ED5",
+          7
+        ],
+        [
+          "071F584B-2D14-4233-A70E-717F20A748CD",
+          6
+        ],
+        [
+          "560C8F43-7F27-42D7-9B1E-3BC72F203696",
+          6
+        ],
+        [
+          "57972C11-BDAF-4BCA-97D8-13E15BDE8007",
+          5
+        ]
+      ]
+    },
+    "person_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 2,
+      "distinct_nonmissing": 215,
+      "most_common": [
+        [
+          "https://legistar.council.nyc.gov/PersonDetail.aspx?ID=34347&GUID=DE746E5F-0273-4994-B43D-05EF901C99FC&Search=",
+          8
+        ],
+        [
+          "https://legistar.council.nyc.gov/PersonDetail.aspx?ID=34352&GUID=AB4A85D3-F71A-454E-98F2-1CE3A6D62ED5&Search=",
+          7
+        ],
+        [
+          "https://legistar.council.nyc.gov/PersonDetail.aspx?ID=34332&GUID=071F584B-2D14-4233-A70E-717F20A748CD&Search=",
+          6
+        ],
+        [
+          "https://legistar.council.nyc.gov/PersonDetail.aspx?ID=34490&GUID=560C8F43-7F27-42D7-9B1E-3BC72F203696&Search=",
+          6
+        ],
+        [
+          "https://legistar.council.nyc.gov/PersonDetail.aspx?ID=259854&GUID=8A5E4604-BE67-4188-874D-47EC25E341E6&Search=",
+          5
+        ]
+      ]
+    },
+    "website_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 94,
+      "distinct_nonmissing": 107,
+      "most_common": [
+        [
+          "http://council.nyc.gov/d24/html/members/home.shtml",
+          10
+        ],
+        [
+          "http://council.nyc.gov/d6/html/members/home.shtml",
+          9
+        ],
+        [
+          "https://council.nyc.gov/district-44/",
+          9
+        ],
+        [
+          "http://council.nyc.gov/d17/html/members/home.shtml",
+          8
+        ],
+        [
+          "http://council.nyc.gov/d10/html/members/home.shtml",
+          7
+        ]
+      ]
+    },
+    "evidence_summary": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "Official Legistar City Council office record.",
+          463
+        ],
+        [
+          "Official Legistar City Council office record; district filled from the linked Legistar PersonDetail Notes field because the all-term grid omits the district.",
+          88
+        ],
+        [
+          "No official Legistar office record covers this period; the Wikipedia district page lists this member for the whole period. Dates are clipped to the official-record gap.",
+          3
+        ],
+        [
+          "Official Legistar City Council office record. Corrected: The Legistar grid lists District 47, which Ari Kagan held in 2022-2023 in the same grid; Brannan represented District 43 until the 2024 redistricting (Wikipedia District 43 and 47 pages).",
+          1
+        ],
+        [
+          "Official Legistar City Council office record. Corrected: The Legistar grid lists District 47, which Mark Treyger held in 2018-2021 in the same grid; Brannan represented District 43 until the 2024 redistricting (Wikipedia District 43 and 47 pages).",
+          1
+        ]
+      ]
+    },
+    "source_review_required": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "False",
+          547
+        ],
+        [
+          "True",
+          11
+        ]
+      ]
+    },
+    "source_review_reason": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 547,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "district_from_wikipedia_surname_match",
+          5
+        ],
+        [
+          "official_roster_correction",
+          3
+        ],
+        [
+          "wikipedia_gap_fill",
+          3
+        ]
+      ]
+    }
+  }
+}

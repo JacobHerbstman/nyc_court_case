@@ -1,0 +1,848 @@
+{
+  "dataset": "legistar_2024_broad_recall_action_details.csv",
+  "rows": 376,
+  "key": [
+    "matter_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "f0135337f486cd3623e16ff407676a97c7a3f6bc3d0a1a0296df886a4cce7fe5",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "source_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "nyc_council_legistar_land_use_broad_recall",
+          376
+        ]
+      ]
+    },
+    "pull_date": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "20260603",
+          376
+        ]
+      ]
+    },
+    "query_year": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "2024",
+          376
+        ]
+      ]
+    },
+    "query_matter_type": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "Land Use Application",
+          199
+        ],
+        [
+          "Resolution",
+          153
+        ],
+        [
+          "Land Use Call-Up",
+          24
+        ]
+      ]
+    },
+    "matter_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 376,
+      "most_common": [
+        [
+          "6482400",
+          1
+        ],
+        [
+          "6482401",
+          1
+        ],
+        [
+          "6482402",
+          1
+        ],
+        [
+          "6482403",
+          1
+        ],
+        [
+          "6482404",
+          1
+        ]
+      ]
+    },
+    "matter_guid": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 376,
+      "most_common": [
+        [
+          "008FCE96-5ABF-41E7-8C27-775240046519",
+          1
+        ],
+        [
+          "00DCB527-4442-4AE5-9B84-8D731F430DDD",
+          1
+        ],
+        [
+          "011E02BB-D5B8-4968-8E5C-1289F37973EA",
+          1
+        ],
+        [
+          "0128BC47-26CD-4030-AC4E-359782021B04",
+          1
+        ],
+        [
+          "01785305-EEF7-498C-BBF7-E0D8927573A9",
+          1
+        ]
+      ]
+    },
+    "matter_file": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 376,
+      "most_common": [
+        [
+          "LU 0001-2024",
+          1
+        ],
+        [
+          "LU 0002-2024",
+          1
+        ],
+        [
+          "LU 0003-2024",
+          1
+        ],
+        [
+          "LU 0004-2024",
+          1
+        ],
+        [
+          "LU 0005-2024",
+          1
+        ]
+      ]
+    },
+    "matter_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 376,
+      "most_common": [
+        [
+          "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=6482400&GUID=258B6670-4D82-405F-A2C7-25F1DD0565A0&Options=ID|Text|&Search=",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=6482401&GUID=2B4B0F1F-4847-4F74-9EBD-D2BD9B6E48A4&Options=ID|Text|&Search=",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=6482402&GUID=8A6A5796-0292-4EBB-A615-EDD16C2AF415&Options=ID|Text|&Search=",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=6482403&GUID=66D92E5E-2CDC-41DA-B6BB-15AFE65DEABD&Options=ID|Text|&Search=",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=6482404&GUID=670A9D93-5A8B-42C0-AAFA-9E9321BFA0C9&Options=ID|Text|&Search=",
+          1
+        ]
+      ]
+    },
+    "history_sequence": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          341
+        ],
+        [
+          "2",
+          35
+        ]
+      ]
+    },
+    "history_date": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 21,
+      "most_common": [
+        [
+          "8/15/2024",
+          47
+        ],
+        [
+          "11/21/2024",
+          36
+        ],
+        [
+          "4/18/2024",
+          34
+        ],
+        [
+          "10/10/2024",
+          33
+        ],
+        [
+          "9/26/2024",
+          30
+        ]
+      ]
+    },
+    "history_action_by": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "City Council",
+          376
+        ]
+      ]
+    },
+    "history_action": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "Approved, by Council",
+          376
+        ]
+      ]
+    },
+    "history_result": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "Pass",
+          376
+        ]
+      ]
+    },
+    "history_detail_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 376,
+      "most_common": [
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=29585315&GUID=397AAAA1-1302-4DE9-8396-0CC4872EA664",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=29585316&GUID=CEFC073C-208A-4072-8F18-4186948E9AD6",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=29585317&GUID=85B78B04-5309-4CBD-A800-C3DCF06BD15D",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=29747969&GUID=67C1CCF3-9EC3-4DCB-B71B-9E3E5D9464EF",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=29747970&GUID=7F4A18CF-0604-4E26-B757-C5DF3E8F291D",
+          1
+        ]
+      ]
+    },
+    "fetch_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "cached",
+          376
+        ]
+      ]
+    },
+    "raw_path": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 376,
+      "most_common": [
+        [
+          "../output/source_files/nyc_council_legistar_land_use_broad_recall/20260603/year_2024/action_detail_pages/lu_0001_2024_6482400.html",
+          1
+        ],
+        [
+          "../output/source_files/nyc_council_legistar_land_use_broad_recall/20260603/year_2024/action_detail_pages/lu_0002_2024_6482401.html",
+          1
+        ],
+        [
+          "../output/source_files/nyc_council_legistar_land_use_broad_recall/20260603/year_2024/action_detail_pages/lu_0003_2024_6482402.html",
+          1
+        ],
+        [
+          "../output/source_files/nyc_council_legistar_land_use_broad_recall/20260603/year_2024/action_detail_pages/lu_0004_2024_6482403.html",
+          1
+        ],
+        [
+          "../output/source_files/nyc_council_legistar_land_use_broad_recall/20260603/year_2024/action_detail_pages/lu_0005_2024_6482404.html",
+          1
+        ]
+      ]
+    },
+    "file_size_bytes": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 172,
+      "most_common": [
+        [
+          "91876",
+          10
+        ],
+        [
+          "91914",
+          10
+        ],
+        [
+          "91775",
+          9
+        ],
+        [
+          "91836",
+          8
+        ],
+        [
+          "91852",
+          8
+        ]
+      ],
+      "minimum": 49285,
+      "maximum": 92372
+    },
+    "checksum_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 376,
+      "most_common": [
+        [
+          "006e9f91e1173b8577f6d3395883d683dda98e024fb07ae637bc7d91da88280b",
+          1
+        ],
+        [
+          "0079eb34dbece7368d70b9b80dfb522a8c728ef0e9ecba142b1c62e08af0776c",
+          1
+        ],
+        [
+          "0152e7c24cf7700b90f1a187c74570d0bccbda61be4f0a50548b59e6eb49bc18",
+          1
+        ],
+        [
+          "02b8b2c27a30c64bb786c75f2b8c7ebd5ab2093eb64a0214b9ee3d0ba16face4",
+          1
+        ],
+        [
+          "02f474ad997b0d0a6ae00661e35e1a3bf6b819aa7453564a262066549a579497",
+          1
+        ]
+      ]
+    },
+    "action_detail_type": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "Land Use Application",
+          199
+        ],
+        [
+          "Resolution",
+          153
+        ],
+        [
+          "Land Use Call-Up",
+          24
+        ]
+      ]
+    },
+    "action_detail_title": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 371,
+      "most_common": [
+        [
+          "Landmarks, 97-22 Cresskill Place Disposition, Queens (C 240061 PPQ)",
+          2
+        ],
+        [
+          "WHGA Amsterdam Garvey: Block 1916, Lot 17; Block 2077, Lot 22, Manhattan, Community District No. 9 and 10, Council District No. 7 and 9.",
+          2
+        ],
+        [
+          "Zoning, 343 West 47th Street Demolition Special Permit, Manhattan (C 240244 ZSM).",
+          2
+        ],
+        [
+          "Zoning, La Catrina, Queens (D 2450141875 SWQ)",
+          2
+        ],
+        [
+          "Zoning, Seis Vecinos Restaurant, Bronx (D 2450065822 SWX).",
+          2
+        ]
+      ]
+    },
+    "action_detail_result": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "Pass",
+          376
+        ]
+      ]
+    },
+    "agenda_note": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 205,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "Coupled on General Orders",
+          77
+        ],
+        [
+          "Coupled on GO",
+          64
+        ],
+        [
+          "Coupled on Call-Up Vote",
+          18
+        ],
+        [
+          "Preconsidered - Coupled on General Orders",
+          10
+        ],
+        [
+          "Amended and Coupled on GO",
+          1
+        ]
+      ]
+    },
+    "minutes_note": {
+      "python_types": [],
+      "missing": 376,
+      "distinct_nonmissing": 0,
+      "most_common": []
+    },
+    "action_detail_action": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "Approved, by Council",
+          376
+        ]
+      ]
+    },
+    "action_detail_text": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "A motion was made that this Land Use Application be Approved, by Council approved by consent Roll Call.",
+          188
+        ],
+        [
+          "A motion was made that this Resolution be Approved, by Council approved by consent Roll Call.",
+          142
+        ],
+        [
+          "A motion was made that this Land Use Call-Up be Approved, by Council approved by consent Roll Call.",
+          16
+        ],
+        [
+          "A motion was made that this Land Use Application be Approved, by Council approved by Roll Call.",
+          11
+        ],
+        [
+          "A motion was made that this Resolution be Approved, by Council approved by Roll Call.",
+          11
+        ]
+      ]
+    },
+    "vote_tab_label": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 19,
+      "most_common": [
+        [
+          "Consent Votes (50:0)",
+          113
+        ],
+        [
+          "Consent Votes (48:0)",
+          90
+        ],
+        [
+          "Consent Votes (45:0)",
+          50
+        ],
+        [
+          "Consent Votes (44:0)",
+          46
+        ],
+        [
+          "Consent Votes (42:0)",
+          19
+        ]
+      ]
+    },
+    "vote_record_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "51",
+          375
+        ],
+        [
+          "0",
+          1
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 51
+    },
+    "parsed_vote_rows": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "51",
+          375
+        ],
+        [
+          "0",
+          1
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 51
+    },
+    "affirmative_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 14,
+      "most_common": [
+        [
+          "50",
+          114
+        ],
+        [
+          "48",
+          90
+        ],
+        [
+          "45",
+          52
+        ],
+        [
+          "44",
+          48
+        ],
+        [
+          "42",
+          19
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 51
+    },
+    "negative_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "0",
+          355
+        ],
+        [
+          "1",
+          10
+        ],
+        [
+          "15",
+          4
+        ],
+        [
+          "16",
+          2
+        ],
+        [
+          "20",
+          2
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 20
+    },
+    "abstain_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "0",
+          373
+        ],
+        [
+          "3",
+          2
+        ],
+        [
+          "1",
+          1
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 3
+    },
+    "excused_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "0",
+          329
+        ],
+        [
+          "1",
+          28
+        ],
+        [
+          "3",
+          19
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 3
+    },
+    "non_voting_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "0",
+          363
+        ],
+        [
+          "1",
+          12
+        ],
+        [
+          "4",
+          1
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 4
+    },
+    "other_vote_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "1",
+          113
+        ],
+        [
+          "3",
+          71
+        ],
+        [
+          "6",
+          71
+        ],
+        [
+          "7",
+          47
+        ],
+        [
+          "2",
+          45
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 7
+    },
+    "vote_margin": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 14,
+      "most_common": [
+        [
+          "50-0-0",
+          114
+        ],
+        [
+          "48-0-0",
+          90
+        ],
+        [
+          "45-0-0",
+          52
+        ],
+        [
+          "44-0-0",
+          48
+        ],
+        [
+          "42-0-0",
+          19
+        ]
+      ]
+    },
+    "negative_members": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 355,
+      "distinct_nonmissing": 8,
+      "most_common": [
+        [
+          "Shekar Krishnan",
+          10
+        ],
+        [
+          "Alexa Avilés; Gale A. Brewer; Tiffany L. Cabán; Jennifer Gutiérrez; Shahana K. Hanif; Robert F. Holden; Shekar Krishnan; Kristy Marmorato; Christopher Marte; Darlene Mealy; Sandy Nurse; Vickie Paladino; Pierina Ana Sanchez; Inna Vernikov; Kalman Yeger",
+          2
+        ],
+        [
+          "Joann Ariola; Chris Banks; Joseph C. Borelli; David M. Carr; Eric Dinowitz; Kamillah Hanks; Robert F. Holden; Linda Lee; Farah N. Louis; Kristy Marmorato; Darlene Mealy; Mercedes Narcisse; Sandy Nurse; Vickie Paladino; Kalman Yeger; Susan Zhuang",
+          2
+        ],
+        [
+          "Joann Ariola; Chris Banks; Joseph C. Borelli; David M. Carr; Eric Dinowitz; Kamillah Hanks; Robert F. Holden; Linda Lee; Farah N. Louis; Kristy Marmorato; Darlene Mealy; Mercedes Narcisse; Vickie Paladino; Kalman Yeger; Susan Zhuang",
+          2
+        ],
+        [
+          "Robert F. Holden; Vickie Paladino; Inna Vernikov; Kalman Yeger",
+          2
+        ]
+      ]
+    },
+    "abstain_members": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 373,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "Justin L. Brannan; Lincoln Restler; Susan Zhuang",
+          2
+        ],
+        [
+          "Althea V. Stevens",
+          1
+        ]
+      ]
+    }
+  }
+}

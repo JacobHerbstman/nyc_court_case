@@ -10,6 +10,7 @@ import requests
 
 sys.path.append("../../_lib")
 from legistar_utils import (
+    check_cached_history_page,
     check_saved_html,
     parse_action_detail,
     request_with_retries,
@@ -17,6 +18,7 @@ from legistar_utils import (
     save_text,
     sha256,
 )
+from member_deference_utils import save_frame
 
 SOURCE_ID = "nyc_council_legistar_land_use_broad_recall"
 if len(sys.argv) != 2 or not re.fullmatch(r"\d{4}", sys.argv[1]):
@@ -43,12 +45,13 @@ target_events = history_events[
     & approved_by_council
     & (history_events["history_detail_url"] != "")
 ].copy()
-target_events["history_date_parsed"] = pd.to_datetime(target_events["history_date"], errors="coerce")
-target_events["history_sequence_int"] = pd.to_numeric(target_events["history_sequence"], errors="coerce")
+# Legistar lists history newest first, so history_sequence 1 is the latest action.
+# Keep the latest Council approval event for each matter.
+target_events["history_sequence_int"] = target_events["history_sequence"].astype(int)
 target_events = (
-    target_events.sort_values(["matter_id", "history_date_parsed", "history_sequence_int"])
-    .drop_duplicates("matter_id", keep="last")
-    .drop(columns=["history_date_parsed", "history_sequence_int"])
+    target_events.sort_values(["matter_id", "history_sequence_int"])
+    .drop_duplicates("matter_id", keep="first")
+    .drop(columns=["history_sequence_int"])
 )
 
 if target_events.empty:
@@ -80,6 +83,7 @@ for i, row in enumerate(target_events.sort_values(["history_date", "matter_file"
     raw_path = raw_dir / f"{safe_stub(row['matter_file'])}_{row['matter_id']}.html"
     check_saved_html([raw_path], f"{QUERY_YEAR} Legistar action-detail page")
     if raw_path.exists() and raw_path.stat().st_size > 0:
+        check_cached_history_page(raw_path, row["history_detail_url"])
         page_html = raw_path.read_text(encoding="utf-8")
         fetch_status = "cached"
     else:
@@ -188,5 +192,5 @@ if QUERY_YEAR == "2001":
     if laguardia_negative.empty:
         raise RuntimeError("Res 1939-2001 must record Helen M. Marshall voting Negative.")
 
-action_details.to_csv(f"../output/legistar_{QUERY_YEAR}_broad_recall_action_details.csv", index=False)
-member_votes.to_csv(f"../output/legistar_{QUERY_YEAR}_broad_recall_member_votes.csv", index=False)
+save_frame(action_details, f"../output/legistar_{QUERY_YEAR}_broad_recall_action_details.csv", ["matter_id"])
+save_frame(member_votes, f"../output/legistar_{QUERY_YEAR}_broad_recall_member_votes.csv", ["matter_id", "vote_sequence"])

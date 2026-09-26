@@ -5,7 +5,7 @@ all: ../output/member_deference_nonapproval_geography_recovery.csv
 	../input/member_deference_final_action_vote_queue.csv \
 	../input/zap_project_data.parquet \
 	../input/zap_project_bbl.parquet \
-	../input/mappluto_current_lot_lookup.parquet | ../output
+	../input/mappluto_current_lot_lookup.parquet | ../output ../report
 	python3 $<
 
 ../input/member_deference_final_action_vote_queue.csv: ../../build_member_deference_vote_panel/output/member_deference_final_action_vote_queue.csv | ../input

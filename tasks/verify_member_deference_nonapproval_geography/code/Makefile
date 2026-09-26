@@ -7,8 +7,7 @@ all: ../output/member_deference_nonapproval_geography_conservative_queue.csv
 	../input/member_deference_nonapproval_geography_review_queue.csv \
 	../input/member_deference_nonapproval_geography_chatgpt_review_responses.csv \
 	../input/member_deference_matter_universe.csv \
-	../input/mappluto_current_lot_lookup.parquet \
-	../input/council_member_roster_master.csv | ../output
+	../input/mappluto_current_lot_lookup.parquet | ../output ../report
 	python3 $<
 
 ../input/member_deference_final_action_vote_queue.csv: ../../build_member_deference_vote_panel/output/member_deference_final_action_vote_queue.csv | ../input
@@ -29,15 +28,11 @@ all: ../output/member_deference_nonapproval_geography_conservative_queue.csv
 ../input/mappluto_current_lot_lookup.parquet: ../../build_mappluto_current_lookup/output/mappluto_current_lot_lookup.parquet | ../input
 	ln -sf "$<" "$@"
 
-../input/council_member_roster_master.csv: ../../build_council_member_roster/output/council_member_roster_master.csv | ../input
-	ln -sf "$<" "$@"
-
 link-inputs: ../input/member_deference_final_action_vote_queue.csv \
 	../input/member_deference_nonapproval_geography_recovery.csv \
 	../input/member_deference_nonapproval_geography_review_queue.csv \
 	../input/member_deference_nonapproval_geography_chatgpt_review_responses.csv \
 	../input/member_deference_matter_universe.csv \
-	../input/mappluto_current_lot_lookup.parquet \
-	../input/council_member_roster_master.csv
+	../input/mappluto_current_lot_lookup.parquet
 
 include ../../generic.make

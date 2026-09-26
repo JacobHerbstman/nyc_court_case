@@ -1,0 +1,4 @@
+person_id,member_name,listed_district,listed_term_start_date,listed_term_end_date,corrected_district,corrected_term_start_date,corrected_term_end_date,correction_reason
+189408,Justin L. Brannan,47,2018-01-01,2021-12-31,43,2018-01-01,2021-12-31,"The Legistar grid lists District 47, which Mark Treyger held in 2018-2021 in the same grid; Brannan represented District 43 until the 2024 redistricting (Wikipedia District 43 and 47 pages)."
+189408,Justin L. Brannan,47,2022-01-01,2023-12-31,43,2022-01-01,2023-12-31,"The Legistar grid lists District 47, which Ari Kagan held in 2022-2023 in the same grid; Brannan represented District 43 until the 2024 redistricting (Wikipedia District 43 and 47 pages)."
+162000,Barry S. Grodenchik,23,2014-01-01,2017-12-31,23,2015-11-24,2017-12-31,"The Legistar grid start overlaps Mark S. Weprin (District 23 through 2015-06-14 in the same grid); the start is set to Grodenchik's first Legistar roll-call vote."

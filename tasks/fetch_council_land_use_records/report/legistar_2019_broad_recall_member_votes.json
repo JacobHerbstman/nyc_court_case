@@ -1,0 +1,386 @@
+{
+  "dataset": "legistar_2019_broad_recall_member_votes.csv",
+  "rows": 26105,
+  "key": [
+    "matter_id",
+    "vote_sequence"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "0bf1fa60e71de39e3e958a2d2e202db9427d78fe26365260e5015dcc81481486",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "source_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "nyc_council_legistar_land_use_broad_recall",
+          26105
+        ]
+      ]
+    },
+    "pull_date": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "20260603",
+          26105
+        ]
+      ]
+    },
+    "query_year": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "2019",
+          26105
+        ]
+      ]
+    },
+    "query_matter_type": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "Land Use Application",
+          14068
+        ],
+        [
+          "Resolution",
+          10513
+        ],
+        [
+          "Land Use Call-Up",
+          1524
+        ]
+      ]
+    },
+    "matter_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 514,
+      "most_common": [
+        [
+          "3785423",
+          51
+        ],
+        [
+          "3785424",
+          51
+        ],
+        [
+          "3785425",
+          51
+        ],
+        [
+          "3829594",
+          51
+        ],
+        [
+          "3829595",
+          51
+        ]
+      ]
+    },
+    "matter_guid": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 514,
+      "most_common": [
+        [
+          "00A704DD-4488-4AE2-9FB6-D6D0751921EE",
+          51
+        ],
+        [
+          "0322131D-76FD-4FC2-831A-47D158F2AC98",
+          51
+        ],
+        [
+          "0367D857-1801-40FF-B55F-F6C32A6BF571",
+          51
+        ],
+        [
+          "04774CA1-BA78-49DA-A733-8D5D9C0C75E5",
+          51
+        ],
+        [
+          "05879EEA-AFCD-4ADC-B7B4-E00C97E0EDF2",
+          51
+        ]
+      ]
+    },
+    "matter_file": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 514,
+      "most_common": [
+        [
+          "LU 0310-2018",
+          51
+        ],
+        [
+          "LU 0311-2018",
+          51
+        ],
+        [
+          "LU 0312-2018",
+          51
+        ],
+        [
+          "LU 0313-2019",
+          51
+        ],
+        [
+          "LU 0314-2019",
+          51
+        ]
+      ]
+    },
+    "history_sequence": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "1",
+          22857
+        ],
+        [
+          "2",
+          3198
+        ],
+        [
+          "3",
+          50
+        ]
+      ]
+    },
+    "history_date": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 23,
+      "most_common": [
+        [
+          "10/17/2019",
+          3876
+        ],
+        [
+          "6/13/2019",
+          2397
+        ],
+        [
+          "9/25/2019",
+          2397
+        ],
+        [
+          "5/8/2019",
+          1550
+        ],
+        [
+          "3/13/2019",
+          1479
+        ]
+      ]
+    },
+    "history_detail_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 514,
+      "most_common": [
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=17050692&GUID=CF4D8189-2704-42FE-9E99-F40B5C8CF7A5",
+          51
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=17050694&GUID=04A208EF-27F7-4975-87E3-5AEDB7BC763E",
+          51
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=17050695&GUID=E474260F-A422-4BB9-AAAF-3CA7EFECC435",
+          51
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=17130123&GUID=F0F5D1BA-C4C6-41E8-9826-4423EBE18D61",
+          51
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=17130124&GUID=A9FDF746-652B-44F2-8746-C5965476D06A",
+          51
+        ]
+      ]
+    },
+    "vote_sequence": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 51,
+      "most_common": [
+        [
+          "1",
+          514
+        ],
+        [
+          "10",
+          514
+        ],
+        [
+          "11",
+          514
+        ],
+        [
+          "12",
+          514
+        ],
+        [
+          "13",
+          514
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 51
+    },
+    "person_name": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 52,
+      "most_common": [
+        [
+          "Adrienne E. Adams",
+          514
+        ],
+        [
+          "Alan N. Maisel",
+          514
+        ],
+        [
+          "Alicka Ampry-Samuel",
+          514
+        ],
+        [
+          "Andrew Cohen",
+          514
+        ],
+        [
+          "Andy L. King",
+          514
+        ]
+      ]
+    },
+    "person_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 52,
+      "most_common": [
+        [
+          "111608",
+          514
+        ],
+        [
+          "124558",
+          514
+        ],
+        [
+          "124615",
+          514
+        ],
+        [
+          "124616",
+          514
+        ],
+        [
+          "125474",
+          514
+        ]
+      ]
+    },
+    "person_guid": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 52,
+      "most_common": [
+        [
+          "05CAA197-5B6A-4A99-95A5-7658CABB352E",
+          514
+        ],
+        [
+          "07FD8D9C-7F94-4F4E-9E71-5009C671D7F8",
+          514
+        ],
+        [
+          "10D30DB2-ADB7-4897-A67F-FA03B748A91D",
+          514
+        ],
+        [
+          "147C0AF1-AC84-4FCF-855F-6143FABD52B5",
+          514
+        ],
+        [
+          "18000E01-1E85-4EF0-B80F-82C8944DF05B",
+          514
+        ]
+      ]
+    },
+    "vote": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 10,
+      "most_common": [
+        [
+          "Affirmative",
+          23564
+        ],
+        [
+          "Absent",
+          1615
+        ],
+        [
+          "Negative",
+          464
+        ],
+        [
+          "Non-voting",
+          164
+        ],
+        [
+          "Medical",
+          124
+        ]
+      ]
+    }
+  }
+}

@@ -11,6 +11,9 @@ hierarchy uses existing Legistar geography, ZAP application matches, ZAP BBL
 matches, BBLs parsed from matter titles, exact address matches, and small
 rule-based address variants.
 
+Borough for BBL and address parsing is read from the title only when exactly one
+borough name appears, else from the application-number suffix.
+
 Current MapPLUTO matches are location-based backups rather than direct
 historical district statements, so the output carries source flags for downstream
 review.

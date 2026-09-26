@@ -14,6 +14,7 @@ from bs4 import BeautifulSoup
 
 sys.path.append("../../_lib")
 from legistar_utils import check_saved_html, normalize_space, parse_form_inputs, safe_stub, save_text, sha256
+from member_deference_utils import APPLICATION_RE, council_districts_from_text, save_frame
 
 BASE_URL = "https://legistar.council.nyc.gov/Legislation.aspx"
 if len(sys.argv) != 2 or not re.fullmatch(r"\d{4}", sys.argv[1]):
@@ -45,11 +46,6 @@ LAND_USE_TEXT_RE = re.compile(
     r"\bN\s*\d{6}\s*[A-Z]{2,4}\b|"
     r"\bM\s*\d{6}"
     r")",
-    re.IGNORECASE,
-)
-
-APPLICATION_RE = re.compile(
-    r"\b(?:[CNM]\s*)?\d{6}\s*(?:\([A-Z0-9]+\)\s*)?[A-Z]{2,4}\b",
     re.IGNORECASE,
 )
 
@@ -159,19 +155,7 @@ def extract_borough(title: str) -> str | None:
 
 
 def extract_council_districts(title: str) -> str | None:
-    match = re.search(
-        r"Council District(?:s| Nos?\.?| no\.?)?\s*([0-9,\sand-]+)",
-        title,
-        flags=re.IGNORECASE,
-    )
-    if not match:
-        return None
-
-    districts = re.findall(r"\d{1,2}", match.group(1))
-    if not districts:
-        return None
-
-    return "; ".join(dict.fromkeys(districts))
+    return "; ".join(council_districts_from_text(title)) or None
 
 
 def extract_application_numbers(title: str) -> str | None:
@@ -587,8 +571,12 @@ def main() -> None:
         ).any():
             raise RuntimeError("Known LaGuardia hotel resolution must have a City Council history event.")
 
-    matter_index.to_csv(f"../output/legistar_{QUERY_YEAR}_broad_recall_matter_index.csv", index=False)
-    history_events.to_csv(f"../output/legistar_{QUERY_YEAR}_broad_recall_history_events.csv", index=False)
+    save_frame(matter_index, f"../output/legistar_{QUERY_YEAR}_broad_recall_matter_index.csv", ["matter_id"])
+    save_frame(
+        history_events,
+        f"../output/legistar_{QUERY_YEAR}_broad_recall_history_events.csv",
+        ["matter_id", "history_sequence"],
+    )
 
 
 if __name__ == "__main__":

@@ -1,0 +1,951 @@
+{
+  "dataset": "legistar_2001_broad_recall_matter_index.csv",
+  "rows": 1454,
+  "key": [
+    "matter_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "95c5c271b7b0c74844c57c7d85e2b38fc75ea357c4d1b1020a8f79ff1b802845",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "source_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "nyc_council_legistar_land_use_broad_recall",
+          1454
+        ]
+      ]
+    },
+    "pull_date": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "20260513",
+          1454
+        ]
+      ]
+    },
+    "query_year": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "2001",
+          1454
+        ]
+      ]
+    },
+    "query_matter_type": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "Resolution",
+          948
+        ],
+        [
+          "Land Use Application",
+          438
+        ],
+        [
+          "Land Use Call-Up",
+          68
+        ]
+      ]
+    },
+    "query_matter_type_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "1",
+          948
+        ],
+        [
+          "10",
+          438
+        ],
+        [
+          "13",
+          68
+        ]
+      ]
+    },
+    "query_page": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 10,
+      "most_common": [
+        [
+          "1",
+          268
+        ],
+        [
+          "2",
+          200
+        ],
+        [
+          "3",
+          200
+        ],
+        [
+          "4",
+          200
+        ],
+        [
+          "5",
+          138
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 10
+    },
+    "query_record_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "948",
+          948
+        ],
+        [
+          "438",
+          438
+        ],
+        [
+          "68",
+          68
+        ]
+      ],
+      "minimum": 68,
+      "maximum": 948
+    },
+    "query_page_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "10",
+          948
+        ],
+        [
+          "5",
+          438
+        ],
+        [
+          "1",
+          68
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 10
+    },
+    "matter_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1454,
+      "most_common": [
+        [
+          "430226",
+          1
+        ],
+        [
+          "430228",
+          1
+        ],
+        [
+          "430300",
+          1
+        ],
+        [
+          "430302",
+          1
+        ],
+        [
+          "430394",
+          1
+        ]
+      ]
+    },
+    "matter_guid": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1454,
+      "most_common": [
+        [
+          "000961A6-742B-4A31-BAF1-54700D25D784",
+          1
+        ],
+        [
+          "0018D4AA-4DCF-4BAC-8605-AB57B46C3E81",
+          1
+        ],
+        [
+          "0039CA93-C3B0-4A39-A6F5-736172D5C7E2",
+          1
+        ],
+        [
+          "0044AD47-8655-4470-93CA-B667E787C104",
+          1
+        ],
+        [
+          "00578B82-C489-45AF-9F50-81F8077BF724",
+          1
+        ]
+      ]
+    },
+    "matter_file": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1454,
+      "most_common": [
+        [
+          "LU 0041-1998",
+          1
+        ],
+        [
+          "LU 0042-1998",
+          1
+        ],
+        [
+          "LU 0043-1998",
+          1
+        ],
+        [
+          "LU 0044-1998",
+          1
+        ],
+        [
+          "LU 0045-1998",
+          1
+        ]
+      ]
+    },
+    "matter_file_year": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "2001",
+          921
+        ],
+        [
+          "1998",
+          206
+        ],
+        [
+          "2000",
+          191
+        ],
+        [
+          "1999",
+          135
+        ],
+        [
+          "2002",
+          1
+        ]
+      ]
+    },
+    "matter_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1454,
+      "most_common": [
+        [
+          "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=430226&GUID=59320A65-9680-46D5-B7F5-D5711065E43F&Options=ID|Text|&Search=",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=430228&GUID=7F6F0470-A037-42D7-A923-7C4BBEA49C0F&Options=ID|Text|&Search=",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=430300&GUID=90A6BF8C-7EC0-4781-AB78-D41924341826&Options=ID|Text|&Search=",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=430302&GUID=515B34BB-73DD-4B2C-B398-B7472F1EFB72&Options=ID|Text|&Search=",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=430394&GUID=1685C4C5-8A8F-4B31-8B3F-29B9BDDB2F37&Options=ID|Text|&Search=",
+          1
+        ]
+      ]
+    },
+    "law_number": {
+      "python_types": [],
+      "missing": 1454,
+      "distinct_nonmissing": 0,
+      "most_common": []
+    },
+    "matter_type": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "Resolution",
+          948
+        ],
+        [
+          "Land Use Application",
+          438
+        ],
+        [
+          "Land Use Call-Up",
+          68
+        ]
+      ]
+    },
+    "status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "Adopted",
+          808
+        ],
+        [
+          "Filed",
+          646
+        ]
+      ]
+    },
+    "committee": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 27,
+      "most_common": [
+        [
+          "Committee on Land Use",
+          287
+        ],
+        [
+          "Committee on Finance",
+          170
+        ],
+        [
+          "Subcommittee on Planning, Dispositions and Concessions",
+          164
+        ],
+        [
+          "Subcommittee on Zoning and Franchises",
+          115
+        ],
+        [
+          "Committee on Public Safety",
+          78
+        ]
+      ]
+    },
+    "prime_sponsor": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 9,
+      "distinct_nonmissing": 56,
+      "most_common": [
+        [
+          "June M. Eisland",
+          774
+        ],
+        [
+          "Herbert E. Berman",
+          56
+        ],
+        [
+          "Peter F. Vallone",
+          50
+        ],
+        [
+          "Wendell Foster",
+          46
+        ],
+        [
+          "Morton Povman",
+          39
+        ]
+      ]
+    },
+    "council_member_sponsors": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 36,
+      "most_common": [
+        [
+          "1",
+          726
+        ],
+        [
+          "2",
+          157
+        ],
+        [
+          "10",
+          40
+        ],
+        [
+          "12",
+          39
+        ],
+        [
+          "11",
+          36
+        ]
+      ]
+    },
+    "title": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1447,
+      "most_common": [
+        [
+          "Application no. 20015301 HAM, an Urban Development Action Area Project, located at 268 East 4th Street, Council District no. 2, Borough of Manhattan. This matter is subject to Council review and action pursuant to Article 16 of the New York General Municipal Law, at the request of the New York City Department of Housing Preservation and Development, and pursuant to Section 577 of the Private Housing Finance Law for an exemption from real property taxes.",
+          2
+        ],
+        [
+          "RESOLUTION APPROVING THE MODIFICATION (MN-3) OF UNITS OF APPROPRIATION AND THE TRANSFER OF CITY FUNDS BETWEEN AGENCIES PROPOSED BY THE MAYOR PURSUANT TO SECTION 107(b) OF THE CHARTER OF THE CITY OF NEW YORK.",
+          2
+        ],
+        [
+          "Resolution approving the decision of the City Planning Commission on ULURP Nos. C 000355 ZSM and C 000356 ZSM (L.U. Nos. 1209 and 1210), grant of special permits pursuant to Sections 74-743(3) and 74-746 of the Zoning Resolution to allow a sanitation garage.",
+          2
+        ],
+        [
+          "Uniform Land Use Review Procedure application no. 010123 ZMK, pursuant to §197-c and §197-d of the New York City Charter, concerning changes to the zoning map, Borough of Brooklyn, Council District no. 34.",
+          2
+        ],
+        [
+          "Uniform Land Use Review Procedure application no. 960517 ZMR, pursuant to §197-c and §197-d of the New York City Charter, concerning changes to the zoning map, Borough of Staten Island, Council District no. 50.",
+          2
+        ]
+      ]
+    },
+    "borough": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 1032,
+      "distinct_nonmissing": 17,
+      "most_common": [
+        [
+          "Manhattan",
+          161
+        ],
+        [
+          "Brooklyn",
+          115
+        ],
+        [
+          "Queens",
+          55
+        ],
+        [
+          "The Bronx",
+          45
+        ],
+        [
+          "Staten Island",
+          19
+        ]
+      ]
+    },
+    "affected_council_districts": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 1027,
+      "distinct_nonmissing": 79,
+      "most_common": [
+        [
+          "3",
+          26
+        ],
+        [
+          "9",
+          26
+        ],
+        [
+          "8",
+          22
+        ],
+        [
+          "1",
+          18
+        ],
+        [
+          "6",
+          18
+        ]
+      ]
+    },
+    "application_numbers_in_title": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 679,
+      "distinct_nonmissing": 552,
+      "most_common": [
+        [
+          "20015001 TCK",
+          3
+        ],
+        [
+          "20015006 TCM",
+          3
+        ],
+        [
+          "20015008 TCX",
+          3
+        ],
+        [
+          "20015015 TCM",
+          3
+        ],
+        [
+          "20015016 TCM",
+          3
+        ]
+      ]
+    },
+    "ulurp_text_flag": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "True",
+          758
+        ],
+        [
+          "False",
+          696
+        ]
+      ]
+    },
+    "land_use_recall_flag": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "True",
+          823
+        ],
+        [
+          "False",
+          631
+        ]
+      ]
+    },
+    "land_use_recall_reason": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 631,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "official_land_use_matter_type",
+          506
+        ],
+        [
+          "land_use_committee_resolution",
+          247
+        ],
+        [
+          "land_use_text_resolution",
+          70
+        ]
+      ]
+    },
+    "laguardia_hotel_seed_flag": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "False",
+          1451
+        ],
+        [
+          "True",
+          3
+        ]
+      ]
+    },
+    "detail_raw_path": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 631,
+      "distinct_nonmissing": 823,
+      "most_common": [
+        [
+          "../output/source_files/nyc_council_legistar_land_use_broad_recall/20260513/year_2001/detail_pages/land_use_application/lu_0041_1998_430629.html",
+          1
+        ],
+        [
+          "../output/source_files/nyc_council_legistar_land_use_broad_recall/20260513/year_2001/detail_pages/land_use_application/lu_0042_1998_430628.html",
+          1
+        ],
+        [
+          "../output/source_files/nyc_council_legistar_land_use_broad_recall/20260513/year_2001/detail_pages/land_use_application/lu_0043_1998_430630.html",
+          1
+        ],
+        [
+          "../output/source_files/nyc_council_legistar_land_use_broad_recall/20260513/year_2001/detail_pages/land_use_application/lu_0044_1998_430631.html",
+          1
+        ],
+        [
+          "../output/source_files/nyc_council_legistar_land_use_broad_recall/20260513/year_2001/detail_pages/land_use_application/lu_0045_1998_430632.html",
+          1
+        ]
+      ]
+    },
+    "detail_title": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 631,
+      "distinct_nonmissing": 817,
+      "most_common": [
+        [
+          "Application no. 20015301 HAM, an Urban Development Action Area Project, located at 268 East 4th Street, Council District no. 2, Borough of Manhattan. This matter is subject to Council review and action pursuant to Article 16 of the New York General Municipal Law, at the request of the New York City Department of Housing Preservation and Development, and pursuant to Section 577 of the Private Housing Finance Law for an exemption from real property taxes.",
+          2
+        ],
+        [
+          "Resolution approving the decision of the City Planning Commission on ULURP Nos. C 000355 ZSM and C 000356 ZSM (L.U. Nos. 1209 and 1210), grant of special permits pursuant to Sections 74-743(3) and 74-746 of the Zoning Resolution to allow a sanitation garage.",
+          2
+        ],
+        [
+          "Uniform Land Use Review Procedure application no. 010123 ZMK, pursuant to §197-c and §197-d of the New York City Charter, concerning changes to the zoning map, Borough of Brooklyn, Council District no. 34.",
+          2
+        ],
+        [
+          "Uniform Land Use Review Procedure application no. 960517 ZMR, pursuant to §197-c and §197-d of the New York City Charter, concerning changes to the zoning map, Borough of Staten Island, Council District no. 50.",
+          2
+        ],
+        [
+          "Uniform land use review procedure application no. 010149 ZSM, pursuant to §197-c and 197-d of the Charter of the City of New York concerning a special permit under the Zoning Resolution in the Borough of Manhattan, Council District no. 6 to allow an attended public parking garage. This application is subject to review and action by the Land Use Committee only if appealed to the Council pursuant to §197-d(b)(2) of the Charter or called-up by vote of the Council pursuant to §197-d(b)(3) of the Charter.",
+          2
+        ]
+      ]
+    },
+    "detail_attachment_count": {
+      "python_types": [
+        "float"
+      ],
+      "missing": 631,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "1.0",
+          400
+        ],
+        [
+          "0.0",
+          336
+        ],
+        [
+          "2.0",
+          61
+        ],
+        [
+          "3.0",
+          24
+        ],
+        [
+          "4.0",
+          2
+        ]
+      ],
+      "minimum": 0.0,
+      "maximum": 4.0
+    },
+    "detail_report_count": {
+      "python_types": [
+        "float"
+      ],
+      "missing": 631,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1.0",
+          492
+        ],
+        [
+          "3.0",
+          331
+        ]
+      ],
+      "minimum": 1.0,
+      "maximum": 3.0
+    },
+    "detail_history_count": {
+      "python_types": [
+        "float"
+      ],
+      "missing": 631,
+      "distinct_nonmissing": 26,
+      "most_common": [
+        [
+          "2.0",
+          308
+        ],
+        [
+          "8.0",
+          165
+        ],
+        [
+          "1.0",
+          69
+        ],
+        [
+          "4.0",
+          48
+        ],
+        [
+          "10.0",
+          40
+        ]
+      ],
+      "minimum": 1.0,
+      "maximum": 43.0
+    },
+    "detail_history_detail_url_count": {
+      "python_types": [
+        "float"
+      ],
+      "missing": 631,
+      "distinct_nonmissing": 26,
+      "most_common": [
+        [
+          "2.0",
+          308
+        ],
+        [
+          "8.0",
+          165
+        ],
+        [
+          "1.0",
+          69
+        ],
+        [
+          "4.0",
+          48
+        ],
+        [
+          "10.0",
+          40
+        ]
+      ],
+      "minimum": 1.0,
+      "maximum": 43.0
+    },
+    "detail_meeting_detail_url_count": {
+      "python_types": [
+        "float"
+      ],
+      "missing": 631,
+      "distinct_nonmissing": 9,
+      "most_common": [
+        [
+          "1.0",
+          460
+        ],
+        [
+          "3.0",
+          170
+        ],
+        [
+          "4.0",
+          108
+        ],
+        [
+          "0.0",
+          40
+        ],
+        [
+          "5.0",
+          20
+        ]
+      ],
+      "minimum": 0.0,
+      "maximum": 22.0
+    },
+    "detail_attachment_urls": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 967,
+      "distinct_nonmissing": 487,
+      "most_common": [
+        [
+          "https://legistar.council.nyc.gov/View.ashx?M=F&ID=6227606&GUID=69A1850C-8834-47C2-AB74-CF1A718D733F; https://legistar.council.nyc.gov/View.ashx?M=F&ID=6227618&GUID=A7B6BDE7-EC4E-4C1A-9328-FA87B6AE5E67",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/View.ashx?M=F&ID=6227607&GUID=E38CB1EE-FF27-4D9E-9CCB-3AF7ED9F788E; https://legistar.council.nyc.gov/View.ashx?M=F&ID=6227619&GUID=554DD282-1136-48CC-A5DC-2F8D344094E2",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/View.ashx?M=F&ID=6227608&GUID=8B662502-DE4D-4B80-875B-B41791C661DB; https://legistar.council.nyc.gov/View.ashx?M=F&ID=6227620&GUID=0DB770E6-FD32-4D4B-A932-77E4A681980E",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/View.ashx?M=F&ID=6227615&GUID=AFDF4B2C-FC8D-4E34-96EF-2F364E8E436F; https://legistar.council.nyc.gov/View.ashx?M=F&ID=6227627&GUID=EB8ED61B-39CD-43C4-BE1F-4DD1C19078BA",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/View.ashx?M=F&ID=6227616&GUID=8ABFA73D-1188-4B14-8136-D95922F3DE19; https://legistar.council.nyc.gov/View.ashx?M=F&ID=6227628&GUID=A0CBB8C0-6563-440C-B0FB-AC5C3AA9F015; https://legistar.council.nyc.gov/View.ashx?M=F&ID=880999&GUID=67D3029A-5BB9-4378-AF30-9E4A040AB7E3",
+          1
+        ]
+      ]
+    },
+    "detail_report_urls": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 631,
+      "distinct_nonmissing": 823,
+      "most_common": [
+        [
+          "https://legistar.council.nyc.gov/ViewReport.ashx?M=R&N=Master&GID=61&ID=430607&GUID=D0DC4601-9B43-4857-9549-0A441C80052C&Title=Legislation+Details",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/ViewReport.ashx?M=R&N=Master&GID=61&ID=430628&GUID=214E9734-E577-400B-AA91-922CD26D342A&Title=Legislation+Details",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/ViewReport.ashx?M=R&N=Master&GID=61&ID=430629&GUID=AF0D9363-5ADB-4064-9758-1C25528FB69B&Title=Legislation+Details",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/ViewReport.ashx?M=R&N=Master&GID=61&ID=430630&GUID=2C0415F0-A7BD-4C63-B8A0-425F9397EA4E&Title=Legislation+Details",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/ViewReport.ashx?M=R&N=Master&GID=61&ID=430631&GUID=072D5DB3-0192-473E-A835-65409904E325&Title=Legislation+Details",
+          1
+        ]
+      ]
+    },
+    "detail_history_detail_urls": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 631,
+      "distinct_nonmissing": 823,
+      "most_common": [
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2236269&GUID=B4F0E7B6-8141-4184-AC1D-6A30E73CF626; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2236270&GUID=9CFC4307-EC75-4234-8315-5E60CA7DCF37; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2236271&GUID=0333C421-12A0-43E2-9160-FD9C91D81076; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2236272&GUID=0D520A78-9307-4E4D-B78E-BD0E2F846276; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2267760&GUID=7776AE44-02F7-4259-A889-3FCCEED83DBC",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2236451&GUID=2E491BE5-02DF-4E27-94E9-F25F89CA1534; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2236452&GUID=477C7D43-2076-4C85-A0AC-1845DD012F16; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2267764&GUID=03737B71-4BEA-4A6B-BD83-DBFEA5C79519",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2236453&GUID=6DBEC46D-CF5D-4FFC-8BC9-FD815F68FA28; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2236454&GUID=22B084EF-1E1B-4B09-9FCD-8C4875662FDC; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2267765&GUID=6CABA622-2B27-475E-8EA0-53EEFA2A81CD",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2236455&GUID=D238A030-BF3A-4055-B3C4-B97C9547B348; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2236456&GUID=6107A41D-C95D-4820-B504-C78F7AED0640; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2267763&GUID=AF4FFC3E-5B63-41FA-AEE0-F9C92061316A",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2236457&GUID=AFC7BE25-9CCB-4BDD-B9FD-B737C33C8A28; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2236458&GUID=1CAA4E60-F0BC-4DE0-A60B-41CD7ADC3BFD; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2267762&GUID=B5928B47-2449-4F6F-ABFD-AA5DD98F2462",
+          1
+        ]
+      ]
+    },
+    "detail_meeting_detail_urls": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 671,
+      "distinct_nonmissing": 192,
+      "most_common": [
+        [
+          "https://legistar.council.nyc.gov/MeetingDetail.aspx?ID=72001&GUID=0BA4C831-585F-40E4-961D-210319DF49BF&Options=ID|Text|&Search=",
+          33
+        ],
+        [
+          "https://legistar.council.nyc.gov/MeetingDetail.aspx?ID=71772&GUID=97FB7B81-374A-4A4F-AA72-4C37A47AC51C&Options=ID|Text|&Search=",
+          31
+        ],
+        [
+          "https://legistar.council.nyc.gov/MeetingDetail.aspx?ID=72029&GUID=70628424-0A3C-419F-B017-6AD5CEA0C97B&Options=ID|Text|&Search=",
+          29
+        ],
+        [
+          "https://legistar.council.nyc.gov/MeetingDetail.aspx?ID=71986&GUID=BAEA07C7-B2E6-48B2-86A2-494AE4402C94&Options=ID|Text|&Search=",
+          28
+        ],
+        [
+          "https://legistar.council.nyc.gov/MeetingDetail.aspx?ID=71904&GUID=6A5146D4-4E80-4703-93D2-B6B1D629DC9D&Options=ID|Text|&Search=",
+          27
+        ]
+      ]
+    }
+  }
+}

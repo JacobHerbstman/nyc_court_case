@@ -1,0 +1,87 @@
+{
+  "dataset": "council_land_use_adoption_over_local_member_rollcall_opposition_rolling5_with_raw_clean.csv",
+  "rows": 28,
+  "key": "query_year",
+  "unique_nonmissing_key": true,
+  "md5_csv_bytes": "6f12c6c6b889e0aa27a3a61f4ab97cfe",
+  "fingerprint_scope": "Saved CSV bytes, including row order; not proof of source correctness.",
+  "columns": {
+    "query_year": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 28,
+      "minimum": 1998,
+      "maximum": 2025
+    },
+    "event_rows": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 25,
+      "minimum": 80,
+      "maximum": 251
+    },
+    "override_events": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "minimum": 0,
+      "maximum": 8
+    },
+    "non_override_events": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 25,
+      "minimum": 80,
+      "maximum": 250
+    },
+    "override_share": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 15,
+      "minimum": 0,
+      "maximum": 0.0437
+    },
+    "override_share_rolling_5": {
+      "type": "numeric",
+      "missing": 4,
+      "distinct_nonmissing": 24,
+      "minimum": 0.0012,
+      "maximum": 0.0123
+    },
+    "override_events_rolling_5": {
+      "type": "numeric",
+      "missing": 4,
+      "distinct_nonmissing": 9,
+      "minimum": 0.2,
+      "maximum": 2.2
+    },
+    "opposed_events": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 9,
+      "minimum": 0,
+      "maximum": 11
+    },
+    "overruled_share_of_opposed": {
+      "type": "numeric",
+      "missing": 5,
+      "distinct_nonmissing": 10,
+      "minimum": 0,
+      "maximum": 1
+    },
+    "overruled_share_of_opposed_rolling_5": {
+      "type": "numeric",
+      "missing": 4,
+      "distinct_nonmissing": 21,
+      "minimum": 0.0833,
+      "maximum": 0.7333
+    },
+    "override_events_multi_district": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "minimum": 0,
+      "maximum": 1
+    }
+  }
+}

@@ -6,7 +6,7 @@ all: ../output/council_land_use_decision_panel.csv
 	../input/member_deference_vote_panel.csv \
 	../input/member_deference_nonapproval_geography_conservative_queue.csv \
 	../input/member_deference_nonapproval_action_details.csv \
-	../input/member_deference_nonapproval_local_member_vote_status.csv | ../output
+	../input/member_deference_nonapproval_local_member_vote_status.csv | ../output ../report
 	python3 $<
 
 ../input/member_deference_matter_universe.csv: ../../build_member_deference_vote_panel/output/member_deference_matter_universe.csv | ../input

@@ -8,13 +8,22 @@ import pandas as pd
 import requests
 
 sys.path.append("../../_lib")
-from legistar_utils import parse_action_detail, request_with_retries, safe_stub, save_text, sha256
-from member_deference_utils import collapse_values, edge_name, split_semicolon, write_csv
+from legistar_utils import check_cached_history_page, parse_action_detail, request_with_retries, safe_stub, save_text, sha256
+from member_deference_utils import (
+    collapse_values,
+    local_member_votes,
+    local_roster_rows,
+    local_vote_status,
+    read_roster_by_district,
+    save_frame,
+    split_semicolon,
+)
 
 
 queue = pd.read_csv(
     "../input/member_deference_nonapproval_geography_conservative_queue.csv", dtype=str, keep_default_na=False
 )
+roster_by_district = read_roster_by_district("../input/council_member_roster_master.csv")
 target_queue = queue[queue["fetch_vote_detail_first_pass"].str.lower().eq("true")].copy()
 target_queue = target_queue.sort_values(["query_year", "matter_file", "matter_id"]).reset_index(drop=True)
 
@@ -43,11 +52,13 @@ fetch_failures = []
 for i, row in enumerate(target_queue.to_dict("records"), start=1):
     raw_path = raw_dir / f"{safe_stub(row['matter_file'])}_{row['matter_id']}.html"
 
-    if not raw_path.exists() or raw_path.stat().st_size == 0:
+    if raw_path.exists() and raw_path.stat().st_size > 0:
+        check_cached_history_page(raw_path, row["final_history_detail_url"])
+    else:
         try:
             response = request_with_retries(session, row["final_history_detail_url"])
             save_text(raw_path, response.text)
-            time.sleep(0.03)
+            time.sleep(0.25)
         except requests.RequestException as exc:
             fetch_failures.append(
                 {
@@ -77,7 +88,6 @@ for i, row in enumerate(target_queue.to_dict("records"), start=1):
             "final_history_detail_url": row["final_history_detail_url"],
             "affected_council_districts": row["affected_council_districts"],
             "affected_district_source": row["affected_district_source"],
-            "local_members_from_roster": row["local_members_from_roster"],
             "application_keys": row["application_keys"],
             "title": row["title"],
             "raw_path": str(raw_path),
@@ -98,7 +108,6 @@ for i, row in enumerate(target_queue.to_dict("records"), start=1):
                 "final_history_date": row["final_history_date"],
                 "final_history_action": row["final_history_action"],
                 "affected_council_districts": row["affected_council_districts"],
-                "local_members_from_roster": row["local_members_from_roster"],
                 "vote_sequence": vote_sequence,
                 **vote,
             }
@@ -122,7 +131,6 @@ member_votes = pd.DataFrame(
         "final_history_date",
         "final_history_action",
         "affected_council_districts",
-        "local_members_from_roster",
         "vote_sequence",
         "person_name",
         "person_id",
@@ -171,93 +179,40 @@ if not vote_count_check["parsed_rows_match_legistar_record_count"].all():
     )
     raise RuntimeError(f"Member-vote rows do not reconcile to Legistar vote-record counts for: {bad_matters}")
 
-member_votes_for_join = member_votes.copy()
-if member_votes_for_join.empty:
-    member_votes_by_person = pd.DataFrame(
-        columns=["matter_id", "local_member_key", "matched_vote_person_names", "local_member_final_action_votes"]
-    )
-else:
-    member_votes_for_join["local_member_key"] = member_votes_for_join["person_name"].map(edge_name)
-    member_votes_by_person = (
-        member_votes_for_join.groupby(["matter_id", "local_member_key"], as_index=False)
-        .agg(
-            matched_vote_person_names=("person_name", collapse_values),
-            local_member_final_action_votes=("vote", collapse_values),
-        )
-    )
-
-if member_votes_by_person.duplicated(["matter_id", "local_member_key"]).any():
-    raise RuntimeError("Non-approval member-vote rows must be unique by matter_id and normalized person key.")
-
-local_member_rows = []
+# Local members are read from the roster on the final-action date and matched to the
+# roll call by Legistar person_id, with the same rule as the approval-side vote panel.
+votes_by_matter = {matter_id: rows.to_dict("records") for matter_id, rows in member_votes.groupby("matter_id")}
+local_rows_out = []
 for row in action_details.to_dict("records"):
-    for local_member_name in split_semicolon(row["local_members_from_roster"]):
-        local_member_rows.append(
-            {
-                "query_year": row["query_year"],
-                "matter_id": row["matter_id"],
-                "matter_file": row["matter_file"],
-                "matter_status": row["matter_status"],
-                "disposition_group": row["disposition_group"],
-                "final_history_date": row["final_history_date"],
-                "final_history_action": row["final_history_action"],
-                "affected_council_districts": row["affected_council_districts"],
-                "local_members_from_roster": row["local_members_from_roster"],
-                "local_member_name": local_member_name,
-                "local_member_key": edge_name(local_member_name),
-                "parsed_vote_rows": row["parsed_vote_rows"],
-            }
-        )
-
-local_member_votes = pd.DataFrame(
-    local_member_rows,
-    columns=[
-        "query_year",
-        "matter_id",
-        "matter_file",
-        "matter_status",
-        "disposition_group",
-        "final_history_date",
-        "final_history_action",
-        "affected_council_districts",
-        "local_members_from_roster",
-        "local_member_name",
-        "local_member_key",
-        "parsed_vote_rows",
-    ],
-)
-if not local_member_votes.empty:
-    local_member_votes = local_member_votes.merge(
-        member_votes_by_person,
-        on=["matter_id", "local_member_key"],
-        how="left",
-        validate="many_to_one",
+    districts = split_semicolon(row["affected_council_districts"])
+    local_rows, missing_roster_districts = local_roster_rows(
+        roster_by_district, districts, pd.to_datetime(row["final_history_date"], format="%Y-%m-%d")
     )
-else:
-    local_member_votes["matched_vote_person_names"] = pd.Series(dtype="object")
-    local_member_votes["local_member_final_action_votes"] = pd.Series(dtype="object")
+    matter_votes = votes_by_matter.get(row["matter_id"], [])
+    local_votes = local_member_votes(local_rows, matter_votes)
+    local_rows_out.append(
+        {
+            "matter_id": row["matter_id"],
+            "local_members_from_roster": collapse_values([local["member_name"] for local in local_votes]),
+            "local_member_person_ids": collapse_values([local["person_id"] for local in local_votes]),
+            "local_member_vote_match_methods": collapse_values([local["match_method"] for local in local_votes]),
+            "missing_roster_districts": collapse_values(missing_roster_districts),
+            "local_member_rows": len(local_votes),
+            "local_member_vote_rows_found": sum(bool(local["vote"]) for local in local_votes),
+            "matched_vote_person_names": collapse_values([local["member_name"] for local in local_votes if local["vote"]]),
+            "local_member_final_action_votes": collapse_values(
+                [f"{local['member_name']}: {local['vote']}" for local in local_votes if local["vote"]]
+            ),
+            "local_member_abstain": collapse_values(
+                [local["member_name"] for local in local_votes if local["vote"] == "Abstain"]
+            ),
+            "local_member_final_action_vote_status": local_vote_status(
+                districts, missing_roster_districts, local_votes, len(matter_votes)
+            ),
+        }
+    )
 
-local_member_votes["local_member_vote_found"] = local_member_votes["local_member_final_action_votes"].fillna("").ne("")
-
-
-def local_member_vote_category(value: object) -> str:
-    votes = set(split_semicolon(value))
-    if not votes:
-        return "missing_from_vote_rows"
-    if any(vote in {"Negative", "Abstain"} for vote in votes):
-        return "negative_or_abstain"
-    if votes == {"Affirmative"}:
-        return "affirmative"
-    if votes.issubset({"Excused", "Non-voting", "Absent", "Maternity"}):
-        return "excused_nonvoting_absent"
-    return "mixed_or_other"
-
-
-local_member_votes["local_member_final_action_vote_category"] = local_member_votes[
-    "local_member_final_action_votes"
-].map(local_member_vote_category)
-
-local_member_base = action_details[
+local_member_summary = action_details[
     [
         "query_year",
         "matter_id",
@@ -267,55 +222,12 @@ local_member_base = action_details[
         "final_history_date",
         "final_history_action",
         "affected_council_districts",
-        "local_members_from_roster",
         "parsed_vote_rows",
     ]
-].copy()
-if local_member_votes.empty:
-    local_member_matter = pd.DataFrame(columns=["matter_id"])
-else:
-    local_member_matter = (
-        local_member_votes.groupby("matter_id", as_index=False)
-        .agg(
-            local_member_rows=("local_member_name", "size"),
-            local_member_vote_rows_found=("local_member_vote_found", "sum"),
-            matched_vote_person_names=("matched_vote_person_names", collapse_values),
-            local_member_final_action_votes=("local_member_final_action_votes", collapse_values),
-            local_member_final_action_vote_categories=("local_member_final_action_vote_category", collapse_values),
-        )
-    )
-
-local_member_summary = local_member_base.merge(local_member_matter, on="matter_id", how="left", validate="one_to_one")
-local_member_summary["local_member_rows"] = local_member_summary["local_member_rows"].fillna(0).astype(int)
-local_member_summary["local_member_vote_rows_found"] = (
-    local_member_summary["local_member_vote_rows_found"].fillna(0).astype(int)
+].merge(pd.DataFrame(local_rows_out), on="matter_id", how="left", validate="one_to_one")
+action_details = action_details.merge(
+    local_member_summary[["matter_id", "local_members_from_roster"]], on="matter_id", how="left", validate="one_to_one"
 )
-for col in [
-    "matched_vote_person_names",
-    "local_member_final_action_votes",
-    "local_member_final_action_vote_categories",
-]:
-    local_member_summary[col] = local_member_summary[col].fillna("")
 
-
-def matter_vote_status(row: pd.Series) -> str:
-    categories = split_semicolon(row["local_member_final_action_vote_categories"])
-    if not split_semicolon(row["local_members_from_roster"]):
-        return "no_local_member_from_roster"
-    if int(row["parsed_vote_rows"]) == 0:
-        return "zero_vote_page"
-    if not categories or set(categories) == {"missing_from_vote_rows"}:
-        return "local_member_missing_from_vote_rows"
-    if "negative_or_abstain" in categories:
-        return "local_member_negative_or_abstain"
-    if set(categories) == {"affirmative"}:
-        return "local_member_affirmative_only"
-    if set(categories) == {"excused_nonvoting_absent"}:
-        return "local_member_excused_nonvoting_absent_only"
-    return "local_member_mixed_or_other"
-
-
-local_member_summary["local_member_final_action_vote_status"] = local_member_summary.apply(matter_vote_status, axis=1)
-
-write_csv("../output/member_deference_nonapproval_action_details.csv", action_details)
-write_csv("../output/member_deference_nonapproval_local_member_vote_status.csv", local_member_summary)
+save_frame(action_details, "../output/member_deference_nonapproval_action_details.csv", ["matter_id"])
+save_frame(local_member_summary, "../output/member_deference_nonapproval_local_member_vote_status.csv", ["matter_id"])

@@ -1,0 +1,57 @@
+{
+  "dataset": "council_land_use_adoption_share_among_local_member_rollcall_opposition_by_term.csv",
+  "rows": 8,
+  "key": "council_term",
+  "unique_nonmissing_key": true,
+  "md5_csv_bytes": "9ddb91cafe09ea54fcde750aee92f341",
+  "fingerprint_scope": "Saved CSV bytes, including row order; not proof of source correctness.",
+  "columns": {
+    "council_term": {
+      "type": "factor",
+      "missing": 0,
+      "distinct_nonmissing": 8
+    },
+    "event_rows": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 8,
+      "minimum": 181,
+      "maximum": 913
+    },
+    "opposed_events": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "minimum": 3,
+      "maximum": 17
+    },
+    "override_events": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "minimum": 0,
+      "maximum": 10
+    },
+    "overruled_share_of_opposed": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "minimum": 0,
+      "maximum": 0.6667
+    },
+    "ci_low": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 8,
+      "minimum": 0,
+      "maximum": 0.3838
+    },
+    "ci_high": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 8,
+      "minimum": 0.4809,
+      "maximum": 0.8818
+    }
+  }
+}

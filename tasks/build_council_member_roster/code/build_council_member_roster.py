@@ -11,7 +11,9 @@ from bs4 import BeautifulSoup
 import sys
 
 sys.path.append("../../_lib")
-from legistar_utils import normalize_space, write_dict_rows_csv
+from data_reports import save_csv
+from legistar_utils import normalize_space
+from member_deference_utils import surname
 
 LEGISTAR_URL = (
     "https://legistar.council.nyc.gov/"
@@ -75,6 +77,15 @@ def active_rows(rows: list[dict[str, object]], district: int, check_date: str) -
     ]
 
 
+def overlaps(left: dict[str, object], right: dict[str, object]) -> bool:
+    return date_value(left["term_start_date"], "1900-01-01") <= date_value(right["term_end_date"]) and date_value(
+        right["term_start_date"], "1900-01-01"
+    ) <= date_value(left["term_end_date"])
+
+
+# A year-only Wikipedia term ("Kathryn E. Freed (1991-2002)") is read as its widest span,
+# January 1 of the first year to December 31 of the last. It is only used to test whether
+# a member covers a whole gap in the official record, and is then clipped to that gap.
 def wiki_year_term(value: str, is_end: bool = False) -> str | None:
     text = normalize_space(value)
     if re.fullmatch(r"\d{4}", text):
@@ -360,9 +371,9 @@ for source in source_files_out:
         if not member_name or "District established" in member_name:
             continue
 
-        date_parts = re.split(r"\s+[–-]\s*", term_text, maxsplit=1)
-        term_start_date = parse_wiki_date(date_parts[0]) if date_parts else None
-        term_end_date = parse_wiki_date(date_parts[1]) if len(date_parts) > 1 else None
+        date_parts = re.split(r"\s*[–-]\s*", term_text, maxsplit=1)
+        term_start_date = wiki_year_term(date_parts[0]) if date_parts else None
+        term_end_date = wiki_year_term(date_parts[1], is_end=True) if len(date_parts) > 1 else None
 
         wiki_terms.append(
             {
@@ -394,176 +405,159 @@ for source in source_files_out:
             }
         )
 
-official_with_district = [
+# Source priority. Official Legistar office records are the roster: every Council title
+# (Council Member, Speaker, Majority/Minority Leader, Whip) except Public Advocate, a
+# citywide office. Wikipedia district pages only (a) supply the district for official
+# rows whose Legistar grid and PersonDetail page omit it and (b) fill a period in
+# 1998-2025 that no official row covers, when one Wikipedia member spans the whole gap
+# and has no official term in the district, or has official terms on both sides of it.
+# Each row records its source in roster_source.
+ANALYSIS_START = date(1998, 1, 1)
+ANALYSIS_END = date(2025, 12, 31)
+
+official_rows: list[dict[str, object]] = []
+seen_official: set[tuple[object, ...]] = set()
+for row in official_terms:
+    key = (row["person_id"], row["district"], row["term_start_date"], row["term_end_date"])
+    if row["person_title"] == "Public Advocate" or not row["member_name"] or not row["term_start_date"] or key in seen_official:
+        continue
+    seen_official.add(key)
+    official_rows.append({**row, "roster_source": "legistar_office_record"})
+
+wiki_members = [
     row
-    for row in official_terms
-    if row["district"] is not None
-    and row["term_start_date"]
-    and row["member_name"]
-    and row["person_title"] in {"Council Member", "Speaker"}
+    for row in wiki_terms
+    if row["term_start_date"] and len(compact_name(row["member_name"]).split()) >= 2
+    and compact_name(row["member_name"]) != "vacant"
 ]
 
-wiki_terms_for_master: list[dict[str, object]] = []
-seen_wiki_terms: set[tuple[object, ...]] = set()
-for row in wiki_terms:
-    if not row["member_name"] or not row["term_start_date"]:
+unassigned_official_rows = []
+for row in official_rows:
+    if row["district"] is not None:
         continue
+    districts = {
+        wiki["district"] for wiki in wiki_members if surname(wiki["member_name"]) == surname(row["member_name"]) and overlaps(wiki, row)
+    }
+    if len(districts) != 1:
+        unassigned_official_rows.append(row)
+        continue
+    row["district"] = districts.pop()
+    row["district_text"] = f"District {row['district']:02d}"
+    row["district_source"] = "wikipedia_district_page_surname_match"
+    row["roster_source"] = "legistar_office_record_wikipedia_district"
+    row["source_review_required"] = True
+    row["source_review_reason"] = "district_from_wikipedia_surname_match"
+official_rows = [row for row in official_rows if row["district"] is not None]
 
-    key = (
-        row["district"],
-        row["member_name_clean"],
-        row["term_start_date"],
-        row["term_end_date"],
-        row["source_url"],
+corrections = pd.read_csv("official_roster_corrections.csv", dtype=str, keep_default_na=False)
+for correction in corrections.to_dict("records"):
+    matches = [
+        row
+        for row in official_rows
+        if row["person_id"] == correction["person_id"]
+        and str(row["district"]) == correction["listed_district"]
+        and row["term_start_date"] == correction["listed_term_start_date"]
+        and row["term_end_date"] == correction["listed_term_end_date"]
+    ]
+    if len(matches) != 1:
+        raise RuntimeError(f"Roster correction must match exactly one official row: {correction}")
+    row = matches[0]
+    row["district"] = int(correction["corrected_district"])
+    row["district_text"] = f"District {row['district']:02d}"
+    row["term_start_date"] = correction["corrected_term_start_date"]
+    row["term_end_date"] = correction["corrected_term_end_date"]
+    row["roster_source"] = "legistar_office_record_corrected"
+    row["source_review_required"] = True
+    row["source_review_reason"] = "official_roster_correction"
+    row["evidence_summary"] = f"{row['evidence_summary']} Corrected: {correction['correction_reason']}"
+
+gap_fill_rows = []
+for district in range(1, 52):
+    district_official = sorted(
+        (row for row in official_rows if row["district"] == district),
+        key=lambda row: date_value(row["term_start_date"], "1900-01-01"),
     )
-    if key in seen_wiki_terms:
-        continue
-    seen_wiki_terms.add(key)
-    wiki_terms_for_master.append(row)
+    gaps = []
+    cursor = ANALYSIS_START
+    for row in district_official:
+        start = date_value(row["term_start_date"], "1900-01-01")
+        if start > cursor:
+            gaps.append((cursor, min(start - timedelta(days=1), ANALYSIS_END)))
+        cursor = max(cursor, date_value(row["term_end_date"]) + timedelta(days=1))
+    if cursor <= ANALYSIS_END:
+        gaps.append((cursor, ANALYSIS_END))
 
-districts_with_wiki_history = {int(row["district"]) for row in wiki_terms_for_master}
-
-master_rows = list(wiki_terms_for_master)
-
-for official_row in official_with_district:
-    if int(official_row["district"]) not in districts_with_wiki_history:
-        continue
-
-    official_start = date_value(official_row["term_start_date"], "1900-01-01")
-    official_end = date_value(official_row["term_end_date"], "2100-12-31")
-
-    for master_row in master_rows:
-        if int(master_row["district"]) != int(official_row["district"]):
+    for gap_start, gap_end in gaps:
+        if gap_start > gap_end:
             continue
-        if master_row["member_name_clean"] != official_row["member_name_clean"]:
+        covering = [
+            wiki
+            for wiki in wiki_members
+            if wiki["district"] == district
+            and date_value(wiki["term_start_date"], "1900-01-01") <= gap_start
+            and date_value(wiki["term_end_date"]) >= gap_end
+        ]
+        if len(covering) != 1:
             continue
-
-        master_start = date_value(master_row["term_start_date"], "1900-01-01")
-        master_end = date_value(master_row["term_end_date"], "2100-12-31")
-
-        if official_start <= master_end + timedelta(days=1) and official_end > master_end and official_end >= master_start:
-            master_row["term_end_date"] = official_row["term_end_date"]
-            master_row["source_review_required"] = True
-            master_row["source_review_reason"] = (
-                f"{master_row['source_review_reason']}; official_legistar_extended_secondary_term_end"
-                if master_row["source_review_reason"]
-                else "official_legistar_extended_secondary_term_end"
-            )
-            master_row["evidence_summary"] = (
-                f"{master_row['evidence_summary']} Term end extended using overlapping official Legistar "
-                "office-record dates for the same member and district."
-            )
-
-for row in official_with_district:
-    if int(row["district"]) not in districts_with_wiki_history:
-        master_rows.append(row)
+        wiki = covering[0]
+        same_member = [row for row in district_official if surname(row["member_name"]) == surname(wiki["member_name"])]
+        ended_before_gap = any(date_value(row["term_end_date"]) == gap_start - timedelta(days=1) for row in same_member)
+        resumed_after_gap = any(date_value(row["term_start_date"], "1900-01-01") == gap_end + timedelta(days=1) for row in same_member)
+        if same_member and not (ended_before_gap and resumed_after_gap):
+            continue  # Legistar dates this member's own term; the gap is a vacancy.
+        person_ids = {row["person_id"] for row in same_member}
+        gap_fill_rows.append(
+            {
+                **wiki,
+                "roster_record_id": f"{wiki['roster_record_id']}_gap_{gap_start.isoformat()}",
+                "term_start_date": gap_start.isoformat(),
+                "term_end_date": gap_end.isoformat(),
+                "person_id": person_ids.pop() if len(person_ids) == 1 else "",
+                "roster_source": "wikipedia_gap_fill",
+                "evidence_summary": (
+                    "No official Legistar office record covers this period; the Wikipedia district page lists "
+                    "this member for the whole period. Dates are clipped to the official-record gap."
+                ),
+                "source_review_required": True,
+                "source_review_reason": "wikipedia_gap_fill",
+            }
+        )
 
 master_rows = sorted(
-    master_rows,
-    key=lambda row: (
-        int(row["district"]),
-        date_value(row["term_start_date"], "1900-01-01"),
-        date_value(row["term_end_date"], "2100-12-31"),
-        row["source_precedence"],
-        row["member_name"],
-    ),
+    official_rows + gap_fill_rows,
+    key=lambda row: (int(row["district"]), date_value(row["term_start_date"], "1900-01-01"), row["member_name"]),
 )
 
-trimmed_master_rows: list[dict[str, object]] = []
-
-for district in range(1, 52):
-    district_rows = [row for row in master_rows if row["district"] == district]
-    district_rows = sorted(
-        district_rows,
-        key=lambda row: (
-            date_value(row["term_start_date"], "1900-01-01"),
-            date_value(row["term_end_date"], "2100-12-31"),
-            row["source_precedence"],
-            row["member_name"],
-        ),
-    )
-
-    for row in district_rows:
-        row = dict(row)
-
-        if trimmed_master_rows and trimmed_master_rows[-1]["district"] == district:
-            previous = trimmed_master_rows[-1]
-            previous_end = date_value(previous["term_end_date"], "2100-12-31")
-            row_start = date_value(row["term_start_date"], "1900-01-01")
-            row_end = date_value(row["term_end_date"], "2100-12-31")
-
-            if row_start < previous_end and row["member_name_clean"] != previous["member_name_clean"]:
-                new_start = (previous_end + timedelta(days=1)).isoformat()
-                row["term_start_date"] = new_start
-                row["source_review_required"] = True
-                row["source_review_reason"] = (
-                    f"{row['source_review_reason']}; trimmed_start_after_prior_member_interval"
-                    if row["source_review_reason"]
-                    else "trimmed_start_after_prior_member_interval"
-                )
-                row["evidence_summary"] = (
-                    f"{row['evidence_summary']} Start date trimmed to avoid overlapping active members "
-                    "within a district; verify against official Green Book or election records."
-                )
-
-                if date_value(row["term_start_date"], "1900-01-01") > row_end:
-                    continue
-
-        trimmed_master_rows.append(row)
-
-master_rows = trimmed_master_rows
-
-overlap_rows: list[dict[str, object]] = []
-for district in range(1, 52):
-    district_rows = [row for row in master_rows if row["district"] == district]
-    for i, left in enumerate(district_rows):
-        for right in district_rows[i + 1 :]:
-            if date_value(left["term_start_date"]) < date_value(right["term_end_date"]) and date_value(
-                right["term_start_date"]
-            ) < date_value(left["term_end_date"]):
-                overlap_rows.append(
-                    {
-                        "district": district,
-                        "left_record_id": left["roster_record_id"],
-                        "left_member_name": left["member_name"],
-                        "left_start_date": left["term_start_date"],
-                        "left_end_date": left["term_end_date"],
-                        "right_record_id": right["roster_record_id"],
-                        "right_member_name": right["member_name"],
-                        "right_start_date": right["term_start_date"],
-                        "right_end_date": right["term_end_date"],
-                    }
-                )
-
-known_specs = [
-    {
-        "district": 21,
-        "check_date": "2001-05-23",
-        "expected_member_name": "Helen Marshall",
-    },
-    {
-        "district": 33,
-        "check_date": "2009-06-10",
-        "expected_member_name": "David Yassky",
-    },
-    {
-        "district": 34,
-        "check_date": "2009-12-21",
-        "expected_member_name": "Diana Reyna",
-    },
+overlap_rows = [
+    (left["district"], left["member_name"], left["term_start_date"], right["member_name"], right["term_start_date"])
+    for i, left in enumerate(master_rows)
+    for right in master_rows[i + 1 :]
+    if left["district"] == right["district"] and left["person_id"] != right["person_id"] and overlaps(left, right)
 ]
 
-for spec in known_specs:
-    matches = active_rows(master_rows, spec["district"], spec["check_date"])
-    member_names = "; ".join(row["member_name"] for row in matches)
-    expected_clean = compact_name(spec["expected_member_name"])
-    if len(matches) != 1 or compact_name(member_names) != expected_clean:
-        raise RuntimeError(
-            f"{spec['expected_member_name']} must be the district {spec['district']} member on {spec['check_date']}."
-        )
+known_specs = [
+    (21, "2001-05-23", "Helen M. Marshall"),
+    (33, "2009-06-10", "David Yassky"),
+    (34, "2009-12-21", "Diana Reyna"),
+    (1, "2001-12-31", "Kathryn E. Freed"),
+    (1, "2002-01-01", "Alan J. Gerson"),
+    (1, "2010-01-01", "Margaret S. Chin"),
+    (1, "2021-12-31", "Margaret S. Chin"),
+    (1, "2022-01-01", "Christopher Marte"),
+    (18, "2024-06-01", "Amanda C. Farias"),
+    (19, "2025-06-01", "Vickie Paladino"),
+    (43, "2019-06-01", "Justin L. Brannan"),
+    (47, "2019-06-01", "Mark Treyger"),
+    (51, "2020-06-01", "Joseph C. Borelli"),
+]
+for district, check_date, expected_member_name in known_specs:
+    matches = active_rows(master_rows, district, check_date)
+    if [surname(row["member_name"]) for row in matches] != [surname(expected_member_name)]:
+        raise RuntimeError(f"{expected_member_name} must be the only district {district} member on {check_date}.")
 
 fields = [
     "roster_record_id",
+    "roster_source",
     "source_id",
     "source_role",
     "source_tier",
@@ -590,15 +584,15 @@ fields = [
     "source_review_reason",
 ]
 
+print(f"Official rows: {len(official_rows)}; Wikipedia gap fills: {len(gap_fill_rows)}")
+print(f"Official rows left without a district: {[row['member_name'] for row in unassigned_official_rows]}")
 if len(official_terms) == 0:
     raise RuntimeError("Official Legistar office-record rows must be parsed.")
 if len(person_detail_district_by_id) == 0:
     raise RuntimeError("Legistar PersonDetail district notes must be parsed.")
-if len([row for row in wiki_terms if row["member_name"]]) < 51:
+if len(wiki_members) < 51:
     raise RuntimeError("Wikipedia district-history member rows must be parsed.")
 if overlap_rows:
-    raise RuntimeError("Master roster must not have overlapping district intervals.")
-if min(row["term_start_date"] for row in master_rows if row["term_start_date"]) > "1990-01-01":
-    raise RuntimeError("Master roster must reach before 1990.")
+    raise RuntimeError(f"Master roster must not have overlapping district intervals: {overlap_rows}")
 
-write_dict_rows_csv("../output/council_member_roster_master.csv", master_rows, fields)
+save_csv(master_rows, fields, "../output/council_member_roster_master.csv", ["roster_record_id"])

@@ -1,0 +1,935 @@
+{
+  "dataset": "legistar_2000_broad_recall_matter_index.csv",
+  "rows": 782,
+  "key": [
+    "matter_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "1c7ff8349aba22b8d968e13b3f337836d739322aec37f15db760121a012b274f",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "source_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "nyc_council_legistar_land_use_broad_recall",
+          782
+        ]
+      ]
+    },
+    "pull_date": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "20260513",
+          782
+        ]
+      ]
+    },
+    "query_year": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "2000",
+          782
+        ]
+      ]
+    },
+    "query_matter_type": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "Resolution",
+          427
+        ],
+        [
+          "Land Use Application",
+          295
+        ],
+        [
+          "Land Use Call-Up",
+          60
+        ]
+      ]
+    },
+    "query_matter_type_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "1",
+          427
+        ],
+        [
+          "10",
+          295
+        ],
+        [
+          "13",
+          60
+        ]
+      ]
+    },
+    "query_page": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "1",
+          260
+        ],
+        [
+          "2",
+          200
+        ],
+        [
+          "3",
+          195
+        ],
+        [
+          "4",
+          100
+        ],
+        [
+          "5",
+          27
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 5
+    },
+    "query_record_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "427",
+          427
+        ],
+        [
+          "295",
+          295
+        ],
+        [
+          "60",
+          60
+        ]
+      ],
+      "minimum": 60,
+      "maximum": 427
+    },
+    "query_page_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "5",
+          427
+        ],
+        [
+          "3",
+          295
+        ],
+        [
+          "1",
+          60
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 5
+    },
+    "matter_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 782,
+      "most_common": [
+        [
+          "430485",
+          1
+        ],
+        [
+          "431219",
+          1
+        ],
+        [
+          "431900",
+          1
+        ],
+        [
+          "432072",
+          1
+        ],
+        [
+          "432077",
+          1
+        ]
+      ]
+    },
+    "matter_guid": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 782,
+      "most_common": [
+        [
+          "014A23CD-A8DC-4540-BE23-91AC925A1D40",
+          1
+        ],
+        [
+          "01574232-17B0-4E55-B03E-9BDFDEAC098C",
+          1
+        ],
+        [
+          "0175F762-A1D1-4FFD-AAC7-89DC0B2B9DB7",
+          1
+        ],
+        [
+          "01AA651A-D072-4BC1-8F2F-9446511284A5",
+          1
+        ],
+        [
+          "0279D4CC-71D2-41E6-BBDA-E46A2E23B29A",
+          1
+        ]
+      ]
+    },
+    "matter_file": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 782,
+      "most_common": [
+        [
+          "LU 0018-1998",
+          1
+        ],
+        [
+          "LU 0112-1998",
+          1
+        ],
+        [
+          "LU 0277-1998",
+          1
+        ],
+        [
+          "LU 0281-1998",
+          1
+        ],
+        [
+          "LU 0513-1999",
+          1
+        ]
+      ]
+    },
+    "matter_file_year": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "2000",
+          737
+        ],
+        [
+          "1999",
+          40
+        ],
+        [
+          "1998",
+          5
+        ]
+      ]
+    },
+    "matter_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 782,
+      "most_common": [
+        [
+          "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=430485&GUID=3BDC886F-F7AD-4515-9E6B-E6326C6BC99B&Options=ID|Text|&Search=",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=431219&GUID=86F70360-38D1-4A07-B3D8-7BB55CF8E9E0&Options=ID|Text|&Search=",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=431900&GUID=3CEA1E40-7A19-47E2-AB70-B6ED6D995EC3&Options=ID|Text|&Search=",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=432072&GUID=1CB31785-B3B5-41F2-A6F7-B2276D77FB3B&Options=ID|Text|&Search=",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=432077&GUID=45C45849-5E34-423B-A240-18A49723F3F3&Options=ID|Text|&Search=",
+          1
+        ]
+      ]
+    },
+    "law_number": {
+      "python_types": [],
+      "missing": 782,
+      "distinct_nonmissing": 0,
+      "most_common": []
+    },
+    "matter_type": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "Resolution",
+          427
+        ],
+        [
+          "Land Use Application",
+          295
+        ],
+        [
+          "Land Use Call-Up",
+          60
+        ]
+      ]
+    },
+    "status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "Adopted",
+          751
+        ],
+        [
+          "Filed",
+          25
+        ],
+        [
+          "Disapproved",
+          6
+        ]
+      ]
+    },
+    "committee": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 21,
+      "most_common": [
+        [
+          "Committee on Land Use",
+          253
+        ],
+        [
+          "Committee on Finance",
+          198
+        ],
+        [
+          "Subcommittee on Planning, Dispositions and Concessions",
+          83
+        ],
+        [
+          "City Council",
+          63
+        ],
+        [
+          "Subcommittee on Zoning and Franchises",
+          46
+        ]
+      ]
+    },
+    "prime_sponsor": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 4,
+      "distinct_nonmissing": 36,
+      "most_common": [
+        [
+          "June M. Eisland",
+          578
+        ],
+        [
+          "Herbert E. Berman",
+          62
+        ],
+        [
+          "Peter F. Vallone",
+          24
+        ],
+        [
+          "Morton Povman",
+          15
+        ],
+        [
+          "Margarita Lopez",
+          13
+        ]
+      ]
+    },
+    "council_member_sponsors": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 31,
+      "most_common": [
+        [
+          "1",
+          420
+        ],
+        [
+          "2",
+          255
+        ],
+        [
+          "3",
+          14
+        ],
+        [
+          "25",
+          7
+        ],
+        [
+          "16",
+          6
+        ]
+      ]
+    },
+    "title": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 778,
+      "most_common": [
+        [
+          "Resolution affirming the designation by the Landmarks Preservation Commission of the (Former) Hamilton Theater, located at 3560-3568 Broadway (a.k.a. 559-561 West 146th Street) (Block 2078, Lot 1 in part), Manhattan, Designation List No. 311, LP-2052 (L.U. No. 711; 20005237 HKM; N 000396 HKM).",
+          2
+        ],
+        [
+          "Resolution approving the decision of the City Planning Commission on ULURP No. C 990525 PCR (L.U. No. 656), a site selection and an acquisition of property located on the west side of Wright Street, between Canal Street and Broad Street (Block 526, Lot 1), Staten Island, for use as a library.",
+          2
+        ],
+        [
+          "Section 202 Supportive Housing Program for the Elderly, Saint Paul the Apostle Senior Housing, 55-06 99th Street, Queens, Community District No. 4, Council District No. 25.",
+          2
+        ],
+        [
+          "Section 202 Supportive Housing Program for the Elderly, Selfhelp, United Help Kissena Apartments, 45-35 Kissena Boulevard, Queens, Community District No. 7, Council District No. 20.",
+          2
+        ],
+        [
+          "A proposal by the Department of General Services, pursuant to §195 of the New York City Charter, for the acquisition of office space located at 808/810 East 16th Street , Borough of Brooklyn , Council District no. 44, for use by Brooklyn Community Board #14. (Non-ULURP no. 20005171)",
+          1
+        ]
+      ]
+    },
+    "borough": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 501,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "Manhattan",
+          83
+        ],
+        [
+          "Brooklyn",
+          72
+        ],
+        [
+          "Queens",
+          49
+        ],
+        [
+          "The Bronx",
+          44
+        ],
+        [
+          "Staten Island",
+          23
+        ]
+      ]
+    },
+    "affected_council_districts": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 484,
+      "distinct_nonmissing": 62,
+      "most_common": [
+        [
+          "9",
+          25
+        ],
+        [
+          "34",
+          16
+        ],
+        [
+          "17",
+          14
+        ],
+        [
+          "2",
+          12
+        ],
+        [
+          "25",
+          12
+        ]
+      ]
+    },
+    "application_numbers_in_title": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 170,
+      "distinct_nonmissing": 404,
+      "most_common": [
+        [
+          "20005207 TCM",
+          3
+        ],
+        [
+          "20005261 TCM",
+          3
+        ],
+        [
+          "20005306 TCM",
+          3
+        ],
+        [
+          "20005311 TCQ",
+          3
+        ],
+        [
+          "20005344 TCM",
+          3
+        ]
+      ]
+    },
+    "ulurp_text_flag": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "True",
+          591
+        ],
+        [
+          "False",
+          191
+        ]
+      ]
+    },
+    "land_use_recall_flag": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "True",
+          641
+        ],
+        [
+          "False",
+          141
+        ]
+      ]
+    },
+    "land_use_recall_reason": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 141,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "official_land_use_matter_type",
+          355
+        ],
+        [
+          "land_use_committee_resolution",
+          210
+        ],
+        [
+          "land_use_text_resolution",
+          76
+        ]
+      ]
+    },
+    "laguardia_hotel_seed_flag": {
+      "python_types": [
+        "bool"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "False",
+          782
+        ]
+      ]
+    },
+    "detail_raw_path": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 141,
+      "distinct_nonmissing": 641,
+      "most_common": [
+        [
+          "../output/source_files/nyc_council_legistar_land_use_broad_recall/20260513/year_2000/detail_pages/land_use_application/lu_0018_1998_430485.html",
+          1
+        ],
+        [
+          "../output/source_files/nyc_council_legistar_land_use_broad_recall/20260513/year_2000/detail_pages/land_use_application/lu_0112_1998_431219.html",
+          1
+        ],
+        [
+          "../output/source_files/nyc_council_legistar_land_use_broad_recall/20260513/year_2000/detail_pages/land_use_application/lu_0277_1998_432072.html",
+          1
+        ],
+        [
+          "../output/source_files/nyc_council_legistar_land_use_broad_recall/20260513/year_2000/detail_pages/land_use_application/lu_0281_1998_432077.html",
+          1
+        ],
+        [
+          "../output/source_files/nyc_council_legistar_land_use_broad_recall/20260513/year_2000/detail_pages/land_use_application/lu_0513_1999_433230.html",
+          1
+        ]
+      ]
+    },
+    "detail_title": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 141,
+      "distinct_nonmissing": 639,
+      "most_common": [
+        [
+          "Resolution affirming the designation by the Landmarks Preservation Commission of the (Former) Hamilton Theater, located at 3560-3568 Broadway (a.k.a. 559-561 West 146th Street) (Block 2078, Lot 1 in part), Manhattan, Designation List No. 311, LP-2052 (L.U. No. 711; 20005237 HKM; N 000396 HKM).",
+          2
+        ],
+        [
+          "Resolution approving the decision of the City Planning Commission on ULURP No. C 990525 PCR (L.U. No. 656), a site selection and an acquisition of property located on the west side of Wright Street, between Canal Street and Broad Street (Block 526, Lot 1), Staten Island, for use as a library.",
+          2
+        ],
+        [
+          "A proposal by the Department of General Services, pursuant to §195 of the New York City Charter, for the acquisition of office space located at 808/810 East 16th Street , Borough of Brooklyn , Council District no. 44, for use by Brooklyn Community Board #14. (Non-ULURP no. 20005171)",
+          1
+        ],
+        [
+          "Application No. 20005207 TCM, pursuant to §20-22(6) of the Administrative Code of the City of New York, concerning the petition of Nonna Restaurant Corp. d/b/a Roc Restaurant, to establish and operate an un unenclosed sidewalk cafe located 323-A Greenwich Street, Borough of Manhattan, Council District No. 1. This application is subject to review and action by the Land Use Committee only if called-up by vote of the Council pursuant to Rule 11.20b of the Council and §20-22(6)(g) of the New York City Administrative Code.",
+          1
+        ],
+        [
+          "Application no. 19995075 HAK, an Urban Development Action Area Project known as Atlantic Terminal-Phase III, located in Community Board 2, Council District no. 35, Borough of Brooklyn. This matter is subject to Council review and action pursuant to Article 16 of the New York General Municipal Law, at the request of the New York City Department of Housing Preservation and Development, and Section 696 of the General Municipal Law for a real property tax exemption.",
+          1
+        ]
+      ]
+    },
+    "detail_attachment_count": {
+      "python_types": [
+        "float"
+      ],
+      "missing": 141,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "0.0",
+          367
+        ],
+        [
+          "1.0",
+          270
+        ],
+        [
+          "2.0",
+          4
+        ]
+      ],
+      "minimum": 0.0,
+      "maximum": 2.0
+    },
+    "detail_report_count": {
+      "python_types": [
+        "float"
+      ],
+      "missing": 141,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1.0",
+          321
+        ],
+        [
+          "3.0",
+          320
+        ]
+      ],
+      "minimum": 1.0,
+      "maximum": 3.0
+    },
+    "detail_history_count": {
+      "python_types": [
+        "float"
+      ],
+      "missing": 141,
+      "distinct_nonmissing": 31,
+      "most_common": [
+        [
+          "2.0",
+          286
+        ],
+        [
+          "8.0",
+          118
+        ],
+        [
+          "1.0",
+          60
+        ],
+        [
+          "11.0",
+          35
+        ],
+        [
+          "10.0",
+          34
+        ]
+      ],
+      "minimum": 1.0,
+      "maximum": 100.0
+    },
+    "detail_history_detail_url_count": {
+      "python_types": [
+        "float"
+      ],
+      "missing": 141,
+      "distinct_nonmissing": 31,
+      "most_common": [
+        [
+          "2.0",
+          286
+        ],
+        [
+          "8.0",
+          118
+        ],
+        [
+          "1.0",
+          60
+        ],
+        [
+          "11.0",
+          35
+        ],
+        [
+          "10.0",
+          34
+        ]
+      ],
+      "minimum": 1.0,
+      "maximum": 100.0
+    },
+    "detail_meeting_detail_url_count": {
+      "python_types": [
+        "float"
+      ],
+      "missing": 141,
+      "distinct_nonmissing": 8,
+      "most_common": [
+        [
+          "1.0",
+          346
+        ],
+        [
+          "3.0",
+          144
+        ],
+        [
+          "4.0",
+          102
+        ],
+        [
+          "2.0",
+          32
+        ],
+        [
+          "5.0",
+          11
+        ]
+      ],
+      "minimum": 0.0,
+      "maximum": 9.0
+    },
+    "detail_attachment_urls": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 508,
+      "distinct_nonmissing": 274,
+      "most_common": [
+        [
+          "https://legistar.council.nyc.gov/View.ashx?M=F&ID=879137&GUID=81EA0176-C718-4644-87DB-AC10BE9846C9",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/View.ashx?M=F&ID=879138&GUID=215139C4-90B1-4A8C-A97F-2E950A29B878",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/View.ashx?M=F&ID=879197&GUID=08E3B44A-DAD8-4C1F-BDCF-7CBECF7C887A",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/View.ashx?M=F&ID=879198&GUID=EACF4594-81CA-4691-9107-60CBDFE4FDBF",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/View.ashx?M=F&ID=879199&GUID=B9DC942D-EF4D-44C7-BFDD-6A9879272A6F",
+          1
+        ]
+      ]
+    },
+    "detail_report_urls": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 141,
+      "distinct_nonmissing": 641,
+      "most_common": [
+        [
+          "https://legistar.council.nyc.gov/ViewReport.ashx?M=R&N=Master&GID=61&ID=430485&GUID=3BDC886F-F7AD-4515-9E6B-E6326C6BC99B&Title=Legislation+Details",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/ViewReport.ashx?M=R&N=Master&GID=61&ID=431219&GUID=86F70360-38D1-4A07-B3D8-7BB55CF8E9E0&Extra=WithText&Title=Legislation+Details+(With+Text); https://legistar.council.nyc.gov/ViewReport.ashx?M=R&N=Master&GID=61&ID=431219&GUID=86F70360-38D1-4A07-B3D8-7BB55CF8E9E0&Title=Legislation+Details; https://legistar.council.nyc.gov/ViewReport.ashx?M=R&N=Text&GID=61&ID=474699&GUID=19DCEB21-00F2-4EAE-BCF5-65E6D9B58F5A&Title=Legislation+Text",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/ViewReport.ashx?M=R&N=Master&GID=61&ID=432072&GUID=1CB31785-B3B5-41F2-A6F7-B2276D77FB3B&Extra=WithText&Title=Legislation+Details+(With+Text); https://legistar.council.nyc.gov/ViewReport.ashx?M=R&N=Master&GID=61&ID=432072&GUID=1CB31785-B3B5-41F2-A6F7-B2276D77FB3B&Title=Legislation+Details; https://legistar.council.nyc.gov/ViewReport.ashx?M=R&N=Text&GID=61&ID=474732&GUID=C0DA9476-C84D-45FF-84CB-CD7705345568&Title=Legislation+Text",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/ViewReport.ashx?M=R&N=Master&GID=61&ID=432077&GUID=45C45849-5E34-423B-A240-18A49723F3F3&Extra=WithText&Title=Legislation+Details+(With+Text); https://legistar.council.nyc.gov/ViewReport.ashx?M=R&N=Master&GID=61&ID=432077&GUID=45C45849-5E34-423B-A240-18A49723F3F3&Title=Legislation+Details; https://legistar.council.nyc.gov/ViewReport.ashx?M=R&N=Text&GID=61&ID=474736&GUID=20C07CA4-A15D-4CF2-A0EC-445967D4C95F&Title=Legislation+Text",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/ViewReport.ashx?M=R&N=Master&GID=61&ID=433230&GUID=70A5BE05-4FEC-4581-B727-3F80F0BBBDB4&Title=Legislation+Details",
+          1
+        ]
+      ]
+    },
+    "detail_history_detail_urls": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 141,
+      "distinct_nonmissing": 641,
+      "most_common": [
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235869&GUID=5E23DD1B-5502-4D6C-A431-24ADFACAF82F; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235870&GUID=9A88F593-2D7E-4B4E-8D21-A6532E167556; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235871&GUID=B8926C4C-4647-4F9A-B768-D5656AE551C2; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235872&GUID=B202F8ED-6FE5-4020-B9B7-2611FEA21CC3; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235873&GUID=6FD7C3BF-7836-45C3-968A-C9DC7F481F01; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235874&GUID=652BB72C-C253-44A0-9B17-7B66A0D31531; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235875&GUID=6369AE59-345D-4739-A3FD-4EC6328328F7; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235876&GUID=8B54AD89-FAF9-4ED8-AD81-C8B9858B16EF; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235877&GUID=84D1D873-E2AC-44F3-B56B-3FDA87CD4427; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235878&GUID=5A3F125A-3AF2-4E6B-93CA-7CCD1FC2D778; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235879&GUID=3742BD09-8B8F-42CC-9929-8969985D383E; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235880&GUID=B1E0BFCF-7F96-4CC7-B301-B441CAA1FA6D; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235881&GUID=730BD9FA-3194-4126-A57E-443E5D2253F4; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235882&GUID=ACD1485E-62C0-43CC-A7D6-3765566CA4C9; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235883&GUID=8F1A6E13-9361-41D9-8F3F-447017D48D9C; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235884&GUID=9B525701-212D-4B1B-8B2D-F20B94E32BE5; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235885&GUID=B23E1517-3F1F-4B97-A0A0-30C02D6C47F1; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235886&GUID=5D15F4A6-74EF-43AC-9CC0-8D1FDE280E0D; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235887&GUID=6B228016-6448-4BBF-B34E-8A577912AA6B; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235888&GUID=6DCA4641-BDD0-4F9F-A541-D535BB8AEDE7; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235889&GUID=CD914958-5F66-4AEF-9028-48EDF3C54756; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235890&GUID=2BB16D27-67C5-41AD-9978-32B443AE3B86; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235891&GUID=8806E4EB-201D-4964-B65A-1970F603E582; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235892&GUID=EEE21FD9-B427-4BAE-9324-320B75945461; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235893&GUID=C95D4538-A1A8-44D8-8236-782387DC6E74; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235894&GUID=42B01A5B-4A17-4A2B-8A2C-CCD25037AC99; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235895&GUID=9C2A3111-B258-42BC-B3F6-392737AD5F8B; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235896&GUID=FCE79EC4-C6D6-4C32-8762-E086C39BBCD6; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235897&GUID=00E74FF6-6AD7-4E97-8CB9-8218F373A578; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235898&GUID=A6CFD75A-00DF-49EA-9539-2F8E7AD1F290; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235899&GUID=E70BA48E-1DFB-46E7-BEAD-9D678DFB6D57; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235900&GUID=0EABDA39-478F-4E7B-90F1-E51DF6492754; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235901&GUID=F76999AF-8684-40AB-B437-97CFF3879BE8; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235902&GUID=A0E01288-2615-4AFC-B3BA-C514DEBFE7AD; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235903&GUID=D9B4EDA9-23D3-4C77-804B-F5B607FB54D1; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235904&GUID=E6D1B830-3D76-4FB7-B95A-A2D9F9BCF700; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235905&GUID=3423B70D-94E8-4BAA-9563-A4A28CF428D3; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235906&GUID=E976DD66-20C0-4D1E-8BE7-23876CB04B7E; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235907&GUID=4AD2AE1C-00DE-4FF2-99B9-E9DE4C81F1D6; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235908&GUID=EDDC8758-37E2-48DC-9028-AA8DE4019332; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235909&GUID=1D0C8EE5-A0ED-40C4-BF42-CAC718F85C91; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235910&GUID=C9E7C000-645E-4460-83DE-6ACC7FFF7621; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235911&GUID=B13624A0-5613-4256-86FA-9B3903D42EE4; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235912&GUID=6F8725C5-2887-4B7C-8437-D1391BEFD62F; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235913&GUID=C45BC3B6-2013-48A4-A270-218503E896D2; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235914&GUID=F7A02AF8-CDFA-425B-B6C4-9728E58E487C; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235915&GUID=5FE14862-28A1-460B-986D-4A3A1868D8CB; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235916&GUID=86B42D8A-F648-4A1F-B1F6-16D7160AA16B; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235917&GUID=C971FA08-3C33-46E1-9383-3030609D4359; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235918&GUID=856AC65B-7DEC-4C1D-96B4-B277B57F9FB5; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235919&GUID=7AA7723D-D378-4951-B7F5-C50FA87C8136; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235920&GUID=71109514-8169-47CC-9D4E-297E9D5AD162; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235921&GUID=53A2CAD7-15B6-47F4-85EE-189BD85E5A8E; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235922&GUID=B2D9A2E1-F1EF-4523-A859-A69495544F3E; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2235923&GUID=BE2D1BEC-4BD0-403F-8595-743568206FC1; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2246555&GUID=750327DF-7274-42AC-99ED-439D0B2963A8; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2246588&GUID=04425F2F-9059-48DC-901D-0B1202D99EB6; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2246887&GUID=0E818770-C802-4C43-92EB-4F2E5099E3F6; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2246917&GUID=FFB83106-AD53-4D40-81FB-21E0377B317D; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2247124&GUID=0DD37FC9-72CE-437E-8FE7-15D9AB4C80B6; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2247194&GUID=D1D8AB3F-3630-4B9C-87EA-64528877A424; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2247635&GUID=AF061CC1-A98E-4FE1-8A94-433BB4348FDD; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2247833&GUID=C2EA40F1-BDBC-4803-B4DF-131DA627D57D; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2248165&GUID=0468FD8B-7B9E-441F-9A10-CFCAEBFA46AC; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2248194&GUID=CA5ED1D2-B8B0-4DDB-97DE-37BA3C250D90; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2248565&GUID=F740AEAD-2894-43EF-8BE6-15CD0173E55B; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2248696&GUID=C923B1B2-2D7F-40EB-AC99-4D902C3615E7; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2249032&GUID=B5B29A79-C7A9-4D8F-8B8D-7EB3D50C149D; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2249049&GUID=F926C339-66AC-4D42-9586-62AD49D3784C; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2249505&GUID=DA5AB29B-8962-4B5D-B810-E077D83F7548; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2249519&GUID=B2B64AAB-B8E7-493E-B039-A06BE8EBD9DA; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2249752&GUID=75054756-03C1-45E3-9883-EC2D33437ECA; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2249909&GUID=2CE239CF-54D6-4B53-80A7-A15DA771D405; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2250325&GUID=F6BE867C-7790-4A7B-B451-617328C400D6; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2250340&GUID=BA8F9C42-CADC-478C-B18A-600633E7561B; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2250668&GUID=66CA10A0-6442-4682-A439-A8F64E97298E; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2250689&GUID=9793A179-B7D5-4C3A-B0BD-C40917841C77; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2251356&GUID=69DAD159-09F1-4B5A-89AE-E574B601FF4D; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2251372&GUID=1BA6F2C0-E809-4E06-B43E-C8E8F8644B96; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2251890&GUID=457884CC-7293-44F5-85EC-04890DEE97B6; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2251899&GUID=4FDED543-C1F0-4ABF-9B9B-137497C61AA2; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2252448&GUID=56106065-A027-411B-AF81-5E51D501DF8A; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2252505&GUID=0F3C40C6-CCC8-4AA3-A69A-85318BDE2012; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2253182&GUID=1BB6E1D7-E5F2-4AC3-826C-298F00A93874; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2253216&GUID=1943C969-9FEC-4B8B-8A27-265520219BA8; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2253573&GUID=651CE264-FCBD-45C6-ABF9-889D69C01DE7; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2253673&GUID=1C1076A9-F6BE-4509-AFD3-619D61ECED74; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2254133&GUID=7B813247-B929-4803-8A9F-0A4E27BC7B3B; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2254140&GUID=1C231C88-BFB4-466D-A0A8-2551FA6A75A6; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2254437&GUID=4A4874F3-DF72-4D41-B3E1-713FF2C63AAA; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2254577&GUID=444265BF-7C98-4208-AC9E-AFF4ED7ABE0F; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2254894&GUID=B825DDAE-3E90-40B9-8A58-87D170B36E69; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2254942&GUID=215D7A0E-FD88-4523-998E-7919FE5224D3; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2255308&GUID=238087AA-4A0C-465B-91E0-F723BC8D2279; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2255358&GUID=6B692828-6077-43FB-B258-755C71C40254; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2255583&GUID=65DFFEE5-11F4-4BE6-B9B0-F563A51FF119; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2255763&GUID=D62F0EC3-17CA-4F4B-A520-5B3CA7D4836D; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2255832&GUID=A8AB48A8-4457-4E49-B7F4-27C0241D9563; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2255847&GUID=A67FE133-0CAB-4E6B-8878-C9566E55C272; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2255937&GUID=390B6FE3-AC51-4BD4-8230-9B504AB5D788",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2238395&GUID=DEA3BFD5-6092-49B2-912A-01951D487131; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2238396&GUID=849C34DF-240B-44BC-B030-6BD79C205850; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2238397&GUID=D755E563-6C93-4276-B874-D17747968AD2; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2238398&GUID=2336FA54-1BAC-41D2-BE76-A738609B9540; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2238399&GUID=A91E584D-1680-4D31-9DCE-51F3D3DB1B42; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2238400&GUID=23D5219E-B03A-4FEE-B893-1245F9CE9F3D; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2238401&GUID=C79EF508-59B3-4982-9AA2-0F235CEBB038; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2253546&GUID=FDAD65E8-5B0D-40A7-BAA5-5849FBBC0BE6; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2253547&GUID=90B27EAF-1F25-4629-93F8-4FE8503D2835; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2253548&GUID=3294CFA5-6F76-4A1C-B113-F63D642EC802",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241516&GUID=FB8E9DF2-BF39-4351-A395-8557778E98D9; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241517&GUID=03D22E17-0F15-409A-B57B-1B17255FE47B; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241518&GUID=876E09CA-433F-458F-AC15-0DA81C009BBE; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241519&GUID=5AA52498-F290-4038-8B49-D180C3AA9386; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241520&GUID=474C5642-9F78-480E-A58F-2829D05F5B5C; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241521&GUID=5867F399-BCB6-462F-85C9-7DF61A00561D; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241522&GUID=B184C42F-0507-471C-8373-ED8FEF187D80; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241523&GUID=D77058FD-35BD-4AD1-9ABA-525D74ED07F1; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241524&GUID=BFB2ED13-BF60-443A-80B9-95622DE699FA; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241525&GUID=89573AD7-104B-4D6A-BC19-61CC091171A3; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241526&GUID=E5B0E888-BC1B-4AEA-9808-39CD018D6F39; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241527&GUID=308C5789-611D-45A3-A5E3-01CBE49EB9D0; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241528&GUID=C28AFC08-B17C-4B32-AC56-CCE0E5A48F28; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241529&GUID=600B1959-B2E5-4ABF-A999-26DF092346CB; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241530&GUID=77262A28-B578-45E7-A2AD-1F61EC1DC1A3; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241531&GUID=B8E5E823-1BF4-4D3B-B3DF-FD34EFBEAE1C; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241532&GUID=B54580BE-41A1-4EFE-8A3D-15284EB5CEA3; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241533&GUID=98316E89-8E27-4CE5-B854-2265D2BA31A6; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241534&GUID=18887470-2EF9-4FFD-B156-F17CBCB28F1D; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241535&GUID=26144246-C831-42F2-9BF2-A844237B88BD; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241536&GUID=DBFE2353-4F71-4534-BC84-AD5C435558D7; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241537&GUID=DF97B573-6AEB-44A2-9534-39F4FD427A3B; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241538&GUID=52DCD862-E712-4F12-8FA5-7C65D06D0721; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241539&GUID=3A71E0E5-09CB-4778-A6A6-EBBEB9D5B9E8; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241540&GUID=62DEDF37-8A76-49C9-AFBC-479CBA5DCEDD; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241541&GUID=53F5F38C-6438-4709-A072-1B4BA9878CDD; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241542&GUID=86946AB0-5220-4FEB-9B07-018AD4FD4E35; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241543&GUID=AEF9276B-36AD-4607-A242-700C0E68657F; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241544&GUID=1F59D76E-1C8F-490B-9AD6-829182379A17; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241545&GUID=34915F6B-AE73-4A60-BC84-CD624CA63200; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241546&GUID=D2C05CC2-370F-4BE7-A5F9-FE78E62F3BF9; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241547&GUID=A70D75BB-2655-40E4-8B6D-6B27D6DDB511; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241548&GUID=595D4830-6E47-4306-BADF-79FA1641237E; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241549&GUID=20DE3EE2-B96B-40AE-A53D-5942414BDF65; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241550&GUID=5AF10D8D-BCA8-4316-B6B7-EA6C6C65B21D; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241551&GUID=02A3A769-2A87-42E7-9F5D-9F517198285D; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2246557&GUID=561AA718-2272-4BFF-87C9-6DBEC219C0FF; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2246589&GUID=E1484A63-97DB-4C13-8758-A3E578B5D5B8; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2246886&GUID=FBCFD952-4070-425E-87D8-AD1FE144330F; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2246918&GUID=5CAB5325-96E3-4245-93F3-7BB55D6FE8B4; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2247123&GUID=2984A022-FFA6-4662-9454-52FFD2ED58FF; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2247197&GUID=41F5A933-F072-485E-90A1-DEB33B251320; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2247614&GUID=64355138-2A4D-4ED3-AFF4-649E3D59BC91; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2247829&GUID=6CA24149-64C1-4D44-99FC-DB0A79D97F76; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2248164&GUID=C3BCD5E8-E1AE-4B81-BFBE-7E14A154A013; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2248195&GUID=3A1AE22C-A2B6-4EC7-85B9-C80F3A122D39; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2248564&GUID=B8FBFF22-1354-4C1B-9CEF-F0284A912F44; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2248697&GUID=A3AD01F6-07E2-4527-B90E-AB1718F6CAD8; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2249031&GUID=BAF2A477-66D0-4B9F-9592-6B18CE1EBDA5; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2249050&GUID=B034F336-0FAA-4B3E-91A7-3F8AE95D2387; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2249197&GUID=F08F44B6-3D04-4F86-B591-BB5FF225E71E; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2249204&GUID=3CF6B2BA-26A0-4E2F-838D-8092E44D3A9A; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2249441&GUID=1A27044B-58A4-40E9-B2BC-97DD24714AB9",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241602&GUID=D335D88B-6EA2-4560-9EB2-17951E63191A; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241603&GUID=6C150676-83C5-428F-A1C8-E1E4E9EF33E7; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241604&GUID=6857EC0A-42D4-4BFB-843E-1748620F0A3C; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241605&GUID=3483B368-B02A-4D9A-96B2-15D50A4DD07A; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241606&GUID=0DD97F19-9B02-4911-BE8B-033DDDD078D2; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241607&GUID=B5100D9F-8669-4B5E-82C0-92D25D7D6FA0; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241608&GUID=0CA535C4-AC6E-4AF6-AEF2-D0D511BF99C3; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241609&GUID=45443A93-EFA3-43AF-B429-1C574E3B2193; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241610&GUID=FAF45556-0C96-4972-A2C8-A2DA4E0298A2; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241611&GUID=1BF356E9-2380-45A2-A212-349A664FF1C2; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241612&GUID=7D51F758-14C7-4CBC-BECA-5B72593DDAB2; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241613&GUID=4F4CF965-F6E6-4D61-9A41-123A9422EE53; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241614&GUID=2E315976-E112-4780-B1F9-F04A15FA3B2F; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241615&GUID=39D7E56F-3C51-4A45-A5C8-EA0A88B043D7; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241616&GUID=8A53F897-B228-4C39-AB1B-D42E85AF9916; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241617&GUID=2151D185-1219-4CB5-A614-BD20E88D64FD; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241618&GUID=F0B2C988-6CFC-4D10-86F4-92873CCCBD4B; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241619&GUID=27DFE32E-6628-4DD6-A4EB-29BFC539ED5C; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241620&GUID=438F0745-1487-45A2-B0FB-09F0602D7A29; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241621&GUID=336050C1-8B18-4D69-8C0E-BD8155B0E3B4; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241622&GUID=996EB500-37C6-4C0C-9F7D-2B6D68C1F69E; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241623&GUID=09060767-937A-47A8-9539-886C433CC4A5; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241624&GUID=B55D035D-FABB-470B-BC74-55A350A439EF; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241625&GUID=E38C8B18-9982-4C06-9EC7-FE9E60852E66; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241626&GUID=E4723763-0CDD-47C1-92D1-D43F753D876B; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241627&GUID=006FC58A-C5EB-4F02-8E94-E75F44546F78; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241628&GUID=BAD2EE4F-17A1-46E4-A5A1-355A83A69AC7; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241629&GUID=4B88026D-AF76-447E-B00B-BF453BF6791B; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241630&GUID=94CC46E4-E227-4A19-ADA4-A80BA489ADC1; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241631&GUID=52920982-DD92-4124-8E60-AD5095FCE0A2; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241632&GUID=3AD1DCFA-7712-460B-9419-DC8BF285A084; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241633&GUID=842726EA-44E0-4525-A05E-48BAA84C5719; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241634&GUID=87D8BA95-2DEC-4F52-95F8-D12231DDDBA6; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241635&GUID=869EA6D5-8CC2-4F36-9077-A64E11207271; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241636&GUID=3CAFA0EE-4F0D-4093-810C-EFB9C6FDB849; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2241637&GUID=0B7F5E8C-E3BF-4F69-8D2B-A345FD6A37DA; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2246558&GUID=6ACF04A6-89AD-486C-87C2-C2E10328E7A6; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2246590&GUID=9ED59BF0-1035-41A2-BE2C-FB2F14C4F4CD; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2246885&GUID=946A173B-8953-48CB-8E74-DA2AA0129AF2; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2246919&GUID=7E113566-F36F-4C9E-BD29-9A30AA3C423F; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2247122&GUID=B13A6532-E0E3-4BA8-9705-1D2ADC52CBE6; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2247198&GUID=AFBDA29C-05F9-4B62-BF11-6D4263B0A5C4; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2247613&GUID=A0FB316A-824D-40AB-B00F-B3E6864E20DE; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2247830&GUID=F4A3BC52-0475-45A9-879B-49A16AC698C2; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2248163&GUID=D322805E-344A-4E17-95FA-DE77D056988C; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2248196&GUID=D5027D29-06DD-4841-A7C9-1C9FF9208024; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2248563&GUID=84705505-86F8-426D-91FB-6708EB314E0D; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2248698&GUID=DB5C6CBD-E34F-4FAF-BE2C-CE4AB1FED772; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2249030&GUID=8E91A7E1-AD2F-46F7-902B-1BF2EA2F2E4D; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2249051&GUID=431D5C1E-5EC3-4D99-BE0B-973AF180F9E5; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2249196&GUID=12BB111B-3AE5-44B1-8881-565C68AFF6FF; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2249205&GUID=C748EF29-1C72-4B31-9FAD-0F7EC5B98270; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2249291&GUID=461C281B-D07D-492D-BF3C-6BDCEC969689; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2249292&GUID=6A6A7F73-C9A6-4BAD-8574-F68BCB045DA6; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2249344&GUID=CAA32322-EE6F-4BAD-9279-AC7BF6DA5C18; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2249434&GUID=BBC38AF5-657A-4E17-B483-33C9718EA2D4",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2245925&GUID=2E3FC661-7F87-4A18-B1F1-24A0C8092699; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2245926&GUID=1D309C43-7BD1-4EE2-B23E-AF26A617A92E; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2247618&GUID=3E10D37A-7AB5-411E-86FD-8A8D0E079D2E; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2247824&GUID=794071E4-52C2-45B2-850D-646F2E34C236; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2248170&GUID=134E29C2-42E8-43BF-89B1-C38A0037A64A; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2248189&GUID=B4DB7E15-34C9-4B18-B25E-88EF8620AC37; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2248249&GUID=69DC287A-D324-4131-97CC-6A619541318A; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2248250&GUID=61AB4A8D-DB81-42F0-82C3-9C5315B4F4BD; https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2248592&GUID=180758AC-617D-4506-A6FA-E1F1F033CAE9",
+          1
+        ]
+      ]
+    },
+    "detail_meeting_detail_urls": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 142,
+      "distinct_nonmissing": 181,
+      "most_common": [
+        [
+          "https://legistar.council.nyc.gov/MeetingDetail.aspx?ID=71398&GUID=DCB4A1E6-C70F-4ABD-83D1-5EAD6C271891&Options=ID|Text|&Search=",
+          38
+        ],
+        [
+          "https://legistar.council.nyc.gov/MeetingDetail.aspx?ID=71447&GUID=4821BEDD-34A7-4DAB-B9A1-1A56D8D0BC3D&Options=ID|Text|&Search=",
+          25
+        ],
+        [
+          "https://legistar.council.nyc.gov/MeetingDetail.aspx?ID=71533&GUID=A408058C-5EBF-416C-ACBE-E75E08B146F2&Options=ID|Text|&Search=",
+          25
+        ],
+        [
+          "https://legistar.council.nyc.gov/MeetingDetail.aspx?ID=71466&GUID=0EF9FB2B-9201-424E-A4ED-F1E5B00FAE31&Options=ID|Text|&Search=",
+          24
+        ],
+        [
+          "https://legistar.council.nyc.gov/MeetingDetail.aspx?ID=71637&GUID=2DE7632A-6B6E-42B8-BE78-45BC5DB17129&Options=ID|Text|&Search=",
+          23
+        ]
+      ]
+    }
+  }
+}

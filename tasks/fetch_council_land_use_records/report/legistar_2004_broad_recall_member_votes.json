@@ -1,0 +1,382 @@
+{
+  "dataset": "legistar_2004_broad_recall_member_votes.csv",
+  "rows": 33201,
+  "key": [
+    "matter_id",
+    "vote_sequence"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "c9d6138a55e725cbb7dd7d3549452add31c0ff50d095cee651d423b9c9c00dd1",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "source_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "nyc_council_legistar_land_use_broad_recall",
+          33201
+        ]
+      ]
+    },
+    "pull_date": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "20260513",
+          33201
+        ]
+      ]
+    },
+    "query_year": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "2004",
+          33201
+        ]
+      ]
+    },
+    "query_matter_type": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "Land Use Application",
+          15453
+        ],
+        [
+          "Resolution",
+          14892
+        ],
+        [
+          "Land Use Call-Up",
+          2856
+        ]
+      ]
+    },
+    "matter_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 651,
+      "most_common": [
+        [
+          "440979",
+          51
+        ],
+        [
+          "440980",
+          51
+        ],
+        [
+          "440981",
+          51
+        ],
+        [
+          "440983",
+          51
+        ],
+        [
+          "440984",
+          51
+        ]
+      ]
+    },
+    "matter_guid": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 651,
+      "most_common": [
+        [
+          "00A73D98-4A3F-4E7B-B474-41730D1C61CB",
+          51
+        ],
+        [
+          "00CE8D53-C655-40FA-834E-EDCA8295AA5E",
+          51
+        ],
+        [
+          "0129066D-37E8-4853-80A9-9516C7EC5316",
+          51
+        ],
+        [
+          "01A3761C-3E6E-415F-9A7A-19204E1EB4F8",
+          51
+        ],
+        [
+          "020513B4-B3CE-45B2-AE7E-165C546D6A70",
+          51
+        ]
+      ]
+    },
+    "matter_file": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 651,
+      "most_common": [
+        [
+          "LU 0001-2004",
+          51
+        ],
+        [
+          "LU 0002-2004",
+          51
+        ],
+        [
+          "LU 0003-2004",
+          51
+        ],
+        [
+          "LU 0004-2004",
+          51
+        ],
+        [
+          "LU 0005-2004",
+          51
+        ]
+      ]
+    },
+    "history_sequence": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          33150
+        ],
+        [
+          "5",
+          51
+        ]
+      ]
+    },
+    "history_date": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 21,
+      "most_common": [
+        [
+          "2/4/2004",
+          3264
+        ],
+        [
+          "8/12/2004",
+          3162
+        ],
+        [
+          "7/21/2004",
+          2448
+        ],
+        [
+          "9/28/2004",
+          2397
+        ],
+        [
+          "6/28/2004",
+          1989
+        ]
+      ]
+    },
+    "history_detail_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 651,
+      "most_common": [
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2287529&GUID=A8EC5296-A317-48F8-AAD5-D84240C00573",
+          51
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2287530&GUID=4768F969-18FC-4443-9415-EBFD227E7264",
+          51
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2287535&GUID=B1D89F39-E2C0-47E7-A54A-7300E1551751",
+          51
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2287536&GUID=CF88036A-8501-4FC8-B80A-64B9917476F5",
+          51
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=2287537&GUID=4D0070F1-08D7-44C8-9112-693DAC1B5C9E",
+          51
+        ]
+      ]
+    },
+    "vote_sequence": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 51,
+      "most_common": [
+        [
+          "1",
+          651
+        ],
+        [
+          "10",
+          651
+        ],
+        [
+          "11",
+          651
+        ],
+        [
+          "12",
+          651
+        ],
+        [
+          "13",
+          651
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 51
+    },
+    "person_name": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 51,
+      "most_common": [
+        [
+          "Alan J. Gerson",
+          651
+        ],
+        [
+          "Albert Vann",
+          651
+        ],
+        [
+          "Allan W. Jennings, Jr.",
+          651
+        ],
+        [
+          "Andrew J. Lanza",
+          651
+        ],
+        [
+          "Annabel Palma",
+          651
+        ]
+      ]
+    },
+    "person_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 51,
+      "most_common": [
+        [
+          "33937",
+          651
+        ],
+        [
+          "33939",
+          651
+        ],
+        [
+          "33944",
+          651
+        ],
+        [
+          "33945",
+          651
+        ],
+        [
+          "33946",
+          651
+        ]
+      ]
+    },
+    "person_guid": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 51,
+      "most_common": [
+        [
+          "071F584B-2D14-4233-A70E-717F20A748CD",
+          651
+        ],
+        [
+          "1CBAC7E5-9F7D-4677-920D-89454EF14D9D",
+          651
+        ],
+        [
+          "1D8C951B-EBDD-45A9-9B04-6E33648D861C",
+          651
+        ],
+        [
+          "21CA30B0-B8F3-43A9-9E6E-6D655EAFBF45",
+          651
+        ],
+        [
+          "2248A337-6091-48E7-8911-E76BAB3B07DC",
+          651
+        ]
+      ]
+    },
+    "vote": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "Affirmative",
+          31640
+        ],
+        [
+          "Excused",
+          1288
+        ],
+        [
+          "Maternity",
+          110
+        ],
+        [
+          "Negative",
+          80
+        ],
+        [
+          "Abstain",
+          49
+        ]
+      ]
+    }
+  }
+}

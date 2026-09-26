@@ -1,0 +1,1050 @@
+{
+  "dataset": "member_deference_nonapproval_action_details.csv",
+  "rows": 585,
+  "key": [
+    "matter_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "f19ce3f821fa9656d8caa9a346fd3b520098d34f4446a5e0a8bb7ea3c7839f43",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "query_year": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 27,
+      "most_common": [
+        [
+          "2017",
+          38
+        ],
+        [
+          "2013",
+          37
+        ],
+        [
+          "2005",
+          35
+        ],
+        [
+          "2004",
+          34
+        ],
+        [
+          "2018",
+          33
+        ]
+      ]
+    },
+    "matter_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 585,
+      "most_common": [
+        [
+          "1043476",
+          1
+        ],
+        [
+          "1050074",
+          1
+        ],
+        [
+          "1078127",
+          1
+        ],
+        [
+          "1078140",
+          1
+        ],
+        [
+          "1078141",
+          1
+        ]
+      ]
+    },
+    "matter_file": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 585,
+      "most_common": [
+        [
+          "LU 0001-2018",
+          1
+        ],
+        [
+          "LU 0006-2024",
+          1
+        ],
+        [
+          "LU 0007-2024",
+          1
+        ],
+        [
+          "LU 0008-2024",
+          1
+        ],
+        [
+          "LU 0009-2002",
+          1
+        ]
+      ]
+    },
+    "query_matter_type": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "Land Use Application",
+          305
+        ],
+        [
+          "Resolution",
+          280
+        ]
+      ]
+    },
+    "matter_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "Filed",
+          418
+        ],
+        [
+          "Disapproved",
+          167
+        ]
+      ]
+    },
+    "disposition_group": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "filed_by_council_other",
+          231
+        ],
+        [
+          "filed_withdrawal_or_motion",
+          187
+        ],
+        [
+          "disapproved",
+          167
+        ]
+      ]
+    },
+    "filed_age_group": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 167,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "filed_same_year_matter",
+          407
+        ],
+        [
+          "filed_older_matter",
+          11
+        ]
+      ]
+    },
+    "final_action_vote_fetch_tier": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "core_city_council_nonapproval",
+          585
+        ]
+      ]
+    },
+    "final_history_date": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 185,
+      "most_common": [
+        [
+          "2017-08-09",
+          14
+        ],
+        [
+          "2018-08-08",
+          10
+        ],
+        [
+          "2020-10-15",
+          10
+        ],
+        [
+          "2022-06-02",
+          10
+        ],
+        [
+          "2004-07-21",
+          8
+        ]
+      ]
+    },
+    "final_history_action_by": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "City Council",
+          585
+        ]
+      ]
+    },
+    "final_history_action": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "Filed by Council",
+          418
+        ],
+        [
+          "Disapproved by Council",
+          154
+        ],
+        [
+          "Overridden by Council",
+          8
+        ],
+        [
+          "Approved, by Council",
+          5
+        ]
+      ]
+    },
+    "final_history_result": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 14,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "Pass",
+          571
+        ]
+      ]
+    },
+    "final_history_detail_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 585,
+      "most_common": [
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=10396369&GUID=DB852FB2-5D6A-46EF-9B3E-6C1F788CC8A4",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=10396370&GUID=85373D5A-5493-4BDD-8DE6-ABAFE9ED6F27",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=10404287&GUID=84A9ABBA-135F-41DA-A612-50DF1AC16D64",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=10404288&GUID=B320B685-0FD3-4C6B-A74E-70CC96D6CBDA",
+          1
+        ],
+        [
+          "https://legistar.council.nyc.gov/HistoryDetail.aspx?ID=10912604&GUID=D08188B9-02A0-43F1-84AD-DD54388151CA",
+          1
+        ]
+      ]
+    },
+    "affected_council_districts": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 118,
+      "distinct_nonmissing": 55,
+      "most_common": [
+        [
+          "3",
+          54
+        ],
+        [
+          "1",
+          39
+        ],
+        [
+          "2",
+          31
+        ],
+        [
+          "9",
+          24
+        ],
+        [
+          "33",
+          15
+        ]
+      ]
+    },
+    "affected_district_source": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 10,
+      "most_common": [
+        [
+          "legistar_matter_index",
+          276
+        ],
+        [
+          "manual_review_unresolved",
+          118
+        ],
+        [
+          "title_bbl_current_mappluto",
+          76
+        ],
+        [
+          "title_address_exact_current_mappluto",
+          58
+        ],
+        [
+          "verified_direct_official_district",
+          24
+        ]
+      ]
+    },
+    "application_keys": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 22,
+      "distinct_nonmissing": 306,
+      "most_common": [
+        [
+          "000074PPM",
+          2
+        ],
+        [
+          "000189ZMX",
+          2
+        ],
+        [
+          "000577PPK",
+          2
+        ],
+        [
+          "010354HAK",
+          2
+        ],
+        [
+          "010645ZMK",
+          2
+        ]
+      ]
+    },
+    "title": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 582,
+      "most_common": [
+        [
+          "Application no. 19985360 TCM, pursuant to Section 20-226 of the Administrative Code of the City of New York, concerning the petition of Starbucks Corporation, d/b/a Starbucks Coffee Company #7341, to establish and operate an unenclosed sidewalk cafe located at 296-300 Third Avenue, Borough of Manhattan, Council District no. 2. This application is subject to review and action by the Council pursuant to Rule 11.20b of the Council and Section 20-226(g) of the New York City Administrative Code.",
+          2
+        ],
+        [
+          "Application number C 210230 ZMK (1571 McDonald Avenue Rezoning) submitted by 1571 Development, LLC, pursuant to Sections 197-c and 201 of the New York City Charter for the amendment of the Zoning Map, Section No. 22d, eliminating from within an existing R5 District a C2-3 District and changing from an R5 District to an C4-4L District, Borough of Brooklyn, Community District 12, Council District 44.",
+          2
+        ],
+        [
+          "Application number N 210231 ZRK (1571 McDonald Avenue Rezoning) submitted by 1571 Development, LLC, pursuant to Section 201 of the New York City Charter, for an amendment to the Zoning Resolution of the City of New York, modifying APPENDIX F for the purpose of establishing a Mandatory Inclusionary Housing area, Borough of Brooklyn, Community District 12, Council District 44.",
+          2
+        ],
+        [
+          "360 Preservation, Block 1550, Lots 31 and 36, Brooklyn, Community District No.16. Council District No. 41",
+          1
+        ],
+        [
+          "A proposal by the Department of General Services, pursuant to §195 of the New York City Charter, for the acquisition of office space located at 808/810 East 16th Street, Borough of Brooklyn, Council District no. 44, for use by Brooklyn Community Board #14. (Non-ULURP no. 20005093 PXK)",
+          1
+        ]
+      ]
+    },
+    "raw_path": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 585,
+      "most_common": [
+        [
+          "../output/source_files/member_deference_nonapproval_action_pages/lu_0001_2018_3312323.html",
+          1
+        ],
+        [
+          "../output/source_files/member_deference_nonapproval_action_pages/lu_0006_2024_6482405.html",
+          1
+        ],
+        [
+          "../output/source_files/member_deference_nonapproval_action_pages/lu_0007_2024_6482406.html",
+          1
+        ],
+        [
+          "../output/source_files/member_deference_nonapproval_action_pages/lu_0008_2024_6482407.html",
+          1
+        ],
+        [
+          "../output/source_files/member_deference_nonapproval_action_pages/lu_0009_2002_436962.html",
+          1
+        ]
+      ]
+    },
+    "file_size_bytes": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 439,
+      "most_common": [
+        [
+          "91278",
+          7
+        ],
+        [
+          "91955",
+          6
+        ],
+        [
+          "91404",
+          5
+        ],
+        [
+          "92097",
+          5
+        ],
+        [
+          "91120",
+          4
+        ]
+      ],
+      "minimum": 48965,
+      "maximum": 93245
+    },
+    "checksum_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 585,
+      "most_common": [
+        [
+          "00b57666c302bfa2b938a621dbded20d538497fec00603b657b5eeacac315980",
+          1
+        ],
+        [
+          "01116e4758496c6055a273aced201addbccdb752e12d2ced2e566c0f6288c357",
+          1
+        ],
+        [
+          "0121e6fb215d33b2eaa3417d772cdc6e8d30012d3170f3fd9ddad1471e9f9338",
+          1
+        ],
+        [
+          "02d13ff2847b855f102372924831c9dac617979aef009cb94ac6eec3f52733b4",
+          1
+        ],
+        [
+          "02d7edf4539944a401f3ab8d9aa45b3a9cfd3e127857940fc839d8fbe86194d0",
+          1
+        ]
+      ]
+    },
+    "action_detail_type": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "Land Use Application",
+          305
+        ],
+        [
+          "Resolution",
+          280
+        ]
+      ]
+    },
+    "action_detail_title": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 583,
+      "most_common": [
+        [
+          "Application no. 19985360 TCM, pursuant to Section 20-226 of the Administrative Code of the City of New York, concerning the petition of Starbucks Corporation, d/b/a Starbucks Coffee Company #7341, to establish and operate an unenclosed sidewalk cafe located at 296-300 Third Avenue, Borough of Manhattan, Council District no. 2. This application is subject to review and action by the Council pursuant to Rule 11.20b of the Council and Section 20-226(g) of the New York City Administrative Code.",
+          2
+        ],
+        [
+          "UDAAP, 7 Saratoga Ave. & 1510-1524 Broadway, Brooklyn (C060526HAK)",
+          2
+        ],
+        [
+          "360 Preservation, Brooklyn",
+          1
+        ],
+        [
+          "Applicatio no. 313097 HAM, an Urban Development Action Area Project, located at 3810 Broadway, Council District no. 7, Borough of Manhattan. This matter is subject to Council review and action pursuant to Article 16 of the New York General Municipal Law, at the request of the New York City Department of Housing Preservation and Development and pursuant to Section 577 of the Private Housing Finance Law, an application for a partial tax exemption.",
+          1
+        ],
+        [
+          "Applicatio no. 315097 HAM, an Urban Development Action Area Project, located at 508 West 134th Street, Council District no. 7, Borough of Manhattan. This matter is subject to Council review an dactin pursuant to Article 16 of the New York General Municipal Law, at the request of the New York City Department of Housing Preservation and Development and pursuant to Section 577 of the Private Housing Finance Law, an application for a partial tax exemption.",
+          1
+        ]
+      ]
+    },
+    "action_detail_result": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 14,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "Pass",
+          571
+        ]
+      ]
+    },
+    "agenda_note": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 309,
+      "distinct_nonmissing": 19,
+      "most_common": [
+        [
+          "Coupled to be Filed Pursuant to Letter of Withdrawal",
+          138
+        ],
+        [
+          "Motion to Disapprove",
+          69
+        ],
+        [
+          "Coupled to be Filed",
+          23
+        ],
+        [
+          "Motion to File Pursuant to Letter of Withdrawal",
+          12
+        ],
+        [
+          "Coupled to be Filed pursuant to Withdrawal",
+          7
+        ]
+      ]
+    },
+    "minutes_note": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 172,
+      "distinct_nonmissing": 47,
+      "most_common": [
+        [
+          "Filed pursuant to a Letter of Withdrawal.",
+          201
+        ],
+        [
+          "Motion to Disapprove",
+          37
+        ],
+        [
+          "Filed pursuant to a Letter of Withdrawal",
+          32
+        ],
+        [
+          "Motion to Disapprove.",
+          26
+        ],
+        [
+          "Filed Pursuant to Letter of Withdrawal",
+          15
+        ]
+      ]
+    },
+    "action_detail_action": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "Filed by Council",
+          418
+        ],
+        [
+          "Disapproved by Council",
+          154
+        ],
+        [
+          "Overridden by Council",
+          8
+        ],
+        [
+          "Approved, by Council",
+          5
+        ]
+      ]
+    },
+    "action_detail_text": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 112,
+      "distinct_nonmissing": 34,
+      "most_common": [
+        [
+          "A motion was made that this Resolution be Filed, by Council approved by consent Roll Call.",
+          61
+        ],
+        [
+          "A motion was made that this Land Use Application be Filed, by Council approved by consent Roll Call.",
+          60
+        ],
+        [
+          "A motion was made that this Land Use Application be Filed by Council approved by consent Roll Call.",
+          52
+        ],
+        [
+          "A motion was made that this Resolution be Filed by Council approved by consent Roll Call.",
+          47
+        ],
+        [
+          "A motion was made that this Land Use Application be Approved, by Council approved by consent Roll Call.",
+          34
+        ]
+      ]
+    },
+    "vote_tab_label": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 29,
+      "most_common": [
+        [
+          "Consent Votes (48:0)",
+          90
+        ],
+        [
+          "Consent Votes (50:0)",
+          69
+        ],
+        [
+          "Consent Votes (49:0)",
+          64
+        ],
+        [
+          "Consent Votes (51:0)",
+          60
+        ],
+        [
+          "Consent Votes (47:0)",
+          53
+        ]
+      ]
+    },
+    "vote_record_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 10,
+      "most_common": [
+        [
+          "51",
+          370
+        ],
+        [
+          "50",
+          112
+        ],
+        [
+          "49",
+          28
+        ],
+        [
+          "52",
+          28
+        ],
+        [
+          "0",
+          14
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 52
+    },
+    "parsed_vote_rows": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 10,
+      "most_common": [
+        [
+          "51",
+          370
+        ],
+        [
+          "50",
+          112
+        ],
+        [
+          "49",
+          28
+        ],
+        [
+          "52",
+          28
+        ],
+        [
+          "0",
+          14
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 52
+    },
+    "affirmative_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 15,
+      "most_common": [
+        [
+          "48",
+          114
+        ],
+        [
+          "49",
+          76
+        ],
+        [
+          "50",
+          73
+        ],
+        [
+          "47",
+          69
+        ],
+        [
+          "51",
+          62
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 51
+    },
+    "negative_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "0",
+          548
+        ],
+        [
+          "1",
+          29
+        ],
+        [
+          "2",
+          4
+        ],
+        [
+          "19",
+          2
+        ],
+        [
+          "18",
+          1
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 19
+    },
+    "abstain_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "0",
+          552
+        ],
+        [
+          "1",
+          29
+        ],
+        [
+          "3",
+          2
+        ],
+        [
+          "6",
+          2
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 6
+    },
+    "excused_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 12,
+      "most_common": [
+        [
+          "0",
+          337
+        ],
+        [
+          "2",
+          87
+        ],
+        [
+          "1",
+          37
+        ],
+        [
+          "3",
+          32
+        ],
+        [
+          "4",
+          20
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 12
+    },
+    "non_voting_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "0",
+          506
+        ],
+        [
+          "1",
+          69
+        ],
+        [
+          "2",
+          10
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 2
+    },
+    "other_vote_count": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 10,
+      "most_common": [
+        [
+          "0",
+          369
+        ],
+        [
+          "1",
+          68
+        ],
+        [
+          "3",
+          50
+        ],
+        [
+          "2",
+          26
+        ],
+        [
+          "6",
+          22
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 9
+    },
+    "vote_margin": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 28,
+      "most_common": [
+        [
+          "48-0-0",
+          92
+        ],
+        [
+          "50-0-0",
+          69
+        ],
+        [
+          "49-0-0",
+          66
+        ],
+        [
+          "51-0-0",
+          62
+        ],
+        [
+          "47-0-0",
+          60
+        ]
+      ]
+    },
+    "negative_members": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 548,
+      "distinct_nonmissing": 10,
+      "most_common": [
+        [
+          "Helen Sears",
+          12
+        ],
+        [
+          "Chaim M. Deutsch",
+          8
+        ],
+        [
+          "Mathieu Eugene; I. Daneek Miller",
+          4
+        ],
+        [
+          "Rosie Mendez",
+          4
+        ],
+        [
+          "Antonio Reynoso",
+          2
+        ]
+      ]
+    },
+    "abstain_members": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 552,
+      "distinct_nonmissing": 10,
+      "most_common": [
+        [
+          "Melinda R. Katz",
+          8
+        ],
+        [
+          "Andy L. King",
+          4
+        ],
+        [
+          "Charles Barron",
+          4
+        ],
+        [
+          "Ydanis A. Rodriguez",
+          4
+        ],
+        [
+          "Allan W. Jennings, Jr.",
+          3
+        ]
+      ]
+    },
+    "local_members_from_roster": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 120,
+      "distinct_nonmissing": 113,
+      "most_common": [
+        [
+          "Christine C. Quinn",
+          43
+        ],
+        [
+          "Margaret S. Chin",
+          29
+        ],
+        [
+          "Bill Perkins",
+          19
+        ],
+        [
+          "Rosie Mendez",
+          14
+        ],
+        [
+          "Kalman Yeger",
+          12
+        ]
+      ]
+    }
+  }
+}
