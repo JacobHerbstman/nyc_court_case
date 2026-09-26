@@ -207,6 +207,45 @@ brooklyn_rank_units_plot_df <- brooklyn_rank_units_df %>%
     )
   )
 
+# Within-borough shares: each tercile's share of its own borough's units in
+# five-year bins matching the event study (the last bin is 2020-2025). The
+# all-borough line averages the five borough shares with weights equal to each
+# borough's number of community districts. Bins with no borough units (only
+# Staten Island 50+) have no share and are left out of that average.
+share_bin_starts <- seq(1970, 2020, 5)
+share_bin_labels <- c(paste0(head(share_bin_starts, -1), "-", head(share_bin_starts, -1) + 4), "2020-2025")
+
+borough_share_df <- preferred_df %>%
+  filter(series_family %in% c("units_built_5_plus", "units_built_50_plus"), year >= 1970, year <= 2025) %>%
+  mutate(bin = findInterval(year, share_bin_starts)) %>%
+  group_by(series_family, borough_name, treat_tercile_label, bin) %>%
+  summarize(units = sum(outcome_value), .groups = "drop") %>%
+  group_by(series_family, borough_name, bin) %>%
+  mutate(borough_units = sum(units)) %>%
+  ungroup() %>%
+  mutate(within_borough_share = if_else(borough_units > 0, units / borough_units, NA_real_)) %>%
+  left_join(count(district_lookup, borough_name, name = "borough_cd_count"), by = "borough_name", relationship = "many-to-one")
+
+if (any(is.na(borough_share_df$within_borough_share) & !(borough_share_df$borough_name == "Staten Island" & borough_share_df$series_family == "units_built_50_plus"))) {
+  stop("Only Staten Island 50+ bins may have no borough units.")
+}
+message("Staten Island 50+ bins with no units: ", sum(is.na(borough_share_df$within_borough_share)) / 3)
+
+borough_share_plot_df <- bind_rows(
+  borough_share_df %>%
+    filter(!is.na(within_borough_share)) %>%
+    group_by(series_family, treat_tercile_label, bin) %>%
+    summarize(within_borough_share = weighted.mean(within_borough_share, borough_cd_count), .groups = "drop") %>%
+    mutate(borough_name = "All boroughs (CD-weighted)"),
+  borough_share_df %>%
+    select(series_family, treat_tercile_label, bin, within_borough_share, borough_name)
+) %>%
+  mutate(
+    borough_name = factor(borough_name, levels = c("All boroughs (CD-weighted)", "Manhattan", "Bronx", "Brooklyn", "Queens", "Staten Island")),
+    series_label = factor(if_else(series_family == "units_built_5_plus", "Units built: 5+", "Units built: 50+"), levels = c("Units built: 5+", "Units built: 50+")),
+    treat_tercile_label = factor(treat_tercile_label, levels = c("Low", "Middle", "High"))
+  )
+
 pdf("../output/cd_homeownership_long_units_raw_units_plots.pdf", width = 11, height = 8.5)
 print(
   ggplot(tercile_units_plot_ma3_df, aes(x = year, y = outcome_value_ma, color = treat_tercile_label, group = treat_tercile_label)) +
@@ -241,6 +280,34 @@ print(
       panel.grid.major.y = element_blank()
     )
 )
+# One page per panel: the all-borough average, then each borough.
+for (borough_page in levels(borough_share_plot_df$borough_name)) {
+  print(
+    ggplot(filter(borough_share_plot_df, borough_name == borough_page), aes(x = bin, y = within_borough_share, color = treat_tercile_label, group = treat_tercile_label)) +
+      geom_line(linewidth = 0.9, na.rm = TRUE) +
+      geom_point(size = 2, na.rm = TRUE) +
+      geom_vline(xintercept = c(5, 9), linetype = "dashed", color = "#666666", linewidth = 0.3) +
+      facet_wrap(~series_label, ncol = 1) +
+      scale_color_manual(values = c("Low" = "#3366CC", "Middle" = "#999999", "High" = "#CC3311")) +
+      scale_y_continuous(labels = scales::label_percent(), limits = c(0, 1)) +
+      scale_x_continuous(breaks = seq_along(share_bin_labels), labels = share_bin_labels) +
+      labs(
+        title = paste0("Within-borough share of units built, by homeownership tercile: ", borough_page),
+        subtitle = "Each tercile's share of its own borough's units in five-year bins; dashed lines mark 1990-1994 and 2010-2014",
+        x = NULL,
+        y = "Share of borough units",
+        color = "Treat tercile",
+        caption = paste(
+          "Terciles are within-borough terciles of 1990 homeownership.",
+          "The all-borough page averages borough shares, weighting each borough by its number of community districts.",
+          "Staten Island has one district per tercile; its 50+ bins with no units have no share and are omitted from the average.",
+          sep = "\n"
+        )
+      ) +
+      theme_minimal(base_size = 12) +
+      theme(legend.position = "bottom", panel.grid.minor = element_blank(), plot.caption = element_text(hjust = 0))
+  )
+}
 dev.off()
 
 cat("Wrote community district long units summaries to ../output\n")

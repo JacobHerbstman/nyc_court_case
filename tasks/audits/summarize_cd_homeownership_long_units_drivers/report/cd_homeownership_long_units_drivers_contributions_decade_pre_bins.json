@@ -1,0 +1,91 @@
+{
+  "dataset": "cd_homeownership_long_units_drivers_contributions_decade_pre_bins.csv",
+  "rows": 1180,
+  "key": ["bin_scheme", "outcome", "district_id", "event_period"],
+  "unique_nonmissing_key": true,
+  "md5_csv_bytes": "46ce533af53410755b8a9a922fe1295a",
+  "fingerprint_scope": "Saved CSV bytes, including row order; not proof of source correctness.",
+  "columns": {
+    "bin_scheme": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 1
+    },
+    "district_id": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 59
+    },
+    "event_period": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 10
+    },
+    "period_mean": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 797,
+      "minimum": 0,
+      "maximum": 2158.6
+    },
+    "change_from_reference": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 906,
+      "minimum": -1827,
+      "maximum": 2123.8
+    },
+    "treat_residual": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 118,
+      "minimum": -1.0432,
+      "maximum": 1.1788
+    },
+    "contribution": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 974,
+      "minimum": -138.6069,
+      "maximum": 51.5748
+    },
+    "outcome": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 2
+    },
+    "borocd": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 101,
+      "maximum": 503
+    },
+    "borough_name": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 5
+    },
+    "treat_z_boro": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": -1.3529,
+      "maximum": 2.8055
+    },
+    "large_upzoning": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "minimum": 0,
+      "maximum": 1
+    },
+    "any_upzoning": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "minimum": 0,
+      "maximum": 1
+    }
+  }
+}

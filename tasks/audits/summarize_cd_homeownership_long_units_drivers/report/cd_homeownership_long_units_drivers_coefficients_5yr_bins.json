@@ -1,0 +1,65 @@
+{
+  "dataset": "cd_homeownership_long_units_drivers_coefficients_5yr_bins.csv",
+  "rows": 330,
+  "key": ["bin_scheme", "scenario", "outcome", "event_period"],
+  "unique_nonmissing_key": true,
+  "md5_csv_bytes": "c4228390cddc3e5bb4f4de6360d28f33",
+  "fingerprint_scope": "Saved CSV bytes, including row order; not proof of source correctness.",
+  "columns": {
+    "bin_scheme": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 1
+    },
+    "scenario": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 19
+    },
+    "outcome": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 7
+    },
+    "event_period": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 11
+    },
+    "estimate": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 291,
+      "minimum": -677.2019,
+      "maximum": 628.078
+    },
+    "std_error": {
+      "type": "numeric",
+      "missing": 30,
+      "distinct_nonmissing": 290,
+      "minimum": 0.4235,
+      "maximum": 741.7137
+    },
+    "conf_low": {
+      "type": "numeric",
+      "missing": 30,
+      "distinct_nonmissing": 290,
+      "minimum": -2309.7027,
+      "maximum": 56.2041
+    },
+    "conf_high": {
+      "type": "numeric",
+      "missing": 30,
+      "distinct_nonmissing": 290,
+      "minimum": -324.1103,
+      "maximum": 1865.7034
+    },
+    "n_districts": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 12,
+      "minimum": 12,
+      "maximum": 59
+    }
+  }
+}
