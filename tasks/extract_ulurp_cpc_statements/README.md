@@ -25,3 +25,12 @@ reports.
 
 `make acquire` sends the narratives in `$(DOCUMENTS)` for `$(RUN_ID)`; it is the
 only target that calls the model. `make` builds the tables from saved answers.
+
+Codex app route (readers are app subagents, not `codex exec`):
+`make app-prompts` writes one prompt file per narrative part to
+`data_raw/cpc_statement_extraction/<RUN_ID>/prompts/` with `prompts.csv`, and
+records the intended model and reasoning in `run.json`. Readers write answers to
+`responses/<document_id>_part<k>_attempt<a>.json`. `make app-record`
+(`record_statement_answers.py`) validates new answer files and appends them to
+`attempts.jsonl`; token counts are blank on this route. `make` then builds the
+tables exactly as for the script route.
