@@ -1,0 +1,211 @@
+{
+  "dataset": "census_year_built_cd.csv",
+  "rows": 59,
+  "key": "borocd",
+  "unique_nonmissing_key": true,
+  "md5_csv_bytes": "83f19755ed4199c897caa8ed21e99db6",
+  "fingerprint_scope": "Saved CSV bytes, including row order; not proof of source correctness.",
+  "columns": {
+    "borocd": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 59
+    },
+    "c1990_built_1989_mar1990": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 58,
+      "minimum": 45,
+      "maximum": 1300
+    },
+    "c1990_built_1985_1988": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 58,
+      "minimum": 160.5,
+      "maximum": 8933
+    },
+    "c1990_built_1980_1984": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 244.6,
+      "maximum": 5655.5
+    },
+    "c1990_built_1970_1979": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 696.8,
+      "maximum": 16422
+    },
+    "c1990_housing_units": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 12177.6,
+      "maximum": 136634
+    },
+    "c1990_owner_built_1985_mar1990": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 0,
+      "maximum": 4048.8
+    },
+    "c1990_renter_built_1985_mar1990": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 199.5,
+      "maximum": 6398
+    },
+    "c1990_year_built_allocated": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 1817.7,
+      "maximum": 44340
+    },
+    "c2000_built_1970_1979": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 1098,
+      "maximum": 16611
+    },
+    "c2000_built_1980_1989": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 57,
+      "minimum": 644,
+      "maximum": 12012
+    },
+    "c2000_built_1990_mar2000": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 57,
+      "minimum": 478,
+      "maximum": 11584
+    },
+    "dcp_housing_units_1990": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 12688,
+      "maximum": 136583
+    },
+    "dcp_housing_units_2000": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 15762,
+      "maximum": 135949
+    },
+    "acs2024_housing_units": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 20293,
+      "maximum": 141311
+    },
+    "acs2024_built_2020_later": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 57,
+      "minimum": 56.1,
+      "maximum": 1784
+    },
+    "acs2024_built_2010_2019": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 474.7,
+      "maximum": 17441
+    },
+    "acs2024_built_2000_2009": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 986,
+      "maximum": 12204.9
+    },
+    "acs2024_built_1990_1999": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 733.2,
+      "maximum": 9402.4
+    },
+    "acs2024_built_1980_1989": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 733,
+      "maximum": 13923
+    },
+    "acs2024_built_1970_1979": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 1154.3,
+      "maximum": 17322
+    },
+    "acs2024_occ_1_4_built_2020_later": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 40,
+      "minimum": 0,
+      "maximum": 324.2
+    },
+    "acs2024_occ_5_plus_built_2020_later": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 58,
+      "minimum": 0,
+      "maximum": 1646
+    },
+    "acs2024_occ_1_4_built_2000_2019": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 87.8,
+      "maximum": 9363.9
+    },
+    "acs2024_occ_5_plus_built_2000_2019": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 153.3,
+      "maximum": 25005
+    },
+    "acs2024_occ_1_4_built_1980_1999": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 63,
+      "maximum": 20795.1
+    },
+    "acs2024_occ_5_plus_built_1980_1999": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 169,
+      "maximum": 13680
+    },
+    "acs2024_occ_1_4_built_1960_1979": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 165,
+      "maximum": 17499
+    },
+    "acs2024_occ_5_plus_built_1960_1979": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 1320,
+      "maximum": 35133
+    }
+  }
+}

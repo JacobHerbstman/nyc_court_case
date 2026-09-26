@@ -1,0 +1,58 @@
+{
+  "dataset": "undercount_event_study_coefficients.csv",
+  "rows": 88,
+  "key": ["spec_id", "event_period"],
+  "unique_nonmissing_key": true,
+  "md5_csv_bytes": "4840da80c36321b04a7c95015385ed2e",
+  "fingerprint_scope": "Saved CSV bytes, including row order; not proof of source correctness.",
+  "columns": {
+    "spec_id": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 8
+    },
+    "spec_label": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 8
+    },
+    "reference_period": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 2
+    },
+    "event_period": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 11
+    },
+    "estimate": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 81,
+      "minimum": -357.8997,
+      "maximum": 65.6995
+    },
+    "std_error": {
+      "type": "numeric",
+      "missing": 8,
+      "distinct_nonmissing": 80,
+      "minimum": 21.0178,
+      "maximum": 148.6725
+    },
+    "p_value": {
+      "type": "numeric",
+      "missing": 8,
+      "distinct_nonmissing": 80,
+      "minimum": 0.0141,
+      "maximum": 0.9975
+    },
+    "reference_mean": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "minimum": 171.7695,
+      "maximum": 243.1667
+    }
+  }
+}

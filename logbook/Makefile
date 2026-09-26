@@ -1,6 +1,9 @@
-all: output/2026-09-26-member-deference-bug-fixes.pdf output/2026-09-26-cd-homeownership-decade-bins-drivers.pdf output/2026-09-22-cpc-llm-pilots.pdf output/2026-09-22-cpc-attachment-repair.pdf output/2026-09-15-cpc-human-reconciliation.pdf output/2026-09-15-withdrawal-project-types.pdf output/2026-09-14-cpc-sample-restrictions.pdf output/2026-09-14-regex-strengthening.pdf output/2026-09-14-zap-universe.pdf output/2026-09-14-workspace-checkpoint.pdf output/2026-09-14-regex-comparison.pdf
+all: output/2026-09-26-member-deference-bug-fixes.pdf output/2026-09-26-mappluto-undercount.pdf output/2026-09-26-cd-homeownership-decade-bins-drivers.pdf output/2026-09-22-cpc-llm-pilots.pdf output/2026-09-22-cpc-attachment-repair.pdf output/2026-09-15-cpc-human-reconciliation.pdf output/2026-09-15-withdrawal-project-types.pdf output/2026-09-14-cpc-sample-restrictions.pdf output/2026-09-14-regex-strengthening.pdf output/2026-09-14-zap-universe.pdf output/2026-09-14-workspace-checkpoint.pdf output/2026-09-14-regex-comparison.pdf
 
 output/2026-09-26-member-deference-bug-fixes.pdf: 2026-09-26-member-deference-bug-fixes.md Makefile | output
+	pandoc $< --pdf-engine=pdflatex -V geometry:margin=0.65in -V fontsize=10pt -V colorlinks=true -o $@
+
+output/2026-09-26-mappluto-undercount.pdf: 2026-09-26-mappluto-undercount.md Makefile | output
 	pandoc $< --pdf-engine=pdflatex -V geometry:margin=0.65in -V fontsize=10pt -V colorlinks=true -o $@
 
 output/2026-09-26-cd-homeownership-decade-bins-drivers.pdf: 2026-09-26-cd-homeownership-decade-bins-drivers.md input/cd_homeownership_long_units_event_coefficients_raw_units_decade_bins.pdf Makefile | output

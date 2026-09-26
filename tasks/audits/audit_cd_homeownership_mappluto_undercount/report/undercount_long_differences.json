@@ -1,0 +1,77 @@
+{
+  "dataset": "undercount_long_differences.csv",
+  "rows": 21,
+  "key": ["comparison_id", "outcome", "measure"],
+  "unique_nonmissing_key": true,
+  "md5_csv_bytes": "4d689207a0abe0308fbd1273ac133768",
+  "fingerprint_scope": "Saved CSV bytes, including row order; not proof of source correctness.",
+  "columns": {
+    "comparison_id": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 10
+    },
+    "outcome": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 3
+    },
+    "measure": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 12
+    },
+    "post": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 14
+    },
+    "pre": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 13
+    },
+    "estimate": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 21,
+      "minimum": -245.0579,
+      "maximum": 62.9433
+    },
+    "std_error": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 21,
+      "minimum": 8.5496,
+      "maximum": 123.6414
+    },
+    "p_value": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 21,
+      "minimum": 0.0003,
+      "maximum": 0.8584
+    },
+    "post_mean": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 14,
+      "minimum": 76.3619,
+      "maximum": 381.5559
+    },
+    "pre_mean": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 13,
+      "minimum": 64.8212,
+      "maximum": 353.5237
+    },
+    "n_districts": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "minimum": 59,
+      "maximum": 59
+    }
+  }
+}

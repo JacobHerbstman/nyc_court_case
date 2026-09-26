@@ -1,0 +1,251 @@
+{
+  "dataset": "undercount_borough_summary.csv",
+  "rows": 45,
+  "key": ["window", "borough_code"],
+  "unique_nonmissing_key": true,
+  "md5_csv_bytes": "77bbf3578a378356cad27227f3a4e791",
+  "fingerprint_scope": "Saved CSV bytes, including row order; not proof of source correctness.",
+  "columns": {
+    "window": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 9
+    },
+    "borough_code": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "minimum": 1,
+      "maximum": 5
+    },
+    "borough_name": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 5
+    },
+    "pluto25_units": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 45,
+      "minimum": 2840,
+      "maximum": 138629
+    },
+    "pluto25_units_1_4": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 44,
+      "minimum": 27,
+      "maximum": 36828
+    },
+    "pluto25_units_5_plus": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 45,
+      "minimum": 719,
+      "maximum": 114931
+    },
+    "pluto25_units_heaped_year": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 45,
+      "minimum": 553,
+      "maximum": 25856
+    },
+    "pluto25_altered_units": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 45,
+      "minimum": 240,
+      "maximum": 309511
+    },
+    "pluto25_altered_units_pre1940_5_plus": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 45,
+      "minimum": 27,
+      "maximum": 237674
+    },
+    "pluto02b_units": {
+      "type": "numeric",
+      "missing": 15,
+      "distinct_nonmissing": 30,
+      "minimum": 3059,
+      "maximum": 69790
+    },
+    "pluto02b_units_same_lot_and_year_in_25v4": {
+      "type": "numeric",
+      "missing": 15,
+      "distinct_nonmissing": 30,
+      "minimum": 2299,
+      "maximum": 55103
+    },
+    "hdb_nb_units": {
+      "type": "numeric",
+      "missing": 40,
+      "distinct_nonmissing": 5,
+      "minimum": 7134,
+      "maximum": 69981
+    },
+    "hdb_nb_units_5_plus": {
+      "type": "numeric",
+      "missing": 40,
+      "distinct_nonmissing": 5,
+      "minimum": 1482,
+      "maximum": 64560
+    },
+    "hdb_alteration_units_added": {
+      "type": "numeric",
+      "missing": 40,
+      "distinct_nonmissing": 5,
+      "minimum": 286,
+      "maximum": 11442
+    },
+    "dob_residential_nb_jobs": {
+      "type": "numeric",
+      "missing": 40,
+      "distinct_nonmissing": 5,
+      "minimum": 395,
+      "maximum": 8409
+    },
+    "dob_residential_a1_jobs": {
+      "type": "numeric",
+      "missing": 40,
+      "distinct_nonmissing": 5,
+      "minimum": 1933,
+      "maximum": 6819
+    },
+    "census1990_units": {
+      "type": "numeric",
+      "missing": 25,
+      "distinct_nonmissing": 20,
+      "minimum": 12406,
+      "maximum": 66077.1
+    },
+    "census1990_renter_units": {
+      "type": "numeric",
+      "missing": 40,
+      "distinct_nonmissing": 5,
+      "minimum": 4375,
+      "maximum": 24091
+    },
+    "census2000_units": {
+      "type": "numeric",
+      "missing": 30,
+      "distinct_nonmissing": 15,
+      "minimum": 21583,
+      "maximum": 68770
+    },
+    "acs2024_units": {
+      "type": "numeric",
+      "missing": 20,
+      "distinct_nonmissing": 25,
+      "minimum": 9076,
+      "maximum": 80847.2
+    },
+    "acs2024_occ_units_5_plus": {
+      "type": "numeric",
+      "missing": 35,
+      "distinct_nonmissing": 10,
+      "minimum": 3008,
+      "maximum": 100696
+    },
+    "acs2024_occ_units_1_4": {
+      "type": "numeric",
+      "missing": 35,
+      "distinct_nonmissing": 10,
+      "minimum": 2600,
+      "maximum": 40683
+    },
+    "bps_units": {
+      "type": "numeric",
+      "missing": 5,
+      "distinct_nonmissing": 40,
+      "minimum": 2987,
+      "maximum": 142358
+    },
+    "bps_units_5_plus": {
+      "type": "numeric",
+      "missing": 5,
+      "distinct_nonmissing": 40,
+      "minimum": 537,
+      "maximum": 117513
+    },
+    "pluto_over_census1990": {
+      "type": "numeric",
+      "missing": 25,
+      "distinct_nonmissing": 20,
+      "minimum": 0.183,
+      "maximum": 1.0573
+    },
+    "pluto_over_census2000": {
+      "type": "numeric",
+      "missing": 30,
+      "distinct_nonmissing": 15,
+      "minimum": 0.3936,
+      "maximum": 1.0472
+    },
+    "pluto_over_acs2024": {
+      "type": "numeric",
+      "missing": 20,
+      "distinct_nonmissing": 25,
+      "minimum": 0.3333,
+      "maximum": 1.1609
+    },
+    "pluto_5_plus_over_acs2024_occ_5_plus": {
+      "type": "numeric",
+      "missing": 35,
+      "distinct_nonmissing": 10,
+      "minimum": 0.3755,
+      "maximum": 1.8047
+    },
+    "pluto_1_4_over_acs2024_occ_1_4": {
+      "type": "numeric",
+      "missing": 35,
+      "distinct_nonmissing": 10,
+      "minimum": 0.1108,
+      "maximum": 1.0041
+    },
+    "pluto_over_hdb": {
+      "type": "numeric",
+      "missing": 40,
+      "distinct_nonmissing": 5,
+      "minimum": 0.9185,
+      "maximum": 1.1485
+    },
+    "pluto_5_plus_over_hdb_5_plus": {
+      "type": "numeric",
+      "missing": 40,
+      "distinct_nonmissing": 5,
+      "minimum": 0.9181,
+      "maximum": 1.1962
+    },
+    "pluto25_over_pluto02b": {
+      "type": "numeric",
+      "missing": 15,
+      "distinct_nonmissing": 30,
+      "minimum": 0.9225,
+      "maximum": 1.2396
+    },
+    "census1990_renter_share": {
+      "type": "numeric",
+      "missing": 40,
+      "distinct_nonmissing": 5,
+      "minimum": 0.2957,
+      "maximum": 0.8599
+    },
+    "pluto_over_bps": {
+      "type": "numeric",
+      "missing": 5,
+      "distinct_nonmissing": 40,
+      "minimum": 0.8348,
+      "maximum": 1.5903
+    },
+    "pluto_5_plus_over_bps_5_plus": {
+      "type": "numeric",
+      "missing": 5,
+      "distinct_nonmissing": 40,
+      "minimum": 0.4715,
+      "maximum": 1.9683
+    }
+  }
+}

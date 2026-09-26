@@ -1,0 +1,22 @@
+{
+    "datasets": {
+        "1990_STF3": {
+            "dataTables": [
+                "NH25",
+                "NH27",
+                "NH77"
+            ],
+            "geogLevels": [
+                "tract"
+            ]
+        }
+    },
+    "dataFormat": "csv_no_header",
+    "description": "1990 STF3 year structure built (NH25), tenure by year built (NH27), and year-built imputation (NH77) for New York State tracts",
+    "breakdownAndDataTypeLayout": "single_file",
+    "geographicExtents": [
+        "360"
+    ],
+    "collection": "nhgis",
+    "version": 2
+}

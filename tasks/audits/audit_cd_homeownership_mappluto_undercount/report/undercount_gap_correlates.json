@@ -1,0 +1,60 @@
+{
+  "dataset": "undercount_gap_correlates.csv",
+  "rows": 25,
+  "key": ["window", "model_id", "term"],
+  "unique_nonmissing_key": true,
+  "md5_csv_bytes": "ab4f472256bb28ef1405a3cedbde6041",
+  "fingerprint_scope": "Saved CSV bytes, including row order; not proof of source correctness.",
+  "columns": {
+    "window": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 2
+    },
+    "model_id": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 6
+    },
+    "term": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 5
+    },
+    "estimate": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 25,
+      "minimum": -430.0466,
+      "maximum": 2613.7489
+    },
+    "std_error": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 25,
+      "minimum": 0.016,
+      "maximum": 996.259
+    },
+    "p_value": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 25,
+      "minimum": 0.0001,
+      "maximum": 0.9862
+    },
+    "within_r2": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 11,
+      "minimum": 0.1603,
+      "maximum": 0.566
+    },
+    "gap_mean": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "minimum": 362.3407,
+      "maximum": 863.5085
+    }
+  }
+}
