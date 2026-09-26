@@ -1,14 +1,27 @@
 # Extract ULURP CPC Statements
 
-Draft, September 22. Will extract one row per statement or action from each CPC
-narrative's reading text (`build_ulurp_cpc_reading_text`). Report-level topic
-and actor measures are derived from these rows downstream, so definitions can
-change without rereading reports.
+Extracts one row per statement or action from each CPC narrative's reading text
+(`build_ulurp_cpc_reading_text`). Report-level topic and actor measures are
+derived from these rows downstream, so definitions can change without rereading
+reports.
 
 - `code/statement_instructions.md`: the reader instruction.
-- `code/statement_schema.json`: the required output format; every response is
-  validated against it, and every quote must appear exactly in a cited segment.
+- `code/statement_schema.json`: the required answer format.
+- `code/run_statement_extraction.py`: sends each narrative to the model with
+  `codex exec` on Jacob's ChatGPT plan (it refuses to run unless Codex is logged
+  in with ChatGPT, and strips API keys from its environment). The whole report
+  goes in the prompt; narratives over `MAX_PACKET_CHARACTERS` are split at
+  segment boundaries. Every attempt is logged, and every answer is saved
+  unedited to `data_raw/cpc_statement_extraction/<RUN_ID>/`. A part with a valid
+  answer is never sent again; invalid answers and timeouts get one retry; a
+  usage limit or Codex error stops the run, and rerunning resumes.
+- `code/build_ulurp_cpc_statements.py`: validates the saved answers and writes
+  `output/ulurp_cpc_statements.csv` (one row per statement) and
+  `output/ulurp_cpc_statement_status.csv` (one row per roster narrative:
+  `complete`, `failed` or `not_run`, with token counts).
+- `code/cpc_statement_packets.py`: packet rendering and answer validation
+  shared by both scripts. A valid answer passes the schema, cites only supplied
+  segments, lists all of them as read, and every quote appears in a cited segment.
 
-Not yet decided: the model and API, and the runner. The Makefile arrives with
-the runner. Raw responses will be archived under `data_raw/` and treated as
-fixed after the single full run.
+`make acquire` sends the narratives in `$(DOCUMENTS)` for `$(RUN_ID)`; it is the
+only target that calls the model. `make` builds the tables from saved answers.
