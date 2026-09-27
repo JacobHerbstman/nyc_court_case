@@ -1,4 +1,7 @@
-all: output/2026-09-27-cpc-ocr-quality.pdf output/2026-09-27-cpc-report-measures-and-full-run.pdf output/2026-09-26-cpc-first100-statements.pdf output/2026-09-22-cpc-llm-pilots.pdf output/2026-09-22-cpc-attachment-repair.pdf output/2026-09-15-cpc-human-reconciliation.pdf output/2026-09-15-withdrawal-project-types.pdf output/2026-09-14-cpc-sample-restrictions.pdf output/2026-09-14-regex-strengthening.pdf output/2026-09-14-zap-universe.pdf output/2026-09-14-workspace-checkpoint.pdf output/2026-09-14-regex-comparison.pdf
+all: output/2026-09-27-cpc-measure-spot-check.pdf output/2026-09-27-cpc-ocr-quality.pdf output/2026-09-27-cpc-report-measures-and-full-run.pdf output/2026-09-26-cpc-first100-statements.pdf output/2026-09-22-cpc-llm-pilots.pdf output/2026-09-22-cpc-attachment-repair.pdf output/2026-09-15-cpc-human-reconciliation.pdf output/2026-09-15-withdrawal-project-types.pdf output/2026-09-14-cpc-sample-restrictions.pdf output/2026-09-14-regex-strengthening.pdf output/2026-09-14-zap-universe.pdf output/2026-09-14-workspace-checkpoint.pdf output/2026-09-14-regex-comparison.pdf
+
+output/2026-09-27-cpc-measure-spot-check.pdf: 2026-09-27-cpc-measure-spot-check.md Makefile | output
+	pandoc $< --pdf-engine=pdflatex -V geometry:margin=0.65in -V fontsize=10pt -V colorlinks=true -o $@
 
 output/2026-09-27-cpc-ocr-quality.pdf: 2026-09-27-cpc-ocr-quality.md Makefile | output
 	pandoc $< --pdf-engine=pdflatex -V geometry:margin=0.65in -V fontsize=10pt -V colorlinks=true -o $@

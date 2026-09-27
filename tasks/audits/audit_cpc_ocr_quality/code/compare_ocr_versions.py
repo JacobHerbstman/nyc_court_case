@@ -51,7 +51,7 @@ def found(text, keyword, support, opposition):
     return False
 
 
-with open('../output/cpc_ocr_sample.csv') as f:
+with open('cpc_ocr_sample.csv') as f:
     sample = {r['document_id']: r for r in csv.DictReader(f)}
 with open('../output/cpc_ocr_page_texts.csv') as f:
     pages = list(csv.DictReader(f))

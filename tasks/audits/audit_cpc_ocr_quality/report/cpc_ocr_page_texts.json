@@ -7,7 +7,7 @@
     "pdf_page"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "d89017ea275f993fb7df7ab7069e64c227fd72793d4f5e84a6891aff015c1261",
+  "sha256_csv_bytes": "e1323cc3315847df0bd075e79a61275ecd87482b75e8e79e0d3cac58d173111b",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -237,27 +237,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 43,
+      "distinct_nonmissing": 51,
       "most_common": [
         [
-          "2.2",
-          34
+          "2.7",
+          25
         ],
         [
-          "2.0",
-          31
-        ],
-        [
-          "2.1",
+          "2.6",
           24
+        ],
+        [
+          "2.9",
+          22
         ],
         [
           "2.3",
-          24
+          21
         ],
         [
-          "3.2",
-          24
+          "2.5",
+          21
         ]
       ]
     },

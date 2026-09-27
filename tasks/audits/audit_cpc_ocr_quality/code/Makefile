@@ -1,23 +1,19 @@
-SAMPLE_SEED := cpc-ocr-quality-20260927
 OCR_DPI := 300
 VISION_THRESHOLD := 0.80
 WORKERS := 6
 
-all: ../output/cpc_ocr_sample.csv ../output/cpc_ocr_page_texts.csv ../output/cpc_ocr_report_comparison.csv \
+all: ../output/cpc_ocr_page_texts.csv ../output/cpc_ocr_report_comparison.csv \
 	../output/cpc_ocr_page_comparison.csv ../output/cpc_ocr_excerpts.md
 
-../output/cpc_ocr_sample.csv: select_ocr_sample.py ../input/ulurp_cpc_statement_status_full_sol_high_20260927.csv \
-	../input/ulurp_cpc_reading_roster.csv ../input/ulurp_cpc_human_coding.csv | ../output ../report
-	python3 $< $(SAMPLE_SEED)
-
-../output/cpc_ocr_page_texts.csv: reocr_sample_pages.py ocr_text_quality.py ../output/cpc_ocr_sample.csv \
-	../input/ulurp_cpc_statement_status_full_sol_high_20260927.csv ../input/ulurp_cpc_report_manifest.csv \
+# cpc_ocr_sample.csv is frozen: select_ocr_sample.py drew it once from the run's
+# September 27 pause snapshot (seed cpc-ocr-quality-20260927).
+../output/cpc_ocr_page_texts.csv: reocr_sample_pages.py ocr_text_quality.py cpc_ocr_sample.csv ../input/ulurp_cpc_report_manifest.csv \
 	../input/ulurp_cpc_reading_segments.csv ../input/cpc_report_pdfs | ../output ../report ../temp
 	python3 $< $(OCR_DPI) $(VISION_THRESHOLD) $(WORKERS)
 
 # Vision transcriptions were acquired outside Make (see README); the folder is frozen.
 ../%/cpc_ocr_report_comparison.csv ../%/cpc_ocr_page_comparison.csv ../%/cpc_ocr_excerpts.md: compare_ocr_versions.py ocr_text_quality.py \
-	../output/cpc_ocr_sample.csv ../output/cpc_ocr_page_texts.csv ../input/ulurp_cpc_human_coding.csv \
+	cpc_ocr_sample.csv ../output/cpc_ocr_page_texts.csv ../input/ulurp_cpc_human_coding.csv \
 	../input/vision_transcriptions | ../output ../report
 	python3 $<
 

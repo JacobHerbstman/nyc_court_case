@@ -9,16 +9,16 @@ AUDIT_DOCUMENTS := 52fc332fdf068895488f 6338e5a87d96ff5af282 444e99affa94f415b84
 all: ../output/cpc_statement_report_measures.csv ../output/cpc_statement_measure_audit_sensitivity.csv \
 	../output/cpc_statement_measure_human_agreement.csv \
 	../output/cpc_statement_full_run_human_agreement.csv ../output/cpc_statement_full_run_retest.csv \
-	../output/cpc_statement_full_run_length.csv
+	../output/cpc_statement_full_run_length.csv ../output/cpc_statement_full_run_report_measures.csv
 
 ../%/cpc_statement_report_measures.csv ../%/cpc_statement_measure_audit_sensitivity.csv ../%/cpc_statement_measure_human_agreement.csv: \
-	build_cpc_statement_report_measures.py cpc_statement_measures.py ../input/ulurp_cpc_statements.csv ../input/ulurp_cpc_human_coding.csv \
+	build_cpc_statement_report_measures.py ../../../_lib/cpc_statement_measures.py ../input/ulurp_cpc_statements.csv ../input/ulurp_cpc_human_coding.csv \
 	../input/cpc_statement_audit_assessments.csv $(foreach doc,$(AUDIT_DOCUMENTS),../input/$(doc)_inventory.json) | ../output ../report
 	python3 $<
 
 # The full run is still in progress; these outputs are a snapshot of its completed reports.
-../%/cpc_statement_full_run_human_agreement.csv ../%/cpc_statement_full_run_retest.csv ../%/cpc_statement_full_run_length.csv: \
-	check_full_run_measures.py cpc_statement_measures.py ../input/ulurp_cpc_statements_full_sol_high_20260927.csv \
+../%/cpc_statement_full_run_human_agreement.csv ../%/cpc_statement_full_run_retest.csv ../%/cpc_statement_full_run_length.csv ../%/cpc_statement_full_run_report_measures.csv: \
+	check_full_run_measures.py ../../../_lib/cpc_statement_measures.py ../input/ulurp_cpc_statements_full_sol_high_20260927.csv \
 	../input/ulurp_cpc_statement_status_full_sol_high_20260927.csv ../input/ulurp_cpc_statements.csv \
 	../input/ulurp_cpc_human_coding.csv ../input/ulurp_cpc_reading_roster.csv | ../output ../report
 	python3 $<

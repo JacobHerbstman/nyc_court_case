@@ -1,12 +1,12 @@
 {
-  "dataset": "cpc_statement_report_measures.csv",
-  "rows": 1700,
+  "dataset": "cpc_statement_full_run_report_measures.csv",
+  "rows": 39321,
   "key": [
     "document_id",
     "measure"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "09797fd1e263d829a7a0e2c06692d3f8d89c9a4a6a077a87045a9eadb482cdbe",
+  "sha256_csv_bytes": "60979545e03b94edeffbd70a7043f5268c8a364118fdedd47278ebc19bb05f3f",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -14,26 +14,26 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 100,
+      "distinct_nonmissing": 2313,
       "most_common": [
         [
-          "02c18c0a3b85fce07355",
+          "001f885d7d891a8711f7",
           17
         ],
         [
-          "0568137a2968387b992b",
+          "00231b56ec914bf6ccd9",
           17
         ],
         [
-          "058b4b67762fd0300c23",
+          "002d5b81eb4ca6b13a55",
           17
         ],
         [
-          "0c559b20ddcc16527202",
+          "0030ee4f2ff8b573da4d",
           17
         ],
         [
-          "0df228eea980f2df69da",
+          "00330746fc3823b54877",
           17
         ]
       ]
@@ -47,23 +47,23 @@
       "most_common": [
         [
           "affordability_displacement",
-          100
+          2313
         ],
         [
           "approved_unresolved_objection",
-          100
+          2313
         ],
         [
           "bp_request_or_opposition",
-          100
+          2313
         ],
         [
           "cb_request_or_opposition",
-          100
+          2313
         ],
         [
           "civic_group_position",
-          100
+          2313
         ]
       ]
     },
@@ -71,28 +71,28 @@
       "python_types": [
         "str"
       ],
-      "missing": 100,
-      "distinct_nonmissing": 18,
+      "missing": 19,
+      "distinct_nonmissing": 50,
       "most_common": [
         [
           "0",
-          913
+          23967
         ],
         [
           "1",
-          421
+          9677
         ],
         [
           "none_or_procedural",
-          160
+          3942
         ],
         [
           "opposition",
-          23
+          398
         ],
         [
           "2",
-          20
+          306
         ]
       ]
     }

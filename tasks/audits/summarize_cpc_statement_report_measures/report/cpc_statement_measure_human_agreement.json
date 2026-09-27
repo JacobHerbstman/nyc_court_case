@@ -6,7 +6,7 @@
     "measure"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "84e1670e96820e1caf6ca9c7a6f47fd664778f89ebb354a62c6faf16bbe8ac80",
+  "sha256_csv_bytes": "aff3e7cbc359264fc468aa1b5e725835f3a465ca328106e1f262ad794aa0fdb5",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -118,7 +118,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 12,
+      "distinct_nonmissing": 11,
       "most_common": [
         [
           "0",
@@ -130,14 +130,14 @@
         ],
         [
           "none_or_procedural",
-          35
-        ],
-        [
-          "3",
-          3
+          33
         ],
         [
           "opposition",
+          6
+        ],
+        [
+          "3",
           3
         ]
       ]
@@ -151,11 +151,11 @@
       "most_common": [
         [
           "1",
-          254
+          257
         ],
         [
           "0",
-          39
+          36
         ]
       ]
     },
@@ -164,7 +164,7 @@
         "str"
       ],
       "missing": 184,
-      "distinct_nonmissing": 5,
+      "distinct_nonmissing": 4,
       "most_common": [
         [
           "0",
@@ -180,11 +180,7 @@
         ],
         [
           "opposition",
-          1
-        ],
-        [
-          "support_or_request",
-          1
+          2
         ]
       ]
     },
@@ -197,11 +193,11 @@
       "most_common": [
         [
           "1",
-          89
+          90
         ],
         [
           "0",
-          20
+          19
         ]
       ]
     }

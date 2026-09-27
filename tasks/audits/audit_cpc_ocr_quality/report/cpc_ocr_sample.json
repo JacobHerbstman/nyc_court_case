@@ -5,7 +5,7 @@
     "document_id"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "9ca935dcd0241503df1c87d2ae235452c9b56350b39ef66696a60121f2eea44f",
+  "sha256_csv_bytes": "122c5471b865514b55414107eb394aeffb7c4e958bb85722c93cfbc07832b6f5",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -126,7 +126,7 @@
     },
     "flagged": {
       "python_types": [
-        "int"
+        "str"
       ],
       "missing": 0,
       "distinct_nonmissing": 2,
@@ -139,13 +139,11 @@
           "0",
           5
         ]
-      ],
-      "minimum": 0,
-      "maximum": 1
+      ]
     },
     "human_tallies": {
       "python_types": [
-        "int"
+        "str"
       ],
       "missing": 0,
       "distinct_nonmissing": 2,
@@ -158,13 +156,11 @@
           "0",
           5
         ]
-      ],
-      "minimum": 0,
-      "maximum": 1
+      ]
     },
     "pre1990": {
       "python_types": [
-        "int"
+        "str"
       ],
       "missing": 0,
       "distinct_nonmissing": 2,
@@ -177,9 +173,7 @@
           "0",
           12
         ]
-      ],
-      "minimum": 0,
-      "maximum": 1
+      ]
     },
     "sample_cell": {
       "python_types": [
@@ -249,6 +243,35 @@
         [
           "212524e74a68f4f52d5575293d6711b2b8de03e7d9e767a343311306e56d64ec",
           34
+        ]
+      ]
+    },
+    "reading_notes": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 34,
+      "most_common": [
+        [
+          "Part 1: Agency recommendation dated October 7 follows CPC decision; its Board of Estimate resolution wording is not evidence of adoption. Parcel schedules on pages 4–5 have heavily garbled OCR.\n",
+          1
+        ],
+        [
+          "Part 1: All 18 segments read, including companion disposition report and declaration pages 8–9 flagged unresolved (clear continuation of same declaration). Map page 4 and declaration exhibits contain garbled OCR. Declaration signature OCR says March 1978 but report and notarization say March 16, 1979. Housing is 149 units in zoning report and 150 including superintendent in disposition/declaration. CB7 abstention count differs: two in zoning report, one in disposition. Service-center letter date reads March 6, 1967. Declaration references Exhibit B plan, which is not separately supplied as a legible development-plan attachment.\n",
+          1
+        ],
+        [
+          "Part 1: All 23 segments read, including the zoning diagram, Borough President memo, board letter and committee report. Unresolved pages are tied by their explicit project/application headings or continuation; page 23 also includes clearly separate citywide charter and district historic-preservation matters. OCR artifacts are retained. Main report describes approximately 36,100 square feet; committee reports a reduction to 35,000; BP cover uses 36,094. Main report/form give June 17 board vote; June 18 letter says June 16. Related action is N 250057 ZRK except one CPC consideration typo N 250056 ZRK. Environmental narrative describes Type II memorandum while resolution refers to Negative Declaration/EAS. Nearby station and adjacent building heights differ across source passages. Nine speakers and two email submissions at BP hearing are reported without substantive positions; no positions inferred.\n",
+          1
+        ],
+        [
+          "Part 1: All 31 supplied segments read. No attachments are supplied. Companion report s0011 refers to C 040269 HAM where the urban renewal plan number elsewhere is C 040269 HUM. The CB conditions are advisory; broad later promises and CPC encouragement do not establish adoption of individual conditions.\n",
+          1
+        ],
+        [
+          "Part 1: All 41 segments read. Unresolved attachments explicitly identify 1010 Pacific Street and C 180042 ZMK/N 180043 ZRK and belong to this project. Some OCR is garbled, especially CB form and rent table; no missing cell values inferred. The report gives Revised Negative Declaration dates April 10 (page 6) and April 8 (resolution); BP recommendation is February 12 in CPC summary but February 8 on attachment form. Parking is 49 spaces in CPC report and 50 in BP attachment. Applicant letter says 46 Option 2 affordable units while BP detailed unit mix sums to 47. Page 13 calls the text amendment N 190054 ZRK, inconsistent with N 180043 ZRK elsewhere; retained literal number for that finding. CB letter says R7D/C1-4 rather than C2-4 and describes 11 additional sites although report describes 12 total tax lots including 2 applicant lots. Approval is R7A/C2-4; original project features are kept as proposed, not represented as revised building commitments.\n",
+          1
         ]
       ]
     }

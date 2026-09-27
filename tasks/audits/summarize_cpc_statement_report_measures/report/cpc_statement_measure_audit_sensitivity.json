@@ -6,7 +6,7 @@
     "measure"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "3d0515789637c214d32f3f1dceb776ef48cca3e7fde793eb0f6998ed4643bd59",
+  "sha256_csv_bytes": "638b30be00f22f8f47eb38b157ae26308df0403377e2853084db7211b754b8f3",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -88,11 +88,11 @@
         ],
         [
           "opposition",
-          7
+          8
         ],
         [
           "support_or_request",
-          4
+          3
         ]
       ]
     },
@@ -117,11 +117,11 @@
         ],
         [
           "opposition",
-          7
+          8
         ],
         [
           "support_or_request",
-          4
+          3
         ]
       ]
     },
@@ -146,11 +146,11 @@
         ],
         [
           "opposition",
-          7
+          8
         ],
         [
           "support_or_request",
-          2
+          1
         ]
       ]
     },

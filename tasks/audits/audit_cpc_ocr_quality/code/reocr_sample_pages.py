@@ -26,10 +26,9 @@ ocr_dpi, vision_threshold, workers = int(sys.argv[1]), float(sys.argv[2]), int(s
 FLAG = re.compile(r'garbl|illegib|unreadable|\bOCR\b', re.I)
 csv.field_size_limit(10**9)
 
-with open('../output/cpc_ocr_sample.csv') as f:
+with open('cpc_ocr_sample.csv') as f:
     sample = {r['document_id']: r for r in csv.DictReader(f)}
-with open('../input/ulurp_cpc_statement_status_full_sol_high_20260927.csv') as f:
-    notes = {r['document_id']: r['reading_notes'] for r in csv.DictReader(f) if r['document_id'] in sample}
+notes = {doc: r['reading_notes'] for doc, r in sample.items()}
 with open('../input/ulurp_cpc_report_manifest.csv') as f:
     pdf_name = {r['document_id']: Path(r['local_pdf_path']).name for r in csv.DictReader(f)}
 

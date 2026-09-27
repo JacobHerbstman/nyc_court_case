@@ -1,13 +1,13 @@
 {
   "dataset": "ulurp_cpc_statements_full_sol_high_20260927.csv",
-  "rows": 74702,
+  "rows": 103540,
   "key": [
     "document_id",
     "part",
     "statement_id"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "fa797cdf2ca3db9d3b81ac866da91e7505099910db5ab3c96bea71ee6b220856",
+  "sha256_csv_bytes": "f8fa1c7c02479a193866dfe772757f34ab5b334646a23392c297578a5e79a32d",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -15,27 +15,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 1662,
+      "distinct_nonmissing": 2313,
       "most_common": [
+        [
+          "95f8e2e700b3fc552767",
+          552
+        ],
+        [
+          "23cef7434887c974ad40",
+          477
+        ],
+        [
+          "4375cf955bd236d2ef01",
+          432
+        ],
         [
           "ff0853905f5c0d1c0237",
           429
         ],
         [
-          "d3341b9b297c246b62e0",
-          401
-        ],
-        [
-          "f40221c95e20c8683e96",
-          388
-        ],
-        [
-          "da6ffc3bada8e3ff5400",
-          386
-        ],
-        [
-          "5a6042fc4ce9a85291c1",
-          384
+          "f2756825fc557405316e",
+          409
         ]
       ]
     },
@@ -44,27 +44,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 1662,
+      "distinct_nonmissing": 2313,
       "most_common": [
+        [
+          "C 860685 ZMK",
+          552
+        ],
+        [
+          "C 860212 ZSK",
+          477
+        ],
+        [
+          "C 920357 ZMM",
+          432
+        ],
         [
           "C 870084 HUK",
           429
         ],
         [
-          "C 070529 ZMM",
-          401
-        ],
-        [
-          "C 070522 ZMM",
-          388
-        ],
-        [
-          "N 080100A ZRM",
-          386
-        ],
-        [
-          "C 220338 ZSM",
-          384
+          "C 180216 ZMK",
+          409
         ]
       ]
     },
@@ -77,7 +77,7 @@
       "most_common": [
         [
           "1",
-          74702
+          103540
         ]
       ],
       "minimum": 1,
@@ -88,58 +88,58 @@
         "int"
       ],
       "missing": 0,
-      "distinct_nonmissing": 429,
+      "distinct_nonmissing": 552,
       "most_common": [
         [
           "1",
-          1662
+          2313
         ],
         [
           "2",
-          1662
+          2313
         ],
         [
           "3",
-          1660
+          2311
         ],
         [
           "4",
-          1656
+          2307
         ],
         [
           "5",
-          1634
+          2277
         ]
       ],
       "minimum": 1,
-      "maximum": 429
+      "maximum": 552
     },
     "segment_ids": {
       "python_types": [
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 8941,
+      "distinct_nonmissing": 11461,
       "most_common": [
         [
           "s0002",
-          4082
+          5627
         ],
         [
           "s0001",
-          3823
+          5418
         ],
         [
           "s0003",
-          2862
+          4048
         ],
         [
           "s0004",
-          2694
+          3824
         ],
         [
           "s0005",
-          2631
+          3716
         ]
       ]
     },
@@ -148,27 +148,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 63768,
+      "distinct_nonmissing": 85509,
       "most_common": [
         [
-          "the City Planning Commission finds that the action described herein will have no significant impact on the environment",
-          144
-        ],
-        [
-          "All leases, subleases, or other agreements for use or occupancy of space at the subject property shall give actual notice of this special permit to the lessee, sublessee or occupant.",
-          141
+          "This application was determined to be a Type II action which requires no further environmental review.",
+          189
         ],
         [
           "This action was determined to be consistent with the policies of the New York City Waterfront Revitalization Program.",
-          127
+          183
         ],
         [
-          "This application was determined to be a Type II action which requires no further environmental review.",
-          127
+          "the City Planning Commission finds that the action described herein will have no significant impact on the environment",
+          181
+        ],
+        [
+          "All leases, subleases, or other agreements for use or occupancy of space at the subject property shall give actual notice of this special permit to the lessee, sublessee or occupant.",
+          180
         ],
         [
           "All zoning computations are subject to verification and approval by the New York City Department of Buildings.",
-          108
+          159
         ]
       ]
     },
@@ -181,23 +181,23 @@
       "most_common": [
         [
           "cpc_report",
-          58277
+          81191
         ],
         [
           "borough_president_recommendation",
-          8894
+          12125
         ],
         [
           "community_board_recommendation",
-          2865
+          3861
         ],
         [
           "restrictive_declaration",
-          1653
+          2178
         ],
         [
           "letter",
-          896
+          1249
         ]
       ]
     },
@@ -206,27 +206,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 3147,
+      "distinct_nonmissing": 4138,
       "most_common": [
         [
           "bundle_general",
-          25482
+          35401
         ],
         [
           "other_project",
-          1336
+          1823
         ],
         [
-          "C 130155 PPQ",
-          190
+          "C 860206 ZSK",
+          277
         ],
         [
-          "C 960467 HUM",
-          189
+          "C 920358 ZSM",
+          220
         ],
         [
-          "C 180065 PCK",
-          180
+          "C 900163A ZSQ",
+          200
         ]
       ]
     },
@@ -234,28 +234,28 @@
       "python_types": [
         "str"
       ],
-      "missing": 57016,
-      "distinct_nonmissing": 3921,
+      "missing": 79100,
+      "distinct_nonmissing": 5389,
       "most_common": [
         [
           "The statement concerns East River Plaza and its concurrently reviewed actions.",
           229
         ],
         [
+          "This page continues the named Exchanges Project recommendation, Community Board resolution, or September 1990 support letter supplied in this bundle; Site 5B/5C and the project identify its application context.",
+          227
+        ],
+        [
+          "Concerns the Riverside South project and related mapping, rezoning and special permits as a whole.",
+          225
+        ],
+        [
+          "Saratoga Square Urban Renewal Area in Brooklyn, a separate project supplied in this bundle; the passage belongs to its report or continuing attachment, not North Harlem III.",
+          223
+        ],
+        [
           "125th Street rezoning project generally, or Kingsgate companion project where identified in summary; no single action isolated.",
           215
-        ],
-        [
-          "Attachment belongs to the board or borough-president materials naming 705 Tenth Avenue (DEP Site).",
-          172
-        ],
-        [
-          "Attachment continues the Halletts North document naming Block 911, Lot 1 and the bundle applications.",
-          171
-        ],
-        [
-          "Attachment continues the declaration, maintenance agreement, recommendation or letter explicitly identifying 77 Commercial Street, Block 2472 Lot 410 and the bundle applications.",
-          169
         ]
       ]
     },
@@ -264,27 +264,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 7750,
+      "distinct_nonmissing": 10053,
       "most_common": [
         [
           "City Planning Commission",
-          19825
+          28215
         ],
         [
           "The Commission",
-          4435
+          5535
         ],
         [
           "Department of Housing Preservation and Development",
-          2536
+          3499
         ],
         [
           "Borough President",
-          2034
+          2841
         ],
         [
           "Department of City Planning",
-          1328
+          1712
         ]
       ]
     },
@@ -293,27 +293,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 262,
+      "distinct_nonmissing": 309,
       "most_common": [
         [
           "cpc",
-          26084
+          36247
         ],
         [
           "community_board",
-          8509
+          11346
         ],
         [
           "borough_president",
-          8188
+          11154
         ],
         [
           "city_agency;applicant",
-          5359
+          7464
         ],
         [
           "applicant",
-          4949
+          7018
         ]
       ]
     },
@@ -321,28 +321,28 @@
       "python_types": [
         "str"
       ],
-      "missing": 62808,
-      "distinct_nonmissing": 1699,
+      "missing": 87305,
+      "distinct_nonmissing": 2261,
       "most_common": [
         [
           "City Planning Commission",
-          1589
-        ],
-        [
-          "Brooklyn Borough President",
-          870
+          2278
         ],
         [
           "Manhattan Borough President",
-          858
+          1139
+        ],
+        [
+          "Brooklyn Borough President",
+          1029
         ],
         [
           "Department of Housing Preservation and Development",
-          308
+          516
         ],
         [
           "Department of City Planning",
-          297
+          333
         ]
       ]
     },
@@ -355,15 +355,15 @@
       "most_common": [
         [
           "no",
-          52511
+          72325
         ],
         [
           "yes",
-          21579
+          30379
         ],
         [
           "unclear",
-          612
+          836
         ]
       ]
     },
@@ -376,19 +376,19 @@
       "most_common": [
         [
           "organization",
-          63381
+          88166
         ],
         [
           "office",
-          7060
+          9501
         ],
         [
           "self",
-          2364
+          3174
         ],
         [
           "unclear",
-          1897
+          2699
         ]
       ]
     },
@@ -401,23 +401,23 @@
       "most_common": [
         [
           "finding",
-          21714
+          30153
         ],
         [
           "proposal_description",
-          13286
+          18505
         ],
         [
           "position",
-          9607
+          13250
         ],
         [
           "request",
-          9494
+          12644
         ],
         [
           "requirement",
-          6686
+          9382
         ]
       ]
     },
@@ -430,19 +430,19 @@
       "most_common": [
         [
           "not_applicable",
-          62537
+          86381
         ],
         [
           "definite",
-          9670
+          13581
         ],
         [
           "conditional",
-          1805
+          2641
         ],
         [
           "tentative",
-          690
+          937
         ]
       ]
     },
@@ -451,27 +451,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 66945,
+      "distinct_nonmissing": 92172,
       "most_common": [
         [
           "Recommend approval.",
-          270
+          361
         ],
         [
           "Type II action requires no further environmental review.",
-          128
+          180
         ],
         [
           "Borough President recommends approval.",
-          109
+          150
         ],
         [
           "No significant environmental impact.",
-          94
+          121
         ],
         [
           "Recommends approval.",
-          89
+          104
         ]
       ]
     },
@@ -484,23 +484,23 @@
       "most_common": [
         [
           "none_stated",
-          54304
+          75396
         ],
         [
           "support",
-          16194
+          22324
         ],
         [
           "oppose",
-          2473
+          3453
         ],
         [
           "conditional_support",
-          1654
+          2260
         ],
         [
           "mixed",
-          77
+          107
         ]
       ]
     },
@@ -508,12 +508,20 @@
       "python_types": [
         "str"
       ],
-      "missing": 70257,
-      "distinct_nonmissing": 2396,
+      "missing": 97716,
+      "distinct_nonmissing": 3023,
       "most_common": [
         [
           "Environmental alternative",
           49
+        ],
+        [
+          "citywide program",
+          30
+        ],
+        [
+          "Citywide program",
+          29
         ],
         [
           "685 First Avenue",
@@ -522,14 +530,6 @@
         [
           "Reduced Main Campus Block Development Alternative",
           21
-        ],
-        [
-          "Mermaid Manor",
-          20
-        ],
-        [
-          "citywide transitional housing program",
-          20
         ]
       ]
     },
@@ -537,28 +537,28 @@
       "python_types": [
         "str"
       ],
-      "missing": 71921,
-      "distinct_nonmissing": 1644,
+      "missing": 99694,
+      "distinct_nonmissing": 2149,
       "most_common": [
         [
           "unanimously",
-          54
+          73
         ],
         [
           "Voting No",
-          51
+          56
         ],
         [
           "voting no",
-          41
+          56
+        ],
+        [
+          "16 to 8 with 5 abstentions",
+          46
         ],
         [
           "VOTING NO",
-          27
-        ],
-        [
-          "ABSTAINING",
-          26
+          38
         ]
       ]
     },
@@ -571,23 +571,23 @@
       "most_common": [
         [
           "not_applicable",
-          60467
+          84174
         ],
         [
           "not_addressed",
-          6868
+          9400
         ],
         [
           "addressed_otherwise",
-          3868
+          5286
         ],
         [
           "adopted",
-          1632
+          2240
         ],
         [
           "partly_adopted",
-          992
+          1307
         ]
       ]
     },
@@ -595,28 +595,28 @@
       "python_types": [
         "str"
       ],
-      "missing": 67415,
-      "distinct_nonmissing": 1645,
+      "missing": 93682,
+      "distinct_nonmissing": 2078,
       "most_common": [
         [
+          "20",
+          91
+        ],
+        [
           "24",
-          71
+          90
         ],
         [
-          "23",
-          68
+          "13",
+          88
         ],
         [
-          "17",
-          67
+          "16",
+          87
         ],
         [
-          "15",
-          66
-        ],
-        [
-          "18",
-          66
+          "25",
+          86
         ]
       ]
     },
@@ -629,23 +629,23 @@
       "most_common": [
         [
           "cpc_consideration",
-          16691
+          23545
         ],
         [
           "pre_certification",
-          11662
+          16109
         ],
         [
           "cpc_decision",
-          11515
+          16050
         ],
         [
           "borough_president",
-          10238
+          14135
         ],
         [
           "community_board",
-          8417
+          11315
         ]
       ]
     },
@@ -653,28 +653,28 @@
       "python_types": [
         "str"
       ],
-      "missing": 55450,
-      "distinct_nonmissing": 6170,
+      "missing": 77338,
+      "distinct_nonmissing": 7940,
       "most_common": [
         [
+          "December 22, 2005",
+          175
+        ],
+        [
           "December 19, 2005",
-          99
+          101
+        ],
+        [
+          "June 13, 2018",
+          92
         ],
         [
           "September 20, 2007",
           88
         ],
         [
-          "December 22, 2005",
-          87
-        ],
-        [
           "May 6, 2009",
-          83
-        ],
-        [
-          "FGEIS notice issued July 13, 2017",
-          77
+          84
         ]
       ]
     },
@@ -682,28 +682,28 @@
       "python_types": [
         "str"
       ],
-      "missing": 13174,
-      "distinct_nonmissing": 785,
+      "missing": 18161,
+      "distinct_nonmissing": 892,
       "most_common": [
         [
           "environment_open_space",
-          8603
+          11982
         ],
         [
           "scale_density_design",
-          6530
+          8881
         ],
         [
           "traffic_parking",
-          5923
+          8141
         ],
         [
           "process",
-          4902
+          6905
         ],
         [
           "infrastructure_services",
-          4285
+          6193
         ]
       ]
     },
@@ -711,28 +711,28 @@
       "python_types": [
         "str"
       ],
-      "missing": 71123,
-      "distinct_nonmissing": 2000,
+      "missing": 98639,
+      "distinct_nonmissing": 2584,
       "most_common": [
         [
           "City property disposition",
-          103
+          132
         ],
         [
           "Property disposition",
-          50
+          69
+        ],
+        [
+          "City property disposition.",
+          58
+        ],
+        [
+          "Security or terrorism risk.",
+          39
         ],
         [
           "Tennis access, public programs, ticket distribution, events or commemorative naming.",
           38
-        ],
-        [
-          "City property disposition.",
-          34
-        ],
-        [
-          "Land use and permitted uses, zoning, or leasing restrictions.",
-          23
         ]
       ]
     },
@@ -745,23 +745,23 @@
       "most_common": [
         [
           "none",
-          67872
+          94009
         ],
         [
           "outreach_or_consultation",
-          2246
+          3052
         ],
         [
           "other_procedural",
-          2067
+          2991
         ],
         [
           "monitoring_or_reporting",
-          1185
+          1667
         ],
         [
           "study",
-          1158
+          1580
         ]
       ]
     },
@@ -769,8 +769,8 @@
       "python_types": [
         "str"
       ],
-      "missing": 58138,
-      "distinct_nonmissing": 11115,
+      "missing": 80638,
+      "distinct_nonmissing": 15170,
       "most_common": [
         [
           "Site/lot columns sometimes interleave with condition prose in OCR; exact source entry retained in quote.",
@@ -785,12 +785,12 @@
           92
         ],
         [
-          "Attached declaration/form agreement incorporated by CPC approval subject to technical/counsel changes; blank execution fields do not establish performance.",
-          86
+          "Resolution expressly incorporates pertinent mitigation on this report page; distinct binding adoption of the described measure. ",
+          92
         ],
         [
-          "Resolution expressly incorporates the common FEIS mitigation measures; site applicability is retained in the summary.",
-          66
+          "Attached declaration/form agreement incorporated by CPC approval subject to technical/counsel changes; blank execution fields do not establish performance.",
+          86
         ]
       ]
     },
@@ -799,27 +799,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 7655,
+      "distinct_nonmissing": 9601,
       "most_common": [
         [
           "2",
-          5318
+          7511
         ],
         [
           "1",
-          4511
+          6408
         ],
         [
           "3",
-          3854
+          5491
         ],
         [
           "4",
-          3397
+          4839
         ],
         [
           "5",
-          3328
+          4698
         ]
       ]
     },
@@ -828,8 +828,20 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 3216,
+      "distinct_nonmissing": 4205,
       "most_common": [
+        [
+          "C 920358 ZSM",
+          921
+        ],
+        [
+          "C 860686 ZSK",
+          868
+        ],
+        [
+          "C 060059 MMX",
+          814
+        ],
         [
           "C 070531A ZSM",
           628
@@ -837,18 +849,6 @@
         [
           "C 070314A ZMQ",
           561
-        ],
-        [
-          "C 990099A ZSM",
-          540
-        ],
-        [
-          "C 240015 ZMX",
-          506
-        ],
-        [
-          "C 100310 ZMX",
-          446
         ]
       ]
     },
@@ -861,15 +861,15 @@
       "most_common": [
         [
           "in_scope",
-          59730
+          82693
         ],
         [
           "unresolved",
-          8604
+          12023
         ],
         [
           "in_scope;unresolved",
-          6368
+          8824
         ]
       ]
     }

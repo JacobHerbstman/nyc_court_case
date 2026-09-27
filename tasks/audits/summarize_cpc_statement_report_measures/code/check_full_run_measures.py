@@ -1,6 +1,7 @@
 """Check report-level measures on the full run's completed reports so far.
 
-Three outputs:
+Four outputs:
+0. Report-level measures for every completed report.
 1. Agreement with the earlier human codes on every completed human-coded report.
 2. Test-retest: the first 100 reports were read twice, on September 26 and again
    in the full run, under instructions that differ only by the procedural field.
@@ -32,6 +33,10 @@ first100, _ = report_measures('../input/ulurp_cpc_statements.csv')
 with open('../input/ulurp_cpc_statement_status_full_sol_high_20260927.csv') as f:
     complete = {r['document_id'] for r in csv.DictReader(f) if r['status'] == 'complete'}
 assert set(full) == complete
+
+measure_rows = [{'document_id': doc, 'measure': m, 'value': v} for doc in sorted(full) for m, v in full[doc].items()]
+save_csv(measure_rows, ['document_id', 'measure', 'value'], '../output/cpc_statement_full_run_report_measures.csv',
+         key=['document_id', 'measure'])
 
 human_rows = []
 with open('../input/ulurp_cpc_human_coding.csv') as f:

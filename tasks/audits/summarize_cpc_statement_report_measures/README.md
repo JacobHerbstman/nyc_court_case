@@ -3,7 +3,7 @@
 Derives report-level measures from the first-100 statement rows
 (`extract_ulurp_cpc_statements`) and asks whether row-level errors found by the
 source audit (`audit_ulurp_cpc_statements`) change them. The rules are in
-`code/cpc_statement_measures.py`, shared by both scripts; measure names follow
+`tasks/_lib/cpc_statement_measures.py`, shared with the spot check; measure names follow
 the human codebook where one exists. `code/check_full_run_measures.py` applies
 them to the full run's completed reports so far.
 
@@ -24,8 +24,14 @@ Outputs:
 
 Rules:
 - Local actors are community boards, borough presidents and boards, elected
-  officials, organizations, residents and unidentified hearing speakers, excluding the
-  project team.
+  officials, organizations and institutions, residents and unidentified hearing
+  speakers, excluding the project team.
+- Council member and civic group positions follow the codebook's "opposes all or
+  part": any oppose stance or concern is opposition; otherwise support, a request or
+  a commitment is support. Civic groups include institutions and officers of named
+  organizations, whether or not the reader marked them as speaking for themselves.
+  Changed September 27 after positive-case misses; the earlier rule required
+  an explicit oppose stance and organization-level speech.
 - Rows describing another project are ignored.
 - An issue topic counts only when a local actor opposes, objects to, or asks for
   something about it. Mentions in the project description or in CPC's own findings
@@ -54,24 +60,23 @@ Findings on the first 100, September 27:
 - The September 26 schema has no field for studies, monitoring or consultation, so
   procedural response is blank for that run.
 
-Full run so far (1,662 completed reports, snapshot September 27):
-- Agreement with human codes on 93 human-coded reports:
-  - 0.91 council member position;
-  - 0.84 Borough President request/opposition;
-  - 0.82 civic group position;
-  - 0.83 community board request/opposition;
-  - 0.93 substantial local opposition.
+Full run so far (2,285 completed reports, snapshot September 27, after the rule change):
+- Agreement with human codes on 112 human-coded reports:
+  - council member position 0.94, but the harder test is positive cases, the reports
+    where a human coded an actual position: 8 of 12 right;
+  - civic group position 0.84, positive cases 17 of 24;
+  - Borough President request/opposition 0.85, positive cases 30 of 30;
+  - community board request/opposition 0.84, positive cases 50 of 53;
+  - substantial local opposition 0.94, positive cases 37 of 43.
 - Speaker counts:
-  - support: exact match 0.77, within one 0.93, correlation 0.97;
-  - opposition: exact match 0.90, within one 0.95, correlation 0.82.
+  - support: exact match 0.76, within one 0.90, correlation 0.96;
+  - opposition: exact match 0.91, within one 0.96, correlation 0.83.
 - Weakest measures:
-  - environment/open space: 0.70;
-  - infrastructure/services: 0.74;
-  - approved over unresolved objection: 0.75.
-- Procedural response with the new field is 0.80, the same as coding every report 0
-  (0.81). It finds 11 of 17 human positives but also flags 12 others.
-- Test-retest on the 98 first-100 reports read twice: 0.92–1.00 per measure,
-  0.93 for support-speaker counts.
-- Statement rows track report length closely: the correlation of their logarithms
-  is 0.95, from about 7 rows for the shortest fifth of reports to 98 for the longest.
-  No long report has a suspiciously low row count.
+  - environment/open space 0.70;
+  - infrastructure/services 0.74;
+  - revision/concession 0.75;
+  - explicit local response 0.76;
+  - approved over unresolved objection 0.77.
+- Procedural response agrees 0.76, below the 0.77 from coding every report 0.
+- Test-retest on the 98 first-100 reports read twice: 0.92–1.00 per measure.
+- Statement rows track report length closely (log correlation 0.95).

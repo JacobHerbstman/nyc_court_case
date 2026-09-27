@@ -1,0 +1,403 @@
+{
+  "dataset": "cpc_spot_check_items.csv",
+  "rows": 315,
+  "key": [
+    "document_id",
+    "measure"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "16888156aa73a4bd9ddd9a6b339a8bffb2c48478ae13d4a975811fe9723f5e7a",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 45,
+      "most_common": [
+        [
+          "151236981b9fcfc3773c",
+          7
+        ],
+        [
+          "17cad4f8302d949c487e",
+          7
+        ],
+        [
+          "1f8369cca1e47fd59bc0",
+          7
+        ],
+        [
+          "2174d914460e2bdbc060",
+          7
+        ],
+        [
+          "30ff2817deb60bf5eaac",
+          7
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 45,
+      "most_common": [
+        [
+          "C 010485 MMR",
+          7
+        ],
+        [
+          "C 020363 ZSM",
+          7
+        ],
+        [
+          "C 020539 ZSM",
+          7
+        ],
+        [
+          "C 020562 PQX",
+          7
+        ],
+        [
+          "C 050245 MMQ",
+          7
+        ]
+      ]
+    },
+    "year": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 28,
+      "most_common": [
+        [
+          "1982",
+          35
+        ],
+        [
+          "2007",
+          28
+        ],
+        [
+          "1989",
+          21
+        ],
+        [
+          "2002",
+          21
+        ],
+        [
+          "1979",
+          14
+        ]
+      ]
+    },
+    "project_name": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 35,
+      "distinct_nonmissing": 39,
+      "most_common": [
+        [
+          "Hra Boarding Home",
+          14
+        ],
+        [
+          "269 Henry Street, Former Firehouse",
+          7
+        ],
+        [
+          "331-333 Bowery",
+          7
+        ],
+        [
+          "363 Lafayette Street",
+          7
+        ],
+        [
+          "36th Street",
+          7
+        ]
+      ]
+    },
+    "sample_cell": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "civic_derived",
+          105
+        ],
+        [
+          "council_derived",
+          105
+        ],
+        [
+          "random_other",
+          70
+        ],
+        [
+          "council_mentioned_not_derived",
+          35
+        ]
+      ]
+    },
+    "pdf_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 45,
+      "most_common": [
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/010485.pdf",
+          7
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/020363.pdf",
+          7
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/020539.pdf",
+          7
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/020562.pdf",
+          7
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/050245.pdf",
+          7
+        ]
+      ]
+    },
+    "measure": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "bp_request_or_opposition",
+          45
+        ],
+        [
+          "cb_request_or_opposition",
+          45
+        ],
+        [
+          "civic_group_position",
+          45
+        ],
+        [
+          "councilmember_position",
+          45
+        ],
+        [
+          "cpc_opposition_speakers",
+          45
+        ]
+      ]
+    },
+    "first_pass_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 7,
+      "distinct_nonmissing": 17,
+      "most_common": [
+        [
+          "0",
+          114
+        ],
+        [
+          "1",
+          68
+        ],
+        [
+          "none_or_procedural",
+          53
+        ],
+        [
+          "support_or_request",
+          20
+        ],
+        [
+          "opposition",
+          17
+        ]
+      ]
+    },
+    "first_pass_quote": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 83,
+      "distinct_nonmissing": 183,
+      "most_common": [
+        [
+          "One speaker testified in favor of the application and none in opposition.",
+          3
+        ],
+        [
+          "Representatives of Manhattan Community College and the College of Insurance urged approval of the Renewal Plan. There were no other appearances and the hearing was closed.",
+          3
+        ],
+        [
+          "There was one speaker in favor and none in opposition to the application.",
+          3
+        ],
+        [
+          "There were 13 appearances in favor, 8 in opposition, and the hearing was closed.",
+          3
+        ],
+        [
+          "There were eight speakers, two in favor and six in opposition.",
+          3
+        ]
+      ]
+    },
+    "first_pass_page": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 83,
+      "distinct_nonmissing": 101,
+      "most_common": [
+        [
+          "C 150115 PQK p.3",
+          6
+        ],
+        [
+          "C 880875 HAK p.2",
+          6
+        ],
+        [
+          "C 020363 ZSM p.5",
+          5
+        ],
+        [
+          "C 070265 ZMX p.7",
+          5
+        ],
+        [
+          "C 831081 ZMX p.2",
+          5
+        ]
+      ]
+    },
+    "first_pass_note": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 17,
+      "distinct_nonmissing": 267,
+      "most_common": [
+        [
+          "Single CPC hearing.",
+          7
+        ],
+        [
+          "Unconditional approval.",
+          7
+        ],
+        [
+          "Single hearing, no speakers.",
+          6
+        ],
+        [
+          "Single hearing.",
+          5
+        ],
+        [
+          "No Council Member appears; CPC hearing had no speakers.",
+          3
+        ]
+      ]
+    },
+    "derived_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 14,
+      "most_common": [
+        [
+          "0",
+          114
+        ],
+        [
+          "1",
+          75
+        ],
+        [
+          "none_or_procedural",
+          51
+        ],
+        [
+          "support_or_request",
+          21
+        ],
+        [
+          "opposition",
+          18
+        ]
+      ]
+    },
+    "derived_evidence": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 162,
+      "distinct_nonmissing": 149,
+      "most_common": [
+        [
+          "[position/oppose] Manhattan Community Board No. 10: Board voted against the proposal.",
+          2
+        ],
+        [
+          "[position/oppose] a representative of the existing residential tenants: Oppose project.",
+          2
+        ],
+        [
+          "[position/oppose] representatives from a local historic preservation group: Two preservation-group representatives opposed the proposal.",
+          2
+        ],
+        [
+          "[position/support] The Councilmember for the 11th District: Supports rezoning and urges approval.",
+          2
+        ],
+        [
+          "[commitment/none_stated] American Legion: Donate the remaining Lot 75 and all of Lot 76 for streets.\n[commitment/none_stated] president of the Remsen Park Coalition, Inc.: Continue collaborating with DPR on landscaping and maintenance.\n[position/support] representative of the American Legion: No objection; favors park mapping to preserve the cemetery.",
+          1
+        ]
+      ]
+    },
+    "first_pass_matches_derived": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          268
+        ],
+        [
+          "0",
+          47
+        ]
+      ]
+    }
+  }
+}

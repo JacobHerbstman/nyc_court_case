@@ -1,0 +1,2 @@
+# save_csv writes standard CSV line endings (CRLF).
+*.csv whitespace=cr-at-eol

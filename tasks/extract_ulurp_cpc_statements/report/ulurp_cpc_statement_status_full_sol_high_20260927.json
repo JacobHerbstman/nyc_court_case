@@ -5,7 +5,7 @@
     "document_id"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "212524e74a68f4f52d5575293d6711b2b8de03e7d9e767a343311306e56d64ec",
+  "sha256_csv_bytes": "61a4c2d64b3514dfdbc74fe25c92c1b72a62a654bd07119abc82b00902a64798",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -103,11 +103,11 @@
       "most_common": [
         [
           "not_run",
-          7401
+          6750
         ],
         [
           "complete",
-          1662
+          2313
         ]
       ]
     },
@@ -115,12 +115,12 @@
       "python_types": [
         "int"
       ],
-      "missing": 7401,
+      "missing": 6750,
       "distinct_nonmissing": 1,
       "most_common": [
         [
           "1",
-          1662
+          2313
         ]
       ],
       "minimum": 1,
@@ -135,11 +135,11 @@
       "most_common": [
         [
           "0",
-          7401
+          6750
         ],
         [
           "1",
-          1662
+          2313
         ]
       ],
       "minimum": 0,
@@ -154,19 +154,19 @@
       "most_common": [
         [
           "0",
-          7401
+          6750
         ],
         [
           "1",
-          1449
+          2044
         ],
         [
           "2",
-          208
+          263
         ],
         [
           "3",
-          5
+          6
         ]
       ],
       "minimum": 0,
@@ -177,31 +177,31 @@
         "int"
       ],
       "missing": 0,
-      "distinct_nonmissing": 203,
+      "distinct_nonmissing": 232,
       "most_common": [
         [
           "0",
-          7401
+          6750
         ],
         [
           "6",
-          61
-        ],
-        [
-          "9",
-          56
+          86
         ],
         [
           "7",
-          53
+          77
         ],
         [
-          "10",
-          52
+          "9",
+          76
+        ],
+        [
+          "8",
+          70
         ]
       ],
       "minimum": 0,
-      "maximum": 429
+      "maximum": 552
     },
     "input_tokens": {
       "python_types": [],
@@ -225,8 +225,8 @@
       "python_types": [
         "str"
       ],
-      "missing": 7462,
-      "distinct_nonmissing": 1599,
+      "missing": 6833,
+      "distinct_nonmissing": 2228,
       "most_common": [
         [
           "Part 1: Minor OCR errors; no attachments supplied.\n",
@@ -237,15 +237,15 @@
           1
         ],
         [
+          "Part 1: Administratively corrected report dated August 2, 2022 corrects resolution block/lot. Page 2 locates the house on Lot 80 but page 3 says Lot 99. CPC summary gives CB vote September 25, 2018; attachment gives September 26. Recommendation forms contain OCR artifacts.\n",
+          1
+        ],
+        [
           "Part 1: Agency attachment includes a proposed Board of Estimate resolution, without an adoption date; it is not recorded as a separate adopted Board decision.\n",
           1
         ],
         [
           "Part 1: Agency recommendation dated October 7 follows CPC decision; its Board of Estimate resolution wording is not evidence of adoption. Parcel schedules on pages 4–5 have heavily garbled OCR.\n",
-          1
-        ],
-        [
-          "Part 1: All 10 pages read. No attachments supplied. Parking figures conflict: sponsor mentions 47 required plus 30 public; initial detailed plan says 41 resident and 36 public; HPD letter says total 109 with 69 plus 41, then 68 public. DOT short-term usage is OCRed 40-40%. These figures are preserved, not reconciled.\n",
           1
         ]
       ]

@@ -1,18 +1,20 @@
 """Report-level CPC measures derived from statement rows.
 
-Shared by build_cpc_statement_report_measures.py (first-100 audit) and
-check_full_run_measures.py (the full run so far).
+Shared by tasks/audits/summarize_cpc_statement_report_measures (first-100 audit and
+full-run checks) and tasks/audits/spot_check_cpc_statement_measures.
 """
 import re
 
 # Actors counted as local: community boards, borough presidents and boards,
-# elected officials, organizations, residents and unidentified hearing speakers,
-# excluding anyone on the project team.
+# elected officials, organizations and institutions, residents and unidentified
+# hearing speakers, excluding anyone on the project team.
 LOCAL_ROLES = {'community_board', 'borough_board', 'borough_president', 'council_member',
                'other_elected_official', 'civic_organization', 'business_or_trade_group',
-               'labor_union', 'resident', 'unidentified_speaker'}
+               'labor_union', 'institution', 'resident', 'unidentified_speaker'}
 INSTITUTIONAL_LOCAL_ROLES = LOCAL_ROLES - {'resident', 'unidentified_speaker'}
-CIVIC_ROLES = {'civic_organization', 'business_or_trade_group', 'labor_union'}
+# Named organizations, including their officers even when the reader marks them as
+# speaking for themselves ("President of the Block Association").
+CIVIC_ROLES = {'civic_organization', 'business_or_trade_group', 'labor_union', 'institution'}
 ISSUE_TOPICS = {
     'affordability_displacement': {'affordability', 'displacement'},
     'environment_open_space': {'environment_open_space'},
@@ -39,10 +41,12 @@ def objects(r):
 
 
 def position(rows):
-    if any(opposes(r) for r in rows):
+    """Codebook actor position: opposing all or part of the proposal is opposition, so an
+    objection or concern counts; otherwise support, a request or a commitment is support."""
+    if any(opposes(r) or r['statement_type'] == 'concern' for r in rows):
         return 'opposition'
-    if any(r['stance_on_project'] in {'support', 'conditional_support'} or r['statement_type'] in {'request', 'position'}
-           for r in rows):
+    if any(r['stance_on_project'] in {'support', 'conditional_support'}
+           or r['statement_type'] in {'request', 'position', 'commitment'} for r in rows):
         return 'support_or_request'
     return 'none_or_procedural'
 
@@ -77,7 +81,7 @@ def measures(rows):
     else:
         out['procedural_response'] = ''
     out['councilmember_position'] = position([r for r in local if 'council_member' in r['actor_roles']])
-    out['civic_group_position'] = position([r for r in local if r['actor_roles'] & CIVIC_ROLES and r['speaks_for'] == 'organization'])
+    out['civic_group_position'] = position([r for r in local if r['actor_roles'] & CIVIC_ROLES])
     # An issue counts when a local actor raises it: opposes, objects or asks for
     # something about it. Mentions only in the project description or in CPC's
     # own findings (e.g. routine environmental review) do not count.
