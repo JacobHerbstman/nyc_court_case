@@ -1,0 +1,123 @@
+{
+  "dataset": "rezoning_local_control_link.csv",
+  "rows": 85,
+  "key": ["direction", "tercile", "initiation"],
+  "unique_nonmissing_key": true,
+  "md5_csv_bytes": "62942b50b93a3289ff418baa95d4a8c3",
+  "fingerprint_scope": "Saved CSV bytes, including row order; not proof of source correctness.",
+  "columns": {
+    "direction": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 5
+    },
+    "tercile": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 4
+    },
+    "initiation": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 5
+    },
+    "rezonings": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 43,
+      "minimum": 1,
+      "maximum": 471
+    },
+    "dcp_sponsored": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 25,
+      "minimum": 0,
+      "maximum": 63
+    },
+    "with_cpc_report_text": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 43,
+      "minimum": 1,
+      "maximum": 462
+    },
+    "cpc_local_request": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 18,
+      "minimum": 0,
+      "maximum": 28
+    },
+    "cpc_request_names_member": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 13,
+      "minimum": 0,
+      "maximum": 22
+    },
+    "with_local_member_position": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 39,
+      "minimum": 0,
+      "maximum": 364
+    },
+    "local_member_opposed": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "minimum": 0,
+      "maximum": 7
+    },
+    "council_disapproved": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "minimum": 0,
+      "maximum": 0
+    },
+    "approved_over_local_opposition": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "minimum": 0,
+      "maximum": 7
+    },
+    "council_modified": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 17,
+      "minimum": 0,
+      "maximum": 75
+    },
+    "amended_application": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "minimum": 0,
+      "maximum": 11
+    },
+    "area_rezoned": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 71,
+      "minimum": 0,
+      "maximum": 559157720.6813
+    },
+    "capacity_net": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 60,
+      "minimum": -63156119.7187,
+      "maximum": 563868833.144
+    },
+    "median_net_pct_of_rezoned": {
+      "type": "numeric",
+      "missing": 16,
+      "distinct_nonmissing": 39,
+      "minimum": -100,
+      "maximum": 273.5334
+    }
+  }
+}

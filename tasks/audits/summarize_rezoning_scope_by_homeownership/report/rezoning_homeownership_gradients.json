@@ -1,0 +1,60 @@
+{
+  "dataset": "rezoning_homeownership_gradients.csv",
+  "rows": 357,
+  "key": ["specification", "outcome", "term"],
+  "unique_nonmissing_key": true,
+  "md5_csv_bytes": "8e452da450601f581456ba1baaec4453",
+  "fingerprint_scope": "Saved CSV bytes, including row order; not proof of source correctness.",
+  "columns": {
+    "specification": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 3
+    },
+    "outcome": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 17
+    },
+    "term": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 7
+    },
+    "coefficient": {
+      "type": "numeric",
+      "missing": 25,
+      "distinct_nonmissing": 332,
+      "minimum": -3.9382,
+      "maximum": 7.9628
+    },
+    "std_error": {
+      "type": "numeric",
+      "missing": 25,
+      "distinct_nonmissing": 332,
+      "minimum": 0.0003,
+      "maximum": 2.7946
+    },
+    "p_value": {
+      "type": "numeric",
+      "missing": 25,
+      "distinct_nonmissing": 329,
+      "minimum": 0,
+      "maximum": 0.9991
+    },
+    "outcome_mean": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 219,
+      "minimum": -0.1393,
+      "maximum": 12.0353
+    },
+    "cds": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "minimum": 55,
+      "maximum": 59
+    }
+  }
+}

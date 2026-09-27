@@ -1,0 +1,266 @@
+{
+  "dataset": "rezonings.csv",
+  "rows": 770,
+  "key": "ulurp",
+  "unique_nonmissing_key": true,
+  "md5_csv_bytes": "156cabf571d485594bea63699e7cc44a",
+  "fingerprint_scope": "Saved CSV bytes, including row order; not proof of source correctness.",
+  "columns": {
+    "ulurp": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 770
+    },
+    "effective": {
+      "type": ["IDate", "Date"],
+      "missing": 0,
+      "distinct_nonmissing": 337
+    },
+    "project_id": {
+      "type": "character",
+      "missing": 22,
+      "distinct_nonmissing": 742
+    },
+    "project_name": {
+      "type": "character",
+      "missing": 22,
+      "distinct_nonmissing": 740
+    },
+    "applicant_type": {
+      "type": "character",
+      "missing": 22,
+      "distinct_nonmissing": 3
+    },
+    "primary_cd": {
+      "type": "integer",
+      "missing": 4,
+      "distinct_nonmissing": 59,
+      "minimum": 101,
+      "maximum": 503
+    },
+    "footprint_cds": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 111
+    },
+    "direction": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 5
+    },
+    "baseline_release": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 24
+    },
+    "footprint_lots": {
+      "type": "integer",
+      "missing": 4,
+      "distinct_nonmissing": 208,
+      "minimum": 1,
+      "maximum": 15117
+    },
+    "footprint_lotarea": {
+      "type": "numeric",
+      "missing": 4,
+      "distinct_nonmissing": 765,
+      "minimum": 0.0121,
+      "maximum": 56610063.5452
+    },
+    "footprint_capacity": {
+      "type": "numeric",
+      "missing": 4,
+      "distinct_nonmissing": 653,
+      "minimum": 0,
+      "maximum": 53976179.6675
+    },
+    "changed_lots": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 189,
+      "minimum": 0,
+      "maximum": 14186
+    },
+    "lots_without_polygon": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "minimum": 0,
+      "maximum": 3
+    },
+    "full_lot_change_without_polygon": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 16,
+      "minimum": -9875.64,
+      "maximum": 51772
+    },
+    "lots_up": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 133,
+      "minimum": 0,
+      "maximum": 5407
+    },
+    "lots_down": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 94,
+      "minimum": 0,
+      "maximum": 6319
+    },
+    "lots_contextual": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 107,
+      "minimum": 0,
+      "maximum": 13421
+    },
+    "area_rezoned": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 630,
+      "minimum": 0,
+      "maximum": 48334715.3488
+    },
+    "area_upzoned": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 526,
+      "minimum": 0,
+      "maximum": 16677632.352
+    },
+    "area_downzoned": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 131,
+      "minimum": 0,
+      "maximum": 16765098.1561
+    },
+    "area_contextual": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 142,
+      "minimum": 0,
+      "maximum": 44564158.8604
+    },
+    "rezoned_lot_capacity_before": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 434,
+      "minimum": 0,
+      "maximum": 53283195.6338
+    },
+    "capacity_added": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 527,
+      "minimum": 0,
+      "maximum": 49198242.0925
+    },
+    "capacity_removed": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 131,
+      "minimum": 0,
+      "maximum": 19804882.3536
+    },
+    "capacity_net": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 558,
+      "minimum": -16756707.9038,
+      "maximum": 49198242.0925
+    },
+    "net_pct_of_rezoned": {
+      "type": "numeric",
+      "missing": 337,
+      "distinct_nonmissing": 262,
+      "minimum": -100,
+      "maximum": 410088.4769
+    },
+    "net_pct_of_footprint": {
+      "type": "numeric",
+      "missing": 117,
+      "distinct_nonmissing": 471,
+      "minimum": -100.0001,
+      "maximum": 339396898.8674
+    },
+    "added_pct_of_rezoned": {
+      "type": "numeric",
+      "missing": 337,
+      "distinct_nonmissing": 243,
+      "minimum": 0,
+      "maximum": 410088.4769
+    },
+    "removed_pct_of_rezoned": {
+      "type": "numeric",
+      "missing": 337,
+      "distinct_nonmissing": 116,
+      "minimum": 0,
+      "maximum": 100
+    },
+    "primary_applicant": {
+      "type": "character",
+      "missing": 22,
+      "distinct_nonmissing": 544
+    },
+    "council_matters": {
+      "type": "character",
+      "missing": 11,
+      "distinct_nonmissing": 758
+    },
+    "council_outcome": {
+      "type": "character",
+      "missing": 11,
+      "distinct_nonmissing": 2
+    },
+    "council_modified": {
+      "type": "logical",
+      "missing": 11,
+      "distinct_nonmissing": 2
+    },
+    "council_no_votes": {
+      "type": "numeric",
+      "missing": 12,
+      "distinct_nonmissing": 11,
+      "minimum": 0,
+      "maximum": 13
+    },
+    "local_member_position": {
+      "type": "character",
+      "missing": 173,
+      "distinct_nonmissing": 2
+    },
+    "council_districts": {
+      "type": "character",
+      "missing": 11,
+      "distinct_nonmissing": 107
+    },
+    "council_override": {
+      "type": "logical",
+      "missing": 0,
+      "distinct_nonmissing": 2
+    },
+    "cpc_local_request": {
+      "type": "logical",
+      "missing": 13,
+      "distinct_nonmissing": 2
+    },
+    "cpc_request_names_member": {
+      "type": "logical",
+      "missing": 13,
+      "distinct_nonmissing": 2
+    },
+    "cpc_request_sentence": {
+      "type": "character",
+      "missing": 701,
+      "distinct_nonmissing": 68
+    },
+    "cpc_report_text": {
+      "type": "logical",
+      "missing": 0,
+      "distinct_nonmissing": 2
+    }
+  }
+}

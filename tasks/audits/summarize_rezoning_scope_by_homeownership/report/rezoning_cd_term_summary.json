@@ -1,0 +1,326 @@
+{
+  "dataset": "rezoning_cd_term_summary.csv",
+  "rows": 354,
+  "key": ["borocd", "term"],
+  "unique_nonmissing_key": true,
+  "md5_csv_bytes": "bae28c2b6477e8e85feefb55e32107d6",
+  "fingerprint_scope": "Saved CSV bytes, including row order; not proof of source correctness.",
+  "columns": {
+    "borocd": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 101,
+      "maximum": 503
+    },
+    "borough_name": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 5
+    },
+    "treat_pp": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": -22.3985,
+      "maximum": 30.5809
+    },
+    "treat_z_boro": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": -1.3529,
+      "maximum": 2.8055
+    },
+    "median_household_income_1990": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 12688,
+      "maximum": 69146
+    },
+    "log_income_1990": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 9.4484,
+      "maximum": 11.144
+    },
+    "tercile": {
+      "type": "factor",
+      "missing": 0,
+      "distinct_nonmissing": 3
+    },
+    "lot_area_2002": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 20903853.7664,
+      "maximum": 415705335.4645
+    },
+    "capacity_2002": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 59,
+      "minimum": 34900759.4672,
+      "maximum": 228335872.3147
+    },
+    "term": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 6
+    },
+    "rezonings": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 13,
+      "minimum": 0,
+      "maximum": 14
+    },
+    "upzonings": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 11,
+      "minimum": 0,
+      "maximum": 12
+    },
+    "downzonings": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "minimum": 0,
+      "maximum": 4
+    },
+    "mixed": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "minimum": 0,
+      "maximum": 2
+    },
+    "contextual": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "minimum": 0,
+      "maximum": 8
+    },
+    "downzonings_dcp_requested": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "minimum": 0,
+      "maximum": 2
+    },
+    "upzonings_dcp": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "minimum": 0,
+      "maximum": 2
+    },
+    "area_upzoned": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 243,
+      "minimum": 0,
+      "maximum": 19439757.0645
+    },
+    "area_downzoned": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 94,
+      "minimum": 0,
+      "maximum": 16853490.2136
+    },
+    "area_contextual": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 100,
+      "minimum": 0,
+      "maximum": 94916056.8435
+    },
+    "area_downzoned_dcp_requested": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 43,
+      "minimum": 0,
+      "maximum": 16765098.1561
+    },
+    "area_contextual_dcp_requested": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 43,
+      "minimum": 0,
+      "maximum": 52034011.18
+    },
+    "capacity_added": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 243,
+      "minimum": 0,
+      "maximum": 44223249.755
+    },
+    "capacity_removed": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 94,
+      "minimum": 0,
+      "maximum": 19900345.7758
+    },
+    "capacity_net": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 250,
+      "minimum": -16852171.326,
+      "maximum": 44223249.755
+    },
+    "capacity_removed_dcp_requested": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 43,
+      "minimum": 0,
+      "maximum": 19804882.3536
+    },
+    "capacity_removed_dcp_other": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 38,
+      "minimum": 0,
+      "maximum": 8601176.5223
+    },
+    "capacity_removed_other_applicant": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 33,
+      "minimum": 0,
+      "maximum": 6733100.4031
+    },
+    "capacity_added_dcp": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 100,
+      "minimum": 0,
+      "maximum": 44223249.755
+    },
+    "capacity_added_other_applicant": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 194,
+      "minimum": 0,
+      "maximum": 26293073.4055
+    },
+    "unattributed_capacity_net": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 286,
+      "minimum": -4128992.68,
+      "maximum": 9499502.67
+    },
+    "area_upzoned_pct_lot_area": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 243,
+      "minimum": 0,
+      "maximum": 36.0213
+    },
+    "area_downzoned_pct_lot_area": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 94,
+      "minimum": 0,
+      "maximum": 27.7696
+    },
+    "area_contextual_pct_lot_area": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 100,
+      "minimum": 0,
+      "maximum": 26.5399
+    },
+    "area_downzoned_dcp_requested_pct_lot_area": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 43,
+      "minimum": 0,
+      "maximum": 27.6239
+    },
+    "area_contextual_dcp_requested_pct_lot_area": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 43,
+      "minimum": 0,
+      "maximum": 25.341
+    },
+    "capacity_2002_pct_capacity": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "minimum": 100,
+      "maximum": 100
+    },
+    "capacity_added_pct_capacity": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 243,
+      "minimum": 0,
+      "maximum": 29.1619
+    },
+    "capacity_removed_pct_capacity": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 94,
+      "minimum": 0,
+      "maximum": 24.0283
+    },
+    "capacity_net_pct_capacity": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 250,
+      "minimum": -20.3479,
+      "maximum": 28.2316
+    },
+    "capacity_removed_dcp_requested_pct_capacity": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 43,
+      "minimum": 0,
+      "maximum": 23.9131
+    },
+    "capacity_removed_dcp_other_pct_capacity": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 38,
+      "minimum": 0,
+      "maximum": 6.4804
+    },
+    "capacity_removed_other_applicant_pct_capacity": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 33,
+      "minimum": 0,
+      "maximum": 7.1595
+    },
+    "capacity_added_dcp_pct_capacity": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 100,
+      "minimum": 0,
+      "maximum": 27.9546
+    },
+    "capacity_added_other_applicant_pct_capacity": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 194,
+      "minimum": 0,
+      "maximum": 19.6022
+    },
+    "unattributed_capacity_net_pct_capacity": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 286,
+      "minimum": -3.236,
+      "maximum": 7.7579
+    }
+  }
+}
