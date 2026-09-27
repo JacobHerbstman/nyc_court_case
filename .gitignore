@@ -8,6 +8,7 @@
 __pycache__/
 node_modules/
 .claude/
+.codex/
 
 # --- Log files ---
 *.log
