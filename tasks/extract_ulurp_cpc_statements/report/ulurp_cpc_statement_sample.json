@@ -1,0 +1,272 @@
+{
+  "dataset": "ulurp_cpc_statement_sample.csv",
+  "rows": 100,
+  "key": [
+    "document_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "7920d4fb5d256aa243ab3af48cc599c4dbddef650192080bab90b5ab473b64e1",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 100,
+      "most_common": [
+        [
+          "02c18c0a3b85fce07355",
+          1
+        ],
+        [
+          "0568137a2968387b992b",
+          1
+        ],
+        [
+          "058b4b67762fd0300c23",
+          1
+        ],
+        [
+          "0c559b20ddcc16527202",
+          1
+        ],
+        [
+          "0df228eea980f2df69da",
+          1
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 100,
+      "most_common": [
+        [
+          "C 000374 ZMR",
+          1
+        ],
+        [
+          "C 010122 ZMQ",
+          1
+        ],
+        [
+          "C 010555 ZSX",
+          1
+        ],
+        [
+          "C 020143 MMK",
+          1
+        ],
+        [
+          "C 020227 PPR",
+          1
+        ]
+      ]
+    },
+    "project_name": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 8,
+      "distinct_nonmissing": 87,
+      "most_common": [
+        [
+          "C-O-P",
+          6
+        ],
+        [
+          "109 Marcus Garvey Boulevard LSGD",
+          1
+        ],
+        [
+          "110 Boerum Pl Bet Pacific & Dean Sts",
+          1
+        ],
+        [
+          "1400 Story Avenue - York Studios",
+          1
+        ],
+        [
+          "145 Hudson Street",
+          1
+        ]
+      ]
+    },
+    "year": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 43,
+      "most_common": [
+        [
+          "1977",
+          8
+        ],
+        [
+          "1979",
+          6
+        ],
+        [
+          "1990",
+          6
+        ],
+        [
+          "1978",
+          4
+        ],
+        [
+          "1995",
+          4
+        ]
+      ]
+    },
+    "selection_reason": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "fresh_decade_scope_sample",
+          74
+        ],
+        [
+          "human_coded_control",
+          16
+        ],
+        [
+          "long_report_stress_case",
+          6
+        ],
+        [
+          "known_attachment_repair",
+          4
+        ]
+      ]
+    },
+    "human_coded": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          80
+        ],
+        [
+          "1",
+          20
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "unresolved_pages": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 18,
+      "most_common": [
+        [
+          "0",
+          46
+        ],
+        [
+          "1",
+          14
+        ],
+        [
+          "2",
+          9
+        ],
+        [
+          "5",
+          6
+        ],
+        [
+          "3",
+          4
+        ]
+      ]
+    },
+    "segment_count": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 38,
+      "most_common": [
+        [
+          "10",
+          9
+        ],
+        [
+          "8",
+          8
+        ],
+        [
+          "12",
+          6
+        ],
+        [
+          "2",
+          6
+        ],
+        [
+          "3",
+          6
+        ]
+      ]
+    },
+    "segment_characters": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 100,
+      "most_common": [
+        [
+          "104249",
+          1
+        ],
+        [
+          "110441",
+          1
+        ],
+        [
+          "111846",
+          1
+        ],
+        [
+          "12220",
+          1
+        ],
+        [
+          "12314",
+          1
+        ]
+      ]
+    },
+    "sample_seed": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "cpc-statements-first100-20260926",
+          100
+        ]
+      ]
+    }
+  }
+}

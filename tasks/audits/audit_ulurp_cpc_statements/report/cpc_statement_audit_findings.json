@@ -1,0 +1,274 @@
+{
+  "dataset": "cpc_statement_audit_findings.csv",
+  "rows": 835,
+  "key": [
+    "document_id",
+    "issue_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "fc636074734216a657d0f63ad016069fa4de42d928bbfbf7cc1e5cf6d7eb48b8",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 20,
+      "most_common": [
+        [
+          "d7f0f0f503caae417e85",
+          510
+        ],
+        [
+          "5663059d8a5882b9c972",
+          80
+        ],
+        [
+          "c27f7af95a119ee12e69",
+          38
+        ],
+        [
+          "7c333cc492149fda31c5",
+          33
+        ],
+        [
+          "8cc1f566a6b3da4f05b1",
+          26
+        ]
+      ]
+    },
+    "issue_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 777,
+      "most_common": [
+        [
+          "I001",
+          4
+        ],
+        [
+          "I002",
+          4
+        ],
+        [
+          "I003",
+          4
+        ],
+        [
+          "I004",
+          4
+        ],
+        [
+          "I005",
+          3
+        ]
+      ]
+    },
+    "classification": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "inventory_omission",
+          627
+        ],
+        [
+          "clear_error",
+          78
+        ],
+        [
+          "granularity",
+          56
+        ],
+        [
+          "unclear",
+          47
+        ],
+        [
+          "source_limit",
+          27
+        ]
+      ]
+    },
+    "categories": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 18,
+      "most_common": [
+        [
+          "[]",
+          618
+        ],
+        [
+          "[\"omission\"]",
+          121
+        ],
+        [
+          "[\"request_adoption\"]",
+          27
+        ],
+        [
+          "[\"stage_position\"]",
+          19
+        ],
+        [
+          "[\"actor\"]",
+          10
+        ]
+      ]
+    },
+    "inventory_statement_ids": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 151,
+      "most_common": [
+        [
+          "[]",
+          630
+        ],
+        [
+          "[4]",
+          5
+        ],
+        [
+          "[5]",
+          5
+        ],
+        [
+          "[6]",
+          5
+        ],
+        [
+          "[10]",
+          4
+        ]
+      ]
+    },
+    "extraction_statement_ids": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 682,
+      "most_common": [
+        [
+          "[]",
+          40
+        ],
+        [
+          "[3]",
+          5
+        ],
+        [
+          "[4]",
+          5
+        ],
+        [
+          "[5]",
+          5
+        ],
+        [
+          "[11]",
+          4
+        ]
+      ]
+    },
+    "segment_ids": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 361,
+      "most_common": [
+        [
+          "[\"s0002\"]",
+          26
+        ],
+        [
+          "[\"s0161\"]",
+          21
+        ],
+        [
+          "[\"s0001\"]",
+          19
+        ],
+        [
+          "[\"s0017\"]",
+          13
+        ],
+        [
+          "[\"s0166\"]",
+          12
+        ]
+      ]
+    },
+    "quote": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 755,
+      "most_common": [
+        [
+          "All leases, subleases, or other agreements for use or occupancy of space at the subject property shall give actual notice of this special permit to the lessee, sub-lessee or occupant.",
+          6
+        ],
+        [
+          "The adverse environmental impacts disclosed in the FSEIS will be minimized or avoided to the maximum extent practicable",
+          6
+        ],
+        [
+          "The development which is the subject of this application shall conform to all applicable laws and regulations relating to their construction, operation and maintenance.",
+          6
+        ],
+        [
+          "This action was determined to be consistent with the policies of the New York City Waterfront Revitalization Program.",
+          6
+        ],
+        [
+          "shall be developed in size and arrangement substantially in accordance with the dimensions, specifications and zoning computations",
+          6
+        ]
+      ]
+    },
+    "explanation": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 335,
+      "most_common": [
+        [
+          "Source-supported extraction detail not separately enumerated in the coarser independent inventory. Reviewed against cited source segment(s), including stage, actor, application and condition/response context. This is an inventory gap; it is not an extraction omission or unsupported row.",
+          500
+        ],
+        [
+          "The source supports an ancillary 39th Street ferry service initiative. The row assigns support to bundle_general with an empty component, which reads as unqualified support for the Industry City application. It should scope this endorsement to that separate initiative (or use none_stated for stance on Industry City). The summary itself is supported; this is one erroneous row, not multiple errors.",
+          2
+        ],
+        [
+          "Additional BP concern about character change on active narrow jobs corridor is supported. Inventory146 jobs/148 height concerns overlap but did not independently inventory this broader Boone character concern; no extraction error.",
+          1
+        ],
+        [
+          "Additional supported CPC clearance finding at consideration is not separately inventoried; inventory row 2 describes DOT proposal and row 15 public benefit. It is not an extraction failure.",
+          1
+        ],
+        [
+          "Adopted unrestricted decision conflicts with preceding CPC non-commercial recommendation. Baseline preserves both stages and describes the conflict. The conflict is in source, not an error or lost change in position in extraction.",
+          1
+        ]
+      ]
+    }
+  }
+}

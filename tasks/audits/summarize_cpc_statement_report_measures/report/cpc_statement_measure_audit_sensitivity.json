@@ -1,0 +1,251 @@
+{
+  "dataset": "cpc_statement_measure_audit_sensitivity.csv",
+  "rows": 300,
+  "key": [
+    "document_id",
+    "measure"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "412f9ba67d585220b7470c1fd3842c5e957b9ff9091846ea46bb9e5cf585cc9b",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 20,
+      "most_common": [
+        [
+          "02c18c0a3b85fce07355",
+          15
+        ],
+        [
+          "1818edbd692337c3eeeb",
+          15
+        ],
+        [
+          "22929526d2ff38ceca2e",
+          15
+        ],
+        [
+          "2ed657ccf1fdddca5f64",
+          15
+        ],
+        [
+          "444e99affa94f415b846",
+          15
+        ]
+      ]
+    },
+    "measure": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 15,
+      "most_common": [
+        [
+          "affordability_displacement",
+          20
+        ],
+        [
+          "approved_unresolved_objection",
+          20
+        ],
+        [
+          "bp_request_or_opposition",
+          20
+        ],
+        [
+          "cb_request_or_opposition",
+          20
+        ],
+        [
+          "civic_group_position",
+          20
+        ]
+      ]
+    },
+    "original": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "0",
+          142
+        ],
+        [
+          "1",
+          118
+        ],
+        [
+          "none_or_procedural",
+          29
+        ],
+        [
+          "opposition",
+          7
+        ],
+        [
+          "support_or_request",
+          4
+        ]
+      ]
+    },
+    "audit_corrected": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "0",
+          147
+        ],
+        [
+          "1",
+          113
+        ],
+        [
+          "none_or_procedural",
+          29
+        ],
+        [
+          "opposition",
+          7
+        ],
+        [
+          "support_or_request",
+          4
+        ]
+      ]
+    },
+    "audit_corrected_drop_unclear": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "0",
+          148
+        ],
+        [
+          "1",
+          112
+        ],
+        [
+          "none_or_procedural",
+          31
+        ],
+        [
+          "opposition",
+          7
+        ],
+        [
+          "support_or_request",
+          2
+        ]
+      ]
+    },
+    "clear_error_rows": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "0",
+          150
+        ],
+        [
+          "3",
+          60
+        ],
+        [
+          "1",
+          45
+        ],
+        [
+          "9",
+          30
+        ],
+        [
+          "5",
+          15
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 9
+    },
+    "unclear_rows": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 10,
+      "most_common": [
+        [
+          "0",
+          75
+        ],
+        [
+          "1",
+          60
+        ],
+        [
+          "2",
+          30
+        ],
+        [
+          "3",
+          30
+        ],
+        [
+          "9",
+          30
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 14
+    },
+    "inventory_rows_added": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9,
+      "most_common": [
+        [
+          "0",
+          90
+        ],
+        [
+          "3",
+          60
+        ],
+        [
+          "9",
+          45
+        ],
+        [
+          "2",
+          30
+        ],
+        [
+          "10",
+          15
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 15
+    }
+  }
+}

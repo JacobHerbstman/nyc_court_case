@@ -11,6 +11,7 @@ packages = [
     ("pyarrow", "pyarrow"),
     ("requests", "requests"),
     ("beautifulsoup4", "bs4"),
+    ("jsonschema", "jsonschema"),
 ]
 
 rows = []

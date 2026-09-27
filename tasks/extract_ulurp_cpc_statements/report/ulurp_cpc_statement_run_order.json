@@ -1,0 +1,120 @@
+{
+  "dataset": "ulurp_cpc_statement_run_order.csv",
+  "rows": 9063,
+  "key": [
+    "document_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "920ff2876f9e26e452391cef318884078a71182ee7fee5ee7e164a74b2548e8e",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9063,
+      "most_common": [
+        [
+          "00119c3b0ee800f4d8ba",
+          1
+        ],
+        [
+          "00126d30463744ba647c",
+          1
+        ],
+        [
+          "00167643a19f5c30bf57",
+          1
+        ],
+        [
+          "001f885d7d891a8711f7",
+          1
+        ],
+        [
+          "00231b56ec914bf6ccd9",
+          1
+        ]
+      ]
+    },
+    "run_order": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9063,
+      "most_common": [
+        [
+          "1",
+          1
+        ],
+        [
+          "10",
+          1
+        ],
+        [
+          "100",
+          1
+        ],
+        [
+          "1000",
+          1
+        ],
+        [
+          "1001",
+          1
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 9063
+    },
+    "order_group": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "single_packet",
+          8872
+        ],
+        [
+          "first100",
+          100
+        ],
+        [
+          "split_report",
+          91
+        ]
+      ]
+    },
+    "parts": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "1",
+          8970
+        ],
+        [
+          "2",
+          63
+        ],
+        [
+          "3",
+          29
+        ],
+        [
+          "4",
+          1
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 4
+    }
+  }
+}

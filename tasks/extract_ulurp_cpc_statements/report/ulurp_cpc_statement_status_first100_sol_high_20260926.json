@@ -1,0 +1,278 @@
+{
+  "dataset": "ulurp_cpc_statement_status_first100_sol_high_20260926.csv",
+  "rows": 9063,
+  "key": [
+    "document_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "926e0907f7398e8ced2353435a27479936d6a001e57f4dcf12b5f70925bc6106",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9063,
+      "most_common": [
+        [
+          "00119c3b0ee800f4d8ba",
+          1
+        ],
+        [
+          "00126d30463744ba647c",
+          1
+        ],
+        [
+          "00167643a19f5c30bf57",
+          1
+        ],
+        [
+          "001f885d7d891a8711f7",
+          1
+        ],
+        [
+          "00231b56ec914bf6ccd9",
+          1
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9063,
+      "most_common": [
+        [
+          "C 000002 ZSM",
+          1
+        ],
+        [
+          "C 000012 ZSR",
+          1
+        ],
+        [
+          "C 000013 ZSR",
+          1
+        ],
+        [
+          "C 000014 ZSR",
+          1
+        ],
+        [
+          "C 000016A ZSR",
+          1
+        ]
+      ]
+    },
+    "run_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "first100_sol_high_20260926",
+          9063
+        ]
+      ]
+    },
+    "selected_for_run": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          8963
+        ],
+        [
+          "1",
+          100
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "not_run",
+          8963
+        ],
+        [
+          "complete",
+          100
+        ]
+      ]
+    },
+    "parts": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 8963,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "1",
+          98
+        ],
+        [
+          "2",
+          1
+        ],
+        [
+          "3",
+          1
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 3
+    },
+    "valid_parts": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "0",
+          8963
+        ],
+        [
+          "1",
+          98
+        ],
+        [
+          "2",
+          1
+        ],
+        [
+          "3",
+          1
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 3
+    },
+    "attempts": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "0",
+          8963
+        ],
+        [
+          "1",
+          67
+        ],
+        [
+          "2",
+          27
+        ],
+        [
+          "3",
+          5
+        ],
+        [
+          "4",
+          1
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 4
+    },
+    "statement_rows": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 61,
+      "most_common": [
+        [
+          "0",
+          8963
+        ],
+        [
+          "17",
+          5
+        ],
+        [
+          "21",
+          4
+        ],
+        [
+          "32",
+          4
+        ],
+        [
+          "6",
+          4
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1131
+    },
+    "input_tokens": {
+      "python_types": [],
+      "missing": 9063,
+      "distinct_nonmissing": 0,
+      "most_common": []
+    },
+    "cached_input_tokens": {
+      "python_types": [],
+      "missing": 9063,
+      "distinct_nonmissing": 0,
+      "most_common": []
+    },
+    "output_tokens": {
+      "python_types": [],
+      "missing": 9063,
+      "distinct_nonmissing": 0,
+      "most_common": []
+    },
+    "reading_notes": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 8963,
+      "distinct_nonmissing": 100,
+      "most_common": [
+        [
+          "Part 0: Whole-report reconciliation: every source segment s0001–s0405 and every row in all three saved first-pass answers (611 + 404 + 217) read. Same-actor/application/stage repetitions in consultation summaries, Board/BP attachments and companion recitals were consolidated after source review; atomic requests, distinct stages, application-specific statutory findings and approvals, and conflicting votes/descriptions remain. Responses checked across the full report: explicit IH, school, public-access, storefront, parking and separate-entrance connections linked; partial measures are qualified and unrelated similar amenities do not establish adoption. Declaration obligations remain subject to their election, funding, waiver, timing and enforcement terms; blank execution dates do not establish execution or implementation. Conflicts include Board overall votes (35:3 versus 36-2-0-0), text-amendment vote (34:2:1 versus 36:2:1), building height/floor-area descriptions, school-capacity descriptions and BP parking arithmetic. Collective hearing summaries do not allocate each concern individually among the represented offices; descriptive actors are retained without invented names. Historical Riverside South statements are distinguished from the current bundle. Unclear denotes a related feature without an express relationship to the particular demand; not_addressed denotes no explicit response in the supplied whole report. All earlier saved answers preserved; this is extraction reconciliation, not the independent audit.\n",
+          1
+        ],
+        [
+          "Part 0: Whole-report reconciliation: read all 195 original segments s0001–s0195 and both saved first-pass answers (562 and 167 rows). Part2 s0142–s0150 is a continuation of Borough President Adams’s March 4, 2020 recommendation identified in s0112–s0141, not an unidentified new actor or stage. Repeated BP requests/positions, companion proposal descriptions, CB/BP recommendations and joint hearing counts were consolidated with source citations; distinct applications, actors, stages, opinions and substantive requirements remain. CPC’s direct discussion of requested restrictions, studies, industrial set-asides, hotels, parking, bulk, waterfront access and out-of-purview agency matters supplies response links. Explained or rejected requests are not adoption. Council-requested September 2019 hotel/industrial/retail promises and the conditional February hearing willingness to remove hotels are preserved alongside unchanged certified application and contrary CPC hotel approval. No later Council action is supplied. Conditional declaration public space, shuttle, shelters and mitigation are kept as approval requirements, with no inferred adoption of superficially similar CB/BP demands. The focal map report’s conditional BP approval differs from unconditioned approval in the full recommendation; both are retained as conflicting source statements, not a proven change of position. CB vote dates January15 versus January16; BP hearing dates December9, January14 and January8 are unresolved. Jobs15000/20000+/15000 direct+8000 indirect; firms450/550, employees7000/8000; academic400000/625000/628000; manufacturing1.8m/1.874m; hotels290000/287000; FAR4.97/4.96 vary by source. BP s0119 includes apparent 7,700,000-gsf retail error; BP retail limits and tracked changes have conflicting aggregates. Generic school authorization/findings do not mean schools are proposed: s0077 expressly says none. Severe map OCR s0090, form/vote OCR, declaration blank dates, footnote Mitigation Measures (if any) to be confirmed, and title-only exhibits A–F limit interpretation. Signed/notarized OCR s0194–s0195 has uncertain dating; no recordation inferred. Resolution cross-reference C190297ZSM and subject-property C190296ZMK appear erroneous; actual special-permit action is C190297ZSK. Structural/quotation validation is not an independent accuracy audit.\n",
+          1
+        ],
+        [
+          "Part 1: All 10 report segments read; no attachments supplied. OCR frequently substitutes 0/5/8/I for C/6/B/1 in zoning labels. Certified R6B proposal was deleted on June 11, 1990 and is distinguished from the adopted C6-2A rezoning. Certified description gives 6.02 maximum FAR while consideration describes 6.5 with community facility. Residents associations and hearing representative are unnamed.\n",
+          1
+        ],
+        [
+          "Part 1: All 11 segments read including restored board and BP attachments. Minor typos: 3676 instead of 3276, AVNEUE, and BP diagram date December 15 rather than December 14. Board form handwritten dates/counts garbled; CPC narrative reports hearing February 8 while BP says February 16. CPC says approximately/less than 500 SF Lot 22 area.\n",
+          1
+        ],
+        [
+          "Part 1: All 12 segments read including FAA letters. OCR severely reorders the hearing speaker list and autorotation analysis; collective affiliations retained without inventing personal names. Opposition/support points are collectively summarized, not assignable to individual listed speakers. s0001 says service discontinued January 1970 while s0002 gives last operating date February 15, 1968; unresolved historical inconsistency. Initial 36 daily operations differs from 30–60 assumed in noise study. FAA September letter withholds approval pending review; October manual acceptance and December environmental declaration are later distinct findings. October 12 FAA letter and full noise/safety reports referenced but not supplied.\n",
+          1
+        ]
+      ]
+    }
+  }
+}

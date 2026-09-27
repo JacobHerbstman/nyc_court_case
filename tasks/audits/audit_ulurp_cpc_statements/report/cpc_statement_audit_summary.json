@@ -1,0 +1,653 @@
+{
+  "dataset": "cpc_statement_audit_summary.csv",
+  "rows": 20,
+  "key": [
+    "document_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "ef08163067f43087f48fe50dc10bd3a293e6db503663d3dc793d22d86db08a89",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 20,
+      "most_common": [
+        [
+          "02c18c0a3b85fce07355",
+          1
+        ],
+        [
+          "1818edbd692337c3eeeb",
+          1
+        ],
+        [
+          "22929526d2ff38ceca2e",
+          1
+        ],
+        [
+          "2ed657ccf1fdddca5f64",
+          1
+        ],
+        [
+          "444e99affa94f415b846",
+          1
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 20,
+      "most_common": [
+        [
+          "C 100287 ZSM",
+          1
+        ],
+        [
+          "C 100420 ZMM",
+          1
+        ],
+        [
+          "C 110297 ZSX",
+          1
+        ],
+        [
+          "C 120294 ZMK",
+          1
+        ],
+        [
+          "C 130155 PPQ",
+          1
+        ]
+      ]
+    },
+    "project_name": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 2,
+      "distinct_nonmissing": 18,
+      "most_common": [
+        [
+          "1400 Story Avenue - York Studios",
+          1
+        ],
+        [
+          "19 East 72nd Street",
+          1
+        ],
+        [
+          "3276 Jerome Avenue",
+          1
+        ],
+        [
+          "3rd Avenue Corridor Rezoning and Text Amendment",
+          1
+        ],
+        [
+          "624 Morris Avenue Rezoning",
+          1
+        ]
+      ]
+    },
+    "audit_reason": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "fresh_decade_coverage",
+          6
+        ],
+        [
+          "additional_human_control",
+          4
+        ],
+        [
+          "repaired_attachment_control",
+          4
+        ],
+        [
+          "fresh_page_scope_coverage",
+          2
+        ],
+        [
+          "long_single_packet",
+          2
+        ]
+      ]
+    },
+    "human_coded": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          12
+        ],
+        [
+          "1",
+          8
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "unresolved_pages": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 8,
+      "most_common": [
+        [
+          "0",
+          9
+        ],
+        [
+          "1",
+          2
+        ],
+        [
+          "2",
+          2
+        ],
+        [
+          "3",
+          2
+        ],
+        [
+          "5",
+          2
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 124
+    },
+    "segments_assessed": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 16,
+      "most_common": [
+        [
+          "2",
+          3
+        ],
+        [
+          "18",
+          2
+        ],
+        [
+          "8",
+          2
+        ],
+        [
+          "11",
+          1
+        ],
+        [
+          "124",
+          1
+        ]
+      ],
+      "minimum": 2,
+      "maximum": 405
+    },
+    "inventory_statements": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 20,
+      "most_common": [
+        [
+          "118",
+          1
+        ],
+        [
+          "16",
+          1
+        ],
+        [
+          "171",
+          1
+        ],
+        [
+          "178",
+          1
+        ],
+        [
+          "18",
+          1
+        ]
+      ],
+      "minimum": 6,
+      "maximum": 517
+    },
+    "extracted_statements": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 18,
+      "most_common": [
+        [
+          "17",
+          2
+        ],
+        [
+          "19",
+          2
+        ],
+        [
+          "1131",
+          1
+        ],
+        [
+          "15",
+          1
+        ],
+        [
+          "155",
+          1
+        ]
+      ],
+      "minimum": 5,
+      "maximum": 1131
+    },
+    "inventory_covered": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 17,
+      "most_common": [
+        [
+          "16",
+          2
+        ],
+        [
+          "19",
+          2
+        ],
+        [
+          "49",
+          2
+        ],
+        [
+          "115",
+          1
+        ],
+        [
+          "14",
+          1
+        ]
+      ],
+      "minimum": 5,
+      "maximum": 506
+    },
+    "inventory_partly_covered": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "0",
+          8
+        ],
+        [
+          "1",
+          4
+        ],
+        [
+          "2",
+          4
+        ],
+        [
+          "3",
+          2
+        ],
+        [
+          "4",
+          1
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 7
+    },
+    "inventory_omitted": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "0",
+          9
+        ],
+        [
+          "1",
+          4
+        ],
+        [
+          "2",
+          2
+        ],
+        [
+          "4",
+          2
+        ],
+        [
+          "3",
+          1
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 8
+    },
+    "inventory_unclear": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "0",
+          9
+        ],
+        [
+          "1",
+          4
+        ],
+        [
+          "2",
+          4
+        ],
+        [
+          "4",
+          2
+        ],
+        [
+          "13",
+          1
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 13
+    },
+    "clear_omission_rows": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 8,
+      "most_common": [
+        [
+          "0",
+          6
+        ],
+        [
+          "1",
+          4
+        ],
+        [
+          "4",
+          3
+        ],
+        [
+          "2",
+          2
+        ],
+        [
+          "3",
+          2
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 10
+    },
+    "extraction_supported": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 19,
+      "most_common": [
+        [
+          "17",
+          2
+        ],
+        [
+          "1130",
+          1
+        ],
+        [
+          "14",
+          1
+        ],
+        [
+          "15",
+          1
+        ],
+        [
+          "150",
+          1
+        ]
+      ],
+      "minimum": 5,
+      "maximum": 1130
+    },
+    "extraction_clear_error": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "0",
+          10
+        ],
+        [
+          "3",
+          4
+        ],
+        [
+          "1",
+          3
+        ],
+        [
+          "9",
+          2
+        ],
+        [
+          "5",
+          1
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 9
+    },
+    "extraction_unclear": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 10,
+      "most_common": [
+        [
+          "0",
+          5
+        ],
+        [
+          "1",
+          4
+        ],
+        [
+          "2",
+          2
+        ],
+        [
+          "3",
+          2
+        ],
+        [
+          "9",
+          2
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 14
+    },
+    "extraction_duplicate": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          19
+        ],
+        [
+          "1",
+          1
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "clear_error_issues": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 10,
+      "most_common": [
+        [
+          "0",
+          6
+        ],
+        [
+          "2",
+          3
+        ],
+        [
+          "3",
+          3
+        ],
+        [
+          "7",
+          2
+        ],
+        [
+          "12",
+          1
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 13
+    },
+    "unresolved_issues": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "2",
+          5
+        ],
+        [
+          "3",
+          5
+        ],
+        [
+          "0",
+          4
+        ],
+        [
+          "1",
+          2
+        ],
+        [
+          "4",
+          2
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 7
+    },
+    "source_limit_issues": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "1",
+          15
+        ],
+        [
+          "2",
+          3
+        ],
+        [
+          "3",
+          2
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 3
+    },
+    "review_notes": {
+      "python_types": [
+        "list",
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 20,
+      "most_common": [
+        [
+          "AI-assisted source audit, not human ground truth. Reviewed all 118 frozen inventory statements and all 155 frozen extraction statements against every segment s0001-s0076. Inventory mostly covered: one distinct BP feasibility finding omitted; two component endorsements partly covered because support was coded as a request. Three extracted rows have clear status/type errors (4,96,97); two response judgments (84,89) remain unclear. Additional supported context and hearing-stage findings missing from the independent inventory are explicitly recorded as inventory_omission. Differences in merging/splitting do not count as errors: detailed zoning features may combine in the inventory, board/companion votes split by application in extraction, aggregate hearing tally overlaps identified speakers, and testing/remediation split is more precise in extraction. Narrator attribution in background (DCP versus Commission) and unstated timing for historical actions do not establish clear errors. Source OCR/conflicting FAR preserved; unresolved BP continuation pages tied to named applications. Inventory 114 is broadly represented by BP follow-up request 78 and CPC scope acknowledgment 116; no separate omission inferred for that premise. Human reference not opened.",
+          1
+        ],
+        [
+          "AI-assisted source audit, not human ground truth. Reviewed all 23 frozen inventory statements and all 22 extracted statements against all five source segments. Every inventory content statement is covered; no clear substantive omission or extracted-row error. One HUD funding-warning response judgment remains unclear. Historical R5 actions and senior housing termination are correctly classified other_project, Community Board #8 remains an applicant/project-team actor while also a board, and DPR opposition is correctly limited to Ewen Park. Different splitting of HUD refusal/warning and historical partial approval is granularity only. Some inventory actor/stage assignments are more definite than source supports; extraction’s unclear analysis author and unstated historical proposal stage are reasonable. Diagram names focal application; garbled OCR and Lot 68/368 conflict noted. Human reference not opened.",
+          1
+        ],
+        [
+          "All 16 inventory and 15 extraction rows assessed against all six frozen segments. No confirmed material omission or erroneous extracted row. Extraction retains map proposal, related actions, board/BP recommendations, environmental/WRP findings and all binding map conditions. Same environmental conclusion across two stages is merged with both dates/citations retained. Missing special-permit companion prevents auditing detailed background, board conditions, testimony and reasoning, and is accurately disclosed. Application-number source conflict is preserved. No human labels accessed.",
+          1
+        ],
+        [
+          "All 18 inventory and 19 extraction rows assessed against all nine segments. No confirmed substantive omission or erroneous extracted row. Two actor/team judgments remain uncertain: background preservation assessment attribution and community support reported only by applicant representatives. Park location/context is an additional supported extraction statement missing from inventory. Garbled map pages add no recoverable statement. Main hearing date conflict is preserved. Differences in unstated/pre-certification timing and finding/proposal description are not automatically errors.",
+          1
+        ],
+        [
+          "All 8 inventory rows and all 5 extracted rows checked against both source segments. No clear material omission or erroneous extracted row. Administrative absence facts are retained in report reading_notes. Program obligations and tenant acquisitions are correctly proposal descriptions rather than invented commitments. No human reference accessed. Frozen inventory and extraction preserved.",
+          1
+        ]
+      ]
+    }
+  }
+}

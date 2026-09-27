@@ -1,0 +1,178 @@
+{
+  "dataset": "cpc_statement_audit_assessments.csv",
+  "rows": 5177,
+  "key": [
+    "document_id",
+    "side",
+    "statement_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "6896446c2ffca6d9c38eafe77d87c06ff8d36c7de2127b168d2af342fe8e9a21",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 20,
+      "most_common": [
+        [
+          "d7f0f0f503caae417e85",
+          1630
+        ],
+        [
+          "5663059d8a5882b9c972",
+          1164
+        ],
+        [
+          "22929526d2ff38ceca2e",
+          545
+        ],
+        [
+          "c27f7af95a119ee12e69",
+          391
+        ],
+        [
+          "8cc1f566a6b3da4f05b1",
+          354
+        ]
+      ]
+    },
+    "side": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "extraction",
+          3009
+        ],
+        [
+          "inventory",
+          2168
+        ]
+      ]
+    },
+    "statement_id": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1131,
+      "most_common": [
+        [
+          "1",
+          40
+        ],
+        [
+          "2",
+          40
+        ],
+        [
+          "3",
+          40
+        ],
+        [
+          "4",
+          40
+        ],
+        [
+          "5",
+          40
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 1131
+    },
+    "assessment": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "supported",
+          2895
+        ],
+        [
+          "covered",
+          2072
+        ],
+        [
+          "unclear",
+          108
+        ],
+        [
+          "clear_error",
+          38
+        ],
+        [
+          "omitted",
+          34
+        ]
+      ]
+    },
+    "extraction_statement_ids": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 954,
+      "most_common": [
+        [
+          "[]",
+          3049
+        ],
+        [
+          "[15]",
+          19
+        ],
+        [
+          "[3]",
+          19
+        ],
+        [
+          "[1]",
+          18
+        ],
+        [
+          "[12]",
+          17
+        ]
+      ]
+    },
+    "issue_ids": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 797,
+      "most_common": [
+        [
+          "[]",
+          3906
+        ],
+        [
+          "[\"I017\"]",
+          24
+        ],
+        [
+          "[\"I011\"]",
+          19
+        ],
+        [
+          "[\"V09\"]",
+          16
+        ],
+        [
+          "[\"I002\"]",
+          15
+        ]
+      ]
+    }
+  }
+}

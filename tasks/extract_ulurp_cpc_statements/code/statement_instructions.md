@@ -64,6 +64,11 @@ the CPC report and attached in full), record it once and list every segment ID
 where it appears. If two different actors say similar things, make separate
 rows.
 
+Merge repetitions only when the actor, application, stage, position and status
+are the same. Keep an earlier objection and later support as separate rows.
+When one citation is the original letter and another is its CPC summary,
+`source_part` describes the document containing your quoted passage.
+
 ## Fields
 
 **Where it is.** `segment_ids`; `quote`, an exact contiguous passage from one of
@@ -142,6 +147,10 @@ says happened: `adopted`, `partly_adopted`, `rejected`, `addressed_otherwise`
 document the response in `response_statement_ids`. Do not infer adoption
 because a later feature resembles the request; the report must connect them or
 state the change. Use `not_applicable` for other types.
+`not_addressed` means no response is recorded in the supplied report, not that
+no response ever occurred. If you receive only one part of a split report,
+use `unclear` for an otherwise unanswered request and explain that the response
+may be in another part. Do not infer project-wide opposition from a concern.
 
 **When.** `stage`: where in the process it occurred, from the text or the part of
 the report it appears in: `pre_certification`, `community_board`,
@@ -159,6 +168,19 @@ residents or businesses losing housing, premises or the ability to remain,
 including relocation; property values or nuisance alone are not displacement.
 An empty list is allowed for rows such as a bare vote.
 
+**Procedural steps.** `procedural_action`: for requests, commitments,
+requirements, modifications and decisions, whether the row asks for, promises,
+requires or makes a procedural step rather than (or as well as) a change to the
+project itself: `study` (a new study, survey or analysis to be done),
+`monitoring_or_reporting` (monitoring, compliance reports, reporting back to a
+board or agency), `task_force_or_working_group`, `outreach_or_consultation`
+(future meetings, consultation, notification, a community liaison), or
+`other_procedural`. Use `none` for everything else, including a study or review
+completed before or as part of the application, such as the environmental review
+itself, and for every other statement type. A commitment to build a school is
+`none`; a commitment to study school capacity and report to the Community Board
+is `study` (the reporting is part of the same step).
+
 `note`: anything a researcher should know about this row: ambiguity, conflicting
 figures elsewhere in the report, a collective statement attributed to several
 speakers.
@@ -172,8 +194,9 @@ numbers). `segments_read`: every segment ID you read.
 ## Example (invented)
 
 Text: "Community Board 3 recommended approval by a vote of 30 to 2, on condition
-that the developer provide 40 on-site parking spaces. At the hearing the
-applicant's representative stated that the developer would provide 35 spaces.
+that the developer provide 40 on-site parking spaces. At the hearing, in response
+to that request, the applicant's representative stated that the developer had
+agreed to add 35 spaces instead of the requested 40.
 The Commission's approval requires the 35 spaces in the restrictive
 declaration."
 
@@ -182,7 +205,8 @@ stage `community_board`. (2) `request`, Community Board 3, 40 on-site parking
 spaces, topic `traffic_parking`, response `partly_adopted`, response rows 3 and
 4. (3) `commitment`, applicant's representative, `project_team: yes`,
 35 spaces, `definite`, stage `cpc_hearing`. (4) `requirement`, CPC, 35 spaces in
-the restrictive declaration, `definite`, stage `cpc_decision`.
+the restrictive declaration, `definite`, stage `cpc_decision`. All four have
+`procedural_action` `none`.
 
 Return one JSON object that follows the supplied schema. Before finishing,
 check that every quote appears exactly in a listed segment and that every

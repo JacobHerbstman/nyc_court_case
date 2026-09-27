@@ -20,7 +20,7 @@
           "actor_name", "actor_roles", "office_or_affiliation", "project_team", "speaks_for",
           "statement_type", "certainty", "summary", "stance_on_project", "component", "votes",
           "response", "response_statement_ids", "stage", "timing_note",
-          "topics", "topic_note", "note"
+          "topics", "topic_note", "procedural_action", "note"
         ],
         "properties": {
           "statement_id": {"type": "integer", "minimum": 1},
@@ -63,6 +63,9 @@
             "historic_preservation", "traffic_parking", "infrastructure_services",
             "environment_open_space", "jobs_economy", "process", "other"]}},
           "topic_note": {"type": "string"},
+          "procedural_action": {"enum": [
+            "none", "study", "monitoring_or_reporting", "task_force_or_working_group",
+            "outreach_or_consultation", "other_procedural"]},
           "note": {"type": "string"}
         }
       }

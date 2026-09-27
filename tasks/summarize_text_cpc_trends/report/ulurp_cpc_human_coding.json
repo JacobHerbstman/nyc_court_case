@@ -6,7 +6,7 @@
     "field"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "8a51f2ce42ee206102fa66ff621ef270872b78a699288bc88ffcbfb145128fdb",
+  "sha256_csv_bytes": "e6dcdad7e8d021d00e0b8cae71aace9c1159a2dfecc033d0606120d77ec378d0",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "source_document_id": {
@@ -594,11 +594,11 @@
       "most_common": [
         [
           "0",
-          3169
+          3168
         ],
         [
           "1",
-          1712
+          1713
         ],
         [
           "none_or_procedural",
@@ -626,19 +626,19 @@
           23
         ],
         [
+          "10568b4e669c1211976a506a1d3f9f04b19ce0e57c62241ea78554d4d357f258",
+          23
+        ],
+        [
+          "2366c0bd9eeddd4a04ea2dea8f95fdfd1ff6f9d37aea3573b04a0f976f5ed4ca",
+          23
+        ],
+        [
           "23d89a4f0b2ecb3944aa2976c81fcab6ee3910c9b7cb4ef0ae989c0d731fd88d",
           23
         ],
         [
           "2912268db0ab932e9cb8a37066f3722ef6ef34ea743868b1d537517b0d28ceda",
-          23
-        ],
-        [
-          "2c7b2d8254eb8bbc581907f23bc86468003a7a4179d20e24c6790889734d4e0d",
-          23
-        ],
-        [
-          "373b45a4f725b2da6400238e18560c01cd3e1c7843b995adf35480ffd5c9b3a8",
           23
         ]
       ]

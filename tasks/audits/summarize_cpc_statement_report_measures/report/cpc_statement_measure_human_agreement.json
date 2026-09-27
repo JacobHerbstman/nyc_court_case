@@ -1,0 +1,209 @@
+{
+  "dataset": "cpc_statement_measure_human_agreement.csv",
+  "rows": 275,
+  "key": [
+    "document_id",
+    "measure"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "d94efe6a545832dd56ae85fd5de2b73c93fc6a12dc459bca103d224790e8c712",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 20,
+      "most_common": [
+        [
+          "02c18c0a3b85fce07355",
+          15
+        ],
+        [
+          "0568137a2968387b992b",
+          15
+        ],
+        [
+          "180f2f3d15c99c5ab311",
+          15
+        ],
+        [
+          "1818edbd692337c3eeeb",
+          15
+        ],
+        [
+          "454495b3c2b022fa8752",
+          15
+        ]
+      ]
+    },
+    "measure": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 15,
+      "most_common": [
+        [
+          "affordability_displacement",
+          20
+        ],
+        [
+          "councilmember_position",
+          20
+        ],
+        [
+          "approved_unresolved_objection",
+          19
+        ],
+        [
+          "civic_group_position",
+          19
+        ],
+        [
+          "infrastructure_services",
+          19
+        ]
+      ]
+    },
+    "human_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "0",
+          156
+        ],
+        [
+          "1",
+          80
+        ],
+        [
+          "none_or_procedural",
+          31
+        ],
+        [
+          "opposition",
+          6
+        ],
+        [
+          "support_or_request",
+          2
+        ]
+      ]
+    },
+    "human_status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "single_human_coder",
+          225
+        ],
+        [
+          "human_agreement",
+          50
+        ]
+      ]
+    },
+    "derived_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "0",
+          151
+        ],
+        [
+          "1",
+          85
+        ],
+        [
+          "none_or_procedural",
+          35
+        ],
+        [
+          "opposition",
+          3
+        ],
+        [
+          "support_or_request",
+          1
+        ]
+      ]
+    },
+    "agree": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          235
+        ],
+        [
+          "0",
+          40
+        ]
+      ]
+    },
+    "audit_corrected_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 159,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "0",
+          63
+        ],
+        [
+          "1",
+          37
+        ],
+        [
+          "none_or_procedural",
+          14
+        ],
+        [
+          "opposition",
+          1
+        ],
+        [
+          "support_or_request",
+          1
+        ]
+      ]
+    },
+    "audit_corrected_agree": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 159,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          93
+        ],
+        [
+          "0",
+          23
+        ]
+      ]
+    }
+  }
+}

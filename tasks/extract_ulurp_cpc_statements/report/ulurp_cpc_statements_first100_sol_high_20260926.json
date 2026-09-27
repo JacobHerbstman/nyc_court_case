@@ -1,0 +1,852 @@
+{
+  "dataset": "ulurp_cpc_statements_first100_sol_high_20260926.csv",
+  "rows": 6562,
+  "key": [
+    "document_id",
+    "part",
+    "statement_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "4214a1d99a434f0a8ff2e6ffe41ec82eb6e90b36a793adba29716d8a5279ee76",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 100,
+      "most_common": [
+        [
+          "d7f0f0f503caae417e85",
+          1131
+        ],
+        [
+          "5663059d8a5882b9c972",
+          647
+        ],
+        [
+          "22929526d2ff38ceca2e",
+          286
+        ],
+        [
+          "c27f7af95a119ee12e69",
+          213
+        ],
+        [
+          "cd28ea66009f6eced628",
+          200
+        ]
+      ]
+    },
+    "focal_application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 100,
+      "most_common": [
+        [
+          "C 100287 ZSM",
+          1131
+        ],
+        [
+          "C 160146 MMK",
+          647
+        ],
+        [
+          "C 110297 ZSX",
+          286
+        ],
+        [
+          "C 190403 ZMX",
+          213
+        ],
+        [
+          "C 170236 ZSM",
+          200
+        ]
+      ]
+    },
+    "part": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          4784
+        ],
+        [
+          "0",
+          1778
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "statement_id": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1131,
+      "most_common": [
+        [
+          "1",
+          100
+        ],
+        [
+          "2",
+          100
+        ],
+        [
+          "3",
+          100
+        ],
+        [
+          "4",
+          100
+        ],
+        [
+          "5",
+          100
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 1131
+    },
+    "segment_ids": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1358,
+      "most_common": [
+        [
+          "s0002",
+          259
+        ],
+        [
+          "s0004",
+          229
+        ],
+        [
+          "s0005",
+          229
+        ],
+        [
+          "s0001",
+          192
+        ],
+        [
+          "s0003",
+          190
+        ]
+      ]
+    },
+    "quote": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6030,
+      "most_common": [
+        [
+          "The Chairperson of Queens Community Board 3 reiterated the conditions stated in Community Board 3’s conditional disapproval of the application",
+          19
+        ],
+        [
+          "the City Planning Commission finds that the action described herein will have no significant impact on the environment;",
+          16
+        ],
+        [
+          "All zoning computations are subject to verification and approval by the New York City Department of Buildings.",
+          12
+        ],
+        [
+          "This action was determined to be consistent with the policies of the New York City Waterfront Revitalization Program.",
+          12
+        ],
+        [
+          "All leases, subleases, or other agreements for use or occupancy of space at the subject property shall give actual notice of this special permit to the lessee, sublessee or occupant.",
+          9
+        ]
+      ]
+    },
+    "source_part": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 8,
+      "most_common": [
+        [
+          "cpc_report",
+          4742
+        ],
+        [
+          "borough_president_recommendation",
+          872
+        ],
+        [
+          "community_board_recommendation",
+          416
+        ],
+        [
+          "restrictive_declaration",
+          415
+        ],
+        [
+          "hearing_minutes_or_testimony",
+          50
+        ]
+      ]
+    },
+    "application": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 220,
+      "most_common": [
+        [
+          "bundle_general",
+          2502
+        ],
+        [
+          "C 130155 PPQ",
+          181
+        ],
+        [
+          "other_project",
+          128
+        ],
+        [
+          "C 190297 ZSK",
+          122
+        ],
+        [
+          "N 190430(A) ZRY",
+          86
+        ]
+      ]
+    },
+    "application_basis": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 4338,
+      "distinct_nonmissing": 300,
+      "most_common": [
+        [
+          "Industry City application/bundle explicitly named in this recommendation or its continuous attached document.",
+          330
+        ],
+        [
+          "Continuation of the Riverside Center Parcel LMN restrictive declaration; the text names the project, site, or action.",
+          143
+        ],
+        [
+          "Report attributes this feature to the whole Crotona Park East/West Farms project.",
+          131
+        ],
+        [
+          "Statement concerns Bally’s Ferry Point gaming project and related land-use actions.",
+          96
+        ],
+        [
+          "Continuation of the Riverside Center MCB7 July 2010 report; the text names the project, site, or action.",
+          95
+        ]
+      ]
+    },
+    "actor_name": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 930,
+      "most_common": [
+        [
+          "City Planning Commission",
+          1336
+        ],
+        [
+          "The Commission",
+          672
+        ],
+        [
+          "Community Board 7",
+          215
+        ],
+        [
+          "Department of City Planning",
+          211
+        ],
+        [
+          "Borough President Adams",
+          191
+        ]
+      ]
+    },
+    "actor_roles": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 73,
+      "most_common": [
+        [
+          "cpc",
+          2355
+        ],
+        [
+          "community_board",
+          879
+        ],
+        [
+          "borough_president",
+          783
+        ],
+        [
+          "applicant",
+          534
+        ],
+        [
+          "city_agency;applicant",
+          199
+        ]
+      ]
+    },
+    "office_or_affiliation": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 5720,
+      "distinct_nonmissing": 166,
+      "most_common": [
+        [
+          "BRONX BOROUGH PRESIDENT",
+          92
+        ],
+        [
+          "Community Board 7 / Manhattan",
+          71
+        ],
+        [
+          "City Planning Commission",
+          70
+        ],
+        [
+          "Manhattan Borough President",
+          69
+        ],
+        [
+          "Brooklyn Borough President",
+          54
+        ]
+      ]
+    },
+    "project_team": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "no",
+          4763
+        ],
+        [
+          "yes",
+          1756
+        ],
+        [
+          "unclear",
+          43
+        ]
+      ]
+    },
+    "speaks_for": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "organization",
+          5321
+        ],
+        [
+          "office",
+          821
+        ],
+        [
+          "self",
+          297
+        ],
+        [
+          "unclear",
+          123
+        ]
+      ]
+    },
+    "statement_type": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9,
+      "most_common": [
+        [
+          "finding",
+          1863
+        ],
+        [
+          "proposal_description",
+          1201
+        ],
+        [
+          "request",
+          878
+        ],
+        [
+          "position",
+          769
+        ],
+        [
+          "requirement",
+          695
+        ]
+      ]
+    },
+    "certainty": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "not_applicable",
+          5448
+        ],
+        [
+          "definite",
+          838
+        ],
+        [
+          "conditional",
+          216
+        ],
+        [
+          "tentative",
+          60
+        ]
+      ]
+    },
+    "summary": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5977,
+      "most_common": [
+        [
+          "Recommend approval.",
+          18
+        ],
+        [
+          "Oppose proposed site.",
+          14
+        ],
+        [
+          "Borough President recommends approval.",
+          12
+        ],
+        [
+          "No significant environmental impact.",
+          12
+        ],
+        [
+          "Written support for Industry City application.",
+          12
+        ]
+      ]
+    },
+    "stance_on_project": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "none_stated",
+          4950
+        ],
+        [
+          "support",
+          1279
+        ],
+        [
+          "oppose",
+          238
+        ],
+        [
+          "conditional_support",
+          90
+        ],
+        [
+          "mixed",
+          5
+        ]
+      ]
+    },
+    "component": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6242,
+      "distinct_nonmissing": 195,
+      "most_common": [
+        [
+          "Site 4",
+          12
+        ],
+        [
+          "Butler Terrace, Block 85 Lot 35",
+          10
+        ],
+        [
+          "Hotel uses",
+          8
+        ],
+        [
+          "Site 1",
+          8
+        ],
+        [
+          "marketing effort",
+          8
+        ]
+      ]
+    },
+    "votes": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6355,
+      "distinct_nonmissing": 153,
+      "most_common": [
+        [
+          "ABSTAINING",
+          7
+        ],
+        [
+          "unanimously",
+          7
+        ],
+        [
+          "ORLANDO MARIN, Commissioner, Abstained",
+          6
+        ],
+        [
+          "# In Favor: 20 # Against: 0 # Abstaining: 7",
+          5
+        ],
+        [
+          "36 to one with one abstention",
+          5
+        ]
+      ]
+    },
+    "response": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "not_applicable",
+          5176
+        ],
+        [
+          "not_addressed",
+          567
+        ],
+        [
+          "addressed_otherwise",
+          513
+        ],
+        [
+          "partly_adopted",
+          112
+        ],
+        [
+          "rejected",
+          101
+        ]
+      ]
+    },
+    "response_statement_ids": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 5771,
+      "distinct_nonmissing": 259,
+      "most_common": [
+        [
+          "381",
+          73
+        ],
+        [
+          "379",
+          44
+        ],
+        [
+          "371",
+          32
+        ],
+        [
+          "391;392;472;473;474;447",
+          21
+        ],
+        [
+          "375",
+          17
+        ]
+      ]
+    },
+    "stage": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9,
+      "most_common": [
+        [
+          "cpc_consideration",
+          1258
+        ],
+        [
+          "cpc_decision",
+          1144
+        ],
+        [
+          "borough_president",
+          998
+        ],
+        [
+          "pre_certification",
+          930
+        ],
+        [
+          "community_board",
+          904
+        ]
+      ]
+    },
+    "timing_note": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 4289,
+      "distinct_nonmissing": 576,
+      "most_common": [
+        [
+          "March 4, 2020 recommendation; hearing date conflicts: January 8 in attachment, January 14 in CPC summary, December 9 in focal report.",
+          182
+        ],
+        [
+          "Board vote January 15, 2020; attached final amended recommendation January 29, 2020. BP summary gives January 16.",
+          157
+        ],
+        [
+          "Attached declaration recites approvals October 27, 2010; execution date unfilled.",
+          151
+        ],
+        [
+          "October 27, 2010.",
+          111
+        ],
+        [
+          "February 19, 2020 CPC hearing.",
+          76
+        ]
+      ]
+    },
+    "topics": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 924,
+      "distinct_nonmissing": 243,
+      "most_common": [
+        [
+          "environment_open_space",
+          850
+        ],
+        [
+          "traffic_parking",
+          655
+        ],
+        [
+          "process",
+          572
+        ],
+        [
+          "scale_density_design",
+          553
+        ],
+        [
+          "infrastructure_services",
+          375
+        ]
+      ]
+    },
+    "topic_note": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 6347,
+      "distinct_nonmissing": 127,
+      "most_common": [
+        [
+          "Building legalization",
+          27
+        ],
+        [
+          "Aviation safety.",
+          12
+        ],
+        [
+          "Residential and building legalization",
+          12
+        ],
+        [
+          "Security",
+          6
+        ],
+        [
+          "Public safety",
+          5
+        ]
+      ]
+    },
+    "note": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 4640,
+      "distinct_nonmissing": 867,
+      "most_common": [
+        [
+          "Condition in attached declaration with blank execution dates/signatures; recitals identify Commission approval October 27, 2010. Implementation is not established by this text.",
+          148
+        ],
+        [
+          "Declaration text has blank execution/notary dates; this row records its stated covenant or term, not evidence of execution.",
+          73
+        ],
+        [
+          "Binding Exhibit A condition incorporated by CPC approval in s0157/s0160; quoted covenants often use Declarant as grammatical subject.",
+          57
+        ],
+        [
+          "Formal statutory finding or resolution in this companion application, distinct from the earlier discussion in the principal report.",
+          57
+        ],
+        [
+          "Whole-report review: s0142–s0150 continues the same March 4, 2020 Borough President recommendation beginning at s0112; repeated request consolidated.",
+          45
+        ]
+      ]
+    },
+    "cited_pdf_pages": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1250,
+      "most_common": [
+        [
+          "2",
+          340
+        ],
+        [
+          "5",
+          308
+        ],
+        [
+          "4",
+          298
+        ],
+        [
+          "3",
+          267
+        ],
+        [
+          "6",
+          258
+        ]
+      ]
+    },
+    "cited_source_applications": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 225,
+      "most_common": [
+        [
+          "C 100296A ZSM",
+          951
+        ],
+        [
+          "C 190296 ZMK",
+          544
+        ],
+        [
+          "C 100310 ZMX",
+          225
+        ],
+        [
+          "C 190403 ZMX",
+          213
+        ],
+        [
+          "C 130155 PPQ",
+          183
+        ]
+      ]
+    },
+    "cited_page_scopes": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "in_scope",
+          4814
+        ],
+        [
+          "unresolved",
+          1030
+        ],
+        [
+          "in_scope;unresolved",
+          718
+        ]
+      ]
+    }
+  }
+}

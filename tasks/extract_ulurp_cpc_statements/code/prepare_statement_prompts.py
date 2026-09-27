@@ -37,8 +37,28 @@ else:
     (run_dir / 'responses').mkdir()
     commit = subprocess.run(['git', 'rev-parse', 'HEAD'], capture_output=True, text=True).stdout.strip()
     run_file.write_text(json.dumps(dict(settings, run_id=run_id, git_commit=commit), indent=2) + '\n')
+    (run_dir / 'statement_instructions.md').write_text(instructions)
+    (run_dir / 'statement_schema.json').write_text(Path('statement_schema.json').read_text())
 
-document_ids = [line.strip() for line in Path(document_id_file).read_text().splitlines() if line.strip()]
+review_instruction = Path('whole_report_review.md').read_text()
+if (run_dir / 'whole_report_review.md').exists():
+    assert (run_dir / 'whole_report_review.md').read_text() == review_instruction, 'Whole-report review instruction changed.'
+else:
+    (run_dir / 'whole_report_review.md').write_text(review_instruction)
+
+if Path(document_id_file).suffix == '.csv':
+    with open(document_id_file) as f:
+        document_ids = [r['document_id'] for r in csv.DictReader(f)]
+    if (run_dir / 'sample.csv').exists():
+        assert (run_dir / 'sample.csv').read_bytes() == Path(document_id_file).read_bytes(), 'Frozen sample changed.'
+    else:
+        (run_dir / 'sample.csv').write_bytes(Path(document_id_file).read_bytes())
+else:
+    document_ids = [line.strip() for line in Path(document_id_file).read_text().splitlines() if line.strip()]
+assert len(document_ids) == len(set(document_ids)), 'Duplicate requested documents.'
+if (run_dir / 'prompts.csv').exists():
+    with (run_dir / 'prompts.csv').open() as f:
+        assert {r['document_id'] for r in csv.DictReader(f)} == set(document_ids), 'Use a new RUN_ID for a different sample.'
 roster, segments = read_inputs(set(document_ids))
 manifest = []
 for doc in document_ids:
@@ -52,6 +72,8 @@ for doc in document_ids:
         path.write_text(prompt)
         manifest.append(dict(document_id=doc, part=part['part'], parts=part['parts'], prompt_file=path.name,
                              answer_file=f"{doc}_part{part['part']}_attempt1.json", segments=len(part['segments']),
+                             application_number=roster[doc]['application_number'], project_name=roster[doc]['project_name'],
+                             characters=len(part['text']),
                              packet_sha256=sha(part['text']), prompt_sha256=sha(prompt)))
 with (run_dir / 'prompts.csv').open('w', newline='') as f:
     writer = csv.DictWriter(f, fieldnames=list(manifest[0]))

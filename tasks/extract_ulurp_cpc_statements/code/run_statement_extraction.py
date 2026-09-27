@@ -9,6 +9,7 @@ a usage limit or any Codex error stops the whole run. Rerunning resumes.
 Run from tasks/extract_ulurp_cpc_statements/code (normally through `make acquire`).
 """
 import hashlib
+import csv
 import json
 import os
 import re
@@ -31,12 +32,13 @@ sha = lambda text: hashlib.sha256(text.encode()).hexdigest()
 now = lambda: datetime.now(timezone.utc).isoformat(timespec='seconds')
 env = {k: v for k, v in os.environ.items() if k not in {'OPENAI_API_KEY', 'AI_GATEWAY_API_KEY'}}
 
-login = subprocess.run(['codex', 'login', 'status'], capture_output=True, text=True, env=env)
+login = subprocess.run(['codex', 'login', 'status'], capture_output=True, text=True, env=env, cwd=tempfile.gettempdir())
 if 'Logged in using ChatGPT' not in login.stdout + login.stderr:
     sys.exit('Codex is not logged in with ChatGPT; refusing to run (nothing may bill the API).')
 
 instructions = Path('statement_instructions.md').read_text()
 schema_path = Path('statement_schema.json').resolve()
+schema = json.loads(schema_path.read_text())
 run_dir = Path('../../../data_raw/cpc_statement_extraction') / run_id
 (run_dir / 'responses').mkdir(parents=True, exist_ok=True)
 (run_dir / 'events').mkdir(exist_ok=True)
@@ -50,15 +52,22 @@ if run_file.exists():
     if changed:
         sys.exit(f'Run {run_id} was started with different {changed}; use a new RUN_ID.')
 else:
-    version = subprocess.run(['codex', '--version'], capture_output=True, text=True, env=env).stdout.strip()
+    version = subprocess.run(['codex', '--version'], capture_output=True, text=True, env=env, cwd=tempfile.gettempdir()).stdout.strip()
     commit = subprocess.run(['git', 'rev-parse', 'HEAD'], capture_output=True, text=True).stdout.strip()
     run_file.write_text(json.dumps(dict(settings, run_id=run_id, codex_version=version, git_commit=commit,
                                         started_at=now()), indent=2) + '\n')
+    (run_dir / 'statement_instructions.md').write_text(instructions)
+    (run_dir / 'statement_schema.json').write_text(schema_path.read_text())
 
 attempts_file = run_dir / 'attempts.jsonl'
 history = [json.loads(line) for line in attempts_file.read_text().splitlines()] if attempts_file.exists() else []
 
-document_ids = [line.strip() for line in Path(document_id_file).read_text().splitlines() if line.strip()]
+if Path(document_id_file).suffix == '.csv':
+    with open(document_id_file) as f:
+        document_ids = [r['document_id'] for r in csv.DictReader(f)]
+else:
+    document_ids = [line.strip() for line in Path(document_id_file).read_text().splitlines() if line.strip()]
+assert len(document_ids) == len(set(document_ids)), 'Duplicate requested documents.'
 roster, segments = read_inputs(set(document_ids))
 queue = []
 for doc in document_ids:
@@ -121,7 +130,7 @@ def send(doc, part, done_attempts):
                       cached_input_tokens=usage.get('cached_input_tokens', ''),
                       output_tokens=usage.get('output_tokens', ''), stderr=stderr[-2000:])
         if exit_code == 0 and response.exists():
-            answer, errors = validate_answer(response.read_text(), doc, part['segments'])
+            answer, errors = validate_answer(response.read_text(), doc, part['segments'], schema)
             record.update(validation_status='valid' if answer else 'invalid', validation_errors=errors[:20],
                           statement_rows=len(answer['statements']) if answer else '')
         elif exit_code != 'timeout' and LIMIT_PATTERN.search(stderr + stdout):

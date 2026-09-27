@@ -10,7 +10,7 @@ from pathlib import Path
 
 import jsonschema
 
-SCHEMA = json.loads(Path('statement_schema.json').read_text())
+PROCEDURAL_TYPES = {'request', 'commitment', 'requirement', 'modification', 'decision'}
 WRAPPER = ('You are a non-interactive reader. Do not run commands, read files, browse or use tools; '
            'everything you need is in this message. Follow the instruction below and return only the JSON object.')
 
@@ -64,13 +64,13 @@ def build_prompt(instructions, packet_text):
     return WRAPPER + '\n\n' + instructions + '\n\n## Report\n\n' + packet_text
 
 
-def validate_answer(raw, document_id, part_segments):
+def validate_answer(raw, document_id, part_segments, schema):
     """Return (answer or None, list of errors)."""
     try:
         answer = json.loads(raw)
     except json.JSONDecodeError as e:
         return None, [f'invalid JSON: {e}']
-    errors = [f'schema: {e.message[:200]}' for e in jsonschema.Draft202012Validator(SCHEMA).iter_errors(answer)]
+    errors = [f'schema: {e.message[:200]}' for e in jsonschema.Draft202012Validator(schema).iter_errors(answer)]
     if errors:
         return None, errors
     norm = lambda s: ' '.join(s.split())
@@ -82,6 +82,8 @@ def validate_answer(raw, document_id, part_segments):
     if len(ids) != len(set(ids)):
         errors.append('duplicate statement_id')
     for r in rows:
+        if not norm(r['quote']):
+            errors.append(f"row {r['statement_id']}: empty quotation")
         unknown = [s for s in r['segment_ids'] if s not in texts]
         if unknown:
             errors.append(f"row {r['statement_id']}: unknown segments {unknown}")
@@ -89,6 +91,18 @@ def validate_answer(raw, document_id, part_segments):
             errors.append(f"row {r['statement_id']}: quote not found in cited segments")
         if any(i not in ids for i in r['response_statement_ids']):
             errors.append(f"row {r['statement_id']}: response_statement_ids refer to missing rows")
+        if r['statement_id'] in r['response_statement_ids']:
+            errors.append(f"row {r['statement_id']}: a statement cannot be its own response")
+        if r['statement_type'] not in {'concern', 'request'} and (r['response'] != 'not_applicable' or r['response_statement_ids']):
+            errors.append(f"row {r['statement_id']}: response fields apply only to concerns and requests")
+        if r['statement_type'] in {'concern', 'request'} and r['response'] == 'not_applicable':
+            errors.append(f"row {r['statement_id']}: concern or request needs a response status")
+        if r['response'] in {'adopted', 'partly_adopted', 'rejected', 'addressed_otherwise'} and not r['response_statement_ids']:
+            errors.append(f"row {r['statement_id']}: recorded response needs supporting statement IDs")
+        if (r['statement_type'] in {'commitment', 'requirement', 'modification'}) == (r['certainty'] == 'not_applicable'):
+            errors.append(f"row {r['statement_id']}: certainty does not match statement type")
+        if r.get('procedural_action', 'none') != 'none' and r['statement_type'] not in PROCEDURAL_TYPES:
+            errors.append(f"row {r['statement_id']}: procedural_action applies only to requests, commitments, requirements, modifications and decisions")
     if set(answer['segments_read']) != set(texts):
         errors.append(f"segments_read differs from supplied segments ({len(set(texts) - set(answer['segments_read']))} missing)")
     return (answer if not errors else None), errors
