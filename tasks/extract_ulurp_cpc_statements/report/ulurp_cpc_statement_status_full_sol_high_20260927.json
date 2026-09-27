@@ -1,0 +1,254 @@
+{
+  "dataset": "ulurp_cpc_statement_status_full_sol_high_20260927.csv",
+  "rows": 9063,
+  "key": [
+    "document_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "212524e74a68f4f52d5575293d6711b2b8de03e7d9e767a343311306e56d64ec",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9063,
+      "most_common": [
+        [
+          "00119c3b0ee800f4d8ba",
+          1
+        ],
+        [
+          "00126d30463744ba647c",
+          1
+        ],
+        [
+          "00167643a19f5c30bf57",
+          1
+        ],
+        [
+          "001f885d7d891a8711f7",
+          1
+        ],
+        [
+          "00231b56ec914bf6ccd9",
+          1
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9063,
+      "most_common": [
+        [
+          "C 000002 ZSM",
+          1
+        ],
+        [
+          "C 000012 ZSR",
+          1
+        ],
+        [
+          "C 000013 ZSR",
+          1
+        ],
+        [
+          "C 000014 ZSR",
+          1
+        ],
+        [
+          "C 000016A ZSR",
+          1
+        ]
+      ]
+    },
+    "run_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "full_sol_high_20260927",
+          9063
+        ]
+      ]
+    },
+    "selected_for_run": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "1",
+          9063
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 1
+    },
+    "status": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "not_run",
+          7401
+        ],
+        [
+          "complete",
+          1662
+        ]
+      ]
+    },
+    "parts": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 7401,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "1",
+          1662
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 1
+    },
+    "valid_parts": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          7401
+        ],
+        [
+          "1",
+          1662
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "attempts": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "0",
+          7401
+        ],
+        [
+          "1",
+          1449
+        ],
+        [
+          "2",
+          208
+        ],
+        [
+          "3",
+          5
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 3
+    },
+    "statement_rows": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 203,
+      "most_common": [
+        [
+          "0",
+          7401
+        ],
+        [
+          "6",
+          61
+        ],
+        [
+          "9",
+          56
+        ],
+        [
+          "7",
+          53
+        ],
+        [
+          "10",
+          52
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 429
+    },
+    "input_tokens": {
+      "python_types": [],
+      "missing": 9063,
+      "distinct_nonmissing": 0,
+      "most_common": []
+    },
+    "cached_input_tokens": {
+      "python_types": [],
+      "missing": 9063,
+      "distinct_nonmissing": 0,
+      "most_common": []
+    },
+    "output_tokens": {
+      "python_types": [],
+      "missing": 9063,
+      "distinct_nonmissing": 0,
+      "most_common": []
+    },
+    "reading_notes": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 7462,
+      "distinct_nonmissing": 1599,
+      "most_common": [
+        [
+          "Part 1: Minor OCR errors; no attachments supplied.\n",
+          3
+        ],
+        [
+          "Part 1: Address of larger building appears as 43-33 in background and 43-23 in docket. Parking described as 307 initially and approximately 300 in consideration. Plans and actual Landmarks discussion are not supplied. Attachments s0008 and s0010 name same special permit, church, buildings and parking despite garbled OCR. Board 1 handwritten explanation illegible.\n",
+          1
+        ],
+        [
+          "Part 1: Agency attachment includes a proposed Board of Estimate resolution, without an adoption date; it is not recorded as a separate adopted Board decision.\n",
+          1
+        ],
+        [
+          "Part 1: Agency recommendation dated October 7 follows CPC decision; its Board of Estimate resolution wording is not evidence of adoption. Parcel schedules on pages 4–5 have heavily garbled OCR.\n",
+          1
+        ],
+        [
+          "Part 1: All 10 pages read. No attachments supplied. Parking figures conflict: sponsor mentions 47 required plus 30 public; initial detailed plan says 41 resident and 36 public; HPD letter says total 109 with 69 plus 41, then 68 public. DOT short-term usage is OCRed 40-40%. These figures are preserved, not reconciled.\n",
+          1
+        ]
+      ]
+    }
+  }
+}

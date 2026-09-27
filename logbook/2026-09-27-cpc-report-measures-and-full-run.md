@@ -42,3 +42,19 @@ Reading order is fixed in advance: the first hundred, then the other 8,872
 single-packet reports in seeded random order, so a partial run is a random
 sample, then the 91 split reports. A human spot check of request and adoption
 rows is still planned, after much of the corpus is read.
+
+Follow-up, same day, at 1,662 completed reports:
+- **Human codes.** The measures were rechecked against human codes on 93 completed
+  human-coded reports:
+  - council member position 0.91, Borough President 0.84, community board 0.83,
+    civic group 0.82;
+  - hearing speaker counts within one of the human count in 0.93 (support) and
+    0.95 (opposition) of reports.
+- **Speaker counts rule.** Counts take the larger of the stated tally and the
+  individually described speakers. They are blank when the reader recorded a tally
+  with no number (14 reports).
+- **Test-retest.** Agreement on the 98 first-100 reports read twice is 0.92–1.00
+  per measure.
+- **Procedural response** uses the new field only when it answers a local request or
+  concern. It reaches 0.80, but coding every report 0 would score 0.81.
+- **Report length.** Statement rows track report length closely.

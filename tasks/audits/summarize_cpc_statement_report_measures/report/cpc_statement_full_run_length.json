@@ -1,0 +1,186 @@
+{
+  "dataset": "cpc_statement_full_run_length.csv",
+  "rows": 1662,
+  "key": [
+    "document_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "90ef932c17c8b005bf492e2a87f1b703068294fd7e39b7631aa414d490a9bb84",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1662,
+      "most_common": [
+        [
+          "001f885d7d891a8711f7",
+          1
+        ],
+        [
+          "002d5b81eb4ca6b13a55",
+          1
+        ],
+        [
+          "0030ee4f2ff8b573da4d",
+          1
+        ],
+        [
+          "00d29884b0fa0b61d12d",
+          1
+        ],
+        [
+          "00dc0b94b739ce0874be",
+          1
+        ]
+      ]
+    },
+    "year": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 50,
+      "most_common": [
+        [
+          "1982",
+          99
+        ],
+        [
+          "1981",
+          85
+        ],
+        [
+          "1980",
+          77
+        ],
+        [
+          "1989",
+          73
+        ],
+        [
+          "1985",
+          65
+        ]
+      ]
+    },
+    "characters": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1560,
+      "most_common": [
+        [
+          "46996",
+          5
+        ],
+        [
+          "153332",
+          3
+        ],
+        [
+          "27489",
+          3
+        ],
+        [
+          "28003",
+          3
+        ],
+        [
+          "29919",
+          3
+        ]
+      ]
+    },
+    "unresolved_segments": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 56,
+      "most_common": [
+        [
+          "0",
+          758
+        ],
+        [
+          "1",
+          242
+        ],
+        [
+          "2",
+          146
+        ],
+        [
+          "3",
+          115
+        ],
+        [
+          "4",
+          79
+        ]
+      ]
+    },
+    "statement_rows": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 202,
+      "most_common": [
+        [
+          "6",
+          61
+        ],
+        [
+          "9",
+          56
+        ],
+        [
+          "7",
+          53
+        ],
+        [
+          "10",
+          52
+        ],
+        [
+          "12",
+          45
+        ]
+      ]
+    },
+    "rows_per_10k_characters": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1207,
+      "most_common": [
+        [
+          "12.94",
+          5
+        ],
+        [
+          "13.48",
+          5
+        ],
+        [
+          "13.93",
+          5
+        ],
+        [
+          "10.26",
+          4
+        ],
+        [
+          "11.31",
+          4
+        ]
+      ]
+    }
+  }
+}

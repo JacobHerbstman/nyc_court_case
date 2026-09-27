@@ -1,0 +1,256 @@
+{
+  "dataset": "cpc_ocr_sample.csv",
+  "rows": 34,
+  "key": [
+    "document_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "9ca935dcd0241503df1c87d2ae235452c9b56350b39ef66696a60121f2eea44f",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 34,
+      "most_common": [
+        [
+          "0568137a2968387b992b",
+          1
+        ],
+        [
+          "091f594603dc46ae2bfb",
+          1
+        ],
+        [
+          "0e6500033b0a740f5091",
+          1
+        ],
+        [
+          "10507621d921dde7c0d7",
+          1
+        ],
+        [
+          "137edb9fa9a6c73911bd",
+          1
+        ]
+      ]
+    },
+    "application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 34,
+      "most_common": [
+        [
+          "C 040270 ZMM",
+          1
+        ],
+        [
+          "C 070451 PCQ",
+          1
+        ],
+        [
+          "C 110228 PCQ",
+          1
+        ],
+        [
+          "C 180042 ZMK",
+          1
+        ],
+        [
+          "C 180085 ZMQ",
+          1
+        ]
+      ]
+    },
+    "year": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 23,
+      "most_common": [
+        [
+          "1982",
+          4
+        ],
+        [
+          "1979",
+          3
+        ],
+        [
+          "1989",
+          3
+        ],
+        [
+          "1977",
+          2
+        ],
+        [
+          "1980",
+          2
+        ]
+      ]
+    },
+    "pages": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 17,
+      "most_common": [
+        [
+          "2",
+          7
+        ],
+        [
+          "4",
+          4
+        ],
+        [
+          "5",
+          3
+        ],
+        [
+          "12",
+          2
+        ],
+        [
+          "13",
+          2
+        ]
+      ]
+    },
+    "flagged": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          29
+        ],
+        [
+          "0",
+          5
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "human_tallies": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          29
+        ],
+        [
+          "0",
+          5
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "pre1990": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          22
+        ],
+        [
+          "0",
+          12
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "sample_cell": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "flagged_pre1990_human",
+          15
+        ],
+        [
+          "flagged_1990on_human",
+          9
+        ],
+        [
+          "flagged_pre1990_no_human",
+          5
+        ],
+        [
+          "control_1990on_human",
+          3
+        ],
+        [
+          "control_pre1990_human",
+          2
+        ]
+      ]
+    },
+    "rank": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 34,
+      "most_common": [
+        [
+          "004063dbb5534fc515c2e4fd5fdac1a992b4a6f956451462dcbb5825eef1b7df",
+          1
+        ],
+        [
+          "00a9a8719256bff098a3b8165efa83ff1bbe0002a9957bb9d66be54fa855d812",
+          1
+        ],
+        [
+          "00db6b98c327c5c9d4f861ee044c7885acf907093e5ba6c532bdfe0cb410b75a",
+          1
+        ],
+        [
+          "00e96aa3db4fb24ee0f3ddbe9e826b1f72b03ca1b6eda44982fb1eaf8c8ac977",
+          1
+        ],
+        [
+          "01159f27ec7640ced262660826c282e4596b7463270b4aa725f0343fecbdb340",
+          1
+        ]
+      ]
+    },
+    "status_snapshot_sha256": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "212524e74a68f4f52d5575293d6711b2b8de03e7d9e767a343311306e56d64ec",
+          34
+        ]
+      ]
+    }
+  }
+}

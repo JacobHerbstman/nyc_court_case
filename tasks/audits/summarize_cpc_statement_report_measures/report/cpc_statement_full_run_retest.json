@@ -1,12 +1,12 @@
 {
-  "dataset": "cpc_statement_report_measures.csv",
-  "rows": 1700,
+  "dataset": "cpc_statement_full_run_retest.csv",
+  "rows": 1568,
   "key": [
     "document_id",
     "measure"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "05b3b99df152e7f4b01fc9e27a1124a903f2a5430fe348c1117c0308900de5cb",
+  "sha256_csv_bytes": "56e3a8ee5b24f2f9ca871255963275fc1f18f41966450471077e04a88b3056f4",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -14,27 +14,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 100,
+      "distinct_nonmissing": 98,
       "most_common": [
         [
           "02c18c0a3b85fce07355",
-          17
+          16
         ],
         [
           "0568137a2968387b992b",
-          17
+          16
         ],
         [
           "058b4b67762fd0300c23",
-          17
+          16
         ],
         [
           "0c559b20ddcc16527202",
-          17
+          16
         ],
         [
           "0df228eea980f2df69da",
-          17
+          16
         ]
       ]
     },
@@ -43,44 +43,44 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 17,
+      "distinct_nonmissing": 16,
       "most_common": [
         [
           "affordability_displacement",
-          100
+          98
         ],
         [
           "approved_unresolved_objection",
-          100
+          98
         ],
         [
           "bp_request_or_opposition",
-          100
+          98
         ],
         [
           "cb_request_or_opposition",
-          100
+          98
         ],
         [
           "civic_group_position",
-          100
+          98
         ]
       ]
     },
-    "value": {
+    "first100_value": {
       "python_types": [
         "str"
       ],
-      "missing": 100,
-      "distinct_nonmissing": 18,
+      "missing": 0,
+      "distinct_nonmissing": 17,
       "most_common": [
         [
           "0",
-          914
+          913
         ],
         [
           "1",
-          420
+          397
         ],
         [
           "none_or_procedural",
@@ -91,8 +91,54 @@
           20
         ],
         [
-          "opposition",
-          17
+          "support_or_request",
+          15
+        ]
+      ]
+    },
+    "full_run_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 17,
+      "most_common": [
+        [
+          "0",
+          915
+        ],
+        [
+          "1",
+          396
+        ],
+        [
+          "none_or_procedural",
+          170
+        ],
+        [
+          "2",
+          19
+        ],
+        [
+          "support_or_request",
+          14
+        ]
+      ]
+    },
+    "agree": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "1",
+          1516
+        ],
+        [
+          "0",
+          52
         ]
       ]
     }

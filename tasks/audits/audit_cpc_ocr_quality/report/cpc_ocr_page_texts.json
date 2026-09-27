@@ -1,0 +1,334 @@
+{
+  "dataset": "cpc_ocr_page_texts.csv",
+  "rows": 431,
+  "key": [
+    "document_id",
+    "source_document_id",
+    "pdf_page"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "d89017ea275f993fb7df7ab7069e64c227fd72793d4f5e84a6891aff015c1261",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 34,
+      "most_common": [
+        [
+          "160defec91155f5c6a83",
+          43
+        ],
+        [
+          "5ff15b38926793e89ae6",
+          43
+        ],
+        [
+          "be6ab7753d4d38f950ff",
+          41
+        ],
+        [
+          "d00f082088edafa37c2f",
+          31
+        ],
+        [
+          "a81120b674b2198628e4",
+          24
+        ]
+      ]
+    },
+    "year": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 23,
+      "most_common": [
+        [
+          "1989",
+          60
+        ],
+        [
+          "1986",
+          43
+        ],
+        [
+          "1979",
+          42
+        ],
+        [
+          "2019",
+          41
+        ],
+        [
+          "2004",
+          31
+        ]
+      ]
+    },
+    "source_document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 46,
+      "most_common": [
+        [
+          "5ff15b38926793e89ae6",
+          43
+        ],
+        [
+          "be6ab7753d4d38f950ff",
+          41
+        ],
+        [
+          "253c7e5e151bac0d75a4",
+          31
+        ],
+        [
+          "a81120b674b2198628e4",
+          24
+        ],
+        [
+          "50e64061d9ec121c6c14",
+          23
+        ]
+      ]
+    },
+    "pdf_page": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 43,
+      "most_common": [
+        [
+          "1",
+          46
+        ],
+        [
+          "2",
+          46
+        ],
+        [
+          "3",
+          37
+        ],
+        [
+          "4",
+          35
+        ],
+        [
+          "5",
+          28
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 43
+    },
+    "segment_ids": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 43,
+      "most_common": [
+        [
+          "s0001",
+          34
+        ],
+        [
+          "s0002",
+          34
+        ],
+        [
+          "s0003",
+          27
+        ],
+        [
+          "s0004",
+          25
+        ],
+        [
+          "s0005",
+          21
+        ]
+      ]
+    },
+    "page_scope": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "in_scope",
+          347
+        ],
+        [
+          "unresolved",
+          84
+        ]
+      ]
+    },
+    "text_a": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 431,
+      "most_common": [
+        [
+          "\"CITY PLANNING COMMISSION June 2, 1982/Calendar No.79 C 820736 TCM Appt4catcon ,teview, purtzuant to Sect,wn 19/-c oi the New YoAL Cita ChatteA, o6 the gAant o6 a one yean AevocafIee conzent to conistAmlt an4 ape/Late an enctmed ,sidewaek cc* with 25 tabiez and 50 zeatz at 73 Pardz Avenue Touth on the .southecut t coAnet o.6 Foutth Avenue and Ea, 10th Stteet, Community &and No. 3, in the Bonough o6 Manhattan. The application for the one year revocable consent to construct and operate an enclosed sidewalk cafe was filed by the Cooper Green Restaurant Corp., doing business as the Green Kitchen, pursuant to the Uniform Land Use Review Procedure, Article 2, Paragraph (4). The application was received by the City Planning Commission on February 5, 1982 and completed on March 12, 1982. It was Certified on March 25, 1982 after receipt of a letter from the Bureau of Franchises indicating that its processing of the petition had been completed and that the Department of Highways had no objections to the application. Community Board No. 3 in Manhattan held a conforming public hearing on this application and approved it on April 27, 1982. Twenty-two members voted in favor of it, none opposed it and six abstained. The Board's recommendation was received by the City Planning Commission on April 30, 1982, 32 days before the deadline. On May 5, 1982 (Calendar No . 79), the City Planning Commission scheduled a Public Hearing on the matter. The Hearing was duly held on May 19, 1982 (Calendar No.45). There was one appearance in favor of the cafe by a-representative of the applicant and the Hearing was closed. The City Planning Commission has reviewed the land use implications of the proposed revocable consent for an enclosed sidewalk cafe at 73 Park Avenue South in the Borough of Manhattan and finds that the proposed sidewalk cafe meets the desigi and locational standards of the adopted cafe guidelines. RESOLVED, by the City Planning Commission, pursuant to Section 197-c of the New York City Charter, that the application of Cooper Green Restaurant Corp. for the grant of a one year revocable consent to construct and operate an enclosed sidewalk cafe containing 25 tables and SO seats at 73 Park Avenue South in the Borough of Manhattan, be and hereby is APPROVED because of conformance to the adopted sidewalk cafe guide- lines. CC 820736 TCM).",
+          1
+        ],
+        [
+          "\"IF 7. The Declarant covenants to abide by the requirements of the New York tate Department of Environmental Conservation as set forth in a letter dated June 2, 1978; Application No. FW-24304-0119, annexed hereto as Exhibit \"C\". R. The Declarant covenants to do no construction or development on SLIT' 17 of the Subject Property, as indicated on the Site Plan, annexed hereto as Exhibit \"1.1\" prior to submitting a development plan to the City Planning Commission for its review and approval. The drainage channel located on the Subject Property shall be bridged prior to the Declarant's applying for any Certificate of Occupancy for any development on Stage II. The Declarant covenants to construct such bridge to meet traffic safety standards. The Declarant recognizes that the City of New York is an Interested party to this Declaration and consents to the City's enforging the covenants, conditions, restrictions and agreements herein contained by what- ever means may be appropriate to the situation. This Declaration shall become effective when the City Planning Commission and the Board of Estimate ;hall have duly approved the Application k:780361ZMR for a rezoning to C1-2 This Declaration runs with the land, binding the Declarant and its successors and assigns, and it shall be so construd. U. This Declaration may be amended or cancelled only with the approval of the City. Planning Commission and the Board of Estimate and no other apprDval or consent shall be required from any public body, private person or legel entity of any kind. However, the Chairman of the City Plan- ning Commission may administratively approve minor modifications to this Declaration which shall not he deemed amendments requiring the approval of the City Planning Commission and Board of Estimate. 13. Declarant covennnts that when the City Planning Commission tins approved applicaLion C74361 ZMR, it shall immediately file and record this Declaration in the Office of the County Clerk of the City of New York, County of Richmond, indoxiny it ngainst the entire Subject Property, 6 C780361ZMR",
+          1
+        ],
+        [
+          "#4 prior to entering the program located in Glenmont, New York. Several mitigation measures to reduce or eliminate the aforementioned impacts have been implemented on an emergency basis and would be provided permanently if the program is adopted. These measures include the implementation of the Shelter Employment and Housing Program (SEHP) and Work Experience Program (WEP). Open Space The permanent expansion of the Greenpoint Men's Shelter by an additional 289 male residents would exacerbate present deficiencies in public open/recreational space, creating a potentially significant impact. A portion of the parking lot on-site has been converted to a passive open space area to provide additional recreational space. This open space area would partially mitigate the impacts to existing recreational resources. Plans to expand outdoor recreation space on a permanent basis also includes basketball and volleyball courts for active recreation. Recreation space has been expanded in Building #2 to accommodate residents of Buildings #4, #5 and #6. This recreational space contains tables, Page 8 C 890619 PSK",
+          1
+        ],
+        [
+          "% Those speaking in opposition included the Deputy Borough President of Queens, residents and Board members of Parkway Village, and the attorney representing Parkway Village. The testimony focused on the proposed facility's height and density as it would relate to the two- and three-story homes in Parkway Village. The Deputy Borough President recognized the need for such services, but felt the proposed building would be inappropriate at this particular site because it would be out of context with the existing Parkway Village community. Several speakers voiced their concern that the proposed facility would result in congestion and safety issues, and negatively impact the quality of life in an area already saturated with health-related facilities. There were no other speakers and the hearing was closed. CONSIDERATI ON The Commission believes that the grant of this special permit is appropriate. The applicant is proposing to construct a 200-bed Assisted Living Program facility on a 44,500 square foot undeveloped property which is part of a larger zoning lot that contains cooperative development consisting of two- and three- story garden apartments. This use requires a special permit pursuant to Section 74-904 of the Zoning Resolution and the proposed facility must satisfy the fmdings of that section. The proposed domiciliary care facility would function as an Assisted Living Program. This program is designed as an alternative to nursing home placement for people who cannot live independently but do C 960307 ZSQ",
+          1
+        ],
+        [
+          "' \".\"1:2\":7\"\"Ft .624. .r,\\ MLA \"0.1-7<vy r T'nmnimmwr7 :.., 7 EXHIBIT \"A\" TO DECLARATION OF RE- STRICTIONS MADE BY S.H. HOUSING DEVELOPMENT FUND CORPORATION ALL THAT CERTAIN lot, piece or parcel of land with any buildings and improvements thereon erected, situate lying and being in the City of New York, County of Queens, and State of New York, which is bounded by Clearview Express- way (northbound service road), 26th Avenue and Corporal in the Kennedy Street, and which is Block 5863, Lot 250 land records of the City of New York. C780287ZMQ 11",
+          1
+        ]
+      ]
+    },
+    "text_b": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 431,
+      "most_common": [
+        [
+          "! CITY PLANNING COMMISSION October 17, 1979 / Calendar No. 38 =) C 790337 PSQ Selection and acquisition of a site Located on the southwest corner of Northen Boulevard and 108th Street in the Borough of Queens, pursuant to Section 197-c of the New York City Charter, for the construction of a dug rehabilitation facility. . An application by the Community Development Agency for the selection and acquisition of this site was recetved on May 16, 1979 and certified complete by the City Planning Commission on July 2, 1979. The proposed facility represents the first phase of a four phase community oriented cultural, recreational, educational and social services center. The project, which is sponsored by Elmcor Youth & Adult Activities, Inc., is called the Louis Armstrong Rehabilitation Center, in honor of the late musician, who was born in the area. Elmcor presently owns and operates a community services facility located in two buildings on Northern Boulevard, adjacent to the proposed site. The present facility is overcrowded and cannot now service the increasing needs of the community. The first phase, which jis the subject of this proposal, consists of the acqui- sition of five privately-owned lots adjacent to the existing facility, demolition of the existing buildings on these lots and construction of a drug rehabilitation center. The City will acquire the property and construct the facility through the use of Community Development funds. After completion of the facility, the City will lease it to Elmcor for operation of the drug program. A com- ' panion - application for the proposed lease (C790338PLQ) has also been submitted by the Community Development agency. Cultural, recreational and educational facilities will be developed later for the completion of the Louis Armstrong Rehabilitation Center. Community Development funds totalling $1.75 million have been approved for the project. Four of the lots to be acquired are improved with four three-story brick resi- dential buildings with commercial on the ground level. The fifth lot is improved with a filling station. Including the filling station, there are a total of four businessess and five residential tenants presently occupying the subject site. Elmcor will assist in the relocation of all legal tenants.",
+          1
+        ],
+        [
+          "\"Exhibit A\" Borough of Richmond, County of Richmond, City and State of New York, designated on the Tax Map of the City of New York for the Corcugh of Richmond as Lot 59 in 8lock 3551 of Section 16... a C780361ZMR",
+          1
+        ],
+        [
+          "#4 prior to entering the program located in Glenmont, New York. Several mitigation measures to reduce or eliminate the aforementioned impacts have been implemented on an emergency basis and would be provided permanently if the program is adopted. These measures include the implementation of the Shelter Employment and Housing Program (SEHP) and Work Experience Program (WEP). Open Space The permanent expansion of the Greenpoint Men's Shelter by an additional 289 male residents would exacerbate present deficiencies in public open/recreational space, creating a potentially significant impact. A portion of the parking lot on-site has been converted to a passive open space area to provide additional recreational space. This open space area would partially mitigate the impacts to existing recreational resources. Plans to expand outdoor recreation space on a permanent basis also includes basketball and volleyball courts for active recreation. Recreation space has been expanded in Building #2 to accommodate residents of Buildings #4, #5 and #6. This recreational space contains tables, Page 8 ; C 890619 PSK",
+          1
+        ],
+        [
+          "% two fourteen-story apartment buildings northwest of the site across Goethals Avenue. The proposed facility would not require any significant additions to neighborhood supporting services. Supportive housing and home care services would be available, and the facility would have 24-hour security. The building would be constructed of fully non-combustible fire rated construction, and an automatic sprinkler system and a 24-hour supervised fire alarm would be installed. The streets providing access, Parsons Boulevard and Goethals Avenue, would be adequate to handle the traffic generated by the proposed facility. Both are wide streets mapped at a width of 80 feet. Forty-nine parking spaces would be provided, well in excess of the required amount. The trip analysis conducted during the environmental review indicated the proposed project would not be expected to generate significant traffic impacts. The Commission understands the concerns expressed by the Borough President and Community Board 8 relating to the scale of the original proposal as it relates to Parkway Village. The applicant has responded with a modified plan that shows a reduction in height. The major bulk in the modified proposal is shifted away from the adjacent residential development toward the roadways. The proposed open areas which include the parking lot and the passive recreation area are placed towards the southern and western property lines, where the proposed development would be closest to existing residential structures. Other elements of the original plan that contributed to a harmonious relationship with adjacent development, such as landscaping and fascade treatinent, remain unchanged. The Commission believes that the modified plan is more sensitive to the surrounding low-rise garden apartments in Parkway Village. 7 C 960307 ZSQ",
+          1
+        ],
+        [
+          "' CITY PLANNING COMMISSION December 23, 1985/Calendar No. 3 C 851036 HDM IN THE MATTER OF the disposition of city-owned property located in Manhattan Community District 7, pursuant to Section 197-c of the New York City Charter. This application was submitted by the Department of Housing Preservation and Development on May 17, 1985. The proposed disposition will facilitate the substantial rehabilitation of a vacant five-story building to provide 28 dwelling units for the elderly and handicapped and one superintendent's apartment on the southerly side of West 105th Street between Amsterdam and Columbus Avenues; 140 West 105th Street (Tax Block 1859, Lot 46). The proposed development, tentatively known as Fania Gersham House, would be developed by the WSA Housing Development Fund Co., an Article XI Housing company. The sponsor of the project is the West Side Federation For Senior Housing (WSFSH) who will also manage the building after completion. The project is to be financed by a direct loan under Section 202 of the National Housing Act of 1959, as amended, with subsidies for all rental units to: be provided pursuant to Section 8 of the U.S. Housing Act of 1937, as amended. The building, will have an entrance at grade, elevator service for all floors, and will provide 24 studio apartments, 4 one-bedroom apartments and one two-bedroom apartment for the superintendent. Four of the rental apartments will be designed for occupancy by physically-handicapped tenants. The building will also include a laundry room, recreation room and a meeting room. The building will have a social services manager to assist tenants with personal problems, coordinate programming and assist in the development of a tenants council. The manager will assist tenants with securing entitlements and needed services, provide counselling to tenants on an as-needed basis, develop contacts with community agencies and other social service programs, familiarize tenants with the various activities in the community and provide group and recreational activities on-site as needed. WSFSH expects that the social service clan would be consistent with the plans. functioning in the two other buildings WSFSH owns and operates {the Marseilles and Red Oak apartments). The safety and security of the tenants will be enhanced by the provision for 24-hour guard service stationed in the Icbby with intercom connedtion to all apartments and two emergency pull cords per apartment (in the bathroom and Sleeping area ) connected to the lobby location of the guards. In addition, a fence will be erected on the south side of the premises on the greund level and on the roof separating Fania Gersham House from an adjacent buiiding on the east side. ENVIRONMENTAL QUALITY REVIEW On May 22, 1985, the Department of City Planning and the Department of Environmental Protection determined that the application represented a Type II action that required no further envrionmental review. .",
+          1
+        ]
+      ]
+    },
+    "seconds_b": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 43,
+      "most_common": [
+        [
+          "2.2",
+          34
+        ],
+        [
+          "2.0",
+          31
+        ],
+        [
+          "2.1",
+          24
+        ],
+        [
+          "2.3",
+          24
+        ],
+        [
+          "3.2",
+          24
+        ]
+      ]
+    },
+    "vision": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          395
+        ],
+        [
+          "1",
+          36
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "vision_reason": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 395,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "garbled_text_a",
+          29
+        ],
+        [
+          "reader_note",
+          5
+        ],
+        [
+          "garbled_text_a;reader_note",
+          2
+        ]
+      ]
+    },
+    "image": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 431,
+      "most_common": [
+        [
+          "0568137a2968387b992b_p001.png",
+          1
+        ],
+        [
+          "0568137a2968387b992b_p002.png",
+          1
+        ],
+        [
+          "07b907fc884e415a7c07_p001.png",
+          1
+        ],
+        [
+          "07b907fc884e415a7c07_p002.png",
+          1
+        ],
+        [
+          "07b907fc884e415a7c07_p003.png",
+          1
+        ]
+      ]
+    }
+  }
+}

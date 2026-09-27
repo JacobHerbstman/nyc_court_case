@@ -1,0 +1,375 @@
+{
+  "dataset": "cpc_ocr_page_comparison.csv",
+  "rows": 431,
+  "key": [
+    "document_id",
+    "source_document_id",
+    "pdf_page"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "f6016465f8deadfdcb322c0a38d263e3a6f0a7591b63b6461f0df1344e5ae5f4",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 34,
+      "most_common": [
+        [
+          "160defec91155f5c6a83",
+          43
+        ],
+        [
+          "5ff15b38926793e89ae6",
+          43
+        ],
+        [
+          "be6ab7753d4d38f950ff",
+          41
+        ],
+        [
+          "d00f082088edafa37c2f",
+          31
+        ],
+        [
+          "a81120b674b2198628e4",
+          24
+        ]
+      ]
+    },
+    "year": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 23,
+      "most_common": [
+        [
+          "1989",
+          60
+        ],
+        [
+          "1986",
+          43
+        ],
+        [
+          "1979",
+          42
+        ],
+        [
+          "2019",
+          41
+        ],
+        [
+          "2004",
+          31
+        ]
+      ]
+    },
+    "source_document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 46,
+      "most_common": [
+        [
+          "5ff15b38926793e89ae6",
+          43
+        ],
+        [
+          "be6ab7753d4d38f950ff",
+          41
+        ],
+        [
+          "253c7e5e151bac0d75a4",
+          31
+        ],
+        [
+          "a81120b674b2198628e4",
+          24
+        ],
+        [
+          "50e64061d9ec121c6c14",
+          23
+        ]
+      ]
+    },
+    "pdf_page": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 43,
+      "most_common": [
+        [
+          "1",
+          46
+        ],
+        [
+          "2",
+          46
+        ],
+        [
+          "3",
+          37
+        ],
+        [
+          "4",
+          35
+        ],
+        [
+          "5",
+          28
+        ]
+      ]
+    },
+    "vision": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "0",
+          395
+        ],
+        [
+          "1",
+          36
+        ]
+      ]
+    },
+    "vision_reason": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 395,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "garbled_text_a",
+          29
+        ],
+        [
+          "reader_note",
+          5
+        ],
+        [
+          "garbled_text_a;reader_note",
+          2
+        ]
+      ]
+    },
+    "words_a": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 271,
+      "most_common": [
+        [
+          "221",
+          6
+        ],
+        [
+          "167",
+          5
+        ],
+        [
+          "230",
+          5
+        ],
+        [
+          "244",
+          5
+        ],
+        [
+          "136",
+          4
+        ]
+      ],
+      "minimum": 16,
+      "maximum": 649
+    },
+    "words_b": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 266,
+      "most_common": [
+        [
+          "216",
+          6
+        ],
+        [
+          "203",
+          5
+        ],
+        [
+          "230",
+          5
+        ],
+        [
+          "156",
+          4
+        ],
+        [
+          "186",
+          4
+        ]
+      ],
+      "minimum": 3,
+      "maximum": 643
+    },
+    "share_a": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 160,
+      "most_common": [
+        [
+          "0.902",
+          9
+        ],
+        [
+          "0.915",
+          9
+        ],
+        [
+          "0.916",
+          9
+        ],
+        [
+          "0.918",
+          9
+        ],
+        [
+          "0.930",
+          9
+        ]
+      ]
+    },
+    "share_b": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 171,
+      "most_common": [
+        [
+          "0.918",
+          10
+        ],
+        [
+          "0.921",
+          10
+        ],
+        [
+          "0.917",
+          8
+        ],
+        [
+          "0.919",
+          8
+        ],
+        [
+          "0.927",
+          8
+        ]
+      ]
+    },
+    "share_c": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 395,
+      "distinct_nonmissing": 34,
+      "most_common": [
+        [
+          "0.759",
+          2
+        ],
+        [
+          "0.921",
+          2
+        ],
+        [
+          "0.553",
+          1
+        ],
+        [
+          "0.615",
+          1
+        ],
+        [
+          "0.630",
+          1
+        ]
+      ]
+    },
+    "sections": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 287,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "consideration",
+          45
+        ],
+        [
+          "board_recommendation;hearing",
+          42
+        ],
+        [
+          "hearing",
+          23
+        ],
+        [
+          "board_recommendation;hearing;consideration",
+          12
+        ],
+        [
+          "hearing;consideration",
+          12
+        ]
+      ]
+    },
+    "seconds_b": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 43,
+      "most_common": [
+        [
+          "2.2",
+          34
+        ],
+        [
+          "2.0",
+          31
+        ],
+        [
+          "2.1",
+          24
+        ],
+        [
+          "2.3",
+          24
+        ],
+        [
+          "3.2",
+          24
+        ]
+      ]
+    }
+  }
+}

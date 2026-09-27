@@ -1,0 +1,877 @@
+{
+  "dataset": "ulurp_cpc_statements_full_sol_high_20260927.csv",
+  "rows": 74702,
+  "key": [
+    "document_id",
+    "part",
+    "statement_id"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "fa797cdf2ca3db9d3b81ac866da91e7505099910db5ab3c96bea71ee6b220856",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1662,
+      "most_common": [
+        [
+          "ff0853905f5c0d1c0237",
+          429
+        ],
+        [
+          "d3341b9b297c246b62e0",
+          401
+        ],
+        [
+          "f40221c95e20c8683e96",
+          388
+        ],
+        [
+          "da6ffc3bada8e3ff5400",
+          386
+        ],
+        [
+          "5a6042fc4ce9a85291c1",
+          384
+        ]
+      ]
+    },
+    "focal_application_number": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1662,
+      "most_common": [
+        [
+          "C 870084 HUK",
+          429
+        ],
+        [
+          "C 070529 ZMM",
+          401
+        ],
+        [
+          "C 070522 ZMM",
+          388
+        ],
+        [
+          "N 080100A ZRM",
+          386
+        ],
+        [
+          "C 220338 ZSM",
+          384
+        ]
+      ]
+    },
+    "part": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 1,
+      "most_common": [
+        [
+          "1",
+          74702
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 1
+    },
+    "statement_id": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 429,
+      "most_common": [
+        [
+          "1",
+          1662
+        ],
+        [
+          "2",
+          1662
+        ],
+        [
+          "3",
+          1660
+        ],
+        [
+          "4",
+          1656
+        ],
+        [
+          "5",
+          1634
+        ]
+      ],
+      "minimum": 1,
+      "maximum": 429
+    },
+    "segment_ids": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 8941,
+      "most_common": [
+        [
+          "s0002",
+          4082
+        ],
+        [
+          "s0001",
+          3823
+        ],
+        [
+          "s0003",
+          2862
+        ],
+        [
+          "s0004",
+          2694
+        ],
+        [
+          "s0005",
+          2631
+        ]
+      ]
+    },
+    "quote": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 63768,
+      "most_common": [
+        [
+          "the City Planning Commission finds that the action described herein will have no significant impact on the environment",
+          144
+        ],
+        [
+          "All leases, subleases, or other agreements for use or occupancy of space at the subject property shall give actual notice of this special permit to the lessee, sublessee or occupant.",
+          141
+        ],
+        [
+          "This action was determined to be consistent with the policies of the New York City Waterfront Revitalization Program.",
+          127
+        ],
+        [
+          "This application was determined to be a Type II action which requires no further environmental review.",
+          127
+        ],
+        [
+          "All zoning computations are subject to verification and approval by the New York City Department of Buildings.",
+          108
+        ]
+      ]
+    },
+    "source_part": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9,
+      "most_common": [
+        [
+          "cpc_report",
+          58277
+        ],
+        [
+          "borough_president_recommendation",
+          8894
+        ],
+        [
+          "community_board_recommendation",
+          2865
+        ],
+        [
+          "restrictive_declaration",
+          1653
+        ],
+        [
+          "letter",
+          896
+        ]
+      ]
+    },
+    "application": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3147,
+      "most_common": [
+        [
+          "bundle_general",
+          25482
+        ],
+        [
+          "other_project",
+          1336
+        ],
+        [
+          "C 130155 PPQ",
+          190
+        ],
+        [
+          "C 960467 HUM",
+          189
+        ],
+        [
+          "C 180065 PCK",
+          180
+        ]
+      ]
+    },
+    "application_basis": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 57016,
+      "distinct_nonmissing": 3921,
+      "most_common": [
+        [
+          "The statement concerns East River Plaza and its concurrently reviewed actions.",
+          229
+        ],
+        [
+          "125th Street rezoning project generally, or Kingsgate companion project where identified in summary; no single action isolated.",
+          215
+        ],
+        [
+          "Attachment belongs to the board or borough-president materials naming 705 Tenth Avenue (DEP Site).",
+          172
+        ],
+        [
+          "Attachment continues the Halletts North document naming Block 911, Lot 1 and the bundle applications.",
+          171
+        ],
+        [
+          "Attachment continues the declaration, maintenance agreement, recommendation or letter explicitly identifying 77 Commercial Street, Block 2472 Lot 410 and the bundle applications.",
+          169
+        ]
+      ]
+    },
+    "actor_name": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7750,
+      "most_common": [
+        [
+          "City Planning Commission",
+          19825
+        ],
+        [
+          "The Commission",
+          4435
+        ],
+        [
+          "Department of Housing Preservation and Development",
+          2536
+        ],
+        [
+          "Borough President",
+          2034
+        ],
+        [
+          "Department of City Planning",
+          1328
+        ]
+      ]
+    },
+    "actor_roles": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 262,
+      "most_common": [
+        [
+          "cpc",
+          26084
+        ],
+        [
+          "community_board",
+          8509
+        ],
+        [
+          "borough_president",
+          8188
+        ],
+        [
+          "city_agency;applicant",
+          5359
+        ],
+        [
+          "applicant",
+          4949
+        ]
+      ]
+    },
+    "office_or_affiliation": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 62808,
+      "distinct_nonmissing": 1699,
+      "most_common": [
+        [
+          "City Planning Commission",
+          1589
+        ],
+        [
+          "Brooklyn Borough President",
+          870
+        ],
+        [
+          "Manhattan Borough President",
+          858
+        ],
+        [
+          "Department of Housing Preservation and Development",
+          308
+        ],
+        [
+          "Department of City Planning",
+          297
+        ]
+      ]
+    },
+    "project_team": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "no",
+          52511
+        ],
+        [
+          "yes",
+          21579
+        ],
+        [
+          "unclear",
+          612
+        ]
+      ]
+    },
+    "speaks_for": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "organization",
+          63381
+        ],
+        [
+          "office",
+          7060
+        ],
+        [
+          "self",
+          2364
+        ],
+        [
+          "unclear",
+          1897
+        ]
+      ]
+    },
+    "statement_type": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9,
+      "most_common": [
+        [
+          "finding",
+          21714
+        ],
+        [
+          "proposal_description",
+          13286
+        ],
+        [
+          "position",
+          9607
+        ],
+        [
+          "request",
+          9494
+        ],
+        [
+          "requirement",
+          6686
+        ]
+      ]
+    },
+    "certainty": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "not_applicable",
+          62537
+        ],
+        [
+          "definite",
+          9670
+        ],
+        [
+          "conditional",
+          1805
+        ],
+        [
+          "tentative",
+          690
+        ]
+      ]
+    },
+    "summary": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 66945,
+      "most_common": [
+        [
+          "Recommend approval.",
+          270
+        ],
+        [
+          "Type II action requires no further environmental review.",
+          128
+        ],
+        [
+          "Borough President recommends approval.",
+          109
+        ],
+        [
+          "No significant environmental impact.",
+          94
+        ],
+        [
+          "Recommends approval.",
+          89
+        ]
+      ]
+    },
+    "stance_on_project": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 5,
+      "most_common": [
+        [
+          "none_stated",
+          54304
+        ],
+        [
+          "support",
+          16194
+        ],
+        [
+          "oppose",
+          2473
+        ],
+        [
+          "conditional_support",
+          1654
+        ],
+        [
+          "mixed",
+          77
+        ]
+      ]
+    },
+    "component": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 70257,
+      "distinct_nonmissing": 2396,
+      "most_common": [
+        [
+          "Environmental alternative",
+          49
+        ],
+        [
+          "685 First Avenue",
+          26
+        ],
+        [
+          "Reduced Main Campus Block Development Alternative",
+          21
+        ],
+        [
+          "Mermaid Manor",
+          20
+        ],
+        [
+          "citywide transitional housing program",
+          20
+        ]
+      ]
+    },
+    "votes": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 71921,
+      "distinct_nonmissing": 1644,
+      "most_common": [
+        [
+          "unanimously",
+          54
+        ],
+        [
+          "Voting No",
+          51
+        ],
+        [
+          "voting no",
+          41
+        ],
+        [
+          "VOTING NO",
+          27
+        ],
+        [
+          "ABSTAINING",
+          26
+        ]
+      ]
+    },
+    "response": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "not_applicable",
+          60467
+        ],
+        [
+          "not_addressed",
+          6868
+        ],
+        [
+          "addressed_otherwise",
+          3868
+        ],
+        [
+          "adopted",
+          1632
+        ],
+        [
+          "partly_adopted",
+          992
+        ]
+      ]
+    },
+    "response_statement_ids": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 67415,
+      "distinct_nonmissing": 1645,
+      "most_common": [
+        [
+          "24",
+          71
+        ],
+        [
+          "23",
+          68
+        ],
+        [
+          "17",
+          67
+        ],
+        [
+          "15",
+          66
+        ],
+        [
+          "18",
+          66
+        ]
+      ]
+    },
+    "stage": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9,
+      "most_common": [
+        [
+          "cpc_consideration",
+          16691
+        ],
+        [
+          "pre_certification",
+          11662
+        ],
+        [
+          "cpc_decision",
+          11515
+        ],
+        [
+          "borough_president",
+          10238
+        ],
+        [
+          "community_board",
+          8417
+        ]
+      ]
+    },
+    "timing_note": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 55450,
+      "distinct_nonmissing": 6170,
+      "most_common": [
+        [
+          "December 19, 2005",
+          99
+        ],
+        [
+          "September 20, 2007",
+          88
+        ],
+        [
+          "December 22, 2005",
+          87
+        ],
+        [
+          "May 6, 2009",
+          83
+        ],
+        [
+          "FGEIS notice issued July 13, 2017",
+          77
+        ]
+      ]
+    },
+    "topics": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 13174,
+      "distinct_nonmissing": 785,
+      "most_common": [
+        [
+          "environment_open_space",
+          8603
+        ],
+        [
+          "scale_density_design",
+          6530
+        ],
+        [
+          "traffic_parking",
+          5923
+        ],
+        [
+          "process",
+          4902
+        ],
+        [
+          "infrastructure_services",
+          4285
+        ]
+      ]
+    },
+    "topic_note": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 71123,
+      "distinct_nonmissing": 2000,
+      "most_common": [
+        [
+          "City property disposition",
+          103
+        ],
+        [
+          "Property disposition",
+          50
+        ],
+        [
+          "Tennis access, public programs, ticket distribution, events or commemorative naming.",
+          38
+        ],
+        [
+          "City property disposition.",
+          34
+        ],
+        [
+          "Land use and permitted uses, zoning, or leasing restrictions.",
+          23
+        ]
+      ]
+    },
+    "procedural_action": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 6,
+      "most_common": [
+        [
+          "none",
+          67872
+        ],
+        [
+          "outreach_or_consultation",
+          2246
+        ],
+        [
+          "other_procedural",
+          2067
+        ],
+        [
+          "monitoring_or_reporting",
+          1185
+        ],
+        [
+          "study",
+          1158
+        ]
+      ]
+    },
+    "note": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 58138,
+      "distinct_nonmissing": 11115,
+      "most_common": [
+        [
+          "Site/lot columns sometimes interleave with condition prose in OCR; exact source entry retained in quote.",
+          126
+        ],
+        [
+          "Attached declaration is an unsigned form incorporated as a condition of CPC approval; obligation subject to its stated exceptions.",
+          115
+        ],
+        [
+          "Attachment header says 940013 ZRM; description identifies N 940113ZRM.",
+          92
+        ],
+        [
+          "Attached declaration/form agreement incorporated by CPC approval subject to technical/counsel changes; blank execution fields do not establish performance.",
+          86
+        ],
+        [
+          "Resolution expressly incorporates the common FEIS mitigation measures; site applicability is retained in the summary.",
+          66
+        ]
+      ]
+    },
+    "cited_pdf_pages": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7655,
+      "most_common": [
+        [
+          "2",
+          5318
+        ],
+        [
+          "1",
+          4511
+        ],
+        [
+          "3",
+          3854
+        ],
+        [
+          "4",
+          3397
+        ],
+        [
+          "5",
+          3328
+        ]
+      ]
+    },
+    "cited_source_applications": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3216,
+      "most_common": [
+        [
+          "C 070531A ZSM",
+          628
+        ],
+        [
+          "C 070314A ZMQ",
+          561
+        ],
+        [
+          "C 990099A ZSM",
+          540
+        ],
+        [
+          "C 240015 ZMX",
+          506
+        ],
+        [
+          "C 100310 ZMX",
+          446
+        ]
+      ]
+    },
+    "cited_page_scopes": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "most_common": [
+        [
+          "in_scope",
+          59730
+        ],
+        [
+          "unresolved",
+          8604
+        ],
+        [
+          "in_scope;unresolved",
+          6368
+        ]
+      ]
+    }
+  }
+}
