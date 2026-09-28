@@ -53,3 +53,10 @@ Code the application(s) in the report bundle, not other projects the report ment
 - Exclude letters, written testimony, petitions, and organizations that did not appear
   as speakers. The same person may be counted again at a continued hearing.
 - Leave blank when no exact count is reported (added here to match the support rule).
+
+## Rulings from Jacob's review (September 28)
+- civic_group_position: businesses are not civic groups; facility operators (e.g. a
+  senior center operator) are not civic groups; community groups that clearly take a
+  side count even when the report does not name them.
+- Hearing counts printed in a companion report heard on the same dates count for
+  every application in the bundle.

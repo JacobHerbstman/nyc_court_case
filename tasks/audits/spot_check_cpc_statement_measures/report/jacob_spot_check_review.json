@@ -1,0 +1,159 @@
+{
+  "dataset": "jacob_spot_check_review.csv",
+  "rows": 72,
+  "key": [
+    "document_id",
+    "measure"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "47fe63317336ec90ee96e83391fc79d9832f1bf114c613c9efaa3472e47d038e",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 37,
+      "most_common": [
+        [
+          "df787dc03cae1bd64204",
+          5
+        ],
+        [
+          "96bb1d772cdf441d146a",
+          4
+        ],
+        [
+          "a0497471d59a70aaad60",
+          4
+        ],
+        [
+          "601d1b6b7a609bc0561e",
+          3
+        ],
+        [
+          "6d2364e4b225fe00c2c0",
+          3
+        ]
+      ]
+    },
+    "measure": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "cpc_support_speakers",
+          22
+        ],
+        [
+          "civic_group_position",
+          18
+        ],
+        [
+          "cpc_opposition_speakers",
+          11
+        ],
+        [
+          "councilmember_position",
+          8
+        ],
+        [
+          "substantial_local_opposition",
+          7
+        ]
+      ]
+    },
+    "reviewer": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "jacob",
+          70
+        ],
+        [
+          "claude_page_check",
+          2
+        ]
+      ]
+    },
+    "agrees": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "Y",
+          69
+        ],
+        [
+          "N",
+          3
+        ]
+      ]
+    },
+    "reviewed_value": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 7,
+      "distinct_nonmissing": 17,
+      "most_common": [
+        [
+          "none_or_procedural",
+          14
+        ],
+        [
+          "0",
+          12
+        ],
+        [
+          "support_or_request",
+          8
+        ],
+        [
+          "1",
+          5
+        ],
+        [
+          "4",
+          4
+        ]
+      ]
+    },
+    "note": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 67,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "Checked the page image of companion report C 790065 ZMQ, p.1 (790065.pdf): \"5 appearances in favor and 11 in opposition at the first hearing and 2 in favor and 11 in opposition at the October 3, 1979 hearing\". The landfill and rezoning were heard together; the landfill report itself gives no count.",
+          2
+        ],
+        [
+          "Amico isnt a civic group",
+          1
+        ],
+        [
+          "I know we need a name but this is clearly support",
+          1
+        ],
+        [
+          "busniness are not civic groups",
+          1
+        ]
+      ]
+    }
+  }
+}

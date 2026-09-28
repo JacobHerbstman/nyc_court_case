@@ -6,7 +6,7 @@
     "measure"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "b48e569ddcbbd98aca860e1fc9c87c5c7042411f2e7c1fbd20e18e1c511ee4d5",
+  "sha256_csv_bytes": "8a340b498832fa7d5c7683c4324543ebcfebe76ef2963c01276bea55569ef11a",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -292,6 +292,35 @@
         [
           "C 831081 ZMX p.2",
           5
+        ]
+      ]
+    },
+    "quote_pdf_url": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 83,
+      "distinct_nonmissing": 47,
+      "most_common": [
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/070132.pdf",
+          7
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/070265.pdf",
+          7
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/070430.pdf",
+          7
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/160133.pdf",
+          7
+        ],
+        [
+          "https://www1.nyc.gov/assets/planning/download/pdf/about/cpc/870534.pdf",
+          7
         ]
       ]
     },

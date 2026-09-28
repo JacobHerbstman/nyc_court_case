@@ -67,3 +67,32 @@ These are for Jacob's review:
   ("the CB reports the Council Member supports"), was coded none in most cases.
 - **Split tallies:** where hearing tallies are split, e.g. for the program vs for the
   site, or across companion reports, the coders' choices are explained in the notes.
+
+## Review results, September 28
+
+Jacob reviewed 70 of the 72 Review items. He agreed with the first pass on 67 and
+disagreed on 3.
+
+The other 2 are the landfill report's speaker counts. The tallies are printed in the
+companion rezoning report (C 790065 ZMQ, p.1), which was heard on the same dates.
+Claude checked them on the page image: 5+2 in favor and 11+11 against, so 7 and 22.
+They are recorded as `claude_page_check` in `code/jacob_spot_check_review.csv`.
+
+The workbook now has a `quote_pdf_url` column, because a quote can come from a
+companion report in the same bundle. The build fills saved answers back in.
+
+`output/cpc_spot_check_scores.csv` scores both methods against the reviewed values:
+- **First pass:** right on 69 of 72 reviewed items. Its 3 misses are civic group calls.
+  Estimated accuracy on all 315 items is 0.99.
+- **Derived measures:** right on 3 of the 47 disagreements. All 25 sampled agreements
+  were confirmed. Estimated accuracy on all 315 items is 0.86.
+  - Speaker counts: wrong in all 29 of their disagreements (20 support, 9 opposition).
+  - Civic groups: wrong in 6 of 9.
+  - Community board, substantial opposition, council member, Borough President:
+    wrong in the rest (3, 3, 2 and 1).
+
+Jacob's civic group rulings, added to the codebook:
+- Businesses are not civic groups.
+- Facility operators, such as a senior center, are not civic groups.
+- Community groups count when they clearly take a side, even if the report does not
+  name them.

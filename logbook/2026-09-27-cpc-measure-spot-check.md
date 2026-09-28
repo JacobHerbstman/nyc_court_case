@@ -32,3 +32,23 @@ items. They agree on 43 of 45 council positions, but only 36 of 45 civic groups 
 25 of 45 support-speaker counts. The speaker gaps mostly come from the derived
 counting rule, not the reading. Jacob's answers will be saved as a committed table
 and used to score both.
+
+Review results, September 28:
+- **Review.** Jacob reviewed 70 of the 72 priority items and agreed with the blind
+  first pass on 67. The other 2, the landfill speaker counts, were confirmed on the
+  page image of the companion rezoning report heard on the same dates.
+- **First pass:** right on 69 of 72 reviewed items. The misses are all civic group
+  calls. Estimated accuracy on all 315 items is 0.99.
+- **Derived measures:** right on only 3 of the 47 disagreements. Estimated accuracy on
+  all 315 items is 0.86.
+  - Speaker counts are wrong in all 29 of their disagreements; civic groups in 6 of 9.
+  - Council member positions were rarely at issue (2 items). Council members took
+    part in few of these reports.
+- **Rulings** (added to the spot-check codebook):
+  - businesses and facility operators are not civic groups;
+  - community groups that clearly take a side count even when the report does not
+    name them;
+  - hearing counts printed in a companion report heard on the same dates count for
+    the whole bundle.
+- **Conclusion.** The errors are in turning rows into measures, not in reading.
+  Reading a report directly for these measures is close to right.

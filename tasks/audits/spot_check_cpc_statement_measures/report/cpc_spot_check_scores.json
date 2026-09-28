@@ -1,0 +1,158 @@
+{
+  "dataset": "cpc_spot_check_scores.csv",
+  "rows": 16,
+  "key": [
+    "measure",
+    "group"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "ad62a23b34e95a1a41e7594c32e9f8dbc5dd20519af5c66dfd6dcffa4a87833d",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "measure": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 8,
+      "most_common": [
+        [
+          "all",
+          2
+        ],
+        [
+          "bp_request_or_opposition",
+          2
+        ],
+        [
+          "cb_request_or_opposition",
+          2
+        ],
+        [
+          "civic_group_position",
+          2
+        ],
+        [
+          "councilmember_position",
+          2
+        ]
+      ]
+    },
+    "group": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "agreement_sample",
+          7
+        ],
+        [
+          "disagreement",
+          7
+        ],
+        [
+          "estimated_accuracy_derived",
+          1
+        ],
+        [
+          "estimated_accuracy_first_pass",
+          1
+        ]
+      ]
+    },
+    "reviewed": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 9,
+      "most_common": [
+        [
+          "2",
+          4
+        ],
+        [
+          "9",
+          3
+        ],
+        [
+          "3",
+          2
+        ],
+        [
+          "315",
+          2
+        ],
+        [
+          "0",
+          1
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 315
+    },
+    "first_pass_correct": {
+      "python_types": [
+        "int",
+        "str"
+      ],
+      "missing": 1,
+      "distinct_nonmissing": 9,
+      "most_common": [
+        [
+          "2",
+          4
+        ],
+        [
+          "3",
+          2
+        ],
+        [
+          "6",
+          2
+        ],
+        [
+          "9",
+          2
+        ],
+        [
+          "0",
+          1
+        ]
+      ]
+    },
+    "derived_correct": {
+      "python_types": [
+        "int",
+        "str"
+      ],
+      "missing": 1,
+      "distinct_nonmissing": 7,
+      "most_common": [
+        [
+          "0",
+          7
+        ],
+        [
+          "2",
+          3
+        ],
+        [
+          "0.860",
+          1
+        ],
+        [
+          "3",
+          1
+        ],
+        [
+          "4",
+          1
+        ]
+      ]
+    }
+  }
+}

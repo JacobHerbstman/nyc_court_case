@@ -51,12 +51,21 @@ def evidence_rows(rows, measure):
     return [r for r in rows if r['stage'] == 'cpc_hearing' and r['stance_on_project'] in stances]
 
 
+# Saved answers (Jacob's review, plus page checks by Claude) are filled back into the
+# workbook. A workbook holding answers not yet saved to code/ is never overwritten.
+saved = {}
+if Path('jacob_spot_check_review.csv').exists():
+    with open('jacob_spot_check_review.csv') as f:
+        saved = {(r['document_id'], r['measure']): r for r in csv.DictReader(f)}
 if Path(REVIEW).exists():
     for sheet in load_workbook(REVIEW).worksheets[1:3]:
         header = [c.value for c in sheet[1]]
-        if any(row[header.index(c)] not in (None, '') for row in sheet.iter_rows(min_row=2, values_only=True)
-               for c in REVIEW_COLUMNS if c in header):
-            sys.exit(f'{REVIEW} has review answers; save them to code/ before rebuilding.')
+        for row in sheet.iter_rows(min_row=2, values_only=True):
+            d = dict(zip(header, row))
+            answer = str(d.get('jacob_agrees') or '').strip().upper()
+            key = (d['document_id'], d['measure'])
+            if answer and (key not in saved or saved[key]['agrees'] != answer):
+                sys.exit(f'{REVIEW} has review answers not saved in code/jacob_spot_check_review.csv.')
 
 with open('cpc_spot_check_sample.csv') as f:
     sample = list(csv.DictReader(f))
@@ -93,16 +102,17 @@ for s in sample:
             assert value in CATEGORIES, (doc, measure, value)
         else:
             assert value in {'0', '1'}, (doc, measure, value)
-        page = ''
+        page = quote_pdf_url = ''
         if f['quote']:
             segment = segments[doc, f['segment_id']]
             assert ' '.join(f['quote'].split()) in ' '.join(segment['text'].split()), (doc, measure)
             page = f"{segment['source_application_number']} p.{segment['pdf_page']}"
+            quote_pdf_url = segment['public_pdf_url']
         rows = evidence_rows(statements[doc], measure)
         items.append(dict(
             document_id=doc, application_number=s['application_number'], year=s['year'], project_name=s['project_name'],
             sample_cell=s['sample_cell'], pdf_url=pdf_url, measure=measure, first_pass_value=value,
-            first_pass_quote=f['quote'], first_pass_page=page, first_pass_note=f['note'],
+            first_pass_quote=f['quote'], first_pass_page=page, quote_pdf_url=quote_pdf_url, first_pass_note=f['note'],
             derived_value=derived[doc][measure],
             derived_evidence='\n'.join(f"[{r['statement_type']}/{r['stance_on_project']}] {r['actor_name']}: {r['summary']}"
                                        for r in rows[:4]) + (f'\n(+{len(rows) - 4} more)' if len(rows) > 4 else ''),
@@ -126,6 +136,7 @@ for line in [
         'first_pass_value is a blind Claude coding from the report text, with its quote and page.',
         'derived_value is what the full statement run produces; derived_evidence shows the rows behind it.',
         'Rows where the two differ are shaded. Rows are grouped by report; pdf_url opens the report.',
+        'quote_pdf_url opens the PDF the quote comes from; it can be a companion report in the same bundle.',
         'For each row, fill jacob_agrees with Y or N for the FIRST-PASS value; if N, put the right value in jacob_value.',
         'Values: positions support_or_request / opposition / none_or_procedural; BP, CB and opposition 1/0;',
         'speaker counts an integer, or blank when the report gives no exact count.',
@@ -133,16 +144,19 @@ for line in [
     guide.append([line])
 guide.column_dimensions['A'].width = 120
 columns = ['document_id', 'year', 'project_name', 'pdf_url', 'measure', 'first_pass_value', 'first_pass_quote',
-           'first_pass_page', 'first_pass_note', 'derived_value', 'derived_evidence'] + REVIEW_COLUMNS
+           'first_pass_page', 'quote_pdf_url', 'first_pass_note', 'derived_value', 'derived_evidence'] + REVIEW_COLUMNS
 shade = PatternFill('solid', fgColor='FCE4D6')
 widths = dict(document_id=12, year=6, project_name=24, pdf_url=14, measure=26, first_pass_value=16, first_pass_quote=50,
-              first_pass_page=14, first_pass_note=40, derived_value=16, derived_evidence=60,
+              first_pass_page=14, quote_pdf_url=14, first_pass_note=40, derived_value=16, derived_evidence=60,
               jacob_agrees=12, jacob_value=16, jacob_note=30)
 for title, keep in (('Review', '1'), ('Other items', '0')):
     sheet = book.create_sheet(title)
     sheet.append(columns)
     for item in (i for i in items if i['priority'] == keep):
-        sheet.append([item.get(c, '') for c in columns])
+        answer = saved.get((item['document_id'], item['measure']))
+        filled = dict(jacob_agrees=answer['agrees'], jacob_value=answer['reviewed_value'] if answer['agrees'] == 'N' else '',
+                      jacob_note=answer['note'] if answer['reviewer'] == 'jacob' else f"(Claude page check) {answer['note']}") if answer else {}
+        sheet.append([filled.get(c, item.get(c, '')) for c in columns])
         if item['first_pass_matches_derived'] == '0':
             for cell in sheet[sheet.max_row]:
                 cell.fill = shade
