@@ -1,12 +1,12 @@
 {
   "dataset": "cpc_row_judge_packets.csv",
-  "rows": 90,
+  "rows": 135,
   "key": [
     "document_id",
     "variant"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "d2f12e03c3d69e27133202810dd2b954fc31679dedc1a7314990b6a7fb7355f7",
+  "sha256_csv_bytes": "24dbac315893a89d5a66220465e9811754edddd000f1fab8124cbb68d0c86106",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -18,23 +18,23 @@
       "most_common": [
         [
           "151236981b9fcfc3773c",
-          2
+          3
         ],
         [
           "17cad4f8302d949c487e",
-          2
+          3
         ],
         [
           "1f8369cca1e47fd59bc0",
-          2
+          3
         ],
         [
           "2174d914460e2bdbc060",
-          2
+          3
         ],
         [
           "30ff2817deb60bf5eaac",
-          2
+          3
         ]
       ]
     },
@@ -43,10 +43,14 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 2,
+      "distinct_nonmissing": 3,
       "most_common": [
         [
           "rows_hearing",
+          45
+        ],
+        [
+          "rows_hearing_slim",
           45
         ],
         [
@@ -64,23 +68,23 @@
       "most_common": [
         [
           "43",
-          6
+          9
         ],
         [
           "5",
-          6
+          9
         ],
         [
           "14",
-          4
+          6
         ],
         [
           "24",
-          4
+          6
         ],
         [
           "31",
-          4
+          6
         ]
       ],
       "minimum": 5,
@@ -99,19 +103,19 @@
         ],
         [
           "2",
-          12
+          24
         ],
         [
           "1",
-          11
+          22
         ],
         [
           "3",
-          11
+          22
         ],
         [
           "4",
-          6
+          12
         ]
       ],
       "minimum": 0,
@@ -122,8 +126,12 @@
         "int"
       ],
       "missing": 0,
-      "distinct_nonmissing": 90,
+      "distinct_nonmissing": 135,
       "most_common": [
+        [
+          "10015",
+          1
+        ],
         [
           "10023",
           1
@@ -133,15 +141,11 @@
           1
         ],
         [
-          "11089",
+          "10582",
           1
         ],
         [
-          "11604",
-          1
-        ],
-        [
-          "11620",
+          "10906",
           1
         ]
       ],
@@ -153,7 +157,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 90,
+      "distinct_nonmissing": 135,
       "most_common": [
         [
           "../temp/judge_packets/rows_hearing/151236981b9fcfc3773c.txt",

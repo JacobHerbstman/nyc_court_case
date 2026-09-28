@@ -9,7 +9,8 @@ after each rule change. `review_group` in the review table keeps the original st
 
 Row judging (data_raw/cpc_spot_check_row_judging/) answers the same codebook from Sol's
 statement rows, without the PDF: `rows_only`, and `rows_hearing` with the report's
-hearing pages added. Their values and quotes are validated here. Unreviewed items take
+hearing pages added, and `rows_hearing_slim` with a compact row table. Their values and
+quotes are validated here. Unreviewed items take
 the first pass as the reference, which slightly favors the first pass.
 """
 # Interactive use: cd to tasks/audits/spot_check_cpc_statement_measures/code, then
@@ -35,7 +36,7 @@ with open('../input/ulurp_cpc_reading_segments.csv') as f:
     for r in csv.DictReader(f):
         if r['document_id'] in docs:
             segments[r['document_id'], r['segment_id']] = ' '.join(r['text'].split())
-VARIANTS = ('rows_only', 'rows_hearing')
+VARIANTS = ('rows_only', 'rows_hearing', 'rows_hearing_slim')
 
 
 def quoted(quote, text):
@@ -64,7 +65,7 @@ for variant in VARIANTS:
             else:
                 assert value in {'0', '1'}, (variant, doc, i['measure'], value)
             if a.get('quote'):
-                assert variant == 'rows_hearing' and quoted(a['quote'], segments[doc, a['segment_id']]), (variant, doc)
+                assert variant != 'rows_only' and quoted(a['quote'], segments[doc, a['segment_id']]), (variant, doc)
             judged[variant, doc, i['measure']] = value
 
 rows = []

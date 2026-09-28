@@ -80,3 +80,7 @@ Judging from Sol's rows, September 28:
   Niños do not count; obviously supportive unnamed groups do. After that, rows plus
   hearing pages is the most accurate method: 312 of 315 items and 70 of Jacob's 72.
   The direct reading scores 310 and 67.
+- **Slim packets.** The hearing pages plus a compact table of the needed row fields are
+  half the size and about 40% cheaper to judge (about 7,400 subagent tokens per
+  report). They score 310 of 315 items and 68 of 72 reviewed, with both speaker counts
+  right in all 45 reports. That is two borderline calls behind the full packets.

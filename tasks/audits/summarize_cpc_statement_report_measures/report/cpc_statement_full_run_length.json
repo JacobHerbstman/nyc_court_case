@@ -1,11 +1,11 @@
 {
   "dataset": "cpc_statement_full_run_length.csv",
-  "rows": 4931,
+  "rows": 4962,
   "key": [
     "document_id"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "f009fe8ad20e23c0c5d99d124fe9815993a2f2514ae4e054581b44f23cd05cef",
+  "sha256_csv_bytes": "f59644c105f07a7531e8cf16e49abfe657d831c5f15482f962dfd1eda198c6b4",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -13,7 +13,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 4931,
+      "distinct_nonmissing": 4962,
       "most_common": [
         [
           "00126d30463744ba647c",
@@ -46,15 +46,15 @@
       "most_common": [
         [
           "1982",
-          311
+          316
         ],
         [
           "1981",
-          272
+          274
         ],
         [
           "1980",
-          218
+          219
         ],
         [
           "1983",
@@ -71,7 +71,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 4151,
+      "distinct_nonmissing": 4171,
       "most_common": [
         [
           "46996",
@@ -104,23 +104,23 @@
       "most_common": [
         [
           "0",
-          2208
+          2222
         ],
         [
           "1",
-          776
+          780
         ],
         [
           "2",
-          436
+          441
         ],
         [
           "3",
-          327
+          330
         ],
         [
           "4",
-          253
+          254
         ]
       ]
     },
@@ -133,7 +133,7 @@
       "most_common": [
         [
           "6",
-          185
+          187
         ],
         [
           "7",
@@ -141,11 +141,11 @@
         ],
         [
           "9",
-          182
+          185
         ],
         [
           "8",
-          170
+          171
         ],
         [
           "10",
@@ -158,7 +158,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 2296,
+      "distinct_nonmissing": 2301,
       "most_common": [
         [
           "14.06",

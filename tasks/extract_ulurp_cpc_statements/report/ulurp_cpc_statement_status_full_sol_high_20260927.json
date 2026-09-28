@@ -5,7 +5,7 @@
     "document_id"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "04345e74cbc4a11a22bfc8d1d142ee012de9bedffdb9bd4bb7a2b53bee3801f5",
+  "sha256_csv_bytes": "cf6e6ff20f6852c94d5b355a6a85d298b5d4923a8634fa62c12f095f8e69f8ca",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -103,11 +103,11 @@
       "most_common": [
         [
           "complete",
-          4931
+          4962
         ],
         [
           "not_run",
-          4132
+          4101
         ]
       ]
     },
@@ -115,12 +115,12 @@
       "python_types": [
         "int"
       ],
-      "missing": 4132,
+      "missing": 4101,
       "distinct_nonmissing": 1,
       "most_common": [
         [
           "1",
-          4931
+          4962
         ]
       ],
       "minimum": 1,
@@ -135,11 +135,11 @@
       "most_common": [
         [
           "1",
-          4931
+          4962
         ],
         [
           "0",
-          4132
+          4101
         ]
       ],
       "minimum": 0,
@@ -154,15 +154,15 @@
       "most_common": [
         [
           "1",
-          4313
+          4340
         ],
         [
           "0",
-          4132
+          4101
         ],
         [
           "2",
-          581
+          585
         ],
         [
           "3",
@@ -185,11 +185,11 @@
       "most_common": [
         [
           "0",
-          4132
+          4101
         ],
         [
           "6",
-          185
+          187
         ],
         [
           "7",
@@ -197,11 +197,11 @@
         ],
         [
           "9",
-          182
+          185
         ],
         [
           "8",
-          170
+          171
         ]
       ],
       "minimum": 0,
@@ -229,8 +229,8 @@
       "python_types": [
         "str"
       ],
-      "missing": 4259,
-      "distinct_nonmissing": 4801,
+      "missing": 4228,
+      "distinct_nonmissing": 4832,
       "most_common": [
         [
           "Part 1: Minor OCR errors; no attachments supplied.\n",

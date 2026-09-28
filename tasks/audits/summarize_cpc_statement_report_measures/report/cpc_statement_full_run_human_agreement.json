@@ -1,12 +1,12 @@
 {
   "dataset": "cpc_statement_full_run_human_agreement.csv",
-  "rows": 3179,
+  "rows": 3196,
   "key": [
     "document_id",
     "measure"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "b54bcf3d383a458b1b3c192da9d801dd6b7ecf1cc7ed516374b612878a91bddb",
+  "sha256_csv_bytes": "92e4b926f43a9a4604cbdc160a51ba2abd25a53df57a1ab77888903efdc67364",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -14,7 +14,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 196,
+      "distinct_nonmissing": 197,
       "most_common": [
         [
           "02c18c0a3b85fce07355",
@@ -47,23 +47,23 @@
       "most_common": [
         [
           "councilmember_position",
-          196
+          197
         ],
         [
           "civic_group_position",
-          193
+          194
         ],
         [
           "affordability_displacement",
-          192
+          193
         ],
         [
           "bp_request_or_opposition",
-          192
+          193
         ],
         [
           "substantial_local_opposition",
-          192
+          193
         ]
       ]
     },
@@ -76,15 +76,15 @@
       "most_common": [
         [
           "0",
-          1790
+          1798
         ],
         [
           "1",
-          915
+          922
         ],
         [
           "none_or_procedural",
-          334
+          336
         ],
         [
           "opposition",
@@ -105,7 +105,7 @@
       "most_common": [
         [
           "single_human_coder",
-          2655
+          2672
         ],
         [
           "human_agreement",
@@ -126,19 +126,19 @@
       "most_common": [
         [
           "0",
-          1751
+          1759
         ],
         [
           "1",
-          954
+          961
         ],
         [
           "none_or_procedural",
-          328
+          329
         ],
         [
           "opposition",
-          38
+          39
         ],
         [
           "2",
@@ -155,11 +155,11 @@
       "most_common": [
         [
           "1",
-          2637
+          2653
         ],
         [
           "0",
-          542
+          543
         ]
       ]
     },
@@ -167,12 +167,12 @@
       "python_types": [
         "str"
       ],
-      "missing": 2823,
+      "missing": 2838,
       "distinct_nonmissing": 9,
       "most_common": [
         [
           "0",
-          306
+          308
         ],
         [
           "1",

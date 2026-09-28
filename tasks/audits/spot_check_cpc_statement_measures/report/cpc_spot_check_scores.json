@@ -5,7 +5,7 @@
     "measure"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "c4f930dbdfebc65d122af79f66dc6eb14b35a6aec17b0aa55e77cbc3cae978b0",
+  "sha256_csv_bytes": "c10aa0c6a7f43fbd98323a663bb0b115975ae064c810f92c5e5a44cdb1622214",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "measure": {
@@ -198,6 +198,33 @@
       ],
       "minimum": 43,
       "maximum": 312
+    },
+    "rows_hearing_slim_correct": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 4,
+      "most_common": [
+        [
+          "44",
+          3
+        ],
+        [
+          "45",
+          3
+        ],
+        [
+          "310",
+          1
+        ],
+        [
+          "43",
+          1
+        ]
+      ],
+      "minimum": 43,
+      "maximum": 310
     },
     "derived_blank": {
       "python_types": [

@@ -180,3 +180,27 @@ Scale estimates, from the reports completed so far:
   pages) would be about 28M tokens.
 - Re-reading every report in full would be about 67M tokens.
 - The slim packet is untested.
+
+## Slim packets, September 28
+
+`rows_hearing_slim` packets hold the hearing pages plus a compact table of the row
+fields the measures use: statement_id, actor, roles, project team, type, stance,
+component, votes, response and links, stage and summary. They drop quotes, notes and
+repeated field names, so they are about half the size of `rows_hearing` (median
+13,107 characters against 27,614).
+
+Results, blind Claude subagents with the same instructions:
+
+| Method | All 315 items | Jacob's 72 reviewed items |
+|---|---|---|
+| rows_hearing_slim | 310 | 68 |
+| rows_hearing | 312 | 70 |
+| First pass | 310 | 67 |
+
+- The slim version is right on both speaker counts in all 45 reports.
+- Its two extra reviewed misses are borderline judgment calls:
+  - a council member's general request relayed by the community board;
+  - whether five residents' objections count as substantial opposition.
+- Subagent usage is about 7,400 tokens per report, against about 12,600 for
+  `rows_hearing`: 333,000 against 567,000 tokens for the 45 reports. At that rate the
+  full corpus would be roughly 67M subagent tokens.
