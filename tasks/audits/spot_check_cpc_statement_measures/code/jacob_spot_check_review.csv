@@ -6,7 +6,7 @@ a0497471d59a70aaad60,cpc_opposition_speakers,agreement_sample,jacob,Y,0,
 b0fab8ab4e66bb1a8258,civic_group_position,agreement_sample,jacob,Y,support_or_request,
 b0fab8ab4e66bb1a8258,cb_request_or_opposition,disagreement,jacob,Y,0,
 b0fab8ab4e66bb1a8258,cpc_support_speakers,disagreement,jacob,Y,4,
-3a2361ba02feb156d070,civic_group_position,disagreement,jacob,Y,support_or_request,
+3a2361ba02feb156d070,civic_group_position,disagreement,jacob,N,none_or_procedural,"Corrected September 28: Nuestros Ninos is a facility operator, not a civic group (earlier Y was a mistake)."
 6d2364e4b225fe00c2c0,civic_group_position,disagreement,jacob,Y,none_or_procedural,
 6d2364e4b225fe00c2c0,cpc_support_speakers,disagreement,jacob,Y,2,
 6d2364e4b225fe00c2c0,cpc_opposition_speakers,disagreement,jacob,Y,6,
@@ -28,7 +28,7 @@ b6cc3e64d81c19448b42,civic_group_position,disagreement,jacob,N,none_or_procedura
 8d4867976202439b050b,cpc_opposition_speakers,disagreement,jacob,Y,,
 a7d0c2b50bbd2f11cdac,substantial_local_opposition,disagreement,jacob,Y,0,
 a7d0c2b50bbd2f11cdac,cpc_support_speakers,disagreement,jacob,Y,5,
-5ccd0074693eefe3c7ba,civic_group_position,disagreement,jacob,Y,none_or_procedural,
+5ccd0074693eefe3c7ba,civic_group_position,disagreement,jacob,N,support_or_request,Corrected September 28: unnamed neighborhood groups count when their support is obvious.
 5ccd0074693eefe3c7ba,cpc_support_speakers,disagreement,jacob,Y,3,
 7f4a70790d56975f836d,civic_group_position,disagreement,jacob,Y,none_or_procedural,
 7f4a70790d56975f836d,cpc_support_speakers,disagreement,jacob,Y,2,

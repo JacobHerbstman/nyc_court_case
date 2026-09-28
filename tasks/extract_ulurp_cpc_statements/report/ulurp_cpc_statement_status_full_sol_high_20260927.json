@@ -5,7 +5,7 @@
     "document_id"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "ba9566ba046de52a3e06b0379b3b45fe6dbc5bd0d990247ed1d07320fb8c8a32",
+  "sha256_csv_bytes": "04345e74cbc4a11a22bfc8d1d142ee012de9bedffdb9bd4bb7a2b53bee3801f5",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -103,11 +103,11 @@
       "most_common": [
         [
           "complete",
-          4795
+          4931
         ],
         [
           "not_run",
-          4268
+          4132
         ]
       ]
     },
@@ -115,12 +115,12 @@
       "python_types": [
         "int"
       ],
-      "missing": 4268,
+      "missing": 4132,
       "distinct_nonmissing": 1,
       "most_common": [
         [
           "1",
-          4795
+          4931
         ]
       ],
       "minimum": 1,
@@ -135,11 +135,11 @@
       "most_common": [
         [
           "1",
-          4795
+          4931
         ],
         [
           "0",
-          4268
+          4132
         ]
       ],
       "minimum": 0,
@@ -153,20 +153,20 @@
       "distinct_nonmissing": 5,
       "most_common": [
         [
-          "0",
-          4268
+          "1",
+          4313
         ],
         [
-          "1",
-          4202
+          "0",
+          4132
         ],
         [
           "2",
-          560
+          581
         ],
         [
           "3",
-          32
+          36
         ],
         [
           "4",
@@ -181,23 +181,23 @@
         "int"
       ],
       "missing": 0,
-      "distinct_nonmissing": 251,
+      "distinct_nonmissing": 252,
       "most_common": [
         [
           "0",
-          4268
-        ],
-        [
-          "7",
-          183
+          4132
         ],
         [
           "6",
-          178
+          185
+        ],
+        [
+          "7",
+          185
         ],
         [
           "9",
-          172
+          182
         ],
         [
           "8",
@@ -229,8 +229,8 @@
       "python_types": [
         "str"
       ],
-      "missing": 4395,
-      "distinct_nonmissing": 4665,
+      "missing": 4259,
+      "distinct_nonmissing": 4801,
       "most_common": [
         [
           "Part 1: Minor OCR errors; no attachments supplied.\n",
@@ -241,15 +241,15 @@
           2
         ],
         [
+          "Part 1: 109 segments include multiple companion CPC reports and attachments for Queens, Brooklyn and Staten Island. Several attachment pages were marked unresolved but identify a named application; one Staten Island form concerns separate C190431 PCR. OCR is noisy on handwritten recommendation forms. Brooklyn CB15 abstention count differs between acquisition and disposition reports; Queens housing counts are described as eight managed lots in the CPC background and seven CD14 lots in board attachments. The Queens focal report gives Negative Declaration dates May 15 and May 20. Several companion reports contain application-number copy errors in narrative or resolution text.\n",
+          1
+        ],
+        [
           "Part 1: 14 segments include CPC report, board form, Borough President recommendation and applicant counsel letter. Pages 10–14 are flagged unresolved, but each names L&E, C 160093 ZSK or the 2700 Stillwell Avenue project. OCR obscures some form marks and exact flood and trip figures differ across source parts; the CPC report provides the vote count and resolution. Neighbor letter is summarized but not supplied.\n",
           1
         ],
         [
           "Part 1: 150 segments include the focal C 240163 MMX report, zoning report C 240015 ZMX, four companion City Map reports and attached board/Borough President recommendations. Fourteen Borough President/CB10 continuation pages are flagged unresolved but continue identified letters/recommendations. Zoning text application N 240016 ZRX is described but its separate report is not supplied. Community Board 11 vote counts conflict: CPC summaries report 25 in favor, none against and two abstaining; the attached recommendation form, CB11 letter and Borough President account report 25 in favor, five against and zero abstentions. Several report headings have inconsistent filing dates and application labels; source wording is retained in quotes. Map diagram and census table OCR are substantially garbled. The report discusses future station and development actions; statements of intent or projected features are not evidence of completed construction or binding commitments.\n",
-          1
-        ],
-        [
-          "Part 1: 154 segments from companion Brooklyn Center and Atlantic Terminal reports. OCR is garbled in several maps and exhibits. Some figures conflict across passages, including Brooklyn Center parking reservoir spaces and Atlantic Terminal tower height. The 860207 ZAK residential declaration in unresolved pages is an unsigned template with blank parties, dates and exhibits; its text identifies Atlantic Terminal and is treated as proposed declaration terms, not proof of execution. The Strand is explicitly described as a separate disposition. No standalone N 860210 ZRK or N 860207 ZAK CPC report appears in the supplied packet.\n",
           1
         ]
       ]

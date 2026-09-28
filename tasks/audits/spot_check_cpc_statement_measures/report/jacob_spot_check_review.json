@@ -6,7 +6,7 @@
     "measure"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "1604fce4e403fdf73674bcf889ed29b0a7e0ae1b0c84f4c224571fc812ddf4e5",
+  "sha256_csv_bytes": "955a6036018cda6bb7480b4a5c62d399e6eb33158fc1fc56df0a4563eef3194e",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -110,11 +110,11 @@
       "most_common": [
         [
           "Y",
-          69
+          67
         ],
         [
           "N",
-          3
+          5
         ]
       ]
     },
@@ -151,8 +151,8 @@
       "python_types": [
         "str"
       ],
-      "missing": 67,
-      "distinct_nonmissing": 4,
+      "missing": 65,
+      "distinct_nonmissing": 6,
       "most_common": [
         [
           "Checked the page image of companion report C 790065 ZMQ, p.1 (790065.pdf): \"5 appearances in favor and 11 in opposition at the first hearing and 2 in favor and 11 in opposition at the October 3, 1979 hearing\". The landfill and rezoning were heard together; the landfill report itself gives no count.",
@@ -163,11 +163,15 @@
           1
         ],
         [
-          "I know we need a name but this is clearly support",
+          "Corrected September 28: Nuestros Ninos is a facility operator, not a civic group (earlier Y was a mistake).",
           1
         ],
         [
-          "busniness are not civic groups",
+          "Corrected September 28: unnamed neighborhood groups count when their support is obvious.",
+          1
+        ],
+        [
+          "I know we need a name but this is clearly support",
           1
         ]
       ]

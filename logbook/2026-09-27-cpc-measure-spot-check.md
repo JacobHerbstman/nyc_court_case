@@ -76,3 +76,7 @@ Judging from Sol's rows, September 28:
   are usually not in the rows.
 - **Scale.** A slim packet, with the key row fields plus hearing pages, would be about
   28M tokens for the whole corpus. Re-reading every report would be about 67M.
+- **Corrections.** Jacob then corrected two civic answers: operators like Nuestros
+  Niños do not count; obviously supportive unnamed groups do. After that, rows plus
+  hearing pages is the most accurate method: 312 of 315 items and 70 of Jacob's 72.
+  The direct reading scores 310 and 67.

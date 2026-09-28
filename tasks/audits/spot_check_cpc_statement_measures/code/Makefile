@@ -4,7 +4,9 @@ all: ../output/cpc_spot_check_items.csv ../output/cpc_spot_check_review.xlsx ../
 # cpc_spot_check_sample.csv is frozen: select_spot_check.py drew it once from the
 # full run's September 27 snapshot (seed cpc-spot-check-20260927).
 # The first pass was acquired outside Make (see README); its folder is frozen.
-# jacob_spot_check_review.csv holds the saved review answers.
+# jacob_spot_check_review.csv holds the saved review answers. The workbook is precious:
+# a build refused over unsaved answers must not delete it.
+.PRECIOUS: ../output/cpc_spot_check_review.xlsx
 ../%/cpc_spot_check_items.csv ../%/cpc_spot_check_review.xlsx: build_spot_check_workbook.py ../../../_lib/cpc_statement_measures.py \
 	cpc_spot_check_sample.csv jacob_spot_check_review.csv spot_check_codebook.md ../input/first_pass ../input/ulurp_cpc_reading_segments.csv \
 	../input/cpc_statement_full_run_report_measures.csv ../input/ulurp_cpc_statements_full_sol_high_20260927.csv | ../output ../report

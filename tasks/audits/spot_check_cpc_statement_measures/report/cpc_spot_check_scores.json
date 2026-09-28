@@ -5,7 +5,7 @@
     "measure"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "0ec59386884726da951a3eab7a5e45fdcac5626ec6c917b24af15a6eeb082bb7",
+  "sha256_csv_bytes": "c4f930dbdfebc65d122af79f66dc6eb14b35a6aec17b0aa55e77cbc3cae978b0",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "measure": {
@@ -99,16 +99,16 @@
           6
         ],
         [
-          "312",
+          "310",
           1
         ],
         [
-          "42",
+          "40",
           1
         ]
       ],
-      "minimum": 42,
-      "maximum": 312
+      "minimum": 40,
+      "maximum": 310
     },
     "derived_correct": {
       "python_types": [
@@ -119,27 +119,27 @@
       "most_common": [
         [
           "42",
-          3
+          2
+        ],
+        [
+          "44",
+          2
         ],
         [
           "25",
           1
         ],
         [
-          "276",
+          "278",
           1
         ],
         [
           "38",
           1
-        ],
-        [
-          "43",
-          1
         ]
       ],
       "minimum": 25,
-      "maximum": 276
+      "maximum": 278
     },
     "rows_only_correct": {
       "python_types": [
@@ -157,7 +157,7 @@
           1
         ],
         [
-          "268",
+          "270",
           1
         ],
         [
@@ -165,12 +165,12 @@
           1
         ],
         [
-          "41",
+          "43",
           1
         ]
       ],
       "minimum": 21,
-      "maximum": 268
+      "maximum": 270
     },
     "rows_hearing_correct": {
       "python_types": [
@@ -184,11 +184,11 @@
           5
         ],
         [
-          "310",
+          "312",
           1
         ],
         [
-          "41",
+          "43",
           1
         ],
         [
@@ -196,8 +196,8 @@
           1
         ]
       ],
-      "minimum": 41,
-      "maximum": 310
+      "minimum": 43,
+      "maximum": 312
     },
     "derived_blank": {
       "python_types": [

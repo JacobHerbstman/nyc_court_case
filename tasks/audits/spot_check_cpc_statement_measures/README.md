@@ -141,30 +141,37 @@ PDF? `write_judge_packets.py` writes two packets per report:
 Blind Claude subagents judged each packet with the codebook and Jacob's rulings. See
 `data_raw/cpc_spot_check_row_judging/claude_opus_5_5_20260928/`.
 
-Correct items, out of 315, against the reviewed value or else the first pass:
+Jacob then corrected two answers:
+- Nuestros Niños is an operator, so none.
+- The unnamed U Thant neighborhood groups obviously support, so support.
+
+After those corrections, correct items out of 315, against the reviewed value or else
+the first pass:
 
 | Method | Correct |
 |---|---|
-| rows_hearing | 310 |
-| First pass (direct reading of the full report) | 312 |
-| Current rules | 276 |
-| rows_only | 268 |
+| rows_hearing | 312 |
+| First pass (direct reading of the full report) | 310 |
+| Current rules | 278 |
+| rows_only | 270 |
 
 On the 72 items Jacob reviewed:
 
-| Method | Reviewed items | The 47 disagreements |
-|---|---|---|
-| First pass | 69 | 44 |
-| rows_hearing | 68 | 43 |
-| rows_only | 57 | 33 |
-| Current rules | 36 | 12 |
+| Method | Correct |
+|---|---|
+| rows_hearing | 70 |
+| First pass | 67 |
+| rows_only | 59 |
+| Current rules | 38 |
 
 `rows_hearing` gets both speaker counts right in all 45 reports. `rows_only` cannot:
 the tallies are usually not in the rows.
 
-Three of `rows_hearing`'s 4 reviewed misses are civic group cases where Jacob's
-answers conflict with his written rulings (operators, unnamed groups, Henry Street
-Settlement). The fourth is a Borough President request reported only second-hand.
+Its 2 remaining reviewed misses are Henry Street Settlement's civic group position and
+a Borough President request reported only second-hand.
+
+The workbook is `.PRECIOUS` in the Makefile, because the shared `.DELETE_ON_ERROR`
+would otherwise delete it when the build refuses to overwrite unsaved answers.
 
 Scale estimates, from the reports completed so far:
 - The packets used here, with every row field plus hearing pages, would be about 85M

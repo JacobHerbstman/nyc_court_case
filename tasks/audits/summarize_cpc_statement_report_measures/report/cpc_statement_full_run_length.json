@@ -1,11 +1,11 @@
 {
   "dataset": "cpc_statement_full_run_length.csv",
-  "rows": 4795,
+  "rows": 4931,
   "key": [
     "document_id"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "93226343c81f951c26044a10e70a5fafe8613ec01890675939d1f8492485441f",
+  "sha256_csv_bytes": "f009fe8ad20e23c0c5d99d124fe9815993a2f2514ae4e054581b44f23cd05cef",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -13,7 +13,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 4795,
+      "distinct_nonmissing": 4931,
       "most_common": [
         [
           "00126d30463744ba647c",
@@ -46,23 +46,23 @@
       "most_common": [
         [
           "1982",
-          300
+          311
         ],
         [
           "1981",
-          266
+          272
         ],
         [
           "1980",
-          215
-        ],
-        [
-          "1989",
-          202
+          218
         ],
         [
           "1983",
-          201
+          211
+        ],
+        [
+          "1989",
+          209
         ]
       ]
     },
@@ -71,7 +71,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 4061,
+      "distinct_nonmissing": 4151,
       "most_common": [
         [
           "46996",
@@ -104,23 +104,23 @@
       "most_common": [
         [
           "0",
-          2155
+          2208
         ],
         [
           "1",
-          762
+          776
         ],
         [
           "2",
-          418
+          436
         ],
         [
           "3",
-          317
+          327
         ],
         [
           "4",
-          247
+          253
         ]
       ]
     },
@@ -129,19 +129,19 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 250,
+      "distinct_nonmissing": 251,
       "most_common": [
         [
-          "7",
-          183
+          "6",
+          185
         ],
         [
-          "6",
-          178
+          "7",
+          185
         ],
         [
           "9",
-          172
+          182
         ],
         [
           "8",
@@ -149,7 +149,7 @@
         ],
         [
           "10",
-          148
+          153
         ]
       ]
     },
@@ -158,8 +158,12 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 2271,
+      "distinct_nonmissing": 2296,
       "most_common": [
+        [
+          "14.06",
+          8
+        ],
         [
           "14.19",
           8
@@ -174,10 +178,6 @@
         ],
         [
           "12.46",
-          7
-        ],
-        [
-          "12.69",
           7
         ]
       ]

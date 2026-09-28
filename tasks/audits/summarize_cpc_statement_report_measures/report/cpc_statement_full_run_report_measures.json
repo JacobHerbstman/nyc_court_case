@@ -1,12 +1,12 @@
 {
   "dataset": "cpc_statement_full_run_report_measures.csv",
-  "rows": 81515,
+  "rows": 83827,
   "key": [
     "document_id",
     "measure"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "4a0a48170b9f3eabd0e91733bb3c3bfe9ca69c866d371be4a4a8fac75a227aec",
+  "sha256_csv_bytes": "b7041f4c8eedf88d30e7107ad69d9fc478e3f52b89e4730734a65fbd475aa586",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -14,7 +14,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 4795,
+      "distinct_nonmissing": 4931,
       "most_common": [
         [
           "00126d30463744ba647c",
@@ -47,23 +47,23 @@
       "most_common": [
         [
           "affordability_displacement",
-          4795
+          4931
         ],
         [
           "approved_unresolved_objection",
-          4795
+          4931
         ],
         [
           "bp_request_or_opposition",
-          4795
+          4931
         ],
         [
           "cb_request_or_opposition",
-          4795
+          4931
         ],
         [
           "civic_group_position",
-          4795
+          4931
         ]
       ]
     },
@@ -71,28 +71,28 @@
       "python_types": [
         "str"
       ],
-      "missing": 429,
+      "missing": 438,
       "distinct_nonmissing": 55,
       "most_common": [
         [
           "0",
-          50644
+          52024
         ],
         [
           "1",
-          19252
+          19858
         ],
         [
           "none_or_procedural",
-          8449
+          8690
         ],
         [
           "opposition",
-          650
+          665
         ],
         [
           "2",
-          500
+          515
         ]
       ]
     }

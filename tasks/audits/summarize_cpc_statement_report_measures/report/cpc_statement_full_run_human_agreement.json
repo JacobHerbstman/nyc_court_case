@@ -1,12 +1,12 @@
 {
   "dataset": "cpc_statement_full_run_human_agreement.csv",
-  "rows": 3078,
+  "rows": 3179,
   "key": [
     "document_id",
     "measure"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "9132e97d0a30addf43b19b5771ac27a5a50a0626d77cdc284fb2a2be3e161443",
+  "sha256_csv_bytes": "b54bcf3d383a458b1b3c192da9d801dd6b7ecf1cc7ed516374b612878a91bddb",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -14,7 +14,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 190,
+      "distinct_nonmissing": 196,
       "most_common": [
         [
           "02c18c0a3b85fce07355",
@@ -47,23 +47,23 @@
       "most_common": [
         [
           "councilmember_position",
-          190
+          196
         ],
         [
           "civic_group_position",
-          187
+          193
         ],
         [
           "affordability_displacement",
-          186
+          192
         ],
         [
           "bp_request_or_opposition",
-          186
+          192
         ],
         [
           "substantial_local_opposition",
-          186
+          192
         ]
       ]
     },
@@ -72,27 +72,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 19,
+      "distinct_nonmissing": 20,
       "most_common": [
         [
           "0",
-          1740
+          1790
         ],
         [
           "1",
-          882
+          915
         ],
         [
           "none_or_procedural",
-          326
+          334
         ],
         [
           "opposition",
-          29
+          32
         ],
         [
-          "support_or_request",
-          22
+          "2",
+          23
         ]
       ]
     },
@@ -105,11 +105,11 @@
       "most_common": [
         [
           "single_human_coder",
-          2571
+          2655
         ],
         [
           "human_agreement",
-          394
+          411
         ],
         [
           "provisional",
@@ -122,27 +122,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 19,
+      "distinct_nonmissing": 20,
       "most_common": [
         [
           "0",
-          1707
+          1751
         ],
         [
           "1",
-          915
+          954
         ],
         [
           "none_or_procedural",
-          321
+          328
         ],
         [
           "opposition",
-          34
+          38
         ],
         [
           "2",
-          26
+          28
         ]
       ]
     },
@@ -155,11 +155,11 @@
       "most_common": [
         [
           "1",
-          2555
+          2637
         ],
         [
           "0",
-          523
+          542
         ]
       ]
     },
@@ -167,16 +167,16 @@
       "python_types": [
         "str"
       ],
-      "missing": 2733,
+      "missing": 2823,
       "distinct_nonmissing": 9,
       "most_common": [
         [
           "0",
-          297
+          306
         ],
         [
           "1",
-          25
+          26
         ],
         [
           "2",
@@ -187,7 +187,7 @@
           6
         ],
         [
-          "6",
+          "4",
           2
         ]
       ]

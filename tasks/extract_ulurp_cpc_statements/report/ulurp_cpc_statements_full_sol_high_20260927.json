@@ -1,13 +1,13 @@
 {
   "dataset": "ulurp_cpc_statements_full_sol_high_20260927.csv",
-  "rows": 175581,
+  "rows": 179730,
   "key": [
     "document_id",
     "part",
     "statement_id"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "b942ec65e80156b3c93778f69d6c4f58cdf721404f64efaf3cf0ef7d099ec2a6",
+  "sha256_csv_bytes": "55ea154878bc4e307e1cf1dd6c0291f57e8fd9cca5cbc0456f3059a099dbc92e",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -15,7 +15,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 4795,
+      "distinct_nonmissing": 4931,
       "most_common": [
         [
           "95f8e2e700b3fc552767",
@@ -44,7 +44,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 4795,
+      "distinct_nonmissing": 4931,
       "most_common": [
         [
           "C 860685 ZMK",
@@ -77,7 +77,7 @@
       "most_common": [
         [
           "1",
-          175581
+          179730
         ]
       ],
       "minimum": 1,
@@ -92,23 +92,23 @@
       "most_common": [
         [
           "2",
-          4795
+          4931
         ],
         [
           "1",
-          4794
+          4930
         ],
         [
           "3",
-          4789
+          4925
         ],
         [
           "4",
-          4769
+          4904
         ],
         [
           "5",
-          4698
+          4827
         ]
       ],
       "minimum": 1,
@@ -119,27 +119,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 14782,
+      "distinct_nonmissing": 15003,
       "most_common": [
         [
           "s0001",
-          12130
+          12448
         ],
         [
           "s0002",
-          11464
+          11725
         ],
         [
           "s0003",
-          8096
+          8281
         ],
         [
           "s0004",
-          7545
+          7765
         ],
         [
           "s0005",
-          7185
+          7385
         ]
       ]
     },
@@ -148,27 +148,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 142897,
+      "distinct_nonmissing": 146038,
       "most_common": [
         [
           "This application was determined to be a Type II action which requires no further environmental review.",
-          407
+          413
         ],
         [
           "the City Planning Commission finds that the action described herein will have no significant impact on the environment",
-          330
+          340
         ],
         [
           "This action was determined to be consistent with the policies of the New York City Waterfront Revitalization Program.",
-          293
+          297
         ],
         [
           "All leases, subleases, or other agreements for use or occupancy of space at the subject property shall give actual notice of this special permit to the lessee, sublessee or occupant.",
-          265
+          273
         ],
         [
           "the City Planning Commission finds that the action described herein will have no significant impact on the environment;",
-          251
+          263
         ]
       ]
     },
@@ -181,23 +181,23 @@
       "most_common": [
         [
           "cpc_report",
-          141549
+          144810
         ],
         [
           "borough_president_recommendation",
-          18133
+          18642
         ],
         [
           "community_board_recommendation",
-          6565
+          6810
         ],
         [
           "restrictive_declaration",
-          2994
+          3050
         ],
         [
           "letter",
-          2014
+          2026
         ]
       ]
     },
@@ -206,15 +206,15 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 7250,
+      "distinct_nonmissing": 7393,
       "most_common": [
         [
           "bundle_general",
-          50225
+          51226
         ],
         [
           "other_project",
-          2592
+          2659
         ],
         [
           "C 860206 ZSK",
@@ -234,8 +234,8 @@
       "python_types": [
         "str"
       ],
-      "missing": 140487,
-      "distinct_nonmissing": 10212,
+      "missing": 143893,
+      "distinct_nonmissing": 10580,
       "most_common": [
         [
           "The statement concerns East River Plaza and its concurrently reviewed actions.",
@@ -264,27 +264,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 15859,
+      "distinct_nonmissing": 16122,
       "most_common": [
         [
           "City Planning Commission",
-          49333
+          50574
         ],
         [
           "Department of Housing Preservation and Development",
-          6980
+          7132
         ],
         [
           "The Commission",
-          6529
+          6566
         ],
         [
           "Borough President",
-          3787
+          3865
         ],
         [
           "Department of City Planning",
-          2864
+          2916
         ]
       ]
     },
@@ -293,27 +293,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 448,
+      "distinct_nonmissing": 450,
       "most_common": [
         [
           "cpc",
-          59581
+          60903
         ],
         [
           "community_board",
-          20843
+          21443
         ],
         [
           "borough_president",
-          17877
+          18307
         ],
         [
           "applicant",
-          12490
+          12869
         ],
         [
           "city_agency;applicant",
-          11254
+          11485
         ]
       ]
     },
@@ -321,24 +321,24 @@
       "python_types": [
         "str"
       ],
-      "missing": 152490,
-      "distinct_nonmissing": 3211,
+      "missing": 156393,
+      "distinct_nonmissing": 3265,
       "most_common": [
         [
           "City Planning Commission",
-          3490
+          3526
         ],
         [
           "Manhattan Borough President",
-          1479
+          1494
         ],
         [
           "Brooklyn Borough President",
-          1166
+          1184
         ],
         [
           "Department of Housing Preservation and Development",
-          731
+          733
         ],
         [
           "Department of City Planning",
@@ -355,15 +355,15 @@
       "most_common": [
         [
           "no",
-          123275
+          126179
         ],
         [
           "yes",
-          51153
+          52389
         ],
         [
           "unclear",
-          1153
+          1162
         ]
       ]
     },
@@ -376,19 +376,19 @@
       "most_common": [
         [
           "organization",
-          154051
+          157808
         ],
         [
           "office",
-          12147
+          12353
         ],
         [
           "self",
-          5712
+          5847
         ],
         [
           "unclear",
-          3671
+          3722
         ]
       ]
     },
@@ -401,23 +401,23 @@
       "most_common": [
         [
           "finding",
-          48042
+          49086
         ],
         [
           "proposal_description",
-          32157
-        ],
-        [
-          "position",
-          23305
+          32930
         ],
         [
           "request",
-          23276
+          23899
+        ],
+        [
+          "position",
+          23867
         ],
         [
           "requirement",
-          14060
+          14333
         ]
       ]
     },
@@ -430,19 +430,19 @@
       "most_common": [
         [
           "not_applicable",
-          147596
+          151119
         ],
         [
           "definite",
-          22439
+          22956
         ],
         [
           "conditional",
-          3892
+          3957
         ],
         [
           "tentative",
-          1654
+          1698
         ]
       ]
     },
@@ -451,7 +451,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 159455,
+      "distinct_nonmissing": 163267,
       "most_common": [
         [
           "Recommend approval.",
@@ -459,7 +459,7 @@
         ],
         [
           "Recommended approval.",
-          200
+          205
         ],
         [
           "Type II action requires no further environmental review.",
@@ -467,7 +467,7 @@
         ],
         [
           "CPC finds no significant environmental impact.",
-          166
+          171
         ],
         [
           "Borough President recommends approval.",
@@ -484,23 +484,23 @@
       "most_common": [
         [
           "none_stated",
-          126610
+          129578
         ],
         [
           "support",
-          38668
+          39593
         ],
         [
           "oppose",
-          5837
+          5962
         ],
         [
           "conditional_support",
-          4171
+          4285
         ],
         [
           "mixed",
-          295
+          312
         ]
       ]
     },
@@ -508,8 +508,8 @@
       "python_types": [
         "str"
       ],
-      "missing": 165366,
-      "distinct_nonmissing": 5181,
+      "missing": 169385,
+      "distinct_nonmissing": 5247,
       "most_common": [
         [
           "Environmental alternative",
@@ -537,12 +537,12 @@
       "python_types": [
         "str"
       ],
-      "missing": 168605,
-      "distinct_nonmissing": 3690,
+      "missing": 172548,
+      "distinct_nonmissing": 3767,
       "most_common": [
         [
           "unanimously",
-          119
+          122
         ],
         [
           "16 to 8 with 5 abstentions",
@@ -571,23 +571,23 @@
       "most_common": [
         [
           "not_applicable",
-          141166
+          144431
         ],
         [
           "not_addressed",
-          16331
+          16733
         ],
         [
           "addressed_otherwise",
-          9188
+          9453
         ],
         [
           "adopted",
-          4165
+          4276
         ],
         [
           "partly_adopted",
-          2360
+          2405
         ]
       ]
     },
@@ -595,28 +595,28 @@
       "python_types": [
         "str"
       ],
-      "missing": 157928,
-      "distinct_nonmissing": 2740,
+      "missing": 161615,
+      "distinct_nonmissing": 2779,
       "most_common": [
         [
           "17",
-          227
+          237
         ],
         [
           "20",
-          216
+          218
         ],
         [
           "18",
-          207
+          214
         ],
         [
           "15",
-          203
+          210
         ],
         [
           "21",
-          201
+          206
         ]
       ]
     },
@@ -629,23 +629,23 @@
       "most_common": [
         [
           "cpc_consideration",
-          41531
+          42537
         ],
         [
           "pre_certification",
-          27654
+          28214
         ],
         [
           "cpc_decision",
-          26054
+          26648
         ],
         [
           "borough_president",
-          22297
+          22849
         ],
         [
           "community_board",
-          20868
+          21515
         ]
       ]
     },
@@ -653,8 +653,8 @@
       "python_types": [
         "str"
       ],
-      "missing": 137817,
-      "distinct_nonmissing": 11594,
+      "missing": 141271,
+      "distinct_nonmissing": 11796,
       "most_common": [
         [
           "December 22, 2005",
@@ -682,28 +682,28 @@
       "python_types": [
         "str"
       ],
-      "missing": 27529,
-      "distinct_nonmissing": 1033,
+      "missing": 28147,
+      "distinct_nonmissing": 1041,
       "most_common": [
         [
           "environment_open_space",
-          19793
+          20234
         ],
         [
           "traffic_parking",
-          13679
+          13977
         ],
         [
           "scale_density_design",
-          13657
+          13943
         ],
         [
           "process",
-          11830
+          12106
         ],
         [
           "infrastructure_services",
-          11734
+          11991
         ]
       ]
     },
@@ -711,12 +711,12 @@
       "python_types": [
         "str"
       ],
-      "missing": 167988,
-      "distinct_nonmissing": 3581,
+      "missing": 172037,
+      "distinct_nonmissing": 3638,
       "most_common": [
         [
           "City property disposition",
-          166
+          172
         ],
         [
           "Property disposition",
@@ -724,7 +724,7 @@
         ],
         [
           "City-owned property disposition",
-          97
+          98
         ],
         [
           "Public land disposition",
@@ -745,23 +745,23 @@
       "most_common": [
         [
           "none",
-          161084
+          164923
         ],
         [
           "outreach_or_consultation",
-          4661
+          4781
         ],
         [
           "other_procedural",
-          4123
+          4177
         ],
         [
           "study",
-          2733
+          2796
         ],
         [
           "monitoring_or_reporting",
-          2508
+          2566
         ]
       ]
     },
@@ -769,8 +769,8 @@
       "python_types": [
         "str"
       ],
-      "missing": 141652,
-      "distinct_nonmissing": 24868,
+      "missing": 145165,
+      "distinct_nonmissing": 25448,
       "most_common": [
         [
           "Site/lot columns sometimes interleave with condition prose in OCR; exact source entry retained in quote.",
@@ -799,27 +799,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 12084,
+      "distinct_nonmissing": 12249,
       "most_common": [
         [
           "2",
-          14705
+          15041
         ],
         [
           "1",
-          14227
+          14606
         ],
         [
           "3",
-          10656
+          10919
         ],
         [
           "4",
-          9522
+          9823
         ],
         [
           "5",
-          8916
+          9156
         ]
       ]
     },
@@ -828,19 +828,19 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 7313,
+      "distinct_nonmissing": 7460,
       "most_common": [
         [
           "C 070531A ZSM",
           1250
         ],
         [
-          "C 060059 MMX",
-          1059
+          "C 860686 ZSK",
+          1123
         ],
         [
-          "C 860686 ZSK",
-          1005
+          "C 060059 MMX",
+          1059
         ],
         [
           "C 920358 ZSM",
@@ -861,15 +861,15 @@
       "most_common": [
         [
           "in_scope",
-          143778
+          147171
         ],
         [
           "unresolved",
-          18238
+          18702
         ],
         [
           "in_scope;unresolved",
-          13565
+          13857
         ]
       ]
     }
