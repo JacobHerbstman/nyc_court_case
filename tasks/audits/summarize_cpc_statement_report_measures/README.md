@@ -28,21 +28,29 @@ Rules:
   speakers, excluding the project team.
 - Council member and civic group positions follow the codebook's "opposes all or
   part": any oppose stance or concern is opposition; otherwise support, a request or
-  a commitment is support. Civic groups include institutions and officers of named
-  organizations, whether or not the reader marked them as speaking for themselves.
-  Changed September 27 after positive-case misses; the earlier rule required
-  an explicit oppose stance and organization-level speech.
+  a commitment is support.
+- Civic groups follow Jacob's September 28 rulings:
+  - They are civic, neighborhood, tenant and community organizations and unions,
+    including their officers and unnamed community groups that clearly take a side.
+  - Businesses count only as associations, such as a merchants association or a
+    chamber of commerce.
+  - Individual businesses, facility operators and institutions do not count.
 - Rows describing another project are ignored.
 - An issue topic counts only when a local actor opposes, objects to, or asks for
   something about it. Mentions in the project description or in CPC's own findings
   do not count.
   The rules were compared on these same 20 reports before this one was chosen,
   so its agreement is somewhat optimistic.
-- CPC hearing speakers, per side: the larger of any stated tally ("six speakers
-  in favor") and the number of individually described speakers. A named group with
-  a number ("five members of local art organizations") counts that many. Numbers of
-  letters or petitions do not count. If the only tally row gives no number, the
-  count is blank (unknown).
+- CPC hearing speakers, per side, from hearing speakers' position rows only:
+  - A stated tally ("six speakers in favor") wins; tallies on different hearing dates
+    are added.
+  - Otherwise, count the distinct named speakers, after collapsing name variants of
+    one speaker. A named group with a number counts that many.
+  - A tally with no number, or a plural group with no number, leaves the count blank.
+  - Changed September 28. The earlier rule double counted speakers who had several
+    rows.
+  - The reader often does not record the hearing tally as a row, which limits any
+    rule; see `tasks/audits/spot_check_cpc_statement_measures`.
 - Procedural response: a local request or concern answered by a row whose
   `procedural_action` is a study, monitoring/reporting, task force or
   outreach/consultation. Runs before September 27 have no such field and leave it

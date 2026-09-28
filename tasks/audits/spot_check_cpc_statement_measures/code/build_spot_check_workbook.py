@@ -24,7 +24,7 @@ from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Alignment, Font, PatternFill
 
 sys.path.insert(0, '../../../_lib')
-from cpc_statement_measures import CIVIC_ROLES, asks, is_local, opposes, parse
+from cpc_statement_measures import asks, civic_group, is_local, opposes, parse
 from data_reports import save_csv
 
 csv.field_size_limit(10**9)
@@ -41,14 +41,15 @@ def evidence_rows(rows, measure):
     if measure == 'councilmember_position':
         return [r for r in local if 'council_member' in r['actor_roles']]
     if measure == 'civic_group_position':
-        return [r for r in local if r['actor_roles'] & CIVIC_ROLES]
+        return [r for r in local if civic_group(r)]
     if measure in ('bp_request_or_opposition', 'cb_request_or_opposition'):
         role = 'borough_president' if measure.startswith('bp') else 'community_board'
         return [r for r in local if role in r['actor_roles'] and (asks(r) or opposes(r))]
     if measure == 'substantial_local_opposition':
         return [r for r in local if opposes(r)]
     stances = {'support', 'conditional_support'} if 'support' in measure else {'oppose'}
-    return [r for r in rows if r['stage'] == 'cpc_hearing' and r['stance_on_project'] in stances]
+    return [r for r in rows if r['stage'] == 'cpc_hearing' and r['stance_on_project'] in stances
+            and r['statement_type'] == 'position']
 
 
 # Saved answers (Jacob's review, plus page checks by Claude) are filled back into the
@@ -122,8 +123,11 @@ agreements = sorted((i for i in items if i['first_pass_matches_derived'] == '1')
 actors = [i for i in agreements if i['measure'] in ('councilmember_position', 'civic_group_position')][:15]
 others = [i for i in agreements if i['measure'] not in ('councilmember_position', 'civic_group_position')][:10]
 checked = {(i['document_id'], i['measure']) for i in actors + others}
+# Once the review is saved, the reviewed items stay the priority set even if later rule
+# changes move which items disagree.
 for i in items:
-    i['priority'] = str(int(i['first_pass_matches_derived'] == '0' or (i['document_id'], i['measure']) in checked))
+    key = (i['document_id'], i['measure'])
+    i['priority'] = str(int(key in saved if saved else i['first_pass_matches_derived'] == '0' or key in checked))
 save_csv(items, list(items[0]), '../output/cpc_spot_check_items.csv', key=['document_id', 'measure'])
 
 book = Workbook()

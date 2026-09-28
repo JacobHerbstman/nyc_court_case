@@ -6,7 +6,7 @@
     "measure"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "e8b796aff38055ecb106adfe0f63f263c325ac65408f97e8436607bcba056766",
+  "sha256_csv_bytes": "818276b15119d4f6f2e5327e01c7e248f9a5f6a446241ccaba5cb19e292ce6bf",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -71,28 +71,28 @@
       "python_types": [
         "str"
       ],
-      "missing": 52,
+      "missing": 427,
       "distinct_nonmissing": 55,
       "most_common": [
         [
           "0",
-          50603
+          50628
         ],
         [
           "1",
-          19316
+          19240
         ],
         [
           "none_or_procedural",
-          8266
+          8446
         ],
         [
           "opposition",
-          756
+          649
         ],
         [
           "2",
-          580
+          500
         ]
       ]
     }

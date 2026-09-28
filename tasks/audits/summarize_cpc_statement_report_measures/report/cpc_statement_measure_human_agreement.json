@@ -1,12 +1,12 @@
 {
   "dataset": "cpc_statement_measure_human_agreement.csv",
-  "rows": 293,
+  "rows": 292,
   "key": [
     "document_id",
     "measure"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "aff3e7cbc359264fc468aa1b5e725835f3a465ca328106e1f262ad794aa0fdb5",
+  "sha256_csv_bytes": "0c688e5c8e0a5a6d244dae31dbfcde337b963cc90088a31b6d92ad6b678ed32b",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -72,7 +72,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 10,
+      "distinct_nonmissing": 9,
       "most_common": [
         [
           "0",
@@ -105,7 +105,7 @@
       "most_common": [
         [
           "single_human_coder",
-          237
+          236
         ],
         [
           "human_agreement",
@@ -118,7 +118,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 11,
+      "distinct_nonmissing": 9,
       "most_common": [
         [
           "0",
@@ -137,8 +137,8 @@
           6
         ],
         [
-          "3",
-          3
+          "2",
+          2
         ]
       ]
     },
@@ -151,11 +151,11 @@
       "most_common": [
         [
           "1",
-          257
+          258
         ],
         [
           "0",
-          36
+          34
         ]
       ]
     },
@@ -163,7 +163,7 @@
       "python_types": [
         "str"
       ],
-      "missing": 184,
+      "missing": 183,
       "distinct_nonmissing": 4,
       "most_common": [
         [
@@ -188,7 +188,7 @@
       "python_types": [
         "str"
       ],
-      "missing": 184,
+      "missing": 183,
       "distinct_nonmissing": 2,
       "most_common": [
         [

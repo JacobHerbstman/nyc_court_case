@@ -6,7 +6,7 @@
     "measure"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "8a340b498832fa7d5c7683c4324543ebcfebe76ef2963c01276bea55569ef11a",
+  "sha256_csv_bytes": "d9c121b8587ffee3e967188cfc4d13675f5bd3005e1528dd9dbeb9bdf45b2cd4",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -357,7 +357,7 @@
       "python_types": [
         "str"
       ],
-      "missing": 0,
+      "missing": 16,
       "distinct_nonmissing": 14,
       "most_common": [
         [
@@ -370,15 +370,15 @@
         ],
         [
           "none_or_procedural",
-          51
+          54
         ],
         [
           "support_or_request",
-          21
+          19
         ],
         [
           "opposition",
-          18
+          17
         ]
       ]
     },
@@ -386,8 +386,8 @@
       "python_types": [
         "str"
       ],
-      "missing": 162,
-      "distinct_nonmissing": 149,
+      "missing": 165,
+      "distinct_nonmissing": 146,
       "most_common": [
         [
           "[position/oppose] Manhattan Community Board No. 10: Board voted against the proposal.",
@@ -420,11 +420,11 @@
       "most_common": [
         [
           "1",
-          268
+          273
         ],
         [
           "0",
-          47
+          42
         ]
       ]
     },

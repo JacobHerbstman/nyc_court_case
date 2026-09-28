@@ -52,3 +52,16 @@ Review results, September 28:
     the whole bundle.
 - **Conclusion.** The errors are in turning rows into measures, not in reading.
   Reading a report directly for these measures is close to right.
+
+Rule changes, September 28, from the review:
+- **Civic groups** now exclude individual businesses, facility operators and
+  institutions, and keep associations, unions and community groups, named or not.
+  On the spot check they are right on 42 of 45 reports, up from 39. On human codes,
+  agreement is 0.86, up from 0.84.
+- **Speaker counts** now use position rows only, collapse name variants of a speaker,
+  add tallies across hearing dates, and are left blank when no number is recorded.
+  They stay weak: support right on 25 of 45, opposition on 38 of 45. The reader
+  usually does not record the hearing tally as a row.
+- **Next step.** A targeted pass that reads only the hearing pages and returns the two
+  tallies with a quote would fix this. Those pages are about 17% of the corpus text,
+  typically 2 pages per report.

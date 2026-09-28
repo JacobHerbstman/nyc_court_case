@@ -96,3 +96,37 @@ Jacob's civic group rulings, added to the codebook:
 - Facility operators, such as a senior center, are not civic groups.
 - Community groups count when they clearly take a side, even if the report does not
   name them.
+
+## After the September 28 rule changes
+
+The civic group and speaker rules in `tasks/_lib/cpc_statement_measures.py` changed.
+The reviewed items stay fixed as the scored set, and `review_group` records the
+original strata.
+
+`output/cpc_spot_check_scores.csv` scores every item against a reference: the
+reviewed value where reviewed, otherwise the first pass. All 25 sampled agreements
+were confirmed.
+
+Derived measures are right on 276 of 315 items; the first pass on 312. By measure,
+out of 45 reports:
+
+| Measure | Derived correct |
+|---|---|
+| Borough President | 44 |
+| Council member | 43 |
+| Community board | 42 |
+| Civic group | 42 (was 39) |
+| Substantial local opposition | 42 |
+| Opposition speakers | 38 (3 blank) |
+| Support speakers | 25 (9 blank) |
+
+Speaker counts stay weak because the reader usually does not record the hearing
+tally ("There were 13 appearances in favor") as a statement row. No rule can
+recover that from the rows.
+
+Two answers to confirm with Jacob:
+- He agreed that the Nuestros Niños operator supports (3a2361ba02feb156d070), but
+  ruled that operators are not civic groups.
+- He agreed with none for U Thant Park, where three representatives of unnamed
+  neighborhood groups supported (5ccd0074693eefe3c7ba), but ruled that unnamed
+  groups that clearly take a side count.

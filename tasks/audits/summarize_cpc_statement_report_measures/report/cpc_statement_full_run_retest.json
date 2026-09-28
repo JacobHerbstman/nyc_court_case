@@ -1,12 +1,12 @@
 {
   "dataset": "cpc_statement_full_run_retest.csv",
-  "rows": 1568,
+  "rows": 1556,
   "key": [
     "document_id",
     "measure"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "13a87c3276c8575f5c19d52c30847cd564f0065312cdb438387c44cbcd1c070e",
+  "sha256_csv_bytes": "4f5b785699a3d207dcbf16b08bb3d2c82504e636c4d21f03a6cb9a35b1bc763e",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -72,11 +72,11 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 17,
+      "distinct_nonmissing": 16,
       "most_common": [
         [
           "0",
-          912
+          913
         ],
         [
           "1",
@@ -84,15 +84,15 @@
         ],
         [
           "none_or_procedural",
-          160
-        ],
-        [
-          "2",
-          20
+          163
         ],
         [
           "opposition",
           19
+        ],
+        [
+          "2",
+          16
         ]
       ]
     },
@@ -101,27 +101,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 17,
+      "distinct_nonmissing": 14,
       "most_common": [
         [
           "0",
-          914
+          915
         ],
         [
           "1",
-          397
+          395
         ],
         [
           "none_or_procedural",
-          161
-        ],
-        [
-          "2",
-          19
+          164
         ],
         [
           "opposition",
-          19
+          18
+        ],
+        [
+          "2",
+          17
         ]
       ]
     },
@@ -134,11 +134,11 @@
       "most_common": [
         [
           "1",
-          1517
+          1511
         ],
         [
           "0",
-          51
+          45
         ]
       ]
     }

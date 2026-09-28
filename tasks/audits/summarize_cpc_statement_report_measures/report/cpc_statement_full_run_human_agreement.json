@@ -1,12 +1,12 @@
 {
   "dataset": "cpc_statement_full_run_human_agreement.csv",
-  "rows": 3092,
+  "rows": 3078,
   "key": [
     "document_id",
     "measure"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "6d18a12b2b272c4b352b5dd958a24bdf46a116a7f51a48a570213bb3b3d886f7",
+  "sha256_csv_bytes": "9132e97d0a30addf43b19b5771ac27a5a50a0626d77cdc284fb2a2be3e161443",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -33,7 +33,7 @@
           17
         ],
         [
-          "0aa168449468b04fafe6",
+          "0ca3eb57eec42d4cd9ca",
           17
         ]
       ]
@@ -72,7 +72,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 21,
+      "distinct_nonmissing": 19,
       "most_common": [
         [
           "0",
@@ -80,7 +80,7 @@
         ],
         [
           "1",
-          885
+          882
         ],
         [
           "none_or_procedural",
@@ -91,7 +91,7 @@
           29
         ],
         [
-          "2",
+          "support_or_request",
           22
         ]
       ]
@@ -105,15 +105,15 @@
       "most_common": [
         [
           "single_human_coder",
-          2582
+          2571
         ],
         [
           "human_agreement",
-          396
+          394
         ],
         [
           "provisional",
-          114
+          113
         ]
       ]
     },
@@ -122,11 +122,11 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 20,
+      "distinct_nonmissing": 19,
       "most_common": [
         [
           "0",
-          1706
+          1707
         ],
         [
           "1",
@@ -134,15 +134,15 @@
         ],
         [
           "none_or_procedural",
-          314
+          321
         ],
         [
           "opposition",
-          36
+          34
         ],
         [
           "2",
-          27
+          26
         ]
       ]
     },
@@ -155,11 +155,11 @@
       "most_common": [
         [
           "1",
-          2553
+          2555
         ],
         [
           "0",
-          539
+          523
         ]
       ]
     },
@@ -168,27 +168,27 @@
         "str"
       ],
       "missing": 2733,
-      "distinct_nonmissing": 12,
+      "distinct_nonmissing": 9,
       "most_common": [
         [
           "0",
-          298
+          297
         ],
         [
           "1",
-          31
+          25
         ],
         [
           "2",
-          12
+          10
         ],
         [
           "3",
-          5
+          6
         ],
         [
-          "4",
-          3
+          "6",
+          2
         ]
       ]
     }

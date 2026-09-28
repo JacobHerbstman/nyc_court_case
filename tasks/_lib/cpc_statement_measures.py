@@ -12,9 +12,21 @@ LOCAL_ROLES = {'community_board', 'borough_board', 'borough_president', 'council
                'other_elected_official', 'civic_organization', 'business_or_trade_group',
                'labor_union', 'institution', 'resident', 'unidentified_speaker'}
 INSTITUTIONAL_LOCAL_ROLES = LOCAL_ROLES - {'resident', 'unidentified_speaker'}
-# Named organizations, including their officers even when the reader marks them as
-# speaking for themselves ("President of the Block Association").
-CIVIC_ROLES = {'civic_organization', 'business_or_trade_group', 'labor_union', 'institution'}
+# Civic groups (Jacob's review, September 28): civic, neighborhood, tenant and community
+# organizations and unions, including their officers and unnamed community groups that
+# clearly take a side. Businesses count only as associations (a merchants association,
+# a chamber of commerce); individual businesses, facility operators and institutions
+# do not.
+CIVIC_ROLES = {'civic_organization', 'labor_union'}
+BUSINESS_ASSOCIATION = re.compile(r'associat|chamber|alliance|coalition|council|merchants|improvement district|\bbid\b|'
+                                  r'partnership|federation|league|society|committee|union|club', re.I)
+
+
+def civic_group(r):
+    if 'operator_or_occupant' in r['actor_roles']:
+        return False
+    return bool(r['actor_roles'] & CIVIC_ROLES) or (
+        'business_or_trade_group' in r['actor_roles'] and bool(BUSINESS_ASSOCIATION.search(r['actor_name'])))
 ISSUE_TOPICS = {
     'affordability_displacement': {'affordability', 'displacement'},
     'environment_open_space': {'environment_open_space'},
@@ -81,7 +93,7 @@ def measures(rows):
     else:
         out['procedural_response'] = ''
     out['councilmember_position'] = position([r for r in local if 'council_member' in r['actor_roles']])
-    out['civic_group_position'] = position([r for r in local if r['actor_roles'] & CIVIC_ROLES])
+    out['civic_group_position'] = position([r for r in local if civic_group(r)])
     # An issue counts when a local actor raises it: opposes, objects or asks for
     # something about it. Mentions only in the project description or in CPC's
     # own findings (e.g. routine environmental review) do not count.
@@ -105,43 +117,81 @@ def parse(r):
 NUMBER_WORDS = {w: i for i, w in enumerate(
     'zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen '
     'sixteen seventeen eighteen nineteen twenty'.split())}
-# A number followed within three words by a noun for people: "six speakers", "Five
-# applicant-team representatives", "three members of the Board". Not "36 letters".
-HEADCOUNT = re.compile(r'\b(\d+|' + '|'.join(NUMBER_WORDS) + r')\s+(?:[\w-]+\s+){0,3}?'
+TENS = {'twenty': 20, 'thirty': 30, 'forty': 40, 'fifty': 50}
+NUMBER = r'(\d+|(?:twenty|thirty|forty|fifty)-\w+|' + '|'.join(NUMBER_WORDS) + r')'
+# A stated hearing tally: "six speakers", "13 appearances", "Twenty-nine speakers".
+TALLY = re.compile(NUMBER + r'\s+(?:[\w-]+\s+){0,2}?(speakers?|people|persons|individuals|appearances)\b', re.I)
+# A named group with a number: "Five members of local art organizations". Not "36 letters".
+HEADCOUNT = re.compile(NUMBER + r'\s+(?:[\w-]+\s+){0,3}?'
                        r'(speakers?|people|persons|individuals|residents|members|representatives)\b', re.I)
-# Rows standing for all speakers on one side ("six speakers", "Speakers in favor"),
+# Rows standing for all speakers on one side ("six speakers", "Speakers in favor", "29"),
 # as opposed to a named person or group.
-GENERIC_SPEAKERS = re.compile(r'\b(speakers?|people|persons|individuals)\b', re.I)
+GENERIC_SPEAKERS = re.compile(r'^\W*(\d+|' + '|'.join(NUMBER_WORDS) + r'|several|many|other|a number of|those|the|all|few)?'
+                              r'\b.{0,25}\b(speakers?|people|persons|individuals|appearances)\b|^\W*\d+\W*$', re.I)
+# Plural groups with no number: their size is unknown.
+PLURAL = re.compile(r'\b(representatives|members|residents|speakers|owners|officials|people|individuals|persons|others|'
+                    r'neighbors|tenants|groups)\b', re.I)
 
 
-def headcount(r):
-    """People a row stands for when it states a number, else None."""
+def number(text):
+    text = text.lower()
+    if text.isdigit():
+        return int(text)
+    if '-' in text:
+        tens, ones = text.split('-', 1)
+        return TENS[tens] + NUMBER_WORDS.get(ones, 0)
+    return NUMBER_WORDS[text]
+
+
+def first_number(pattern, r):
     for text in (r['actor_name'], r['summary']):
-        m = HEADCOUNT.search(text)
+        m = pattern.search(text)
         if m:
-            value = m.group(1).lower()
-            return int(value) if value.isdigit() else NUMBER_WORDS[value]
+            return number(m.group(1))
     return None
+
+
+def speaker_key(name):
+    """Collapse name variants of one speaker ("the representative of the applicant",
+    "The applicant's representative")."""
+    name = re.sub(r"[\u2019']s\b", '', name.lower())
+    name = re.sub(r'\b(the|a|an|of|from|for|representatives?|spokes\w+|speaking)\b', ' ', name)
+    return ' '.join(re.sub(r'[^a-z0-9 ]', ' ', name).split()[:4])
 
 
 def speaker_counts(rows):
     """Support and opposition speakers at the CPC hearing, or '' when not recoverable.
 
-    Reports usually give a tally ("six speakers in favor") and then describe some of
-    the speakers, who also get their own rows. For each side, take the larger of the
-    stated tally and the number of individually described speakers (a named group
-    with a stated number counts that many). If the only tally row gives no number,
-    the count is unknown.
+    Uses the position rows of hearing speakers (their findings and concerns repeat the
+    same people). Stated tallies ("six speakers in favor") win; tallies on different
+    hearing dates are added. Otherwise count the distinct named speakers, a named group
+    with a number counting that many. A tally with no number, or a plural group with no
+    number ("neighborhood residents"), makes the count unknown.
     """
     out = {}
     for side, stances in (('support', {'support', 'conditional_support'}), ('opposition', {'oppose'})):
         hearing = [r for r in rows if r['stage'] == 'cpc_hearing' and r['stance_on_project'] in stances
-                   and not r['actor_roles'] & {'cpc', 'city_planning_staff'} and r['application'] != 'other_project']
-        tally_rows = [r for r in hearing if GENERIC_SPEAKERS.search(r['actor_name'])]
-        tallies = [n for n in map(headcount, tally_rows) if n is not None]
-        named = {r['actor_name']: headcount(r) or 1 for r in hearing if r not in tally_rows}
-        if tally_rows and not tallies and not named:
+                   and r['statement_type'] == 'position' and not r['actor_roles'] & {'cpc', 'city_planning_staff'}
+                   and r['application'] != 'other_project']
+        tallies, named, unknown = {}, {}, False
+        for r in hearing:
+            if GENERIC_SPEAKERS.search(r['actor_name']):
+                n = first_number(TALLY, r)
+                if n is None and re.fullmatch(r'\W*\d+\W*', r['actor_name']):
+                    n = int(re.sub(r'\D', '', r['actor_name']))
+                if n is None:
+                    unknown = True
+                else:
+                    tallies[n, r['timing_note']] = n
+            else:
+                n = first_number(HEADCOUNT, r)
+                if n is None and PLURAL.search(r['actor_name']):
+                    unknown = True
+                named[speaker_key(r['actor_name'])] = n or 1
+        if tallies:
+            out[f'cpc_{side}_speakers'] = str(sum(tallies.values()))
+        elif unknown:
             out[f'cpc_{side}_speakers'] = ''
         else:
-            out[f'cpc_{side}_speakers'] = str(max([sum(named.values())] + tallies))
+            out[f'cpc_{side}_speakers'] = str(sum(named.values()))
     return out

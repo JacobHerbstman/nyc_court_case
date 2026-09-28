@@ -6,7 +6,7 @@
     "measure"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "47fe63317336ec90ee96e83391fc79d9832f1bf114c613c9efaa3472e47d038e",
+  "sha256_csv_bytes": "1604fce4e403fdf73674bcf889ed29b0a7e0ae1b0c84f4c224571fc812ddf4e5",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -64,6 +64,23 @@
         [
           "substantial_local_opposition",
           7
+        ]
+      ]
+    },
+    "review_group": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "disagreement",
+          47
+        ],
+        [
+          "agreement_sample",
+          25
         ]
       ]
     },
