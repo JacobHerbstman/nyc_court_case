@@ -1,11 +1,11 @@
 {
   "dataset": "cpc_statement_full_run_length.csv",
-  "rows": 2313,
+  "rows": 4793,
   "key": [
     "document_id"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "e2fd9cb56f90b6253ce2bd1afd9d378912ee85278d8dfda42d9cf2e56259a46c",
+  "sha256_csv_bytes": "478267a2cd735812c615c52382a020a65448e7e848fb4a29acf95388c3fa378c",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -13,8 +13,16 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 2313,
+      "distinct_nonmissing": 4793,
       "most_common": [
+        [
+          "00126d30463744ba647c",
+          1
+        ],
+        [
+          "00167643a19f5c30bf57",
+          1
+        ],
         [
           "001f885d7d891a8711f7",
           1
@@ -25,14 +33,6 @@
         ],
         [
           "002d5b81eb4ca6b13a55",
-          1
-        ],
-        [
-          "0030ee4f2ff8b573da4d",
-          1
-        ],
-        [
-          "00330746fc3823b54877",
           1
         ]
       ]
@@ -46,23 +46,23 @@
       "most_common": [
         [
           "1982",
-          142
+          300
         ],
         [
           "1981",
-          123
-        ],
-        [
-          "1989",
-          110
+          265
         ],
         [
           "1980",
-          103
+          214
         ],
         [
-          "1979",
-          91
+          "1989",
+          202
+        ],
+        [
+          "1983",
+          201
         ]
       ]
     },
@@ -71,27 +71,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 2113,
+      "distinct_nonmissing": 4059,
       "most_common": [
         [
           "46996",
-          5
+          7
         ],
         [
           "167444",
-          4
+          6
         ],
         [
-          "29919",
-          4
+          "269908",
+          6
         ],
         [
           "92890",
-          4
+          6
         ],
         [
-          "117307",
-          3
+          "153332",
+          5
         ]
       ]
     },
@@ -100,27 +100,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 58,
+      "distinct_nonmissing": 69,
       "most_common": [
         [
           "0",
-          1054
+          2153
         ],
         [
           "1",
-          337
+          762
         ],
         [
           "2",
-          194
+          418
         ],
         [
           "3",
-          154
+          317
         ],
         [
           "4",
-          119
+          247
         ]
       ]
     },
@@ -129,27 +129,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 231,
+      "distinct_nonmissing": 250,
       "most_common": [
         [
-          "6",
-          86
+          "7",
+          183
         ],
         [
-          "7",
-          77
+          "6",
+          178
         ],
         [
           "9",
-          76
+          172
         ],
         [
           "8",
-          70
+          170
         ],
         [
-          "14",
-          62
+          "10",
+          148
         ]
       ]
     },
@@ -158,27 +158,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 1507,
+      "distinct_nonmissing": 2270,
       "most_common": [
         [
-          "14.06",
+          "14.19",
+          8
+        ],
+        [
+          "10.29",
           7
         ],
         [
-          "13.93",
-          6
+          "11.77",
+          7
         ],
         [
-          "11.31",
-          5
+          "12.46",
+          7
         ],
         [
           "12.69",
-          5
-        ],
-        [
-          "12.94",
-          5
+          7
         ]
       ]
     }

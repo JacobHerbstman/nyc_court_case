@@ -5,7 +5,7 @@
     "document_id"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "61a4c2d64b3514dfdbc74fe25c92c1b72a62a654bd07119abc82b00902a64798",
+  "sha256_csv_bytes": "f3417cd38ec14dd139797a37f82859c50bda0c637ef4e31226e596a5951439bc",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -102,12 +102,12 @@
       "distinct_nonmissing": 2,
       "most_common": [
         [
-          "not_run",
-          6750
+          "complete",
+          4793
         ],
         [
-          "complete",
-          2313
+          "not_run",
+          4270
         ]
       ]
     },
@@ -115,12 +115,12 @@
       "python_types": [
         "int"
       ],
-      "missing": 6750,
+      "missing": 4270,
       "distinct_nonmissing": 1,
       "most_common": [
         [
           "1",
-          2313
+          4793
         ]
       ],
       "minimum": 1,
@@ -134,12 +134,12 @@
       "distinct_nonmissing": 2,
       "most_common": [
         [
-          "0",
-          6750
+          "1",
+          4793
         ],
         [
-          "1",
-          2313
+          "0",
+          4270
         ]
       ],
       "minimum": 0,
@@ -150,54 +150,58 @@
         "int"
       ],
       "missing": 0,
-      "distinct_nonmissing": 4,
+      "distinct_nonmissing": 5,
       "most_common": [
         [
           "0",
-          6750
+          4270
         ],
         [
           "1",
-          2044
+          4200
         ],
         [
           "2",
-          263
+          560
         ],
         [
           "3",
-          6
+          32
+        ],
+        [
+          "4",
+          1
         ]
       ],
       "minimum": 0,
-      "maximum": 3
+      "maximum": 4
     },
     "statement_rows": {
       "python_types": [
         "int"
       ],
       "missing": 0,
-      "distinct_nonmissing": 232,
+      "distinct_nonmissing": 251,
       "most_common": [
         [
           "0",
-          6750
-        ],
-        [
-          "6",
-          86
+          4270
         ],
         [
           "7",
-          77
+          183
+        ],
+        [
+          "6",
+          178
         ],
         [
           "9",
-          76
+          172
         ],
         [
           "8",
-          70
+          170
         ]
       ],
       "minimum": 0,
@@ -225,27 +229,27 @@
       "python_types": [
         "str"
       ],
-      "missing": 6833,
-      "distinct_nonmissing": 2228,
+      "missing": 4397,
+      "distinct_nonmissing": 4663,
       "most_common": [
         [
           "Part 1: Minor OCR errors; no attachments supplied.\n",
           3
         ],
         [
-          "Part 1: Address of larger building appears as 43-33 in background and 43-23 in docket. Parking described as 307 initially and approximately 300 in consideration. Plans and actual Landmarks discussion are not supplied. Attachments s0008 and s0010 name same special permit, church, buildings and parking despite garbled OCR. Board 1 handwritten explanation illegible.\n",
+          "Part 1: OCR contains errors; see row notes for material ambiguity.\n",
+          2
+        ],
+        [
+          "Part 1: 14 segments include CPC report, board form, Borough President recommendation and applicant counsel letter. Pages 10–14 are flagged unresolved, but each names L&E, C 160093 ZSK or the 2700 Stillwell Avenue project. OCR obscures some form marks and exact flood and trip figures differ across source parts; the CPC report provides the vote count and resolution. Neighbor letter is summarized but not supplied.\n",
           1
         ],
         [
-          "Part 1: Administratively corrected report dated August 2, 2022 corrects resolution block/lot. Page 2 locates the house on Lot 80 but page 3 says Lot 99. CPC summary gives CB vote September 25, 2018; attachment gives September 26. Recommendation forms contain OCR artifacts.\n",
+          "Part 1: 150 segments include the focal C 240163 MMX report, zoning report C 240015 ZMX, four companion City Map reports and attached board/Borough President recommendations. Fourteen Borough President/CB10 continuation pages are flagged unresolved but continue identified letters/recommendations. Zoning text application N 240016 ZRX is described but its separate report is not supplied. Community Board 11 vote counts conflict: CPC summaries report 25 in favor, none against and two abstaining; the attached recommendation form, CB11 letter and Borough President account report 25 in favor, five against and zero abstentions. Several report headings have inconsistent filing dates and application labels; source wording is retained in quotes. Map diagram and census table OCR are substantially garbled. The report discusses future station and development actions; statements of intent or projected features are not evidence of completed construction or binding commitments.\n",
           1
         ],
         [
-          "Part 1: Agency attachment includes a proposed Board of Estimate resolution, without an adoption date; it is not recorded as a separate adopted Board decision.\n",
-          1
-        ],
-        [
-          "Part 1: Agency recommendation dated October 7 follows CPC decision; its Board of Estimate resolution wording is not evidence of adoption. Parcel schedules on pages 4–5 have heavily garbled OCR.\n",
+          "Part 1: 154 segments from companion Brooklyn Center and Atlantic Terminal reports. OCR is garbled in several maps and exhibits. Some figures conflict across passages, including Brooklyn Center parking reservoir spaces and Atlantic Terminal tower height. The 860207 ZAK residential declaration in unresolved pages is an unsigned template with blank parties, dates and exhibits; its text identifies Atlantic Terminal and is treated as proposed declaration terms, not proof of execution. The Strand is explicitly described as a separate disposition. No standalone N 860210 ZRK or N 860207 ZAK CPC report appears in the supplied packet.\n",
           1
         ]
       ]

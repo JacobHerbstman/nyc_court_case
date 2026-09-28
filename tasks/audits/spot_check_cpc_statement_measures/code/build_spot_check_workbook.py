@@ -4,13 +4,16 @@ For each sampled report and measure:
 - the first-pass value, quote and note (blind Claude coding from source text,
   data_raw/cpc_spot_check_first_pass/);
 - the value derived from the full run's statement rows, with the rows behind it.
-Every first-pass quote is checked against its cited segment. Jacob reviews the
-first-pass values in the workbook; his answers are then saved as a committed table
+Every first-pass quote is checked against its cited segment. Jacob reviews a
+priority set: every item where the first pass and the derived value differ, plus
+25 seeded agreements (15 council member or civic group, 10 other) to check they are
+not both wrong. The rest are on a separate, optional sheet. Jacob's answers are then saved as a committed table
 before any rebuild, and the script refuses to overwrite a workbook that has answers.
 """
 # Interactive use: cd to tasks/audits/spot_check_cpc_statement_measures/code, then
 # python3 build_spot_check_workbook.py
 import csv
+import hashlib
 import json
 import re
 import sys
@@ -49,10 +52,11 @@ def evidence_rows(rows, measure):
 
 
 if Path(REVIEW).exists():
-    sheet = load_workbook(REVIEW)['Review']
-    header = [c.value for c in sheet[1]]
-    if any(row[header.index(c)] not in (None, '') for row in sheet.iter_rows(min_row=2, values_only=True) for c in REVIEW_COLUMNS):
-        sys.exit(f'{REVIEW} has review answers; save them to code/ before rebuilding.')
+    for sheet in load_workbook(REVIEW).worksheets[1:3]:
+        header = [c.value for c in sheet[1]]
+        if any(row[header.index(c)] not in (None, '') for row in sheet.iter_rows(min_row=2, values_only=True)
+               for c in REVIEW_COLUMNS if c in header):
+            sys.exit(f'{REVIEW} has review answers; save them to code/ before rebuilding.')
 
 with open('cpc_spot_check_sample.csv') as f:
     sample = list(csv.DictReader(f))
@@ -103,13 +107,22 @@ for s in sample:
             derived_evidence='\n'.join(f"[{r['statement_type']}/{r['stance_on_project']}] {r['actor_name']}: {r['summary']}"
                                        for r in rows[:4]) + (f'\n(+{len(rows) - 4} more)' if len(rows) > 4 else ''),
             first_pass_matches_derived=str(int(value == derived[doc][measure]))))
+rank = lambda i: hashlib.sha256(f"cpc-spot-check-priority|{i['document_id']}|{i['measure']}".encode()).hexdigest()
+agreements = sorted((i for i in items if i['first_pass_matches_derived'] == '1'), key=rank)
+actors = [i for i in agreements if i['measure'] in ('councilmember_position', 'civic_group_position')][:15]
+others = [i for i in agreements if i['measure'] not in ('councilmember_position', 'civic_group_position')][:10]
+checked = {(i['document_id'], i['measure']) for i in actors + others}
+for i in items:
+    i['priority'] = str(int(i['first_pass_matches_derived'] == '0' or (i['document_id'], i['measure']) in checked))
 save_csv(items, list(items[0]), '../output/cpc_spot_check_items.csv', key=['document_id', 'measure'])
 
 book = Workbook()
 guide = book.active
 guide.title = 'Instructions'
 for line in [
-        'Spot check of CPC report measures: 45 reports x 7 measures.',
+        'Spot check of CPC report measures: 45 reports x 7 measures (315 items).',
+        'START HERE: the Review sheet has the priority items only. The Other items sheet is optional.',
+        'Review = every item where the first pass and the derived value differ (shaded), plus 25 random agreements.',
         'first_pass_value is a blind Claude coding from the report text, with its quote and page.',
         'derived_value is what the full statement run produces; derived_evidence shows the rows behind it.',
         'Rows where the two differ are shaded. Rows are grouped by report; pdf_url opens the report.',
@@ -119,27 +132,28 @@ for line in [
         'Definitions are on the Codebook sheet. Save the file in place when done.']:
     guide.append([line])
 guide.column_dimensions['A'].width = 120
-review = book.create_sheet('Review')
 columns = ['document_id', 'year', 'project_name', 'pdf_url', 'measure', 'first_pass_value', 'first_pass_quote',
            'first_pass_page', 'first_pass_note', 'derived_value', 'derived_evidence'] + REVIEW_COLUMNS
-review.append(columns)
 shade = PatternFill('solid', fgColor='FCE4D6')
-for item in items:
-    review.append([item[c] if c in item else '' for c in columns])
-    if item['first_pass_matches_derived'] == '0':
-        for cell in review[review.max_row]:
-            cell.fill = shade
-for cell in review[1]:
-    cell.font = Font(bold=True)
 widths = dict(document_id=12, year=6, project_name=24, pdf_url=14, measure=26, first_pass_value=16, first_pass_quote=50,
               first_pass_page=14, first_pass_note=40, derived_value=16, derived_evidence=60,
               jacob_agrees=12, jacob_value=16, jacob_note=30)
-for i, c in enumerate(columns, 1):
-    review.column_dimensions[review.cell(1, i).column_letter].width = widths[c]
-for row in review.iter_rows(min_row=2):
-    for cell in row:
-        cell.alignment = Alignment(wrap_text=True, vertical='top')
-review.freeze_panes = 'F2'
+for title, keep in (('Review', '1'), ('Other items', '0')):
+    sheet = book.create_sheet(title)
+    sheet.append(columns)
+    for item in (i for i in items if i['priority'] == keep):
+        sheet.append([item.get(c, '') for c in columns])
+        if item['first_pass_matches_derived'] == '0':
+            for cell in sheet[sheet.max_row]:
+                cell.fill = shade
+    for cell in sheet[1]:
+        cell.font = Font(bold=True)
+    for i, c in enumerate(columns, 1):
+        sheet.column_dimensions[sheet.cell(1, i).column_letter].width = widths[c]
+    for row in sheet.iter_rows(min_row=2):
+        for cell in row:
+            cell.alignment = Alignment(wrap_text=True, vertical='top')
+    sheet.freeze_panes = 'F2'
 codebook = book.create_sheet('Codebook')
 for measure in MEASURES:
     codebook.append([measure, ' '.join(rules[measure].split())])
@@ -149,4 +163,5 @@ for row in codebook.iter_rows():
     for cell in row:
         cell.alignment = Alignment(wrap_text=True, vertical='top')
 book.save(REVIEW)
-print(f"{len(items)} items; first pass matches derived on {sum(i['first_pass_matches_derived'] == '1' for i in items)}")
+print(f"{len(items)} items; first pass matches derived on {sum(i['first_pass_matches_derived'] == '1' for i in items)}; "
+      f"{sum(i['priority'] == '1' for i in items)} priority items")

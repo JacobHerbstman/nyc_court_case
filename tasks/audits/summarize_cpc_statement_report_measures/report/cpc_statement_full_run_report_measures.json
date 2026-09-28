@@ -1,12 +1,12 @@
 {
   "dataset": "cpc_statement_full_run_report_measures.csv",
-  "rows": 39321,
+  "rows": 81481,
   "key": [
     "document_id",
     "measure"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "60979545e03b94edeffbd70a7043f5268c8a364118fdedd47278ebc19bb05f3f",
+  "sha256_csv_bytes": "e8b796aff38055ecb106adfe0f63f263c325ac65408f97e8436607bcba056766",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -14,8 +14,16 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 2313,
+      "distinct_nonmissing": 4793,
       "most_common": [
+        [
+          "00126d30463744ba647c",
+          17
+        ],
+        [
+          "00167643a19f5c30bf57",
+          17
+        ],
         [
           "001f885d7d891a8711f7",
           17
@@ -26,14 +34,6 @@
         ],
         [
           "002d5b81eb4ca6b13a55",
-          17
-        ],
-        [
-          "0030ee4f2ff8b573da4d",
-          17
-        ],
-        [
-          "00330746fc3823b54877",
           17
         ]
       ]
@@ -47,23 +47,23 @@
       "most_common": [
         [
           "affordability_displacement",
-          2313
+          4793
         ],
         [
           "approved_unresolved_objection",
-          2313
+          4793
         ],
         [
           "bp_request_or_opposition",
-          2313
+          4793
         ],
         [
           "cb_request_or_opposition",
-          2313
+          4793
         ],
         [
           "civic_group_position",
-          2313
+          4793
         ]
       ]
     },
@@ -71,28 +71,28 @@
       "python_types": [
         "str"
       ],
-      "missing": 19,
-      "distinct_nonmissing": 50,
+      "missing": 52,
+      "distinct_nonmissing": 55,
       "most_common": [
         [
           "0",
-          23967
+          50603
         ],
         [
           "1",
-          9677
+          19316
         ],
         [
           "none_or_procedural",
-          3942
+          8266
         ],
         [
           "opposition",
-          398
+          756
         ],
         [
           "2",
-          306
+          580
         ]
       ]
     }

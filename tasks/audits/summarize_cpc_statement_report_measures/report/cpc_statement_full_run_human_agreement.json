@@ -1,12 +1,12 @@
 {
   "dataset": "cpc_statement_full_run_human_agreement.csv",
-  "rows": 1859,
+  "rows": 3092,
   "key": [
     "document_id",
     "measure"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "c3f8a9545e316b1d9cde53e0809a27873c45ea68932c1283bfe93a45b4d645d8",
+  "sha256_csv_bytes": "6d18a12b2b272c4b352b5dd958a24bdf46a116a7f51a48a570213bb3b3d886f7",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -14,7 +14,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 114,
+      "distinct_nonmissing": 190,
       "most_common": [
         [
           "02c18c0a3b85fce07355",
@@ -29,11 +29,11 @@
           17
         ],
         [
-          "0aa168449468b04fafe6",
+          "0a8bb7676106a481a385",
           17
         ],
         [
-          "0ca3eb57eec42d4cd9ca",
+          "0aa168449468b04fafe6",
           17
         ]
       ]
@@ -47,23 +47,23 @@
       "most_common": [
         [
           "councilmember_position",
-          114
+          190
         ],
         [
           "civic_group_position",
-          113
+          187
         ],
         [
           "affordability_displacement",
-          112
+          186
         ],
         [
           "bp_request_or_opposition",
-          112
+          186
         ],
         [
           "substantial_local_opposition",
-          112
+          186
         ]
       ]
     },
@@ -72,27 +72,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 17,
+      "distinct_nonmissing": 21,
       "most_common": [
         [
           "0",
-          985
+          1740
         ],
         [
           "1",
-          588
+          885
         ],
         [
           "none_or_procedural",
-          191
+          326
         ],
         [
           "opposition",
-          21
+          29
         ],
         [
           "2",
-          16
+          22
         ]
       ]
     },
@@ -105,15 +105,15 @@
       "most_common": [
         [
           "single_human_coder",
-          1570
+          2582
         ],
         [
           "human_agreement",
-          206
+          396
         ],
         [
           "provisional",
-          83
+          114
         ]
       ]
     },
@@ -122,27 +122,27 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 17,
+      "distinct_nonmissing": 20,
       "most_common": [
         [
           "0",
-          962
+          1706
         ],
         [
           "1",
-          606
+          915
         ],
         [
           "none_or_procedural",
-          181
+          314
         ],
         [
           "opposition",
-          26
+          36
         ],
         [
           "2",
-          21
+          27
         ]
       ]
     },
@@ -155,11 +155,11 @@
       "most_common": [
         [
           "1",
-          1513
+          2553
         ],
         [
           "0",
-          346
+          539
         ]
       ]
     },
@@ -167,28 +167,28 @@
       "python_types": [
         "str"
       ],
-      "missing": 1649,
-      "distinct_nonmissing": 9,
+      "missing": 2733,
+      "distinct_nonmissing": 12,
       "most_common": [
         [
           "0",
-          176
+          298
         ],
         [
           "1",
-          20
+          31
         ],
         [
           "2",
-          7
+          12
         ],
         [
           "3",
-          2
+          5
         ],
         [
-          "11",
-          1
+          "4",
+          3
         ]
       ]
     }

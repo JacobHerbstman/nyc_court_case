@@ -28,7 +28,11 @@ group took part.
    - The derived value sits beside it, with the statement rows behind it.
    - Every quote is checked against its segment.
 4. **Jacob's review**: mark `jacob_agrees` Y or N for each first-pass value, and give
-   the right value when N.
+   the right value when N. Only the Review sheet is needed; the rest are on an optional
+   Other items sheet. The Review sheet has 72 items:
+   - all 47 where the first pass and derived value differ;
+   - 25 seeded agreements (15 council member or civic group, 10 other), to check the
+     two are not both wrong.
    - The answers are then saved as a committed table in `code/`. That table becomes
      the reference for scoring both the first pass and the derived measures.
    - The build refuses to overwrite a workbook that already has answers.
