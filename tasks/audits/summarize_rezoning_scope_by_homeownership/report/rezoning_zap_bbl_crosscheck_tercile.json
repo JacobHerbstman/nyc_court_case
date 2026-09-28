@@ -1,0 +1,69 @@
+{
+  "dataset": "rezoning_zap_bbl_crosscheck_tercile.csv",
+  "rows": 12,
+  "key": ["tercile", "direction"],
+  "unique_nonmissing_key": true,
+  "md5_csv_bytes": "dc03d60d8c61595b86f81588e56028f3",
+  "fingerprint_scope": "Saved CSV bytes, including row order; not proof of source correctness.",
+  "columns": {
+    "tercile": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 3
+    },
+    "direction": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 4
+    },
+    "rezonings": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 12,
+      "minimum": 4,
+      "maximum": 197
+    },
+    "with_zap_bbls": {
+      "type": "integer",
+      "missing": 0,
+      "distinct_nonmissing": 10,
+      "minimum": 3,
+      "maximum": 179
+    },
+    "zap_lotarea": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 12,
+      "minimum": 156297,
+      "maximum": 258660840
+    },
+    "map_changed_lotarea": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 12,
+      "minimum": 28944282,
+      "maximum": 286941684
+    },
+    "lot_area_2002": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 3,
+      "minimum": 1405349427,
+      "maximum": 2294913397
+    },
+    "zap_pct_of_lot_area": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 12,
+      "minimum": 0.0068,
+      "maximum": 11.2711
+    },
+    "map_pct_of_lot_area": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 12,
+      "minimum": 1.6921,
+      "maximum": 12.5034
+    }
+  }
+}

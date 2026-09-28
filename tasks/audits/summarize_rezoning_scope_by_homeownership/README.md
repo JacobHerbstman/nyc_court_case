@@ -340,3 +340,30 @@ observed.
   unobserved.
 - The CPC request flag undercounts requests (recall about 81-88%). A request
   statement is the report's own account, not proof of who initiated the study.
+
+## ZAP BBL cross-check
+
+`crosscheck_zap_bbls.R` compares the map-based rezoned area with ZAP's project BBL
+lists. Both use PLUTO lot area from the release before each amendment. Outputs:
+`rezoning_zap_bbl_crosscheck.csv` (per amendment) and
+`rezoning_zap_bbl_crosscheck_tercile.csv` (tercile shares by both methods).
+
+Findings, September 28:
+- **Coverage.** Of 748 amendments linked to a ZAP project, 128 list no BBLs. Those 128
+  hold 23,977 of the 32,951 acres whose zoning actually changed. They are mostly DCP
+  neighborhood rezonings: South Jamaica, Bayside, Whitestone, Throgs Neck, the Staten
+  Island mid-island rezonings.
+  - Several other big DCP rezonings list one or two token lots.
+- **Stray parcels.** ZAP lists can include parcels that were not rezoned. Rosedale lists
+  2 BBLs, one of them 4,600 acres. That alone would put 11% of high-homeownership lot
+  area in "contextual" rezonings.
+- **Overall.** ZAP-listed lots cover 21% of the map-based changed area, and only 18%
+  of ZAP-listed area changed zoning.
+- **Where ZAP's list is plausibly complete** (at least half as many lots as changed on
+  the map; 420 amendments, mostly private, 1,909 acres):
+  - ZAP lists 86% of the changed area, with a median of 100% per amendment;
+  - 54% of the listed area changed, with a median of 90% per amendment.
+  - The lists add lots that were not rezoned.
+- **Conclusion.** Summing ZAP BBL lot area would miss most area-wide rezoning and
+  misstate the tercile pattern. The map-based measure stays the main measure. ZAP
+  BBLs agree with it where they are complete.

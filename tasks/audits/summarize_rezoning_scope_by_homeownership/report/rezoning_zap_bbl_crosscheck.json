@@ -1,0 +1,108 @@
+{
+  "dataset": "rezoning_zap_bbl_crosscheck.csv",
+  "rows": 748,
+  "key": "ulurp",
+  "unique_nonmissing_key": true,
+  "md5_csv_bytes": "db78823ecfe313766df80d552a7fe9b6",
+  "fingerprint_scope": "Saved CSV bytes, including row order; not proof of source correctness.",
+  "columns": {
+    "ulurp": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 748
+    },
+    "project_id": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 742
+    },
+    "project_name": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 740
+    },
+    "applicant_type": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 3
+    },
+    "direction": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 5
+    },
+    "primary_cd": {
+      "type": "character",
+      "missing": 4,
+      "distinct_nonmissing": 59
+    },
+    "effective": {
+      "type": "character",
+      "missing": 0,
+      "distinct_nonmissing": 335
+    },
+    "zap_bbls": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 52,
+      "minimum": 0,
+      "maximum": 2058
+    },
+    "zap_bbls_in_pluto": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 51,
+      "minimum": 0,
+      "maximum": 2054
+    },
+    "zap_lotarea": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 550,
+      "minimum": 0,
+      "maximum": 201877331
+    },
+    "map_changed_lots": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 186,
+      "minimum": 0,
+      "maximum": 14186
+    },
+    "map_changed_lotarea": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 594,
+      "minimum": 0,
+      "maximum": 48335033
+    },
+    "overlap_lots": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 43,
+      "minimum": 0,
+      "maximum": 1861
+    },
+    "overlap_lotarea": {
+      "type": "numeric",
+      "missing": 0,
+      "distinct_nonmissing": 412,
+      "minimum": 0,
+      "maximum": 6740756
+    },
+    "zap_area_changed_share": {
+      "type": "numeric",
+      "missing": 175,
+      "distinct_nonmissing": 226,
+      "minimum": 0,
+      "maximum": 1
+    },
+    "map_area_listed_share": {
+      "type": "numeric",
+      "missing": 135,
+      "distinct_nonmissing": 118,
+      "minimum": 0,
+      "maximum": 1.0001
+    }
+  }
+}

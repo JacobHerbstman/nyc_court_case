@@ -1,7 +1,8 @@
 all: ../output/rezonings.csv ../output/rezoning_cd_term_summary.csv ../output/rezoning_homeownership_gradients.csv \
 	../output/rezoning_local_control_link.csv \
 	../output/rezoning_land_area_by_tercile_term.pdf ../output/rezoning_capacity_by_tercile_term.pdf \
-	../output/rezoning_counts_by_tercile_term.pdf ../output/rezoning_homeownership_gradients.pdf
+	../output/rezoning_counts_by_tercile_term.pdf ../output/rezoning_homeownership_gradients.pdf \
+	../output/rezoning_zap_bbl_crosscheck.csv ../output/rezoning_zap_bbl_crosscheck_tercile.csv
 
 ../temp/lot_zoning_panel.parquet: build_lot_zoning_panel.R \
 	../input/mappluto_02b.zip \
@@ -43,6 +44,14 @@ all: ../output/rezonings.csv ../output/rezoning_cd_term_summary.csv ../output/re
 	summarize_rezonings_by_homeownership.R ../output/rezonings.csv ../temp/lot_capacity_changes.parquet \
 	../temp/cd_baseline_2002.csv ../input/cd_homeownership_1990_measure.csv | ../output ../report
 	Rscript --vanilla $<
+
+../%/rezoning_zap_bbl_crosscheck.csv ../%/rezoning_zap_bbl_crosscheck_tercile.csv: crosscheck_zap_bbls.R ../output/rezonings.csv \
+	../temp/lot_zoning_panel.parquet ../temp/lot_capacity_changes.parquet ../input/zap_project_bbl.parquet \
+	../input/cd_homeownership_1990_measure.csv | ../output ../report
+	Rscript --vanilla $<
+
+../input/zap_project_bbl.parquet: ../../../build_zap_datasets/output/zap_project_bbl.parquet | ../input
+	ln -sf "$<" "$@"
 
 ../input/mappluto_02b.zip: ../../../../data_raw/dcp_mappluto_archive/02b/mappluto_02b.zip | ../input
 	ln -sf "$<" "$@"
