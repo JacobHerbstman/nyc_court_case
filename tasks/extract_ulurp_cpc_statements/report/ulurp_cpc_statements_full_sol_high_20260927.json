@@ -1,13 +1,13 @@
 {
   "dataset": "ulurp_cpc_statements_full_sol_high_20260927.csv",
-  "rows": 175497,
+  "rows": 175581,
   "key": [
     "document_id",
     "part",
     "statement_id"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "c968de98f58fd832f6d1a2adce3f1da2e51851e2c1eaa30a2bb2e42b63dd5d82",
+  "sha256_csv_bytes": "b942ec65e80156b3c93778f69d6c4f58cdf721404f64efaf3cf0ef7d099ec2a6",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -15,7 +15,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 4793,
+      "distinct_nonmissing": 4795,
       "most_common": [
         [
           "95f8e2e700b3fc552767",
@@ -44,7 +44,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 4793,
+      "distinct_nonmissing": 4795,
       "most_common": [
         [
           "C 860685 ZMK",
@@ -77,7 +77,7 @@
       "most_common": [
         [
           "1",
-          175497
+          175581
         ]
       ],
       "minimum": 1,
@@ -92,23 +92,23 @@
       "most_common": [
         [
           "2",
-          4793
+          4795
         ],
         [
           "1",
-          4792
+          4794
         ],
         [
           "3",
-          4787
+          4789
         ],
         [
           "4",
-          4767
+          4769
         ],
         [
           "5",
-          4696
+          4698
         ]
       ],
       "minimum": 1,
@@ -123,23 +123,23 @@
       "most_common": [
         [
           "s0001",
-          12120
+          12130
         ],
         [
           "s0002",
-          11438
+          11464
         ],
         [
           "s0003",
-          8077
+          8096
         ],
         [
           "s0004",
-          7533
+          7545
         ],
         [
           "s0005",
-          7176
+          7185
         ]
       ]
     },
@@ -148,7 +148,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 142819,
+      "distinct_nonmissing": 142897,
       "most_common": [
         [
           "This application was determined to be a Type II action which requires no further environmental review.",
@@ -181,7 +181,7 @@
       "most_common": [
         [
           "cpc_report",
-          141470
+          141549
         ],
         [
           "borough_president_recommendation",
@@ -206,7 +206,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 7248,
+      "distinct_nonmissing": 7250,
       "most_common": [
         [
           "bundle_general",
@@ -234,7 +234,7 @@
       "python_types": [
         "str"
       ],
-      "missing": 140403,
+      "missing": 140487,
       "distinct_nonmissing": 10212,
       "most_common": [
         [
@@ -264,15 +264,15 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 15846,
+      "distinct_nonmissing": 15859,
       "most_common": [
         [
           "City Planning Commission",
-          49307
+          49333
         ],
         [
           "Department of Housing Preservation and Development",
-          6971
+          6980
         ],
         [
           "The Commission",
@@ -297,11 +297,11 @@
       "most_common": [
         [
           "cpc",
-          59549
+          59581
         ],
         [
           "community_board",
-          20838
+          20843
         ],
         [
           "borough_president",
@@ -309,7 +309,7 @@
         ],
         [
           "applicant",
-          12469
+          12490
         ],
         [
           "city_agency;applicant",
@@ -321,8 +321,8 @@
       "python_types": [
         "str"
       ],
-      "missing": 152408,
-      "distinct_nonmissing": 3210,
+      "missing": 152490,
+      "distinct_nonmissing": 3211,
       "most_common": [
         [
           "City Planning Commission",
@@ -355,15 +355,15 @@
       "most_common": [
         [
           "no",
-          123214
+          123275
         ],
         [
           "yes",
-          51131
+          51153
         ],
         [
           "unclear",
-          1152
+          1153
         ]
       ]
     },
@@ -376,7 +376,7 @@
       "most_common": [
         [
           "organization",
-          153982
+          154051
         ],
         [
           "office",
@@ -384,11 +384,11 @@
         ],
         [
           "self",
-          5703
+          5712
         ],
         [
           "unclear",
-          3665
+          3671
         ]
       ]
     },
@@ -401,23 +401,23 @@
       "most_common": [
         [
           "finding",
-          48023
+          48042
         ],
         [
           "proposal_description",
-          32142
+          32157
         ],
         [
           "position",
-          23292
+          23305
         ],
         [
           "request",
-          23267
+          23276
         ],
         [
           "requirement",
-          14050
+          14060
         ]
       ]
     },
@@ -430,15 +430,15 @@
       "most_common": [
         [
           "not_applicable",
-          147530
+          147596
         ],
         [
           "definite",
-          22424
+          22439
         ],
         [
           "conditional",
-          3889
+          3892
         ],
         [
           "tentative",
@@ -451,7 +451,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 159376,
+      "distinct_nonmissing": 159455,
       "most_common": [
         [
           "Recommend approval.",
@@ -484,15 +484,15 @@
       "most_common": [
         [
           "none_stated",
-          126544
+          126610
         ],
         [
           "support",
-          38657
+          38668
         ],
         [
           "oppose",
-          5830
+          5837
         ],
         [
           "conditional_support",
@@ -508,8 +508,8 @@
       "python_types": [
         "str"
       ],
-      "missing": 165284,
-      "distinct_nonmissing": 5179,
+      "missing": 165366,
+      "distinct_nonmissing": 5181,
       "most_common": [
         [
           "Environmental alternative",
@@ -537,7 +537,7 @@
       "python_types": [
         "str"
       ],
-      "missing": 168523,
+      "missing": 168605,
       "distinct_nonmissing": 3690,
       "most_common": [
         [
@@ -571,23 +571,23 @@
       "most_common": [
         [
           "not_applicable",
-          141099
+          141166
         ],
         [
           "not_addressed",
-          16329
+          16331
         ],
         [
           "addressed_otherwise",
-          9184
+          9188
         ],
         [
           "adopted",
-          4158
+          4165
         ],
         [
           "partly_adopted",
-          2358
+          2360
         ]
       ]
     },
@@ -595,7 +595,7 @@
       "python_types": [
         "str"
       ],
-      "missing": 157859,
+      "missing": 157928,
       "distinct_nonmissing": 2740,
       "most_common": [
         [
@@ -629,15 +629,15 @@
       "most_common": [
         [
           "cpc_consideration",
-          41497
+          41531
         ],
         [
           "pre_certification",
-          27641
+          27654
         ],
         [
           "cpc_decision",
-          26036
+          26054
         ],
         [
           "borough_president",
@@ -645,7 +645,7 @@
         ],
         [
           "community_board",
-          20864
+          20868
         ]
       ]
     },
@@ -653,8 +653,8 @@
       "python_types": [
         "str"
       ],
-      "missing": 137741,
-      "distinct_nonmissing": 11592,
+      "missing": 137817,
+      "distinct_nonmissing": 11594,
       "most_common": [
         [
           "December 22, 2005",
@@ -682,12 +682,12 @@
       "python_types": [
         "str"
       ],
-      "missing": 27516,
+      "missing": 27529,
       "distinct_nonmissing": 1033,
       "most_common": [
         [
           "environment_open_space",
-          19787
+          19793
         ],
         [
           "traffic_parking",
@@ -695,11 +695,11 @@
         ],
         [
           "scale_density_design",
-          13648
+          13657
         ],
         [
           "process",
-          11823
+          11830
         ],
         [
           "infrastructure_services",
@@ -711,7 +711,7 @@
       "python_types": [
         "str"
       ],
-      "missing": 167904,
+      "missing": 167988,
       "distinct_nonmissing": 3581,
       "most_common": [
         [
@@ -745,7 +745,7 @@
       "most_common": [
         [
           "none",
-          161002
+          161084
         ],
         [
           "outreach_or_consultation",
@@ -753,7 +753,7 @@
         ],
         [
           "other_procedural",
-          4122
+          4123
         ],
         [
           "study",
@@ -761,7 +761,7 @@
         ],
         [
           "monitoring_or_reporting",
-          2507
+          2508
         ]
       ]
     },
@@ -769,8 +769,8 @@
       "python_types": [
         "str"
       ],
-      "missing": 141581,
-      "distinct_nonmissing": 24861,
+      "missing": 141652,
+      "distinct_nonmissing": 24868,
       "most_common": [
         [
           "Site/lot columns sometimes interleave with condition prose in OCR; exact source entry retained in quote.",
@@ -803,23 +803,23 @@
       "most_common": [
         [
           "2",
-          14679
+          14705
         ],
         [
           "1",
-          14217
+          14227
         ],
         [
           "3",
-          10637
+          10656
         ],
         [
           "4",
-          9510
+          9522
         ],
         [
           "5",
-          8907
+          8916
         ]
       ]
     },
@@ -828,7 +828,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 7311,
+      "distinct_nonmissing": 7313,
       "most_common": [
         [
           "C 070531A ZSM",
@@ -861,7 +861,7 @@
       "most_common": [
         [
           "in_scope",
-          143694
+          143778
         ],
         [
           "unresolved",

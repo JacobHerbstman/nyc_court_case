@@ -1,11 +1,11 @@
 {
   "dataset": "cpc_statement_full_run_length.csv",
-  "rows": 4793,
+  "rows": 4795,
   "key": [
     "document_id"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "478267a2cd735812c615c52382a020a65448e7e848fb4a29acf95388c3fa378c",
+  "sha256_csv_bytes": "93226343c81f951c26044a10e70a5fafe8613ec01890675939d1f8492485441f",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -13,7 +13,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 4793,
+      "distinct_nonmissing": 4795,
       "most_common": [
         [
           "00126d30463744ba647c",
@@ -50,11 +50,11 @@
         ],
         [
           "1981",
-          265
+          266
         ],
         [
           "1980",
-          214
+          215
         ],
         [
           "1989",
@@ -71,7 +71,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 4059,
+      "distinct_nonmissing": 4061,
       "most_common": [
         [
           "46996",
@@ -104,7 +104,7 @@
       "most_common": [
         [
           "0",
-          2153
+          2155
         ],
         [
           "1",
@@ -158,7 +158,7 @@
         "str"
       ],
       "missing": 0,
-      "distinct_nonmissing": 2270,
+      "distinct_nonmissing": 2271,
       "most_common": [
         [
           "14.19",

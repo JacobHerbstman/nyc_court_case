@@ -65,3 +65,14 @@ Rule changes, September 28, from the review:
 - **Next step.** A targeted pass that reads only the hearing pages and returns the two
   tallies with a quote would fix this. Those pages are about 17% of the corpus text,
   typically 2 pages per report.
+
+Judging from Sol's rows, September 28:
+- **Test.** Blind Claude subagents answered the seven measures for the 45 reports from
+  Sol's statement rows alone, and from the rows plus the report's hearing pages.
+- **Rows plus hearing pages** is right on 310 of 315 items, against 312 for a direct
+  reading of the full report and 276 for the current rules. On Jacob's 72 reviewed
+  items it scores 68, against 69 for the direct reading and 36 for the rules.
+- **Rows only** is right on 268 items. It misses speaker counts because the tallies
+  are usually not in the rows.
+- **Scale.** A slim packet, with the key row fields plus hearing pages, would be about
+  28M tokens for the whole corpus. Re-reading every report would be about 67M.

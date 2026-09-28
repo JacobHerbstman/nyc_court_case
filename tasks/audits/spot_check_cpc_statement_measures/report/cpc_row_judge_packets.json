@@ -1,0 +1,181 @@
+{
+  "dataset": "cpc_row_judge_packets.csv",
+  "rows": 90,
+  "key": [
+    "document_id",
+    "variant"
+  ],
+  "unique_nonmissing_key": true,
+  "sha256_csv_bytes": "d2f12e03c3d69e27133202810dd2b954fc31679dedc1a7314990b6a7fb7355f7",
+  "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
+  "columns": {
+    "document_id": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 45,
+      "most_common": [
+        [
+          "151236981b9fcfc3773c",
+          2
+        ],
+        [
+          "17cad4f8302d949c487e",
+          2
+        ],
+        [
+          "1f8369cca1e47fd59bc0",
+          2
+        ],
+        [
+          "2174d914460e2bdbc060",
+          2
+        ],
+        [
+          "30ff2817deb60bf5eaac",
+          2
+        ]
+      ]
+    },
+    "variant": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 2,
+      "most_common": [
+        [
+          "rows_hearing",
+          45
+        ],
+        [
+          "rows_only",
+          45
+        ]
+      ]
+    },
+    "statement_rows": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 34,
+      "most_common": [
+        [
+          "43",
+          6
+        ],
+        [
+          "5",
+          6
+        ],
+        [
+          "14",
+          4
+        ],
+        [
+          "24",
+          4
+        ],
+        [
+          "31",
+          4
+        ]
+      ],
+      "minimum": 5,
+      "maximum": 95
+    },
+    "hearing_segments": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 8,
+      "most_common": [
+        [
+          "0",
+          45
+        ],
+        [
+          "2",
+          12
+        ],
+        [
+          "1",
+          11
+        ],
+        [
+          "3",
+          11
+        ],
+        [
+          "4",
+          6
+        ]
+      ],
+      "minimum": 0,
+      "maximum": 9
+    },
+    "characters": {
+      "python_types": [
+        "int"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 90,
+      "most_common": [
+        [
+          "10023",
+          1
+        ],
+        [
+          "10273",
+          1
+        ],
+        [
+          "11089",
+          1
+        ],
+        [
+          "11604",
+          1
+        ],
+        [
+          "11620",
+          1
+        ]
+      ],
+      "minimum": 2780,
+      "maximum": 76511
+    },
+    "packet": {
+      "python_types": [
+        "str"
+      ],
+      "missing": 0,
+      "distinct_nonmissing": 90,
+      "most_common": [
+        [
+          "../temp/judge_packets/rows_hearing/151236981b9fcfc3773c.txt",
+          1
+        ],
+        [
+          "../temp/judge_packets/rows_hearing/17cad4f8302d949c487e.txt",
+          1
+        ],
+        [
+          "../temp/judge_packets/rows_hearing/1f8369cca1e47fd59bc0.txt",
+          1
+        ],
+        [
+          "../temp/judge_packets/rows_hearing/2174d914460e2bdbc060.txt",
+          1
+        ],
+        [
+          "../temp/judge_packets/rows_hearing/30ff2817deb60bf5eaac.txt",
+          1
+        ]
+      ]
+    }
+  }
+}

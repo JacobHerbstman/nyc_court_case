@@ -5,7 +5,7 @@
     "document_id"
   ],
   "unique_nonmissing_key": true,
-  "sha256_csv_bytes": "f3417cd38ec14dd139797a37f82859c50bda0c637ef4e31226e596a5951439bc",
+  "sha256_csv_bytes": "ba9566ba046de52a3e06b0379b3b45fe6dbc5bd0d990247ed1d07320fb8c8a32",
   "fingerprint_scope": "Saved CSV bytes, including row order and line endings; not a proof of source correctness.",
   "columns": {
     "document_id": {
@@ -103,11 +103,11 @@
       "most_common": [
         [
           "complete",
-          4793
+          4795
         ],
         [
           "not_run",
-          4270
+          4268
         ]
       ]
     },
@@ -115,12 +115,12 @@
       "python_types": [
         "int"
       ],
-      "missing": 4270,
+      "missing": 4268,
       "distinct_nonmissing": 1,
       "most_common": [
         [
           "1",
-          4793
+          4795
         ]
       ],
       "minimum": 1,
@@ -135,11 +135,11 @@
       "most_common": [
         [
           "1",
-          4793
+          4795
         ],
         [
           "0",
-          4270
+          4268
         ]
       ],
       "minimum": 0,
@@ -154,11 +154,11 @@
       "most_common": [
         [
           "0",
-          4270
+          4268
         ],
         [
           "1",
-          4200
+          4202
         ],
         [
           "2",
@@ -185,7 +185,7 @@
       "most_common": [
         [
           "0",
-          4270
+          4268
         ],
         [
           "7",
@@ -229,8 +229,8 @@
       "python_types": [
         "str"
       ],
-      "missing": 4397,
-      "distinct_nonmissing": 4663,
+      "missing": 4395,
+      "distinct_nonmissing": 4665,
       "most_common": [
         [
           "Part 1: Minor OCR errors; no attachments supplied.\n",

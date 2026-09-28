@@ -130,3 +130,46 @@ Two answers to confirm with Jacob:
 - He agreed with none for U Thant Park, where three representatives of unnamed
   neighborhood groups supported (5ccd0074693eefe3c7ba), but ruled that unnamed
   groups that clearly take a side count.
+
+## Judging from Sol's rows, September 28
+
+Can a model answer the codebook from Sol's statement rows instead of re-reading the
+PDF? `write_judge_packets.py` writes two packets per report:
+- `rows_only`: the statement rows;
+- `rows_hearing`: the same rows plus the report's hearing pages.
+
+Blind Claude subagents judged each packet with the codebook and Jacob's rulings. See
+`data_raw/cpc_spot_check_row_judging/claude_opus_5_5_20260928/`.
+
+Correct items, out of 315, against the reviewed value or else the first pass:
+
+| Method | Correct |
+|---|---|
+| rows_hearing | 310 |
+| First pass (direct reading of the full report) | 312 |
+| Current rules | 276 |
+| rows_only | 268 |
+
+On the 72 items Jacob reviewed:
+
+| Method | Reviewed items | The 47 disagreements |
+|---|---|---|
+| First pass | 69 | 44 |
+| rows_hearing | 68 | 43 |
+| rows_only | 57 | 33 |
+| Current rules | 36 | 12 |
+
+`rows_hearing` gets both speaker counts right in all 45 reports. `rows_only` cannot:
+the tallies are usually not in the rows.
+
+Three of `rows_hearing`'s 4 reviewed misses are civic group cases where Jacob's
+answers conflict with his written rulings (operators, unnamed groups, Henry Street
+Settlement). The fourth is a Borough President request reported only second-hand.
+
+Scale estimates, from the reports completed so far:
+- The packets used here, with every row field plus hearing pages, would be about 85M
+  tokens for the corpus.
+- A slim packet (actor, roles, type, stance, response, stage and summary, plus hearing
+  pages) would be about 28M tokens.
+- Re-reading every report in full would be about 67M tokens.
+- The slim packet is untested.
